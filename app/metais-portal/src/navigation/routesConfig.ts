@@ -26,6 +26,10 @@ import Evaluation from '@/pages/ci/KRIS/[entityId]/evaluation'
 import Goals from '@/pages/ci/KRIS/[entityId]/goals'
 import Tasks from '@/pages/ci/KRIS/[entityId]/tasks'
 import KsEntityDetailPage from '@/pages/ci/KS/[entityId]'
+import { SlaContractDetailPage } from '@/pages/ci/Kontrakt/[entityId]'
+import { SlaContractHistory } from '@/pages/ci/Kontrakt/[entityId]/history'
+import { SlaContractInformation } from '@/pages/ci/Kontrakt/[entityId]/information'
+import { SlaContractSupportContact } from '@/pages/ci/Kontrakt/[entityId]/supportContact'
 import ITVSExceptionsEditPage from '@/pages/ci/OsobitnyPostup/[entityId]/edit'
 import CreateITVSExceptionsPage from '@/pages/ci/OsobitnyPostup/create'
 import POIsListPage from '@/pages/ci/PO_IS'
@@ -64,6 +68,7 @@ import CookiesInfoPage from '@/pages/cookies/info'
 import CodeListDetailPage from '@/pages/data-objects/codelists/[id]/detail'
 import EditCodeListPage from '@/pages/data-objects/codelists/[id]/edit'
 import CodeListPage from '@/pages/data-objects/codelists/list'
+import RefIdentifiersPage from '@/pages/data-objects/ref-identifiers'
 import RequestListDetailPage from '@/pages/data-objects/requestlist/[requestId]/detail'
 import RequestListEditPage from '@/pages/data-objects/requestlist/[requestId]/edit'
 import RequestListCreatePage from '@/pages/data-objects/requestlist/create'
@@ -114,10 +119,6 @@ import VoteCreatePage from '@/pages/standardization/voteslist/create'
 import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
-import { SlaContractHistory } from '@/pages/ci/Kontrakt/[entityId]/history'
-import { SlaContractSupportContact } from '@/pages/ci/Kontrakt/[entityId]/supportContact'
-import { SlaContractInformation } from '@/pages/ci/Kontrakt/[entityId]/information'
-import { SlaContractDetailPage } from '@/pages/ci/Kontrakt/[entityId]'
 import { SlaContractList } from '@/pages/ci/Kontrakt/list'
 import { OlaContractAdd } from '@/pages/ola-contract-list/add'
 import { EditSlaContractPage } from '@/pages/ci/Kontrakt/[entityId]/edit'
@@ -477,6 +478,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.DATA_OBJECT_REQUESTS_CREATE,
                 slug: RouterRoutes.DATA_OBJECT_REQUESTS_CREATE,
                 component: RequestListCreatePage,
+            },
+            {
+                path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS,
+                slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS,
+                component: RefIdentifiersPage,
             },
             {
                 path: RouterRoutes.REF_REGISTERS_LIST,

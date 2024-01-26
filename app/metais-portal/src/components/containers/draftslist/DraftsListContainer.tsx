@@ -18,7 +18,7 @@ interface IDraftsListDataTableContainerProps<T> {
 export const DraftsListContainer = <T extends FieldValues & IFilterParams>({ View, defaultFilterValues }: IDraftsListDataTableContainerProps<T>) => {
     const { filterParams, handleFilterChange } = useFilterForCiList<T, GetFOPStandardRequestsParams>({
         ...defaultFilterValues,
-        sort: [{ orderBy: ATTRIBUTE_NAME.Sr_Name, sortDirection: SortType.DESC }],
+        sort: [{ orderBy: ATTRIBUTE_NAME.createdAt, sortDirection: SortType.DESC }],
     })
 
     const { data, isLoading: isDraftsLoading, isError: isDraftsError } = useGetFOPStandardRequests(mapFilterToStandardDrafts(filterParams))

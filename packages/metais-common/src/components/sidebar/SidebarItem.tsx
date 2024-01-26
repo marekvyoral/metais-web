@@ -2,6 +2,7 @@ import { ArrowDownIcon } from '@isdd/idsk-ui-kit'
 import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation, useMatch } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import styles from '@isdd/metais-common/components/GridView.module.scss'
 
@@ -44,6 +45,8 @@ export const SidebarItem = ({
 
     const shouldNotBeBold = hasSamePathAsParent && !isDetail && !isUrlMatched
 
+    const { t } = useTranslation()
+
     useEffect(() => {
         if (defaultOpenedMenuItemsIndexes.length > 0) {
             setExpandedSubItemIndexes((prev) => [
@@ -72,7 +75,15 @@ export const SidebarItem = ({
                         {item.title}
                     </Link>
                     {item.subItems && isSidebarExpanded && (
-                        <img src={ArrowDownIcon} className={classNames(styles.arrow, !isExpanded && styles.rotate)} alt="arrow-down" />
+                        <img
+                            src={ArrowDownIcon}
+                            className={classNames(styles.arrow, !isExpanded && styles.rotate)}
+                            alt={
+                                isExpanded
+                                    ? t('sidebar.expandableCloseItem', { name: item.title })
+                                    : t('sidebar.expandableExpandItem', { name: item.title })
+                            }
+                        />
                     )}
                 </div>
                 {item.subItems && isExpanded && isSidebarExpanded && (

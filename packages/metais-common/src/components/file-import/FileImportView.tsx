@@ -1,5 +1,5 @@
 import React, { SetStateAction } from 'react'
-import { Uppy, UppyFile } from '@uppy/core'
+import { UploadResult, Uppy, UppyFile } from '@uppy/core'
 import { StatusBar } from '@uppy/react'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { useTranslation } from 'react-i18next'
@@ -25,7 +25,7 @@ interface IFileImportView {
     handleRemoveFile: (fileId: string) => void
     handleRemoveErrorMessage: () => void
     handleCancelImport: () => void
-    handleImport: () => Promise<void>
+    handleImport: () => Promise<UploadResult | undefined> | Promise<void>
     uploadFilesStatus: UploadingFilesStatus
     currentFiles: UppyFile[]
     fileImportStep: FileImportStepEnum

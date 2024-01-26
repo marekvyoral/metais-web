@@ -15,6 +15,7 @@ import { AuthProvider } from 'react-oauth2-code-pkce'
 import { AutoLogout } from '@isdd/metais-common/src/components/auto-logout/AutoLogout'
 import { authConfig } from '@isdd/metais-common/contexts/auth/authConfig'
 import { CrashFallback } from '@isdd/metais-common/src/components/crash-fallback/CrashFallback'
+import { CodeListWorkingLanguageProvider } from '@isdd/metais-common/contexts/codeListWorkingLanguage/codeListWorkingLanguageContext'
 import { ErrorBoundary } from 'react-error-boundary'
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 
@@ -57,9 +58,11 @@ root.render(
                                             <FilterContextProvider>
                                                 <ActionSuccessProvider>
                                                     <UserPreferencesProvider>
-                                                        <DndProvider backend={HTML5Backend}>
-                                                            <App />
-                                                        </DndProvider>
+                                                        <CodeListWorkingLanguageProvider>
+                                                            <DndProvider backend={HTML5Backend}>
+                                                                <App />
+                                                            </DndProvider>
+                                                        </CodeListWorkingLanguageProvider>
                                                     </UserPreferencesProvider>
                                                 </ActionSuccessProvider>
                                             </FilterContextProvider>

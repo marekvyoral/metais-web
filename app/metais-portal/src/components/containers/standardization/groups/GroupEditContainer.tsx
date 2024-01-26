@@ -1,6 +1,5 @@
 import { Group, useFindByUuid3, useUpdateOrCreate2 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
-import { ApiError } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React, { useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -33,6 +32,7 @@ export interface IGroupEditViewParams {
     isEdit?: boolean
     resultApiCall?: IResultApiCall
     isLoading: boolean
+    uniqueConstraintError?: { [key: string]: string }
 }
 
 export interface IGroupEditContainer {
@@ -53,7 +53,7 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
     })
 
     const { data: infoData, isLoading, isError } = useFindByUuid3(id ?? '')
-
+    const [uniqueConstraintError, setUniqueConstraintError] = useState<{ [key: string]: string }>()
     const invalidateGroupDetailCache = useInvalidateGroupsDetailCache(id ?? '')
     const invalidateCache = useInvalidateGroupsListCache({ sortBy: 'name', ascending: false })
     const goBack = () => {
@@ -71,12 +71,32 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
                 invalidateCache.invalidate()
                 invalidateGroupDetailCache.invalidate()
             },
-            onError(error: ApiError) {
-                setResultApiCall({
-                    isError: true,
-                    isSuccess: false,
-                    message: error?.type === 'NoChangesDetected' ? t(`errors.${ReponseErrorCodeEnum.DEFAULT}`) : t(`errors.NoChangesDetected`),
-                })
+            onError(error) {
+                if (error instanceof Error && typeof error.message === 'string') {
+                    const err: { [key: string]: string } = {}
+                    const errorData = JSON.parse(error.message)
+                    switch (errorData.type) {
+                        case 'UniqueConstraintException':
+                            err[errorData.property] =
+                                errorData.property === 'name' ? t('groups.errors.uniqueName') : t('groups.errors.uniqueShortName')
+                            setUniqueConstraintError(err)
+                            break
+                        case 'NoChangesDetected':
+                            setResultApiCall({
+                                isError: true,
+                                isSuccess: false,
+                                message: t(`errors.NoChangesDetected`),
+                            })
+                            break
+                        default:
+                            setResultApiCall({
+                                isError: true,
+                                isSuccess: false,
+                                message: t(`errors.${ReponseErrorCodeEnum.DEFAULT}`),
+                            })
+                            break
+                    }
+                }
             },
         },
     })
@@ -101,6 +121,7 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
                 isEdit
                 resultApiCall={resultApiCall}
                 isLoading={isUpdating}
+                uniqueConstraintError={uniqueConstraintError}
             />
         </QueryFeedback>
     )

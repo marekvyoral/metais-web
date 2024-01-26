@@ -1,7 +1,7 @@
 import { ApiCodelistItem } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useTranslation } from 'react-i18next'
-import { Button, ButtonGroupRow, TextWarning } from '@isdd/idsk-ui-kit/index'
+import { Button, ButtonGroupRow } from '@isdd/idsk-ui-kit/index'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -43,13 +43,14 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
 
     return (
         <div className={styles.expandableRowContent}>
-            {codelistItem.locked && (
-                <TextWarning>
-                    {t('codeListDetail.warning.itemLocked', { user: codelistItem.lockedBy, date: t('date', { date: codelistItem.lockedFrom }) })}
-                </TextWarning>
+            {codelistItem && (
+                <CodeListItemInfo
+                    showDateIntervals
+                    codelistItem={codelistItem}
+                    workingLanguage={workingLanguage}
+                    attributeProfile={attributeProfile}
+                />
             )}
-
-            {codelistItem && <CodeListItemInfo codelistItem={codelistItem} workingLanguage={workingLanguage} attributeProfile={attributeProfile} />}
 
             <ButtonGroupRow>
                 {canEditItem && handleOpenEditItem && (

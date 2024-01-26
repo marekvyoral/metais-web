@@ -25,6 +25,8 @@ export interface IRequestForm {
     startDate?: Date | null
     validDate?: Date | null
     codeListState?: RequestListState
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [x: string]: any
 }
 
 export const mapFormToSave = (formData: IRequestForm, language: string, id?: number): ApiCodelistPreview => {
@@ -178,8 +180,9 @@ export const mapCodeListToForm = (codeList: ApiCodelistItem[], language: string)
                     codeItem: code.itemCode ?? '',
                     codeName: code.codelistItemNames?.find((item) => item.language === language)?.value ?? '',
                     shortname: code.codelistItemShortenedNames?.find((item) => item.language === language)?.value ?? '',
+                    shortcut: code.codelistItemAbbreviatedNames?.find((item) => item.language === language)?.value ?? '',
                     addData: code.codelistItemAdditionalContents?.find((item) => item.language === language)?.value ?? '',
-                    unit: code.codelistItemUnitsOfMeasure?.find((item) => item.id === code.id)?.value ?? '',
+                    unit: code.codelistItemUnitsOfMeasure?.[0]?.value ?? '',
                     note: code.codelistItemNotes?.find((item) => item.language === language)?.value ?? '',
                     order: code.codelistItemLogicalOrders?.find((item) => item.language === language)?.value
                         ? Number(code.codelistItemLogicalOrders?.find((item) => item.language === language)?.value)
@@ -202,21 +205,26 @@ export const mapCodeListToForm = (codeList: ApiCodelistItem[], language: string)
 
 export const mapToCodeListDetail = (language: string, item?: IItemForm): ApiCodelistItem | undefined => {
     if (!item) return undefined
+
+    const effectiveFrom = ''
+    const effectiveTo = ''
+
     return {
         id: item.id,
         itemCode: item.codeItem,
-        codelistItemNames: [{ value: item.codeName, language: language }],
-        codelistItemShortenedNames: [{ value: item.shortname, language: language }],
-        codelistItemAdditionalContents: [{ value: item.unit, language: language }],
+        codelistItemNames: [{ value: item.codeName, language: language, effectiveFrom, effectiveTo }],
+        codelistItemAbbreviatedNames: [{ value: item.shortcut, language: language, effectiveFrom, effectiveTo }],
+        codelistItemShortenedNames: [{ value: item.shortname, language: language, effectiveFrom, effectiveTo }],
+        codelistItemAdditionalContents: [{ value: item.addData, language: language, effectiveFrom, effectiveTo }],
         codelistItemUnitsOfMeasure: [{ value: item.unit }],
         codelistItemNotes: [{ value: item.note, language: language }],
         codelistItemLogicalOrders: [{ value: item.order, language: language }],
-        codelistItemLegislativeValidities: [{ validityValue: item.law }],
+        codelistItemLegislativeValidities: [{ validityValue: item.law, effectiveFrom, effectiveTo }],
         itemUri: item.refident,
-        codelistItemExcludes: [{ value: item.exclude, language: language }],
-        codelistItemIncludes: [{ value: item.contain, language: language }],
-        codelistItemIncludesAlso: [{ value: item.alsoContain, language: language }],
-        validFrom: item.effectiveFrom,
+        codelistItemExcludes: [{ value: item.exclude, language: language, effectiveFrom, effectiveTo }],
+        codelistItemIncludes: [{ value: item.contain, language: language, effectiveFrom, effectiveTo }],
+        codelistItemIncludesAlso: [{ value: item.alsoContain, language: language, effectiveFrom, effectiveTo }],
+        validFrom: item.validDate,
         lockedBy: item.lockedBy,
         lockedFrom: item.lockedFrom,
     } as ApiCodelistItem

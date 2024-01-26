@@ -135,7 +135,8 @@ export const useInvalidateGroupsDetailCache = (id: string) => {
 export const useInvalidateCodeListCache = () => {
     const queryClient = useQueryClient()
 
-    const invalidate = (code: string, id: number) => {
+    const invalidateCodelists = (code: string, id: number) => {
+        // invalidate codelists requests cache for lists and selected codelist
         queryClient.invalidateQueries([getGetCodelistHeaderQueryKey(id)[0]])
         queryClient.invalidateQueries([getGetOriginalCodelistHeaderQueryKey(code)[0]])
         queryClient.invalidateQueries([getGetRoleParticipantBulkQueryKey({})[0]])
@@ -147,13 +148,8 @@ export const useInvalidateCodeListCache = () => {
         queryClient.invalidateQueries([getGetTemporalCodelistHeaderWithLockQueryKey(code)[0]])
     }
 
-    return { invalidate }
-}
-
-export const useInvalidateCodeListRequestCache = () => {
-    const queryClient = useQueryClient()
-
-    const invalidate = (id?: number) => {
+    const invalidateRequests = (id?: number) => {
+        // invalidate codelists requests cache for lists and selected request
         queryClient.invalidateQueries([getGetCodelistRequestsQueryKey({ language: '', pageNumber: 0, perPage: 0 })[0]])
         if (id) {
             queryClient.invalidateQueries([getGetCodelistRequestDetailQueryKey(id)[0]])
@@ -161,7 +157,16 @@ export const useInvalidateCodeListRequestCache = () => {
         }
     }
 
-    return { invalidate }
+    const invalidateAll = () => {
+        // invalidates whole codelists cache regardless id/code
+        queryClient.invalidateQueries({
+            predicate: (query) => {
+                return query.queryHash.startsWith('["/codelists')
+            },
+        })
+    }
+
+    return { invalidateCodelists, invalidateRequests, invalidateAll }
 }
 
 export const useInvalidateAttributeProfileCache = (entityName: string) => {

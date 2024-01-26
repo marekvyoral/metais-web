@@ -52,7 +52,11 @@ export const useCreateRequestSchema = (canEdit: boolean): IOutput => {
         mainGestor: string().required(t('codeListList.requestValidations.mainGestor')),
         gid: string(),
         refIndicator: string(),
-        notes: array(),
+        notes: array().of(
+            object().shape({
+                text: string(),
+            }),
+        ),
         name: string().required(t('codeListList.requestValidations.name')),
         lastName: string().required(t('codeListList.requestValidations.lastName')),
         phone: string().required(t('codeListList.requestValidations.phone')).matches(REGEX_TEL, t('codeListList.requestValidations.phoneFormat')),

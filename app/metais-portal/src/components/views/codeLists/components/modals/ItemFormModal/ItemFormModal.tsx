@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
-import { BaseModal, Button, ButtonGroupRow, CheckBox, Input, LoadingIndicator, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Button, ButtonGroupRow, CheckBox, Input, LoadingIndicator, TextArea, TextHeading, TextWarning } from '@isdd/idsk-ui-kit/index'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -23,7 +23,8 @@ import {
     CodeListItemState,
     getErrorTranslateKeys,
     mapCodeListItemToForm,
-    mapToCodeListDetail,
+    mapFormToCodeListItem,
+    removeOtherLanguagesFromItem,
 } from '@/componentHelpers/codeList'
 
 export interface IItemForm {
@@ -142,23 +143,24 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
     const handleApiSubmitItem = (form: IItemForm) => {
         if (form.id) {
             // edit
-            const mappedItem = mapToCodeListDetail(workingLanguage, form, item)
+            const mappedItem = mapFormToCodeListItem(workingLanguage, form, item)
             if (item?.codelistItemNames?.some((name) => name.language === workingLanguage)) {
                 // update existing
                 mutationUpdateAndUnlockItem.mutate({ code: codeListCode, itemCode: mappedItem.itemCode || '', data: mappedItem })
             } else {
                 // add language version
+                const strippedItem = removeOtherLanguagesFromItem(mappedItem, workingLanguage)
                 mutationCreateItemLangExtended.mutate({
                     code: codeListCode,
-                    itemCode: mappedItem.itemCode || '',
-                    data: mappedItem,
+                    itemCode: strippedItem.itemCode || '',
+                    data: strippedItem,
                     actualLang: workingLanguage,
                 })
-                mutationUpdateItemLangExtended.mutate({ code: codeListCode, itemCode: mappedItem.itemCode || '', data: mappedItem })
+                mutationUpdateItemLangExtended.mutate({ code: codeListCode, itemCode: strippedItem.itemCode || '', data: strippedItem })
             }
         } else {
             // create
-            const mappedItem = mapToCodeListDetail(workingLanguage, form)
+            const mappedItem = mapFormToCodeListItem(workingLanguage, form)
             mutationCreateItem.mutate({ code: codeListCode, data: mappedItem })
         }
     }
@@ -179,9 +181,12 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
     }, [item])
 
     return (
-        <BaseModal isOpen={isOpen} close={close}>
-            <QueryFeedback loading={isLoadingFormData}>
+        <QueryFeedback loading={isLoadingFormData} indicatorProps={{ fullscreen: true }}>
+            <BaseModal isOpen={isOpen} close={close}>
                 <TextHeading size="L">{t(`codeListDetail.title.${isEdit ? 'editItem' : 'addNewItem'}`)}</TextHeading>
+                <TextWarning>
+                    {t(`codeListDetail.warning.workingLanguageNotice`, { language: t(`codeListDetail.languages.${workingLanguage}`) })}
+                </TextWarning>
                 {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                 {loadErrorMessage && (
                     <QueryFeedback
@@ -192,7 +197,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
                 )}
                 {!loadErrorMessage && (
                     <form onSubmit={handleSubmit(handleApiSubmitItem)}>
-                        {isEdit && <Input hidden {...register(CodeListItemFormEnum.ID)} id={CodeListItemFormEnum.ID} />}
+                        {isEdit && <input hidden {...register(CodeListItemFormEnum.ID)} id={CodeListItemFormEnum.ID} />}
                         <Input
                             required
                             label={getDescription('Gui_Profil_ZC_nazov_polozky', language, attributeProfile)}
@@ -316,16 +321,16 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
                         />
                         <MutationFeedback
                             success={isSuccess}
-                            successMessage={t('codeListDetail.feedback.editCodeListItems')}
+                            successMessage={isEdit ? t('codeListDetail.feedback.editItemSuccess') : t('codeListDetail.feedback.createItemSuccess')}
                             error={submitErrorMessage && t([submitErrorMessage, 'feedback.mutationErrorMessage'])}
                         />
                         <ButtonGroupRow>
                             <Button label={t('form.cancel')} type="reset" variant="secondary" onClick={close} />
-                            <Button label={t('form.submit')} type="submit" />
+                            <Button label={t('codeListDetail.button.save')} type="submit" />
                         </ButtonGroupRow>
                     </form>
                 )}
-            </QueryFeedback>
-        </BaseModal>
+            </BaseModal>
+        </QueryFeedback>
     )
 }

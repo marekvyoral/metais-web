@@ -6,7 +6,6 @@ import {
     useProcessRequestAction,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -14,7 +13,7 @@ import { RoleParticipantUI, useGetRoleParticipantBulk } from '@isdd/metais-commo
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
-import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
@@ -40,6 +39,7 @@ export interface RequestDetailData {
 
 export interface DetailRequestViewProps {
     data: RequestDetailData
+    workingLanguage: string
     isLoading: boolean
     isLoadingMutation: boolean
     isError: boolean
@@ -55,12 +55,15 @@ interface DetailRequestContainerProps {
 }
 
 export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ View }) => {
-    const { i18n } = useTranslation()
     const { requestId } = useParams()
     const navigate = useNavigate()
 
+    // WorkingLanguage is forced to system default 'sk' for requests.
+    // Content is created and displayed in only one language.
+    const workingLanguage = 'sk'
+
     const { setIsActionSuccess } = useActionSuccess()
-    const { invalidate } = useInvalidateCodeListRequestCache()
+    const { invalidateRequests } = useInvalidateCodeListCache()
 
     const { filter, handleFilterChange } = useFilterParams<IFilter>({
         pageNumber: BASE_PAGE_NUMBER,
@@ -75,7 +78,7 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
         isFetching: isLoadingItemList,
         isError: isErrorItemList,
     } = useGetCodelistRequestItems(Number(requestId), {
-        language: i18n.language,
+        language: workingLanguage,
         pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
         perPage: filter.pageSize ?? BASE_PAGE_SIZE,
     })
@@ -110,7 +113,7 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
             },
             {
                 onSuccess: () => {
-                    invalidate(detailData?.id)
+                    invalidateRequests(detailData?.id)
                     setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
                     navigate(`${NavigationSubRoutes.REQUESTLIST}`)
                 },
@@ -130,6 +133,7 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
             <View
                 requestId={requestId}
                 data={data}
+                workingLanguage={workingLanguage}
                 isLoading={isLoading}
                 isLoadingMutation={isLoadingRequestAction}
                 actionsErrorMessages={actionsErrorMessages}

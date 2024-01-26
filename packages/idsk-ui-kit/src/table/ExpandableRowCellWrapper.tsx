@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { Row } from '@tanstack/react-table'
+import { useTranslation } from 'react-i18next'
 
 import styles from './table.module.scss'
 
@@ -9,6 +10,8 @@ interface ExpandableRowCellProps<T> extends PropsWithChildren {
 }
 
 export const ExpandableRowCellWrapper = <T,>({ row, children }: ExpandableRowCellProps<T>): JSX.Element => {
+    const { t } = useTranslation()
+
     return (
         <div
             className={styles.expandCheckboxCell}
@@ -29,6 +32,7 @@ export const ExpandableRowCellWrapper = <T,>({ row, children }: ExpandableRowCel
                             width: '1.1rem',
                             height: '1.1rem',
                         }}
+                        alt={row.getIsExpanded() ? t('table.expandableCloseItem') : t('table.expandableExpandItem')}
                     />
                 </div>
             )}

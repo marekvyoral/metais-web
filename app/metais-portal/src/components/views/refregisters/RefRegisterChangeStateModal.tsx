@@ -12,6 +12,7 @@ import { useStateMachine } from '@isdd/metais-common/components/state-machine/ho
 import stylesImport from '@isdd/metais-common/components/file-import/FileImport.module.scss'
 import { UppyFile } from '@uppy/core'
 import { v4 as uuidV4 } from 'uuid'
+import { ApiStandardRequestRequestChannel, useCreateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 
 import { downloadFile } from '@/components/views/documents/utils'
 import { RefRegisterStateMachine } from '@/pages/refregisters/[entityId]'
@@ -22,6 +23,7 @@ interface IRefRegisterChangeStateModal {
     entityId: string
     targetState: ApiReferenceRegisterState | undefined
     handleChangeState: (attachementIds: string[], description: string) => Promise<void>
+    entityItemName: string
 }
 
 export const RefRegisterChangeStateModal = ({
@@ -30,6 +32,7 @@ export const RefRegisterChangeStateModal = ({
     entityId,
     targetState,
     handleChangeState,
+    entityItemName,
 }: IRefRegisterChangeStateModal) => {
     const refRegisterStateContext = useContext(RefRegisterStateMachine)
 
@@ -41,6 +44,7 @@ export const RefRegisterChangeStateModal = ({
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
 
     const generate = useGenerateReferenceRegisterByUuidHook()
+    const standardRequest = useCreateStandardRequest()
     const { uppy, currentFiles, handleRemoveFile, uploadFilesStatus, handleUpload, generalErrorMessages, removeGeneralErrorMessages } = useUppy({
         multiple: true,
         fileImportStep,
@@ -62,12 +66,47 @@ export const RefRegisterChangeStateModal = ({
         },
     })
 
+    const requestData = {
+        version: 1,
+        srName: 'Žiadosť o zaradenie ISVS: ' + entityItemName + ' do zoznamu referenčných registrov',
+        srDescription1:
+            'Vecný popis návrhu nového štandardu: Základné údaje referenčného registra aopis referenčných údajov je uvedený v priloženom súbore.',
+        srDescription2: '-',
+        srDescription3: '-',
+        srDescription4: '-',
+        srDescription5: '-',
+        srDescription6: '-',
+        attachments: [],
+        requestChannel: ApiStandardRequestRequestChannel.RR,
+        requestChannelAttributes: [
+            {
+                attributeName: 'rr_uuid',
+                attributeValue: entityId,
+            },
+        ],
+    }
+
     const onSubmit = async (formValues: FieldValues) => {
         if (targetState) {
             if (targetState === ApiReferenceRegisterState.MPK_IN_PROGRESS) {
                 const metadata = await generate(entityId)
 
                 downloadFile(`${DMS_DOWNLOAD_FILE}${metadata?.uuid}`, metadata?.uuid ?? '')
+            }
+            if (targetState === ApiReferenceRegisterState.APPROVAL_IN_PROGRESS) {
+                const metadata = await generate(entityId)
+                standardRequest.mutateAsync({
+                    data: {
+                        ...requestData,
+                        attachments: [
+                            {
+                                attachmentId: entityId,
+                                attachmentName: metadata.filename,
+                                attachmentSize: metadata.contentLength,
+                            },
+                        ],
+                    },
+                })
             }
 
             if (currentFiles?.length > 0) await handleUpload()

@@ -143,6 +143,8 @@
             "meetings": "Meetings",
             "registers": "Reference registers",
             "codelists": "Codelists",
+            "refIdentifiers": "Reference identifiers",
+            "refIdentifierList": "List of request",
             "publicCodelists": "Public codelists",
             "centralModel": "Central data model",
             "licenses": "Licenses",
@@ -191,7 +193,9 @@
     },
     "sidebar": {
         "hide": "HIDE",
-        "unhide": "SHOW"
+        "unhide": "SHOW",
+        "expandableExpandItem": "Open menu item {{name}}",
+        "expandableCloseItem": "Close menu item {{name}}"
     },
     "userManagement": {
         "error": {
@@ -328,6 +332,7 @@
         "fixLink": "Correct",
         "invalidEntityId": "Invalid entity",
         "codeList": {
+            "uploadValidationFallbackError": "File validation error. Check the correctness of the data.",
             "cl.missing.header.name": "Invalid request. Name of the codelist is required.",
             "cl.missing.header.master.manager": "Invalid request. Main authority of codelist is mandatory.",
             "cl.missing.header.validity": "Invalid request. Validity of the codelist is required.",
@@ -831,7 +836,9 @@
         "pagination": "Page navigation",
         "sortBy": "Sort by",
         "selectAllItems": "Select all items",
-        "noDataLoaded": "No data loaded"
+        "noDataLoaded": "No data loaded",
+        "expandableExpandItem": "Open item detail",
+        "expandableCloseItem": "Close item detail"
     },
     "state": "Evidence status",
     "group": "Group",
@@ -1057,7 +1064,9 @@
             "groupShortNameRequired": "Abbreviation of group is required",
             "descriptionRequired": "Description is required",
             "chairmanRequired": "Chairman is required",
-            "organizationRequired": "Organization is required"
+            "organizationRequired": "Organization is required",
+            "uniqueName":"Name of group must be unique",
+            "uniqueShortName":"Abbreviation of group must be unique"
         },
         "creatingGroup": "Creating group",
         "editingGroup": "Editing group"
@@ -1073,7 +1082,8 @@
             "validItem": "Item is valid, it is not possible to carry out selected operation.",
             "notFoundPO": "Error in rights - not find public authority.",
             "notToClone": "For this item, you can not create an instance because this item is an instance and can not create instances of instances"
-        }
+        },
+        "iconAltText": "Description {{text}}"
     },
     "addFileSuccess": "Document {{docs}} has been added successfully",
     "addFilesSuccess": "Documents {{docs}} have been added successfully",
@@ -1160,6 +1170,7 @@
         "newRelation": "Add new relation of {{itemName}}",
         "newCiAndRelation": "Add new item and relation for {{itemName}}",
         "refRegisters": "Reference registers",
+        "refIdentifiers": "List of request",
         "standardization": "Standardization",
         "draftsList": "Drafts list",
         "refRegistersCreate": "Request to add",
@@ -1264,6 +1275,7 @@
             "effective": "Effective as of today"
         },
         "languages": {
+            "sk": "Slovak",
             "en": "English",
             "de": "German",
             "hu": "Hungarian"
@@ -1280,13 +1292,16 @@
         },
         "feedback": {
             "editCodeListItems": "Codelist items have been changed",
+            "editItemSuccess": "Codelist item has been changed",
+            "createItemSuccess": "Codelist item has been created",
             "translationCreated": "The language version of codelist has been created. You can now add translation of items in this language.",
             "translationWarning": "The language version of the codelist should be published only when completely translated.",
             "returnToMainGestor": "Codelist was returned for revision.",
             "sendToSzzc": "Request has been sent to administrator of BC list.",
             "publishCodeListItems": "Codelist items were published.",
             "requestRejected": "This request was rejected on {{day}}. Reason for rejection: {{cause}}",
-            "requestSentToKSISVS": "This request was sent for approval to the Committee for Standardization ISPA on {{day}}."
+            "requestSentToKSISVS": "This request was sent for approval to the Committee for Standardization ISPA on {{day}}.",
+            "importDone": "Codelist import was successful"
         },
         "modal": {
             "title": {
@@ -1299,7 +1314,9 @@
                 "sendToIsvs": "Move to the Committee for Standardization ISPA",
                 "sendToSzzc": "Sent to headers list administrator",
                 "returnToMainGestor": "Return codelist to main gestor",
-                "publishCodeList": "Publish codelist"
+                "publishCodeList": "Publish codelist",
+                "removeLock": "Cancel lock",
+                "discardUpdating": "Discard version in-progress"
             },
             "form": {
                 "validFrom": "Valid from:",
@@ -1334,12 +1351,17 @@
             "addNewItem": "Add new item",
             "markItemReadyForPublishing": "Mark as ready for publishing",
             "markReadyForPublishingBulk": "Mark as ready for publishing",
-            "setDatesBulk": "Fill in the validity date and effective start date"
+            "setDatesBulk": "Fill in the validity date and effective start date",
+            "removeLock": "Cancel lock",
+            "discardUpdating": "Discard version in-progress",
+            "showOriginalInNewWindow": "Open previous version in a new window"
         },
         "warning": {
+            "codelistLocked": "By making changes you have automatically locked the counter and its items to prevent third party modifications",
             "itemLocked": "This is a version in-progress by authorized user {{user}} as of {{day}}",
-            "workVersion": "This is a version in-progress.",
-            "updatingVersion": "You are modifying a version in-progress by authorized user {{user}} as of {{day}}."
+            "workVersion": "This is a version in-progress",
+            "updatingVersion": "You are modifying a version in-progress by authorized user {{user}} as of {{day}}",
+            "workingLanguageNotice": "You are modifying language: {{language}}"
         },
         "validation": {
             "code": "Codelist ID is required field",
@@ -1370,9 +1392,7 @@
             "cancelAddNewGestor": "Cancel adding a new main manager",
             "addNewRow": "Add a new row",
             "addNewVersionName": "Add a new version of the title",
-            "cancelAddNewVersionName": "Cancel new version of name",
-            "removeLock": "Cancel lock",
-            "discardUpdating": "Discard version in-progress"
+            "cancelAddNewVersionName": "Cancel new version of name"
         },
         "requestCreate": {
             "btnCheck": "Check",
@@ -1410,9 +1430,9 @@
         "requestModal": {
             "yes": "Yes",
             "no": "No",
-            "validate": "Dátum platnosti",
-            "startDate": "Začiatok účinnosti",
-            "endDate": "Koniec účinnosti",
+            "validate": "Expiry date",
+            "startDate": "Effective from",
+            "endDate": "Effective to",
             "acceptTitle": "Accepting request",
             "acceptDesc": "By accepting request is base counter draft sent for approval to the Committee for Standardization of ISPA. Upon its approval it is moved to counter list and relevant authority will be asked to complete counter items within the statutory deadline.",
             "acceptSzzcTitle": "Accept by headers list administrator",
@@ -1471,6 +1491,30 @@
             "CANCEL_REQUEST": "Cancel request",
             "IMPORT": "Import codelist",
             "EXPORT": "Export"
+        }
+    },
+    "refIdentifiers": {
+        "title": "List of reference identifiers (URI)",
+        "fitler": {
+            "type": "Type",
+            "state": "State",
+            "createdAtFrom": "Created from",
+            "createdAtTo": "Created to",
+            "view": "View",
+            "all": "All",
+            "onlyMy": "Only my"
+        },
+        "table": {
+            "name": "Name",
+            "uri": "URI",
+            "type": "Type",
+            "state": "State"
+        },
+        "type": {
+            "DatovyPrvok": "Data element",
+            "URIDataset": "Dataset",
+            "URIKatalog": "Catalogue",
+            "Individuum": "URI template"
         }
     },
     "selectCiItem": {
@@ -1622,6 +1666,7 @@
         "codeListRequestsDetail": "Request detail",
         "codeList": "Codelist list",
         "codeListDetail": "Detail codelist",
+        "refIdentifiers": "Reference identifiers",
         "meetingsCreate": "Creation of meeting",
         "meetingDetail": "Detail of meeting",
         "publicAuthoritiesHierarchy": "Hierarchy of public authorities"

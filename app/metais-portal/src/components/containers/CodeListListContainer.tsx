@@ -4,7 +4,6 @@ import { RoleParticipantUI, useGetRoleParticipantBulk } from '@isdd/metais-commo
 import { ApiCodelistPreview, useGetCodelistHeaders } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 
 export enum CodeListFilterOnlyBase {
     TRUE = 'TRUE',
@@ -62,8 +61,6 @@ export const defaultFilterValues = {
 }
 
 export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnlyPublishedPage, View }) => {
-    const { i18n } = useTranslation()
-
     const { filter, handleFilterChange } = useFilterParams<CodeListListFilterData>({
         sort: [
             {
@@ -81,7 +78,7 @@ export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnly
     } = useGetCodelistHeaders({
         toDate: filter.toDate ?? '',
         mainGestorPoUuid: filter.mainGestorPoUuid ?? '',
-        language: i18n.language ?? 'sk',
+        language: 'sk',
         pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
         perPage: filter.pageSize ?? BASE_PAGE_SIZE,
         sortBy: filter.sort?.[0]?.orderBy ?? 'code',
@@ -102,7 +99,7 @@ export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnly
         isFetching: isLoadingRoleParticipants,
         isError: isErrorRoleParticipants,
         isFetching: isFetchingCiList,
-    } = useGetRoleParticipantBulk({ gids }, { query: { enabled: !!codelistHeadersData?.codelists?.length } })
+    } = useGetRoleParticipantBulk({ gids }, { query: { enabled: !!gids.length } })
 
     const isLoading = [isLoadingCodelistHeaders, isLoadingRoleParticipants && isFetchingCiList].some((item) => item)
     const isError = [isErrorCodelistHeaders, isErrorRoleParticipants].some((item) => item)

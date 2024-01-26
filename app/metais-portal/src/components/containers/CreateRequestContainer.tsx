@@ -9,14 +9,13 @@ import {
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import React, { useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { RequestListState } from '@isdd/metais-common/constants'
 import { useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
@@ -28,10 +27,13 @@ import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 export interface CreateRequestViewProps {
     requestId?: string
+    workingLanguage: string
     isLoading: boolean
     isLoadingMutation: boolean
     isError: boolean
     errorMessages: string[]
+    isSuccessSetDates?: boolean
+    errorMessageSetDates?: string
     attributeProfile: AttributeProfile
     canEdit?: boolean
     firstNotUsedCode?: string
@@ -61,12 +63,15 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     const {
         state: { user },
     } = useAuth()
-    const { i18n } = useTranslation()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
 
+    // WorkingLanguage is forced to system default 'sk' for requests.
+    // Content is created and displayed in only one language.
+    const workingLanguage = 'sk'
+
     const addOrGetGroupHook = useAddOrGetGroupHook()
-    const { invalidate } = useInvalidateCodeListRequestCache()
+    const { invalidateRequests } = useInvalidateCodeListCache()
 
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
     const [errorAddOrGetGroup, setAddOrGetGroupError] = useState<{ message: string }>()
@@ -125,12 +130,12 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
 
     const onSave = async (formData: IRequestForm) => {
         const uuid = getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)
-        const saveData = mapFormToSave(formData, i18n.language)
+        const saveData = mapFormToSave(formData, workingLanguage)
         setAddOrGetGroupError(undefined)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
                 mutateAsync({ data: saveData }).then(() => {
-                    invalidate()
+                    invalidateRequests()
                     setIsActionSuccess({
                         value: true,
                         path: NavigationSubRoutes.REQUESTLIST,
@@ -149,8 +154,8 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
         setAddOrGetGroupError(undefined)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
-                mutateSendASync({ data: mapFormToSave(formData, i18n.language) }).then(() => {
-                    invalidate()
+                mutateSendASync({ data: mapFormToSave(formData, workingLanguage) }).then(() => {
+                    invalidateRequests()
                     setIsActionSuccess({
                         value: true,
                         path: NavigationSubRoutes.REQUESTLIST,
@@ -172,6 +177,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     return (
         <RequestListPermissionsWrapper>
             <View
+                workingLanguage={workingLanguage}
                 isError={isError}
                 errorMessages={errorMessages}
                 isLoading={isLoading}

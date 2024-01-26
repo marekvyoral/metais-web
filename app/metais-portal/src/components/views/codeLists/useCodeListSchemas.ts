@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { ObjectSchema, array, date, object, string } from 'yup'
 
+import { effectiveToGreaterThanEffectiveFrom } from './useEditCodeListSchemas'
+
 export enum AddNewLanguageList {
     'en' = 'en',
     'de' = 'de',
@@ -53,6 +55,10 @@ export const useItemSchema = (): IItem => {
         code: string().required(t('codeListDetail.validation.code')),
         name: string().required(t('codeListDetail.validation.name')),
         effectiveFrom: string().required(t('codeListDetail.validation.effectiveFrom')),
+        effectiveTo: string().when('effectiveFrom', {
+            is: (value: string | undefined) => value && value.length > 0,
+            then: () => string().test('largerThan', t('codeListList.requestValidations.dateGreaterThan'), effectiveToGreaterThanEffectiveFrom),
+        }),
     })
 
     return {
