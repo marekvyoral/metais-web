@@ -427,18 +427,18 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                         required
                                         label={getDescription('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
                                         info={getName('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
-                                        id={RequestFormEnum.VALIDDATE}
-                                        {...register(RequestFormEnum.VALIDDATE)}
-                                        type="date"
-                                        error={formState.errors[RequestFormEnum.VALIDDATE]?.message}
-                                    />
-                                    <Input
-                                        label={getDescription('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
-                                        info={getName('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
                                         id={RequestFormEnum.STARTDATE}
                                         {...register(RequestFormEnum.STARTDATE)}
                                         type="date"
                                         error={formState.errors[RequestFormEnum.STARTDATE]?.message}
+                                    />
+                                    <Input
+                                        label={getDescription('Gui_Profil_ZC_datum_platnosti', language, attributeProfile)}
+                                        info={getName('Gui_Profil_ZC_datum_platnosti', language, attributeProfile)}
+                                        id={RequestFormEnum.VALIDDATE}
+                                        {...register(RequestFormEnum.VALIDDATE)}
+                                        type="date"
+                                        error={formState.errors[RequestFormEnum.VALIDDATE]?.message}
                                     />
                                 </>
                             )}
