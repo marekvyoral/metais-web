@@ -1,5 +1,8 @@
 import classNames from 'classnames'
 import React, { DetailedHTMLProps, forwardRef } from 'react'
+import { decodeHtmlEntities } from '@isdd/metais-common/src/utils/utils'
+
+import styles from './checkbox.module.scss'
 
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
@@ -30,7 +33,7 @@ export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
                     </>
                 )}
                 <div className={classNames('govuk-checkboxes__item', containerClassName)}>
-                    <div>
+                    <div className={styles.checkboxWrap}>
                         <input
                             className={classNames('govuk-checkboxes__input', className)}
                             id={id}
@@ -50,7 +53,12 @@ export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
                         ) : (
                             <span className={classNames('govuk-label govuk-checkboxes__label', labelClassName)}>{label}</span>
                         )}
-                        {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
+                        {info && (
+                            <Tooltip
+                                descriptionElement={<div className="tooltipWidth500">{decodeHtmlEntities(info)}</div>}
+                                altText={`Tooltip ${label}`}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
