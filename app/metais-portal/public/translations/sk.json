@@ -1178,7 +1178,7 @@
         "refRegisters": "Referenčné registre",
         "refRegistersCreate": "Žiadosť na pridanie",
         "refRegistersEdit": "Zmena údajov o referenčnom registri",
-        "refIdentifiers": "Zoznam žiadostí",
+        "refIdentifiers": "Zoznam referencovateľných identifikátorov",
         "dataObjects": "Dátové objekty",
         "requestList": "Zoznam žiadostí založenia číselníka",
         "requestCreate": "Žiadosť o zaradenie číselníka",
@@ -1502,6 +1502,10 @@
     },
     "refIdentifiers": {
         "title": "Zoznam referencovateľných identifikátorov (URI)",
+        "breadcrumbs": {
+            "uriList": "Uri - zoznam",
+            "uriDetail": "Uri - detail"
+        },
         "filter": {
             "type": "Typ",
             "state": "Stav",
@@ -1522,6 +1526,19 @@
             "URIDataset": "Dataset",
             "URIKatalog": "Katalóg",
             "Individuum": "Šablóna URI"
+        },
+        "detail": {
+            "gestor": "Gestor",
+            "type": "Typ žiadosti",
+            "state": "Stav",
+            "historicalCode": "Historický kód",
+            "datasets": "Datasety katalógu",
+            "createdAt": "Vytvorené",
+            "createdBy": "Používateľom",
+            "lastModifiedAt": "Posledná modifikácia",
+            "modifiedBy": "Modifikáciu vykonal",
+            "uri": "URI",
+            "dataItemElements": "Podriadené dátové prvky"
         }
     },
     "selectCiItem": {

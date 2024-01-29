@@ -71,6 +71,8 @@ export const RefIdentifiersContainer: React.FC<RefIdentifiersContainerProps> = (
     } = useReadCiList1({
         page: filter.pageNumber,
         perpage: filter.pageSize,
+        sortBy: ATTRIBUTE_NAME.Gen_Profil_nazov,
+        sortType: filter.sort?.[0]?.sortDirection,
         filter: {
             attributes: [
                 { name: ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie, filterValue: [{ value: filter.state, equality: OPERATOR_OPTIONS.EQUAL }] },

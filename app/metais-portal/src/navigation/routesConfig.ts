@@ -121,6 +121,7 @@ import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
 import { SlaContractList } from '@/pages/ci/Kontrakt/list'
 import { OlaContractAdd } from '@/pages/ola-contract-list/add'
+import RefIdentifierDetailPage from '@/pages/data-objects/ref-identifiers/[id]/detail'
 
 export interface RouteConfig {
     path?: string
@@ -482,6 +483,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS,
                 slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS,
                 component: RefIdentifiersPage,
+            },
+            {
+                path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_DETAIL,
+                slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_DETAIL,
+                component: RefIdentifierDetailPage,
             },
             {
                 path: RouterRoutes.REF_REGISTERS_LIST,

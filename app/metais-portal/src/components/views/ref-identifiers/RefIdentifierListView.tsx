@@ -84,6 +84,7 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                 hiddenButtons={{ SELECT_COLUMNS: true }}
             />
             <Table
+                rowHref={(row) => `./${row?.original?.uuid}`}
                 data={data?.configurationItemSet as ColumnsOutputDefinition[]}
                 columns={refIdentifierColumns(t, i18n.language, registrationState)}
                 sort={filter.sort ?? []}
