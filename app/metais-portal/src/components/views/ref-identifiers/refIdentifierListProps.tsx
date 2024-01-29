@@ -1,9 +1,10 @@
-import { ColumnDef } from '@tanstack/react-table'
-import { TFunction } from 'i18next'
-import { ATTRIBUTE_NAME, RefIdentifierTypeEnum } from '@isdd/metais-common/api'
 import { IOption } from '@isdd/idsk-ui-kit/index'
+import { ATTRIBUTE_NAME, RefIdentifierTypeEnum } from '@isdd/metais-common/api'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { ColumnDef } from '@tanstack/react-table'
+import { TFunction } from 'i18next'
+import { Link } from 'react-router-dom'
 
 import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
 
@@ -44,7 +45,11 @@ export const refIdentifierColumns = (t: TFunction, language: string, stateEnum: 
         meta: {
             getCellContext: (ctx) => ctx.getValue(),
         },
-        cell: (ctx) => ctx.getValue(),
+        cell: (ctx) => (
+            <Link to={'./' + ctx?.row?.original?.uuid} onClick={(e) => e.stopPropagation()}>
+                {ctx?.getValue?.() as string}
+            </Link>
+        ),
     },
     {
         id: 'uri',
@@ -55,7 +60,6 @@ export const refIdentifierColumns = (t: TFunction, language: string, stateEnum: 
             if (row.type === RefIdentifierTypeEnum.URIDataset) return row.attributes?.[ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu]
             if (row.type === RefIdentifierTypeEnum.URIKatalog) return row.attributes?.[ATTRIBUTE_NAME.Profil_URIKatalog_uri]
         },
-        enableSorting: true,
         meta: {
             getCellContext: (ctx) => ctx.getValue(),
         },
@@ -65,17 +69,15 @@ export const refIdentifierColumns = (t: TFunction, language: string, stateEnum: 
         id: 'type',
         header: t('refIdentifiers.table.type'),
         accessorFn: (row) => row.type,
-        enableSorting: true,
         meta: {
             getCellContext: (ctx) => ctx.getValue(),
         },
-        cell: (ctx) => ctx.getValue(),
+        cell: (ctx) => t(`refIdentifiers.type.${ctx.getValue()}`),
     },
     {
         id: 'state',
         header: t('refIdentifiers.table.state'),
         accessorFn: (row) => row.attributes?.[ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie],
-        enableSorting: true,
         meta: {
             getCellContext: (ctx) => ctx.getValue(),
         },

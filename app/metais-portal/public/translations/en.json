@@ -1065,8 +1065,8 @@
             "descriptionRequired": "Description is required",
             "chairmanRequired": "Chairman is required",
             "organizationRequired": "Organization is required",
-            "uniqueName":"Name of group must be unique",
-            "uniqueShortName":"Abbreviation of group must be unique"
+            "uniqueName": "Name of group must be unique",
+            "uniqueShortName": "Abbreviation of group must be unique"
         },
         "creatingGroup": "Creating group",
         "editingGroup": "Editing group"
@@ -1170,7 +1170,7 @@
         "newRelation": "Add new relation of {{itemName}}",
         "newCiAndRelation": "Add new item and relation for {{itemName}}",
         "refRegisters": "Reference registers",
-        "refIdentifiers": "List of request",
+        "refIdentifiers": "Reference identifiers",
         "standardization": "Standardization",
         "draftsList": "Drafts list",
         "refRegistersCreate": "Request to add",
@@ -1495,6 +1495,10 @@
     },
     "refIdentifiers": {
         "title": "List of reference identifiers (URI)",
+        "breadcrumbs": {
+            "uriList": "Uri - list",
+            "uriDetail": "Uri - detail"
+        },
         "fitler": {
             "type": "Type",
             "state": "State",
@@ -1515,6 +1519,19 @@
             "URIDataset": "Dataset",
             "URIKatalog": "Catalogue",
             "Individuum": "URI template"
+        },
+        "detail": {
+            "gestor": "Gestor",
+            "type": "Request type",
+            "state": "Status",
+            "historicalCode": "History code",
+            "datasets": "Catalog dataset",
+            "createdAt": "Created at",
+            "createdBy": "Created by",
+            "lastModifiedAt": "Last modified at",
+            "modifiedBy": "Modified by",
+            "uri": "URI",
+            "dataItemElements": "Child data elements"
         }
     },
     "selectCiItem": {

@@ -101,6 +101,14 @@ export const getDescription = (technicalName: string, language: string, profile?
     return findProfileAttribute(technicalName, profile)?.[language === 'en' ? 'engName' : 'name'] ?? ''
 }
 
+export const getNameByAttribute = (language: string, attribute?: Attribute) => {
+    return attribute?.[language === 'en' ? 'engName' : 'name'] ?? ''
+}
+
+export const getDescriptionByAttribute = (language: string, attribute?: Attribute) => {
+    return attribute?.[language === 'en' ? 'engDescription' : 'description'] ?? ''
+}
+
 export const getName = (technicalName: string, language: string, profile?: AttributeProfile) => {
     return findProfileAttribute(technicalName, profile)?.[language === 'en' ? 'engDescription' : 'description'] ?? ''
 }
