@@ -601,7 +601,7 @@
             "successReturned": "Project returned for completion",
             "error": "An error occurred while submitting the project",
             "errorDocuments": "Mandatory documents are not created",
-            "errorRelations": "There is no mandatory relationship with the ISVS or the Place of operation",
+            "errorRelations": "There is no mandatory relationship with the ISVS, Program or the Place of operation",
             "errorRelationsAsKsFaza": "The item has a life cycle phase of \"Live Operation",
             "errorNotApprovedKS": "End services need to be completed and published.",
             "errorNotAllowedApprove": "The user has no right to approve the project.",

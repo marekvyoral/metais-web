@@ -256,6 +256,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         disabled={attribute.readOnly || disabled}
                         info={attribute.description}
                         defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
+                        metaAttributes={{ state: ['DRAFT'] }}
                     />
                 )
             }

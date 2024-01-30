@@ -4,7 +4,9 @@ import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
 
-import { CreateEntity, CreateEntityData } from '@/components/create-entity/CreateEntity'
+import { CreateProjectEntity } from './CreateProjectEntity'
+
+import { CreateEntityData } from '@/components/create-entity/CreateEntity'
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 import { filterProjectSchemaForCreateBasedOnProjectStatus } from '@/componentHelpers/ci/projectHelpers'
 
@@ -32,7 +34,7 @@ export const CreateProjectView: React.FC<Props> = ({ data, entityName, ownerId, 
                 <TextHeading size="XL">{t('ciType.createEntity', { entityName: data.attributesData.ciTypeData?.name })}</TextHeading>
                 {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
             </FlexColumnReverseWrapper>
-            <CreateEntity
+            <CreateProjectEntity
                 data={{ attributesData: { ...rest, ciTypeData: filteredProjectSchema }, generatedEntityId, ownerId }}
                 roleState={roleState}
                 publicAuthorityState={publicAuthorityState}
