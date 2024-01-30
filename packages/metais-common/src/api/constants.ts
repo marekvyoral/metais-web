@@ -39,6 +39,7 @@ export enum ATTRIBUTE_NAME {
     EA_Profil_Projekt_schvalovaci_proces = 'EA_Profil_Projekt_schvalovaci_proces',
     EA_Profil_PO_je_kapitola = 'EA_Profil_PO_je_kapitola',
     EA_Profil_Projekt_status = 'EA_Profil_Projekt_status',
+    EA_Profil_Projekt_program = 'EA_Profil_Projekt_program',
     Profil_Rel_FazaZivotnehoCyklu = 'Profil_Rel_FazaZivotnehoCyklu',
     IKT_Profil_Schvalenie_stav_migracie = 'IKT_Profil_Schvalenie_stav_migracie',
     Financny_Profil_Projekt_schvalene_rocne_naklady = 'Financny_Profil_Projekt_schvalene_rocne_naklady',

@@ -304,3 +304,4 @@ export const Gui_Profil_DIZ_konzumujuci_projekt = 'Gui_Profil_DIZ_konzumujuci_pr
 export const Gui_Profil_DIZ_poskytujuci_projekt = 'Gui_Profil_DIZ_poskytujuci_projekt'
 export const FAZA_KONTRAKTU = 'FAZA_KONTRAKTU'
 export const Profil_Kontrakt = 'Profil_Kontrakt'
+export const Program_financuje_Projekt = 'Program_financuje_Projekt'

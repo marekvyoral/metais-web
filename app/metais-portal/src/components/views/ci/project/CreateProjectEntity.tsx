@@ -1,17 +1,18 @@
-import { ConfigurationItemUiAttributes, useStoreConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemUiAttributes, useStoreConfigurationItem, useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { Program_financuje_Projekt, ROLES } from '@isdd/metais-common/constants'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
-
-import { CreateCiEntityForm } from './CreateCiEntityForm'
-import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from './createEntityHelpers'
+import { v4 as uuidV4 } from 'uuid'
 
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
+import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from '@/components/create-entity/createEntityHelpers'
+import { CreateCiEntityForm } from '@/components/create-entity/CreateCiEntityForm'
 
 export interface AttributesData {
     ciTypeData: CiType | undefined
@@ -34,7 +35,7 @@ interface ICreateEntity {
     defaultItemAttributeValues?: ConfigurationItemUiAttributes
 }
 
-export const CreateEntity: React.FC<ICreateEntity> = ({
+export const CreateProjectEntity: React.FC<ICreateEntity> = ({
     data,
     entityName,
     updateCiItemId,
@@ -43,6 +44,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     publicAuthorityState,
 }) => {
     const { t } = useTranslation()
+
     const isUpdate = !!updateCiItemId
 
     const { attributesData, generatedEntityId } = data
@@ -51,7 +53,8 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     const onStatusSuccess = useCiCreateEditOnStatusSuccess()
     const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
     const { onSubmit, uploadError, setUploadError, configurationItemId } = useCiCreateUpdateOnSubmit(entityName)
-    const storeConfigurationItem = useStoreConfigurationItem({
+
+    const storeGraph = useStoreGraph({
         mutation: {
             onError() {
                 setUploadError(true)
@@ -65,6 +68,48 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             },
         },
     })
+
+    const storeConfigurationItem = useStoreConfigurationItem({
+        mutation: {
+            onError() {
+                setUploadError(true)
+            },
+            onSuccess(successData, variables) {
+                if (successData.requestId != null) {
+                    if (isUpdate) {
+                        getRequestStatus(successData.requestId, () => onStatusSuccess({ configurationItemId, isUpdate, entityName }))
+                    } else {
+                        getRequestStatus(successData.requestId, () => {
+                            const attributes = variables.data.attributes as { value: string; name: string }[]
+                            const programUuid = attributes?.find(
+                                (att: { value: string; name: string }) => att?.name === ATTRIBUTE_NAME.EA_Profil_Projekt_program,
+                            )?.value
+
+                            storeGraph.mutateAsync({
+                                data: {
+                                    storeSet: {
+                                        relationshipSet: [
+                                            {
+                                                type: Program_financuje_Projekt,
+                                                uuid: uuidV4(),
+                                                startUuid: programUuid,
+                                                endUuid: variables.data.uuid,
+                                                owner: variables.data.owner,
+                                                attributes: [],
+                                            },
+                                        ],
+                                    },
+                                },
+                            })
+                        })
+                    }
+                } else {
+                    setUploadError(true)
+                }
+            },
+        },
+    })
+
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
     useEffect(() => {
         if (!(isRedirectError || isProcessedError || isRedirectLoading)) {
@@ -100,7 +145,8 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                         onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
                         onChangeRole={roleState.setSelectedRole}
                         selectedOrg={publicAuthorityState.selectedPublicAuthority}
-                        ciRoles={ciTypeData?.roleList ?? []}
+                        ciRoles={[ROLES.EA_GARPO]}
+                        disableRoleSelect
                     />
                 )}
 

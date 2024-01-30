@@ -600,7 +600,7 @@
             "successReturned": "Projekt vrátený na dopracovanie",
             "error": "Pri odoslaní projektu nastala chyba",
             "errorDocuments": "Nie sú vytvorené povinné dokumenty",
-            "errorRelations": "Nie je vytvorený povinný vzťah na ISVS, alebo Miesto prevádzky",
+            "errorRelations": "Nie je vytvorený povinný vzťah na ISVS, Program alebo Miesto prevádzky",
             "errorRelationsAsKsFaza": "Položka má fázu životného cyklu \"Ostrá prevádzka",
             "errorNotApprovedKS": "Koncové služby je potrebné vyplniť a vypublikovať.",
             "errorNotAllowedApprove": "Používateľ nemá práva na schválenie projektu.",
