@@ -2,7 +2,6 @@ import { SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
-import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { useInvalidateCiHistoryListCache, useInvalidateCiNeighboursWithAllRelsCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
@@ -61,7 +60,6 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
     ]
 
     const { constraintsData, ciTypeData, unitsData } = attributesData
-    const { setIsListPageOpen, setSelectedItems } = useNewRelationData()
     const [uploadError, setUploadError] = useState(false)
 
     const currentName =
@@ -101,8 +99,6 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
 
     const onStoreGraphSuccess = () => {
         navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
-        setIsListPageOpen(false)
-        setSelectedItems(null)
         invalidateRelationListCacheByUuid.invalidate()
         invalidateHistoryListCache(entityId)
     }
