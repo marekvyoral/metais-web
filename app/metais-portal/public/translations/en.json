@@ -1540,6 +1540,7 @@
         "error": "Error while fetching configuration items data."
     },
     "newRelation": {
+        "or": "Or",
         "detailButton": "Item's Detail",
         "deleteButton": "Delete",
         "heading": "Add new relation ...",
@@ -2217,7 +2218,6 @@
         "loading": "Proccessing logout"
     },
     "KRIS": {
-        "heading": "List of KRIT approaches",
         "responsibleAuthority": "Current responsible authority",
         "table": {
             "code": "Code",
