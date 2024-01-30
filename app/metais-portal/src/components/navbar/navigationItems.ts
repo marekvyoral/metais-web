@@ -52,7 +52,7 @@ const getDataObjectSubItems = (t: TFunction, isSideMenu?: boolean) => {
         },
         {
             title: t('navMenu.lists.refIdentifiers'),
-            path: NavigationSubRoutes.REF_IDENTIFIERS_HOWTO,
+            path: NavigationSubRoutes.REF_URI_HOWTO,
             subItems: [{ title: t('navMenu.lists.refIdentifierList'), path: NavigationSubRoutes.REF_IDENTIFIERS }],
         },
     ]
@@ -85,7 +85,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
 
         {
             title: t('navMenu.programProjectsActivities'),
-            path: RouteNames.HOW_TO_PROGRAMS_PROJECTS_ACTIVITIES,
+            path: NavigationSubRoutes.PROJEKT,
             subItems: [
                 { title: t('navMenu.lists.aktivita'), path: NavigationSubRoutes.AKTIVITA },
                 { title: t('navMenu.lists.programs'), path: NavigationSubRoutes.PROGRAM },
@@ -94,7 +94,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         },
         {
             title: t('navMenu.publicAuthoritiesNav'),
-            path: RouteNames.HOW_TO_PO,
+            path: NavigationSubRoutes.PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS,
             subItems: [
                 {
                     title: t('navMenu.lists.processorsOfITDevelopmentConcepts'),
