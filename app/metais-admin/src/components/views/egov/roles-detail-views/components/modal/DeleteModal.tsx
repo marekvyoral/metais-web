@@ -1,8 +1,8 @@
-import { BaseModal, Button, ButtonGroupRow, TextBody, TextHeading } from '@isdd/idsk-ui-kit'
+import { BaseModal, TextBody, TextHeading } from '@isdd/idsk-ui-kit'
 import { Pagination } from '@isdd/idsk-ui-kit/types'
 import { FindByNameWithParamsParams, Role, useDelete, useFindByNameWithParamsHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
-import { MutationFeedback } from '@isdd/metais-common/index'
+import { ModalButtons, MutationFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -43,15 +43,12 @@ export const DeleteRoleModal: React.FC<IDeleteRoleModapProps> = ({ setTableRoles
                 <TextBody size="L">
                     {roleToDelete?.name}: {roleToDelete?.description}
                 </TextBody>
-                <ButtonGroupRow>
-                    <Button
-                        label={t('radioButton.yes')}
-                        onClick={() => {
-                            deleteRole({ uuid: roleToDelete?.uuid ?? '' })
-                        }}
-                    />
-                    <Button label={t('actionsInTable.cancel')} onClick={() => setRoleToDelete(undefined)} variant="secondary" />
-                </ButtonGroupRow>
+                <ModalButtons
+                    submitButtonLabel={t('radioButton.yes')}
+                    onSubmit={() => deleteRole({ uuid: roleToDelete?.uuid ?? '' })}
+                    closeButtonLabel={t('actionsInTable.cancel')}
+                    onClose={() => setRoleToDelete(undefined)}
+                />
             </>
         </BaseModal>
     )

@@ -1,14 +1,13 @@
 import { RadioButton, RadioGroupWithLabel, TextArea, TextHeading, TextLinkExternal } from '@isdd/idsk-ui-kit'
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { BulkList } from '@isdd/metais-common/components/actions-over-table/bulk-actions-popup/BulkList'
-import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { ChangeOwnerDataUi, ChangeOwnerDataUiChangeType, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ISelectPublicAuthorityAndRole, SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { CHANGE_OWNER_CHANGE_REASON, CHANGE_OWNER_CHANGE_TYPE } from '@isdd/metais-common/constants'
+import { ModalButtons } from '@isdd/metais-common/components/modal-buttons/ModalButtons'
 
 interface IChangeOwnerBulkView extends ISelectPublicAuthorityAndRole {
     items: ConfigurationItemUi[]
@@ -70,11 +69,6 @@ export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
                 ))}
             </RadioGroupWithLabel>
 
-            <div className={styles.buttonGroup}>
-                <Button onClick={() => onClose()} label={t('button.cancel')} variant="secondary" />
-                <Button type="submit" label={t('bulkActions.changeOwner.button')} />
-            </div>
-
             {multiple && <BulkList title={t('bulkActions.changeOwner.listText', { count: items.length })} items={items} />}
 
             <TextLinkExternal
@@ -83,6 +77,8 @@ export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
                 newTab
                 textLink={t('bulkActions.changeOwner.newWindowText')}
             />
+
+            <ModalButtons submitButtonLabel={t('bulkActions.changeOwner.button')} closeButtonLabel={t('button.cancel')} onClose={onClose} />
         </form>
     )
 }

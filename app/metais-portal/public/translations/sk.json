@@ -303,7 +303,8 @@
         "save": "Uložiť formulár",
         "editItem": "Editovať položku",
         "waitSending": "Čakajte prosím. Odosielam formulár.",
-        "cancel": "Zrušiť"
+        "cancel": "Zrušiť",
+        "back":"Späť"
     },
     "languageSelector": {
         "open": "Rozbaliť jazykové menu",

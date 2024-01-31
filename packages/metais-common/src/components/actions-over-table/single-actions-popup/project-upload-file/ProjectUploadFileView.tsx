@@ -1,5 +1,4 @@
 import { LoadingIndicator, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import React, { useState } from 'react'
 import { FieldValues, FormState, UseFormRegister } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +9,7 @@ import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swag
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
+import { ModalButtons } from '@isdd/metais-common/components/modal-buttons/ModalButtons'
 
 interface IProjectUploadFileViewProps {
     items?: ConfigurationItemUi[]
@@ -64,14 +64,13 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
                         })}
                     />
                 )}
-                <div className={styles.buttonGroupEnd}>
-                    <Button onClick={() => onClose()} label={t('button.cancel')} variant="secondary" />
-                    <Button
-                        label={t('bulkActions.addFile.upload')}
-                        disabled={!formState.isValid || (currentFiles && currentFiles.length < 1)}
-                        type="submit"
-                    />
-                </div>
+
+                <ModalButtons
+                    submitButtonLabel={t('bulkActions.addFile.upload')}
+                    disabled={!formState.isValid || (currentFiles && currentFiles.length < 1)}
+                    closeButtonLabel={t('button.cancel')}
+                    onClose={onClose}
+                />
             </form>
         </>
     )

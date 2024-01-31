@@ -1,7 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
     BaseModal,
-    Button,
     ButtonLink,
     ButtonPopup,
     CheckBox,
@@ -19,7 +18,7 @@ import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { ModalButtons, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -239,11 +238,12 @@ export const SlaDetailView: React.FC<IView> = ({
                                 }
                             />
                         </DefinitionList>
-                        <div className={styles.rowFlex}>
-                            <Button label={t('confirmationModal.cancelButtonLabel')} variant="secondary" onClick={() => setUpdateItem(undefined)} />
-                            <Button label={t('sla-detail.save')} type="submit" />
-                        </div>
                     </div>
+                    <ModalButtons
+                        submitButtonLabel={t('sla-detail.save')}
+                        closeButtonLabel={t('confirmationModal.cancelButtonLabel')}
+                        onClose={() => setUpdateItem(undefined)}
+                    />
                 </form>
             </BaseModal>
             <QueryFeedback loading={false} error={isError} withChildren>

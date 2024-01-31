@@ -1,6 +1,6 @@
-import { BaseModal, Button, ButtonGroupRow, SelectLazyLoading, TextHeading, TextWarning } from '@isdd/idsk-ui-kit'
+import { BaseModal, SelectLazyLoading, TextHeading, TextWarning } from '@isdd/idsk-ui-kit'
 import { CiListFilterContainerUi, ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { ModalButtons, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -121,17 +121,15 @@ export const GeneratePdfModal: React.FC<IGeneratePdfModalProps> = ({ open, orgId
                         }
                         setValue={setValue}
                     />
-                    <ButtonGroupRow>
-                        <Button label={t('ciType.pdfGenerateFuture')} type="submit" />
-                        <Button
-                            variant="secondary"
-                            label={t('evaluation.cancelBtn')}
-                            onClick={() => {
-                                reset()
-                                onClose()
-                            }}
-                        />
-                    </ButtonGroupRow>
+
+                    <ModalButtons
+                        submitButtonLabel={t('ciType.pdfGenerateFuture')}
+                        closeButtonLabel={t('evaluation.cancelBtn')}
+                        onClose={() => {
+                            reset()
+                            onClose()
+                        }}
+                    />
                 </form>
             </QueryFeedback>
         </BaseModal>

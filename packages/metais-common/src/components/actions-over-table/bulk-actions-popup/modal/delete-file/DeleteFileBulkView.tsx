@@ -1,5 +1,4 @@
 import { IconWithText, TextArea, TextHeading, TextLinkExternal } from '@isdd/idsk-ui-kit'
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FieldValues, UseFormRegister } from 'react-hook-form'
@@ -8,6 +7,7 @@ import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swag
 import { ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { BulkList } from '@isdd/metais-common/components/actions-over-table/bulk-actions-popup/BulkList'
+import { ModalButtons } from '@isdd/metais-common/components/modal-buttons/ModalButtons'
 
 interface IDeleteFileBulkViewProps {
     items: ConfigurationItemUi[]
@@ -38,10 +38,8 @@ export const DeleteFileBulkView: React.FC<IDeleteFileBulkViewProps> = ({ items, 
                 textLink={t('bulkActions.deleteFile.newWindowText')}
             />
             <TextArea {...register('reason')} label={t('bulkActions.deleteFile.reason')} rows={3} />
-            <div className={styles.buttonGroupEnd}>
-                <Button onClick={() => onClose()} label={t('button.cancel')} variant="secondary" />
-                <Button onClick={() => onSubmit()} label={t('bulkActions.deleteFile.deleteFile')} type="submit" />
-            </div>
+
+            <ModalButtons submitButtonLabel={t('bulkActions.deleteFile.deleteFile')} closeButtonLabel={t('button.cancel')} onClose={onClose} />
         </form>
     )
 }

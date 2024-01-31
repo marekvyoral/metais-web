@@ -1,11 +1,11 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { ModalButtons } from '@isdd/metais-common'
 
 import styles from './confirmationModal.module.scss'
 
 import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
 
 export interface IConfirmationProps {
     title?: string
@@ -48,18 +48,15 @@ export const ConfirmationModal: React.FC<IConfirmationProps> = ({
                 </TextHeading>
                 <div className={styles.content}>
                     <div className="govuk-radios--small">{content}</div>
-                    <div className={styles.buttonGroup}>
-                        {showCancelButton && <Button label={t('confirmationModal.cancelButtonLabel')} variant="secondary" onClick={onClose} />}
-                        {showOKButton && (
-                            <Button
-                                label={okButtonLabel ? okButtonLabel : t('confirmationModal.okButtonLabel')}
-                                variant={okButtonVariant}
-                                onClick={onConfirm}
-                            />
-                        )}
-                    </div>
                 </div>
             </div>
+            <ModalButtons
+                {...(showOKButton && { submitButtonLabel: okButtonLabel ? okButtonLabel : t('confirmationModal.okButtonLabel') })}
+                onSubmit={onConfirm}
+                submitButtonVariant={okButtonVariant}
+                closeButtonLabel={t('confirmationModal.cancelButtonLabel')}
+                {...(showCancelButton && { onClose })}
+            />
         </BaseModal>
     )
 }

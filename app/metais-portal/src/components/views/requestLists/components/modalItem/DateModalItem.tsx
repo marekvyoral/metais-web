@@ -3,6 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import { IItemForm, RequestItemFormEnum } from '@/components/views/requestLists/components/modalItem/ModalItem'
 import { useItemDateSchema } from '@/components/views/requestLists/useRequestSchemas'
@@ -68,9 +69,18 @@ export const DateModalItem: React.FC<DateModalItemProps> = ({ isOpen, close, onS
                     <ButtonGroupRow>
                         <Button type="submit" disabled={!formState.isValid} label={t('codeListDetail.modal.button.confirm')} />
                     </ButtonGroupRow>
+                    <ModalButtons
+                        submitButtonLabel={t('codeListDetail.modal.button.confirm')}
+                        closeButtonLabel={t('evaluation.cancelBtn')}
+                        onClose={close}
+                        disabled={!formState.isValid}
+                    />
                 </form>
             ) : (
-                <TextWarning>{t('codeListDetail.modal.text.nothingSelected')}</TextWarning>
+                <>
+                    <TextWarning>{t('codeListDetail.modal.text.nothingSelected')}</TextWarning>
+                    <ModalButtons onClose={close} />
+                </>
             )}
         </BaseModal>
     )

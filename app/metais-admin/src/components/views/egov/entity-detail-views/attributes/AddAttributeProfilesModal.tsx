@@ -1,9 +1,8 @@
 import { BaseModal, MultiSelect } from '@isdd/idsk-ui-kit'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { QueryFeedback } from '@isdd/metais-common/index'
-import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { ModalButtons, QueryFeedback } from '@isdd/metais-common/index'
 
 import { ProfileListContainer } from '@/components/containers/Egov/Profile/ProfileListContainer'
 import { CreateEntityForm } from '@/types/form'
@@ -11,10 +10,9 @@ import { CreateEntityForm } from '@/types/form'
 interface AttributesModal {
     open: boolean
     onClose: () => void
-    attrProfiles: AttributeProfile[]
 }
 
-export const AddAttributeProfilesModal = ({ open, onClose, attrProfiles }: AttributesModal) => {
+export const AddAttributeProfilesModal = ({ open, onClose }: AttributesModal) => {
     const { t } = useTranslation()
     const { setValue, getValues } = useFormContext<CreateEntityForm, unknown, undefined>()
     const handleOnAttributeProfilesChange = useCallback(
@@ -32,9 +30,6 @@ export const AddAttributeProfilesModal = ({ open, onClose, attrProfiles }: Attri
         },
         [onClose, setValue],
     )
-    useEffect(() => {
-        setValue('attributeProfiles', attrProfiles)
-    }, [attrProfiles, setValue])
 
     return (
         <BaseModal isOpen={open} close={onClose}>
@@ -59,6 +54,7 @@ export const AddAttributeProfilesModal = ({ open, onClose, attrProfiles }: Attri
                                     value={getValues('attributeProfiles')?.map((profile) => JSON.stringify(profile))}
                                     onChange={handleOnAttributeProfilesChange}
                                 />
+                                <ModalButtons onClose={onClose} />
                             </QueryFeedback>
                         </div>
                     )

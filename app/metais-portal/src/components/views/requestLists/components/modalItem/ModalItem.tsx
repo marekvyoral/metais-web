@@ -1,9 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
-import { BaseModal, Button, ButtonGroupRow, CheckBox, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, CheckBox, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import { useItemSchema } from '@/components/views/requestLists/useRequestSchemas'
 import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
@@ -184,10 +185,8 @@ export const ModalItem: React.FC<ModalItemProps> = ({ isOpen, canEdit, close, on
                     {...register(RequestItemFormEnum.LAW)}
                     error={formState.errors?.[RequestItemFormEnum.LAW]?.message}
                 />
-                <ButtonGroupRow>
-                    <Button label={t('form.cancel')} type="reset" variant="secondary" onClick={close} />
-                    <Button label={t('codeListList.requestCreate.saveBtn')} type="submit" />
-                </ButtonGroupRow>
+
+                <ModalButtons submitButtonLabel={t('codeListList.requestCreate.saveBtn')} closeButtonLabel={t('form.cancel')} onClose={close} />
             </form>
         </BaseModal>
     )

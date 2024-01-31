@@ -1,6 +1,6 @@
-import { BaseModal, Button, ButtonGroupRow, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
+import { BaseModal, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
 import { useGenerateCodeAndURLHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { ModalButtons, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -46,17 +46,14 @@ export const ReturnToWorkoutModal: React.FC<IReturnToWorkoutModalProps> = ({ ope
                         <TextArea {...register('note')} label={t('modalKris.returnToWorkout.note')} rows={3} />
                         <input type="hidden" {...register('Gen_Profil_kod_metais')} defaultValue={storedData?.Gen_Profil_kod_metais} />
                         <input type="hidden" {...register('Gen_Profil_ref_id')} defaultValue={storedData?.Gen_Profil_ref_id} />
-                        <ButtonGroupRow>
-                            <Button label={t('ciType.return')} type="submit" />
-                            <Button
-                                variant="secondary"
-                                label={t('evaluation.cancelBtn')}
-                                onClick={() => {
-                                    reset()
-                                    onClose()
-                                }}
-                            />
-                        </ButtonGroupRow>
+                        <ModalButtons
+                            submitButtonLabel={t('ciType.return')}
+                            closeButtonLabel={t('evaluation.cancelBtn')}
+                            onClose={() => {
+                                reset()
+                                onClose()
+                            }}
+                        />
                     </form>
                 )}
             </QueryFeedback>

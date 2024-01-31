@@ -2,6 +2,8 @@ import { BaseModal, TextWarning } from '@isdd/idsk-ui-kit'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { ModalButtons } from '../modal-buttons/ModalButtons'
+
 import styles from './autoLogout.module.scss'
 
 type Props = {
@@ -17,6 +19,7 @@ export const AutoLogoutWarningModal = ({ isOpen, onClose, countDown }: Props) =>
             <div className={styles.messageDiv}>
                 <TextWarning>{t('autoLogout.warningMessage', { countDown })}</TextWarning>
             </div>
+            <ModalButtons onClose={onClose} />
         </BaseModal>
     )
 }

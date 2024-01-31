@@ -1,7 +1,6 @@
 import React, { SetStateAction } from 'react'
 import { UploadResult, Uppy, UppyFile } from '@uppy/core'
 import { StatusBar } from '@uppy/react'
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { useTranslation } from 'react-i18next'
 import { TextBody } from '@isdd/idsk-ui-kit'
 
@@ -15,7 +14,7 @@ import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagge
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { ModalButtons, QueryFeedback } from '@isdd/metais-common/index'
 import { UploadingFilesStatus } from '@isdd/metais-common/hooks/useUppy'
 
 interface IFileImportView {
@@ -101,16 +100,15 @@ export const FileImportView: React.FC<IFileImportView> = ({
                     generalErrorMessages={generalErrorMessages}
                 />
             </div>
-            <div className={styles.centeredButtons}>
-                <Button onClick={handleCancelImport} label={t('fileImport.cancel')} variant="secondary" />
-                {fileImportStep !== FileImportStepEnum.DONE && (
-                    <Button
-                        onClick={handleImport}
-                        label={fileImportStep === FileImportStepEnum.VALIDATE ? t('fileImport.validate') : t('fileImport.import')}
-                        disabled={isSubmitDisabled}
-                    />
-                )}
-            </div>
+
+            <ModalButtons
+                isLoading={false}
+                submitButtonLabel={fileImportStep === FileImportStepEnum.VALIDATE ? t('fileImport.validate') : t('fileImport.import')}
+                onSubmit={handleImport}
+                closeButtonLabel={t('fileImport.cancel')}
+                onClose={handleCancelImport}
+                disabled={isSubmitDisabled}
+            />
         </>
     )
 }

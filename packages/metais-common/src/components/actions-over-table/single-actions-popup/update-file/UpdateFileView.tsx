@@ -1,5 +1,4 @@
 import { IconWithText, Input, TextHeading, TextLinkExternal } from '@isdd/idsk-ui-kit'
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import React from 'react'
 import { FieldValues, FormState, UseFormRegister } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -8,6 +7,7 @@ import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swag
 import { ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { BulkList } from '@isdd/metais-common/components/actions-over-table/bulk-actions-popup/BulkList'
+import { ModalButtons } from '@isdd/metais-common/components/modal-buttons/ModalButtons'
 
 interface IUpdateFileViewProps {
     items: ConfigurationItemUi[]
@@ -39,10 +39,12 @@ export const UpdateFileView: React.FC<IUpdateFileViewProps> = ({ items, register
             />
             <Input type="file" {...register('file')} />
 
-            <div className={styles.buttonGroupEnd}>
-                <Button onClick={() => onClose()} label={t('button.cancel')} variant="secondary" />
-                <Button label={t('bulkActions.updateFile.updateFile')} disabled={!formState.isDirty} type="submit" />
-            </div>
+            <ModalButtons
+                submitButtonLabel={t('bulkActions.updateFile.updateFile')}
+                disabled={!formState.isDirty}
+                closeButtonLabel={t('button.cancel')}
+                onClose={onClose}
+            />
         </form>
     )
 }
