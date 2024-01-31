@@ -1,4 +1,5 @@
 import { BaseModal, Button, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
+import { ModalButtons } from '@isdd/metais-common/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -24,6 +25,7 @@ export const RefuseTextModal = ({ open, onClose, onSubmit }: IRefuseTextModalPro
                 }}
             />
             <Button onClick={() => onSubmit(text)} label={t('requestList.decline')} />
+            <ModalButtons submitButtonLabel={t('requestList.decline')} onSubmit={() => onSubmit(text)} onClose={onClose} />
         </BaseModal>
     )
 }

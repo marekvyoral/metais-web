@@ -6,6 +6,7 @@ import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
 import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
 import { RadioButtonGroup } from '@isdd/idsk-ui-kit/radio-button-group/RadioButtonGroup'
 import { ExportIcon } from '@isdd/metais-common/assets/images'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import styles from './exportItemsOrRelations.module.scss'
 
@@ -80,6 +81,7 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
                     </div>
                 </div>
             </div>
+            <ModalButtons onClose={close} />
         </BaseModal>
     )
 }

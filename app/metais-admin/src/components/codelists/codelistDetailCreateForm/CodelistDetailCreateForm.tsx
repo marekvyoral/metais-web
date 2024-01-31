@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { ModalButtons, QueryFeedback } from '@isdd/metais-common/index'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import React from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -69,21 +69,16 @@ export const CodelistDetailCreateForm: React.FC<Props> = ({ onSubmit, closeModal
                     label={t('codelists.engDescription')}
                     {...register(CodelistDetailEnum.ENG_DESCRIPTION)}
                 />
-                <SubmitWithFeedback
+
+                <ModalButtons
+                    isLoading={isLoading}
                     submitButtonLabel={t('codelists.save')}
-                    loading={isLoading}
-                    additionalButtons={[
-                        <Button
-                            key={1}
-                            variant="secondary"
-                            label={t('codelists.cancel')}
-                            onClick={() => {
-                                clearErrors()
-                                setResultCreateEnum({ isError: false, isSuccess: false, message: '' })
-                                closeModal()
-                            }}
-                        />,
-                    ]}
+                    closeButtonLabel={t('codelists.cancel')}
+                    onClose={() => {
+                        clearErrors()
+                        setResultCreateEnum({ isError: false, isSuccess: false, message: '' })
+                        closeModal()
+                    }}
                 />
             </QueryFeedback>
         </form>

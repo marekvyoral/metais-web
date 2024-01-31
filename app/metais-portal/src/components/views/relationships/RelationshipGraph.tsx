@@ -13,6 +13,7 @@ import classnames from 'classnames'
 import * as d3 from 'd3'
 import { FC, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import styles from './relationshipGraph.module.scss'
 import { isRelatedCiTypeCmdbView } from './typeHelper'
@@ -249,6 +250,7 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
                         />
                     )}
                 </div>
+                <ModalButtons onClose={() => setNodeDetail(null)} />
             </BaseModal>
         </div>
     )

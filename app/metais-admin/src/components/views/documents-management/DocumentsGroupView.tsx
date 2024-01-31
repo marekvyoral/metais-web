@@ -9,7 +9,7 @@ import {
 } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { ActionsOverTable, MutationFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, ModalButtons, MutationFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -245,20 +245,26 @@ export const DocumentsGroupView: React.FC<IView> = ({
             <BaseModal isOpen={deleteGroupModalOpen} close={() => setDeleteGroupModalOpen(false)}>
                 <TextHeading size="L">{t('documentsManagement.removingDocumentsGroup')}</TextHeading>
                 <TextBody>{i18n.language == 'sk' ? infoData.name : infoData.nameEng}</TextBody>
-                <div className={styles.buttonGroupEnd}>
-                    <Button onClick={() => setDeleteGroupModalOpen(false)} label={t('codelists.cancel')} variant="secondary" />
-                    <Button onClick={() => deleteGroupDocument(infoData.id ?? 0)} label={t('codelists.remove')} type="submit" />
-                </div>
+
+                <ModalButtons
+                    submitButtonLabel={t('codelists.remove')}
+                    onSubmit={() => deleteGroupDocument(infoData.id ?? 0)}
+                    closeButtonLabel={t('codelists.cancel')}
+                    onClose={() => setDeleteGroupModalOpen(false)}
+                />
             </BaseModal>
 
             <BaseModal isOpen={!!documentToDelete} close={() => setDocumentToDelete(undefined)}>
                 <TextHeading size="L">{t('documentsManagement.removingDocument')}</TextHeading>
                 <TextBody>{i18n.language == 'sk' ? documentToDelete?.name : documentToDelete?.nameEng}</TextBody>
                 <TextBody>{i18n.language == 'sk' ? documentToDelete?.description : documentToDelete?.descriptionEng}</TextBody>
-                <div className={styles.buttonGroupEnd}>
-                    <Button onClick={() => setDocumentToDelete(undefined)} label={t('codelists.cancel')} variant="secondary" />
-                    <Button onClick={() => deleteDocumentModal(documentToDelete?.id ?? 0)} label={t('codelists.remove')} type="submit" />
-                </div>
+
+                <ModalButtons
+                    submitButtonLabel={t('codelists.remove')}
+                    onSubmit={() => deleteDocumentModal(documentToDelete?.id ?? 0)}
+                    closeButtonLabel={t('codelists.cancel')}
+                    onClose={() => setDocumentToDelete(undefined)}
+                />
             </BaseModal>
         </>
     )

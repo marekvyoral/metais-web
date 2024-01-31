@@ -1,4 +1,4 @@
-import { BaseModal, Button, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
@@ -8,7 +8,7 @@ import {
     useCreateCodelistLanguageVersion,
     ApiCodelistLanguageVersion,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { QueryFeedback, MutationFeedback } from '@isdd/metais-common/index'
+import { QueryFeedback, MutationFeedback, ModalButtons } from '@isdd/metais-common/index'
 import { useCallback, useEffect } from 'react'
 
 import styles from './newLanguageVersionModal.module.scss'
@@ -114,17 +114,17 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
     return (
         <BaseModal isOpen={isOpen} close={handleOnClose}>
             <QueryFeedback loading={isLoading} error={false} withChildren>
-                <div className={styles.modalContainer}>
-                    <div className={styles.content}>
-                        <TextHeading size="L" className={styles.heading}>
-                            {t('codeListDetail.modal.title.addLanguageVersion')}
-                        </TextHeading>
-                        {isError && <QueryFeedback error={isError} loading={false} />}
-                        {errorMessages.map((errorMessage, index) => (
-                            <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
-                        ))}
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className={styles.modalContainer}>
+                        <div className={styles.content}>
+                            <TextHeading size="L" className={styles.heading}>
+                                {t('codeListDetail.modal.title.addLanguageVersion')}
+                            </TextHeading>
+                            {isError && <QueryFeedback error={isError} loading={false} />}
+                            {errorMessages.map((errorMessage, index) => (
+                                <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                            ))}
 
-                        <form onSubmit={handleSubmit(onSubmit)}>
                             <SimpleSelect
                                 label={t('codeListDetail.form.label.language')}
                                 name="language"
@@ -133,33 +133,34 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
                                     label: t(`codeListDetail.languages.${lang}`),
                                     value: lang,
                                 }))}
+                                className={styles.stretch}
                             />
                             {selectedLanguage && (
                                 <>
                                     {fields.map((item, index) => {
                                         return (
-                                            <>
-                                                <Input
-                                                    key={index}
-                                                    {...register(`names.${index}.name`)}
-                                                    hint={t('codeListDetail.form.hint.name', {
-                                                        name: item.slovakName,
-                                                    })}
-                                                    label={t('codeListDetail.form.label.name')}
-                                                    error={formState.errors.names?.message}
-                                                />
-                                            </>
+                                            <Input
+                                                key={index}
+                                                {...register(`names.${index}.name`)}
+                                                hint={t('codeListDetail.form.hint.name', {
+                                                    name: item.slovakName,
+                                                })}
+                                                label={t('codeListDetail.form.label.name')}
+                                                error={formState.errors.names?.message}
+                                            />
                                         )
                                     })}
-                                    <div className={styles.buttonGroup}>
-                                        <Button type="submit" disabled={!formState.isValid} label={t('codeListDetail.form.label.submit')} />
-                                        <Button label={t('confirmationModal.cancelButtonLabel')} variant="secondary" onClick={handleOnClose} />
-                                    </div>
                                 </>
                             )}
-                        </form>
+                        </div>
                     </div>
-                </div>
+                    <ModalButtons
+                        submitButtonLabel={t('codeListDetail.form.label.submit')}
+                        closeButtonLabel={t('confirmationModal.cancelButtonLabel')}
+                        onClose={handleOnClose}
+                        disabled={!formState.isValid}
+                    />
+                </form>
             </QueryFeedback>
         </BaseModal>
     )

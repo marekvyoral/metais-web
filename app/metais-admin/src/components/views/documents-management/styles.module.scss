@@ -2,7 +2,7 @@
 .buttonGroupEnd {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: right;
     gap: govuk-spacing(2);
 
     @include mq($until: tablet) {

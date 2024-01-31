@@ -8,6 +8,7 @@ import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingInd
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import { useDownloadInternalCodelistHook, useDownloadInternalCodelistRequestHook } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import styles from './exportCodeListModal.module.scss'
 
@@ -87,6 +88,7 @@ export const ExportCodeListModal: React.FC<ExportCodeListModalProps> = ({ code, 
                     </div>
                 </div>
             </div>
+            <ModalButtons onClose={onClose} />
         </BaseModal>
     )
 }

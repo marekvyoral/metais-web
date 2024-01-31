@@ -1,0 +1,10 @@
+@import '@isdd/metais-common/src/utils.scss';
+
+.contentRight {
+    display: flex;
+    justify-content: right;
+}
+
+.loadingText {
+    color: govuk-colour('grey-1');
+}

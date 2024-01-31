@@ -305,7 +305,8 @@
         "save": "Save form",
         "editItem": "Edit item",
         "waitSending": "Wait please. I am sending the form.",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "back": "Back"
     },
     "languageSelector": {
         "open": "Open language menu",

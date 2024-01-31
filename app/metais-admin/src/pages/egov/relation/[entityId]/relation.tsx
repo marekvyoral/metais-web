@@ -11,6 +11,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 const Profile = () => {
     const { entityId } = useParams()
     const { t } = useTranslation()
+
     return (
         <RelationDetailContainer
             entityName={entityId ?? ''}

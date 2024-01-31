@@ -1,8 +1,9 @@
 import React from 'react'
-import { BaseModal, Button, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import styles from '@isdd/metais-common/components/export-items-or-relations/exportItemsOrRelations.module.scss'
 import { useTranslation } from 'react-i18next'
 import { UseFormRegister } from 'react-hook-form'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 interface iDraftListCreateFormDialog {
     openCreateFormDialog: boolean
@@ -29,11 +30,9 @@ export const DraftListCreateFormDialog = ({ openCreateFormDialog, closeCreateFor
                         // eslint-disable-next-line no-warning-comments
                         TODO: Captcha 
                     */}
-                    <div className={styles.confirmButton}>
-                        <Button label={t('DraftsList.header.changeState.submit')} onClick={handleSubmit} />
-                    </div>
                 </div>
             </div>
+            <ModalButtons submitButtonLabel={t('DraftsList.header.changeState.submit')} onSubmit={handleSubmit} onClose={closeCreateFormDialog} />
         </BaseModal>
     )
 }

@@ -2,7 +2,7 @@ import { BaseModal, MultiSelect } from '@isdd/idsk-ui-kit'
 import { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { ModalButtons, QueryFeedback } from '@isdd/metais-common/index'
 
 import { ProfileListContainer } from '@/components/containers/Egov/Profile/ProfileListContainer'
 import { CreateEntityForm } from '@/types/form'
@@ -54,6 +54,7 @@ export const AddAttributeProfilesModal = ({ open, onClose }: AttributesModal) =>
                                     value={getValues('attributeProfiles')?.map((profile) => JSON.stringify(profile))}
                                     onChange={handleOnAttributeProfilesChange}
                                 />
+                                <ModalButtons onClose={onClose} />
                             </QueryFeedback>
                         </div>
                     )

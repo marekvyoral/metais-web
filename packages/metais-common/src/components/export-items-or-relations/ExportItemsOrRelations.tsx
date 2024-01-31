@@ -7,6 +7,8 @@ import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { ModalButtons } from '../modal-buttons/ModalButtons'
+
 import styles from './exportItemsOrRelations.module.scss'
 
 import { ExportIcon } from '@isdd/metais-common/assets/images'
@@ -80,6 +82,7 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
                     </div>
                 </div>
             </div>
+            <ModalButtons onClose={close} />
         </BaseModal>
     )
 }

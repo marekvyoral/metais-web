@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { BaseModal, Button, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
+import { BaseModal, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -8,9 +8,9 @@ import { object, string } from 'yup'
 import styles from './modals.module.scss'
 import { SelectImplicitHierarchy } from './SelectImplicitHierarchy'
 
+import { ModalButtons } from '@isdd/metais-common/components/modal-buttons/ModalButtons'
 import { ClaimEvent } from '@isdd/metais-common/api/generated/claim-manager-swagger'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
-import { SubmitWithFeedback } from '@isdd/metais-common/components/submit-with-feedback/SubmitWithFeedback'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export enum RequestFormFields {
@@ -85,9 +85,10 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
 
     return (
         <BaseModal widthInPx={640} isOpen={isOpen} close={onClose}>
-            <div className={styles.div}>
-                <TextHeading size="L">{t('userProfile.requests.rightsSettings')}</TextHeading>
-                <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className={styles.div}>
+                    <TextHeading size="L">{t('userProfile.requests.rightsSettings')}</TextHeading>
+
                     <SelectImplicitHierarchy
                         setValue={setValue}
                         error={errors[RequestFormFields.PO]?.message}
@@ -118,16 +119,14 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
                         {...register(RequestFormFields.DESCRIPTION)}
                     />
                     <MutationFeedback success={false} error={sendError} />
-                    <SubmitWithFeedback
-                        className={styles.noMarginButtons}
-                        loading={isSubmitting || isValidating || isLoading}
-                        submitButtonLabel={t('userProfile.requests.submit')}
-                        additionalButtons={[
-                            <Button key="cancelButton" variant="secondary" type="reset" label={t('userProfile.requests.cancel')} onClick={onClose} />,
-                        ]}
-                    />
-                </form>
-            </div>
+                </div>
+                <ModalButtons
+                    submitButtonLabel={t('userProfile.requests.submit')}
+                    isLoading={isSubmitting || isValidating || isLoading}
+                    closeButtonLabel={t('userProfile.requests.cancel')}
+                    onClose={onClose}
+                />
+            </form>
         </BaseModal>
     )
 }
