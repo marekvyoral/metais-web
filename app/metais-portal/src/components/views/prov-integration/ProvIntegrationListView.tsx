@@ -1,11 +1,13 @@
 import React from 'react'
-import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, CreateEntityButton, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_INTEGRATION } from '@isdd/metais-common/constants'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
 
 import { ProvIntegrationListFilter } from './ProvIntegrationListFilter'
 import { ProvIntegrationTable } from './ProvIntegrationTable'
@@ -24,12 +26,24 @@ export const ProvIntegrationListView: React.FC<IProvIntegrationListView> = ({
     const navigate = useNavigate()
     const location = useLocation()
     const { listIntegrationLinks, dizStateData } = data
+    const { isActionSuccess } = useActionSuccess()
 
     return (
         <>
             <FlexColumnReverseWrapper>
                 <TextHeading size="L">{t('integrationLinks.heading')}</TextHeading>
                 <QueryFeedback loading={false} error={isError} />
+                <ElementToScrollTo isVisible={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}>
+                    <MutationFeedback
+                        error={false}
+                        success={isActionSuccess.value}
+                        successMessage={
+                            isActionSuccess.additionalInfo?.type === 'create'
+                                ? t('mutationFeedback.successfulCreated')
+                                : t('mutationFeedback.successfulUpdated')
+                        }
+                    />
+                </ElementToScrollTo>
             </FlexColumnReverseWrapper>
             <ProvIntegrationListFilter defaultFilterValues={defaultFilterValues} dizStateData={dizStateData} />
             <ActionsOverTable
@@ -40,7 +54,7 @@ export const ProvIntegrationListView: React.FC<IProvIntegrationListView> = ({
                 }}
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                entityName=""
+                entityName={ENTITY_INTEGRATION}
                 createButton={
                     <CreateEntityButton
                         label={t('integrationLinks.createButton')}

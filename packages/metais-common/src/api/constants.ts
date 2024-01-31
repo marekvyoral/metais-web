@@ -65,6 +65,9 @@ export enum ATTRIBUTE_NAME {
     Profil_KRIS_stav_kris = 'Profil_KRIS_stav_kris',
     Profil_Ciel_kategoria = 'Profil_Ciel_kategoria',
     Profil_KRIS_Zavazok_ciele_principy_stav = 'Profil_KRIS_Zavazok_ciele_principy_stav',
+    Gui_Profil_DIZ_konzumujuci_projekt = 'Gui_Profil_DIZ_konzumujuci_projekt',
+    Gui_Profil_DIZ_poskytujuci_projekt = 'Gui_Profil_DIZ_poskytujuci_projekt',
+    Integracia_Profil_Integracia_stav_diz = 'Integracia_Profil_Integracia_stav_diz',
     Profil_URIKatalog_uri = 'Profil_URIKatalog_uri',
     Profil_URIDataset_uri_datasetu = 'Profil_URIDataset_uri_datasetu',
     Profil_Individuum_zaklad_uri = 'Profil_Individuum_zaklad_uri',
@@ -98,6 +101,7 @@ export enum ATTRIBUTE_NAME {
 export enum ATTRIBUTE_PROFILE_NAME {
     Profil_KRIS = 'Profil_KRIS',
     Financny_Profil_Projekt = 'Financny_Profil_Projekt',
+    Integracia_Profil_Integracia = 'Integracia_Profil_Integracia',
 }
 
 export enum API_STANDARD_REQUEST_ATTRIBUTES {

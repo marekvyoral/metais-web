@@ -9,6 +9,7 @@ import {
 import { FAZA_INTEGRACNEHO_MILNIKA } from '@isdd/metais-common/constants'
 import { useQueryClient } from '@tanstack/react-query'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export type HarmonogramView = {
     isLoading: boolean
@@ -21,6 +22,7 @@ export type HarmonogramView = {
         integrationPhase: EnumType | undefined
     }
     updateHarmonogram: (formValues: ApiIntegrationHarmonogram[]) => void
+    entityId: string
 }
 
 type Props = {
@@ -29,6 +31,7 @@ type Props = {
 }
 
 export const IntegrationHarmonogramContainer: React.FC<Props> = ({ View, entityId }) => {
+    const navigate = useNavigate()
     const {
         data: harmonogramData,
         isError,
@@ -60,6 +63,7 @@ export const IntegrationHarmonogramContainer: React.FC<Props> = ({ View, entityI
                         results: variables.data,
                     }
                 })
+                navigate('?')
             },
         },
     })
@@ -89,6 +93,7 @@ export const IntegrationHarmonogramContainer: React.FC<Props> = ({ View, entityI
             isUpdateLoading={isUpdateLoading}
             isUpdateError={isUpdateError}
             updateHarmonogram={updateHarmonogram}
+            entityId={entityId}
         />
     )
 }

@@ -184,6 +184,11 @@
             "serviceLevelAgreementsWithOperator": "Service level agreements with the Operator (SLA)",
             "integrationAgreementsOnServiceLevel": "Integration agreements on the level of service provided (ISLA)",
             "training": "Trainings"
+        },
+        "sla": {
+            "slaAndIntegrations": "Integration and SLA",
+            "integrationLinks": "Integration links",
+            "isla": "Integration SLA"
         }
     },
     "radioButton": {
@@ -811,7 +816,7 @@
     "createEntity": {
         "required": "required",
         "errorTitle": "Error occured",
-        "errorMessage": "We apologize, but a technical error occurred while editing the item. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
+        "errorMessage": "We apologize, but a technical error occurred during your action. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
         "select": "Select...",
         "email": "metais@mirri.gov.sk",
         "publicAuthority": "Public Authority",
@@ -827,7 +832,8 @@
         "orgAndRoleError": {
             "title": "Missing rights for organization",
             "message": "You are missing rights for creating item under this organization"
-        }
+        },
+        "ownerError": "Can not proceed in creation because you are not an owner of this item."
     },
     "table": {
         "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
@@ -2402,7 +2408,25 @@
             "providingIsvsName": "Prov. MP",
             "consumingProjName": "Prov. proj.",
             "providingProjName": "Prov. ISPA"
-        }
+        },
+        "manualSign": "Upload manually signed document",
+        "cancelManualSignature": "Cancel manual signature",
+        "approve": "Approve DIZ",
+        "sign": "Sign DIZ",
+        "reject": "Reject DIZ",
+        "uploadDoc": "Upload document for approval and signing",
+        "openDocHistory": "Document history"
+    },
+    "dmsFileHistory": {
+        "heading": "History of document {{item}}",
+        "fileName": "File name",
+        "version": "Verion",
+        "mimeType": "Document type",
+        "contentLength": "Size",
+        "validityFrom": "Valid from",
+        "validityTo": "Valid to",
+        "currentVersion": "Current version",
+        "lastModifiedBy": "Last modified by"
     },
     "slaContracts": {
         "columns": {
@@ -2471,5 +2495,9 @@
         "heading": "List of SLA with contractors",
         "headingAdd": "Add SLA with contractor",
         "createButton": "Add new SLA with contractor"
+    },
+    "upload": {
+        "success": "Document has been added successfully",
+        "error": "Error while uploading document. Please try again."
     }
 }
