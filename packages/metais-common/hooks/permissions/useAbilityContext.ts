@@ -1,6 +1,6 @@
 import { defineAbility } from '@casl/ability'
 import { createContextualCan, useAbility } from '@casl/react'
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
 
 const detectSubjectType = (object: object) => {
     return object.constructor.name
@@ -12,3 +12,10 @@ export const AbilityContext = createContext(defaultAbility)
 
 export const useAbilityContext = () => useAbility(AbilityContext)
 export const Can = createContextualCan(AbilityContext.Consumer)
+
+export const AbilityContextWithFeedback = createContext({
+    ability: defaultAbility,
+    isError: false,
+    isLoading: false,
+})
+export const useAbilityContextWithFeedback = () => useContext(AbilityContextWithFeedback)

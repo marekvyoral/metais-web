@@ -159,6 +159,14 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
 
         return defaultValue
     }
+
+    const handleDateChange = (date: Date | null, name: string) => {
+        setValue(name, date ? formatDateForDefaultValue(date.toISOString()) : null)
+    }
+
+    const regexConstraints = attribute?.constraints?.[0] as AttributeConstraintRegexAllOf
+    const isGenProfilNazov = attribute.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov
+
     const renderContent = () => {
         if (attribute.technicalName == null) return <></>
         switch (true) {
@@ -182,10 +190,6 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                 )
             }
             case isDate: {
-                const handleDateChange = (date: Date | null, name: string) => {
-                    setValue(name, date ? formatDateForDefaultValue(date.toISOString()) : null)
-                }
-
                 return (
                     <DateInput
                         handleDateChange={handleDateChange}
@@ -308,7 +312,6 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
             }
 
             case isRegex: {
-                const regexConstraints = attribute?.constraints?.[0] as AttributeConstraintRegexAllOf
                 return (
                     <Input
                         correct={isCorrect}
@@ -394,8 +397,6 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
             }
 
             case hasStringValue: {
-                const isGenProfilNazov = attribute.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov
-
                 return (
                     <Input
                         correct={isCorrect}

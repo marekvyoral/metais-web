@@ -11,8 +11,9 @@ export enum RouteNames {
     //HOW_TO_PO = '/howto/PO_HOWTO',
     HOW_TO_KRIS_STUDIES_PROJECTS = '/howto/SPK_HOWTO',
     HOW_TO_REFERENCE_IDENTIFIERS = '/howto/URI_HOWTO',
-    //HOW_TO_PROGRAMS_PROJECTS_ACTIVITIES = '/howto/PROGRAMS_PROJECTS_ACTIVITIES',
+    // HOW_TO_PROGRAMS_PROJECTS_ACTIVITIES = '/howto/PROGRAMS_PROJECTS_ACTIVITIES',
     HOW_TO_DATA_OBJECTS = '/howto/REF_REG_HOWTO', // the same as HOW_TO_REFERENCE_REGISTERS = '/howto/REF_REG_HOWTO'
+    ISVS_INTEGRATIONS_HOWTO = '/howto/ISVS_INTEGRATIONS_HOWTO',
     PREHLADY_A_POSTUPY = '/help',
     DOCUMENTS_LIST_TAB = '/ci/:entityName/:entityId/documents',
     RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
@@ -127,10 +128,11 @@ export enum RouterRoutes {
     CI_AS_CREATE = 'ci/AS/create',
     ITVS_EXCEPTIONS_CREATE = 'ci/OsobitnyPostup/create',
     ITVS_EXCEPTIONS_EDIT = 'ci/OsobitnyPostup/:entityId/edit',
-    INTEGRATION_LIST = 'ci/Integracia',
-    INTEGRATION_CREATE = 'ci/Integracia/create',
-    INTEGRATION_DETAIL = 'ci/Integracia/:entityId',
-    INTEGRATION_HISTORY = 'ci/Integracia/:entityId/history',
+    INTEGRATION_LIST = '/ci/Integracia',
+    INTEGRATION_CREATE = '/ci/Integracia/create',
+    INTEGRATION_EDIT = '/ci/Integracia/:entityId/edit',
+    INTEGRATION_DETAIL = '/ci/Integracia/:entityId',
+    INTEGRATION_HISTORY = '/ci/Integracia/:entityId/history',
     INTEGRATION_KS_AS_OUTLET = 'ksAsList',
     INTEGRATION_SUBJECTS_LIST_OUTLET = 'subjectsList',
     INTEGRATION_HARMONOGRAM_OUTLET = 'harmonogram',
@@ -249,6 +251,8 @@ export enum NavigationSubRoutes {
     TOTAL_COST_OF_OWNERSHIP = '/howto/TOTAL_OWNERSHIP_COSTS_HOWTO',
     SERVICE_LEVEL_AGREEMENTS_WITH_OPERATOR = '/sla-contract-list',
     INTEGRATION_AGREEMENTS_ON_SERVICE_LEVEL = '/isla-contract-list',
+    ISLA = '/ci/Kontrakt',
+    INTEGRATION_LINKS = '/ci/Integracia',
 }
 
 export enum AdminRouteRoles {

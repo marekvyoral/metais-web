@@ -7,13 +7,15 @@ import {
     CiType,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
-import { FieldErrors, FieldValues } from 'react-hook-form'
+import { FieldErrors, FieldValues, UseFormSetValue } from 'react-hook-form'
 import { AnyObject, NumberSchema } from 'yup'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { isDate, isObjectEmpty } from '@isdd/metais-common/utils/utils'
 import { ENTITY_PROJECT, ROLES } from '@isdd/metais-common/constants'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { DateTime } from 'luxon'
+import { ConfigurationItemUiAttributes, ApiError, ConfigurationItemUi, RequestIdUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useEffect, useState } from 'react'
 import {
     useInvalidateCiHistoryListCache,
     useInvalidateCiItemCache,
@@ -22,12 +24,12 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
-import { ApiError, ConfigurationItemUi, RequestIdUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useState } from 'react'
 import { useDeleteCacheForCi } from '@isdd/metais-common/hooks/be-cache/useDeleteCacheForCi'
 import { v4 as uuidV4 } from 'uuid'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
+
+import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
 
 export const isRoundNumber = (value: number) => {
     return value === parseInt(value.toString(), 10)
@@ -150,6 +152,50 @@ export const canCreateProject = (entityName: string, currentRoleName: string): b
     }
 
     return isProject && isEAGarpo
+}
+
+export const getHint = (att: Attribute, generatedEntityId: CiCode) => {
+    if (att.technicalName === AttributesConfigTechNames.REFERENCE_ID) {
+        const lastIndex = generatedEntityId?.ciurl?.lastIndexOf('/')
+        const urlString = generatedEntityId?.ciurl?.slice(0, lastIndex) + '/'
+        return urlString
+    }
+}
+
+type ResetDefaultValuesForCiEntityArgs = {
+    generatedEntityId: CiCode | undefined
+    setValue: UseFormSetValue<ConfigurationItemUiAttributes>
+    formDefaultValues: ConfigurationItemUiAttributes
+    defaultValues:
+        | Readonly<{
+              [x: string]: unknown
+          }>
+        | undefined
+    isUpdate: boolean
+}
+
+export const useResetDefaultValuesForCiEntity = ({
+    defaultValues,
+    formDefaultValues,
+    generatedEntityId,
+    setValue,
+    isUpdate,
+}: ResetDefaultValuesForCiEntityArgs) => {
+    useEffect(() => {
+        if (!isUpdate) {
+            const referenceIdValue = generatedEntityId?.ciurl
+            const metaIsCodeValue = generatedEntityId?.cicode
+            setValue(AttributesConfigTechNames.REFERENCE_ID, referenceIdValue)
+            setValue(AttributesConfigTechNames.METAIS_CODE, metaIsCodeValue)
+        }
+
+        Object.entries(formDefaultValues).forEach((item) => {
+            const element = defaultValues?.[item[0]]
+            if (element === '' || element === undefined) {
+                setValue(item[0], item[1])
+            }
+        })
+    }, [defaultValues, formDefaultValues, generatedEntityId?.cicode, generatedEntityId?.ciurl, isUpdate, setValue])
 }
 
 export const getUrlStringFromCiCode = (ciCode: CiCode) => {

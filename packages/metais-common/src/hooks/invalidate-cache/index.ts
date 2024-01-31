@@ -29,6 +29,7 @@ import {
     getGetCodelistRequestDetailQueryKey,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
+import { getGetMetaQueryKey } from '@isdd/metais-common/api/generated/dms-swagger'
 import { getGetTraineesQueryKey, getGetTrainingsForUserQueryKey } from '@isdd/metais-common/api/generated/trainings-swagger'
 
 const isCiListFilterContainerUi = (obj: unknown): obj is CiListFilterContainerUi => {
@@ -65,6 +66,17 @@ export const useInvalidateCiListFilteredCache = () => {
         } else {
             queryClient.invalidateQueries([listQueryKey[0]])
         }
+    }
+
+    return { invalidate }
+}
+
+export const useInvalidateDmsFileCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (ciItemUuid: string) => {
+        const QK = getGetMetaQueryKey(ciItemUuid)
+        queryClient.invalidateQueries(QK)
     }
 
     return { invalidate }

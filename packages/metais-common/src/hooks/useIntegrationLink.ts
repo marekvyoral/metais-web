@@ -1,11 +1,17 @@
 import { useTranslation } from 'react-i18next'
-import { useEffect } from 'react'
 
 import { useFindAll311 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useReadNeighboursConfigurationItems } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { ENTITY_PROJECT, GUI_PROFILE_DIZ, INTEGRACIA_KONZUMUJE_PROJEKT, INTEGRACIA_VYSTAVUJE_PROJEKT } from '@isdd/metais-common/constants'
+import {
+    ENTITY_PROJECT,
+    GUI_PROFILE_DIZ,
+    INTEGRACIA_KONZUMUJE_PROJEKT,
+    INTEGRACIA_VYSTAVUJE_PROJEKT,
+    PO,
+    PO_asociuje_Projekt,
+} from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { getGetAttributeProfileQueryKey, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 type Props = {
     entityId: string
@@ -13,12 +19,7 @@ type Props = {
     lastModifiedByLogin: string
 }
 
-export const useIntegrationLink = ({ entityId, createdByLogin, lastModifiedByLogin }: Props) => {
-    const { i18n } = useTranslation()
-    const {
-        state: { user },
-    } = useAuth()
-
+export const useIntegrationLinkConsumingAndProvidingProject = (entityId: string) => {
     const {
         data: consumingProjectData,
         isError: isConsumingProjectError,
@@ -34,6 +35,23 @@ export const useIntegrationLink = ({ entityId, createdByLogin, lastModifiedByLog
         {
             query: {
                 enabled: !!entityId,
+            },
+        },
+    )
+    const {
+        data: consumingPOData,
+        isError: isConsumingPOError,
+        isLoading: isConsumingPOLoading,
+        fetchStatus: consumingPOFetchStatus,
+    } = useReadNeighboursConfigurationItems(
+        consumingProjectData?.fromCiSet?.[0]?.uuid ?? '',
+        {
+            nodeType: PO,
+            relationshipType: PO_asociuje_Projekt,
+        },
+        {
+            query: {
+                enabled: !!consumingProjectData?.fromCiSet?.[0]?.uuid,
             },
         },
     )
@@ -55,6 +73,49 @@ export const useIntegrationLink = ({ entityId, createdByLogin, lastModifiedByLog
             },
         },
     )
+    const {
+        data: providingPOData,
+        isError: isProvidingPOError,
+        isLoading: isProvidingPOLoading,
+        fetchStatus: providingPOFetchStatus,
+    } = useReadNeighboursConfigurationItems(
+        providingProjectData?.fromCiSet?.[0]?.uuid ?? '',
+        {
+            nodeType: PO,
+            relationshipType: PO_asociuje_Projekt,
+        },
+        {
+            query: {
+                enabled: !!providingProjectData?.fromCiSet?.[0]?.uuid,
+            },
+        },
+    )
+
+    return {
+        consumingProjectData: consumingProjectData?.fromCiSet?.[0],
+        providingProjectData: providingProjectData?.fromCiSet?.[0],
+        consumingPOData: consumingPOData?.toCiSet?.[0],
+        providingPOData: providingPOData?.toCiSet?.[0],
+        isLoading:
+            (isConsumingProjectLoading && consumingProjectFetchStatus != 'idle') ||
+            (isProvidingProjectLoading && providingProjectFetchStatus != 'idle') ||
+            (isConsumingPOLoading && consumingPOFetchStatus != 'idle') ||
+            (isProvidingPOLoading && providingPOFetchStatus != 'idle'),
+        isError: isConsumingProjectError || isProvidingProjectError || isConsumingPOError || isProvidingPOError,
+    }
+}
+
+export const useIntegrationLink = ({ entityId, createdByLogin, lastModifiedByLogin }: Props) => {
+    const { i18n } = useTranslation()
+    const {
+        state: { user },
+    } = useAuth()
+    const {
+        consumingProjectData,
+        providingProjectData,
+        isError: ProvAndConsProjError,
+        isLoading: ProvAndConsProjLoading,
+    } = useIntegrationLinkConsumingAndProvidingProject(entityId)
 
     //TS-IGNORE => bad generated type => email should not be mandatory
     const {
@@ -93,31 +154,26 @@ export const useIntegrationLink = ({ entityId, createdByLogin, lastModifiedByLog
         },
     )
 
+    const enumQK = getGetAttributeProfileQueryKey(GUI_PROFILE_DIZ)
     const {
         data: dizProfileData,
         isLoading: isDizProfileLoading,
         isError: isDizProfileError,
-        refetch: refetchGuiProfileDiz,
-    } = useGetAttributeProfile(GUI_PROFILE_DIZ)
-
-    useEffect(() => {
-        refetchGuiProfileDiz()
-    }, [i18n.language, refetchGuiProfileDiz])
+    } = useGetAttributeProfile(GUI_PROFILE_DIZ, { query: { queryKey: [i18n.language, enumQK] } })
 
     const isLoading =
-        (isConsumingProjectLoading && consumingProjectFetchStatus != 'idle') ||
         (isCreatedByLoading && createdByFetchStatus != 'idle') ||
         (isLastModifiedByLoading && lastModifiedByFetchStatus != 'idle') ||
-        (isProvidingProjectLoading && providingProjectFetchStatus != 'idle') ||
-        isDizProfileLoading
+        isDizProfileLoading ||
+        ProvAndConsProjLoading
 
-    const isError = isConsumingProjectError || isCreatedByError || isLastModifiedByError || isProvidingProjectError || isDizProfileError
+    const isError = isCreatedByError || isLastModifiedByError || isDizProfileError || ProvAndConsProjError
 
     return {
         isLoading,
         isError,
-        consumingProjectData: consumingProjectData?.fromCiSet?.[0],
-        providingProjectData: providingProjectData?.fromCiSet?.[0],
+        consumingProjectData,
+        providingProjectData,
         createdByIdentityData,
         lastModifiedByIdentityData,
         dizProfileData,

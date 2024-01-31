@@ -22,8 +22,8 @@ type Props = {
     generatedEntityId: CiCode
     ciTypeData: CiType | undefined
     onSubmit: (formData: FieldValues) => void
-    isProcessing: boolean
-    selectedRole: GidRoleData | null
+    isProcessing?: boolean
+    selectedRole?: GidRoleData | null
     stepperList: ISection[]
     formDefaultValues: ConfigurationItemUiAttributes
     isUpdate: boolean

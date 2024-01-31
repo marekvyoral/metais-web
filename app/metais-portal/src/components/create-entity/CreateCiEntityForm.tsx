@@ -35,9 +35,9 @@ interface ICreateCiEntityForm {
     defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
     updateCiItemId?: string
     relationSchema?: RelationshipType
-    isProcessing: boolean
+    isProcessing?: boolean
     withRelation?: boolean
-    selectedRole: GidRoleData | null
+    selectedRole?: GidRoleData | null
 }
 
 export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
@@ -66,8 +66,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
 
     const metaisEmail = 'metais@mirri.gov.sk'
     const location = useLocation()
-    const attProfiles = useMemo(() => ciTypeData?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeData])
-
+    const attProfiles = useMemo(() => ciTypeData?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeData?.attributeProfiles])
     const attProfileTechNames = attProfiles.map((profile) => profile.technicalName)
     const mappedProfileTechNames: Record<string, boolean> = attProfileTechNames.reduce<Record<string, boolean>>((accumulator, attributeName) => {
         if (attributeName != null) {

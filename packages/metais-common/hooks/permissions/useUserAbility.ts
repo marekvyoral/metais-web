@@ -3,7 +3,8 @@ import { AbilityBuilder, createMongoAbility } from '@casl/ability'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { canCreateCiForType, canUserCreateCi } from '@isdd/metais-common/permissions/ci'
-import { STANDARDIZATION_DRAFTS_LIST } from '@isdd/metais-common/constants'
+import { ENTITY_INTEGRATION, STANDARDIZATION_DRAFTS_LIST } from '@isdd/metais-common/constants'
+import { getHasIntRole } from '@isdd/metais-common/componentHelpers/ci/integration'
 
 export enum Actions {
     READ = 'read',
@@ -22,6 +23,7 @@ export enum Actions {
     KRIS_SUBSCRIBE = 'KRIS_PODPIS',
     KRIS_SEND_APPROVING = 'KRIS_SEND_APPROVING',
     READ_TRAININGS = 'READ_TRAININGS',
+    CHANGE_VALIDITY = 'CHANGE_VALIDITY',
 }
 
 export const ADMIN = 'R_ADMIN'
@@ -33,7 +35,7 @@ export const CANNOT_READ_ENTITY = ['ulohy', 'notifications', 'data-objects/reque
 export const CAN_CREATE_WITHOUT_LOGIN = [STANDARDIZATION_DRAFTS_LIST]
 
 const defineAbilityForUser = (roles: string[] = [], entityName: string, create?: boolean) => {
-    const { can, build } = new AbilityBuilder(createMongoAbility)
+    const { can, cannot, build } = new AbilityBuilder(createMongoAbility)
 
     if (roles.includes(ADMIN)) {
         can(Actions.READ, entityName)
@@ -56,6 +58,12 @@ const defineAbilityForUser = (roles: string[] = [], entityName: string, create?:
     }
 
     if (entityName === STANDARDIZATION_DRAFTS_LIST) can(Actions.CREATE, 'ci')
+    if (entityName == ENTITY_INTEGRATION) {
+        const hasIntRole = getHasIntRole(roles)
+        if (!hasIntRole) {
+            cannot(Actions.CREATE, entityName)
+        }
+    }
 
     return build()
 }
