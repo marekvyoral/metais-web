@@ -189,7 +189,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
                     onClick={() => setDeleteGroupModalOpen(true)}
                     disabled={documentsData.length !== 0}
                 />
-                {documentsData.length !== 0 && <Tooltip descriptionElement={t('documentManagement.deleteTooltip')} />}
+                {documentsData.length !== 0 && <Tooltip descriptionElement={t('documentsManagement.deleteTooltip')} />}
             </ButtonGroupRow>
             <MutationFeedback
                 success={isActionSuccess.value && isActionSuccess?.additionalInfo?.type == 'editGroup'}
