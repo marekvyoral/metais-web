@@ -248,6 +248,7 @@
         },
         "create": {
             "requiredField": "This field is required",
+            "requiredOneSourceOneDestination": "You must fill in at least one source and destination",
             "codePrefixRegex": "Accepted character are only 'a'..'z' and underscore '_'.",
             "technicalNameRegex": "Technical name could only consists of alphabet character or underscore",
             "addProfile": "Add profile",
@@ -1069,7 +1070,7 @@
         "moreOptions": "More options",
         "documentGroup": "Document group",
         "type": "Type",
-        "deleteTooltip": "Deletion is only allowed for empty items (delete existing documents first)"
+        "deleteTooltip": "Deletion is only allowed for empty groups (delete existing documents first)"
     },
     "homePage": {
         "placeholder": "Home - login to see navigation items",

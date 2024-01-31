@@ -279,6 +279,7 @@
         },
         "create": {
             "requiredField": "Toto pole je povinné",
+            "requiredOneSourceOneDestination": "Musíte vyplniť aspoň jeden zdroj a cieľ",
             "codePrefixRegex": "Povolenými znakmi pre prefix sú 'a'..'z', a oddelovač '_'.",
             "technicalNameRegex": "Technické meno môže byť len z písmen abecedy alebo podčiarkovníka",
             "addProfile": "Pridať profil",
@@ -1075,7 +1076,7 @@
         "moreOptions": "Viac možností",
         "documentGroup": "Skupina dokumentov",
         "type": "Typ",
-        "deleteTooltip": "Odstránenie je povolené len pre prázdne položky (najskôr odstráňte existujúce dokumenty)"
+        "deleteTooltip": "Odstránenie je povolené len pre prázdne skupiny (najskôr odstráňte existujúce dokumenty)"
     },
     "homePage": {
         "placeholder": "Domov - pre zobrazenie navigácie je potrebné prihlásiť sa",
