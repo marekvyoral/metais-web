@@ -54,11 +54,11 @@ export const constructRouteObject = ({ slug, Component, ParentComponent, parentF
         const parentSlug = parseSlugFromFilePath(parentFilePath ?? '')
         return (
             <Route path={parentSlug} key={parentSlug} element={<ParentComponent />}>
-                <Route element={<ProtectedRoute element={<Component />} slug={slug} />} key={slug} index />
+                <Route element={<ProtectedRoute element={<Component />} slug={slug} isAdmin />} key={slug} index />
             </Route>
         )
     } else {
-        return <Route path={slug === '' ? INDEX_ROUTE : slug} element={<ProtectedRoute element={<Component />} slug={slug} />} key={slug} />
+        return <Route path={slug === '' ? INDEX_ROUTE : slug} element={<ProtectedRoute element={<Component />} slug={slug} isAdmin />} key={slug} />
     }
 }
 

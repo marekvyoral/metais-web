@@ -229,7 +229,7 @@ export const CreateEntityView = ({
                                     <AddConnectionModal open={connectionsOpen} onClose={() => setConnectionsOpen(false)} />
                                     <ConnectionView sources={sourcesFromForm ?? []} targets={targetsFromForm ?? []} />
                                     {(formState?.errors?.sources || formState?.errors?.targets) && (
-                                        <ErrorBlock errorMessage={t('egov.create.requiredField')} />
+                                        <ErrorBlock errorMessage={t('egov.create.requiredOneSourceOneDestination')} />
                                     )}
                                 </div>
                             )}

@@ -248,10 +248,13 @@
         },
         "create": {
             "requiredField": "This field is required",
+            "requiredOneSourceOneDestination": "You must fill in at least one source and destination",
             "codePrefixRegex": "Accepted character are only 'a'..'z' and underscore '_'.",
             "technicalNameRegex": "Technical name could only consists of alphabet character or underscore",
             "addProfile": "Add profile",
             "removeProfile": "Remove profile",
+            "addConnection": "Add connection",
+            "addAttribute": "Add attribute",
             "back": "Back to the list of attribute profiles",
             "integer": "Integer",
             "boolean": "Boolean",
@@ -1068,7 +1071,8 @@
         "delete": "Delete item",
         "moreOptions": "More options",
         "documentGroup": "Document group",
-        "type": "Type"
+        "type": "Type",
+        "deleteTooltip": "Deletion is only allowed for empty groups (delete existing documents first)"
     },
     "homePage": {
         "placeholder": "Home - login to see navigation items",
@@ -1079,9 +1083,9 @@
     },
     "monitoring": {
         "breadcrumbs": {
-            "home":"Home Page",
-            "monitoring":"Monitoring management",
-            "params" :"Monitoring parameters",
+            "home": "Home Page",
+            "monitoring": "Monitoring management",
+            "params": "Monitoring parameters",
             "list": "Monitoring records",
             "detail": "Detail",
             "create": "New Record",
@@ -1111,9 +1115,9 @@
             },
             "newMonitoringButton": "Add new record"
         },
-        "detail":{
+        "detail": {
             "heading": "Monitoring detail",
-            "table":{
+            "table": {
                 "intervalStart": "Start of Interval",
                 "intervalEnd": "End of Interval",
                 "status": "Status"
@@ -1134,7 +1138,7 @@
                 "responseBody": "Response Body",
                 "close": "Close",
                 "StatusOk": "Corresponds to the expected value",
-                "StatusNotOk": "Does not correspond to the expected value" 
+                "StatusNotOk": "Does not correspond to the expected value"
             },
             "edit": "Edit",
             "delete": "Delete",
@@ -1160,7 +1164,7 @@
             "update": "Update",
             "cancel": "Cancel",
             "httpPart": "HTTP - part",
-            "radioButton":{
+            "radioButton": {
                 "get": "GET",
                 "post": "POST"
             },
