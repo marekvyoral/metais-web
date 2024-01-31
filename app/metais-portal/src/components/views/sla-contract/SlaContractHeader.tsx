@@ -7,13 +7,15 @@ import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { ChangeOwnerBulkModal, InvalidateBulkModal, MutationFeedback, ReInvalidateBulkModal } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, ChangeOwnerBulkModal, InvalidateBulkModal, MutationFeedback, ReInvalidateBulkModal } from '@isdd/metais-common/index'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useInvalidateCiItemCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useInvalidateCiItemCache, useInvalidateDmsFileCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useSlaContractTransition } from '@isdd/metais-common/api/generated/monitoring-swagger'
+
+import { ProvIntegrationUploadDocModal } from '../prov-integration/ProvIntegrationUploadDocModal'
 
 import { SLA_STATE_TRANSITION, SlaActions } from '@/components/sla-actions/SlaActions'
 import { CheckSlaParamsModal } from '@/components/check-sla-params-modal/CheckSlaParamsModal'
@@ -43,10 +45,11 @@ export const SlaContractDetailHeader: React.FC<Props> = ({
     isRelation,
     editButton,
     isLocked,
+    entityName,
 }) => {
     const { t } = useTranslation()
     const { invalidate: invalidateCiItemCache } = useInvalidateCiItemCache()
-    //todo const { invalidate: invalidateDmsfileCache } = useInvalidateDmsFileCache()
+    const { invalidate: invalidateDmsfileCache } = useInvalidateDmsFileCache()
 
     const { handleReInvalidate, handleInvalidate, errorMessage, isBulkLoading } = useBulkAction(isRelation)
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
@@ -59,7 +62,7 @@ export const SlaContractDetailHeader: React.FC<Props> = ({
 
     const invalidateQueriesAfterSuccess = () => {
         invalidateCiItemCache(entityId)
-        //todo invalidateDmsfileCache(entityId)
+        invalidateDmsfileCache(entityId)
     }
 
     const {
@@ -212,26 +215,26 @@ export const SlaContractDetailHeader: React.FC<Props> = ({
                 />
                 <CheckSlaParamsModal isOpen={isCheckParamsOpen} onClose={() => setIsCheckParamsOpen(false)} entityId={entityId} />
 
-                {/*  <ProvIntegrationUploadDocModal
-        entityName={entityName}
-        header={t('integrationLinks.manualSign')}
-        isOpen={showManuallySignDoc}
-        onClose={() => setShowManuallySignDoc(false)}
-        onUploadSuccess={() => handleIterationStateTransition(SLA_STATE_TRANSITION.MANUALY_SIGN)}
-        entityId={entityId}
-        metaisCode={entityData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais]}
-        ownerGid={entityData?.owner ?? ''}
-    />
-    <ProvIntegrationUploadDocModal
-        entityName={entityName}
-        header={t('integrationLinks.uploadDoc')}
-        isOpen={showUploadDoc}
-        onClose={() => setShowUploadDoc(false)}
-        onUploadSuccess={() => invalidateQueriesAfterSuccess()}
-        entityId={entityId}
-        metaisCode={entityData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais]}
-        ownerGid={entityData?.owner ?? ''}
-    />*/}
+                <ProvIntegrationUploadDocModal
+                    entityName={entityName}
+                    header={t('integrationLinks.manualSign')}
+                    isOpen={showManuallySignDoc}
+                    onClose={() => setShowManuallySignDoc(false)}
+                    onUploadSuccess={() => handleIterationStateTransition(SLA_STATE_TRANSITION.MANUALY_SIGN)}
+                    entityId={entityId}
+                    metaisCode={entityData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais]}
+                    ownerGid={entityData?.owner ?? ''}
+                />
+                <ProvIntegrationUploadDocModal
+                    entityName={entityName}
+                    header={t('integrationLinks.uploadDoc')}
+                    isOpen={showUploadDoc}
+                    onClose={() => setShowUploadDoc(false)}
+                    onUploadSuccess={() => invalidateQueriesAfterSuccess()}
+                    entityId={entityId}
+                    metaisCode={entityData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais]}
+                    ownerGid={entityData?.owner ?? ''}
+                />
             </div>
         </>
     )

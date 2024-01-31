@@ -102,7 +102,8 @@ export const useSlaContractPermissions = (entityName: string, entityId: string) 
         (roleParticipantLoading && roleParticipantFetchStatus != 'idle') ||
         (ciLoading && ciDataFetchStatus != 'idle') ||
         ciTypeLoading ||
-        isSlaContractLoading || isDmsLoading
+        isSlaContractLoading ||
+        isDmsLoading
 
     const isError = isOwnerError || isRightsDataError || roleParticipantError || ciError || ciTypeError || isSlaContractError
 

@@ -21,6 +21,7 @@ import {
     useSlaContractCache,
 } from '@isdd/metais-common/hooks/invalidate-cache'
 import { protectDateFromDecrement } from '@isdd/metais-common/utils/utils'
+import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
 
 import { CreateCiEntityForm } from '@/components/create-entity/CreateCiEntityForm'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
@@ -135,14 +136,15 @@ export const EditSlaContractPage = () => {
             <MainContentWrapper>
                 <FlexColumnReverseWrapper>
                     <TextHeading size="XL">{t('ciType.editEntity', { entityName: t('slaContracts.heading') })}</TextHeading>
-                    {/*TODO element to scroll to */}
-                    <QueryFeedback
-                        loading={false}
-                        error={isSlaContractError || isAttError}
-                        errorProps={{
-                            errorMessage: t('createEntity.redirectErrorEdit'),
-                        }}
-                    />
+                    <ElementToScrollTo isVisible={isSlaContractError || isAttError}>
+                        <QueryFeedback
+                            loading={false}
+                            error={isSlaContractError || isAttError}
+                            errorProps={{
+                                errorMessage: t('createEntity.redirectErrorEdit'),
+                            }}
+                        />
+                    </ElementToScrollTo>
                     <MutationFeedback success={false} error={isUpdateSlaError ? t('createEntity.mutationError') : ''} />
                 </FlexColumnReverseWrapper>
                 <SubHeading entityName={entityName ?? ''} entityId={entityId ?? ''} currentName={currentName} />

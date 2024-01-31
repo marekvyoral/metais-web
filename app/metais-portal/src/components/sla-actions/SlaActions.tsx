@@ -1,11 +1,9 @@
 import { ButtonLink } from '@isdd/idsk-ui-kit/index'
-import { Dispatch, SetStateAction, useContext, useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Can, ExtendedAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { SlaAction } from '@isdd/metais-common/hooks/permissions/useSlaContractPermissions'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-
-import { CheckSlaParamsModal } from '../check-sla-params-modal/CheckSlaParamsModal'
 
 export enum SLA_STATE_TRANSITION {
     REVERT_MANUAL_SIGN = 'REVERT_MANUAL_SIGN',
