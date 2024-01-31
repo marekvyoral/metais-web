@@ -253,6 +253,8 @@
             "technicalNameRegex": "Technical name could only consists of alphabet character or underscore",
             "addProfile": "Add profile",
             "removeProfile": "Remove profile",
+            "addConnection": "Add connection",
+            "addAttribute": "Add attribute",
             "back": "Back to the list of attribute profiles",
             "integer": "Integer",
             "boolean": "Boolean",
