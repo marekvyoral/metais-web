@@ -37,10 +37,7 @@ export const SidebarSectionsContainer = ({ isSidebarExpanded, setIsSidebarExpand
     }, [])
 
     return (
-        <div
-            className={classNames('govuk-!-font-size-19', styles.sectionsContainer, !isSidebarExpanded && styles.closesSectionsContainer)}
-            aria-hidden
-        >
+        <div className={classNames('govuk-!-font-size-19', styles.sectionsContainer, !isSidebarExpanded && styles.closesSectionsContainer)}>
             {sections.map((menuItem, index) => {
                 const isExpanded = expandedSectionIndexes[index]
                 const onToggle = (toggle?: boolean) => {

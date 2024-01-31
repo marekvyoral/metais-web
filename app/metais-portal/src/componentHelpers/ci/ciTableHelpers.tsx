@@ -71,15 +71,14 @@ export const mapTableData = (
 
         Object.keys(confItem?.attributes ?? {})?.map((attributeName: string) => {
             const foundAttrWithTypes = reducedAttributes[attributeName]
-            const newRowValue = pairEnumsToEnumValues(
-                foundAttrWithTypes,
-                confItem,
-                constraintsData ?? [],
+            const newRowValue = pairEnumsToEnumValues({
+                attribute: foundAttrWithTypes,
+                ciItemData: confItem,
+                constraintsData: constraintsData ?? [],
                 t,
                 unitsData,
-                uuidsToMatchedCiItemsMap?.[confItem.uuid ?? ''] ?? {},
-                false,
-            )
+                matchedAttributeNamesToCiItem: uuidsToMatchedCiItemsMap?.[confItem.uuid ?? ''] ?? {},
+            })
             newAttributes[attributeName] = newRowValue
         })
 

@@ -12,19 +12,17 @@ import {
     Tabs,
     TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useParams } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { CodeListDetailItemsWrapper } from './CodeListDetailItemsWrapper'
-import { selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
+import { getAllWorkingLanguages, selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
 import styles from './codeList.module.scss'
 import { ExportCodeListModal } from './components/modals/ExportCodeListModal/ExportCodeListModal'
 import { ImportCodeListModal } from './components/modals/ImportCodeListModal/ImportCodeListModal'
@@ -38,9 +36,8 @@ import { CodeListDetailWrapperProps } from '@/components/containers/CodeListDeta
 import { CodeListDetailHistoryContainer } from '@/components/containers/CodeListDetailHistoryContainer'
 import { CodeListDetailItemsContainer } from '@/components/containers/CodeListDetailItemsContainer'
 
-const getAllWorkingLanguages = (codelist?: ApiCodelistPreview): string[] => {
-    const languages = codelist?.codelistNames?.map((name) => name.language || '') ?? []
-    return languages.filter((item, index) => languages.indexOf(item) === index)
+export enum IsSuccessActions {
+    IMPORT = 'import',
 }
 
 export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
@@ -59,13 +56,14 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     handlePublishCodeList,
     handleReturnToMainGestor,
     handleSendToSzzc,
+    handleDiscardChanges,
+    handleRemoveLock,
+    handleEdit,
 }) => {
     const { t } = useTranslation()
-    const { id: codeId } = useParams()
-    const navigate = useNavigate()
 
     const {
-        isActionSuccess: { value: isSuccessEdit },
+        isActionSuccess: { value: isSuccessEdit, additionalInfo: isSuccessAdditionalInfo },
     } = useActionSuccess()
 
     const [isExportModalOpen, setIsExportModalOpen] = useState(false)
@@ -76,9 +74,12 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     const [isPublishCodeListOpen, setIsPublishCodeListOpen] = useState(false)
     const [isReturnToMainGestorOpen, setIsReturnToMainGestorOpen] = useState(false)
     const [isSendToSzzcOpen, setIsSendToSzzcOpen] = useState(false)
+    const [isDiscardOpened, setIsDiscardOpen] = useState(false)
+    const [isRemoveLockOpened, setIsRemoveLockOpened] = useState(false)
     const [isMutationSuccess, setIsMutationSuccess] = useState(false)
 
     const code = data.codeList?.code ?? ''
+    const mainSuccessMessage = isSuccessAdditionalInfo?.action === IsSuccessActions.IMPORT ? t('codeListDetail.feedback.importDone') : successMessage
 
     const tabs: Tab[] = [
         {
@@ -90,6 +91,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                     gestorList={data.gestors}
                     attributeProfile={data.attributeProfile ?? {}}
                     workingLanguage={workingLanguage}
+                    showDateIntervals
                 />
             ),
         },
@@ -121,10 +123,6 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
         },
     ]
 
-    const handleEdit = () => {
-        navigate(`${NavigationSubRoutes.CODELIST}/${codeId}/edit`)
-    }
-
     const title = selectBasedOnLanguageAndDate(data.codeList?.codelistNames, workingLanguage) ?? ''
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
@@ -134,20 +132,34 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
         }
     }, [actionsErrorMessages.length, isSuccessEdit, isSuccessMutation, scrollToMutationFeedback])
 
+    const breadcrumbs = (
+        <BreadCrumbs
+            withWidthContainer
+            links={[
+                { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
+                { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
+                { label: t('codeList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CODELIST },
+                { label: String(title), href: `${NavigationSubRoutes.CODELIST}/${data.codeList?.id}` },
+            ]}
+        />
+    )
+
+    if (isError && !code) {
+        return (
+            <>
+                {breadcrumbs}
+                <MainContentWrapper>
+                    <QueryFeedback error={isError} loading={false} />
+                </MainContentWrapper>
+            </>
+        )
+    }
+
     return (
         <>
-            <BreadCrumbs
-                withWidthContainer
-                links={[
-                    { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
-                    { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
-                    { label: t('codeList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CODELIST },
-                    { label: String(title), href: `${NavigationSubRoutes.CODELIST}/${data.codeList?.id}` },
-                ]}
-            />
+            {breadcrumbs}
             <MainContentWrapper>
-                {isError && !code && <QueryFeedback error={isError} loading={false} />}
                 <MutationFeedback success={isMutationSuccess} successMessage={t('codeListDetail.feedback.translationCreated')} error={undefined} />
                 {isMutationSuccess && <TextWarning>{t('codeListDetail.feedback.translationWarning')}</TextWarning>}
                 <QueryFeedback loading={isLoading} error={false} withChildren>
@@ -165,7 +177,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                                                 <ButtonLink
                                                     key={language}
                                                     label={
-                                                        language.toLocaleUpperCase() +
+                                                        t(`codeListDetail.languages.${language}`) +
                                                         (language === workingLanguage ? t('codeListDetail.selectedSuffix') : '')
                                                     }
                                                     onClick={() => {
@@ -242,6 +254,20 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                                                     onClick={() => setIsNewLanguageVersionModalOpen(true)}
                                                 />
                                             </Can>
+                                            <Can I={Actions.UNLOCK} a={Subjects.DETAIL}>
+                                                <ButtonLink
+                                                    key={'removeLock'}
+                                                    label={t('codeListDetail.button.removeLock')}
+                                                    onClick={() => setIsRemoveLockOpened(true)}
+                                                />
+                                            </Can>
+                                            <Can I={Actions.DISCARD} a={Subjects.DETAIL}>
+                                                <ButtonLink
+                                                    key={'discardUpdating'}
+                                                    label={t('codeListDetail.button.discardUpdating')}
+                                                    onClick={() => setIsDiscardOpen(true)}
+                                                />
+                                            </Can>
                                         </div>
                                     )
                                 }}
@@ -251,7 +277,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
 
                     <QueryFeedback error={isError} loading={false} />
                     <div ref={wrapperRef}>
-                        <MutationFeedback success={isSuccessMutation || isSuccessEdit} successMessage={successMessage} error={null} />
+                        <MutationFeedback success={isSuccessMutation || isSuccessEdit} successMessage={mainSuccessMessage} error={null} />
                         {actionsErrorMessages.map((errorMessage, index) => (
                             <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
                         ))}
@@ -275,27 +301,15 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                         workingLanguage={workingLanguage}
                         code={code}
                         invalidateCodeListDetailCache={invalidateCodeListDetailCache}
-                        View={(props) => (
-                            <CodeListDetailItemsWrapper
-                                code={props.code}
-                                items={props.items}
-                                filter={props.filter}
-                                workingLanguage={props.workingLanguage}
-                                attributeProfile={props.attributeProfile}
-                                isLoading={props.isLoading}
-                                isLoadingItemAction={props.isLoadingItemAction}
-                                isError={props.isError}
-                                itemActionErrors={props.itemActionErrors}
-                                isSuccessItemActionMutation={props.isSuccessItemActionMutation}
-                                invalidateCodeListDetailCache={props.invalidateCodeListDetailCache}
-                                handleFilterChange={props.handleFilterChange}
-                                handleMarkForPublish={props.handleMarkForPublish}
-                                handleSetDates={props.handleSetDates}
-                            />
-                        )}
+                        View={(props) => <CodeListDetailItemsWrapper {...props} />}
                     />
                     <ExportCodeListModal code={code} isOpen={isExportModalOpen} onClose={() => setIsExportModalOpen(false)} />
-                    <ImportCodeListModal code={code} isOpen={isImportModalOpen} onClose={() => setIsImportModalOpen(false)} />
+                    <ImportCodeListModal
+                        code={code}
+                        id={Number(data.codeList?.id)}
+                        isOpen={isImportModalOpen}
+                        onClose={() => setIsImportModalOpen(false)}
+                    />
                     <ConfirmationModal
                         isOpen={isMarkForPublishItemsModalOpen}
                         onClose={() => setIsMarkForPublishItemsModalOpen(false)}
@@ -333,6 +347,24 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                             handleSendToSzzc(() => setIsSendToSzzcOpen(false))
                         }}
                         title={t('codeListDetail.modal.title.sendToSzzc')}
+                        okButtonLabel={t('codeListDetail.modal.button.confirm')}
+                    />
+                    <ConfirmationModal
+                        isOpen={isDiscardOpened}
+                        onClose={() => setIsDiscardOpen(false)}
+                        onConfirm={() => {
+                            handleDiscardChanges(() => setIsDiscardOpen(false))
+                        }}
+                        title={t('codeListDetail.modal.title.discardUpdating')}
+                        okButtonLabel={t('codeListDetail.modal.button.confirm')}
+                    />
+                    <ConfirmationModal
+                        isOpen={isRemoveLockOpened}
+                        onClose={() => setIsRemoveLockOpened(false)}
+                        onConfirm={() => {
+                            handleRemoveLock(() => setIsRemoveLockOpened(false))
+                        }}
+                        title={t('codeListDetail.modal.title.removeLock')}
                         okButtonLabel={t('codeListDetail.modal.button.confirm')}
                     />
                     <NewLanguageVersionModal

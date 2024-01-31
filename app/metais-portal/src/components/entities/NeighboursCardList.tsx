@@ -35,6 +35,7 @@ interface NeighboursCardListProps {
     setPageConfig: (value: React.SetStateAction<ReadCiNeighboursWithAllRelsParams>) => void
     setIsDerived: (value: React.SetStateAction<boolean>) => void
     ciTypeData: CiType | undefined
+    hideButtons: boolean
 }
 
 export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
@@ -49,6 +50,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     setPageConfig,
     setIsDerived,
     ciTypeData,
+    hideButtons,
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
@@ -101,38 +103,40 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                                     errorProps={{ errorMessage: t('feedback.failedFetch') }}
                                     withChildren
                                 >
-                                    <div className={classNames([styles.tableActionsWrapper, key.isDerived && styles.flexEnd])}>
-                                        {!key.isDerived && (
-                                            <ButtonGroupRow>
-                                                <Button
-                                                    className={'marginBottom0'}
-                                                    label={t('neighboursCardList.buttonAddNewRelation')}
-                                                    variant="secondary"
-                                                    disabled={!canCreateRelation}
-                                                    onClick={() => navigate(`new-relation/${key.technicalName}`, { state: { from: location } })}
-                                                />
-                                                <Button
-                                                    className={'marginBottom0'}
-                                                    onClick={() => navigate(`new-ci/${key.technicalName}`, { state: { from: location } })}
-                                                    label={t('neighboursCardList.buttonAddNewRelationCard')}
-                                                    variant="secondary"
-                                                    disabled={!canCreateRelation || !canCreateCi || disabledCreateCI}
-                                                />{' '}
-                                            </ButtonGroupRow>
-                                        )}
-                                        <PageSizeSelect
-                                            id="relationPerPage"
-                                            className={styles.perPageSelectWrapper}
-                                            handlePagingSelect={(page) => {
-                                                setPageConfig((pageConfig) => {
-                                                    return {
-                                                        ...pageConfig,
-                                                        perPage: Number(page),
-                                                    }
-                                                })
-                                            }}
-                                        />
-                                    </div>
+                                    {!hideButtons && (
+                                        <div className={classNames([styles.tableActionsWrapper, key.isDerived && styles.flexEnd])}>
+                                            {!key.isDerived && (
+                                                <ButtonGroupRow>
+                                                    <Button
+                                                        className={'marginBottom0'}
+                                                        label={t('neighboursCardList.buttonAddNewRelation')}
+                                                        variant="secondary"
+                                                        disabled={!canCreateRelation}
+                                                        onClick={() => navigate(`new-relation/${key.technicalName}`, { state: { from: location } })}
+                                                    />
+                                                    <Button
+                                                        className={'marginBottom0'}
+                                                        onClick={() => navigate(`new-ci/${key.technicalName}`, { state: { from: location } })}
+                                                        label={t('neighboursCardList.buttonAddNewRelationCard')}
+                                                        variant="secondary"
+                                                        disabled={!canCreateRelation || !canCreateCi || disabledCreateCI}
+                                                    />
+                                                </ButtonGroupRow>
+                                            )}
+                                            <PageSizeSelect
+                                                id="relationPerPage"
+                                                className={styles.perPageSelectWrapper}
+                                                handlePagingSelect={(page) => {
+                                                    setPageConfig((pageConfig) => {
+                                                        return {
+                                                            ...pageConfig,
+                                                            perPage: Number(page),
+                                                        }
+                                                    })
+                                                }}
+                                            />
+                                        </div>
+                                    )}
                                     <CardColumnList>
                                         {relationsList?.ciWithRels?.map((ciWithRel) => {
                                             const formatedCiWithRel = formatRelationAttributes(ciWithRel, relationTypes, owners, t, i18n)

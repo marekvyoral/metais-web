@@ -29,6 +29,7 @@ interface ICiLazySelect<T extends FieldValues> {
     metaAttributes?: FilterMetaAttributesUi
     attributes?: FilterAttributesUi[]
     option?: (props: OptionProps<ConfigurationItemUi>) => JSX.Element
+    required?: boolean
 }
 
 export const CiLazySelect = <T extends FieldValues>({
@@ -47,6 +48,7 @@ export const CiLazySelect = <T extends FieldValues>({
     metaAttributes,
     attributes,
     option,
+    required,
 }: ICiLazySelect<T>) => {
     const ciOptionsHook = useReadCiList1Hook()
 
@@ -124,6 +126,7 @@ export const CiLazySelect = <T extends FieldValues>({
             disabled={disabled}
             defaultValue={defaultValue ? data?.configurationItemSet?.[0] : undefined}
             info={info}
+            required={required}
         />
     )
 }

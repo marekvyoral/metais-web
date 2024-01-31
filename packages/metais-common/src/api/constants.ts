@@ -39,6 +39,7 @@ export enum ATTRIBUTE_NAME {
     EA_Profil_Projekt_schvalovaci_proces = 'EA_Profil_Projekt_schvalovaci_proces',
     EA_Profil_PO_je_kapitola = 'EA_Profil_PO_je_kapitola',
     EA_Profil_Projekt_status = 'EA_Profil_Projekt_status',
+    EA_Profil_Projekt_program = 'EA_Profil_Projekt_program',
     Profil_Rel_FazaZivotnehoCyklu = 'Profil_Rel_FazaZivotnehoCyklu',
     IKT_Profil_Schvalenie_stav_migracie = 'IKT_Profil_Schvalenie_stav_migracie',
     Financny_Profil_Projekt_schvalene_rocne_naklady = 'Financny_Profil_Projekt_schvalene_rocne_naklady',
@@ -64,12 +65,43 @@ export enum ATTRIBUTE_NAME {
     Profil_KRIS_stav_kris = 'Profil_KRIS_stav_kris',
     Profil_Ciel_kategoria = 'Profil_Ciel_kategoria',
     Profil_KRIS_Zavazok_ciele_principy_stav = 'Profil_KRIS_Zavazok_ciele_principy_stav',
+    Gui_Profil_DIZ_konzumujuci_projekt = 'Gui_Profil_DIZ_konzumujuci_projekt',
+    Gui_Profil_DIZ_poskytujuci_projekt = 'Gui_Profil_DIZ_poskytujuci_projekt',
+    Integracia_Profil_Integracia_stav_diz = 'Integracia_Profil_Integracia_stav_diz',
+    Profil_URIKatalog_uri = 'Profil_URIKatalog_uri',
+    Profil_URIDataset_uri_datasetu = 'Profil_URIDataset_uri_datasetu',
+    Profil_Individuum_zaklad_uri = 'Profil_Individuum_zaklad_uri',
+    Profil_Individuum_historicky_kod = 'Profil_Individuum_historicky_kod',
+    Profil_URIKatalog_historicky_kod = 'Profil_URIKatalog_historicky_kod',
+    Profil_URIDataset_historicky_kod = 'Profil_URIDataset_historicky_kod',
+    Profil_DatovyPrvok_historicky_kod = 'Profil_DatovyPrvok_historicky_kod',
+    Profil_DatovyPrvok_zaciatok_ucinnosti = 'Profil_DatovyPrvok_zaciatok_ucinnosti',
+    Profil_Individuum_platne_od = 'Profil_Individuum_platne_od',
+    Profil_URIKatalog_platne_od = 'Profil_URIKatalog_platne_od',
+    Profil_URIDataset_platne_od = 'Profil_URIDataset_platne_od',
+    Profil_DatovyPrvok_koniec_ucinnosti = 'Profil_DatovyPrvok_koniec_ucinnosti',
+    Profil_Individuum_platne_do = 'Profil_Individuum_platne_do',
+    Profil_URIKatalog_platne_do = 'Profil_URIKatalog_platne_do',
+    Profil_URIDataset_platne_do = 'Profil_URIDataset_platne_do',
+    Profil_DatovyPrvok_kod_datoveho_prvku = 'Profil_DatovyPrvok_kod_datoveho_prvku',
+    Profil_DatovyPrvok_typ_datoveho_prvku = 'Profil_DatovyPrvok_typ_datoveho_prvku',
+    Profil_Individuum_kod = 'Profil_Individuum_kod',
+    Gen_Profil_RefID_stav_registracie = 'Gen_Profil_RefID_stav_registracie',
+    Profil_Kontrakt_faza = 'Profil_Kontrakt_faza',
+    Profil_Kontrakt_identifikator = 'Profil_Kontrakt_identifikator',
+    Profil_Kontrakt_podpora_forma_kontaktu = 'Profil_Kontrakt_podpora_forma_kontaktu',
+    Profil_Kontrakt_podpora_forma_kontaktu_mimo_prevadzky = 'Profil_Kontrakt_podpora_forma_kontaktu_mimo_prevadzky',
+    Profil_Kontrakt_podpora_prevadzkova_doba = 'Profil_Kontrakt_podpora_prevadzkova_doba',
+    Profil_Kontrakt_podpora_instrukcie_kontaktovania = 'Profil_Kontrakt_podpora_instrukcie_kontaktovania',
+    Profil_Kontrakt_podpora_max_odozva_mimo_prevadzky = 'Profil_Kontrakt_podpora_max_odozva_mimo_prevadzky',
+    Profil_Kontrakt_podpora_max_odozva_pocas_prevadzky = 'Profil_Kontrakt_podpora_max_odozva_pocas_prevadzky',
     Profil_Skolenie_pocet_volnych_miest = 'Profil_Skolenie_pocet_volnych_miest',
 }
 
 export enum ATTRIBUTE_PROFILE_NAME {
     Profil_KRIS = 'Profil_KRIS',
     Financny_Profil_Projekt = 'Financny_Profil_Projekt',
+    Integracia_Profil_Integracia = 'Integracia_Profil_Integracia',
 }
 
 export enum API_STANDARD_REQUEST_ATTRIBUTES {
@@ -217,3 +249,10 @@ export const SlaViewOptions = [
 
 export const TYP_HODNOTY = 'TYP_HODNOTY'
 export const TYP_PARAMETROV_JEDNOTKA = 'TYP_PARAMETROV_JEDNOTKA'
+
+export enum RefIdentifierTypeEnum {
+    Individuum = 'Individuum',
+    URIKatalog = 'URIKatalog',
+    DatovyPrvok = 'DatovyPrvok',
+    URIDataset = 'URIDataset',
+}

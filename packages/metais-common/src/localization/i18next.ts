@@ -34,7 +34,7 @@ export const initializeI18nInstance = (basePath = '') => {
     i18nInstance.services.formatter?.add('DATE_SHORT', (value, lng) => {
         try {
             if (!lng) return value
-            if (DateTime.fromJSDate(new Date(value)).isValid) {
+            if (value && DateTime.fromJSDate(new Date(value)).isValid) {
                 return DateTime.fromJSDate(new Date(value)).setLocale(lng).toLocaleString(DateTime.DATE_SHORT)
             }
             return ''
@@ -46,7 +46,7 @@ export const initializeI18nInstance = (basePath = '') => {
     i18nInstance.services.formatter?.add('DATETIME_SHORT_WITH_SECONDS', (value, lng) => {
         try {
             if (!lng) return value
-            if (DateTime.fromJSDate(new Date(value)).isValid) {
+            if (value && DateTime.fromJSDate(new Date(value)).isValid) {
                 return DateTime.fromJSDate(new Date(value)).setLocale(lng).toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)
             }
             return ''

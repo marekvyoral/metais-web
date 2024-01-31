@@ -57,7 +57,15 @@ const PublicAuthoritiesUpdateItemView: React.FC<PublicAuthoritiesUpdateItemProps
                     <InformationGridRow
                         key={index}
                         label={getAttributeName(attribute.name ?? '', attributeList)}
-                        value={pairEnumsToEnumValues(item, data, constraintsData, t, unitsData, undefined, true)}
+                        value={pairEnumsToEnumValues({
+                            attribute: item,
+                            ciItemData: data,
+                            constraintsData,
+                            t,
+                            unitsData,
+                            matchedAttributeNamesToCiItem: undefined,
+                            withDescription: true,
+                        })}
                         valueWarning={attribute.value !== compareAttribute?.value}
                         tooltip={item.description}
                     />

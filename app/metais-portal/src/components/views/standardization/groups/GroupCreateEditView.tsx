@@ -16,7 +16,15 @@ import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect
 import { IGroupEditViewParams } from '@/components/containers/standardization/groups/GroupEditContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, resultApiCall, isLoading }) => {
+export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
+    onSubmit,
+    goBack,
+    infoData,
+    isEdit,
+    resultApiCall,
+    isLoading,
+    uniqueConstraintError,
+}) => {
     const { t } = useTranslation()
 
     const {
@@ -31,7 +39,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
         resolver: yupResolver(isEdit ? editGroupSchema(t) : createGroupSchema(t)),
         defaultValues: {
             name: infoData?.name ?? '',
-            short_name: infoData?.shortName ?? '',
+            shortName: infoData?.shortName ?? '',
             description: infoData?.description || '',
             organization: '',
             user: '',
@@ -40,7 +48,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
     useEffect(() => {
         reset({
             name: infoData?.name ?? '',
-            short_name: infoData?.shortName ?? '',
+            shortName: infoData?.shortName ?? '',
             description: infoData?.description || '',
             organization: '',
             user: '',
@@ -137,13 +145,13 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                             label={`${t('groups.groupName')} (${t('groups.mandatory')}):`}
                             id={GroupFormEnum.NAME}
                             {...register(GroupFormEnum.NAME, { value: infoData?.name })}
-                            error={errors[GroupFormEnum.NAME]?.message}
+                            error={errors[GroupFormEnum.NAME]?.message || uniqueConstraintError?.[GroupFormEnum.NAME]}
                         />
                         <Input
                             label={`${t('groups.shortGroupName')} (${t('groups.mandatory')}):`}
                             id={GroupFormEnum.SHORT_NAME}
                             {...register(GroupFormEnum.SHORT_NAME, { value: infoData?.shortName })}
-                            error={errors[GroupFormEnum.SHORT_NAME]?.message}
+                            error={errors[GroupFormEnum.SHORT_NAME]?.message || uniqueConstraintError?.[GroupFormEnum.SHORT_NAME]}
                         />
                         <RichTextQuill
                             label={`${t('groups.description')} (${t('groups.mandatory')}):`}

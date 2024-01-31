@@ -31,7 +31,6 @@ export interface ICiListContainerView<T> {
     attributes?: Attribute[]
     gestorsData?: RoleParticipantUI[]
     entityName: string
-    ciType: string
     defaultFilterValues: T
     handleFilterChange: (filter: IFilter) => void
     storeUserSelectedColumns: (columnSelection: FavoriteCiType) => void
@@ -46,7 +45,6 @@ export interface ICiListContainerView<T> {
 
 interface ICiListContainer<T> {
     entityName: string
-    ciType?: string
     POType?: string
     ListComponent: React.FC<ICiListContainerView<T>>
     defaultFilterValues: T
@@ -55,7 +53,6 @@ interface ICiListContainer<T> {
 
 export const CiListContainer = <T extends FieldValues & IFilterParams>({
     entityName,
-    ciType,
     POType,
     ListComponent,
     defaultFilterValues,
@@ -144,7 +141,6 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
             constraintsData={constraintsData}
             unitsData={unitsData}
             ciTypeData={ciTypeData}
-            ciType={ciType ?? entityName}
             entityName={entityName}
             POType={POType ?? ''}
         />

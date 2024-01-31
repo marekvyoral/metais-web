@@ -26,9 +26,16 @@ export interface IRelationsView {
 interface IRelationsListContainer {
     entityId: string
     technicalName: string
+    showOnlyTabsWithRelations?: boolean
+    hideButtons?: boolean
 }
 
-export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ entityId, technicalName }) => {
+export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
+    entityId,
+    technicalName,
+    showOnlyTabsWithRelations = false,
+    hideButtons = false,
+}) => {
     const { data: ciTypeData } = useGetCiType(technicalName)
     const { isLoading: areTypesLoading, isError: areTypesError, keysToDisplay } = useEntityRelationsTypesCount(entityId, technicalName)
 
@@ -91,6 +98,8 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
 
     const isError = areTypesError || areRelationsError
 
+    const keysToDisplayOnlyWithRelations = keysToDisplay?.filter?.((item) => item.count)
+
     return (
         <NeighboursCardList
             areTypesLoading={areTypesLoading}
@@ -100,7 +109,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
             relationsList={{ ...relationsList }}
             data={{
                 owners,
-                keysToDisplay: keysToDisplay ?? [],
+                keysToDisplay: showOnlyTabsWithRelations ? keysToDisplayOnlyWithRelations : keysToDisplay ?? [],
                 relationTypes: relationTypes?.results ?? [],
             }}
             pagination={pagination}
@@ -108,6 +117,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
             setPageConfig={setPageConfig}
             setIsDerived={setIsDerived}
             ciTypeData={ciTypeData}
+            hideButtons={hideButtons}
         />
     )
 }

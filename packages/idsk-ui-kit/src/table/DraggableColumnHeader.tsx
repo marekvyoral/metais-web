@@ -76,7 +76,6 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
                                         { arrowBtnAsc: column.getIsSorted() === 'asc' },
                                     )}
                                     onClick={column.getToggleSortingHandler()}
-                                    style={{ opacity: column.getIsSorted() === false ? 0.1 : 1 }}
                                 />
                             )}
                         </strong>

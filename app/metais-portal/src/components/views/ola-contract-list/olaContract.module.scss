@@ -1,7 +1,9 @@
 @import '@isdd/idsk-ui-kit/src/utils.scss';
 
-.attributeGridRowBox {
+.flexBox {
     display: flex;
     gap: govuk-spacing(4);
-    flex-direction: column;
+}
+.fullWidth {
+    width: 100%;
 }

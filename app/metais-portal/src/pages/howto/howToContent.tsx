@@ -32,6 +32,10 @@ const HowToContent: React.FC<HowToContentProps> = ({ howToEnumType }) => {
                 initializedData = data
                 initAll({ scope })
             }
+            const hashElement = window.location.hash ? document.getElementById(window.location.hash.substring(1)) : null
+            if (hashElement) {
+                hashElement.scrollIntoView()
+            }
         }, 500)
     }, [data, isLoading, isError])
 

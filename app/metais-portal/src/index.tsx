@@ -1,6 +1,5 @@
 import { ActionSuccessProvider } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { FilterContextProvider } from '@isdd/metais-common/contexts/filter/filterContext'
-import { NewRelationDataProvider } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { UserPreferencesProvider } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { initializeI18nInstance } from '@isdd/metais-common/localization/i18next'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -15,6 +14,7 @@ import { AuthProvider } from 'react-oauth2-code-pkce'
 import { AutoLogout } from '@isdd/metais-common/src/components/auto-logout/AutoLogout'
 import { authConfig } from '@isdd/metais-common/contexts/auth/authConfig'
 import { CrashFallback } from '@isdd/metais-common/src/components/crash-fallback/CrashFallback'
+import { CodeListWorkingLanguageProvider } from '@isdd/metais-common/contexts/codeListWorkingLanguage/codeListWorkingLanguageContext'
 import { ErrorBoundary } from 'react-error-boundary'
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 
@@ -45,33 +45,33 @@ const queryClient = new QueryClient({
 
 root.render(
     <React.StrictMode>
-        <NewRelationDataProvider>
-            <BrowserRouter>
-                <I18nextProvider i18n={initializeI18nInstance()}>
-                    <QueryClientProvider client={queryClient}>
-                        <AuthProvider authConfig={authConfig({ clientId: CLIENT_ID, scope: SCOPE })}>
-                            <AuthContextProvider>
-                                <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
-                                    <ErrorBoundary fallbackRender={({ error }) => <CrashFallback error={error} />}>
-                                        <AutoLogout>
-                                            <FilterContextProvider>
-                                                <ActionSuccessProvider>
-                                                    <UserPreferencesProvider>
+        <BrowserRouter>
+            <I18nextProvider i18n={initializeI18nInstance()}>
+                <QueryClientProvider client={queryClient}>
+                    <AuthProvider authConfig={authConfig({ clientId: CLIENT_ID, scope: SCOPE })}>
+                        <AuthContextProvider>
+                            <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
+                                <ErrorBoundary fallbackRender={({ error }) => <CrashFallback error={error} />}>
+                                    <AutoLogout>
+                                        <FilterContextProvider>
+                                            <ActionSuccessProvider>
+                                                <UserPreferencesProvider>
+                                                    <CodeListWorkingLanguageProvider>
                                                         <DndProvider backend={HTML5Backend}>
                                                             <App />
                                                         </DndProvider>
-                                                    </UserPreferencesProvider>
-                                                </ActionSuccessProvider>
-                                            </FilterContextProvider>
-                                        </AutoLogout>
-                                    </ErrorBoundary>
-                                </GoogleReCaptchaProvider>
-                            </AuthContextProvider>
-                        </AuthProvider>
-                    </QueryClientProvider>
-                </I18nextProvider>
-            </BrowserRouter>
-        </NewRelationDataProvider>
+                                                    </CodeListWorkingLanguageProvider>
+                                                </UserPreferencesProvider>
+                                            </ActionSuccessProvider>
+                                        </FilterContextProvider>
+                                    </AutoLogout>
+                                </ErrorBoundary>
+                            </GoogleReCaptchaProvider>
+                        </AuthContextProvider>
+                    </AuthProvider>
+                </QueryClientProvider>
+            </I18nextProvider>
+        </BrowserRouter>
     </React.StrictMode>,
 )
 

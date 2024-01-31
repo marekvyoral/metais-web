@@ -141,6 +141,8 @@
             "meetings": "Zoznam zasadnutí",
             "registers": "Referenčné registre",
             "codelists": "Číselníky",
+            "refIdentifiers": "Referencovateľné identifikátory",
+            "refIdentifierList": "Zoznam žiadostí",
             "publicCodelists": "Publikované číselníky",
             "centralModel": "Centrálny dátový model",
             "licenses": "Licencie",
@@ -180,6 +182,11 @@
             "serviceLevelAgreementsWithOperator": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
             "integrationAgreementsOnServiceLevel": "Integračné dohody o úrovni poskytovania služieb (ISLA)",
             "training": "Školenie"
+        },
+        "sla": {
+            "slaAndIntegrations": "Integrácie a SLA",
+            "integrationLinks": "Integračné väzby",
+            "isla": "Integračné dohody o úrovni poskytovania služieb (ISLA)"
         }
     },
     "radioButton": {
@@ -189,7 +196,9 @@
     },
     "sidebar": {
         "hide": "SKRYŤ",
-        "unhide": "ODKRYŤ"
+        "unhide": "ODKRYŤ",
+        "expandableExpandItem": "Otvoriť položky menu {{name}}",
+        "expandableCloseItem": "Zatvoriť položky menu {{name}}"
     },
     "userManagement": {
         "error": {
@@ -320,6 +329,7 @@
         "fixLink": "Opraviť",
         "invalidEntityId": "Nevalidná entita",
         "codeList": {
+            "uploadValidationFallbackError": "Chyba pri validácii súboru. Skontrolujte správnosť údajov.",
             "cl.missing.header.name": "Nesprávna požiadavka. Názov číselníka je povinný.",
             "cl.missing.header.master.manager": "Nesprávna požiadavka. Hlavný gestor číselníka je povinný.",
             "cl.missing.header.validity": "Nesprávna požiadavka. Platnosť číselníka je povinná.",
@@ -595,7 +605,7 @@
             "successReturned": "Projekt vrátený na dopracovanie",
             "error": "Pri odoslaní projektu nastala chyba",
             "errorDocuments": "Nie sú vytvorené povinné dokumenty",
-            "errorRelations": "Nie je vytvorený povinný vzťah na ISVS, alebo Miesto prevádzky",
+            "errorRelations": "Nie je vytvorený povinný vzťah na ISVS, Program alebo Miesto prevádzky",
             "errorRelationsAsKsFaza": "Položka má fázu životného cyklu \"Ostrá prevádzka",
             "errorNotApprovedKS": "Koncové služby je potrebné vyplniť a vypublikovať.",
             "errorNotAllowedApprove": "Používateľ nemá práva na schválenie projektu.",
@@ -624,7 +634,7 @@
         "as": "Aplikačná služba"
     },
     "fileImport": {
-        "uploadFailed": "Upload action failed. Are you online?",
+        "uploadFailed": "Import bol neúspešný.",
         "retry": "Skúsiť znova",
         "header": "Import položiek alebo vzťahov",
         "onlyExisting": "Upraviť len existujúce položky",
@@ -807,7 +817,7 @@
     "createEntity": {
         "required": "povinné",
         "errorTitle": "Nastala chyba",
-        "errorMessage": "Ospravedlňujeme sa, ale pri úprave položky nastala technická chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
+        "errorMessage": "Ospravedlňujeme sa, ale pri vykonávaní vašej akcie nastala technická chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
         "select": "Vyber...",
         "email": "metais@mirri.gov.sk",
         "publicAuthority": "Povinná osoba",
@@ -823,7 +833,8 @@
         "orgAndRoleError": {
             "title": "Chýbajúce práva pre organizáciu",
             "message": "Chýbajú vám práva na vytvorenie položky pod touto organizáciou"
-        }
+        },
+        "ownerError": "Vo vytváraní nie je možné pokračovať, pretože nie ste vlastníkom tejto položky."
     },
     "table": {
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
@@ -832,7 +843,9 @@
         "pagination": "Tabuľková navigácia",
         "sortBy": "Zoraď podľa",
         "selectAllItems": "Vyber všetky položky",
-        "noDataLoaded": "Nenačítali sa žiadne záznamy"
+        "noDataLoaded": "Nenačítali sa žiadne záznamy",
+        "expandableExpandItem": "Otvoriť detail položky",
+        "expandableCloseItem": "Zatvoriť detail položky"
     },
     "state": "Stav evidencie",
     "group": "Skupina",
@@ -1063,7 +1076,9 @@
             "groupShortNameRequired": "Skratka skupiny je povinná",
             "descriptionRequired": "Popis je povinný",
             "chairmanRequired": "Predseda skupiny je povinný",
-            "organizationRequired": "Organizácia je povinná"
+            "organizationRequired": "Organizácia je povinná",
+            "uniqueName": "Názov skupiny musí byť jedinečný",
+            "uniqueShortName": "Skratka skupiny musí byť jedinečná"
         },
         "creatingGroup": "Vytváram novú skupinu",
         "editingGroup": "Upravujem skupinu"
@@ -1079,7 +1094,8 @@
             "validItem": "Položka je platná, nie je možné nad ňou vykonať vybranú operáciu.",
             "notFoundPO": "Chyba pri získávaní informácií o právach - pre dané položke nebola nájdená povinná osoba.",
             "notToClone": "Z tejto položky nie je možné vytvoriť inštanciu nakoľko táto položka je inštanciou a nie je možné vytvárať inštancie z inštancií"
-        }
+        },
+        "iconAltText": "Popis {{text}}"
     },
     "addFileSuccess": "Dokument {{docs}} bol úspešne pridaný",
     "addFilesSuccess": "Dokumenty {{docs}} boli úspešne pridané",
@@ -1168,6 +1184,7 @@
         "refRegisters": "Referenčné registre",
         "refRegistersCreate": "Žiadosť na pridanie",
         "refRegistersEdit": "Zmena údajov o referenčnom registri",
+        "refIdentifiers": "Zoznam referencovateľných identifikátorov",
         "dataObjects": "Dátové objekty",
         "requestList": "Zoznam žiadostí založenia číselníka",
         "requestCreate": "Žiadosť o zaradenie číselníka",
@@ -1271,6 +1288,7 @@
             "effective": "Účinnosť k dnešnému dňu"
         },
         "languages": {
+            "sk": "Slovenčina",
             "en": "Angličtina",
             "de": "Nemčina",
             "hu": "Maďarčina"
@@ -1287,13 +1305,16 @@
         },
         "feedback": {
             "editCodeListItems": "Položky číselníka boli zmenené",
+            "editItemSuccess": "Položka číselníka bola zmenená",
+            "createItemSuccess": "Položka číselníka bola vytvorená",
             "translationCreated": "Jazyková verzia číselníka bola vytvorená. Teraz môžete pridávať preklad položiek v tomto jazyku.",
             "translationWarning": "Jazyková verzia číselníka by mala byť publikovaná len kompletne preložená.",
             "returnToMainGestor": "Číselník bol vrátený na prepracovanie.",
             "sendToSzzc": "Požiadavka bola odoslaná správcovi zoznamu ZČ.",
             "publishCodeListItems": "Položky číselníka boli zverejnené.",
             "requestRejected": "Táto žiadosť bola zamietnutá dňa {{day}}. Dôvod zamietnutia: {{cause}}",
-            "requestSentToKSISVS": "Táto žiadosť bola dňa {{day}} odoslaná na schválenie Komisiou pre štandardizáciu ISVS."
+            "requestSentToKSISVS": "Táto žiadosť bola dňa {{day}} odoslaná na schválenie Komisiou pre štandardizáciu ISVS.",
+            "importDone": "Import číselníka bol úspešný"
         },
         "modal": {
             "title": {
@@ -1306,7 +1327,9 @@
                 "sendToIsvs": "Presunúť do Komisie pre štandardizáciu ISVS",
                 "sendToSzzc": "Presunúť na správcu zoznamu ZČ",
                 "returnToMainGestor": "Vrátiť hlavnému gestorovi",
-                "publishCodeList": "Publikovať číselník"
+                "publishCodeList": "Publikovať číselník",
+                "removeLock": "Zrušiť zámok",
+                "discardUpdating": "Zahodiť rozpracovanú verziu"
             },
             "form": {
                 "validFrom": "Platné od:",
@@ -1341,12 +1364,17 @@
             "addNewItem": "Pridať novú položku",
             "markItemReadyForPublishing": "Pripraviť na publikovanie",
             "markReadyForPublishingBulk": "Označiť ako pripravené pre publikovanie",
-            "setDatesBulk": "Doplniť dátum platnosti a začiatok účinnosti"
+            "setDatesBulk": "Doplniť dátum platnosti a začiatok účinnosti",
+            "removeLock": "Zrušiť zámok",
+            "discardUpdating": "Zahodiť rozpracovanú verziu",
+            "showOriginalInNewWindow": "Zobraziť pôvodnú verziu do nového okna"
         },
         "warning": {
+            "codelistLocked": "Vykonávaním zmien ste atomaticky uzamkli číselník a jeho položky voči zmenám iných osôb",
             "itemLocked": "Toto je rozpracovaná verzia oprávneným používateľom {{user}} zo dňa {{date}}",
             "workVersion": "Toto je rozpracovaná verzia",
-            "updatingVersion": "Upravujete rozpracovanú verziu oprávneným používateľom {{user}} zo dňa {{day}}"
+            "updatingVersion": "Upravujete rozpracovanú verziu oprávneným používateľom {{user}} zo dňa {{day}}",
+            "workingLanguageNotice": "Aktuálne upravujete jazyk: {{language}}"
         },
         "validation": {
             "code": "Kód položky je povinné pole",
@@ -1377,9 +1405,7 @@
             "cancelAddNewGestor": "Zrušiť pridanie nového hlavného gestora",
             "addNewRow": "Pridať nový riadok",
             "addNewVersionName": "Pridať novú verziu názvu",
-            "cancelAddNewVersionName": "Zrušiť pridanie novej verzie názvu",
-            "removeLock": "Zrušiť zámok",
-            "discardUpdating": "Zahodiť rozpracovanú verziu"
+            "cancelAddNewVersionName": "Zrušiť pridanie novej verzie názvu"
         },
         "requestCreate": {
             "btnCheck": "Overiť dostupnosť",
@@ -1480,12 +1506,54 @@
             "EXPORT": "Export"
         }
     },
+    "refIdentifiers": {
+        "title": "Zoznam referencovateľných identifikátorov (URI)",
+        "breadcrumbs": {
+            "uriList": "Uri - zoznam",
+            "uriDetail": "Uri - detail"
+        },
+        "filter": {
+            "type": "Typ",
+            "state": "Stav",
+            "createdAtFrom": "Vytvorené od",
+            "createdAtTo": "Vytvorené do",
+            "view": "Zobraziť",
+            "all": "Všetky",
+            "onlyMy": "Len moje"
+        },
+        "table": {
+            "name": "Názov",
+            "uri": "URI",
+            "type": "Typ",
+            "state": "Stav"
+        },
+        "type": {
+            "DatovyPrvok": "Dátový prvok",
+            "URIDataset": "Dataset",
+            "URIKatalog": "Katalóg",
+            "Individuum": "Šablóna URI"
+        },
+        "detail": {
+            "gestor": "Gestor",
+            "type": "Typ žiadosti",
+            "state": "Stav",
+            "historicalCode": "Historický kód",
+            "datasets": "Datasety katalógu",
+            "createdAt": "Vytvorené",
+            "createdBy": "Používateľom",
+            "lastModifiedAt": "Posledná modifikácia",
+            "modifiedBy": "Modifikáciu vykonal",
+            "uri": "URI",
+            "dataItemElements": "Podriadené dátové prvky"
+        }
+    },
     "selectCiItem": {
         "label": "Položky",
         "loading": "Načítavanie konfiguračných položiek",
         "error": "Chyba pri načítavaní údajov o konfiguračných položkách."
     },
     "newRelation": {
+        "or": "Alebo",
         "detailButton": "Detail položky",
         "deleteButton": "Odstrániť",
         "heading": "Pridať nový vzťah ...",
@@ -1538,6 +1606,7 @@
         "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia",
         "codeListList": "Zoznam číselníkov",
         "codeListDetail": "Detail číselníka",
+        "refIdentifiers": "Referencovateľné identifikátory",
         "meetingsCreate": "Vytvorenie zasadnutia",
         "meetingDetail": "Detail zasadnutia"
     },
@@ -2162,7 +2231,6 @@
         "loading": "Spracúvame odhlásenie"
     },
     "KRIS": {
-        "heading": "Zoznam koncepcií KRIT",
         "responsibleAuthority": "Aktuálne zodpovedná povinná osoba",
         "table": {
             "code": "Kód",
@@ -2347,7 +2415,25 @@
             "providingIsvsName": "Posk. ISVS",
             "consumingProjName": "Konz. projekt",
             "providingProjName": "Posk. projekt"
-        }
+        },
+        "manualSign": "Nahrať manuálne podpísaný dokument",
+        "cancelManualSignature": "Zrušiť manuálny podpis",
+        "approve": "Schváliť DIZ",
+        "sign": "Podpísať DIZ",
+        "reject": "Zamietnuť DIZ",
+        "uploadDoc": "Nahrať dokument na schválenie a podpísanie",
+        "openDocHistory": "História dokumentu"
+    },
+    "dmsFileHistory": {
+        "heading": "História dokumentu {{item}}",
+        "fileName": "Názov súboru",
+        "version": "Verzia",
+        "mimeType": "Typ dokumentu",
+        "contentLength": "Veľkosť",
+        "validityFrom": "Platnosť od",
+        "validityTo": "Platnosť do",
+        "currentVersion": "Aktuálna verzia",
+        "lastModifiedBy": "Poslednú zmenu vykonal"
     },
     "slaContracts": {
         "columns": {
@@ -2377,6 +2463,48 @@
             "all": "Všetky záznamy",
             "active": "Len aktívne záznamy",
             "inactive": "Len neplatné záznamy"
+        },
+        "detail": {
+            "supportContact": "Kontakt na podporu",
+            "owner": "Vlastník",
+            "docForSignAndApproval": "Dokument na schválenie a podpísanie",
+            "consumerIsvsMainPerson": "Povinná osoba za ISVS konzumenta",
+            "providerIsvsMainPerson": "Povinná osoba za ISVS poskytovateľa",
+            "providerIsvs": "ISVS za poskytovateľa",
+            "consumerIsvs": "ISVS za konzumenta"
         }
+    },
+    "olaContracts": {
+        "columns": {
+            "name": "Názov kontraktu",
+            "contractCode": "Kód kontraktu",
+            "contractorIsvsName": "ISVS",
+            "consumerIsvs": "Správca ISVS",
+            "validityStartDate": "Platnosť od",
+            "validityEndDate": "Platnosť do",
+            "vendorLock": "Vendor Lock"
+        },
+        "filter": {
+            "name": "Názov kontraktu",
+            "contractCode": "Kód kontraktu",
+            "metaIsCode": "Kód metaIS",
+            "intervalStart": "Platnosť od",
+            "intervalEnd": "Platnosť do",
+            "selectService": "ISVS",
+            "liableEntities": "Správca ISVS",
+            "description": "Popis kontraktu",
+            "code": "Kód",
+            "referenceIdentifier": "Referencovateľný identifikátor",
+            "crzLink": "Linka do CRZ",
+            "vendorLock": "Vendor Lock"
+        },
+        "title": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
+        "heading": "Zoznam SLA s prevádzkovateľom",
+        "headingAdd": "Pridat SLA s dodávateľom",
+        "createButton": "Pridať novú SLA s dodávateľom"
+    },
+    "upload": {
+        "success": "Dokument bol úspešne pridaný",
+        "error": "Nastala chyba pri uploade dokumentu. Prosím, skúste to znova."
     }
 }

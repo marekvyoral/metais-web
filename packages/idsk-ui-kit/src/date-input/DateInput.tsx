@@ -1,5 +1,5 @@
 import React from 'react'
-import { Control, Controller, UseFormClearErrors } from 'react-hook-form'
+import { Control, Controller, FieldValue, UseFormClearErrors } from 'react-hook-form'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import { Languages } from '@isdd/metais-common/src/localization/languages'
 import { sk, enUS as en } from 'date-fns/locale'
@@ -19,7 +19,8 @@ registerLocale('en', en)
 type Props = {
     handleDateChange: (date: Date | null, name: string) => void
     name: string
-    control: Control
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    control: Control<FieldValue<Record<string, any>>>
     label?: string
     hint?: string
     error?: string

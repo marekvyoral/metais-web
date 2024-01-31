@@ -12,14 +12,13 @@ import {
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import React, { useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RequestListState } from '@isdd/metais-common/constants'
 import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
 
@@ -38,12 +37,15 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     const {
         state: { user },
     } = useAuth()
-    const { i18n } = useTranslation()
     const { requestId } = useParams()
     const navigate = useNavigate()
 
+    // WorkingLanguage is forced to system default 'sk' for requests.
+    // Content is created and displayed in only one language.
+    const workingLanguage = 'sk'
+
     const { setIsActionSuccess } = useActionSuccess()
-    const { invalidate } = useInvalidateCodeListRequestCache()
+    const { invalidateRequests } = useInvalidateCodeListCache()
     const addOrGetGroupHook = useAddOrGetGroupHook()
 
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
@@ -62,21 +64,16 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     }
 
     const implicitHierarchy = useReadCiList()
-    const {
-        data,
-        isLoading: isLoadingDetail,
-        isError: isErrorDetail,
-        error: errorDetail,
-    } = useGetCodelistRequestDetail(Number.parseInt(requestId || ''))
-    const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave, error: errorSave } = useCreateCodelistRequest()
-    const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend, error: errorSend } = useSaveAndSendCodelist()
+    const { data, isLoading: isLoadingDetail, error: errorDetail } = useGetCodelistRequestDetail(Number.parseInt(requestId || ''))
+    const { mutateAsync, isLoading: isLoadingSave, error: errorSave } = useCreateCodelistRequest()
+    const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, error: errorSend } = useSaveAndSendCodelist()
     const { isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile, data: attributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
-    const { mutateAsync: mutateSaveDates, isLoading: isLoadingSaveDates, isError: isErrorSaveDates, error: errorSaveDates } = useSaveDates()
+    const { mutateAsync: mutateSaveDates, isLoading: isLoadingSaveDates, error: errorSaveDates } = useSaveDates()
     const {
         mutateAsync: mutateItemAction,
         isLoading: isLoadingItemAction,
-        isError: isErrorItemAction,
         error: errorItemAction,
+        isSuccess: isSuccessItemAction,
     } = useProcessItemRequestAction1()
     const { mutateAsync: mutateExists, isLoading: isLoadingExists } = useExistsCodelist()
 
@@ -86,12 +83,12 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
         isLoading: isLoadingItemList,
         isError: isErrorItemList,
     } = useGetCodelistRequestItems(Number(requestId || '0'), {
-        language: i18n.language,
+        language: workingLanguage,
         pageNumber: 1,
         perPage: 99999,
     })
 
-    const defaultData = mapToForm(i18n.language, itemList, data)
+    const defaultData = mapToForm(workingLanguage, itemList, data)
 
     const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
         const page = !additional?.page ? 1 : (additional?.page || 0) + 1
@@ -130,7 +127,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     )
 
     const onSave = async (formData: IRequestForm) => {
-        const mappedData = mapFormToSave(formData, i18n.language, data?.id)
+        const mappedData = mapFormToSave(formData, workingLanguage, data?.id)
         const redirectPath = `${NavigationSubRoutes.REQUESTLIST}/${mappedData.id}`
         if (
             mappedData.code &&
@@ -146,7 +143,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
                     ...(mappedData.validFrom && { validFrom: mappedData.validFrom && formatDateForDefaultValue(mappedData.validFrom, 'dd.MM.yyyy') }),
                 },
             }).then(() => {
-                invalidate(Number(requestId))
+                invalidateRequests(Number(requestId))
                 setIsActionSuccess({ value: true, path: redirectPath, additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' } })
                 navigate(redirectPath)
             })
@@ -155,7 +152,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
             addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
                 .then(() => {
                     mutateAsync({ data: mappedData }).then(() => {
-                        invalidate(Number(requestId))
+                        invalidateRequests(Number(requestId))
                         setIsActionSuccess({ value: true, path: redirectPath, additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' } })
                         navigate(redirectPath)
                     })
@@ -170,8 +167,8 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
         const uuid = getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
-                mutateSendASync({ data: mapFormToSave(formData, i18n.language, data?.id) }).then(() => {
-                    invalidate(Number(requestId))
+                mutateSendASync({ data: mapFormToSave(formData, workingLanguage, data?.id) }).then(() => {
+                    invalidateRequests(Number(requestId))
                     setIsActionSuccess({
                         value: true,
                         path: NavigationSubRoutes.REQUESTLIST,
@@ -196,30 +193,17 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
             },
             params: { fromIndex: 0, toIndex: Object.keys(items).length },
         }).then(() => {
-            setIsActionSuccess({
-                value: true,
-                path: `${NavigationSubRoutes.REQUESTLIST}/${requestId}/edit`,
-                additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' },
-            })
             refetchItemList()
         })
     }
 
     const isLoading = [isLoadingDetail, isLoadingItemList, isLoadingAttributeProfile].some((item) => item)
     const isLoadingMutation = [isLoadingSave, isLoadingSend, isLoadingSaveDates, isLoadingItemAction, isLoadingExists].some((item) => item)
-    const isError = [
-        errorAddOrGetGroup,
-        isErrorSave,
-        isErrorDetail,
-        isErrorSend,
-        isErrorItemList,
-        isErrorAttributeProfile,
-        isErrorSaveDates,
-        isErrorItemAction,
-    ].some((item) => item)
+    const isError = [isErrorItemList, isErrorAttributeProfile].some((item) => item)
     const errorMessages = getErrorTranslateKeys(
-        [errorAddOrGetGroup, errorDetail, errorSend, errorSave, errorSaveDates, errorItemAction].map((item) => item as { message: string }),
+        [errorAddOrGetGroup, errorDetail, errorSend, errorSave, errorSaveDates].map((item) => item as { message: string }),
     )
+    const errorMessageSetDates = getErrorTranslateKeys([errorItemAction].map((item) => item as { message: string })).pop()
     const canEdit =
         data &&
         (data.lockedBy === null || data.lockedBy === user?.login) &&
@@ -230,11 +214,14 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
         <RequestListPermissionsWrapper id={requestId ?? ''}>
             <View
                 requestId={requestId}
+                workingLanguage={workingLanguage}
                 canEdit={canEdit}
                 isError={isError}
                 isLoading={isLoading}
                 isLoadingMutation={isLoadingMutation}
                 errorMessages={errorMessages}
+                errorMessageSetDates={errorMessageSetDates}
+                isSuccessSetDates={isSuccessItemAction}
                 onHandleCheckIfCodeIsAvailable={handleCheckIfCodeIsAvailable}
                 loadOptions={loadOptions}
                 onSave={onSave}

@@ -30,6 +30,10 @@ const getDataObjectSubItems = (t: TFunction, isSideMenu?: boolean) => {
             title: t('navMenu.lists.codelists'),
             path: NavigationSubRoutes.CODELIST,
         },
+        {
+            title: t('navMenu.lists.refIdentifiers'),
+            path: NavigationSubRoutes.REF_IDENTIFIERS,
+        },
     ]
 
     const dataObjectSubItemsSideMenu = [
@@ -46,6 +50,11 @@ const getDataObjectSubItems = (t: TFunction, isSideMenu?: boolean) => {
                 { title: t('navMenu.lists.codelistsRequestsList'), path: NavigationSubRoutes.REQUESTLIST, isLoginRequired: true },
             ],
         },
+        {
+            title: t('navMenu.lists.refIdentifiers'),
+            path: NavigationSubRoutes.REF_URI_HOWTO,
+            subItems: [{ title: t('navMenu.lists.refIdentifierList'), path: NavigationSubRoutes.REF_IDENTIFIERS }],
+        },
     ]
     return isSideMenu ? dataObjectSubItemsSideMenu : dataObjectSubItemsTopMenu
 }
@@ -55,6 +64,14 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         { title: t('navMenu.lists.endServices'), path: NavigationSubRoutes.KONCOVE_SLUZBY },
         { title: t('navMenu.lists.applicationServices'), path: NavigationSubRoutes.APLIKACNE_SLUZBY },
         { title: t('navMenu.lists.isvs'), path: NavigationSubRoutes.ISVS },
+        {
+            title: t('navMenu.sla.slaAndIntegrations'),
+            path: RouteNames.ISVS_INTEGRATIONS_HOWTO,
+            subItems: [
+                { title: t('navMenu.sla.integrationLinks'), path: NavigationSubRoutes.INTEGRATION_LINKS },
+                { title: t('navMenu.sla.isla'), path: NavigationSubRoutes.ISLA },
+            ],
+        },
         { title: t('navMenu.lists.infrastructures'), path: NavigationSubRoutes.INFRASCTRUCTURES },
         { title: t('navMenu.lists.webResidence'), path: NavigationSubRoutes.WEBOVE_SIDLO },
         { title: t('navMenu.lists.training'), path: NavigationSubRoutes.TRAINING },
@@ -76,7 +93,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
 
         {
             title: t('navMenu.programProjectsActivities'),
-            path: RouteNames.HOW_TO_PROGRAMS_PROJECTS_ACTIVITIES,
+            path: NavigationSubRoutes.PROJEKT,
             subItems: [
                 { title: t('navMenu.lists.aktivita'), path: NavigationSubRoutes.AKTIVITA },
                 { title: t('navMenu.lists.programs'), path: NavigationSubRoutes.PROGRAM },
@@ -85,7 +102,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         },
         {
             title: t('navMenu.publicAuthoritiesNav'),
-            path: RouteNames.HOW_TO_PO,
+            path: NavigationSubRoutes.PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS,
             subItems: [
                 {
                     title: t('navMenu.lists.processorsOfITDevelopmentConcepts'),

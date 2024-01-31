@@ -25,6 +25,7 @@ export interface CodeListDetailItemsViewProps {
     filter: IFilter
     workingLanguage: string
     invalidateCodeListDetailCache: () => void
+    onModalOpen: () => void
     handleFilterChange: (filter: IFilter) => void
     handleMarkForPublish: (itemCodes: string[]) => void
     handleSetDates: (itemCodes: string[], validFrom: string, effectiveFrom: string) => void
@@ -75,6 +76,7 @@ export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainer
         ...defaultFilterValues,
     })
     const [mutationErrors, setMutationErrors] = useState<itemActionError[]>([])
+    const [isMutationSuccess, setIsMutationSuccess] = useState<boolean>(false)
 
     const {
         isFetching: isLoadingAttributeProfile,
@@ -98,6 +100,11 @@ export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainer
 
     const mutationItemAction = useProcessItemAction()
 
+    const onModalOpen = () => {
+        setIsMutationSuccess(false)
+        setMutationErrors([])
+    }
+
     const handleMarkForPublish = (itemCodes: string[]) => {
         Promise.allSettled(
             itemCodes.map(async (itemCode) => {
@@ -105,7 +112,7 @@ export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainer
                     code,
                     itemCode,
                     params: {
-                        action: ApiCodeListItemsActions.CODELIST_ITEMS_TO_PUBLISH,
+                        action: ApiCodeListItemsActions.CODELIST_ITEM_TO_READY_TO_PUBLISH,
                     },
                 })
             }),
@@ -116,9 +123,11 @@ export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainer
                     return { itemCode: itemCodes[index], message: JSON.parse((error as PromiseRejectedResult).reason.message).message }
                 })
             setMutationErrors(errors)
+            if (!errors.length) {
+                setIsMutationSuccess(true)
+                invalidateCodeListDetailCache()
+            }
         })
-
-        invalidateCodeListDetailCache()
     }
 
     const handleSetDates = async (itemCodes: string[], validFrom: string, effectiveFrom: string) => {
@@ -141,13 +150,15 @@ export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainer
                     return { itemCode: itemCodes[index], message: JSON.parse((error as PromiseRejectedResult).reason.message).message }
                 })
             setMutationErrors(errors)
+            if (!errors.length) {
+                setIsMutationSuccess(true)
+                invalidateCodeListDetailCache()
+            }
         })
-
-        invalidateCodeListDetailCache()
     }
 
     const isLoading = [isLoadingItems, isLoadingAttributeProfile].some((item) => item)
-    const isError = [isErrorItems, isErrorAttributeProfile, mutationItemAction.isError].some((item) => item)
+    const isError = [isErrorItems, isErrorAttributeProfile].some((item) => item)
 
     return (
         <View
@@ -158,10 +169,11 @@ export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainer
             isLoadingItemAction={mutationItemAction.isLoading}
             isError={isError}
             itemActionErrors={mutationErrors}
-            isSuccessItemActionMutation={mutationItemAction.isSuccess}
+            isSuccessItemActionMutation={isMutationSuccess}
             workingLanguage={workingLanguage}
             filter={filter}
             invalidateCodeListDetailCache={invalidateCodeListDetailCache}
+            onModalOpen={onModalOpen}
             handleFilterChange={handleFilterChange}
             handleMarkForPublish={handleMarkForPublish}
             handleSetDates={handleSetDates}

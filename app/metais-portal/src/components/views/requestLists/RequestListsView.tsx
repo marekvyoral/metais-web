@@ -17,13 +17,12 @@ import { CodeListFilterOnlyBase } from '@/components/containers/CodeListListCont
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { RequestListFilterData, RequestListViewProps, defaultFilterValues } from '@/components/containers/RequestListContainer'
 
-const selectBasedOnLanguage = (languageData: Array<ApiCodelistItemName>, appLanguage: string) => {
-    const translatedName = languageData?.find((item) => item.language === appLanguage)?.value
-    return translatedName ?? languageData?.find(() => true)?.value
+const getDefaultLanguageValue = (languageData: Array<ApiCodelistItemName>) => {
+    return languageData?.find((item) => item.language === 'sk')?.value
 }
 
 export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter, handleFilterChange, isLoading }) => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
     const userAbility = useAbilityContext()
@@ -39,10 +38,10 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
             accessorFn: (row) => row.codelistNames,
             enableSorting: true,
             meta: {
-                getCellContext: (ctx) => selectBasedOnLanguage(ctx.getValue() as ApiCodelistItemName[], i18n.language),
+                getCellContext: (ctx) => getDefaultLanguageValue(ctx.getValue() as ApiCodelistItemName[]),
             },
             cell: (row) => {
-                const name = selectBasedOnLanguage(row.getValue() as ApiCodelistItemName[], i18n.language)
+                const name = getDefaultLanguageValue(row.getValue() as ApiCodelistItemName[])
                 return <TextLink to={`${NavigationSubRoutes.REQUESTLIST}/${row.row.original.id}`}>{name}</TextLink>
             },
         },
@@ -66,7 +65,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
         },
         {
             id: 'codelistState',
-            header: t('state'),
+            header: t('codeListList.table.state'),
             accessorFn: (row) => row.codelistState,
             enableSorting: true,
             cell: (row) => {

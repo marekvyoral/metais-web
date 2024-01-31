@@ -102,7 +102,9 @@
     },
     "sidebar": {
         "hide": "SKRYŤ",
-        "unhide": "ODKRYŤ"
+        "unhide": "ODKRYŤ",
+        "expandableExpandItem": "Otvoriť položky menu {{name}}",
+        "expandableCloseItem": "Zatvoriť položky menu {{name}}"
     },
     "filter": {
         "chooseState": "Vyberte stav",
@@ -172,7 +174,9 @@
         "paginationSummaryEmpty": "Zobrazených 0 z celkových 0 záznamov",
         "noRowsFound": "Nenašli sa žiadne záznamy",
         "ico": "ICO",
-        "adress": "Adresa"
+        "adress": "Adresa",
+        "expandableExpandItem": "Otvoriť detail položky",
+        "expandableCloseItem": "Zatvoriť detail položky"
     },
     "form": {
         "userFirstName": "Meno použivateľa",
@@ -218,7 +222,7 @@
         "description": "Popis",
         "engDescription": "Anglický popis",
         "color": "Farebné označenie",
-        "roles": "Opravnené role",
+        "roles": "Oprávnené role",
         "order": "Poradie",
         "invisible": "Viditeľnosť",
         "clarification": "Spresnenie",
@@ -673,6 +677,9 @@
             "massActualizations": "Hromadné aktualizácie",
             "massUpdate": "Hromadné aktualizácie"
         }
+    },
+    "tooltip": {
+        "iconAltText": "Popis {{text}}"
     },
     "tooltips": {
         "selectedEntries": "Vybrané záznamy",

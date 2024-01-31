@@ -23,7 +23,7 @@ import { KRISFilterType } from '@/pages/ci/KRIS'
 
 export const KrisListView: React.FC<ICiListContainerView<KRISFilterType>> = ({
     defaultFilterValues,
-    ciType,
+    entityName,
     columnListData,
     handleFilterChange,
     ciTypeData,
@@ -63,7 +63,7 @@ export const KrisListView: React.FC<ICiListContainerView<KRISFilterType>> = ({
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
-                <TextHeading size="XL">{t('KRIS.heading')}</TextHeading>
+                <TextHeading size="XL">{ciTypeData?.name}</TextHeading>
                 {isError && <QueryFeedback loading={false} error errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
             </FlexColumnReverseWrapper>
 
@@ -122,7 +122,7 @@ export const KrisListView: React.FC<ICiListContainerView<KRISFilterType>> = ({
                     <CreateEntityButton
                         label={t('ciType.createButton.KRIS')}
                         ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
-                        onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })}
+                        onClick={() => navigate(`/ci/${entityName}/create`, { state: { from: location } })}
                     />
                 }
                 hiddenButtons={{ SELECT_COLUMNS: true }}

@@ -96,6 +96,12 @@
         "logout": "Logout",
         "profile": "Profile"
     },
+    "sidebar": {
+        "hide": "HIDE",
+        "unhide": "SHOW",
+        "expandableExpandItem": "Open menu item {{name}}",
+        "expandableCloseItem": "Close menu item {{name}}"
+    },
     "radioButton": {
         "yes": "Yes",
         "no": "No"
@@ -137,7 +143,9 @@
         "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
         "paginationSummaryEmpty": "Viewed 0 from total 0 records",
         "ico": "ICO",
-        "adress": "Adress"
+        "adress": "Adress",
+        "expandableExpandItem": "Open item detail",
+        "expandableCloseItem": "Close item detail"
     },
     "form": {
         "userFirstName": "First name of user",
@@ -579,6 +587,9 @@
             "massActualizations": "Mass updates",
             "massUpdate": "Mass update"
         }
+    },
+    "tooltip": {
+        "iconAltText": "Desciption {{text}}"
     },
     "tooltips": {
         "selectedEntries": "Selected entries",

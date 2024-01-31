@@ -152,6 +152,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                     <ButtonPopup
                         buttonLabel={t('actionOverTable.selectColumn')}
                         buttonClassName="marginBottom0"
+                        popupPosition="right"
                         popupContent={(closePopup) => {
                             return simpleTableColumnsSelect ? (
                                 <TableSelectColumns

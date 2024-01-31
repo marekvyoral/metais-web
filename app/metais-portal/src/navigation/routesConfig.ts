@@ -26,6 +26,10 @@ import Evaluation from '@/pages/ci/KRIS/[entityId]/evaluation'
 import Goals from '@/pages/ci/KRIS/[entityId]/goals'
 import Tasks from '@/pages/ci/KRIS/[entityId]/tasks'
 import KsEntityDetailPage from '@/pages/ci/KS/[entityId]'
+import { SlaContractDetailPage } from '@/pages/ci/Kontrakt/[entityId]'
+import { SlaContractHistory } from '@/pages/ci/Kontrakt/[entityId]/history'
+import { SlaContractInformation } from '@/pages/ci/Kontrakt/[entityId]/information'
+import { SlaContractSupportContact } from '@/pages/ci/Kontrakt/[entityId]/supportContact'
 import ITVSExceptionsEditPage from '@/pages/ci/OsobitnyPostup/[entityId]/edit'
 import CreateITVSExceptionsPage from '@/pages/ci/OsobitnyPostup/create'
 import POIsListPage from '@/pages/ci/PO_IS'
@@ -64,6 +68,7 @@ import CookiesInfoPage from '@/pages/cookies/info'
 import CodeListDetailPage from '@/pages/data-objects/codelists/[id]/detail'
 import EditCodeListPage from '@/pages/data-objects/codelists/[id]/edit'
 import CodeListPage from '@/pages/data-objects/codelists/list'
+import RefIdentifiersPage from '@/pages/data-objects/ref-identifiers'
 import RequestListDetailPage from '@/pages/data-objects/requestlist/[requestId]/detail'
 import RequestListEditPage from '@/pages/data-objects/requestlist/[requestId]/edit'
 import RequestListCreatePage from '@/pages/data-objects/requestlist/create'
@@ -76,6 +81,7 @@ import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
 import ServicesListPage from '@/pages/monitoring/services/services'
 import NotificationsPage from '@/pages/notifications'
 import NotificationsDetailPage from '@/pages/notifications/[id]'
+import { OlaContractList } from '@/pages/ola-contract-list'
 import PublicAuthoritiesHierarchyPage from '@/pages/public-authorities-hierarchy'
 import ITVSStandards from '@/pages/publicspace'
 import RefRegistersDetail from '@/pages/refregisters/[entityId]'
@@ -92,7 +98,6 @@ import Registration from '@/pages/registration/registration'
 import Success from '@/pages/registration/success'
 import RelationDetailPage from '@/pages/relation/[entityName]/[entityId]/[relationshipId]'
 import ReportsListPage from '@/pages/reports/reports'
-import { SlaContractList } from '@/pages/sla-contract/list'
 import SLADetailPage from '@/pages/sla-detail'
 import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
 import DraftsListEditPage from '@/pages/standardization/draftslist/[entityId]/edit'
@@ -114,6 +119,11 @@ import VoteCreatePage from '@/pages/standardization/voteslist/create'
 import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
+import { SlaContractList } from '@/pages/ci/Kontrakt/list'
+import { OlaContractAdd } from '@/pages/ola-contract-list/add'
+import { IntegrationLinkCreate } from '@/pages/ci/Integracia/create'
+import { EditIntegrationLinkPage } from '@/pages/ci/Integracia/[entityId]/edit'
+import RefIdentifierDetailPage from '@/pages/data-objects/ref-identifiers/[id]/detail'
 
 export interface RouteConfig {
     path?: string
@@ -472,6 +482,16 @@ export const routesConfig: RouteConfig[] = [
                 component: RequestListCreatePage,
             },
             {
+                path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS,
+                slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS,
+                component: RefIdentifiersPage,
+            },
+            {
+                path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_DETAIL,
+                slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_DETAIL,
+                component: RefIdentifierDetailPage,
+            },
+            {
                 path: RouterRoutes.REF_REGISTERS_LIST,
                 slug: RouterRoutes.REF_REGISTERS_LIST,
                 component: ReferenceRegisters,
@@ -721,6 +741,17 @@ export const routesConfig: RouteConfig[] = [
                 component: ProvIntegrationList,
             },
             {
+                path: RouterRoutes.INTEGRATION_CREATE,
+                slug: RouterRoutes.INTEGRATION_CREATE,
+                component: IntegrationLinkCreate,
+            },
+            {
+                path: RouterRoutes.INTEGRATION_EDIT,
+                slug: RouterRoutes.INTEGRATION_EDIT,
+                component: EditIntegrationLinkPage,
+            },
+
+            {
                 path: RouterRoutes.INTEGRATION_DETAIL,
                 slug: RouterRoutes.INTEGRATION_DETAIL,
                 component: IntegrationLinkDetailPage,
@@ -756,6 +787,38 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.SLA_CONTRACT_LIST,
                 slug: RouterRoutes.SLA_CONTRACT_LIST,
                 component: SlaContractList,
+            },
+            {
+                path: RouterRoutes.OLA_CONTRACT_LIST,
+                slug: RouterRoutes.OLA_CONTRACT_LIST,
+                component: OlaContractList,
+            },
+            {
+                path: RouterRoutes.OLA_CONTRACT_ADD,
+                slug: RouterRoutes.OLA_CONTRACT_ADD,
+                component: OlaContractAdd,
+            },
+            {
+                path: RouterRoutes.SLA_CONTRACT_DETAIL,
+                slug: RouterRoutes.SLA_CONTRACT_DETAIL,
+                component: SlaContractDetailPage,
+                subRoutes: [
+                    {
+                        slug: RouterRoutes.SLA_CONTRACT_DETAIL,
+                        component: SlaContractInformation,
+                        index: true,
+                    },
+                    {
+                        path: RouterRoutes.SLA_CONTRACT_SUPPORT_CONTACT,
+                        slug: RouterRoutes.SLA_CONTRACT_SUPPORT_CONTACT,
+                        component: SlaContractSupportContact,
+                    },
+                    {
+                        path: RouterRoutes.SLA_CONTRACT_HISTORY,
+                        slug: RouterRoutes.SLA_CONTRACT_HISTORY,
+                        component: SlaContractHistory,
+                    },
+                ],
             },
             ...generalCiRoutes,
             {

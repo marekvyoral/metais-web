@@ -7,9 +7,14 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { StandardDraftsDraftStates } from '@isdd/metais-common/types/api'
-import { useActionStandardRequest, useAssignStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
+import {
+    ApiStandardRequestPreviewRequestChannel,
+    useActionStandardRequest,
+    useAssignStandardRequest,
+} from '@isdd/metais-common/api/generated/standards-swagger'
 import { MutationFeedback } from '@isdd/metais-common/index'
 import { FieldValues } from 'react-hook-form'
+import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { DraftsListButtonPopupContent } from '@/components/entities/draftslist/DraftsListButtonPopupContent'
 import { DraftsListChangeStateModal } from '@/components/entities/draftslist/DraftsListChangeStateModal'
@@ -19,12 +24,14 @@ import { transformTargetStateIntoAction } from '@/componentHelpers/draftsList'
 interface Props {
     entityId: string
     entityItemName: string
+    requestChannel: string
 }
 
-export const DraftsListIdHeader: React.FC<Props> = ({ entityId, entityItemName }) => {
+export const DraftsListIdHeader: React.FC<Props> = ({ entityId, entityItemName, requestChannel }) => {
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
+    const { invalidateAll: invalidateCodelists } = useInvalidateCodeListCache()
 
     const [openChangeStateDialog, setOpenChangeStateDialog] = useState<boolean>(false)
     const [targetState, setTargetState] = useState<StandardDraftsDraftStates>()
@@ -58,8 +65,15 @@ export const DraftsListIdHeader: React.FC<Props> = ({ entityId, entityItemName }
                     action: transformTargetStateIntoAction(targetState as StandardDraftsDraftStates),
                 },
             })
+
+            if (
+                requestChannel === ApiStandardRequestPreviewRequestChannel.ZC_Header ||
+                requestChannel === ApiStandardRequestPreviewRequestChannel.ZC_Request
+            ) {
+                invalidateCodelists()
+            }
         },
-        [changeState, entityId, targetState],
+        [changeState, entityId, invalidateCodelists, requestChannel, targetState],
     )
     const handleAssignToPS = useCallback(
         async (values: FieldValues) => {

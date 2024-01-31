@@ -1,19 +1,31 @@
+import React, { PropsWithChildren, ReactNode, forwardRef } from 'react'
 import classNames from 'classnames'
-import React, { PropsWithChildren, forwardRef } from 'react'
+import sanitizeHtml from 'sanitize-html'
+import { useTranslation } from 'react-i18next'
 
 import styles from './infoIcon.module.scss'
 
-import { InfoIcon } from '@isdd/idsk-ui-kit/assets/images'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 interface IInfoIconWithTextProps extends PropsWithChildren {
     tooltip?: string
     hideIcon?: boolean
+    label?: ReactNode
 }
 
-export const InfoIconWithText = forwardRef<HTMLDivElement, IInfoIconWithTextProps>(({ children, tooltip, hideIcon = false }, ref) => {
+export const InfoIconWithText = forwardRef<HTMLDivElement, IInfoIconWithTextProps>(({ children, tooltip, hideIcon = false, label }, ref) => {
+    const { t } = useTranslation()
+
     return (
         <span className={classNames(styles.infoIconGroup)} ref={ref}>
-            {!hideIcon && <img src={InfoIcon} className={classNames(styles.infoIcon)} alt="info-icon" title={tooltip} />}
+            {!hideIcon && (
+                <span className={classNames(styles.infoIcon)}>
+                    <Tooltip
+                        altText={label && typeof label === 'string' ? t('tooltip.iconAltText', { text: label }) : ''}
+                        descriptionElement={<div className="tooltipWidth500" dangerouslySetInnerHTML={{ __html: sanitizeHtml(tooltip ?? '') }} />}
+                    />
+                </span>
+            )}
             <span className={classNames(styles.infoText)}>{children}</span>
         </span>
     )

@@ -40,7 +40,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
     isError,
     isLoading,
 }) => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const {
         isActionSuccess: { value: isExternalSuccess },
     } = useActionSuccess()
@@ -52,10 +52,10 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
             accessorFn: (row) => row.codelistNames,
             enableSorting: true,
             meta: {
-                getCellContext: (ctx) => selectBasedOnLanguageAndDate(ctx.getValue() as ApiCodelistItemName[], i18n.language),
+                getCellContext: (ctx) => selectBasedOnLanguageAndDate(ctx.getValue() as ApiCodelistItemName[], 'sk'),
             },
             cell: (row) => {
-                const name = selectBasedOnLanguageAndDate(row.getValue() as ApiCodelistItemName[], i18n.language)
+                const name = selectBasedOnLanguageAndDate(row.getValue() as ApiCodelistItemName[], 'sk')
                 return <TextLink to={`${NavigationSubRoutes.CODELIST}/${row.row.original.id}`}>{name}</TextLink>
             },
         },

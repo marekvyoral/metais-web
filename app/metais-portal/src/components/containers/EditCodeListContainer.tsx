@@ -2,10 +2,11 @@ import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { useGetRoleParticipantBulk, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     ApiCodelistPreview,
-    useDeleteTemporalCodelistHeader,
+    getGetCodelistHeaderQueryKey,
+    getGetCodelistHeadersQueryKey,
     useGetCodelistHeader,
+    useGetOriginalCodelistHeader,
     useGetTemporalCodelistHeaderWithLock,
-    useGetUnlockTemporalCodelistHeader,
     useUpdateAndUnlockTemporalCodelistHeader,
     useUpdateCodelistContactData,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
@@ -14,13 +15,15 @@ import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/ap
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import React, { useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { Roles } from '@isdd/metais-common/api'
 import { getOrgIdFromGid, getRoleUuidFromGid } from '@isdd/metais-common/utils/utils'
+import { useQueryClient } from '@tanstack/react-query'
+import { useCodeListWorkingLanguage } from '@isdd/metais-common/contexts/codeListWorkingLanguage/codeListWorkingLanguageContext'
 
+import { getAllWorkingLanguages } from '@/components/views/codeLists/CodeListDetailUtils'
 import { CodeListPermissionsWrapper } from '@/components/permissions/CodeListPermissionsWrapper'
 import { IEditCodeListForm, mapEditFormDataToCodeList, mapFormToContactData } from '@/componentHelpers'
 import { IOption } from '@/components/views/codeLists/CodeListEditView'
@@ -29,20 +32,20 @@ import { getRoleUUID } from '@/componentHelpers/requests'
 
 export interface CodeListDetailData {
     codeList?: ApiCodelistPreview
+    codeListOriginal?: ApiCodelistPreview
     attributeProfile?: AttributeProfile
     defaultManagers?: IOption[]
 }
 
 export interface EditCodeListContainerViewProps {
     data: CodeListDetailData
+    workingLanguage: string
     requestId?: string
     isLoading: boolean
     isLoadingMutation: boolean
     isError: boolean
     errorMessages: string[]
     handleSave: (formData: IEditCodeListForm) => Promise<void>
-    handleRemoveLock: () => void
-    handleDiscardChanges: () => void
     loadOptions: (
         searchQuery: string,
         isMainGestor: boolean,
@@ -62,11 +65,13 @@ interface EditCodeListContainerContainerProps {
 
 export const EditCodeListContainerContainer: React.FC<EditCodeListContainerContainerProps> = ({ View }) => {
     const user = useAuth()
-    const { i18n } = useTranslation()
+    const queryClient = useQueryClient()
+    const { workingLanguage, setWorkingLanguage } = useCodeListWorkingLanguage()
+
     const { id: codeId } = useParams()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
-    const { invalidate } = useInvalidateCodeListCache()
+    const { invalidateCodelists } = useInvalidateCodeListCache()
 
     const [errorCheck, setErrorCheck] = useState<{ message: string }>()
     const [isLoadingCheck, setIsLoadingCheck] = useState<boolean>()
@@ -74,44 +79,33 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
     const userDataGroups = useMemo(() => user.state.user?.groupData ?? [], [user])
     const { mutateAsync: mutateAsyncImplicitHierarchy } = useReadCiList()
 
-    const {
-        mutateAsync: mutateAsyncUnlock,
-        isLoading: isLoadingUnlock,
-        isError: isErrorUnlock,
-        error: errorUnlock,
-    } = useGetUnlockTemporalCodelistHeader()
-    const {
-        mutateAsync: mutateAsyncDiscard,
-        isLoading: isLoadingDiscard,
-        isError: isErrorDiscard,
-        error: errorDiscard,
-    } = useDeleteTemporalCodelistHeader()
-    const {
-        mutateAsync: mutateAsyncSave,
-        isLoading: isLoadingSave,
-        isError: isErrorSave,
-        error: errorSave,
-    } = useUpdateAndUnlockTemporalCodelistHeader()
-    const {
-        mutateAsync: mutateAsyncContactData,
-        isLoading: isLoadingContactData,
-        isError: isErrorContactData,
-        error: errorContactData,
-    } = useUpdateCodelistContactData()
+    const { mutateAsync: mutateAsyncSave, isLoading: isLoadingSave, error: errorSave } = useUpdateAndUnlockTemporalCodelistHeader()
+    const { mutateAsync: mutateAsyncContactData, isLoading: isLoadingContactData, error: errorContactData } = useUpdateCodelistContactData()
     const canGetGroup = useAddOrGetGroupHook()
     const { isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile, data: attributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
 
     const { isLoading: isLoadingData, isError: isErrorData, data: codeListData } = useGetCodelistHeader(Number(codeId))
     const {
+        isFetching: isLoadingOriginal,
+        isError: isErrorOriginal,
+        data: codeListOriginalData,
+    } = useGetOriginalCodelistHeader(codeListData?.code ?? '', { query: { enabled: !!codeListData } })
+    const {
         isInitialLoading: isLoadingTemporalLocked,
-        isError: isErrorTemporalLocked,
         error: errorTemporalLocked,
         data: codeListTemporalLockedData,
-    } = useGetTemporalCodelistHeaderWithLock(codeListData?.code ?? '', { query: { enabled: !!codeListData } })
-
+    } = useGetTemporalCodelistHeaderWithLock(codeListData?.code ?? '', {
+        query: {
+            onSuccess: () => {
+                queryClient.invalidateQueries([getGetCodelistHeadersQueryKey({ language: '', pageNumber: 0, perPage: 0 })[0]])
+                queryClient.invalidateQueries([getGetCodelistHeaderQueryKey(Number(codeId))[0]])
+            },
+            enabled: !!codeListData,
+        },
+    })
     const requestGestorGids = [
-        ...(codeListData?.mainCodelistManagers?.map((gestor) => gestor.value || '') || []),
-        ...(codeListData?.codelistManagers?.map((gestor) => gestor.value || '') || []),
+        ...(codeListTemporalLockedData?.mainCodelistManagers?.map((gestor) => gestor.value || '') || []),
+        ...(codeListTemporalLockedData?.codelistManagers?.map((gestor) => gestor.value || '') || []),
     ]
 
     const {
@@ -125,8 +119,16 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
         },
     )
 
+    useEffect(() => {
+        const languages = getAllWorkingLanguages(codeListTemporalLockedData)
+        if (languages.length > 0 && !languages.includes(workingLanguage)) {
+            setWorkingLanguage('sk')
+        }
+    }, [codeListTemporalLockedData, setWorkingLanguage, workingLanguage])
+
     const data: CodeListDetailData = {
         codeList: codeListTemporalLockedData,
+        codeListOriginal: codeListOriginalData,
         attributeProfile: attributeProfile,
         defaultManagers: roleParticipantsData?.map((item) => ({
             name: item.configurationItemUi?.attributes?.Gen_Profil_nazov,
@@ -166,89 +168,63 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
         }
     }
 
-    const handleRemoveLock = () => {
-        mutateAsyncUnlock({ code: codeListData?.code ?? '' }).then(() => {
-            invalidate(codeListData?.code ?? '', Number(codeListData?.id))
-            const path = `${NavigationSubRoutes.CODELIST}/${data.codeList?.id}`
-            setIsActionSuccess({ value: true, path })
-            navigate(path)
-        })
-    }
-
-    const handleDiscardChanges = () => {
-        mutateAsyncDiscard({ code: codeListData?.code ?? '' }).then(() => {
-            const path = `${NavigationSubRoutes.CODELIST}`
-            setIsActionSuccess({ value: true, path })
-            navigate(path)
-        })
-    }
-
     const saveData = (requestData: ApiCodelistPreview) => {
-        const codeListPromise = mutateAsyncSave({ code: codeListData?.code ?? '', data: requestData })
-        const contactPromise = mutateAsyncContactData({ code: codeListData?.code ?? '', data: mapFormToContactData(requestData) })
-
-        Promise.all([codeListPromise, contactPromise]).then(() => {
-            invalidate(codeListData?.code ?? '', Number(codeListData?.id))
-            const path = `${NavigationSubRoutes.CODELIST}/${data.codeList?.id}`
-            setIsActionSuccess({ value: true, path })
-            navigate(path)
-        })
+        // contact info is saved after codelist save to prevent errors.
+        // some codelist states can prevent contact info from saving.
+        mutateAsyncSave({ code: codeListTemporalLockedData?.code ?? '', data: requestData })
+            .then(() => mutateAsyncContactData({ code: codeListTemporalLockedData?.code ?? '', data: mapFormToContactData(requestData) }))
+            .then(() => {
+                invalidateCodelists(codeListTemporalLockedData?.code ?? '', Number(codeListTemporalLockedData?.id))
+                const path = `${NavigationSubRoutes.CODELIST}/${codeListTemporalLockedData?.id}`
+                setIsActionSuccess({ value: true, path })
+                navigate(path)
+            })
     }
 
     const handleSave = async (formData: IEditCodeListForm) => {
-        const normalizedData = mapEditFormDataToCodeList(formData, data.codeList, i18n.language)
-        const nextGestors = formData.nextGestor || []
+        const normalizedData = mapEditFormDataToCodeList(formData, codeListTemporalLockedData, workingLanguage)
         const mainGestors = [...(formData.mainGestor ?? [])]
+        const nextGestors = formData.nextGestor || []
+        if (formData.newMainGestor?.value) {
+            mainGestors.push(formData.newMainGestor)
+        }
 
         const gestorPromises = [...mainGestors, ...nextGestors]?.map(async (item) =>
             canGetGroup(getRoleUuidFromGid(item?.value ?? ''), getOrgIdFromGid(item?.value ?? '')),
         )
 
-        if (gestorPromises.length > 0) {
-            setErrorCheck(undefined)
-            setIsLoadingCheck(true)
-            Promise.all(gestorPromises)
-                .then(() => {
-                    saveData(normalizedData)
-                })
-                .catch((error) => {
-                    setErrorCheck(error)
-                })
-                .finally(() => {
-                    setIsLoadingCheck(false)
-                })
-        }
+        setErrorCheck(undefined)
+        setIsLoadingCheck(true)
+        Promise.all(gestorPromises)
+            .then(() => {
+                saveData(normalizedData)
+            })
+            .catch((error) => {
+                setErrorCheck(error)
+            })
+            .finally(() => {
+                setIsLoadingCheck(false)
+            })
     }
 
     const isLoading = [isLoadingData, isLoadingTemporalLocked, isLoadingAttributeProfile, isLoadingRoleParticipants].some((item) => item)
-    const isLoadingMutation = [isLoadingUnlock, isLoadingSave, isLoadingDiscard, isLoadingContactData, isLoadingCheck].some((item) => item)
-    const isError = [
-        isErrorSave,
-        errorCheck,
-        isErrorDiscard,
-        isErrorUnlock,
-        isErrorTemporalLocked,
-        isErrorData,
-        isErrorAttributeProfile,
-        isErrorRoleParticipants,
-        isErrorContactData,
-    ].some((item) => item)
+    const isLoadingMutation = [isLoadingSave, isLoadingContactData, isLoadingCheck, isLoadingOriginal].some((item) => item)
+    const isError = [isErrorData, isErrorAttributeProfile, isErrorRoleParticipants, isErrorOriginal].some((item) => item)
     const errorMessages = getErrorTranslateKeys(
-        [errorTemporalLocked, errorCheck, errorUnlock, errorDiscard, errorSave, errorContactData].map((item) => item as { message: string }),
+        [errorTemporalLocked, errorCheck, errorSave, errorContactData].map((item) => item as { message: string }),
     )
 
     return (
         <CodeListPermissionsWrapper id={codeId ?? ''}>
             <View
                 data={data}
+                workingLanguage={workingLanguage}
                 isError={isError}
                 errorMessages={errorMessages}
                 isLoading={isLoading}
                 isLoadingMutation={isLoadingMutation}
                 loadOptions={loadOptions}
                 handleSave={handleSave}
-                handleRemoveLock={handleRemoveLock}
-                handleDiscardChanges={handleDiscardChanges}
             />
         </CodeListPermissionsWrapper>
     )

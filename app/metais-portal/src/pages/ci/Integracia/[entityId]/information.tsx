@@ -1,6 +1,7 @@
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
 import { useIntegrationLink } from '@isdd/metais-common/src/hooks/useIntegrationLink'
+import { useGetMeta } from '@isdd/metais-common/api/generated/dms-swagger'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { IntegrationLinkAccordion } from '@/components/views/prov-integration/integration-link/IntegrationLinkAccordion'
@@ -16,6 +17,7 @@ export const IntegrationLinkInformation = () => {
             createdByLogin: ciItemData?.metaAttributes?.createdBy ?? '',
             lastModifiedByLogin: ciItemData?.metaAttributes?.lastModifiedBy ?? '',
         })
+    const { data: dmsFileMetaData, isLoading: isDmsFileMetaDataLoading, isError: isDmsFileMetaDataError } = useGetMeta(entityId ?? '')
 
     return (
         <>
@@ -31,9 +33,11 @@ export const IntegrationLinkInformation = () => {
                     lastModifiedByIdentityData,
                     createdByIdentityData,
                     dizProfileData,
+                    dmsFileMetaData,
                 }}
                 isError={[isCiItemError, isAttError, isError].some((item) => item)}
-                isLoading={[isCiItemLoading, isAttLoading, isLoading].some((item) => item)}
+                isLoading={[isCiItemLoading, isAttLoading, isLoading, isDmsFileMetaDataLoading].some((item) => item)}
+                isDmsFileError={isDmsFileMetaDataError}
             />
         </>
     )
