@@ -122,6 +122,9 @@ import UserProfilePage from '@/pages/userprofile/profile'
 import { SlaContractList } from '@/pages/ci/Kontrakt/list'
 import { OlaContractAdd } from '@/pages/ola-contract-list/add'
 import { EditSlaContractPage } from '@/pages/ci/Kontrakt/[entityId]/edit'
+import { IntegrationLinkCreate } from '@/pages/ci/Integracia/create'
+import { EditIntegrationLinkPage } from '@/pages/ci/Integracia/[entityId]/edit'
+import RefIdentifierDetailPage from '@/pages/data-objects/ref-identifiers/[id]/detail'
 
 export interface RouteConfig {
     path?: string
@@ -485,6 +488,11 @@ export const routesConfig: RouteConfig[] = [
                 component: RefIdentifiersPage,
             },
             {
+                path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_DETAIL,
+                slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_DETAIL,
+                component: RefIdentifierDetailPage,
+            },
+            {
                 path: RouterRoutes.REF_REGISTERS_LIST,
                 slug: RouterRoutes.REF_REGISTERS_LIST,
                 component: ReferenceRegisters,
@@ -733,6 +741,17 @@ export const routesConfig: RouteConfig[] = [
                 slug: RouterRoutes.INTEGRATION_LIST,
                 component: ProvIntegrationList,
             },
+            {
+                path: RouterRoutes.INTEGRATION_CREATE,
+                slug: RouterRoutes.INTEGRATION_CREATE,
+                component: IntegrationLinkCreate,
+            },
+            {
+                path: RouterRoutes.INTEGRATION_EDIT,
+                slug: RouterRoutes.INTEGRATION_EDIT,
+                component: EditIntegrationLinkPage,
+            },
+
             {
                 path: RouterRoutes.INTEGRATION_DETAIL,
                 slug: RouterRoutes.INTEGRATION_DETAIL,

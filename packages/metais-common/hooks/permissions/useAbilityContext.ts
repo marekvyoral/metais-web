@@ -13,10 +13,9 @@ export const AbilityContext = createContext(defaultAbility)
 export const useAbilityContext = () => useAbility(AbilityContext)
 export const Can = createContextualCan(AbilityContext.Consumer)
 
-//USE FOR PERMISSIONS WITH LOADING
-export const ExtendedAbilityContext = createContext({
+export const AbilityContextWithFeedback = createContext({
     ability: defaultAbility,
     isError: false,
     isLoading: false,
 })
-export const useExtendedAbilityContext = () => useContext(ExtendedAbilityContext)
+export const useAbilityContextWithFeedback = () => useContext(AbilityContextWithFeedback)

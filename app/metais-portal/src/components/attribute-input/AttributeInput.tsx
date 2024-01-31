@@ -29,7 +29,6 @@ import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { ArrayAttributeInput } from './ArrayAttributeInput'
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
-import styles from './attributeInput.module.scss'
 import { getDefaultArrayValue, getDefaultValue } from './attributeInputHelpers'
 
 import { HasResetState } from '@/components/create-entity/CreateCiEntityForm'
@@ -160,6 +159,14 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
 
         return defaultValue
     }
+
+    const handleDateChange = (date: Date | null, name: string) => {
+        setValue(name, date ? formatDateForDefaultValue(date.toISOString()) : null)
+    }
+
+    const regexConstraints = attribute?.constraints?.[0] as AttributeConstraintRegexAllOf
+    const isGenProfilNazov = attribute.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov
+
     const renderContent = () => {
         if (attribute.technicalName == null) return <></>
         switch (true) {
@@ -183,10 +190,6 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                 )
             }
             case isDate: {
-                const handleDateChange = (date: Date | null, name: string) => {
-                    setValue(name, date ? formatDateForDefaultValue(date.toISOString()) : null)
-                }
-
                 return (
                     <DateInput
                         handleDateChange={handleDateChange}
@@ -221,27 +224,28 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
             }
             case isBoolean: {
                 return (
-                    <Controller
-                        name={attribute.technicalName + nameSufix}
-                        control={control}
-                        render={({ field: { onChange, value, name } }) => {
-                            return (
-                                <CheckBox
-                                    name={name}
-                                    label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` ?? ''}
-                                    error={error?.message?.toString()}
-                                    id={attribute.technicalName ?? ''}
-                                    info={attribute.description}
-                                    disabled={attribute.readOnly || disabled}
-                                    containerClassName={styles.withInfoCheckbox}
-                                    checked={isFalsyStringValue(value) ? false : value}
-                                    onChange={(e) => {
-                                        onChange(e.target.checked)
-                                    }}
-                                />
-                            )
-                        }}
-                    />
+                    <div className="govuk-form-group">
+                        <Controller
+                            name={attribute.technicalName + nameSufix}
+                            control={control}
+                            render={({ field: { onChange, value, name } }) => {
+                                return (
+                                    <CheckBox
+                                        name={name}
+                                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` ?? ''}
+                                        error={error?.message?.toString()}
+                                        id={attribute.technicalName ?? ''}
+                                        info={attribute.description}
+                                        disabled={attribute.readOnly || disabled}
+                                        checked={isFalsyStringValue(value) ? false : value}
+                                        onChange={(e) => {
+                                            onChange(e.target.checked)
+                                        }}
+                                    />
+                                )
+                            }}
+                        />
+                    </div>
                 )
             }
             case isCiTypeConstraint && !!ciType: {
@@ -256,6 +260,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         disabled={attribute.readOnly || disabled}
                         info={attribute.description}
                         defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
+                        metaAttributes={{ state: ['DRAFT'] }}
                     />
                 )
             }
@@ -307,7 +312,6 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
             }
 
             case isRegex: {
-                const regexConstraints = attribute?.constraints?.[0] as AttributeConstraintRegexAllOf
                 return (
                     <Input
                         correct={isCorrect}
@@ -393,8 +397,6 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
             }
 
             case hasStringValue: {
-                const isGenProfilNazov = attribute.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov
-
                 return (
                     <Input
                         correct={isCorrect}

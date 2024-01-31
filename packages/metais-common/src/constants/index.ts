@@ -161,6 +161,7 @@ export const DEFAULT_ERROR = 'Error'
 export const ROLES_CAN_CHANGE_STD_DRAFTS = [KSISVS_ROLES.STD_KSPODP, KSISVS_ROLES.STD_KSPRE, KSISVS_ROLES.STD_KSTAJ]
 
 export const STAV_REGISTRACIE = 'STAV_REGISTRACIE'
+export const TYP_DATOVEHO_PRVKU = 'TYP_DATOVEHO_PRVKU'
 export const STAV_PROJEKTU = 'STAV_PROJEKTU'
 export const FAZA_PROJEKTU = 'FAZA_PROJEKTU'
 export const CI_ITEM_QUERY_KEY = 'ciItemData'
@@ -219,6 +220,7 @@ export const ENTITY_PRINCIP = 'Princip'
 export const PO_predklada_KRIS = 'PO_predklada_KRIS'
 export const ENTITY_ZS = 'ZS'
 export const ENTITY_AGENDA = 'Agenda'
+export const ENTITY_INTEGRATION = 'Integracia'
 
 export const INACTIVE_LOGOUT_TIME = import.meta.env.VITE_INACTIVE_LOGOUT_TIME
 export const INACTIVE_WARNING_TIME = import.meta.env.VITE_INACTIVE_WARNING_TIME
@@ -301,5 +303,11 @@ export const PROVIDING_ISVS_NAME = 'providingIsvsName'
 export const INTEGRACIA_Profil_Integracia_stav_diz = 'Integracia_Profil_Integracia_stav_diz'
 export const Gui_Profil_DIZ_konzumujuci_projekt = 'Gui_Profil_DIZ_konzumujuci_projekt'
 export const Gui_Profil_DIZ_poskytujuci_projekt = 'Gui_Profil_DIZ_poskytujuci_projekt'
+export const PO_E_GOVERNMENT_UUID = '67d48d04-321e-426e-a321-e0bc6fa40437'
+export const INT_SPRAVA = 'INT_SPRAVA'
+export const INT_PODPIS = 'INT_PODPIS'
+export const INT_MANAZ = 'INT_MANAZ'
+export const PO_asociuje_Projekt = 'PO_asociuje_Projekt'
 export const FAZA_KONTRAKTU = 'FAZA_KONTRAKTU'
 export const Profil_Kontrakt = 'Profil_Kontrakt'
+export const Program_financuje_Projekt = 'Program_financuje_Projekt'

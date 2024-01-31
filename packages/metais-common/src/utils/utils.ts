@@ -62,6 +62,14 @@ export const replaceDotForUnderscore = (string: string) => {
     return string.replaceAll('.', '_')
 }
 
+export const roundUpToTwo = (num: number) => {
+    return Math.ceil(num * 100) / 100
+}
+
+export const bytesToMB = (bytes: number) => {
+    const converted = bytes / 1024 / 1024
+    return roundUpToTwo(converted)
+}
 export const decodeHtmlEntities = (encodedString: string): string => {
     // This technique leverages the browser's built-in HTML decoding capabilities.
     const textarea = document.createElement('textarea')

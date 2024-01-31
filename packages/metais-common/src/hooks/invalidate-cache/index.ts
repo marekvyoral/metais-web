@@ -29,6 +29,7 @@ import {
     getGetCodelistRequestDetailQueryKey,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
+import { getGetMetaQueryKey } from '@isdd/metais-common/api/generated/dms-swagger'
 import { getGetTraineesQueryKey, getGetTrainingsForUserQueryKey } from '@isdd/metais-common/api/generated/trainings-swagger'
 import { ApiSlaContractRead, ApiSlaContractWrite, getGetSlaContractQueryKey } from '@isdd/metais-common/api/generated/monitoring-swagger'
 
@@ -85,6 +86,17 @@ export const useSlaContractCache = () => {
     }
 
     return { invalidateItemCache, setItemCache }
+}
+
+export const useInvalidateDmsFileCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (ciItemUuid: string) => {
+        const QK = getGetMetaQueryKey(ciItemUuid)
+        queryClient.invalidateQueries(QK)
+    }
+
+    return { invalidate }
 }
 
 export const useInvalidateCiItemCache = () => {

@@ -1,5 +1,5 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -18,7 +18,7 @@ const RefIdentifiersPage = () => {
                 links={[
                     { label: t('breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                    { label: t('breadcrumbs.refIdentifiers'), href: RouteNames.REFERENCE_REGISTERS },
+                    { label: t('breadcrumbs.refIdentifiers'), href: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS },
                 ]}
             />
             <MainContentWrapper>

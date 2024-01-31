@@ -18,21 +18,20 @@ import { ImportButton } from '@isdd/metais-common/components/actions-over-table/
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
+import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_TRAINING } from '@isdd/metais-common/constants'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { useQueryClient } from '@tanstack/react-query'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { ICiListContainerView } from '@/components/containers/CiListContainer'
 import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
-import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { CIFilterData } from '@/pages/ci/[entityName]/entity'
 
@@ -42,7 +41,7 @@ interface IListWrapper extends ICiListContainerView<CIFilterData> {
 
 export const ListWrapper: React.FC<IListWrapper> = ({
     defaultFilterValues,
-    ciType,
+    entityName,
     columnListData,
     handleFilterChange,
     storeUserSelectedColumns,
@@ -68,12 +67,13 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         isLoading: isCiTypeConstraintsLoading,
         uuidsToMatchedCiItemsMap,
     } = useGetCiTypeConstraintsData(ciTypeData, tableData?.configurationItemSet ?? [])
-
+    const {
+        state: { user },
+    } = useAuth()
     const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction()
     const queryKey = getReadCiList1QueryKey({})
     const navigate = useNavigate()
     const location = useLocation()
-    const { setSelectedItems, setIsListPageOpen, selectedItems } = useNewRelationData()
     const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
 
     const checkedRowItems = Object.keys(rowSelection).length
@@ -87,34 +87,19 @@ export const ListWrapper: React.FC<IListWrapper> = ({
 
     const checkedItemList = tableData?.configurationItemSet?.filter((i) => Object.keys(rowSelection).includes(i.uuid || '')) || []
     const queryClient = useQueryClient()
-
+    const typeTraining = entityName === ENTITY_TRAINING
+    const isUserTrainer = user?.roles?.includes('SKOLITEL')
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: (value: React.SetStateAction<boolean>) => void) => {
         closeFunction(false)
         queryClient.invalidateQueries([queryKey[0]])
         refetch()
         setBulkActionResult(actionResult)
     }
-
-    useEffect(() => {
-        if (isNewRelationModal && selectedItems) {
-            if (Array.isArray(selectedItems))
-                setRowSelection(
-                    selectedItems.reduce(
-                        (acc: Record<string, ColumnsOutputDefinition>, item: ColumnsOutputDefinition) => ({
-                            ...acc,
-                            [item.uuid ?? '']: item,
-                        }),
-                        {},
-                    ),
-                )
-        }
-    }, [isNewRelationModal, selectedItems, setRowSelection])
-
-    const handleRelationItemsChange = () => {
-        const selectedItemsKeys = Object.keys(rowSelection)
-        setSelectedItems(selectedItemsKeys.map((key) => rowSelection[key]))
-        setIsListPageOpen(false)
-    }
+    const showCreateEntityButton = useMemo(() => {
+        if (typeTraining) {
+            return isUserTrainer ? true : false
+        } else return true
+    }, [isUserTrainer, typeTraining])
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
@@ -147,7 +132,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                         <div>
                             <Input
                                 id="name"
-                                label={t(`filter.${ciType}.name`)}
+                                label={t(`filter.${entityName}.name`)}
                                 placeholder={t(`filter.namePlaceholder`)}
                                 {...register('Gen_Profil_nazov')}
                             />
@@ -173,21 +158,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     )
                 }}
             />
-            {isNewRelationModal && (
-                <ActionsOverTable
-                    pagination={pagination}
-                    handleFilterChange={handleFilterChange}
-                    storeUserSelectedColumns={storeUserSelectedColumns}
-                    resetUserSelectedColumns={resetUserSelectedColumns}
-                    pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                    entityName={ciTypeData?.name ?? ''}
-                    attributeProfiles={attributeProfiles ?? []}
-                    attributes={attributes ?? []}
-                    columnListData={columnListData}
-                    ciTypeData={ciTypeData}
-                    bulkPopup={<AddItemsButtonGroup handleItemsChange={handleRelationItemsChange} />}
-                />
-            )}
             {!isNewRelationModal && (
                 <ActionsOverTable
                     pagination={pagination}
@@ -202,12 +172,14 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     columnListData={columnListData}
                     ciTypeData={ciTypeData}
                     createButton={
-                        <CreateEntityButton
-                            ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
-                            onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })}
-                        />
+                        showCreateEntityButton && (
+                            <CreateEntityButton
+                                ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
+                                onClick={() => navigate(`/ci/${entityName}/create`, { state: { from: location } })}
+                            />
+                        )
                     }
-                    importButton={<ImportButton ciType={ciType ?? ''} />}
+                    importButton={<ImportButton ciType={entityName ?? ''} />}
                     exportButton={<ExportButton />}
                     bulkPopup={
                         <Tooltip
@@ -291,7 +263,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 isError={isError || isCiTypeConstraintsError}
                 uuidsToMatchedCiItemsMap={uuidsToMatchedCiItemsMap}
             />
-            {isNewRelationModal && <AddItemsButtonGroup handleItemsChange={handleRelationItemsChange} isUnderTable />}
         </QueryFeedback>
     )
 }
