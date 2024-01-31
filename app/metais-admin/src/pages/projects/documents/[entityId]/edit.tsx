@@ -17,7 +17,8 @@ const EditDocumentsGroup = () => {
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
                     { label: t('documentsManagement.heading'), href: AdminRouteNames.DOCUMENTS_MANAGEMENT },
-                    { label: t('documentsManagement.heading'), href: `${AdminRouteNames.DOCUMENTS_MANAGEMENT}/${entityId}/edit` },
+                    { label: t('documentsManagement.heading'), href: `${AdminRouteNames.DOCUMENTS_MANAGEMENT}/${entityId}` },
+                    { label: t('documentsManagement.groupEdit'), href: `${AdminRouteNames.DOCUMENTS_MANAGEMENT}/${entityId}/edit` },
                 ]}
             />
             <MainContentWrapper>

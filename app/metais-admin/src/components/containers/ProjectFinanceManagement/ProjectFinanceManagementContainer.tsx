@@ -66,6 +66,7 @@ export const ProjectFinanceManagementContainer: React.FC<IProjectFinanceManageme
             query: { enabled: loadProgram, queryKey: [filter] },
         },
     )
+
     const {
         mutateAsync: updateProgramHook,
         isError,
@@ -87,7 +88,7 @@ export const ProjectFinanceManagementContainer: React.FC<IProjectFinanceManageme
             isLoading={isAllProgramsLoadings || isApprovalProcessesLoading || (loadProgram && isProgramLoading) || isUpdating}
             allPrograms={allPrograms}
             approvalProcesses={approvalProcesses}
-            program={program}
+            program={filter?.programUuid ? program : undefined}
             updateProgramHook={updateProgramHook}
             filter={filter}
             handleFilterChange={handleFilterChange}

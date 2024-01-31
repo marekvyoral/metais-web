@@ -16,6 +16,7 @@ const CreateDocument = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    { label: t('documentsManagement.heading'), href: `${AdminRouteNames.DOCUMENTS_MANAGEMENT}` },
                     { label: t('documentsManagement.heading'), href: `${AdminRouteNames.DOCUMENTS_MANAGEMENT}/${entityId}/` },
                     { label: t('documentsManagement.editDocument'), href: `${AdminRouteNames.DOCUMENTS_MANAGEMENT}/${entityId}/${documentId}/edit` },
                 ]}

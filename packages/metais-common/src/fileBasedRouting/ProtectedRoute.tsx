@@ -7,9 +7,10 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 interface iProtectedRoute {
     element: JSX.Element
     slug?: string
+    isAdmin?: boolean
 }
 
-const ProtectedRoute = ({ element, slug }: iProtectedRoute) => {
+const ProtectedRoute = ({ element, slug, isAdmin }: iProtectedRoute) => {
     const [notAuthorized, setNotAuthorized] = useState(false)
     const navigate = useNavigate()
     const {
@@ -22,10 +23,12 @@ const ProtectedRoute = ({ element, slug }: iProtectedRoute) => {
     const isCanWithoutLogin = CAN_CREATE_WITHOUT_LOGIN.some((entity) => slug?.includes(entity))
 
     useEffect(() => {
-        if (!isUserLogged && selectedAbility && !isCanWithoutLogin) setNotAuthorized(true)
+        if (isAdmin && !isUserLogged && slug !== 'Home') {
+            setNotAuthorized(true)
+        } else if (!isUserLogged && selectedAbility && !isCanWithoutLogin) setNotAuthorized(true)
         else if (!isUserLogged && isCannotReadPage) setNotAuthorized(true)
         else setNotAuthorized(false)
-    }, [isUserLogged, navigate, selectedAbility, isCannotReadPage, setNotAuthorized, isCanWithoutLogin])
+    }, [isUserLogged, navigate, selectedAbility, isCannotReadPage, setNotAuthorized, isCanWithoutLogin, isAdmin, slug])
 
     if (notAuthorized) return <Navigate to={'/'} />
 
