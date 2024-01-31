@@ -1,6 +1,7 @@
-import { BaseModal, Button, ButtonGroupRow, TextArea, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, TextArea, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import { ApiRequestAction } from '@/components/containers/DetailRequestContainer'
 
@@ -23,10 +24,12 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, title, close
                 <span>{description}</span>
             </TextBody>
             {action === ApiRequestAction.REJECT && <TextArea name={'note'} rows={4} value={note} onChange={(e) => setNote(e.target.value)} />}
-            <ButtonGroupRow>
-                <Button type="button" variant="secondary" label={t('codeListList.requestModal.no')} onClick={close} />
-                <Button type="submit" label={t('codeListList.requestModal.yes')} onClick={() => onSubmit(action, note)} />
-            </ButtonGroupRow>
+            <ModalButtons
+                submitButtonLabel={t('codeListList.requestModal.yes')}
+                onSubmit={() => onSubmit(action, note)}
+                closeButtonLabel={t('codeListList.requestModal.no')}
+                onClose={close}
+            />
         </BaseModal>
     ) : (
         <></>

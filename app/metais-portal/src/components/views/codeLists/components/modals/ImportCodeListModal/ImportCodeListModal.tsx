@@ -1,8 +1,8 @@
-import { BaseModal, Button, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
-import { FileImportStepEnum } from '@isdd/metais-common/index'
+import { FileImportStepEnum, ModalButtons } from '@isdd/metais-common/index'
 import { ExportIcon } from '@isdd/metais-common/assets/images'
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
 import { StatusBar } from '@uppy/react'
@@ -156,14 +156,14 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
                 />
             </div>
 
-            <div className={styles.centeredButtons}>
-                <Button onClick={handleCancelImport} label={t('fileImport.cancel')} variant="secondary" />
-                <Button
-                    onClick={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : processUpload}
-                    label={fileImportStep === FileImportStepEnum.VALIDATE ? t('fileImport.validate') : t('fileImport.import')}
-                    disabled={currentFiles.length === 0}
-                />
-            </div>
+            <ModalButtons
+                isLoading={false}
+                submitButtonLabel={fileImportStep === FileImportStepEnum.VALIDATE ? t('fileImport.validate') : t('fileImport.import')}
+                onSubmit={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : processUpload}
+                closeButtonLabel={t('fileImport.cancel')}
+                onClose={handleCancelImport}
+                disabled={currentFiles.length === 0}
+            />
         </BaseModal>
     )
 }

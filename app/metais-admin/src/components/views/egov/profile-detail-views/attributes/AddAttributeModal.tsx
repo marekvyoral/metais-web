@@ -20,6 +20,7 @@ export const AddAttributeModal = ({ open, onClose, entityName, refetch }: IAddAt
                         data={{ measureUnit: props?.data?.measureUnit, allEnumsData: props?.data?.allEnumsData, entityName }}
                         storeNewAttribute={props?.storeNewAttribute}
                         isLoading={props.isLoading}
+                        closeModal={props.closeModal}
                     />
                 )}
                 onClose={onClose}

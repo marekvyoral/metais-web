@@ -14,6 +14,7 @@ import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiT
 import { useCiListContainer } from '@isdd/metais-common/hooks/useCiListContainer'
 import { ConfigurationItemUi, IncidentRelationshipSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
 import { CIFilterData } from '@/pages/ci/[entityName]/entity'
@@ -168,7 +169,13 @@ export const CiListPageForModal: React.FC<Props> = ({ ciType, selectedItems, onS
                 linkToNewTab
                 baseHref={`/ci/${ciType}`}
             />
-            <AddItemsButtonGroup handleItemsChange={handleRelationItemsChange} isUnderTable onCancel={() => closeOnClick()} />
+
+            <ModalButtons
+                submitButtonLabel={t('newRelation.addItems')}
+                onSubmit={handleRelationItemsChange}
+                closeButtonLabel={t('newRelation.cancel')}
+                onClose={closeOnClick}
+            />
         </QueryFeedback>
     )
 }

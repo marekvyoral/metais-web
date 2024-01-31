@@ -1,4 +1,4 @@
-import { BaseModal, Button, TextArea, TextBody } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, TextArea, TextBody } from '@isdd/idsk-ui-kit/index'
 import { ApiReferenceRegisterState, useGenerateReferenceRegisterByUuidHook } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
 import React, { useContext, useState } from 'react'
@@ -7,7 +7,7 @@ import { StatusBar } from '@uppy/react'
 import { FileImportList } from '@isdd/metais-common/components/file-import/FileImportList'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
-import { DMS_DOWNLOAD_BASE, DMS_DOWNLOAD_FILE, FileImportStepEnum } from '@isdd/metais-common/index'
+import { DMS_DOWNLOAD_BASE, DMS_DOWNLOAD_FILE, FileImportStepEnum, ModalButtons } from '@isdd/metais-common/index'
 import { useStateMachine } from '@isdd/metais-common/components/state-machine/hooks/useStateMachine'
 import stylesImport from '@isdd/metais-common/components/file-import/FileImport.module.scss'
 import { UppyFile } from '@uppy/core'
@@ -148,13 +148,14 @@ export const RefRegisterChangeStateModal = ({
                             removeGeneralErrorMessages={removeGeneralErrorMessages}
                         />
                     </div>
-                    <Button
-                        label={
+
+                    <ModalButtons
+                        submitButtonLabel={
                             targetState === ApiReferenceRegisterState.MPK_IN_PROGRESS
                                 ? t('refRegisters.header.submitMPK')
                                 : t('refRegisters.header.submit')
                         }
-                        type="submit"
+                        onClose={() => setOpenChangeStateDialog(false)}
                     />
                 </>
             </form>

@@ -2,8 +2,9 @@ import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
 import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, CheckBox, GridCol, GridRow, TextArea } from '@isdd/idsk-ui-kit/index'
+import { CheckBox, GridCol, GridRow, TextArea } from '@isdd/idsk-ui-kit/index'
 import { UseFormRegister, UseFormWatch } from 'react-hook-form'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import styles from './meetingProposalsModal.module.scss'
 import { MeetingFormEnum } from './meetingSchema'
@@ -62,28 +63,18 @@ export const MeetingReasonModal: React.FC<IMeetingProposalsModalProps> = ({ isOp
                             </div>
                         </GridCol>
                     </GridRow>
-
-                    <div className={styles.submitButton}>
-                        <Button
-                            label={t('button.saveChanges')}
-                            type="submit"
-                            onClick={() => {
-                                submit()
-                                handleClose()
-                            }}
-                            disabled={!reason}
-                        />
-
-                        <Button
-                            variant="secondary"
-                            label={t('button.cancel')}
-                            onClick={() => {
-                                handleClose()
-                            }}
-                        />
-                    </div>
                 </div>
             </div>
+            <ModalButtons
+                submitButtonLabel={t('button.saveChanges')}
+                onSubmit={() => {
+                    submit()
+                    handleClose()
+                }}
+                closeButtonLabel={t('button.cancel')}
+                onClose={handleClose}
+                disabled={!reason}
+            />
         </BaseModal>
     )
 }

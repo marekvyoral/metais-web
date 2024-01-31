@@ -1,8 +1,9 @@
 import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Input } from '@isdd/idsk-ui-kit/index'
+import { Input } from '@isdd/idsk-ui-kit/index'
 import { ApiMeetingRequest, useCancelMeetingRequest } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import styles from './meetingProposalsModal.module.scss'
 
@@ -34,26 +35,18 @@ export const MeetingCancelModal: React.FC<IMeetingCancelModal> = ({ isOpen, clos
                         label={t('meetings.reasonOfCanceling')}
                         onChange={(e) => setCancelMeetingDescription(e.target.value)}
                     />
-                    <div className={styles.submitButton}>
-                        <Button
-                            label={t('meetings.cancelMeeting')}
-                            onClick={() => {
-                                handleCancelMeeting()
-                                handleClose()
-                            }}
-                            disabled={!cancelMeetingDescription}
-                        />
-
-                        <Button
-                            variant="secondary"
-                            label={t('button.back')}
-                            onClick={() => {
-                                handleClose()
-                            }}
-                        />
-                    </div>
                 </div>
             </div>
+            <ModalButtons
+                submitButtonLabel={t('meetings.cancelMeeting')}
+                onSubmit={() => {
+                    handleCancelMeeting()
+                    handleClose()
+                }}
+                closeButtonLabel={t('button.back')}
+                onClose={handleClose}
+                disabled={!cancelMeetingDescription}
+            />
         </BaseModal>
     )
 }

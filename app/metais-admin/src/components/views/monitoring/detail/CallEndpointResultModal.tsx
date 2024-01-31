@@ -1,11 +1,10 @@
-import { BaseModal, Button, GridCol, GridRow, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, GridCol, GridRow, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { ApiActiveMonitoringResult } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-
-import styles from '../monitoring.module.scss'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 export interface IMonitoringLogFilterData extends IFilterParams, IFilter {
     activeMonitoringCfgId: number
@@ -52,9 +51,7 @@ export const CallEndpointResultModal: React.FC<ICallEndpointResultModal> = ({ ca
                 }
                 hideIcon
             />
-            <div className={styles.alignRight}>
-                <Button type="submit" label={t('monitoring.detail.callEndpointModal.close')} onClick={close} />
-            </div>
+            <ModalButtons closeButtonLabel={t('monitoring.detail.callEndpointModal.close')} onClose={close} />
         </BaseModal>
     )
 }

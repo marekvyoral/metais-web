@@ -24,11 +24,7 @@ export const AddConnectionModal = ({ onClose, open, addConnection }: ConnectionM
                                 label: data?.name ?? '',
                             }
                         }) ?? []
-                    return (
-                        <div style={{ height: 500 }}>
-                            <AddConnectionView listOptions={listOptions} onClose={onClose} addConnection={addConnection} />
-                        </div>
-                    )
+                    return <AddConnectionView listOptions={listOptions} onClose={onClose} addConnection={addConnection} />
                 }}
             />
         </BaseModal>

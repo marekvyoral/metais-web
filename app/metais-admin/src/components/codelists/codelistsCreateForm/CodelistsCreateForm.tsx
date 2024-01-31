@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, CheckBox, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { MutationFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { CheckBox, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { ModalButtons, MutationFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -61,10 +61,12 @@ export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, clos
             <div className={styles.marginBottom}>
                 <CheckBox label={t('codelists.valid')} id="valid" {...register(CodelistEnum.VALIDITY)} />
             </div>
-            <SubmitWithFeedback
+
+            <ModalButtons
+                isLoading={isLoading}
                 submitButtonLabel={t('codelists.createNewCodelist')}
-                loading={isLoading}
-                additionalButtons={[<Button key={1} variant="secondary" label={t('codelists.cancel')} onClick={closeModal} />]}
+                closeButtonLabel={t('codelists.cancel')}
+                onClose={closeModal}
             />
         </form>
     )

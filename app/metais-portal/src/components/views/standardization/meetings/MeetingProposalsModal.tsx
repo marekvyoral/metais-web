@@ -5,11 +5,18 @@ import { useTranslation } from 'react-i18next'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { CellContext, ColumnDef, Row } from '@tanstack/react-table'
-import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
+import {
+    ActionsOverTable,
+    BASE_PAGE_NUMBER,
+    BASE_PAGE_SIZE,
+    ModalButtons,
+    QueryFeedback,
+    formatDateTimeForDefaultValue,
+} from '@isdd/metais-common/index'
 import { ApiStandardRequestPreview, useGetAllStandardRequests } from '@isdd/metais-common/api/generated/standards-swagger'
 import { Filter } from '@isdd/idsk-ui-kit/filter/Filter'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { Button, CheckBox, TextLinkExternal } from '@isdd/idsk-ui-kit/index'
+import { CheckBox, TextLinkExternal } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
@@ -250,25 +257,17 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({ i
                             handlePageChange={(page) => setPagination({ ...pagination, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })}
                         />
                     </QueryFeedback>
-                    <div className={styles.submitButton}>
-                        <Button
-                            label={t('button.saveChanges')}
-                            onClick={() => {
-                                setSelectedProposals(rowSelection)
-                                handleClose()
-                            }}
-                        />
-
-                        <Button
-                            variant="secondary"
-                            label={t('button.cancel')}
-                            onClick={() => {
-                                handleClose()
-                            }}
-                        />
-                    </div>
                 </div>
             </div>
+            <ModalButtons
+                submitButtonLabel={t('button.saveChanges')}
+                onSubmit={() => {
+                    setSelectedProposals(rowSelection)
+                    handleClose()
+                }}
+                closeButtonLabel={t('button.cancel')}
+                onClose={handleClose}
+            />
         </BaseModal>
     )
 }

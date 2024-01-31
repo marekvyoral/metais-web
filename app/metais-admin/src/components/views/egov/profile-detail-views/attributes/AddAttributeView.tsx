@@ -8,14 +8,14 @@ import { CiTypeListSelect } from '@isdd/metais-common/src/components/ci-type-lis
 import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
-import { SubmitWithFeedback } from '@isdd/metais-common/index'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import { IAddAttributeView } from './AddAttributeContainer'
 import { StringConstraints, useCreateAttributeSelectOptions } from './hooks/useCreateAttributeSelectOptions'
 import { useCreateAttributeForm } from './hooks/useCreateAttributeForm'
 import { getTypeForDefaultValue } from './hooks/helpers'
 
-const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, storeNewAttribute, isLoading }: IAddAttributeView) => {
+const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, storeNewAttribute, closeModal, isLoading }: IAddAttributeView) => {
     const { t } = useTranslation()
     const { attributeTypes, measureUnits, stringConstraints, integerConstraints, allEnumsSelectOptions } = useCreateAttributeSelectOptions({
         measureUnit,
@@ -167,7 +167,16 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                         error={formState?.errors?.defaultValue?.message}
                     />
                 )}
-            <SubmitWithFeedback submitButtonLabel={t('form.submit')} loading={isLoading} />
+
+            <ModalButtons
+                isLoading={isLoading}
+                submitButtonLabel={t('form.submit')}
+                closeButtonLabel={t('form.back')}
+                onClose={() => {
+                    clearErrors()
+                    closeModal()
+                }}
+            />
         </form>
     )
 }

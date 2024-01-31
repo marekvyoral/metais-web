@@ -1,10 +1,11 @@
-import { BaseModal, Button, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { StandardDraftsDraftStates } from '@isdd/metais-common/types/api'
 import React, { useContext } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useStateMachine } from '@isdd/metais-common/components/state-machine/hooks/useStateMachine'
 import styles from '@isdd/metais-common/components/export-items-or-relations/exportItemsOrRelations.module.scss'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import { StandardDraftsStateMachine } from '@/pages/standardization/draftslist/[entityId]/form'
 
@@ -36,22 +37,19 @@ export const DraftsListChangeStateModal = ({
 
     return (
         <BaseModal isOpen={openChangeStateDialog} close={() => setOpenChangeStateDialog(false)}>
-            <div className={styles.modalContainer}>
-                <div className={styles.content}>
-                    <TextHeading size={'L'} className={styles.heading}>
-                        {t(`DraftsList.header.${targetState}`)}
-                    </TextHeading>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <>
-                            <Input {...register('description')} label={t('DraftsList.header.changeState.description')} />
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className={styles.modalContainer}>
+                    <div className={styles.content}>
+                        <TextHeading size={'L'} className={styles.heading}>
+                            {t(`DraftsList.header.${targetState}`)}
+                        </TextHeading>
 
-                            <div className={styles.confirmButton}>
-                                <Button label={t('DraftsList.header.changeState.submit')} type="submit" />
-                            </div>
-                        </>
-                    </form>
+                        <Input {...register('description')} label={t('DraftsList.header.changeState.description')} />
+
+                        <ModalButtons submitButtonLabel={t('DraftsList.header.changeState.submit')} onClose={() => setOpenChangeStateDialog(false)} />
+                    </div>
                 </div>
-            </div>
+            </form>
         </BaseModal>
     )
 }

@@ -1,9 +1,7 @@
 import { BaseModal, Button, TextArea } from '@isdd/idsk-ui-kit/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
-
-import styles from '../vote.module.scss'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 interface ICancelVoteButton {
     disabled?: boolean
@@ -31,7 +29,7 @@ export const CancelVoteButton: React.FC<ICancelVoteButton> = ({ cancelVote, disa
 
     return (
         <>
-            {!hidden && <Button type="submit" label={t('votes.voteDetail.cancel')} onClick={() => handleOpenModal()} disabled={disabled} />}
+            {!hidden && <Button type="submit" label={t('votes.voteDetail.cancel')} onClick={handleOpenModal} disabled={disabled} />}
             <BaseModal isOpen={isModalOpen} close={handleCloseModal}>
                 <TextArea
                     name={'cancelVoteDescription'}
@@ -39,11 +37,12 @@ export const CancelVoteButton: React.FC<ICancelVoteButton> = ({ cancelVote, disa
                     rows={3}
                     onChange={(text) => setReasonText(text.target.value)}
                 />
-                <div className={styles.inline}>
-                    <Button type="submit" label={t('votes.voteDetail.cancelVote')} onClick={() => handleDoCancelVote()} />
-                    <Spacer horizontal />
-                    <Button type="submit" label={t('votes.voteDetail.back')} onClick={() => handleCloseModal()} />
-                </div>
+                <ModalButtons
+                    submitButtonLabel={t('votes.voteDetail.cancelVote')}
+                    onSubmit={handleDoCancelVote}
+                    closeButtonLabel={t('votes.voteDetail.back')}
+                    onClose={handleCloseModal}
+                />
             </BaseModal>
         </>
     )

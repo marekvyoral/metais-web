@@ -1,4 +1,4 @@
-import { BaseModal, Button, Input, TextBody, TextHeading } from '@isdd/idsk-ui-kit'
+import { BaseModal, Input, TextBody, TextHeading } from '@isdd/idsk-ui-kit'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import styles from './modals.module.scss'
 
 import { ClaimEvent } from '@isdd/metais-common/api/generated/claim-manager-swagger'
-import { SubmitWithFeedback } from '@isdd/metais-common/components/submit-with-feedback/SubmitWithFeedback'
+import { ModalButtons } from '@isdd/metais-common/components/modal-buttons/ModalButtons'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 type DeletePersonalInfoForm = {
@@ -54,10 +54,11 @@ export const DeletePersonalInfoModal: React.FC<Props> = ({ isOpen, onClose, muta
 
     return (
         <BaseModal widthInPx={640} isOpen={isOpen} close={onClose}>
-            <div className={styles.div}>
-                <TextHeading size="L">{t('userProfile.deletePersonalInfo.heading')}</TextHeading>
-                <TextBody>{t('userProfile.deletePersonalInfo.description')}</TextBody>
-                <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className={styles.div}>
+                    <TextHeading size="L">{t('userProfile.deletePersonalInfo.heading')}</TextHeading>
+                    <TextBody>{t('userProfile.deletePersonalInfo.description')}</TextBody>
+
                     <Input
                         label={t('userProfile.deletePersonalInfo.password')}
                         {...register('password')}
@@ -65,18 +66,14 @@ export const DeletePersonalInfoModal: React.FC<Props> = ({ isOpen, onClose, muta
                         placeholder={t('userProfile.deletePersonalInfo.passwordPlaceholder')}
                         type="password"
                     />
-
-                    <SubmitWithFeedback
-                        className={styles.noMarginButtons}
-                        variant="warning"
-                        submitButtonLabel={t('userProfile.deletePersonalInfo.submit')}
-                        additionalButtons={[
-                            <Button key="cancelButton" variant="secondary" type="reset" label={t('userProfile.requests.cancel')} onClick={onClose} />,
-                        ]}
-                        loading={isValidating || isSubmitting || isLoading}
-                    />
-                </form>
-            </div>
+                </div>
+                <ModalButtons
+                    submitButtonLabel={t('userProfile.deletePersonalInfo.submit')}
+                    closeButtonLabel={t('userProfile.requests.cancel')}
+                    onClose={onClose}
+                    isLoading={isValidating || isSubmitting || isLoading}
+                />
+            </form>
         </BaseModal>
     )
 }
