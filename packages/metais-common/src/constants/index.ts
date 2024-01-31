@@ -300,3 +300,4 @@ export const INTEGRACIA_Profil_Integracia_stav_diz = 'Integracia_Profil_Integrac
 export const Gui_Profil_DIZ_konzumujuci_projekt = 'Gui_Profil_DIZ_konzumujuci_projekt'
 export const Gui_Profil_DIZ_poskytujuci_projekt = 'Gui_Profil_DIZ_poskytujuci_projekt'
 export const FAZA_KONTRAKTU = 'FAZA_KONTRAKTU'
+export const GET_DOCUMENT_GROUPS_QUERY_KEY = 'projectDocumentManagementGroups'

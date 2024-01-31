@@ -1067,7 +1067,8 @@
         "delete": "Odstrániť položku",
         "moreOptions": "Viac možností",
         "documentGroup": "Skupina dokumentov",
-        "type": "Typ"
+        "type": "Typ",
+        "deleteTooltip": "Odstránenie je povolené len pre prázdne položky (najskôr odstráňte existujúce dokumenty)"
     },
     "homePage": {
         "placeholder": "Domov - pre zobrazenie navigácie je potrebné prihlásiť sa",
@@ -1078,9 +1079,9 @@
     },
     "monitoring": {
         "breadcrumbs": {
-            "home":"Hlavná stránka",
-            "monitoring":"Správa monitoringu",
-            "params" :"Monitorovacie parametre",
+            "home": "Hlavná stránka",
+            "monitoring": "Správa monitoringu",
+            "params": "Monitorovacie parametre",
             "list": "Záznamy z monitoringu",
             "detail": "Detail",
             "create": "Nový záznam",
@@ -1110,9 +1111,9 @@
             },
             "newMonitoringButton": "Pridať záznam"
         },
-        "detail":{
+        "detail": {
             "heading": "Detail monitoringu",
-            "table":{
+            "table": {
                 "intervalStart": "Začiatok Intervalu",
                 "intervalEnd": "Koniec Intervalu",
                 "status": "Stav"
@@ -1133,7 +1134,7 @@
                 "responseBody": "Response Body",
                 "close": "Zavrieť",
                 "StatusOk": "Zodpovedá očakávanej hodnote",
-                "StatusNotOk": "Nezodpovedá očakávanej hodnote" 
+                "StatusNotOk": "Nezodpovedá očakávanej hodnote"
             },
             "edit": "Upraviť",
             "delete": "Vymazať",
@@ -1157,9 +1158,9 @@
             "enabled": "povolené",
             "create": "Vytvoriť",
             "update": "Upraviť",
-            "cancel": "Zrušiť", 
+            "cancel": "Zrušiť",
             "httpPart": "HTTP - časť",
-            "radioButton":{
+            "radioButton": {
                 "get": "GET",
                 "post": "POST"
             },

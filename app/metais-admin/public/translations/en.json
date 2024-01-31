@@ -1057,7 +1057,8 @@
         "delete": "Delete item",
         "moreOptions": "More options",
         "documentGroup": "Document group",
-        "type": "Type"
+        "type": "Type",
+        "deleteTooltip": "Deletion is only allowed for empty items (delete existing documents first)"
     },
     "homePage": {
         "placeholder": "Home - login to see navigation items",
@@ -1068,9 +1069,9 @@
     },
     "monitoring": {
         "breadcrumbs": {
-            "home":"Home Page",
-            "monitoring":"Monitoring management",
-            "params" :"Monitoring parameters",
+            "home": "Home Page",
+            "monitoring": "Monitoring management",
+            "params": "Monitoring parameters",
             "list": "Monitoring records",
             "detail": "Detail",
             "create": "New Record",
@@ -1100,9 +1101,9 @@
             },
             "newMonitoringButton": "Add new record"
         },
-        "detail":{
+        "detail": {
             "heading": "Monitoring detail",
-            "table":{
+            "table": {
                 "intervalStart": "Start of Interval",
                 "intervalEnd": "End of Interval",
                 "status": "Status"
@@ -1123,7 +1124,7 @@
                 "responseBody": "Response Body",
                 "close": "Close",
                 "StatusOk": "Corresponds to the expected value",
-                "StatusNotOk": "Does not correspond to the expected value" 
+                "StatusNotOk": "Does not correspond to the expected value"
             },
             "edit": "Edit",
             "delete": "Delete",
@@ -1149,7 +1150,7 @@
             "update": "Update",
             "cancel": "Cancel",
             "httpPart": "HTTP - part",
-            "radioButton":{
+            "radioButton": {
                 "get": "GET",
                 "post": "POST"
             },

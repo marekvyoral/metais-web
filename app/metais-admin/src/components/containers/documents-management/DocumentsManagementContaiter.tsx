@@ -1,7 +1,7 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { ApiError, EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { DocumentGroup, useGetDocumentGroups, useGetPhaseMap, useSaveDocumentGroupHook } from '@isdd/metais-common/api/generated/kris-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, FAZA_PROJEKTU, STAV_PROJEKTU } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, FAZA_PROJEKTU, GET_DOCUMENT_GROUPS_QUERY_KEY, STAV_PROJEKTU } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
@@ -56,7 +56,11 @@ export const DocumentsManagementContainer: React.FC<IDocumentsManagementContaine
 
     const { filter, handleFilterChange } = useFilterParams<DocumentFilterData>(defaultFilter)
 
-    const { data: documentsData, refetch: refetchDocs, isFetching } = useGetDocumentGroups(filter.status, { query: { enabled: filter.status != '' } })
+    const {
+        data: documentsData,
+        refetch: refetchDocs,
+        isFetching,
+    } = useGetDocumentGroups(filter.status, { query: { enabled: filter.status != '', queryKey: [GET_DOCUMENT_GROUPS_QUERY_KEY, filter.status] } })
     const [dataRows, setDataRows] = useState<DocumentGroup[]>()
 
     useEffect(() => {
