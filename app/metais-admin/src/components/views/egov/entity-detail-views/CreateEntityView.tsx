@@ -118,6 +118,7 @@ export const CreateEntityView = ({
         },
         ...tabsFromForm,
     ]
+
     return (
         <>
             <FormProvider {...formMethods}>
@@ -228,7 +229,7 @@ export const CreateEntityView = ({
                                     <AddConnectionModal open={connectionsOpen} onClose={() => setConnectionsOpen(false)} />
                                     <ConnectionView sources={sourcesFromForm ?? []} targets={targetsFromForm ?? []} />
                                     {(formState?.errors?.sources || formState?.errors?.targets) && (
-                                        <ErrorBlock errorMessage={t('egov.create.requiredField')} />
+                                        <ErrorBlock errorMessage={t('egov.create.requiredOneSourceOneDestination')} />
                                     )}
                                 </div>
                             )}
@@ -249,7 +250,6 @@ export const CreateEntityView = ({
                                 <AddAttributeProfilesModal
                                     open={profileAttributesDialog.open}
                                     onClose={() => profileAttributesDialog.setOpen(false)}
-                                    attrProfiles={data?.existingEntityData?.attributeProfiles ?? []}
                                 />
                                 <Button label={t('egov.create.addProfile')} onClick={() => profileAttributesDialog.setOpen(true)} />
                                 {isEdit ? <ProfileTabs tabList={tabGeneric} withoutHeading /> : <ProfileTabs tabList={tabsFromForm} withoutHeading />}

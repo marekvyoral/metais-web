@@ -2,7 +2,7 @@ import { BaseModal, Button, ButtonGroupRow, GridCol, GridRow, Input, TextArea, T
 import { useGenerateCodeAndURLHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IApproveFormData, useGetKirtColumnsHook } from '@isdd/metais-common/api/userConfigKvKrit'
 import { User } from '@isdd/metais-common/contexts/auth/authContext'
-import { MutationFeedback, QueryFeedback, formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { ModalButtons, MutationFeedback, QueryFeedback, formatDateForDefaultValue } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -195,6 +195,23 @@ export const ApproveModal: React.FC<IApproveModalProps> = ({ user, uuid, open, o
                                     }}
                                 />
                             </ButtonGroupRow>
+                            <ModalButtons
+                                submitButtonLabel={t('ciType.approve')}
+                                additionalButtons={[
+                                    <Button
+                                        key={'saveApprovingItem'}
+                                        variant="secondary"
+                                        label={t('ciType.saveApprovingItem')}
+                                        onClick={() => setIsSave(true)}
+                                        type="submit"
+                                    />,
+                                ]}
+                                closeButtonLabel={t('evaluation.cancelBtn')}
+                                onClose={() => {
+                                    reset()
+                                    onClose()
+                                }}
+                            />
                         </form>
                     )}
                 </QueryFeedback>

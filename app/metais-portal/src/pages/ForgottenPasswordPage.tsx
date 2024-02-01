@@ -14,7 +14,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 
 const baseUrl = import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL
 const fetchEmailData = async (email: string) => {
-    const response = await fetch(`${baseUrl}/metaisiam/pass_change/request?email=${email}`, {
+    const response = await fetch(`${baseUrl}/${import.meta.env.VITE_IAM_NAME}/pass_change/request?email=${email}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

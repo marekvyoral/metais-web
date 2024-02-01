@@ -13,6 +13,7 @@ import { MetaVersion, useGetContentHook } from '@isdd/metais-common/api/generate
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { ModalButtons } from '@isdd/metais-common/components/modal-buttons/ModalButtons'
 
 interface IFileHistoryViewProps {
     item: ConfigurationItemUi
@@ -23,7 +24,7 @@ interface IFileHistoryViewProps {
     namesData?: { login: string; fullName: string }[]
 }
 
-export const FileHistoryView: React.FC<IFileHistoryViewProps> = ({ data, item, handlePagingSelect, isLoading, namesData }) => {
+export const FileHistoryView: React.FC<IFileHistoryViewProps> = ({ data, item, handlePagingSelect, isLoading, namesData, onClose }) => {
     const { t } = useTranslation()
     const downloadVersionFile = useGetContentHook()
     const [isFileLoading, setFileLoading] = useState<boolean>(false)
@@ -109,6 +110,7 @@ export const FileHistoryView: React.FC<IFileHistoryViewProps> = ({ data, item, h
                 <PageSizeSelect id="pageSizeSelect" className={styles.selectGroup} handlePagingSelect={handlePagingSelect} />
             </div>
             <Table<MetaVersion> data={data} columns={columns} />
+            <ModalButtons onClose={onClose} />
         </div>
     )
 }

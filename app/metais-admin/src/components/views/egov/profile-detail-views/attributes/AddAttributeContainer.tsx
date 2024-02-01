@@ -13,6 +13,7 @@ export interface IAddAttributeView {
         entityName?: string
     }
     storeNewAttribute: (attributeTechnicalName?: string, newAttribute?: Attribute) => Promise<void>
+    closeModal: () => void
     isLoading: boolean
 }
 
@@ -64,6 +65,7 @@ const AddAttributeContainer = ({ View, onClose, refetch, entityName }: IAddAttri
             }}
             storeNewAttribute={storeNewAttribute}
             isLoading={isCreatingAttr}
+            closeModal={onClose}
         />
     )
 }

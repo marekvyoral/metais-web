@@ -11,7 +11,7 @@ import { DOCUMENT_FIELDS } from './CreateDocumentsGroupView'
 
 import { IView } from '@/components/containers/documents-management/DocumentsGroupContainer'
 
-export const EditDocumentsGroupView: React.FC<IView> = ({ infoData, projectStatus, saveDocumentGroup, isLoading }) => {
+export const EditDocumentsGroupView: React.FC<IView> = ({ infoData, projectStatus, saveDocumentGroup, isLoading, refetchInfoData }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
@@ -37,7 +37,7 @@ export const EditDocumentsGroupView: React.FC<IView> = ({ infoData, projectStatu
             })
                 .then(() => {
                     setIsActionSuccess({ value: true, path: '/projects/documents/' + infoData.id, additionalInfo: { type: 'editGroup' } })
-
+                    refetchInfoData()
                     navigate('/projects/documents/' + infoData.id, { state: { from: location } })
                 })
                 .catch(() => {

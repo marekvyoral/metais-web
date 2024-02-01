@@ -1,11 +1,11 @@
-import { BaseModal, Button, GridRow } from '@isdd/idsk-ui-kit/index'
+import { BaseModal } from '@isdd/idsk-ui-kit/index'
 import { forwardRef, useImperativeHandle, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Row } from '@tanstack/react-table'
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { ApiStandardRequestPreview, ApiStandardRequestPreviewList } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ModalButtons } from '@isdd/metais-common/index'
 
-import styles from './StandardRequestsListModal.module.scss'
 import { standardRequestsListColumns } from './StandardRequestsListColumns'
 
 import { TableWithPagination } from '@/components/views/standardization/votes/components/TableWithPagination/TableWithPagination'
@@ -68,10 +68,12 @@ export const StandardRequestsListModal = forwardRef<StandardRequestsListModalRef
                         />
                     )}
                     <Spacer vertical />
-                    <GridRow>
-                        <Button type="submit" variant="secondary" label={t('votes.type.cancel')} onClick={handleCancel} />
-                        <Button type="submit" label={t('votes.type.select')} className={styles.marginLeft} onClick={handleSelectButtonClick} />
-                    </GridRow>
+                    <ModalButtons
+                        submitButtonLabel={t('votes.type.select')}
+                        onSubmit={handleSelectButtonClick}
+                        closeButtonLabel={t('votes.type.cancel')}
+                        onClose={handleCancel}
+                    />
                 </div>
             </BaseModal>
         )

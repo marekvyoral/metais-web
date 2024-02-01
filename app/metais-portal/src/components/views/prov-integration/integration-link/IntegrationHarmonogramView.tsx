@@ -10,6 +10,8 @@ import { DateTime } from 'luxon'
 import { INTEGRATION_HARMONOGRAM_EDIT_SEARCH_PARAM } from '@isdd/metais-common/constants'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import { replaceDotForUnderscore } from '@isdd/metais-common/utils/utils'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { IntegrationLinkActions } from '@isdd/metais-common/hooks/permissions/useEditIntegrationPermissions'
 
 import styles from './integration.module.scss'
 
@@ -29,10 +31,15 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
     isUpdateSuccess,
     updateHarmonogram,
     data: { harmonogramData, integrationPhase },
+    entityId,
 }) => {
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
+    const ability = useAbilityContext()
+    const canEditPlanned = ability.can(IntegrationLinkActions.EDIT_HARMONOGRAM_PLANNED_DATE, `ci.${entityId}`)
+    const canEditReal = ability.can(IntegrationLinkActions.EDIT_HARMONOGRAM_PLANNED_DATE, `ci.${entityId}`)
+
     const isHarmonogramEdit = location.search.includes(INTEGRATION_HARMONOGRAM_EDIT_SEARCH_PARAM)
 
     const defaultValues = useMemo(() => {
@@ -62,10 +69,8 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
     }, [defaultValues, harmonogramData?.results, reset])
 
     const onSubmit = (formValues: Record<string, string | null>) => {
-        const formattedValuesForUpdate = formatFormValuesForHarmonogramUpdate(formValues, harmonogramData)
-
+        const formattedValuesForUpdate = formatFormValuesForHarmonogramUpdate(formValues, integrationPhase)
         updateHarmonogram(formattedValuesForUpdate)
-        navigate('?')
     }
 
     const handleDateChange = (date: Date | null, name: string) => {
@@ -105,6 +110,7 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
                         name={formatHarmonogramFormKey(replacedItemCode, HarmonogramInputNames.PLANNED_DATE)}
                         control={control}
                         handleDateChange={handleDateChange}
+                        disabled={!canEditPlanned}
                     />
                 ) : (
                     <TextBody>
@@ -129,6 +135,7 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
                         name={formatHarmonogramFormKey(replacedItemCode, HarmonogramInputNames.REALIZED_DATE)}
                         control={control}
                         handleDateChange={handleDateChange}
+                        disabled={!canEditReal}
                     />
                 ) : (
                     <TextBody>
@@ -139,11 +146,26 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
         },
     ]
 
+    const hasHarmonogramData = harmonogramData?.results && harmonogramData.results.length > 0
+    const defaultData: ApiIntegrationHarmonogram[] =
+        integrationPhase?.enumItems
+            ?.map(
+                (item) =>
+                    ({
+                        harmonogramPhase: item.code,
+                    } ?? {}),
+            )
+            .sort((a, b) => {
+                if (a.harmonogramPhase === undefined) return -1
+                if (b.harmonogramPhase === undefined) return 1
+                return a?.harmonogramPhase?.localeCompare(b?.harmonogramPhase)
+            }) ?? []
+
     return (
         <QueryFeedback loading={isLoading || isUpdateLoading} error={isError} withChildren>
             <MutationFeedback success={isUpdateSuccess} error={isUpdateError ? t('feedback.mutationErrorMessage') : ''} />
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Table columns={columns} data={harmonogramData?.results} />
+                <Table columns={columns} data={hasHarmonogramData ? harmonogramData?.results : defaultData} />
                 {isHarmonogramEdit && (
                     <SubmitWithFeedback
                         submitButtonLabel={t('integrationLinks.submit')}

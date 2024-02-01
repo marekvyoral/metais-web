@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { MutationFeedback, QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { ModalButtons, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useReadConfigurationItemByMetaIsCode } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { KSIVS_SHORT_NAME, PUBLIC_ORG_CMDB_CODE } from '@isdd/metais-common/constants'
 import { useInvalidateGroupMembersCache } from '@isdd/metais-common/hooks/invalidate-cache'
@@ -161,9 +161,11 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
                                 {...register(AddMemberEnum.CAN_SEE_EMAILS)}
                             />
                         </div>
-                        <SubmitWithFeedback
+
+                        <ModalButtons
                             submitButtonLabel={t('groups.addMember')}
-                            loading={addingGroupMember}
+                            onClose={onCloseModal}
+                            isLoading={addingGroupMember}
                             disabled={!(watchMember && watchOrg && watchRole)}
                         />
                     </form>

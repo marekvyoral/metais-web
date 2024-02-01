@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react'
-import { BaseModal, Button, TextBody } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, TextBody } from '@isdd/idsk-ui-kit/index'
 import { useGenerateReferenceRegisterByUuidHook } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { useTranslation } from 'react-i18next'
 import { DMS_DOWNLOAD_FILE } from '@isdd/metais-common/api/constants'
+import { ModalButtons } from '@isdd/metais-common/index'
 
 import { downloadFile } from '@/components/views/documents/utils'
 
@@ -27,7 +28,12 @@ export const RefRegisterGeneratePropDialog = ({ openGeneratePropDialog, setOpenG
             <TextBody size="S">{t('refRegisters.header.generateProp1')}</TextBody>
             <TextBody size="S">{t('refRegisters.header.generateProp2')}</TextBody>
 
-            <Button label={t('refRegisters.header.generateProp')} onClick={onSubmit} />
+            <ModalButtons
+                submitButtonLabel={t('refRegisters.header.generateProp')}
+                onSubmit={onSubmit}
+                closeButtonLabel={t('evaluation.cancelBtn')}
+                onClose={() => setOpenGeneratePropDialog(false)}
+            />
         </BaseModal>
     )
 }

@@ -182,6 +182,11 @@
             "serviceLevelAgreementsWithOperator": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
             "integrationAgreementsOnServiceLevel": "Integračné dohody o úrovni poskytovania služieb (ISLA)",
             "training": "Školenie"
+        },
+        "sla": {
+            "slaAndIntegrations": "Integrácie a SLA",
+            "integrationLinks": "Integračné väzby",
+            "isla": "Integračné dohody o úrovni poskytovania služieb (ISLA)"
         }
     },
     "radioButton": {
@@ -256,6 +261,9 @@
         "Program": {
             "name": "Názov"
         },
+        "OsobitnyPostup": {
+            "name": "Názov osobitného postupu"
+        },
         "reset": "Vyčistiť kritériá filtrovania",
         "submit": "Vyfiltrovať"
     },
@@ -298,7 +306,8 @@
         "save": "Uložiť formulár",
         "editItem": "Editovať položku",
         "waitSending": "Čakajte prosím. Odosielam formulár.",
-        "cancel": "Zrušiť"
+        "cancel": "Zrušiť",
+        "back": "Späť"
     },
     "languageSelector": {
         "open": "Rozbaliť jazykové menu",
@@ -600,7 +609,7 @@
             "successReturned": "Projekt vrátený na dopracovanie",
             "error": "Pri odoslaní projektu nastala chyba",
             "errorDocuments": "Nie sú vytvorené povinné dokumenty",
-            "errorRelations": "Nie je vytvorený povinný vzťah na ISVS, alebo Miesto prevádzky",
+            "errorRelations": "Nie je vytvorený povinný vzťah na ISVS, Program alebo Miesto prevádzky",
             "errorRelationsAsKsFaza": "Položka má fázu životného cyklu \"Ostrá prevádzka",
             "errorNotApprovedKS": "Koncové služby je potrebné vyplniť a vypublikovať.",
             "errorNotAllowedApprove": "Používateľ nemá práva na schválenie projektu.",
@@ -651,7 +660,8 @@
         "buttonXML": "XML",
         "buttonCSV": "CSV",
         "buttonXLSX": "XLSX",
-        "loading": "Sťahuje sa súbor"
+        "loading": "Sťahuje sa súbor",
+        "exportSuccess": "Súbor bol úspešne exportovaný"
     },
     "tableSelectColumns": {
         "searchPlaceholder": "Názov hľadaného stĺpca",
@@ -812,7 +822,7 @@
     "createEntity": {
         "required": "povinné",
         "errorTitle": "Nastala chyba",
-        "errorMessage": "Ospravedlňujeme sa, ale pri úprave položky nastala technická chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
+        "errorMessage": "Ospravedlňujeme sa, ale pri vykonávaní vašej akcie nastala technická chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
         "select": "Vyber...",
         "email": "metais@mirri.gov.sk",
         "publicAuthority": "Povinná osoba",
@@ -828,7 +838,8 @@
         "orgAndRoleError": {
             "title": "Chýbajúce práva pre organizáciu",
             "message": "Chýbajú vám práva na vytvorenie položky pod touto organizáciou"
-        }
+        },
+        "ownerError": "Vo vytváraní nie je možné pokračovať, pretože nie ste vlastníkom tejto položky."
     },
     "table": {
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
@@ -1557,6 +1568,7 @@
         "error": "Chyba pri načítavaní údajov o konfiguračných položkách."
     },
     "newRelation": {
+        "or": "Alebo",
         "detailButton": "Detail položky",
         "deleteButton": "Odstrániť",
         "heading": "Pridať nový vzťah ...",
@@ -2234,7 +2246,6 @@
         "loading": "Spracúvame odhlásenie"
     },
     "KRIS": {
-        "heading": "Zoznam koncepcií KRIT",
         "responsibleAuthority": "Aktuálne zodpovedná povinná osoba",
         "table": {
             "code": "Kód",
@@ -2419,7 +2430,25 @@
             "providingIsvsName": "Posk. ISVS",
             "consumingProjName": "Konz. projekt",
             "providingProjName": "Posk. projekt"
-        }
+        },
+        "manualSign": "Nahrať manuálne podpísaný dokument",
+        "cancelManualSignature": "Zrušiť manuálny podpis",
+        "approve": "Schváliť DIZ",
+        "sign": "Podpísať DIZ",
+        "reject": "Zamietnuť DIZ",
+        "uploadDoc": "Nahrať dokument na schválenie a podpísanie",
+        "openDocHistory": "História dokumentu"
+    },
+    "dmsFileHistory": {
+        "heading": "História dokumentu {{item}}",
+        "fileName": "Názov súboru",
+        "version": "Verzia",
+        "mimeType": "Typ dokumentu",
+        "contentLength": "Veľkosť",
+        "validityFrom": "Platnosť od",
+        "validityTo": "Platnosť do",
+        "currentVersion": "Aktuálna verzia",
+        "lastModifiedBy": "Poslednú zmenu vykonal"
     },
     "slaContracts": {
         "columns": {
@@ -2488,5 +2517,9 @@
         "heading": "Zoznam SLA s prevádzkovateľom",
         "headingAdd": "Pridat SLA s dodávateľom",
         "createButton": "Pridať novú SLA s dodávateľom"
+    },
+    "upload": {
+        "success": "Dokument bol úspešne pridaný",
+        "error": "Nastala chyba pri uploade dokumentu. Prosím, skúste to znova."
     }
 }

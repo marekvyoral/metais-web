@@ -1,12 +1,12 @@
-import { BaseModal, Button, ButtonGroupRow, LoadingIndicator, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, LoadingIndicator, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useDeleteGroupRelationHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useInvalidateGroupMembersCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { ModalButtons } from '@isdd/metais-common/index'
 
-import styles from '@/components/views/standardization/groups/styles.module.scss'
 interface DeleteGroupMemberModalProps {
     uuid?: string
     groupUuid: string
@@ -41,10 +41,12 @@ const DeleteGroupMemberModal: React.FC<DeleteGroupMemberModalProps> = ({ isOpen,
                 {deletingMember && <LoadingIndicator layer="dialog" label={t('groups.removingMember')} />}
                 <TextHeading size="L">{t('groups.removeGroupMember')}</TextHeading>
                 <TextBody>{t('groups.sureRemoveMember')}</TextBody>
-                <ButtonGroupRow>
-                    <Button className={styles.marginLeftAuto} label={t('radioButton.yes')} onClick={handleOnDeleteClick} />
-                    <Button label={t('form.cancel')} variant="secondary" onClick={onClose} />
-                </ButtonGroupRow>
+                <ModalButtons
+                    submitButtonLabel={t('radioButton.yes')}
+                    onSubmit={handleOnDeleteClick}
+                    closeButtonLabel={t('form.cancel')}
+                    onClose={onClose}
+                />
             </BaseModal>
         </>
     )

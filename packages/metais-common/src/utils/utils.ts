@@ -62,6 +62,14 @@ export const replaceDotForUnderscore = (string: string) => {
     return string.replaceAll('.', '_')
 }
 
+export const roundUpToTwo = (num: number) => {
+    return Math.ceil(num * 100) / 100
+}
+
+export const bytesToMB = (bytes: number) => {
+    const converted = bytes / 1024 / 1024
+    return roundUpToTwo(converted)
+}
 export const decodeHtmlEntities = (encodedString: string): string => {
     // This technique leverages the browser's built-in HTML decoding capabilities.
     const textarea = document.createElement('textarea')
@@ -71,4 +79,14 @@ export const decodeHtmlEntities = (encodedString: string): string => {
 
 export const removeNonDigitCharacters = (value?: number | string) => {
     return value?.toString().replace(/[^\d]+/g, '') ?? 0
+}
+
+export const isOwnershipOnPoSide = (ownerGid: string, poUuid: string) => {
+    if (ownerGid == null) {
+        return false
+    }
+    if (ownerGid.indexOf(poUuid) != -1) {
+        return true
+    }
+    return false
 }

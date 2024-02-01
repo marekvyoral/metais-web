@@ -91,7 +91,7 @@ export const SelectCiItem: React.FC<Props> = ({
                     />
                 </div>
 
-                <TextBody className={classNames(styles.marginTop, styles.italic)}>alebo</TextBody>
+                <TextBody className={classNames(styles.marginTop, styles.italic)}>{t('newRelation.or')}</TextBody>
                 <Button className={styles.marginTop} variant="secondary" label={t('newRelation.pickItems')} onClick={onOpenModal} />
             </div>
 

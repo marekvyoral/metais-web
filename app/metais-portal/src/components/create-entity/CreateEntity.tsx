@@ -2,26 +2,14 @@ import { ConfigurationItemUiAttributes, useStoreConfigurationItem } from '@isdd/
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useEffect, useState } from 'react'
-import { FieldValues } from 'react-hook-form'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { v4 as uuidV4 } from 'uuid'
 import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
-import { isObjectEmpty } from '@isdd/metais-common/src/utils/utils'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { ENTITY_PROJECT, ROLES } from '@isdd/metais-common/constants'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import {
-    useInvalidateCiHistoryListCache,
-    useInvalidateCiItemCache,
-    useInvalidateCiListFilteredCache,
-} from '@isdd/metais-common/hooks/invalidate-cache'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
-import { formatFormAttributeValue } from './createEntityHelpers'
+import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from './createEntityHelpers'
 
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 
@@ -55,34 +43,14 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     publicAuthorityState,
 }) => {
     const { t } = useTranslation()
-    const navigate = useNavigate()
-    const location = useLocation()
-    const { setIsActionSuccess } = useActionSuccess()
     const isUpdate = !!updateCiItemId
 
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
 
-    const lastIndex = data.generatedEntityId?.ciurl?.lastIndexOf('/')
-    const urlString = data.generatedEntityId?.ciurl?.slice(0, lastIndex) + '/'
-
-    const [uploadError, setUploadError] = useState(false)
-    const [configurationItemId, setConfigurationItemId] = useState<string>('')
-    const isProject = ciTypeData?.technicalName == ENTITY_PROJECT
-
-    const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
-    const invalidateCiByUuidCache = useInvalidateCiItemCache()
-    const invalidateCiHistoryList = useInvalidateCiHistoryListCache()
-    const onStatusSuccess = () => {
-        invalidateCiHistoryList.invalidate(configurationItemId)
-        invalidateCilistFilteredCache.invalidate({ ciType: entityName })
-        invalidateCiByUuidCache.invalidate(configurationItemId)
-
-        const toPath = `/ci/${entityName}/${configurationItemId}`
-        setIsActionSuccess({ value: true, path: toPath, additionalInfo: { type: isUpdate ? 'edit' : 'create' } })
-        navigate(toPath, { state: { from: location } })
-    }
+    const onStatusSuccess = useCiCreateEditOnStatusSuccess()
     const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
+    const { onSubmit, uploadError, setUploadError, configurationItemId } = useCiCreateUpdateOnSubmit(entityName)
     const storeConfigurationItem = useStoreConfigurationItem({
         mutation: {
             onError() {
@@ -90,54 +58,13 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             },
             onSuccess(successData) {
                 if (successData.requestId != null) {
-                    getRequestStatus(successData.requestId, onStatusSuccess)
+                    getRequestStatus(successData.requestId, () => onStatusSuccess({ configurationItemId, isUpdate, entityName }))
                 } else {
                     setUploadError(true)
                 }
             },
         },
     })
-
-    const deleteCacheMutation = useDeleteCacheForCi(entityName)
-
-    const onSubmit = async (formAttributes: FieldValues) => {
-        setUploadError(false)
-        const formAttributesKeys = Object.keys(formAttributes)
-
-        const formattedAttributesToSend = formAttributesKeys
-            .map((key) => ({
-                name: key,
-                value: formatFormAttributeValue(formAttributes, key, urlString),
-            }))
-            .filter((att) => !isObjectEmpty(att.value))
-
-        const type = entityName
-        const ownerId = data.ownerId
-        const uuid = isUpdate ? updateCiItemId : uuidV4()
-        setConfigurationItemId(uuid)
-
-        const dataToUpdate = {
-            uuid: uuid,
-            type: type,
-            attributes: formattedAttributesToSend,
-        }
-
-        const dataToCreate = {
-            ...dataToUpdate,
-            owner: ownerId,
-        }
-
-        const handleStoreConfigurationItem = () => {
-            storeConfigurationItem.mutate({
-                data: isUpdate ? dataToUpdate : dataToCreate,
-            })
-        }
-
-        deleteCacheMutation.mutateAsync(undefined, {
-            onSuccess: () => handleStoreConfigurationItem(),
-        })
-    }
-
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
     useEffect(() => {
         if (!(isRedirectError || isProcessedError || isRedirectLoading)) {
@@ -173,8 +100,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                         onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
                         onChangeRole={roleState.setSelectedRole}
                         selectedOrg={publicAuthorityState.selectedPublicAuthority}
-                        ciRoles={isProject ? [ROLES.EA_GARPO] : ciTypeData?.roleList ?? []}
-                        disableRoleSelect={isProject}
+                        ciRoles={ciTypeData?.roleList ?? []}
                     />
                 )}
 
@@ -184,7 +110,15 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                     constraintsData={constraintsData}
                     unitsData={unitsData}
                     uploadError={uploadError}
-                    onSubmit={onSubmit}
+                    onSubmit={(formData) =>
+                        onSubmit({
+                            formData,
+                            updateCiItemId,
+                            storeCiItem: storeConfigurationItem.mutateAsync,
+                            ownerId: data.ownerId,
+                            generatedEntityId,
+                        })
+                    }
                     defaultItemAttributeValues={defaultItemAttributeValues}
                     updateCiItemId={updateCiItemId}
                     isProcessing={storeConfigurationItem.isLoading}

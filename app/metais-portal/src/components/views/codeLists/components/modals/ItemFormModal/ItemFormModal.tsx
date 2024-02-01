@@ -1,10 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
-import { BaseModal, Button, ButtonGroupRow, CheckBox, Input, LoadingIndicator, TextArea, TextHeading, TextWarning } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, CheckBox, Input, LoadingIndicator, TextArea, TextHeading, TextWarning } from '@isdd/idsk-ui-kit/index'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { ModalButtons, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import {
     ApiCodelistItem,
     useCreateCodelistItem,
@@ -324,10 +324,8 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
                             successMessage={isEdit ? t('codeListDetail.feedback.editItemSuccess') : t('codeListDetail.feedback.createItemSuccess')}
                             error={submitErrorMessage && t([submitErrorMessage, 'feedback.mutationErrorMessage'])}
                         />
-                        <ButtonGroupRow>
-                            <Button label={t('form.cancel')} type="reset" variant="secondary" onClick={close} />
-                            <Button label={t('codeListDetail.button.save')} type="submit" />
-                        </ButtonGroupRow>
+
+                        <ModalButtons submitButtonLabel={t('codeListDetail.button.save')} closeButtonLabel={t('form.cancel')} onClose={close} />
                     </form>
                 )}
             </BaseModal>

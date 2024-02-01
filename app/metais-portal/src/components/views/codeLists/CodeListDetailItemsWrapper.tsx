@@ -6,13 +6,12 @@ import {
     BASE_PAGE_SIZE,
     BulkPopup,
     CreateEntityButton,
+    ModalButtons,
     MutationFeedback,
     QueryFeedback,
 } from '@isdd/metais-common/index'
 import {
     BaseModal,
-    Button,
-    ButtonGroupRow,
     ButtonLink,
     Filter,
     Input,
@@ -246,12 +245,18 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                             {...register(`effectiveFrom`)}
                             error={formState.errors.validFrom?.message}
                         />
-                        <ButtonGroupRow>
-                            <Button type="submit" disabled={!formState.isValid} label={t('codeListDetail.modal.button.confirm')} />
-                        </ButtonGroupRow>
+
+                        <ModalButtons
+                            submitButtonLabel={t('codeListDetail.modal.button.confirm')}
+                            onClose={() => setIsSetDatesDialogOpened(false)}
+                            disabled={!formState.isValid}
+                        />
                     </form>
                 ) : (
-                    <TextWarning>{t('codeListDetail.modal.text.nothingSelected')}</TextWarning>
+                    <>
+                        <TextWarning>{t('codeListDetail.modal.text.nothingSelected')}</TextWarning>
+                        <ModalButtons onClose={() => setIsSetDatesDialogOpened(false)} />
+                    </>
                 )}
                 {itemActionErrors.map((error, index) => (
                     <QueryFeedback
@@ -271,12 +276,17 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                     <>
                         <TextBody>{t('codeListDetail.modal.text.willBeChanged')}</TextBody>
                         {selectedItemsTable}
-                        <ButtonGroupRow>
-                            <Button onClick={onHandleMarkForPublish} label={t('codeListDetail.modal.button.confirm')} />
-                        </ButtonGroupRow>
+                        <ModalButtons
+                            submitButtonLabel={t('codeListDetail.modal.button.confirm')}
+                            onSubmit={onHandleMarkForPublish}
+                            onClose={() => setIsMarkForPublishDialogOpened(false)}
+                        />
                     </>
                 ) : (
-                    <TextWarning>{t('codeListDetail.modal.text.nothingSelected')}</TextWarning>
+                    <>
+                        <TextWarning>{t('codeListDetail.modal.text.nothingSelected')}</TextWarning>*
+                        <ModalButtons onClose={() => setIsMarkForPublishDialogOpened(false)} />
+                    </>
                 )}
                 {itemActionErrors.map((error, index) => (
                     <QueryFeedback
