@@ -263,6 +263,9 @@
         "Program": {
             "name": "Name"
         },
+        "OsobitnyPostup": {
+            "name": "Name of personal procedure"
+        },
         "reset": "Clear Filter",
         "submit": "Filter"
     },
