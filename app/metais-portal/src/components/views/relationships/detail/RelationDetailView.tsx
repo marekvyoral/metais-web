@@ -54,7 +54,7 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
                     { label: entityName, href: `/ci/${entityName}` },
                     {
-                        label: ciTargetData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
+                        label: ciSourceData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
                         href: `/ci/${entityName}/${entityId}`,
                     },
                     {
@@ -130,7 +130,7 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                                         )
                                     })}
                             </DefinitionList>
-                            <Button variant="secondary" label={t('relationDetail.back')} onClick={() => navigate(-1)} />
+                            <Button variant="secondary" label={t('relationDetail.back')} onClick={() => navigate(`/ci/${entityName}/${entityId}`)} />
                         </>
                     )}
                 </QueryFeedback>

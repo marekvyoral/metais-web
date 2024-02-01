@@ -139,7 +139,13 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                                     )}
                                     <CardColumnList>
                                         {relationsList?.ciWithRels?.map((ciWithRel) => {
-                                            const formatedCiWithRel = formatRelationAttributes(ciWithRel, relationTypes, owners, t, i18n)
+                                            const formatedCiWithRel = formatRelationAttributes({
+                                                ciWithRel,
+                                                relationTypes,
+                                                owners,
+                                                t,
+                                                lng: i18n,
+                                            })
                                             return <RelationCard {...formatedCiWithRel} key={formatedCiWithRel?.codeMetaIS} />
                                         })}
                                     </CardColumnList>

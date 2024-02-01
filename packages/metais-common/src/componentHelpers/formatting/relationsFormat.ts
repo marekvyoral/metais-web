@@ -4,13 +4,15 @@ import { Languages } from '@isdd/metais-common/localization/languages'
 import { CiWithRelsUi, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { RelationshipTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
-export const formatRelationAttributes = (
-    ciWithRel: CiWithRelsUi,
-    relationTypes: RelationshipTypePreview[] | undefined,
-    owners: void | RoleParticipantUI[] | undefined,
-    t: TFunction<'translation', undefined, 'translation'>,
-    lng: i18n,
-) => {
+type FormatRelationAttArgs = {
+    ciWithRel: CiWithRelsUi
+    relationTypes: RelationshipTypePreview[] | undefined
+    owners: void | RoleParticipantUI[] | undefined
+    t: TFunction<'translation', undefined, 'translation'>
+    lng: i18n
+}
+
+export const formatRelationAttributes = ({ ciWithRel, relationTypes, owners, t, lng }: FormatRelationAttArgs) => {
     const ci = ciWithRel?.ci
     let attributes = ci?.attributes
 
