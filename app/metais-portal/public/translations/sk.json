@@ -787,7 +787,7 @@
             "CREATE": "Vytvorenie položky",
             "CREATE_INCIDENT_REL": "Vytvorenie vzťahu ku položke",
             "UPDATE": "Aktualizácia položky",
-            "UPDATE_INCIDENT_REL": "Aktualizácia vzťahu",
+            "UDPATE_INCIDENT_REL": "Aktualizácia vzťahu",
             "CHANGE_OWNER": "Zmena vlastníka položky",
             "CHANGE_OWNER_INCIDENT_REL": "Zmena vlastníka vzťahu",
             "INVALIDATE": "Zneplatnenie položky",
