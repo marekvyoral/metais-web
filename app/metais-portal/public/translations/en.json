@@ -1170,11 +1170,12 @@
         "newRelation": "Add new relation of {{itemName}}",
         "newCiAndRelation": "Add new item and relation for {{itemName}}",
         "refRegisters": "Reference registers",
-        "refIdentifiers": "Reference identifiers",
         "standardization": "Standardization",
         "draftsList": "Drafts list",
         "refRegistersCreate": "Request to add",
         "refRegistersEdit": "Edit reference register",
+        "refIdentifiers": "Reference identifiers",
+        "refIdentifiersCreate": "New reference identifier",
         "dataObjects": "Data objects",
         "codeLists": "Codelists",
         "requestList": "List of requests to add a codelist",
@@ -1532,6 +1533,15 @@
             "modifiedBy": "Modified by",
             "uri": "URI",
             "dataItemElements": "Child data elements"
+        },
+        "create": {
+            "title": "New reference identifier",
+            "refTypeTitle": "Reference identifier type",
+            "refInfoTitle": "Reference identifier information",
+            "chooseType": "Select a type",
+            "uri": "URI",
+            "ownerUser": "Proposer",
+            "catalogDataset": "Catalog datasets"
         }
     },
     "selectCiItem": {

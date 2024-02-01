@@ -82,6 +82,7 @@ export enum ATTRIBUTE_NAME {
     Profil_DatovyPrvok_kod_datoveho_prvku = 'Profil_DatovyPrvok_kod_datoveho_prvku',
     Profil_DatovyPrvok_typ_datoveho_prvku = 'Profil_DatovyPrvok_typ_datoveho_prvku',
     Profil_Individuum_kod = 'Profil_Individuum_kod',
+    Profil_Individuum_versions = 'Profil_Individuum_versions',
     Gen_Profil_RefID_stav_registracie = 'Gen_Profil_RefID_stav_registracie',
     Profil_Kontrakt_faza = 'Profil_Kontrakt_faza',
     Profil_Kontrakt_identifikator = 'Profil_Kontrakt_identifikator',

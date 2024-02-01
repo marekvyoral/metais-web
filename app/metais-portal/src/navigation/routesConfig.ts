@@ -122,6 +122,7 @@ import UserProfilePage from '@/pages/userprofile/profile'
 import { SlaContractList } from '@/pages/ci/Kontrakt/list'
 import { OlaContractAdd } from '@/pages/ola-contract-list/add'
 import RefIdentifierDetailPage from '@/pages/data-objects/ref-identifiers/[id]/detail'
+import RefIdentifierCreatePage from '@/pages/data-objects/ref-identifiers/create'
 
 export interface RouteConfig {
     path?: string
@@ -488,6 +489,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_DETAIL,
                 slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_DETAIL,
                 component: RefIdentifierDetailPage,
+            },
+            {
+                path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_CREATE,
+                slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_CREATE,
+                component: RefIdentifierCreatePage,
             },
             {
                 path: RouterRoutes.REF_REGISTERS_LIST,

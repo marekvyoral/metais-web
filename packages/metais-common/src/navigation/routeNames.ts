@@ -92,6 +92,7 @@ export enum RouterRoutes {
     DATA_OBJECT_REQUESTS_EDIT = 'data-objects/requestlist/:requestId/edit',
     DATA_OBJECT_REQUESTS_CREATE = '/data-objects/requestlist/create',
     DATA_OBJECT_REF_IDENTIFIERS = '/data-objects/ref-identifiers',
+    DATA_OBJECT_REF_IDENTIFIERS_CREATE = '/data-objects/ref-identifiers/create',
     DATA_OBJECT_REF_IDENTIFIERS_DETAIL = '/data-objects/ref-identifiers/:id',
     REF_REGISTERS_LIST = '/refregisters',
     REF_REGISTERS_DETAIL = '/refregisters/:entityId',

@@ -3,9 +3,11 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { ActionsOverTable, MutationFeedback, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
+import { ActionsOverTable, CreateEntityButton, MutationFeedback, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { refIdentifierColumns, refIdentifierStateOptions, refIdentifierTypeOptions, refIdentifierViewOptions } from './refIdentifierListProps'
 
@@ -24,6 +26,8 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
     handleFilterChange,
 }) => {
     const { t, i18n } = useTranslation()
+    const location = useLocation()
+    const navigate = useNavigate()
     const {
         isActionSuccess: { value: isExternalSuccess },
     } = useActionSuccess()
@@ -79,6 +83,12 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                     dataLength: data?.configurationItemSet?.length ?? 0,
                 }}
                 entityName=""
+                createButton={
+                    <CreateEntityButton
+                        // ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
+                        onClick={() => navigate(RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_CREATE, { state: { from: location } })}
+                    />
+                }
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 hiddenButtons={{ SELECT_COLUMNS: true }}

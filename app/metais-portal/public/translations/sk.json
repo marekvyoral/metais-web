@@ -1071,8 +1071,8 @@
             "descriptionRequired": "Popis je povinný",
             "chairmanRequired": "Predseda skupiny je povinný",
             "organizationRequired": "Organizácia je povinná",
-            "uniqueName":"Názov skupiny musí byť jedinečný",
-            "uniqueShortName":"Skratka skupiny musí byť jedinečná"
+            "uniqueName": "Názov skupiny musí byť jedinečný",
+            "uniqueShortName": "Skratka skupiny musí byť jedinečná"
         },
         "creatingGroup": "Vytváram novú skupinu",
         "editingGroup": "Upravujem skupinu"
@@ -1179,6 +1179,7 @@
         "refRegistersCreate": "Žiadosť na pridanie",
         "refRegistersEdit": "Zmena údajov o referenčnom registri",
         "refIdentifiers": "Zoznam referencovateľných identifikátorov",
+        "refIdentifiersCreate": "Nový referencovateľný identifikátor",
         "dataObjects": "Dátové objekty",
         "requestList": "Zoznam žiadostí založenia číselníka",
         "requestCreate": "Žiadosť o zaradenie číselníka",
@@ -1539,6 +1540,15 @@
             "modifiedBy": "Modifikáciu vykonal",
             "uri": "URI",
             "dataItemElements": "Podriadené dátové prvky"
+        },
+        "create": {
+            "title": "Nový referencovateľný identifikátor",
+            "refTypeTitle": "Typ referencovateľného identifikátora",
+            "refInfoTitle": "Informácie o referencovateľnom identifikátori",
+            "chooseType": "Vyberte typ",
+            "uri": "URI",
+            "ownerUser": "Zadávateľ",
+            "catalogDataset": "Datasety katalógu"
         }
     },
     "selectCiItem": {
