@@ -184,6 +184,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     bulkPopup={
                         <Tooltip
                             descriptionElement={errorMessage}
+                            on={'click'}
                             position={'center center'}
                             tooltipContent={(open) => (
                                 <div>
