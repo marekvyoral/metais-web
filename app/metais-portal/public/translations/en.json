@@ -786,7 +786,7 @@
             "CREATE": "Create",
             "CREATE_INCIDENT_REL": "Create incident relation",
             "UPDATE": "Update",
-            "UPDATE_INCIDENT_REL": "Update incident relation",
+            "UDPATE_INCIDENT_REL": "Update incident relation",
             "CHANGE_OWNER": "Change owner",
             "CHANGE_OWNER_INCIDENT_REL": "Change owner incident relation",
             "INVALIDATE": "Invalidate",
