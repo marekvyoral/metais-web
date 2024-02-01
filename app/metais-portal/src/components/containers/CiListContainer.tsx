@@ -11,6 +11,7 @@ import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { useFilterForCiList, useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
+import { getMetaAttributesForCiFilter } from '@isdd/metais-common/componentHelpers/ci/filter'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filter'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
@@ -18,6 +19,9 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryObserverResult } from '@tanstack/react-query'
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
+
+import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
+import { useRowSelectionState } from '@/hooks/useRowSelectionState'
 
 export interface ICiListContainerView<T> {
     entityStructure?: CiType
@@ -41,6 +45,8 @@ export interface ICiListContainerView<T> {
     isError: boolean
     isLoading: boolean
     POType: string
+    rowSelection: Record<string, ColumnsOutputDefinition>
+    setRowSelection: React.Dispatch<React.SetStateAction<Record<string, ColumnsOutputDefinition>>>
 }
 
 interface ICiListContainer<T> {
@@ -58,6 +64,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
     defaultFilterValues,
     defaultFilterOperators,
 }: ICiListContainer<T>) => {
+    const { rowSelection, setRowSelection } = useRowSelectionState(entityName)
     const { columnListData, saveColumnSelection, resetColumns, isLoading: isColumnsLoading, isError: isColumnsError } = useGetColumnData(entityName)
     const { currentPreferences } = useUserPreferences()
 
@@ -82,14 +89,6 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
         isLoading: isAttributesLoading,
     } = useAttributesHook(entityName)
 
-    const liableEntity = currentPreferences.myPO ? [currentPreferences.myPO] : undefined
-    const state = filterParams.evidence_status?.length
-        ? filterParams.evidence_status
-        : currentPreferences.showInvalidatedItems
-        ? ['DRAFT', 'INVALIDATED']
-        : ['DRAFT']
-    const metaAttributes = { state: state, liableEntity, ...filterParams.metaAttributeFilters }
-
     const {
         data: tableData,
         isLoading: isReadCiListLoading,
@@ -102,7 +101,12 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
             ...filterToNeighborsApi.filter,
             fullTextSearch: filterParams.fullTextSearch || '',
             attributes: mapFilterParamsToApi({ ...filterParams, evidence_status: undefined }, defaultFilterOperators),
-            metaAttributes,
+            metaAttributes: getMetaAttributesForCiFilter({
+                myPO: currentPreferences.myPO,
+                showInvalidatedItems: currentPreferences.showInvalidatedItems,
+                evidenceStatus: filterParams.evidence_status,
+                metaAttributeFilters: filterParams.metaAttributeFilters,
+            }),
         },
     })
 
@@ -143,6 +147,8 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
             ciTypeData={ciTypeData}
             entityName={entityName}
             POType={POType ?? ''}
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
         />
     )
 }

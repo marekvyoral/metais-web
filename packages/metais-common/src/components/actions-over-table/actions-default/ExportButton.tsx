@@ -2,6 +2,7 @@ import { Button } from '@isdd/idsk-ui-kit/src/button/Button'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import { FieldValues } from 'react-hook-form'
 import { Pagination } from '@isdd/idsk-ui-kit/src/types'
 
 import {
@@ -19,6 +20,9 @@ import { downloadBlobAsFile, generateExportFileName } from '@isdd/metais-common/
 import { IconLabel } from '@isdd/metais-common/components/actions-over-table/icon-label/IconLabel'
 import { ExportItemsOrRelations } from '@isdd/metais-common/components/export-items-or-relations/ExportItemsOrRelations'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers'
+import { getMetaAttributesForCiFilter } from '@isdd/metais-common/componentHelpers/ci/filter'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 export enum FileExtensionEnum {
@@ -27,16 +31,22 @@ export enum FileExtensionEnum {
     XLSX = 'XLSX',
     RDF = 'RDF',
 }
-export interface IExportButtonProps {
+export interface IExportButtonProps<T> {
     pagination?: Pagination
+    defaultFilterValues: T
+    checkedItemsUuids: string[]
 }
 
-export const ExportButton: React.FC<IExportButtonProps> = (pagination) => {
+export const ExportButton = <T extends FieldValues & IFilterParams>({
+    defaultFilterValues,
+    checkedItemsUuids,
+    pagination,
+}: IExportButtonProps<T>) => {
     const [modalOpen, setModalOpen] = useState(false)
     const { t } = useTranslation()
     const { entityName } = useParams()
     const { currentPreferences } = useUserPreferences()
-
+    const { filter: filterParams } = useFilterParams(defaultFilterValues)
     const [isLoading, setLoading] = useState<boolean>(false)
 
     const exportCsv = useExportCsv3Hook()
@@ -76,12 +86,19 @@ export const ExportButton: React.FC<IExportButtonProps> = (pagination) => {
         setIsError(false)
         setIsActionSuccess({ value: false, path: `/ci/${entityName}` })
 
-        const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
         const filter = {
             type: [entityName],
-            metaAttributes,
-            page: pagination?.pagination?.pageNumber,
-            perpage: pagination?.pagination?.pageSize,
+            ...(checkedItemsUuids.length > 0 ? { uuid: checkedItemsUuids } : {}),
+            metaAttributes: getMetaAttributesForCiFilter({
+                myPO: currentPreferences.myPO,
+                showInvalidatedItems: currentPreferences.showInvalidatedItems,
+                evidenceStatus: filterParams.evidence_status,
+                metaAttributeFilters: filterParams.metaAttributeFilters,
+            }),
+            fullTextSearch: filterParams.fullTextSearch || '',
+            attributes: mapFilterParamsToApi({ ...filterParams, evidence_status: undefined }),
+            page: pagination?.pageNumber,
+            perpage: pagination?.pageSize,
         }
 
         if (exportValue === 'items') {

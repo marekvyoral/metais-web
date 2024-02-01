@@ -5,10 +5,10 @@ import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-ta
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { QueryFeedback } from '@isdd/metais-common/index'
-import React, { memo, useState } from 'react'
+import React, { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
+import { getRowSelectionUuids } from '@/componentHelpers/ci/ciTableHelpers'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { ICiListContainerView } from '@/components/containers/CiListContainer'
 import { FilterPO, POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
@@ -33,9 +33,10 @@ export const POView: React.FC<ICiListContainerView<POFilterData>> = memo(
         isLoading,
         isError,
         POType,
+        rowSelection,
+        setRowSelection,
     }) => {
         const { t } = useTranslation()
-        const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
 
         return (
             <QueryFeedback loading={isLoading} error={false} withChildren>
@@ -62,7 +63,13 @@ export const POView: React.FC<ICiListContainerView<POFilterData>> = memo(
                     attributeProfiles={attributeProfiles ?? []}
                     attributes={attributes ?? []}
                     columnListData={columnListData}
-                    exportButton={<ExportButton />}
+                    exportButton={
+                        <ExportButton
+                            defaultFilterValues={defaultFilterValues}
+                            checkedItemsUuids={getRowSelectionUuids(rowSelection)}
+                            pagination={pagination}
+                        />
+                    }
                     importButton={<ImportButton ciType={entityName} />}
                 />
                 <CiTable

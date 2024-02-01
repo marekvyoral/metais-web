@@ -292,3 +292,7 @@ export const getColumnsForIntegrationTables = (columnConfig: IntegrationColumnsC
         enableSorting: true,
     }))
 }
+
+export const getRowSelectionUuids = (rowSelection: Record<string, ColumnsOutputDefinition>) => {
+    return Object.keys(rowSelection)
+}

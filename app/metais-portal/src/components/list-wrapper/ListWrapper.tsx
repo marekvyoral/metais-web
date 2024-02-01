@@ -31,7 +31,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { ICiListContainerView } from '@/components/containers/CiListContainer'
-import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
+import { getRowSelectionUuids } from '@/componentHelpers/ci/ciTableHelpers'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { CIFilterData } from '@/pages/ci/[entityName]/entity'
 
@@ -59,6 +59,8 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     isLoading,
     isError,
     isNewRelationModal,
+    rowSelection,
+    setRowSelection,
 }) => {
     const { t, i18n } = useTranslation()
 
@@ -74,7 +76,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     const queryKey = getReadCiList1QueryKey({})
     const navigate = useNavigate()
     const location = useLocation()
-    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
 
     const checkedRowItems = Object.keys(rowSelection).length
     const isDisabledBulkButton = checkedRowItems === 0
@@ -180,7 +181,13 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                         )
                     }
                     importButton={<ImportButton ciType={entityName ?? ''} />}
-                    exportButton={<ExportButton pagination={pagination} />}
+                    exportButton={
+                        <ExportButton
+                            defaultFilterValues={defaultFilterValues}
+                            checkedItemsUuids={getRowSelectionUuids(rowSelection)}
+                            pagination={pagination}
+                        />
+                    }
                     bulkPopup={
                         <Tooltip
                             descriptionElement={errorMessage}
