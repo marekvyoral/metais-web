@@ -9,6 +9,9 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
+import { GET_DOCUMENT_GROUPS_QUERY_KEY } from '@isdd/metais-common/constants'
+import { useQueryClient } from '@tanstack/react-query'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { IView } from '@/components/containers/documents-management/CreateDocumentsGroupContainer'
 
@@ -32,6 +35,7 @@ export const CreateDocumentsGroupView: React.FC<IView> = ({ projectStatus, saveD
     const location = useLocation()
     const { setIsActionSuccess } = useActionSuccess()
     const [isCreateLoading, setIsCreateLoading] = useState(false)
+    const queryClient = useQueryClient()
 
     const [updateError, setUpdateError] = useState(false)
     const {
@@ -53,8 +57,9 @@ export const CreateDocumentsGroupView: React.FC<IView> = ({ projectStatus, saveD
                 descriptionEng: fieldValues[DOCUMENT_FIELDS.DESCRIPTION_ENG],
             })
                 .then(() => {
-                    setIsActionSuccess({ value: true, path: '/projects/documents' })
-                    navigate('/projects/documents', { state: { from: location } })
+                    setIsActionSuccess({ value: true, path: AdminRouteNames.DOCUMENTS_MANAGEMENT })
+                    queryClient.invalidateQueries([GET_DOCUMENT_GROUPS_QUERY_KEY])
+                    navigate(AdminRouteNames.DOCUMENTS_MANAGEMENT, { state: { from: location } })
                 })
                 .catch(() => {
                     setUpdateError(true)
