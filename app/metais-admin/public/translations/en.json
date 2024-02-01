@@ -444,6 +444,7 @@
         "runMutationError": "Script execution failed, check the validity of the code",
         "successfulUpdated": "The item was successfully changed",
         "successfulCreated": "The item was successfully created",
+        "successfulDeleted": "The item was successfully removed",
         "attrSuccessfulUpdated": "Attribute was successfully changed",
         "attrSuccessfulCreated": "Attribute was successfully created",
         "invalidatePOSuccess": "Public authority successfully invalidate",

@@ -484,6 +484,7 @@
         "runMutationSuccess": "Skript bol úspešne vykonaný",
         "runMutationError": "Vykonávanie skriptu zlyhalo, skontrolujte platnosť kódu",
         "successfulCreated": "Položka bola úspešne pridaná",
+        "successfulDeleted": "Položka bola úspešne odstránená",
         "attrSuccessfulUpdated": "Atribút bol úspešne  zmenený",
         "attrSuccessfulCreated": "Atribút bol úspešne pridaný",
         "invalidatePOSuccess": "Orgán riadenia bol úspešne zneplatnený",
