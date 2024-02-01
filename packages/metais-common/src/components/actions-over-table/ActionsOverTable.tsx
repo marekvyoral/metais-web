@@ -134,11 +134,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                             <>{importButton}</>
                         </Can>
                     )}
-                    {exportButton && (
-                        <Can I={Actions.EXPORT} a={entityName} ability={ability}>
-                            <>{exportButton}</>
-                        </Can>
-                    )}
+                    {exportButton && <>{exportButton}</>}
                 </div>
                 {createButton && (
                     <Can I={Actions.CREATE} a={entityName} ability={ability}>
