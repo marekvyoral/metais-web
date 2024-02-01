@@ -261,6 +261,9 @@
         "Program": {
             "name": "Názov"
         },
+        "OsobitnyPostup": {
+            "name": "Názov osobitného postupu"
+        },
         "reset": "Vyčistiť kritériá filtrovania",
         "submit": "Vyfiltrovať"
     },
@@ -304,7 +307,7 @@
         "editItem": "Editovať položku",
         "waitSending": "Čakajte prosím. Odosielam formulár.",
         "cancel": "Zrušiť",
-        "back":"Späť"
+        "back": "Späť"
     },
     "languageSelector": {
         "open": "Rozbaliť jazykové menu",
