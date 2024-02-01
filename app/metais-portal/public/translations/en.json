@@ -662,7 +662,8 @@
         "buttonXML": "XML",
         "buttonCSV": "CSV",
         "buttonXLSX": "XLSX",
-        "loading": "Downloading file"
+        "loading": "Downloading file",
+        "exportSuccess": "File exported successfully"
     },
     "tableSelectColumns": {
         "searchPlaceholder": "Search column name",
