@@ -657,7 +657,8 @@
         "buttonXML": "XML",
         "buttonCSV": "CSV",
         "buttonXLSX": "XLSX",
-        "loading": "Sťahuje sa súbor"
+        "loading": "Sťahuje sa súbor",
+        "exportSuccess": "Súbor bol úspešne exportovaný"
     },
     "tableSelectColumns": {
         "searchPlaceholder": "Názov hľadaného stĺpca",

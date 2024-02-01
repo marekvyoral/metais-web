@@ -180,7 +180,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                         )
                     }
                     importButton={<ImportButton ciType={entityName ?? ''} />}
-                    exportButton={<ExportButton />}
+                    exportButton={<ExportButton pagination={pagination} />}
                     bulkPopup={
                         <Tooltip
                             descriptionElement={errorMessage}
