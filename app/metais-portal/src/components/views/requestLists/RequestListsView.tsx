@@ -10,7 +10,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
-import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { CodeListFilterOnlyBase } from '@/components/containers/CodeListListContainer'
@@ -21,11 +21,11 @@ const getDefaultLanguageValue = (languageData: Array<ApiCodelistItemName>) => {
     return languageData?.find((item) => item.language === 'sk')?.value
 }
 
-export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter, handleFilterChange, isLoading }) => {
+export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter, handleFilterChange, isLoading, isError }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
-    const userAbility = useAbilityContext()
+    const { ability, isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
 
     const {
         isActionSuccess: { value: isSuccess, additionalInfo },
@@ -85,86 +85,89 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                     { label: t('codeList.breadcrumbs.requestList'), href: NavigationSubRoutes.REQUESTLIST },
                 ]}
             />
-            {userAbility.can(Actions.SHOW, Subjects.LIST) && (
-                <MainContentWrapper>
-                    {isSuccess && (
-                        <MutationFeedback
-                            success
-                            error={false}
-                            successMessage={t([additionalInfo?.messageKey ?? '', 'mutationFeedback.successfulUpdated'])}
-                        />
-                    )}
-                    <QueryFeedback loading={isLoading} error={false} withChildren>
-                        <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
 
-                        <Filter<RequestListFilterData>
-                            heading={t('codeListList.filter.title')}
-                            defaultFilterValues={defaultFilterValues}
-                            form={({ filter: formFilter, register, setValue }) => (
-                                <div>
-                                    <MultiSelect
-                                        id="wfState"
-                                        name="wfState"
-                                        label={t('codeListList.filter.state')}
-                                        options={Object.values(RequestListState).map((state) => ({
-                                            value: state,
-                                            label: t(`codeListList.state.${state}`),
-                                        }))}
-                                        setValue={setValue}
-                                        defaultValue={formFilter.wfState || defaultFilterValues.wfState}
-                                    />
-                                    <Input {...register('code')} type="text" label={t('codeListList.filter.code')} />
-                                    <Input {...register('name')} type="text" label={t('codeListList.filter.name')} />
-                                    <SimpleSelect
-                                        id="onlyBase"
-                                        name="onlyBase"
-                                        label={t('codeListList.filter.onlyBase.label')}
-                                        options={[
-                                            { value: CodeListFilterOnlyBase.TRUE, label: t('codeListList.filter.onlyBase.true') },
-                                            { value: CodeListFilterOnlyBase.FALSE, label: t('codeListList.filter.onlyBase.false') },
-                                        ]}
-                                        setValue={setValue}
-                                        defaultValue={formFilter.onlyBase || defaultFilterValues.onlyBase}
-                                    />
-                                </div>
-                            )}
-                        />
-                        <ActionsOverTable
-                            pagination={{
-                                pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
-                                pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
-                                dataLength: data?.dataLength || 0,
-                            }}
-                            entityName="requestList"
-                            pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                            createButton={
-                                userAbility.can(Actions.CREATE, Subjects.DETAIL) && (
-                                    <CreateEntityButton
-                                        onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}/create`, { state: { from: location } })}
-                                        label={t('codeListList.requestCreate.addBtn')}
-                                    />
-                                )
-                            }
-                            handleFilterChange={handleFilterChange}
-                            hiddenButtons={{ SELECT_COLUMNS: true }}
-                        />
-                        <Table
-                            data={data?.list}
-                            columns={columns}
-                            sort={filter.sort ?? []}
-                            onSortingChange={(columnSort) => {
-                                handleFilterChange({ sort: columnSort })
-                            }}
-                        />
-                        <PaginatorWrapper
-                            pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
-                            pageSize={filter.pageSize || BASE_PAGE_SIZE}
-                            dataLength={data?.dataLength || 0}
-                            handlePageChange={handleFilterChange}
-                        />
-                    </QueryFeedback>
-                </MainContentWrapper>
-            )}
+            <MainContentWrapper>
+                {isSuccess && (
+                    <MutationFeedback
+                        success
+                        error={false}
+                        successMessage={t([additionalInfo?.messageKey ?? '', 'mutationFeedback.successfulUpdated'])}
+                    />
+                )}
+                <QueryFeedback loading={isLoading || !!isAbilityLoading} error={isError || isAbilityError} withChildren>
+                    {ability.can(Actions.SHOW, Subjects.LIST) && (
+                        <>
+                            <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
+
+                            <Filter<RequestListFilterData>
+                                heading={t('codeListList.filter.title')}
+                                defaultFilterValues={defaultFilterValues}
+                                form={({ filter: formFilter, register, setValue }) => (
+                                    <div>
+                                        <MultiSelect
+                                            id="wfState"
+                                            name="wfState"
+                                            label={t('codeListList.filter.state')}
+                                            options={Object.values(RequestListState).map((state) => ({
+                                                value: state,
+                                                label: t(`codeListList.state.${state}`),
+                                            }))}
+                                            setValue={setValue}
+                                            defaultValue={formFilter.wfState || defaultFilterValues.wfState}
+                                        />
+                                        <Input {...register('code')} type="text" label={t('codeListList.filter.code')} />
+                                        <Input {...register('name')} type="text" label={t('codeListList.filter.name')} />
+                                        <SimpleSelect
+                                            id="onlyBase"
+                                            name="onlyBase"
+                                            label={t('codeListList.filter.onlyBase.label')}
+                                            options={[
+                                                { value: CodeListFilterOnlyBase.TRUE, label: t('codeListList.filter.onlyBase.true') },
+                                                { value: CodeListFilterOnlyBase.FALSE, label: t('codeListList.filter.onlyBase.false') },
+                                            ]}
+                                            setValue={setValue}
+                                            defaultValue={formFilter.onlyBase || defaultFilterValues.onlyBase}
+                                        />
+                                    </div>
+                                )}
+                            />
+                            <ActionsOverTable
+                                pagination={{
+                                    pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+                                    pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
+                                    dataLength: data?.dataLength || 0,
+                                }}
+                                entityName="requestList"
+                                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                                createButton={
+                                    ability.can(Actions.CREATE, Subjects.DETAIL) && (
+                                        <CreateEntityButton
+                                            onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}/create`, { state: { from: location } })}
+                                            label={t('codeListList.requestCreate.addBtn')}
+                                        />
+                                    )
+                                }
+                                handleFilterChange={handleFilterChange}
+                                hiddenButtons={{ SELECT_COLUMNS: true }}
+                            />
+                            <Table
+                                data={data?.list}
+                                columns={columns}
+                                sort={filter.sort ?? []}
+                                onSortingChange={(columnSort) => {
+                                    handleFilterChange({ sort: columnSort })
+                                }}
+                            />
+                            <PaginatorWrapper
+                                pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
+                                pageSize={filter.pageSize || BASE_PAGE_SIZE}
+                                dataLength={data?.dataLength || 0}
+                                handlePageChange={handleFilterChange}
+                            />
+                        </>
+                    )}
+                </QueryFeedback>
+            </MainContentWrapper>
         </>
     )
 }

@@ -14,7 +14,8 @@ export const useGroupsPermissions = (groupId?: string) => {
         state: { user },
     } = useAuth()
     const identityUuid = user?.uuid
-    const { data: membershipData } = useFindMembershipData(identityUuid ?? '')
+    const { data: membershipData, isError, isLoading } = useFindMembershipData(identityUuid ?? '')
+
     useEffect(() => {
         const myRoles = user?.roles ?? []
         const userGroupData = membershipData?.membershipData?.find((item: MembershipData) => item.groupUuid == groupId)
@@ -47,5 +48,5 @@ export const useGroupsPermissions = (groupId?: string) => {
 
         abilityContext.update(rules)
     }, [abilityContext, groupId, membershipData, user?.roles])
-    return {}
+    return { isLoading, isError }
 }

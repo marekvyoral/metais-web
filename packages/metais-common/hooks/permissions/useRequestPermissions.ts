@@ -37,7 +37,7 @@ export const useRequestPermissions = (id?: string) => {
         state: { user },
     } = useAuth()
 
-    const { data: detailData } = useGetCodelistRequestDetail(Number.parseInt(id ?? ''), { query: { enabled: !!id } })
+    const { data: detailData, isLoading, isError, fetchStatus } = useGetCodelistRequestDetail(Number.parseInt(id ?? ''), { query: { enabled: !!id } })
 
     useEffect(() => {
         const { can, rules } = new AbilityBuilder(createMongoAbility)
@@ -109,5 +109,5 @@ export const useRequestPermissions = (id?: string) => {
 
         abilityContext.update(rules)
     }, [abilityContext, detailData, id, user?.login, user?.roles])
-    return {}
+    return { isLoading: isLoading && fetchStatus != 'idle', isError }
 }

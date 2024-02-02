@@ -1,5 +1,5 @@
 import { ApiMeetingRequest } from '@isdd/metais-common/api/generated/standards-swagger'
-import { AbilityContext, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { AbilityContextWithFeedback, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { useMeetingsDetailPermissions } from '@isdd/metais-common/hooks/permissions/useMeetingsDetailPermissions'
 
 interface IMMeetingsDetailPermissionsWrapper {
@@ -10,5 +10,5 @@ interface IMMeetingsDetailPermissionsWrapper {
 export const MeetingsDetailPermissionsWrapper = ({ children, meetingDetailData }: IMMeetingsDetailPermissionsWrapper) => {
     const ability = useAbilityContext()
     useMeetingsDetailPermissions(meetingDetailData)
-    return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
+    return <AbilityContextWithFeedback.Provider value={{ ability }}>{children}</AbilityContextWithFeedback.Provider>
 }

@@ -53,26 +53,58 @@ const getCurrentGestorsIds = (gestors: ApiCodelistManager[]): string[] => {
 
 export const useCodeListPermissions = (id: string) => {
     const abilityContext = useAbilityContext()
-
     const {
         state: { user },
     } = useAuth()
-
-    const { data: codeListData, isSuccess: isSuccessCodeListData } = useGetCodelistHeader(Number(id))
-    const { data: codeListOriginalData } = useGetOriginalCodelistHeader(codeListData?.code ?? '', {
+    const {
+        data: codeListData,
+        isSuccess: isSuccessCodeListData,
+        isLoading: isCodeListDataLoading,
+        isError: isCodeListDataError,
+    } = useGetCodelistHeader(Number(id))
+    const {
+        data: codeListOriginalData,
+        isError: isCodelistOriginalError,
+        isLoading: isCodeListOriginalLoading,
+        fetchStatus: codeListOriginalDataFetchStatus,
+    } = useGetOriginalCodelistHeader(codeListData?.code ?? '', {
         query: { enabled: isSuccessCodeListData },
     })
-    const { data: mainGestorIds } = useGetRoleIdsForRole({
+    const {
+        data: mainGestorIds,
+        isError: isMainGestorError,
+        isLoading: isMainGestorLoading,
+        fetchStatus: mainGestorFetchStatus,
+    } = useGetRoleIdsForRole({
         identityGids: getRoleIdsForRole(Roles.SZC_HLGES, user),
         gids: getCurrentGestorsIds(codeListData?.mainCodelistManagers ?? []),
         enabled: !!user,
     })
-    const { data: secondaryGestorIds } = useGetRoleIdsForRole({
+    const {
+        data: secondaryGestorIds,
+        isError: isSecondaryGestorIdsError,
+        isLoading: isSecondaryGestorIdsLoading,
+        fetchStatus: secondaryGestorIdsFetchStatus,
+    } = useGetRoleIdsForRole({
         identityGids: getRoleIdsForRole(Roles.SZC_VEDGES, user),
         gids: getCurrentGestorsIds(codeListData?.codelistManagers ?? []),
         enabled: !!user,
     })
-    const { uuid: topLevelPoUuid } = useGetTopLevelPoUuid()
+    const {
+        uuid: topLevelPoUuid,
+        isError: isTopLevelPoUuidError,
+        isLoading: isTopLevelPoUuidLoading,
+        fetchStatus: topLevelPoUuidFetchStatus,
+    } = useGetTopLevelPoUuid()
+
+    const isLoading =
+        isCodeListDataLoading ||
+        (isMainGestorLoading && mainGestorFetchStatus != 'idle') ||
+        (isCodeListOriginalLoading && codeListOriginalDataFetchStatus != 'idle') ||
+        (isSecondaryGestorIdsLoading && secondaryGestorIdsFetchStatus != 'idle') ||
+        (isTopLevelPoUuidLoading && topLevelPoUuidFetchStatus != 'idle')
+
+    const isError = isCodeListDataError || isMainGestorError || isCodelistOriginalError || isSecondaryGestorIdsError || isTopLevelPoUuidError
 
     useEffect(() => {
         const { can, rules } = new AbilityBuilder(createMongoAbility)
@@ -134,5 +166,5 @@ export const useCodeListPermissions = (id: string) => {
         user,
     ])
 
-    return {}
+    return { isLoading, isError }
 }

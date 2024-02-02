@@ -1,5 +1,5 @@
 import { ApiReferenceRegisterState } from '@isdd/metais-common/api/generated/reference-registers-swagger'
-import { AbilityContext, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { AbilityContextWithFeedback, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { useRefRegisterPermissions } from '@isdd/metais-common/hooks/permissions/useRefRegisterPermissions'
 
 interface iPermissionWrapper {
@@ -12,5 +12,5 @@ interface iPermissionWrapper {
 export const RefRegisterPermissionsWrapper = ({ children, state, owner, managerUuid }: iPermissionWrapper) => {
     const ability = useAbilityContext()
     useRefRegisterPermissions(state, owner, managerUuid)
-    return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
+    return <AbilityContextWithFeedback.Provider value={{ ability }}>{children}</AbilityContextWithFeedback.Provider>
 }

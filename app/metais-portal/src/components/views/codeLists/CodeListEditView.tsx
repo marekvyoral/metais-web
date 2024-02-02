@@ -23,7 +23,7 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
-import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 
 import { useEditCodeListSchema } from './useEditCodeListSchemas'
@@ -78,6 +78,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
         i18n: { language },
     } = useTranslation()
     const navigate = useNavigate()
+    const { isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
+
     const { schema } = useEditCodeListSchema()
     const { codeList, defaultManagers, attributeProfile } = data
     const mappedData = useMemo(() => {
@@ -141,7 +143,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
 
             <Can I={Actions.EDIT} a={Subjects.DETAIL}>
                 <MainContentWrapper>
-                    <QueryFeedback loading={isLoading} error={isError} withChildren>
+                    <QueryFeedback loading={isLoading || !!isAbilityLoading} error={isError || !!isAbilityError} withChildren>
                         {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                         <TextHeading size="XL">{t('codeListList.edit.title')}</TextHeading>
                         <TextWarning>

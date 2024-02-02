@@ -24,7 +24,7 @@ export const useStandardDraftsListPermissions = ({ data: { state, groupId, links
         state: { user },
     } = useAuth()
     const identityUuid = user?.uuid
-    const { data: membershipData } = useFindMembershipData(identityUuid ?? '')
+    const { data: membershipData, isLoading, isError } = useFindMembershipData(identityUuid ?? '')
 
     const hasRole = (myRoles: string[], rolesOfEntity: string[]) => {
         return myRoles?.some((role: string) => rolesOfEntity?.indexOf(role) > -1)
@@ -65,5 +65,5 @@ export const useStandardDraftsListPermissions = ({ data: { state, groupId, links
         can(Actions.CREATE, 'DraftsList')
         abilityContext.update(rules)
     }, [abilityContext, membershipData, groupId, state, user?.roles, links, requestChannel])
-    return {}
+    return { isLoading, isError }
 }
