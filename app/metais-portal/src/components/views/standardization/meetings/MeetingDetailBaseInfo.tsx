@@ -32,6 +32,7 @@ import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useMeeti
 import { MeetingActorsTable } from './MeetingActorsTable'
 import { MeetingExternalActorsTable } from './MeetingExternalActorsTable'
 import { MeetingCancelModal } from './MeetingCancelModal'
+import { MeetingStateEnum } from './MeetingsListView'
 
 import styles from '@/components/views/standardization/meetings/meetingStyles.module.scss'
 
@@ -57,6 +58,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
     const [summarizeLinkChange, setSummarizeLinkChange] = useState(!infoData?.summarizedLink)
     const summarizeLink = useSummarizeMeetingRequest()
     const ability = useAbilityContext()
+    const isMeetingFuture = infoData?.state === MeetingStateEnum.FUTURE
     const userIsParticipate = infoData?.meetingActors?.find((guest) => guest.userName === user?.displayName)?.participation
     const [editParticipate, setEditParticipate] = useState(!userIsParticipate)
     const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
@@ -317,7 +319,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                             <>
                                 <TextHeading size="L">{t('meetings.vote')}</TextHeading>
                                 <TextBody>{t(`meetings.voteValue.${userIsParticipate}`)}</TextBody>
-                                <Button label={t('meetings.changeVote')} onClick={() => setEditParticipate(true)} />
+                                {isMeetingFuture && <Button label={t('meetings.changeVote')} onClick={() => setEditParticipate(true)} />}
                             </>
                         )}
                     </QueryFeedback>
