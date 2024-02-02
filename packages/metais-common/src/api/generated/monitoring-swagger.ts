@@ -44,7 +44,7 @@ export type ListOlaContractListParams = {
     metaIsCode?: string
     validityStart?: string
     validityEnd?: string
-    'liableEntities[]'?: string[]
+    liableEntities?: string[]
     page?: number
     perPageSize?: number
     sortBy?: string

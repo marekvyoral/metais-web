@@ -12,10 +12,11 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 export interface IFileHistoryModalProps {
     onClose: () => void
     item: ConfigurationItemUi
+    isOpen?: boolean
 }
 
-export const FileHistoryModal: React.FC<IFileHistoryModalProps> = ({ item, onClose }) => {
-    const { data, isLoading } = useGetHistory(item.uuid ?? '')
+export const FileHistoryModal: React.FC<IFileHistoryModalProps> = ({ item, onClose, isOpen }) => {
+    const { data, isLoading } = useGetHistory(item.uuid ?? '', { query: { enabled: !!item.uuid } })
     const [tableData, setTableData] = useState(data?.versions ?? [])
     const [pageSize, setPageSize] = useState(10)
     const {
@@ -38,7 +39,7 @@ export const FileHistoryModal: React.FC<IFileHistoryModalProps> = ({ item, onClo
     }, [data?.versions, pageSize])
 
     return (
-        <BaseModal isOpen close={onClose}>
+        <BaseModal isOpen={isOpen ?? true} close={onClose}>
             <FileHistoryView
                 data={tableData}
                 onClose={onClose}

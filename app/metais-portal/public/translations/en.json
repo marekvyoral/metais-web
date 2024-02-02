@@ -186,7 +186,7 @@
             "training": "Trainings"
         },
         "sla": {
-            "slaAndIntegrations": "Integration and SLA",
+            "slaAndIntegrations": "SLA",
             "integrationLinks": "Integration links",
             "isla": "Integration SLA"
         }
@@ -2473,6 +2473,27 @@
         }
     },
     "olaContracts": {
+        "invalidateModal": {
+            "heading": "Invalidate item {{ name }}",
+            "warning": "Selected item will be invalidated. It would not be possible to edit it or carry out further operations with it. Upon its invalidation will all relations to other entities as well be invalidated (services and etc.)",
+            "note": "Note",
+            "invalidation": "Invalidate",
+            "cancel": "Cancel"
+        },
+        "revalidateModal": {
+            "heading": "Reinvalidate item",
+            "warning": "Selected relationship will be validated.",
+            "revalidateRels": "Revalidate relations",
+            "validation": "Validation",
+            "cancel": "Cancel"
+        },
+        "detail": {
+            "heading": "Detail of SLA with contractor",
+            "title": "Detail of SLA with contractor: {{name}}",
+            "edit": "Edit",
+            "notEntered": "Not entered",
+            "history": "Document history"
+        },
         "columns": {
             "name": "Agreement name",
             "contractCode": "Agreement code",
@@ -2484,17 +2505,21 @@
         },
         "filter": {
             "name": "Agreement name",
+            "nameEnglish": "English agreement name",
             "contractCode": "Agreement code",
             "metaIsCode": "MetaIS code",
-            "intervalStart": "Valid from",
-            "intervalEnd": "Valid to",
+            "intervalStart": "Valid from (required)",
+            "intervalEnd": "Valid until",
             "selectService": "Vendor ISPA",
             "liableEntities": "ISPA administrator",
             "description": "Agreement description",
+            "descriptionEnglish": "English agreement description",
             "code": "Code",
             "referenceIdentifier": "Reference identifier",
             "crzLink": "Link to CRZ",
-            "vendorLock": "Vendor Lock"
+            "vendorLock": "Vendor Lock",
+            "contractorIsvsUuid": "Vendor ISPA",
+            "document": "SLA document with supplier"
         },
         "title": "SLA with vendor",
         "heading": "List of SLA with contractors",
