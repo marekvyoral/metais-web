@@ -118,7 +118,7 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
                         error={errors[RequestFormFields.DESCRIPTION]?.message}
                         {...register(RequestFormFields.DESCRIPTION)}
                     />
-                    <MutationFeedback success={false} error={sendError} />
+                    <MutationFeedback success={false} error={sendError} onMessageClose={() => setSendError(undefined)} />
                 </div>
                 <ModalButtons
                     submitButtonLabel={t('userProfile.requests.submit')}

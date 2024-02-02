@@ -1,4 +1,6 @@
-import { useCallback, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
+
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 interface IScrollParams {
     behavior?: 'auto' | 'smooth'
@@ -9,18 +11,26 @@ interface IScrollParams {
 export const useScroll = (scrollOptions?: IScrollParams) => {
     const wrapperRef = useRef<HTMLTableSectionElement>(null)
     const [scrolled, setScrolled] = useState(false)
+    const {
+        setScrolled: setScrolledActionSuccess,
+        isActionSuccess: { scrolled: scrolledActionSuccess },
+    } = useActionSuccess()
 
-    const scrollToMutationFeedback = useCallback(
-        (setScrolledParam?: boolean) => {
-            if ((!scrolled && setScrolledParam) || setScrolledParam == null)
-                wrapperRef.current?.scrollIntoView({
-                    behavior: scrollOptions?.behavior ?? 'smooth',
-                    block: scrollOptions?.block ?? 'center',
-                    inline: scrollOptions?.inline ?? 'nearest',
-                })
-            if (setScrolledParam) setScrolled(true)
-        },
-        [scrollOptions?.behavior, scrollOptions?.block, scrollOptions?.inline, scrolled],
-    )
+    const scrollToMutationFeedback = (setScrolledParam?: boolean) => {
+        if (scrolledActionSuccess) {
+            return
+        }
+        if ((!scrolled && setScrolledParam) || setScrolledParam == null) {
+            wrapperRef.current?.scrollIntoView({
+                behavior: scrollOptions?.behavior ?? 'smooth',
+                block: scrollOptions?.block ?? 'center',
+                inline: scrollOptions?.inline ?? 'nearest',
+            })
+            setScrolledActionSuccess()
+        }
+        if (setScrolledParam) {
+            setScrolled(true)
+        }
+    }
     return { wrapperRef, scrollToMutationFeedback }
 }

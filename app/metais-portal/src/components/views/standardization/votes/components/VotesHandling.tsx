@@ -113,6 +113,7 @@ export const VotesHandler: React.FC<ICastVote> = ({
                     success={voted}
                     error={votesProcessingError && t('votes.actions.failedToSend')}
                     successMessage={t('votes.actions.sent')}
+                    onMessageClose={() => setVotesProcessingError(false)}
                 />
             )}
             <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>

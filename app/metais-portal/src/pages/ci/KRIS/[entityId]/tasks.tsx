@@ -19,6 +19,7 @@ const Tasks: React.FC = () => {
                         isLoading={props.isLoading}
                         isError={props.isError}
                         isSuccessSave={props.isSuccessSave}
+                        resetSuccessSave={props.resetSuccessSave}
                     />
                 )
             }}

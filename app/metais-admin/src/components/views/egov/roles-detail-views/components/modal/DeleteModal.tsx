@@ -38,7 +38,7 @@ export const DeleteRoleModal: React.FC<IDeleteRoleModapProps> = ({ setTableRoles
         <BaseModal isOpen={!!roleToDelete} close={() => setRoleToDelete(undefined)}>
             <>
                 <TextHeading size="L">{t('adminRolesPage.areYouSure')}</TextHeading>
-                <MutationFeedback success={false} error={error} />
+                <MutationFeedback success={false} error={error} onMessageClose={() => setError('')} />
                 <TextBody size="L">{t('adminRolesPage.deleteRoleText')}</TextBody>
                 <TextBody size="L">
                     {roleToDelete?.name}: {roleToDelete?.description}

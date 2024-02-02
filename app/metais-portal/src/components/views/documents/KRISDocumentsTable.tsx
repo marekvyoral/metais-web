@@ -369,6 +369,7 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage + successfullyAdded.join(',')}
                         error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                        onMessageClose={() => setBulkActionResult(undefined)}
                     />
                 </div>
             )}
@@ -380,6 +381,7 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                             docs: successfullyAdded.join(', '),
                         })}
                         error={''}
+                        onMessageClose={() => setBulkActionResult(undefined)}
                     />
                 </div>
             )}

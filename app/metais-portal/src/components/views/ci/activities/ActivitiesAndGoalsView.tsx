@@ -30,6 +30,8 @@ export const ActivitiesAndGoalsView: React.FC<IView> = ({
     isMutateLoading,
     isMutateSuccess,
     isMutateError,
+    resetSuccess,
+    resetError,
 }) => {
     const { t } = useTranslation()
     const location = useLocation()
@@ -103,7 +105,14 @@ export const ActivitiesAndGoalsView: React.FC<IView> = ({
 
     return (
         <QueryFeedback loading={isLoading || isMutateLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
-            <MutationFeedback success={isMutateSuccess} error={isMutateError ? t('feedback.mutationErrorMessage') : undefined} />
+            <MutationFeedback
+                success={isMutateSuccess}
+                error={isMutateError ? t('feedback.mutationErrorMessage') : undefined}
+                onMessageClose={() => {
+                    resetSuccess()
+                    resetError()
+                }}
+            />
             <ActionsOverTable
                 pagination={{ pageNumber: filter.pageNumber, pageSize: filter.pageSize, dataLength: totaltems ?? 0 }}
                 handleFilterChange={handleFilterChange}

@@ -27,6 +27,7 @@ const Find = () => {
                             isLoading={props.isLoading}
                             error={props?.error}
                             isSame={props?.isSame}
+                            onCloseMessage={props.onCloseMessage}
                         />
                     </MainContentWrapper>
                 )}

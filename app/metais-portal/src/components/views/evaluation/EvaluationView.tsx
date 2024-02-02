@@ -27,6 +27,7 @@ interface IEvaluationView {
     isError: boolean
     entityName: string
     resultSuccessApiCall: IResultCall
+    resetResultSuccessApiCall: () => void
     onApprove: (approve: boolean) => void
     onApproveGoals: (approve: boolean, note: string, type: EContainerType, refetchData: () => void) => void
     onResponseGoals: (note: string, refetchData: () => void) => void
@@ -43,6 +44,7 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
     onApprove,
     onApproveGoals,
     onResponseGoals,
+    resetResultSuccessApiCall,
 }) => {
     const { t } = useTranslation()
     const [selectedVersion, setSelectedVersion] = useState<NoteVersionUi>()
@@ -57,7 +59,12 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
         <QueryFeedback loading={isLoading} error={isError} withChildren>
             <>
                 {resultSuccessApiCall.isSuccess && (
-                    <MutationFeedback success={resultSuccessApiCall.isSuccess} successMessage={resultSuccessApiCall.message} error={undefined} />
+                    <MutationFeedback
+                        success={resultSuccessApiCall.isSuccess}
+                        successMessage={resultSuccessApiCall.message}
+                        error={undefined}
+                        onMessageClose={resetResultSuccessApiCall}
+                    />
                 )}
                 <GridRow className={styles.heading}>
                     <GridCol setWidth="one-half">

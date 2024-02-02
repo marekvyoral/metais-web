@@ -69,7 +69,12 @@ export const UserPasswordChangePage = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={classNames({ [styles.positionRelative]: isLoading })}>
             {isLoading && <LoadingIndicator />}
-            <MutationFeedback success={isSuccess} error={error} successMessage={t('feedback.passwordChanged')} />
+            <MutationFeedback
+                success={isSuccess}
+                error={error}
+                successMessage={t('feedback.passwordChanged')}
+                onMessageClose={() => setIsSuccess(false)}
+            />
             <Input {...register('oldPassword')} label={t('userProfile.oldPassword')} error={formState.errors.oldPassword?.message} type="password" />
             <Input {...register('newPassword')} label={t('userProfile.newPassword')} error={formState.errors.newPassword?.message} type="password" />
             <Input

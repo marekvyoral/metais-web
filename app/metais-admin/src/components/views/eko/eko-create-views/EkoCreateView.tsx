@@ -53,7 +53,17 @@ export const EkoCreateView = ({ data, mutate, editData, isError, isLoading }: IE
             <FlexColumnReverseWrapper>
                 {editData ? <h2 className="govuk-heading-l">{t('eko.editCode')}</h2> : <h2 className="govuk-heading-l">{t('eko.createdCode')}</h2>}
                 {(resultApiCall.isError || resultApiCall.isSuccess) && (
-                    <MutationFeedback error={resultApiCall.message} success={resultApiCall.isSuccess} />
+                    <MutationFeedback
+                        error={resultApiCall.message}
+                        success={resultApiCall.isSuccess}
+                        onMessageClose={() =>
+                            setResultApiCall({
+                                isError: false,
+                                isSuccess: false,
+                                message: undefined,
+                            })
+                        }
+                    />
                 )}
                 {isError && <QueryFeedback error loading={false} />}
             </FlexColumnReverseWrapper>

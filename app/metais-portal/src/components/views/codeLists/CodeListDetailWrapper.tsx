@@ -161,7 +161,12 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
         <>
             {breadcrumbs}
             <MainContentWrapper>
-                <MutationFeedback success={isMutationSuccess} successMessage={t('codeListDetail.feedback.translationCreated')} error={undefined} />
+                <MutationFeedback
+                    success={isMutationSuccess}
+                    successMessage={t('codeListDetail.feedback.translationCreated')}
+                    error={undefined}
+                    onMessageClose={() => setIsMutationSuccess(false)}
+                />
                 {isMutationSuccess && <TextWarning>{t('codeListDetail.feedback.translationWarning')}</TextWarning>}
                 <QueryFeedback loading={isLoading || !!isAbilityLoading} error={false} withChildren>
                     {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
