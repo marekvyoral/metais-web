@@ -30,6 +30,7 @@ const EvaluationAccordionPage: React.FC = () => {
                         onResponseGoals={props.onResponseGoals}
                         krisData={props.krisData}
                         resultSuccessApiCall={props.resultSuccessApiCall}
+                        resetResultSuccessApiCall={props.resetResultSuccessApiCall}
                     />
                 )
             }}

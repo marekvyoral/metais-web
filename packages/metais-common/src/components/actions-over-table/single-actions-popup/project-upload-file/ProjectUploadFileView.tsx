@@ -1,5 +1,5 @@
 import { LoadingIndicator, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FieldValues, FormState, UseFormRegister } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
@@ -37,6 +37,17 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
 }) => {
     const { t } = useTranslation()
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>()
+    const [duplicateDocNamesError, setDuplicateDocNamesError] = useState<string>('')
+
+    useEffect(() => {
+        if (duplicateDocNames && duplicateDocNames.length > 0) {
+            setDuplicateDocNamesError(
+                t(`duplicateFile${duplicateDocNames.length > 1 ? 's' : ''}`, {
+                    docs: duplicateDocNames.join(', '),
+                }),
+            )
+        }
+    }, [duplicateDocNames, t])
 
     return (
         <>
@@ -56,13 +67,8 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
                     onUploadSuccess={onFileUploadSuccess}
                     setCurrentFiles={setCurrentFiles}
                 />
-                {duplicateDocNames && duplicateDocNames.length > 0 && (
-                    <MutationFeedback
-                        success={false}
-                        error={t(`duplicateFile${duplicateDocNames.length > 1 ? 's' : ''}`, {
-                            docs: duplicateDocNames.join(', '),
-                        })}
-                    />
+                {duplicateDocNamesError && (
+                    <MutationFeedback success={false} error={duplicateDocNamesError} onMessageClose={() => setDuplicateDocNamesError('')} />
                 )}
 
                 <ModalButtons

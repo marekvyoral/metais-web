@@ -141,7 +141,11 @@ export const RegistrationForm: React.FC<Props> = () => {
             <FlexColumnReverseWrapper>
                 <TextHeading size="L">{t('registration.title')}</TextHeading>
                 {errorFromBE && (
-                    <MutationFeedback error={errorFromBE === CHYBA_BE ? t('registration.error') : getTranslatedError(errorFromBE)} success={false} />
+                    <MutationFeedback
+                        error={errorFromBE === CHYBA_BE ? t('registration.error') : getTranslatedError(errorFromBE)}
+                        success={false}
+                        onMessageClose={() => setErrorFromBE('')}
+                    />
                 )}
             </FlexColumnReverseWrapper>
             <QueryFeedback

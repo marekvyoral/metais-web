@@ -128,7 +128,16 @@ export const CreateEntityView = ({
                             {isEdit ? t(`egov.${type}.editHeader`) + ` - ${data.existingEntityData?.name}` : t(`egov.${type}.createHeader`)}
                         </TextHeading>
                         {isError && <QueryFeedback error loading={false} />}
-                        {(successedMutation || error) && <MutationFeedback success={successedMutation} error={error?.errorMessage} />}
+                        {(successedMutation || error) && (
+                            <MutationFeedback
+                                success={successedMutation}
+                                error={error?.errorMessage}
+                                onMessageClose={() => {
+                                    setError(undefined)
+                                    setSuccessedMutation(false)
+                                }}
+                            />
+                        )}
                     </FlexColumnReverseWrapper>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <>

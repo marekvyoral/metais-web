@@ -12,6 +12,7 @@ export interface iFindView {
     isLoading: boolean
     isSame: boolean
     error?: string
+    onCloseMessage?: () => void
 }
 
 interface ICreateEntity {
@@ -79,6 +80,7 @@ export const FindContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) 
                 isLoading={isLoading}
                 error={error}
                 isSame={isSame}
+                onCloseMessage={() => setSame(false)}
             />
         </>
     )

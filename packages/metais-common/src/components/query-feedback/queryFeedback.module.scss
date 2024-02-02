@@ -6,3 +6,23 @@
 .autoHeight {
     height: auto !important;
 }
+
+.closeIconWrapper {
+    display: flex;
+    align-items: center;
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+.inline {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}

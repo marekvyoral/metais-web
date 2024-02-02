@@ -48,6 +48,8 @@ export interface IView {
     isMutateLoading: boolean
     isMutateSuccess: boolean
     isMutateError: boolean
+    resetSuccess: () => void
+    resetError: () => void
 }
 
 interface IActivitiesAndGoalsListContainer {
@@ -69,7 +71,14 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
         state: { user, token },
     } = useAuth()
 
-    const { getRequestStatus, isError: isRequestError, isLoading: isRequestLoading, isSuccess: isRequestSuccess } = useGetStatus()
+    const {
+        getRequestStatus,
+        isError: isRequestError,
+        isLoading: isRequestLoading,
+        isSuccess: isRequestSuccess,
+        resetSuccess,
+        resetError,
+    } = useGetStatus()
     const { currentPreferences } = useUserPreferences()
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
     const { data: ciData, isLoading: ciLoading } = useReadConfigurationItem(configurationItemId ?? '')
@@ -246,6 +255,8 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
             ciType={ciType}
             ciItemData={ciData}
             canCreateGraph={!!canCreateGraph}
+            resetSuccess={resetSuccess}
+            resetError={resetError}
         />
     )
 }

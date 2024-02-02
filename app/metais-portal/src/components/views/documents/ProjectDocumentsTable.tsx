@@ -335,6 +335,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage}
                         error={bulkActionResult?.isError ? bulkActionResult.errorMessage ?? t('feedback.mutationErrorMessage') : ''}
+                        onMessageClose={() => setBulkActionResult(undefined)}
                     />
                 </div>
             )}

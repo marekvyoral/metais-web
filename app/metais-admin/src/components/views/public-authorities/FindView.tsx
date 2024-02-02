@@ -13,7 +13,7 @@ import { generateFindIcoSchema } from './schemas/findIcoSchema'
 
 import { iFindView } from '@/components/containers/public-authorities/FindContainer'
 
-export const FindView = ({ onSearchIco, data, isLoading, error, isSame }: iFindView) => {
+export const FindView = ({ onSearchIco, data, isLoading, error, isSame, onCloseMessage }: iFindView) => {
     const { t } = useTranslation()
     const formMethods = useForm({
         resolver: yupResolver(generateFindIcoSchema(t)),
@@ -54,7 +54,7 @@ export const FindView = ({ onSearchIco, data, isLoading, error, isSame }: iFindV
                 indicatorProps={{ label: findIco ? t('publicAuthorities.find.loading') : t('loading.loadingSubPage') }}
                 withChildren
             >
-                {isSame && <MutationFeedback success={false} error={t('publicAuthorities.find.icoExist')} />}
+                {isSame && <MutationFeedback success={false} error={t('publicAuthorities.find.icoExist')} onMessageClose={onCloseMessage} />}
                 <div>
                     <h1>{t('publicAuthorities.find.new')}</h1>
                     <div className={styles.form}>

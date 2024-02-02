@@ -162,6 +162,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                 success={isSuccessItemActionMutation}
                 successMessage={t('codeListDetail.feedback.editCodeListItems')}
                 error={undefined}
+                onMessageClose={() => onModalOpen()}
             />
             <ActionsOverTable
                 pagination={{
