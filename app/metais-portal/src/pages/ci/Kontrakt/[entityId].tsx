@@ -99,7 +99,13 @@ export const SlaContractDetailPage: React.FC = () => {
 
                         <Tabs tabList={tabList} />
 
-                        <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} showOnlyTabsWithRelations hideButtons />
+                        <RelationsListContainer
+                            entityId={entityId ?? ''}
+                            technicalName={entityName ?? ''}
+                            showOnlyTabsWithRelations
+                            hideButtons
+                            hidePageSizeSelect
+                        />
                     </QueryFeedback>
                 </CiPermissionsWrapper>
             </MainContentWrapper>

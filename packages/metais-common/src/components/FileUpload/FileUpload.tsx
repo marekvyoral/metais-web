@@ -31,6 +31,7 @@ interface IFileUpload {
     onUploadingStart?: () => void
     onErrorOccurred?: (errorMessages: string[]) => void
     setCurrentFiles?: React.Dispatch<React.SetStateAction<UppyFile[] | undefined>>
+    customUuid?: string
 }
 
 export interface IFileUploadRef {
@@ -52,6 +53,7 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             onUploadSuccess,
             onErrorOccurred,
             setCurrentFiles,
+            customUuid,
         },
         ref,
     ) => {
@@ -83,7 +85,7 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             },
             setFileUuidAsync: isUsingUuidInFilePath
                 ? async (file): Promise<{ uuid: string }> => {
-                      const uuid = await generateUuid()
+                      const uuid = customUuid ?? (await generateUuid())
                       fileUuidsMapping.current[`${file?.id}`] = uuid
                       return { uuid }
                   }

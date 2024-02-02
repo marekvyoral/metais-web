@@ -184,7 +184,7 @@
             "training": "Školenie"
         },
         "sla": {
-            "slaAndIntegrations": "Integrácie a SLA",
+            "slaAndIntegrations": "SLA",
             "integrationLinks": "Integračné väzby",
             "isla": "Integračné dohody o úrovni poskytovania služieb (ISLA)"
         }
@@ -2480,6 +2480,27 @@
         }
     },
     "olaContracts": {
+        "invalidateModal": {
+            "heading": "Zneplatnenie položky {{ name }}",
+            "warning": "Vybraná položka bude zneplatnená. Nebude ju možné editovať, ani nad ňou vykonávať ďalšie operácie. Jej zneplatnením sa zneplatnia aj všetky vzťahy k ostatným entitám (službám a pod.)",
+            "note": "Poznámka / Dôvod zneplatnenia",
+            "invalidation": "Zneplatnenie",
+            "cancel": "Zrušiť"
+        },
+        "revalidateModal": {
+            "heading": "Splatňovanie položky",
+            "warning": " Vybraná položka bude splatnená.",
+            "revalidateRels": "Splatniť vzťahy",
+            "validation": "Splatnenie",
+            "cancel": "Zrušiť"
+        },
+        "detail": {
+            "heading": "Detail SLA s dodávateľom",
+            "title": "Detail SLA s dodávateľom: {{name}}",
+            "edit": "Zmeniť",
+            "notEntered": "Nezadané",
+            "history": "História dokumentu"
+        },
         "columns": {
             "name": "Názov kontraktu",
             "contractCode": "Kód kontraktu",
@@ -2491,17 +2512,21 @@
         },
         "filter": {
             "name": "Názov kontraktu",
+            "nameEnglish": "Anglický názov kontraktu",
             "contractCode": "Kód kontraktu",
             "metaIsCode": "Kód metaIS",
-            "intervalStart": "Platnosť od",
+            "intervalStart": "Platnosť od (povinné)",
             "intervalEnd": "Platnosť do",
             "selectService": "ISVS",
             "liableEntities": "Správca ISVS",
             "description": "Popis kontraktu",
+            "descriptionEnglish": "Anglický popis kontraktu",
             "code": "Kód",
             "referenceIdentifier": "Referencovateľný identifikátor",
             "crzLink": "Linka do CRZ",
-            "vendorLock": "Vendor Lock"
+            "vendorLock": "Vendor Lock",
+            "contractorIsvsUuid": "ISVS",
+            "document": "Dokument SLA s dodávateľom"
         },
         "title": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
         "heading": "Zoznam SLA s prevádzkovateľom",

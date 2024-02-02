@@ -121,6 +121,8 @@ import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
 import { SlaContractList } from '@/pages/ci/Kontrakt/list'
 import { OlaContractAdd } from '@/pages/ola-contract-list/add'
+import { OlaContractDetail } from '@/pages/ola-contract-list/detail'
+import { OlaContractEdit } from '@/pages/ola-contract-list/edit'
 import { IntegrationLinkCreate } from '@/pages/ci/Integracia/create'
 import { EditIntegrationLinkPage } from '@/pages/ci/Integracia/[entityId]/edit'
 import RefIdentifierDetailPage from '@/pages/data-objects/ref-identifiers/[id]/detail'
@@ -797,6 +799,16 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.OLA_CONTRACT_ADD,
                 slug: RouterRoutes.OLA_CONTRACT_ADD,
                 component: OlaContractAdd,
+            },
+            {
+                path: RouterRoutes.OLA_CONTRACT_DETAIL,
+                slug: RouterRoutes.OLA_CONTRACT_DETAIL,
+                component: OlaContractDetail,
+            },
+            {
+                path: RouterRoutes.OLA_CONTRACT_EDIT,
+                slug: RouterRoutes.OLA_CONTRACT_EDIT,
+                component: OlaContractEdit,
             },
             {
                 path: RouterRoutes.SLA_CONTRACT_DETAIL,

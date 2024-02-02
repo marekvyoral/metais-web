@@ -2,12 +2,11 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
 
-import { OlaContractSaveView } from '@/components/views/ola-contract-list/OlaContractSaveView'
-import { OlaContractAddContainer } from '@/components/containers/OlaContractAddContainer'
+import { OlaContractDetailView } from '@/components/views/ola-contract-list/OlaContractDetailView'
+import { OlaContractDetailContainer } from '@/components/containers/OlaContractDetailContainer'
 
-export const OlaContractAdd = () => {
+export const OlaContractDetail = () => {
     const { t } = useTranslation()
-
     return (
         <>
             <BreadCrumbs
@@ -15,10 +14,10 @@ export const OlaContractAdd = () => {
                 links={[
                     { label: t('breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('olaContracts.heading'), href: RouterRoutes.OLA_CONTRACT_LIST },
-                    { label: t('olaContracts.headingAdd'), href: RouterRoutes.OLA_CONTRACT_ADD },
+                    { label: t('olaContracts.detail.heading'), href: '#' },
                 ]}
             />
-            <OlaContractAddContainer View={(props) => <OlaContractSaveView {...props} />} />
+            <OlaContractDetailContainer View={(props) => <OlaContractDetailView {...props} />} />
         </>
     )
 }

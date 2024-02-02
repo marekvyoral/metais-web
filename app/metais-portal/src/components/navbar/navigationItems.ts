@@ -1,6 +1,6 @@
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { DataObjectsIcon, EgovComponentsIcon, InstructionsIcon, MonitoringIcon, StandartsIcon } from '@isdd/metais-common/assets/images'
-import { NavigationItem, NavigationSubItem, NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationItem, NavigationSubItem, NavigationSubRoutes, RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { TFunction } from 'i18next'
 
 const SUBORDINATES_PATH_QUERY =
@@ -66,11 +66,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         { title: t('navMenu.lists.isvs'), path: NavigationSubRoutes.ISVS },
         {
             title: t('navMenu.sla.slaAndIntegrations'),
-            path: RouteNames.ISVS_INTEGRATIONS_HOWTO,
-            subItems: [
-                { title: t('navMenu.sla.integrationLinks'), path: NavigationSubRoutes.INTEGRATION_LINKS },
-                { title: t('navMenu.sla.isla'), path: NavigationSubRoutes.ISLA },
-            ],
+            path: RouterRoutes.OLA_CONTRACT_LIST,
         },
         { title: t('navMenu.lists.infrastructures'), path: NavigationSubRoutes.INFRASCTRUCTURES },
         { title: t('navMenu.lists.webResidence'), path: NavigationSubRoutes.WEBOVE_SIDLO },

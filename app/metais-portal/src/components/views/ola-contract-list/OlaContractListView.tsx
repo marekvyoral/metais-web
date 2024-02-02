@@ -1,9 +1,11 @@
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, CreateEntityButton, QueryFeedback } from '@isdd/metais-common/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -12,10 +14,24 @@ import { OlaContractTable } from './OlaContractTable'
 
 import { IOlaContractListView } from '@/components/containers/OlaContractListContainer'
 
-export const OlaContractListView: React.FC<IOlaContractListView> = ({ data, isError, isLoading, defaultFilterValues, handleFilterChange, sort }) => {
+export const OlaContractListView: React.FC<IOlaContractListView> = ({
+    data,
+    isError,
+    isLoading,
+    defaultFilterValues,
+    handleFilterChange,
+    sort,
+    ownerGid,
+}) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
+
+    const { isActionSuccess } = useActionSuccess()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        scrollToMutationFeedback()
+    }, [isActionSuccess, scrollToMutationFeedback])
 
     return (
         <>
@@ -24,6 +40,12 @@ export const OlaContractListView: React.FC<IOlaContractListView> = ({ data, isEr
                 <QueryFeedback loading={false} error={isError} />
             </FlexColumnReverseWrapper>
             <QueryFeedback loading={isLoading} error={false} withChildren>
+                <div ref={wrapperRef} />
+                <MutationFeedback
+                    success={isActionSuccess.value && isActionSuccess?.additionalInfo?.type == 'create'}
+                    error={undefined}
+                    successMessage={t('mutationFeedback.successfulCreated')}
+                />
                 <OlaContractListFilter defaultFilterValues={defaultFilterValues} />
                 <ActionsOverTable
                     pagination={{
@@ -35,10 +57,12 @@ export const OlaContractListView: React.FC<IOlaContractListView> = ({ data, isEr
                     pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                     entityName=""
                     createButton={
-                        <CreateEntityButton
-                            label={t('olaContracts.createButton')}
-                            onClick={() => navigate(RouterRoutes.OLA_CONTRACT_ADD, { state: { from: location } })}
-                        />
+                        !!ownerGid && (
+                            <CreateEntityButton
+                                label={t('olaContracts.createButton')}
+                                onClick={() => navigate(RouterRoutes.OLA_CONTRACT_ADD, { state: { from: location } })}
+                            />
+                        )
                     }
                     hiddenButtons={{ SELECT_COLUMNS: true }}
                 />

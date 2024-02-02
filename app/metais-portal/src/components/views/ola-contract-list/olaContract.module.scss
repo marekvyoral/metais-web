@@ -7,3 +7,32 @@
 .fullWidth {
     width: 100%;
 }
+
+.flexRowHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: govuk-spacing(4);
+}
+
+.buttonGroupEnd {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: govuk-spacing(2);
+
+    @include mq($until: tablet) {
+        flex-direction: column;
+    }
+}
+
+.invalidated {
+    color: govuk-colour('red') !important;
+    text-decoration: line-through;
+}

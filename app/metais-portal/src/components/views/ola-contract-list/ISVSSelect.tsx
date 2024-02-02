@@ -2,7 +2,7 @@ import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { MetaAttributesState, SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ATTRIBUTE_NAME, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/index'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FieldErrors, FieldValue, UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -16,30 +16,45 @@ interface ISelectISVS {
     name: string
     required?: boolean
     filterUuid?: string
+    uuid?: string
+    additionalName?: string
 }
 
-export const ISVSSelect: React.FC<ISelectISVS> = ({ errors, setValue, name, required = false, filterUuid, clearErrors }) => {
+export const ISVSSelect: React.FC<ISelectISVS> = ({ errors, setValue, name, required = false, filterUuid, clearErrors, uuid, additionalName }) => {
     const { t } = useTranslation()
     const loadServices = useReadCiList1Hook()
     const [selectedISVSItem, setSelectedISVSItem] = useState<ConfigurationItemUi>()
 
-    const findISVS = async (uuid: string) => {
-        const res = await loadServices({
-            filter: {
-                type: ['ISVS'],
-                uuid: [uuid],
-                searchFields: ['Gen_Profil_nazov', 'Gen_Profil_kod_metais'],
-                metaAttributes: {
-                    state: [MetaAttributesState.DRAFT],
+    const findISVS = useCallback(
+        async (id: string | null) => {
+            if (id == null) {
+                setSelectedISVSItem(undefined)
+                return
+            }
+            const res = await loadServices({
+                filter: {
+                    type: ['ISVS'],
+                    uuid: [id],
+                    searchFields: ['Gen_Profil_nazov', 'Gen_Profil_kod_metais'],
+                    metaAttributes: {
+                        state: [MetaAttributesState.DRAFT],
+                    },
                 },
-            },
-            page: BASE_PAGE_NUMBER,
-            perpage: BASE_PAGE_SIZE,
-            sortBy: SortBy.GEN_PROFIL_NAZOV,
-            sortType: SortType.ASC,
-        })
-        setSelectedISVSItem(res?.configurationItemSet?.at(0))
-    }
+                page: BASE_PAGE_NUMBER,
+                perpage: BASE_PAGE_SIZE,
+                sortBy: SortBy.GEN_PROFIL_NAZOV,
+                sortType: SortType.ASC,
+            })
+            setSelectedISVSItem(res?.configurationItemSet?.at(0))
+        },
+        [loadServices],
+    )
+
+    useEffect(() => {
+        if (uuid && !selectedISVSItem) {
+            findISVS(uuid)
+        }
+    }, [findISVS, selectedISVSItem, uuid])
 
     const loadOptionsISVS = async (searchQuery: string, additional: { page: number } | undefined) => {
         const page = !additional?.page ? 1 : (additional?.page || 0) + 1
@@ -88,7 +103,8 @@ export const ISVSSelect: React.FC<ISelectISVS> = ({ errors, setValue, name, requ
             onChange={(val) => {
                 const value: ConfigurationItemUi | null = Array.isArray(val) ? val[0] : val
                 setValue(name, value?.uuid ?? '')
-                findISVS(value?.uuid ?? '')
+                additionalName && setValue(additionalName, value?.attributes?.['Gen_Profil_nazov'] ?? '')
+                findISVS(value?.uuid ?? null)
             }}
             value={selectedISVSItem}
             error={errors?.[name]?.message as string}

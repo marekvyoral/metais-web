@@ -144,6 +144,8 @@ export enum RouterRoutes {
     SLA_CONTRACT_EDIT = '/ci/Kontrakt/:entityId/edit',
     OLA_CONTRACT_LIST = '/ola-contract-list',
     OLA_CONTRACT_ADD = '/ola-contract-add',
+    OLA_CONTRACT_DETAIL = '/ola-contract-list/:entityId',
+    OLA_CONTRACT_EDIT = '/ola-contract-list/:entityId/edit',
 }
 
 export enum AdminRouteNames {

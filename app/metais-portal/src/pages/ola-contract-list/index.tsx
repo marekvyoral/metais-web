@@ -16,7 +16,6 @@ export const OlaContractList = () => {
         liableEntities: [],
         metaIsCode: '',
     }
-
     return (
         <>
             <BreadCrumbs

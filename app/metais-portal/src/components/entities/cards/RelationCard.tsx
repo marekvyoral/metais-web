@@ -18,7 +18,7 @@ interface IRelationCardProps extends PropsWithChildren {
 
     name: string
     admin: React.ReactNode
-    relations?: { title: string; href: string }[]
+    relations?: { title: string; href: string; isValid?: boolean }[]
 }
 
 export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status, label, labelHref, name, admin, relations }) => {
@@ -57,7 +57,15 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
                         <RelationAttribute
                             key={relation.title + index}
                             name={index === 0 ? t('relationCard.relations') : ''}
-                            value={<TextLinkExternal title={relation.title} href={relation.href} textLink={relation.title} newTab />}
+                            value={
+                                <TextLinkExternal
+                                    title={relation.title}
+                                    href={relation.href}
+                                    textLink={relation.title}
+                                    isInvalid={!relation.isValid}
+                                    newTab
+                                />
+                            }
                         />
                     ))}
                 </DefinitionList>
