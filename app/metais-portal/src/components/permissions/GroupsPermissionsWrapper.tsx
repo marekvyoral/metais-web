@@ -1,4 +1,4 @@
-import { AbilityContext, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { AbilityContextWithFeedback, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { useGroupsPermissions } from '@isdd/metais-common/hooks/permissions/useGroupsPermissions'
 interface IGroupsPermissionWrapper {
     children: JSX.Element
@@ -7,6 +7,6 @@ interface IGroupsPermissionWrapper {
 
 export const GroupsPermissionsWrapper = ({ children, groupId }: IGroupsPermissionWrapper) => {
     const ability = useAbilityContext()
-    useGroupsPermissions(groupId)
-    return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
+    const { isLoading, isError } = useGroupsPermissions(groupId)
+    return <AbilityContextWithFeedback.Provider value={{ ability, isError, isLoading }}>{children}</AbilityContextWithFeedback.Provider>
 }

@@ -3,12 +3,10 @@ import { useEffect } from 'react'
 
 import { useAbilityContext } from './useAbilityContext'
 import { Actions } from './useUserAbility'
+import { useCommonPermissionData } from './useCommonPermissionData'
 
-import { useGetRoleParticipant, useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Gen_Profil } from '@isdd/metais-common/api/constants'
-import { useGetRightsForPO, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { CI_ITEM_QUERY_KEY, INVALIDATED } from '@isdd/metais-common/constants'
+import { INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useCanCreateGraph } from '@isdd/metais-common/hooks/useCanCreateGraph'
 import { getUniqueRules } from '@isdd/metais-common/permissions/helpers'
@@ -16,48 +14,12 @@ import { getUniqueRules } from '@isdd/metais-common/permissions/helpers'
 export const useEditCiPermissions = (entityName: string, entityId: string) => {
     const abilityContext = useAbilityContext()
     const {
-        state: { user, token },
+        state: { user },
     } = useAuth()
-    const identityUuid = user?.uuid
-    const isLoggedIn = !!identityUuid
-
-    const { data: ciTypeData, isLoading: ciTypeLoading } = useGetCiType(entityName ?? '')
-
-    const {
-        data: ciData,
-        isLoading: ciLoading,
-        isError: ciError,
-    } = useReadConfigurationItem(entityId ?? '', {
-        query: { enabled: !ciTypeLoading, queryKey: [CI_ITEM_QUERY_KEY, entityId] },
+    const { isLoading, isError, isOwnerByGid, ciData, ciTypeData, rightsData } = useCommonPermissionData({
+        entityId,
+        entityName,
     })
-
-    const {
-        data: roleParticipantData,
-        isLoading: roleParticipantLoading,
-        isError: roleParticipantError,
-    } = useGetRoleParticipant(ciData?.metaAttributes?.owner ?? '', {
-        query: { enabled: !ciLoading && !ciError },
-    })
-
-    const { data: rightsData } = useGetRightsForPO(
-        {
-            identityUuid,
-            cmdbId: roleParticipantData?.owner,
-        },
-        {
-            query: {
-                enabled: !ciLoading && !roleParticipantLoading && !ciError && !roleParticipantError && token !== null && isLoggedIn,
-            },
-        },
-    )
-
-    const { data: isOwnerByGid } = useIsOwnerByGid(
-        {
-            gids: [ciData?.metaAttributes?.owner ?? ''],
-            login: user?.login,
-        },
-        { query: { enabled: !ciLoading && token !== null && isLoggedIn } },
-    )
 
     const { data: canCreateGraph } = useCanCreateGraph()
 
@@ -105,5 +67,6 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
         const mergedRules = [...existingRules, ...updatedRules]
         abilityContext.update(mergedRules)
     }, [rightsData, abilityContext, ciTypeData, ciData, canCreateGraph, user?.roles, isOwnerByGid?.isOwner])
-    return {}
+
+    return { isLoading, isError }
 }

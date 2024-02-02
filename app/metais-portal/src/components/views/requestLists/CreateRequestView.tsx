@@ -27,7 +27,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
 import { CellContext, ColumnDef, ExpandedState, Row } from '@tanstack/react-table'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
-import { Can, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types/'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 
@@ -102,7 +102,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     const navigate = useNavigate()
     const { schema } = useCreateRequestSchema(canEdit ?? false)
     const getRoleParticipantHook = useGetRoleParticipantHook()
-    const userAbility = useAbilityContext()
+    const { ability, isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
 
     const [pagination, setPagination] = useState<Pagination>({
         pageNumber: BASE_PAGE_NUMBER,
@@ -323,7 +323,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         },
     ]
 
-    const canUse = requestId ? userAbility.can(Actions.EDIT, Subjects.DETAIL) : userAbility.can(Actions.CREATE, Subjects.DETAIL)
+    const canUse = requestId ? ability.can(Actions.EDIT, Subjects.DETAIL) : ability.can(Actions.CREATE, Subjects.DETAIL)
 
     return (
         <>
@@ -353,7 +353,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
             )}
             {canUse && (
                 <MainContentWrapper>
-                    <QueryFeedback loading={isLoading} error={isError} withChildren>
+                    <QueryFeedback loading={isLoading || !!isAbilityLoading} error={isError || isAbilityError} withChildren>
                         {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                         <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
                         <form onSubmit={handleSubmit(onHandleSubmit)}>

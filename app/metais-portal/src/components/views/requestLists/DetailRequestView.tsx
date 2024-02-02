@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ExpandedState, Row } from '@tanstack/react-table'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
-import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { ApiCodelistItem } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
@@ -56,6 +56,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
     const {
         isActionSuccess: { value: isSuccess, additionalInfo },
     } = useActionSuccess()
+    const { isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
 
     const [confirmationModal, setConfirmationModal] = useState<{
         action?: ApiRequestAction
@@ -121,7 +122,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                             successMessage={t([additionalInfo?.messageKey ?? '', 'mutationFeedback.successfulUpdated'])}
                         />
                     )}
-                    <QueryFeedback loading={isLoading} error={isError} withChildren>
+                    <QueryFeedback loading={isLoading || !!isAbilityLoading} error={isError || isAbilityError} withChildren>
                         {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                         <div className={styles.headerDiv}>
                             <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>

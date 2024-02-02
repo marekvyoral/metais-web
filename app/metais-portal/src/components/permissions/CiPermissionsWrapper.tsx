@@ -1,4 +1,4 @@
-import { AbilityContext, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { AbilityContextWithFeedback, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { useEditCiPermissions } from '@isdd/metais-common/hooks/permissions/useEditCiPermissions'
 
 interface iPermissionWrapper {
@@ -9,6 +9,6 @@ interface iPermissionWrapper {
 
 export const CiPermissionsWrapper = ({ children, entityName, entityId }: iPermissionWrapper) => {
     const ability = useAbilityContext()
-    useEditCiPermissions(entityName, entityId)
-    return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
+    const { isLoading, isError } = useEditCiPermissions(entityName, entityId)
+    return <AbilityContextWithFeedback.Provider value={{ ability, isLoading, isError }}>{children}</AbilityContextWithFeedback.Provider>
 }
