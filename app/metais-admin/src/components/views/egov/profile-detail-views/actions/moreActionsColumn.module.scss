@@ -1,0 +1,6 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: govuk-spacing(4);
+}

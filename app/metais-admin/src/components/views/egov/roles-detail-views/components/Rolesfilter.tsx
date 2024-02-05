@@ -24,7 +24,7 @@ export const RolesFilter: React.FC<IRoleFilterProps> = ({ tableRoleGroups }) => 
                         setValue={setValue}
                         id="group"
                         name="group"
-                        label={'Group'}
+                        label={t('adminRolesPage.group')}
                         options={[{ value: ALL_EVENT_TYPES, label: t('adminRolesPage.all') }, ...groups]}
                         defaultValue={filter.group}
                     />
@@ -32,7 +32,7 @@ export const RolesFilter: React.FC<IRoleFilterProps> = ({ tableRoleGroups }) => 
                         setValue={setValue}
                         id="system"
                         name="system"
-                        label={'System'}
+                        label={t('adminRolesPage.systemRole')}
                         options={[
                             { value: ALL_EVENT_TYPES, label: t('adminRolesPage.all') },
                             { value: RelatedRoleType.SYSTEM, label: t('adminRolesPage.yes') },

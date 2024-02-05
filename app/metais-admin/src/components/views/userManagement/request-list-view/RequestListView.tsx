@@ -51,7 +51,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
             },
             cell: (ctx) => (
                 <TextLink to={`${route}/detail/${listType?.toLowerCase()}/${ctx?.row?.original?.uuid}`}>
-                    {ctx?.row?.original?.identityFirstName + ' ' + ctx?.row?.original?.identityLastName}
+                    {`${ctx?.row?.original?.identityLastName} ${ctx?.row?.original?.identityFirstName}`}
                 </TextLink>
             ),
         },
@@ -119,7 +119,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
             meta: {
                 getCellContext: (ctx) => ctx?.row?.original?.poName,
             },
-            cell: (ctx) => <span className="govuk-body-s">{ctx?.row?.original?.poName}</span>,
+            cell: (ctx) => <span>{ctx?.row?.original?.poName}</span>,
         },
     ]
 

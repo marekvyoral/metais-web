@@ -9,9 +9,10 @@ import { IActions } from '@/components/containers/Egov/Entity/PublicAuthoritiesL
 
 type Props = {
     ctx: CellContext<ConfigurationItemUi, unknown>
+    disableEdit?: boolean
 }
 
-export const MoreActionsOverRow = ({ ctx, setInvalid }: Props & IActions) => {
+export const MoreActionsOverRow = ({ ctx, setInvalid, disableEdit = false }: Props & IActions) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
@@ -32,6 +33,7 @@ export const MoreActionsOverRow = ({ ctx, setInvalid }: Props & IActions) => {
                                     closePopup()
                                 }}
                                 label={t('egov.detail.validityChange.setInvalid')}
+                                disabled={disableEdit}
                             />
                             <ButtonLink
                                 type="button"
@@ -40,6 +42,7 @@ export const MoreActionsOverRow = ({ ctx, setInvalid }: Props & IActions) => {
                                     closePopup()
                                 }}
                                 label={t('egov.edit')}
+                                disabled={disableEdit}
                             />
                             <ButtonLink
                                 type="button"

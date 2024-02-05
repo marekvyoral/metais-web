@@ -10,6 +10,8 @@ import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+
+import styles from './userView.module.scss'
 interface IUserDetail {
     userData: Identity | undefined
     userId: string
@@ -41,7 +43,13 @@ export const UserDetail: React.FC<IUserDetail> = ({ userData, userId }) => {
     return (
         <>
             <FlexColumnReverseWrapper>
-                <TextHeading size="L">{t('managementList.detailHeading')}</TextHeading>
+                <div className={styles.headerWrapper}>
+                    <TextHeading size="XL">{`${t('managementList.detailHeading')} - ${userData?.displayName}`}</TextHeading>
+                    <Button
+                        label={t('managementList.edit')}
+                        onClick={() => navigate(AdminRouteNames.USER_MANAGEMENT + '/edit/' + userId, { state: { from: location } })}
+                    />
+                </div>
                 <div ref={wrapperRef}>
                     <MutationFeedback error={false} success={isActionSuccess.value} />
                 </div>
@@ -52,10 +60,6 @@ export const UserDetail: React.FC<IUserDetail> = ({ userData, userId }) => {
                     <InformationGridRow key={index} label={item.label} value={item.value} hideIcon />
                 ))}
             </DefinitionList>
-            <Button
-                label={t('managementList.edit')}
-                onClick={() => navigate(AdminRouteNames.USER_MANAGEMENT + '/edit/' + userId, { state: { from: location } })}
-            />
         </>
     )
 }

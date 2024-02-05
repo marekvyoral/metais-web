@@ -1,4 +1,4 @@
-import { Button, Tabs, TextBody } from '@isdd/idsk-ui-kit'
+import { Button, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -17,7 +17,7 @@ export const EkoDetailView = ({ data, isError, isLoading }: IEkoDetailView) => {
             <div>
                 <FlexColumnReverseWrapper>
                     <div className={styles.spaceBetween}>
-                        <h2 className="govuk-heading-l">{data?.name}</h2>
+                        <TextHeading size="XL">{data?.name}</TextHeading>
                         <div>
                             <Button
                                 label={t('eko.edit')}

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RelatedRoleType } from '@isdd/metais-common/api/generated/iam-swagger'
 import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { FormProvider, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { QueryFeedback } from '@isdd/metais-common/index'
@@ -16,32 +16,28 @@ export const RoleEditView: React.FC<IRoleEditViewParams> = ({ currentRole, roleI
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
-    const methods = useForm({
+    const { setValue, register, formState, handleSubmit } = useForm({
         defaultValues: {
             name: currentRole?.name,
             description: currentRole?.description,
             assignedGroup: currentRole?.assignedGroup,
             type: currentRole?.type,
         },
-        values: currentRole,
+        mode: 'onChange',
     })
-    const register = methods.register
-    const errors = methods.formState.errors
-    const onSubmit = methods.handleSubmit((data) => {
+
+    const errors = formState.errors
+    const onSubmit = handleSubmit((data) => {
         updateRole({
             data: {
-                name: data['name'],
-                description: data['description'],
+                name: data.name,
+                description: data.description,
                 type: RelatedRoleType.NON_SYSTEM,
-                assignedGroup: data['assignedGroup'],
+                assignedGroup: data.assignedGroup,
                 uuid: roleId,
             },
         })
     })
-    const [tableRoleGroups, setTableRoleGroups] = useState(roleGroups)
-    useEffect(() => {
-        setTableRoleGroups(roleGroups)
-    }, [roleGroups])
 
     return (
         <>
@@ -54,52 +50,53 @@ export const RoleEditView: React.FC<IRoleEditViewParams> = ({ currentRole, roleI
                 ]}
             />
             <MainContentWrapper>
-                <QueryFeedback loading={isLoading} error={false} withChildren>
+                <QueryFeedback loading={isLoading} error={false}>
                     <FlexColumnReverseWrapper>
-                        <TextHeading size="L">{t('adminRolesPage.newRole')}</TextHeading>
+                        <TextHeading size="L">{t('adminRolesPage.editRole')}</TextHeading>
                         {isError && <QueryFeedback error loading={false} />}
                     </FlexColumnReverseWrapper>
-                    <FormProvider {...methods}>
-                        <form onSubmit={(e) => e.preventDefault()} noValidate className="container">
-                            <Input
-                                label={t('adminRolesPage.name')}
-                                {...register('name', { required: { value: true, message: t('adminRolesPage.requiredName') } })}
-                                error={findInputError(errors, 'name')?.error?.message?.toString()}
+
+                    <form onSubmit={onSubmit}>
+                        <Input
+                            label={t('adminRolesPage.name')}
+                            {...register('name', { required: { value: true, message: t('adminRolesPage.requiredName') } })}
+                            defaultValue={currentRole?.name}
+                            error={findInputError(errors, 'name')?.error?.message?.toString()}
+                        />
+                        <Input
+                            label={t('adminRolesPage.description')}
+                            {...register('description', { required: { value: true, message: t('adminRolesPage.requiredDesc') } })}
+                            defaultValue={currentRole?.description}
+                            error={findInputError(errors, 'description')?.error?.message?.toString()}
+                        />
+                        <SimpleSelect
+                            setValue={setValue}
+                            id="assignedGroup"
+                            name="assignedGroup"
+                            label={t('adminRolesPage.group')}
+                            options={[{ value: '', label: t('adminRolesPage.none') }, ...getGroupRoles(roleGroups)]}
+                            defaultValue={currentRole?.assignedGroup}
+                        />
+                        <SimpleSelect
+                            setValue={setValue}
+                            name="systemRole"
+                            label={t('adminRolesPage.systemRole')}
+                            disabled
+                            options={[
+                                { value: RelatedRoleType.SYSTEM, label: t('adminRolesPage.yes') },
+                                { value: RelatedRoleType.NON_SYSTEM, label: t('adminRolesPage.no') },
+                            ]}
+                            defaultValue={currentRole?.type}
+                        />
+                        <ButtonGroupRow>
+                            <Button label={t('adminRolesPage.submit')} type="submit" />
+                            <Button
+                                label={t('adminRolesPage.cancel')}
+                                onClick={() => navigate(AdminRouteNames.ROLES + '?system=all&group=all', { state: { from: location } })}
+                                variant="secondary"
                             />
-                            <Input
-                                label={t('adminRolesPage.description')}
-                                {...register('description', { required: { value: true, message: t('adminRolesPage.requiredDesc') } })}
-                                error={findInputError(errors, 'description')?.error?.message?.toString()}
-                            />
-                            <SimpleSelect
-                                setValue={methods.setValue}
-                                id="assignedGroup"
-                                name="assignedGroup"
-                                label={t('adminRolesPage.group')}
-                                options={[{ value: '', label: t('adminRolesPage.none') }, ...getGroupRoles(tableRoleGroups)]}
-                                defaultValue={currentRole?.assignedGroup}
-                            />
-                            <SimpleSelect
-                                setValue={methods.setValue}
-                                name="systemRole"
-                                label={t('adminRolesPage.systemRole')}
-                                disabled
-                                options={[
-                                    { value: RelatedRoleType.SYSTEM, label: t('adminRolesPage.yes') },
-                                    { value: RelatedRoleType.NON_SYSTEM, label: t('adminRolesPage.no') },
-                                ]}
-                                defaultValue={currentRole?.type}
-                            />
-                            <ButtonGroupRow>
-                                <Button label={t('adminRolesPage.submit')} onClick={onSubmit} />
-                                <Button
-                                    label={t('adminRolesPage.cancel')}
-                                    onClick={() => navigate(AdminRouteNames.ROLES + '?system=all&group=all', { state: { from: location } })}
-                                    variant="secondary"
-                                />
-                            </ButtonGroupRow>
-                        </form>
-                    </FormProvider>
+                        </ButtonGroupRow>
+                    </form>
                 </QueryFeedback>
             </MainContentWrapper>
         </>

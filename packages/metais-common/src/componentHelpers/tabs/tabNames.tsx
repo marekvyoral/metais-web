@@ -8,7 +8,7 @@ export interface IEntityDetailViewAttributes {
     data: CiType | AttributeProfile | undefined
     attributesOverridesData?: Attribute[] | undefined
     removeProfileAttribute?: (technicalName: string) => void
-    saveExistingAttribute?: (attributeTechnicalName?: string, attribute?: Attribute) => void
+    saveExistingAttribute?: (attributeTechnicalName?: string, attribute?: Attribute, profileTechName?: string) => void
     resetExistingAttribute?: (attributeTechnicalName?: string) => void
 }
 

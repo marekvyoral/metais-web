@@ -4,13 +4,14 @@ import { Role, RoleType } from '@isdd/metais-common/api/generated/iam-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { DEFAULT_PAGESIZE_OPTIONS, getRolesListSelectedColumns } from '@isdd/metais-common/constants'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { ActionsOverTable, BASE_PAGE_NUMBER, CreateEntityButton, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, BASE_PAGE_NUMBER, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import styles from './roles.module.scss'
 
@@ -41,44 +42,45 @@ const RoleListView: React.FC<RoleListViewParams> = ({
     const resetSelectedColumns = () => {
         setSelectedColumns(getRolesListSelectedColumns(t))
     }
+    const { isActionSuccess } = useActionSuccess()
     const columns: ColumnDef<Role>[] = [
         {
-            technicalName: 'name',
-            name: t('adminRolesPage.name'),
+            id: 'name',
+            header: t('adminRolesPage.name'),
+            accessorFn: (row) => row.name,
             meta: {
                 getCellContext: (ctx: CellContext<Role, unknown>) => ctx?.getValue?.(),
             },
+            enableSorting: true,
         },
         {
-            technicalName: 'description',
-            name: t('adminRolesPage.description'),
+            id: 'description',
+            header: t('adminRolesPage.description'),
+            accessorFn: (row) => row.description,
             meta: {
                 getCellContext: (ctx: CellContext<Role, unknown>) => ctx?.getValue?.(),
             },
+            enableSorting: true,
         },
         {
-            technicalName: 'assignedGroup',
-            name: t('adminRolesPage.group'),
+            id: 'assignedGroup',
+            header: t('adminRolesPage.group'),
+            accessorFn: (row) => row.assignedGroup,
             meta: {
                 getCellContext: (ctx: CellContext<Role, unknown>) => ctx?.getValue?.(),
             },
+            enableSorting: false,
         },
         {
-            technicalName: 'type',
-            name: t('adminRolesPage.systemRole'),
+            id: 'type',
+            header: t('adminRolesPage.systemRole'),
+            accessorFn: (row) => row.type,
             meta: {
                 getCellContext: (ctx: CellContext<Role, unknown>) => ctx?.getValue?.(),
             },
+            enableSorting: true,
         },
-    ].map((e) => ({
-        id: e.technicalName,
-        header: e.name,
-        accessorKey: e.technicalName,
-        enableSorting: true,
-        key: e.technicalName,
-        meta: e.meta,
-        size: 200,
-    }))
+    ]
 
     const { handleFilterChange } = useFilterParams(defaultFilterValues)
     const myHandleFilterChange = (myFilter: IFilter) => {
@@ -160,8 +162,19 @@ const RoleListView: React.FC<RoleListViewParams> = ({
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
-                        <TextHeading size="L">{t('adminRolesPage.rolesList')}</TextHeading>
+                        <TextHeading size="XL">{t('adminRolesPage.rolesList')}</TextHeading>
                         {isError && <QueryFeedback error loading={false} />}
+                        {isActionSuccess.value && (
+                            <MutationFeedback
+                                success
+                                successMessage={
+                                    isActionSuccess.additionalInfo?.type === 'edit'
+                                        ? t('mutationFeedback.successfulUpdated')
+                                        : t('mutationFeedback.successfulCreated')
+                                }
+                                error={false}
+                            />
+                        )}
                     </FlexColumnReverseWrapper>
                     <RolesFilter tableRoleGroups={tableRoleGroups} />
                     <ActionsOverTable

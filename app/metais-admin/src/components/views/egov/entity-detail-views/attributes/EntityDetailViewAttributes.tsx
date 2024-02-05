@@ -1,15 +1,16 @@
 import React, { useCallback, useState } from 'react'
-import { IEntityDetailViewAttributes, filterSelectedRowsFromApi, isRowSelected } from '@isdd/metais-common'
+import { IEntityDetailViewAttributes, isRowSelected } from '@isdd/metais-common'
 import { ColumnDef } from '@tanstack/react-table'
-import { Button, Input, Table } from '@isdd/idsk-ui-kit'
+import { Button, ButtonLink, ButtonPopup, Input, Table, TextHeading } from '@isdd/idsk-ui-kit'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { Link } from 'react-router-dom'
+import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 
-import styles from '../../detailViews.module.scss'
+import styles from '@/components/views/egov/detailViews.module.scss'
 
 export const EntityDetailViewAttributes = ({
     data,
@@ -20,14 +21,19 @@ export const EntityDetailViewAttributes = ({
     roles,
 }: IEntityDetailViewAttributes) => {
     const { t } = useTranslation()
-    const indexModificator = 1
-    const selectedFromApi = filterSelectedRowsFromApi(attributesOverridesData, data?.attributes, indexModificator)
+    const [sort, setSort] = useState<ColumnSort[]>([])
     const [selectedRows, setSelectedRows] = useState<Array<number>>([])
     const { register, getValues } = useForm({
         defaultValues: {
             attributes: data?.attributes ?? [],
         },
     })
+
+    const isRowOverriden = (techName: string) => {
+        return attributesOverridesData?.find((attr) => {
+            return attr.technicalName === techName
+        })
+    }
 
     const cancelEditing = useCallback(
         (id: number) => {
@@ -39,9 +45,9 @@ export const EntityDetailViewAttributes = ({
     const handleSaveAttribute = useCallback(
         (rowIndex: number) => {
             const editedData = getValues(`attributes.${rowIndex}`)
-            saveExistingAttribute?.(editedData?.technicalName, editedData)
+            saveExistingAttribute?.(editedData?.technicalName, editedData, data?.technicalName)
         },
-        [saveExistingAttribute, getValues],
+        [saveExistingAttribute, getValues, data],
     )
 
     const handleResetAttribute = useCallback(
@@ -113,46 +119,66 @@ export const EntityDetailViewAttributes = ({
             enableSorting: true,
             id: 'actions',
             cell: (ctx) => {
-                if (isRowSelected(ctx?.row?.index + indexModificator, selectedFromApi) && !isRowSelected(ctx?.row?.original?.id, selectedRows)) {
-                    return (
-                        <div className={styles.actions}>
-                            <Button
-                                onClick={() => {
-                                    ctx?.row?.original?.id && setSelectedRows([...selectedRows, ctx.row.original.id])
+                {
+                    if (!isRowSelected(ctx?.row?.original?.id, selectedRows)) {
+                        return (
+                            <ButtonPopup
+                                popupPosition="right"
+                                buttonLabel={t('actionsInTable.moreActions')}
+                                popupContent={(closePopup) => {
+                                    return (
+                                        <div className={styles.actions}>
+                                            <ButtonLink
+                                                onClick={() => {
+                                                    ctx?.row?.original?.id && setSelectedRows([...selectedRows, ctx.row.original.id])
+                                                    closePopup()
+                                                }}
+                                                label={t('actionsInTable.edit')}
+                                            />
+                                            {isRowOverriden(ctx?.row?.original?.technicalName ?? '') && (
+                                                <ButtonLink
+                                                    onClick={() => {
+                                                        handleResetAttribute(ctx?.row?.index)
+                                                        closePopup()
+                                                    }}
+                                                    label={t('actionsInTable.reset')}
+                                                />
+                                            )}
+                                        </div>
+                                    )
                                 }}
-                                label={t('actionsInTable.edit')}
                             />
-                            <Button onClick={() => handleResetAttribute(ctx?.row?.index)} label={t('actionsInTable.reset')} />
-                        </div>
-                    )
-                } else if (isRowSelected(ctx?.row?.original?.id, selectedRows)) {
-                    return (
-                        <div className={styles.actions}>
-                            <Button
-                                onClick={() => {
-                                    handleSaveAttribute(ctx?.row?.index)
-                                    ctx?.row?.original?.id && cancelEditing(ctx?.row?.original?.id)
+                        )
+                    } else {
+                        return (
+                            <ButtonPopup
+                                popupPosition="right"
+                                buttonLabel={t('actionsInTable.moreActions')}
+                                popupContent={(closePopup) => {
+                                    return (
+                                        <div className={styles.actions}>
+                                            <ButtonLink
+                                                onClick={() => {
+                                                    handleSaveAttribute(ctx?.row?.index)
+                                                    ctx?.row?.original?.id && cancelEditing(ctx?.row?.original?.id)
+                                                    closePopup()
+                                                }}
+                                                label={t('actionsInTable.save')}
+                                            />
+                                            <ButtonLink
+                                                onClick={() => {
+                                                    ctx?.row?.original?.id && cancelEditing(ctx?.row?.original?.id)
+                                                    closePopup()
+                                                }}
+                                                label={t('actionsInTable.cancel')}
+                                            />
+                                        </div>
+                                    )
                                 }}
-                                label={t('actionsInTable.save')}
                             />
-                            <Button
-                                onClick={() => {
-                                    ctx?.row?.original?.id && cancelEditing(ctx?.row?.original?.id)
-                                }}
-                                label={t('actionsInTable.cancel')}
-                            />
-                        </div>
-                    )
-                } else
-                    return (
-                        <Button
-                            onClick={() => {
-                                ctx?.row?.original?.id && setSelectedRows([...selectedRows, ctx.row.original.id])
-                            }}
-                            label={t('actionsInTable.edit')}
-                            disabled={!ctx.row.original.valid}
-                        />
-                    )
+                        )
+                    }
+                }
             },
         },
     ]
@@ -196,10 +222,9 @@ export const EntityDetailViewAttributes = ({
                     )}{' '}
                 </DefinitionList>
             </div>
-            <h3 className="govuk-heading-m">{t('egov.detail.profileAttributes')}</h3>
-            <div>
-                <Table columns={columns} data={data?.attributes} />
-            </div>
+
+            <TextHeading size="M">{t('egov.detail.profileAttributes')}</TextHeading>
+            <Table columns={columns} data={data?.attributes} manualSorting={false} sort={sort} onSortingChange={setSort} />
         </>
     )
 }
