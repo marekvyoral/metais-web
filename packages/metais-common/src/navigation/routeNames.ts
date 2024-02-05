@@ -136,6 +136,7 @@ export enum RouterRoutes {
     INTEGRATION_KS_AS_OUTLET = 'ksAsList',
     INTEGRATION_SUBJECTS_LIST_OUTLET = 'subjectsList',
     INTEGRATION_HARMONOGRAM_OUTLET = 'harmonogram',
+    RELATION_LIST = 'relations',
     SLA_CONTRACT_LIST = '/ci/Kontrakt',
     SLA_CONTRACT_DETAIL = '/ci/Kontrakt/:entityId',
     SLA_CONTRACT_HISTORY = '/ci/Kontrakt/:entityId/history',
