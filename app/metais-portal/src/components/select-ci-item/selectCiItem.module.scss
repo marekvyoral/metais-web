@@ -6,13 +6,21 @@
     justify-content: center;
     gap: govuk-spacing(4);
 }
+
 .selectDiv {
     width: 100%;
 }
+
 .marginTop {
     margin-top: govuk-spacing(5) !important;
 }
+
 .italic {
     font-style: italic;
     color: govuk-colour('dark-grey') !important;
+}
+
+.text {
+    overflow-y: visible !important;
+    overflow-x: visible !important;
 }

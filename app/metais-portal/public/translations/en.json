@@ -309,7 +309,10 @@
         "editItem": "Edit item",
         "waitSending": "Wait please. I am sending the form.",
         "cancel": "Cancel",
-        "back": "Back"
+        "back": "Back",
+        "specialRule":{
+            "osobitnyPostupDateFrom": "Effective date from"
+        }
     },
     "languageSelector": {
         "open": "Open language menu",
@@ -437,7 +440,8 @@
             "phone": "Phone number",
             "organization": "Organization",
             "registrationDate": "Registration date"
-        }
+        },
+        "from": "Training start date"
     },
     "listActions": {
         "selectView": "View"

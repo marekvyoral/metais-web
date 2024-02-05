@@ -206,6 +206,7 @@ export const ENTITY_KONTRAKT = 'Kontrakt'
 export const ENTITY_MIGRATION = 'Migracia'
 export const ENTITY_INFRA_SLUZBA = 'InfraSluzba'
 export const ENTITY_TRAINING = 'Training'
+export const ENTITY_OSOBITNY_POSTUP = 'OsobitnyPostup'
 export const STANDARDIZATION_DRAFTS_LIST = 'draftsList'
 export const REFERENCE_REGISTER = 'ReferenceRegister'
 

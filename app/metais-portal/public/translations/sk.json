@@ -307,7 +307,10 @@
         "editItem": "Editovať položku",
         "waitSending": "Čakajte prosím. Odosielam formulár.",
         "cancel": "Zrušiť",
-        "back": "Späť"
+        "back": "Späť",
+        "specialRule":{
+            "osobitnyPostupDateFrom": "Dátum účinnosti od"
+        }
     },
     "languageSelector": {
         "open": "Rozbaliť jazykové menu",
@@ -435,7 +438,8 @@
             "phone": "Telefónne číslo",
             "organization": "Organizácia",
             "registrationDate": "Dátum príhlásenia"
-        }
+        },
+        "from": "Začiatok školenia"
     },
     "listActions": {
         "selectView": "Zobraziť"
