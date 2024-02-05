@@ -52,8 +52,10 @@ export const CiEntityFormBody: React.FC<Props> = ({
             isUpdate ? combinedProfiles : getFilteredAttributeProfilesBasedOnRole(combinedProfiles, selectedRole?.roleName ?? ''),
             t,
             i18n.language,
+            null,
+            ciTypeData?.technicalName,
         )
-    }, [t, i18n.language, isUpdate, combinedProfiles, selectedRole?.roleName])
+    }, [isUpdate, combinedProfiles, selectedRole?.roleName, t, i18n.language, ciTypeData?.technicalName])
 
     const methods = useForm({
         defaultValues: formDefaultValues,

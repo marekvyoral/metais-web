@@ -4,7 +4,7 @@ import { ATTRIBUTE_NAME, Gen_Profil } from '@isdd/metais-common/api'
 import { CiWithRelsUi, ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
-import { metaisEmail } from '@isdd/metais-common/constants'
+import { ENTITY_OSOBITNY_POSTUP, metaisEmail } from '@isdd/metais-common/constants'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
@@ -107,10 +107,11 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         }
         return acc
     }, {})
-
     const methods = useForm({
         defaultValues: formatForFormDefaultValues(updateCiItemId ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
-        resolver: yupResolver(generateFormSchema([ciTypeData as AttributeProfile, ...attProfiles], t, i18n.language, roleState?.selectedRole)),
+        resolver: yupResolver(
+            generateFormSchema([ciTypeData as AttributeProfile, ...attProfiles], t, i18n.language, roleState?.selectedRole, ENTITY_OSOBITNY_POSTUP),
+        ),
     })
 
     const { handleSubmit, setValue, reset } = methods
