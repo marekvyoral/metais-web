@@ -90,3 +90,13 @@ export const isOwnershipOnPoSide = (ownerGid: string, poUuid: string) => {
     }
     return false
 }
+
+export const findCommonStrings = (array1: string[], array2: string[]) => {
+    const commonStrings: string[] = []
+    array1.forEach((element) => {
+        if (array2.includes(element)) {
+            commonStrings.push(element)
+        }
+    })
+    return commonStrings
+}

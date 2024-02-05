@@ -21,28 +21,32 @@ export const RelationAttributeForm: React.FC<Props> = ({ relationSchema, hasRese
     ]
     return (
         <>
-            {attributes.map((attribute) => (
-                <AttributeInput
-                    key={attribute?.id}
-                    attribute={attribute ?? {}}
-                    register={register}
-                    setValue={setValue}
-                    clearErrors={clearErrors}
-                    trigger={trigger}
-                    isSubmitted={formState.isSubmitted}
-                    error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
-                    hint={attribute?.description}
-                    hasResetState={hasResetState}
-                    constraints={findAttributeConstraint(
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        //@ts-ignore
-                        attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
-                        constraintsData,
-                    )}
-                    unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
-                    control={control}
-                />
-            ))}
+            {attributes.map(
+                (attribute) =>
+                    attribute?.valid &&
+                    !attribute.invisible && (
+                        <AttributeInput
+                            key={attribute?.id}
+                            attribute={attribute ?? {}}
+                            register={register}
+                            setValue={setValue}
+                            clearErrors={clearErrors}
+                            trigger={trigger}
+                            isSubmitted={formState.isSubmitted}
+                            error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
+                            hint={attribute?.description}
+                            hasResetState={hasResetState}
+                            constraints={findAttributeConstraint(
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                //@ts-ignore
+                                attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
+                                constraintsData,
+                            )}
+                            unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                            control={control}
+                        />
+                    ),
+            )}
         </>
     )
 }

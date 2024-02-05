@@ -86,7 +86,7 @@ export const IntegrationLinkFormBody: React.FC<Props> = ({
             {ciTypeData?.attributes?.map?.((attribute) => {
                 return (
                     <React.Fragment key={attribute.technicalName}>
-                        {!attribute.invisible && (
+                        {!attribute.invisible && attribute.valid && (
                             <AttributeInput
                                 control={control}
                                 trigger={trigger}

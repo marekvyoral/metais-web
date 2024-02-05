@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { findCommonStrings } from '@isdd/metais-common/utils/utils'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
-import { findRelationType } from '@/componentHelpers/new-relation'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiCreateItemAndRelationContainer } from '@/components/containers/CiCreateItemAndRelationContainer'
 import { RelationTypePermissionWrapper } from '@/components/permissions/CreateRelationPermissionWrapper'
@@ -44,10 +44,10 @@ const CreateCiItemAndRelation: React.FC = () => {
                         <MainContentWrapper>
                             <RelationTypePermissionWrapper
                                 selectedRoleName={props.data.groupData?.roleName ?? ''}
-                                selectedCiRelationType={findRelationType(props.states.selectedRelationTypeState.selectedRelationTypeTechnicalName, [
-                                    ...(props.data.relationData?.relatedListAsSources ?? []),
-                                    ...(props.data.relationData?.relatedListAsTargets ?? []),
-                                ])}
+                                rolesToCompareWith={findCommonStrings(
+                                    props.data.relationData?.relationTypeData?.roleList ?? [],
+                                    props.data.attributesData?.ciTypeData?.roleList ?? [],
+                                )}
                             >
                                 <NewCiWithRelationView {...props} />
                             </RelationTypePermissionWrapper>
