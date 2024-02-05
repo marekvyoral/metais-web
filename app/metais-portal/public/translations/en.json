@@ -1698,7 +1698,9 @@
         "refIdentifiers": "Reference identifiers",
         "meetingsCreate": "Creation of meeting",
         "meetingDetail": "Detail of meeting",
-        "publicAuthoritiesHierarchy": "Hierarchy of public authorities"
+        "publicAuthoritiesHierarchy": "Hierarchy of public authorities",
+        "relationsSearch": "Relationships search"
+       
     },
     "todo": {
         "header": "Page not found",
@@ -2432,6 +2434,15 @@
         "validityTo": "Valid to",
         "currentVersion": "Current version",
         "lastModifiedBy": "Last modified by"
+    }, 
+     "relationshipList": {
+        "startTypeName": "Type (source)",
+        "startName": "Name (source)",
+        "startKodMetaIS": "MetaIS code (source)",
+        "endTypeName": "Type (target)",
+        "endName": "Name (target)",
+        "endKodMetaIS": "MetaIS code (target)",
+        "relType":"Relationship type"
     },
     "slaContracts": {
         "columns": {

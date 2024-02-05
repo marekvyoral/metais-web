@@ -1613,7 +1613,8 @@
         "codeListDetail": "Detail číselníka",
         "refIdentifiers": "Referencovateľné identifikátory",
         "meetingsCreate": "Vytvorenie zasadnutia",
-        "meetingDetail": "Detail zasadnutia"
+        "meetingDetail": "Detail zasadnutia",
+        "relationsSearch": "Vyhľadávanie podľa vzťahov"
     },
     "refRegisters": {
         "list": {
@@ -2439,6 +2440,15 @@
         "validityTo": "Platnosť do",
         "currentVersion": "Aktuálna verzia",
         "lastModifiedBy": "Poslednú zmenu vykonal"
+    },
+    "relationshipList": {
+        "startTypeName": "Typ (zdroj)",
+        "startName": "Názov (zdroja)",
+        "startKodMetaIS": "MetaIS kód (zdroja)",
+        "endTypeName": "Typ (cieľ)",
+        "endName": "Názov (cieľ)",
+        "endKodMetaIS": "MetaIS kód (cieľ)",
+        "relType":"Typ vzťahu"
     },
     "slaContracts": {
         "columns": {
