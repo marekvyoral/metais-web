@@ -33,7 +33,14 @@ const Profiles = () => {
                                     {props.isError && <QueryFeedback error loading={false} />}
                                 </FlexColumnReverseWrapper>
                                 <EntityFilter defaultFilterValues={defaultFilterValues} />
-                                <EgovTable isFetching={props?.isFetching} refetch={props?.refetch} data={props?.data} entityName={'profile'} />
+                                <EgovTable
+                                    isFetching={props?.isFetching}
+                                    refetch={props?.refetch}
+                                    data={props?.data}
+                                    entityName={'profile'}
+                                    setSort={props.setSort}
+                                    sort={props.sort}
+                                />
                             </QueryFeedback>
                         )
                     }}

@@ -13,6 +13,7 @@ import { createFullAdressFromAttributes } from '@isdd/metais-common/componentHel
 import { CreateEntityButton } from '@isdd/metais-common/components/actions-over-table/actions-default/CreateEntityButton'
 import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useGetTopLevelPoUuid } from '@isdd/metais-common/hooks/useGetTopLevelPoUuid'
 
 import { MoreActionsOverRow } from '@/components/views/public-authorities/actions/MoreActionsOverRow'
 import { IActions } from '@/components/containers/Egov/Entity/PublicAuthoritiesListContainer'
@@ -44,6 +45,7 @@ export const PublicAuthoritiesTable = ({
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
+    const eGovGarant = useGetTopLevelPoUuid()
     const columns: Array<ColumnDef<ConfigurationItemUi>> = [
         {
             header: t('table.name'),
@@ -83,7 +85,12 @@ export const PublicAuthoritiesTable = ({
             header: t('actionsInTable.actions'),
             enableSorting: true,
             id: 'organizationsActions',
-            cell: (ctx) => (ctx.row.original.metaAttributes?.state === 'DRAFT' ? <MoreActionsOverRow setInvalid={setInvalid} ctx={ctx} /> : <></>),
+            cell: (ctx) =>
+                ctx.row.original.metaAttributes?.state === 'DRAFT' ? (
+                    <MoreActionsOverRow setInvalid={setInvalid} ctx={ctx} disableEdit={ctx.row.original.uuid === eGovGarant.uuid} />
+                ) : (
+                    <></>
+                ),
         },
     ]
     return (

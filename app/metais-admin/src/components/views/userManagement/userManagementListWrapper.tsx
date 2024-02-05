@@ -13,6 +13,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { UseMutationResult } from '@tanstack/react-query'
 
 import {
     UserManagementActionsOverRowEnum,
@@ -29,7 +30,6 @@ export interface UserManagementListPageViewProps {
     data: UserManagementListData
     filter: UserManagementFilterData
     handleFilterChange: (filter: IFilter) => void
-    handleRowAction: (identity: { uuid: string; login: string }, action: UserManagementActionsOverRowEnum, isCurrentlyBlocked?: boolean) => void
     handleBlockRowsAction: (identity: { uuid: string; login: string }[], activate: boolean) => void
     handleExport: () => void
     isLoading: boolean
@@ -38,13 +38,21 @@ export interface UserManagementListPageViewProps {
     isErrorExport: boolean
     isMutationError: boolean
     isMutationSuccess: boolean
+    updateIdentityStateBatchMutation: UseMutationResult<
+        void[],
+        unknown,
+        {
+            uuids: string[]
+            activate: boolean
+        },
+        unknown
+    >
 }
 
 export const UserManagementListPageView: React.FC<UserManagementListPageViewProps> = ({
     data,
     filter: userManagementFilter,
     handleFilterChange,
-    handleRowAction,
     handleBlockRowsAction,
     handleExport,
     isError,
@@ -53,6 +61,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     isLoadingExport,
     isMutationError,
     isMutationSuccess,
+    updateIdentityStateBatchMutation,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -165,7 +174,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 filter={userManagementFilter}
                 rowSelection={rowSelection}
                 setRowSelection={setRowSelection}
-                handleRowAction={handleRowAction}
+                updateIdentityStateBatchMutation={updateIdentityStateBatchMutation}
                 handleFilterChange={handleFilterChange}
             />
             <PaginatorWrapper

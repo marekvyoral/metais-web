@@ -129,7 +129,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
 
     return (
         <>
-            <TextHeading size="L">{t('documentsManagement.heading')}</TextHeading>
+            <TextHeading size="XL">{t('documentsManagement.heading')}</TextHeading>
             <Filter<DocumentFilterData>
                 defaultFilterValues={defaultFilter}
                 onlyForm

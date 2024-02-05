@@ -155,7 +155,6 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({ i
                                     handleCheckboxChange(row)
                                 }}
                                 checked={row.original.id ? !!rowSelection.includes(row.original.id.toString()) : false}
-                                //containerClassName={styles.marginBottom15}
                             />
                         </div>
                     </>

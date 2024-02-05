@@ -33,7 +33,7 @@ const Relation = () => {
                                     {props.isError && <QueryFeedback error loading={false} />}
                                 </FlexColumnReverseWrapper>
                                 <EntityFilter defaultFilterValues={defaultFilterValues} />
-                                <EgovTable data={props?.data} entityName={'relation'} />
+                                <EgovTable data={props?.data} entityName={'relation'} setSort={props.setSort} sort={props.sort} />
                             </QueryFeedback>
                         )
                     }}

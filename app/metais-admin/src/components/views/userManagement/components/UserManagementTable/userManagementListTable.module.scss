@@ -12,3 +12,9 @@
 .tooltip {
     border: 1px solid govuk-colour('mid-grey') !important;
 }
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: govuk-spacing(4);
+}

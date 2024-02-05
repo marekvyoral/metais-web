@@ -1,4 +1,4 @@
-@import '../../../../utils.scss';
+@import '@isdd/idsk-ui-kit/src/utils.scss';
 
 .attributeGridRowBox {
     display: flex;
@@ -21,4 +21,10 @@
 }
 .backButton {
     margin-left: auto;
+}
+
+.headerWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

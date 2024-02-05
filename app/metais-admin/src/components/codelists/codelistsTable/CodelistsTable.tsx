@@ -17,13 +17,14 @@ import { ListIcon } from '@isdd/metais-common/assets/images'
 import { BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ActionsOverTable, CreateEntityButton, isRowSelected } from '@isdd/metais-common/index'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { SetStateAction, useCallback, useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string, lazy, ObjectSchema } from 'yup'
 import { TFunction } from 'i18next'
+import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 
 import styles from './codelistsTable.module.scss'
 
@@ -42,6 +43,8 @@ interface ICodelistsTable {
     mutations: CodeListsMutations
     isLoading: boolean
     isError: boolean
+    sort: ColumnSort[]
+    setSort: React.Dispatch<SetStateAction<ColumnSort[]>>
 }
 
 export interface IErrorsState {
@@ -85,7 +88,7 @@ const getCodelistSchema = (t: TFunction) => {
     })
 }
 
-export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutations, isLoading, isError }) => {
+export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutations, isLoading, isError, sort, setSort }) => {
     const { t } = useTranslation()
     const { createEnum, validateEnum, updateEnum, deleteEnum } = mutations
     const location = useLocation()
@@ -122,8 +125,6 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
     const [updatingEnum, setUpdatingEnum] = useState(false)
 
     const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false)
-    const startOfList = currentPage * pageSize - pageSize
-    const endOfList = currentPage * pageSize
 
     const handleDelete = (enumCode: string) => {
         deleteEnum.mutate({ code: enumCode })
@@ -132,9 +133,13 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
     const handleValidate = (enumCode: string) => {
         validateEnum.mutate({ code: enumCode })
     }
+    const handlePageChange = (filter: IFilter) => {
+        setCurrentPage(filter?.pageNumber ?? 0)
+    }
 
-    const handlePagingSelect = (value: string) => {
-        setPageSize(Number(value))
+    const handlePerPageChange = (filter: IFilter | undefined) => {
+        const newPageSize = Number(filter?.pageSize)
+        setPageSize(newPageSize)
     }
 
     const editRow = useCallback(
@@ -190,7 +195,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.code'),
             accessorFn: (row) => row?.code,
-            enableSorting: false,
+            enableSorting: true,
             id: 'code',
             meta: {
                 getCellContext: (ctx: CellContext<EnumTypePreview, unknown>) => ctx?.getValue?.(),
@@ -213,7 +218,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.name'),
             accessorFn: (row) => row?.name,
-            enableSorting: false,
+            enableSorting: true,
             id: 'name',
             meta: {
                 getCellContext: (ctx: CellContext<EnumTypePreview, unknown>) => ctx?.getValue?.(),
@@ -233,7 +238,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.description'),
             accessorFn: (row) => row?.description,
-            enableSorting: false,
+            enableSorting: true,
             id: 'description',
             meta: {
                 getCellContext: (ctx: CellContext<EnumTypePreview, unknown>) => ctx?.getValue?.(),
@@ -394,22 +399,27 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             <ActionsOverTable
                 pagination={{ pageSize, pageNumber: currentPage, dataLength: filteredData?.results?.length ?? 0 }}
                 createButton={<CreateEntityButton label={t('codelists.createNew')} onClick={() => setIsCreateModalOpen(true)} />}
-                handlePagingSelect={handlePagingSelect}
+                handleFilterChange={handlePerPageChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
                 entityName=""
             />
             <Table
-                data={filteredData?.results?.slice(startOfList, endOfList)}
+                data={filteredData?.results}
                 columns={columns.map((item) => ({ ...item, size: 150 }))}
                 isLoading={isLoading || updatingEnum}
                 error={isError}
+                manualPagination={false}
+                manualSorting={false}
+                sort={sort}
+                onSortingChange={setSort}
+                pagination={{ pageIndex: currentPage - 1, pageSize: pageSize }}
             />
             <PaginatorWrapper
                 pageSize={pageSize}
                 pageNumber={currentPage}
                 dataLength={filteredData?.results?.length ?? 0}
-                handlePageChange={(page) => setCurrentPage(page.pageNumber ?? -1)}
+                handlePageChange={handlePageChange}
             />
         </>
     )
