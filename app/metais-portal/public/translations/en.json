@@ -2539,6 +2539,7 @@
         "title": "SLA with vendor",
         "heading": "List of SLA with contractors",
         "headingAdd": "Add SLA with contractor",
+        "headingEdit": "Edit SLA with contractor",
         "createButton": "Add new SLA with contractor"
     },
     "upload": {

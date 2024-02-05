@@ -16,6 +16,8 @@ export const OlaContractList = () => {
         liableEntities: [],
         metaIsCode: '',
     }
+    document.title = `${t('olaContracts.heading')} | MetaIS`
+
     return (
         <>
             <BreadCrumbs

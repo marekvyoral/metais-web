@@ -13,7 +13,6 @@ import { EditCiEntityView } from '@/components/views/ci/edit/EditCiEntityView'
 const EditEntityPage = () => {
     const { t, i18n } = useTranslation()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
-    document.title = `${t('titles.ciEdit', { ci: entityName })} | MetaIS`
 
     const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(entityId)
     const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(entityName)
@@ -22,7 +21,7 @@ const EditEntityPage = () => {
         i18n.language == Languages.SLOVAK
             ? ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
             : ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]
-
+    document.title = `${t('titles.ciEdit', { ci: ciTypeName })} | MetaIS`
     return (
         <>
             <>

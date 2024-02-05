@@ -36,13 +36,13 @@ const ProjectEntityDetailPage: React.FC = () => {
 
     const isUserLogged = !!user
 
-    document.title = `${t('titles.ciDetail', { ci: ENTITY_PROJECT })} | MetaIS`
     const userAbility = useUserAbility()
 
     const setStates = useSetStatesHook()
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_PROJECT)
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,

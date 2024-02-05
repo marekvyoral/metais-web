@@ -62,12 +62,12 @@ const KrisEntityDetailPage: React.FC = () => {
         fetchStatus,
     } = useGetRights(entityId ?? '', { query: { enabled: !!user } })
 
-    document.title = `${t('titles.ciDetail', { ci: ENTITY_KRIS })} | MetaIS`
     const userAbility = useUserAbility()
     const showEvaluation =
         evaluationData && evaluationData.hasVersions && !evaluationData.municipality && (evaluationData.creator || evaluationData.evaluator)
     const { data: ciTypeData } = useGetCiType(ENTITY_KRIS)
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
