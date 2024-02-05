@@ -24,11 +24,11 @@ const GoalEntityDetailPage: React.FC = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    document.title = `${t('titles.ciDetail', { ci: ENTITY_CIEL })} | MetaIS`
     const userAbility = useUserAbility()
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_CIEL)
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,

@@ -8,6 +8,8 @@ import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbi
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Languages } from '@isdd/metais-common/localization/languages'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { POEntityDetailHeader } from './POEntityDetailHeader'
 
@@ -17,14 +19,14 @@ import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrap
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 
 const POEntityDetailPage: React.FC = () => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId, entityName: urlEntityName } = useGetEntityParamsFromUrl()
 
     const entityName = PO
 
-    document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
     const userAbility = useUserAbility()
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
     const [selectedTab, setSelectedTab] = useState<string>()
 
     const {
@@ -41,22 +43,25 @@ const POEntityDetailPage: React.FC = () => {
 
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
 
+    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
+
     return (
         <>
             <BreadCrumbs
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: entityName, href: `/ci/${entityName}` },
+                    { label: ciTypeName, href: `/ci/${urlEntityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
-                        href: `/ci/${entityName}/${entityId}`,
+                        href: `/ci/${urlEntityName}/${entityId}`,
                     },
                 ]}
             />
             <MainContentWrapper>
                 <CiPermissionsWrapper entityId={entityId ?? ''} entityName={entityName}>
-                    <QueryFeedback loading={isCiItemDataLoading}>
+                    <QueryFeedback loading={isCiItemDataLoading || isCiTypeDataLoading} error={isCiTypeDataError}>
                         <FlexColumnReverseWrapper>
                             <POEntityDetailHeader
                                 isInvalidated={isInvalidated}

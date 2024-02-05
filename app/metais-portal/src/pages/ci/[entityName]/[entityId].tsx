@@ -18,7 +18,6 @@ const EntityDetailPage: React.FC = () => {
     const { t, i18n } = useTranslation()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
 
-    document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
     const userAbility = useUserAbility()
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
@@ -36,6 +35,8 @@ const EntityDetailPage: React.FC = () => {
     })
 
     const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t })
+
+    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
 
     return (
         <>

@@ -26,11 +26,11 @@ const AsEntityDetailPage: React.FC = () => {
     const location = useLocation()
     const [selectedTab, setSelectedTab] = useState<string>()
 
-    document.title = `${t('titles.ciDetail', { ci: ENTITY_KS })} | MetaIS`
     const userAbility = useUserAbility()
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_KS)
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,

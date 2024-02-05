@@ -10,7 +10,6 @@ import { CreateCiEntityView } from '@/components/views/ci/create/CreateCiEntityV
 const CreateEntityPage: React.FC = () => {
     const { t } = useTranslation()
     const { entityName } = useGetEntityParamsFromUrl()
-    document.title = `${t('titles.ciCreateEntity', { ci: entityName })} | MetaIS`
 
     return (
         <>

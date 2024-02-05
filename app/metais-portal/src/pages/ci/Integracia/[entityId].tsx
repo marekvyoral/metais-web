@@ -17,10 +17,9 @@ export const IntegrationLinkDetailPage: React.FC = () => {
     const { t, i18n } = useTranslation()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
 
-    document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
-
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,

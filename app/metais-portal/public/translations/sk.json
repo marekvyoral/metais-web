@@ -2545,6 +2545,7 @@
         "title": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
         "heading": "Zoznam SLA s prevádzkovateľom",
         "headingAdd": "Pridat SLA s dodávateľom",
+        "headingEdit": "Zmenit SLA s dodávateľom",
         "createButton": "Pridať novú SLA s dodávateľom"
     },
     "upload": {

@@ -7,6 +7,7 @@ import { OlaContractSaveView } from '@/components/views/ola-contract-list/OlaCon
 
 export const OlaContractEdit = () => {
     const { t } = useTranslation()
+    document.title = `${t('olaContracts.headingEdit')} | MetaIS`
 
     return (
         <>
@@ -15,7 +16,7 @@ export const OlaContractEdit = () => {
                 links={[
                     { label: t('breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('olaContracts.heading'), href: RouterRoutes.OLA_CONTRACT_LIST },
-                    { label: t('olaContracts.headingAdd'), href: RouterRoutes.OLA_CONTRACT_ADD },
+                    { label: t('olaContracts.headingEdit'), href: RouterRoutes.OLA_CONTRACT_ADD },
                 ]}
             />
             <OlaContractEditContainer View={(props) => <OlaContractSaveView {...props} />} />

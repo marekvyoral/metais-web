@@ -29,7 +29,7 @@ interface ICiCreateEntityContainer {
 }
 
 export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ View, entityName }) => {
-    const { i18n } = useTranslation()
+    const { t, i18n } = useTranslation()
     const {
         data: generatedEntityId,
         isLoading: generatedIdLoading,
@@ -49,6 +49,8 @@ export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ Vi
 
     const isLoading = [isAttributesLoading, fetchStatus != 'idle', generatedIdLoading, publicAuthAndRoleLoading].some((item) => item)
     const isError = [isAttributesError, generatedIdError, publicAuthAndRoleError].some((item) => item)
+
+    document.title = `${t('titles.ciCreateEntity', { ci: ciTypeName })} | MetaIS`
 
     return (
         <View

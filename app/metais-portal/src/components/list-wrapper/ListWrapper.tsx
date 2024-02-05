@@ -108,7 +108,15 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         scrollToMutationFeedback()
     }, [bulkActionResult, scrollToMutationFeedback])
 
-    const ciName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    const ciName = useMemo(
+        () => (i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName),
+        [ciTypeData?.engName, ciTypeData?.name, i18n.language],
+    )
+
+    useEffect(() => {
+        document.title = `${t('titles.ciList', { ci: ciName })} | MetaIS`
+    }, [ciName, t])
+
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>

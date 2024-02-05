@@ -7,7 +7,7 @@ import { OlaContractAddContainer } from '@/components/containers/OlaContractAddC
 
 export const OlaContractAdd = () => {
     const { t } = useTranslation()
-
+    document.title = `${t('olaContracts.headingAdd')} | MetaIS`
     return (
         <>
             <BreadCrumbs
