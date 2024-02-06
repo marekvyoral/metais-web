@@ -86,7 +86,6 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
         }
 
         if (callback) callback(responseBody)
-        if (responseBody) return responseBody
-        return response.status
+        return responseBody
     }
 }
