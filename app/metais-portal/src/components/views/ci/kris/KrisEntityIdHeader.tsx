@@ -120,7 +120,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
             gids: [entityData?.metaAttributes?.owner ?? ''],
             login: user?.login,
         },
-        { query: { enabled: entityData && token !== null && !!user?.uuid } },
+        { query: { enabled: entityData?.metaAttributes?.owner !== undefined && token !== null && !!user?.uuid } },
     )
     const { data: dataPoRole, isLoading: isLoadingDataPoRole } = useGetRoleParticipant(entityData?.metaAttributes?.owner ?? '')
 

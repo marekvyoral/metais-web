@@ -56,8 +56,8 @@ export const CiEvaluationContainer: React.FC<ICiEvaluationContainer> = ({ entity
         setApproveLoading(true)
         approveHook(entityId, { manualApproved: approve })
             .then(() => {
-                refetchKrisData()
                 setResultSuccessApiCall({ isSuccess: true, message: t('evaluation.saveSuccess') })
+                refetchKrisData()
             })
             .catch((err) => {
                 setApproveError(err)

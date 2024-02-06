@@ -76,3 +76,17 @@
 .headerBtn {
     margin-bottom: 0 !important;
 }
+
+.buttonPopup {
+    display: flex;
+    flex-direction: column;
+    gap: govuk-spacing(4);
+}
+
+.buttonPopupItem {
+    padding-bottom: govuk-spacing(2);
+}
+
+.noWrap {
+    white-space: nowrap;
+}
