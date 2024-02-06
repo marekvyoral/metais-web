@@ -12,10 +12,10 @@ import classNames from 'classnames'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useInvalidateCiItemCache, useInvalidateDmsFileCache } from '@isdd/metais-common/hooks/invalidate-cache'
-import { useProvisioningSwaggerClient } from '@isdd/metais-common/api/hooks/useProvisioningSwaggerClient'
 import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
 import { IntegrationLinkActions } from '@isdd/metais-common/hooks/permissions/useEditIntegrationPermissions'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useChangeIntegrationState } from '@isdd/metais-common/api/generated/provisioning-swagger'
 
 import { ProvIntegrationUploadDocModal } from './ProvIntegrationUploadDocModal'
 
@@ -68,35 +68,26 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
     const [showManuallySignDoc, setShowManuallySignDoc] = useState<boolean>(false)
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
 
-    const [isStateTransitionSuccess, setStateTransitionSuccess] = useState(false)
-    const [isStateTransitionLoading, setStateTransitionLoading] = useState(false)
-    const [isStateTransitionError, setStateTransitionError] = useState(false)
-    const changeIntegrationState = useProvisioningSwaggerClient()
-
     const invalidateQueriesAfterSuccess = () => {
         invalidateCiItemCache(entityId)
         invalidateDmsfileCache(entityId)
     }
 
-    const handleIterationStateTransition = async (transition: STATE_TRANSITIONS) => {
-        setStateTransitionLoading(true)
-        setStateTransitionError(false)
-        setStateTransitionSuccess(false)
-        try {
-            const result = await changeIntegrationState({
-                url: `/integration/${entityId}/transitions/${transition}`,
-                method: 'post',
-                headers: { 'Content-type': 'application/json' },
-            })
-            if (result === 200) {
+    const {
+        mutateAsync: changeIntegrationState,
+        isError,
+        isLoading,
+        isSuccess,
+    } = useChangeIntegrationState({
+        mutation: {
+            onSuccess() {
                 invalidateQueriesAfterSuccess()
-                setStateTransitionSuccess(true)
-            }
-        } catch {
-            setStateTransitionError(true)
-        } finally {
-            setStateTransitionLoading(false)
-        }
+            },
+        },
+    })
+
+    const handleIterationStateTransition = async (transition: STATE_TRANSITIONS) => {
+        changeIntegrationState({ integrationUuid: entityId, transition })
     }
 
     const handleBulkAction = (actionResult: IBulkActionResult) => {
@@ -113,17 +104,15 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
 
     return (
         <>
-            <ElementToScrollTo
-                isVisible={bulkActionResult?.isError || bulkActionResult?.isSuccess || isStateTransitionError || isStateTransitionSuccess}
-            >
+            <ElementToScrollTo isVisible={bulkActionResult?.isError || bulkActionResult?.isSuccess || isError || isSuccess}>
                 <MutationFeedback
-                    success={bulkActionResult?.isSuccess || isStateTransitionSuccess}
+                    success={bulkActionResult?.isSuccess || isSuccess}
                     successMessage={bulkActionResult?.successMessage}
-                    error={bulkActionResult?.isError || isStateTransitionError ? t('feedback.mutationErrorMessage') : ''}
+                    error={bulkActionResult?.isError || isError ? t('feedback.mutationErrorMessage') : ''}
                 />
             </ElementToScrollTo>
             <div className={styles.headerDiv}>
-                {(isBulkLoading || isStateTransitionLoading) && <LoadingIndicator fullscreen />}
+                {(isBulkLoading || isLoading) && <LoadingIndicator fullscreen />}
                 <TextHeading size="XL" className={classNames({ [styles.invalidated]: isInvalidated })}>
                     {entityItemName}
                 </TextHeading>

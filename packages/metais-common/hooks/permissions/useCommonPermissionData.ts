@@ -47,7 +47,7 @@ export const useCommonPermissionData = ({ entityId, entityName }: Args) => {
         },
         {
             query: {
-                enabled: !ciLoading && !roleParticipantLoading && !ciError && !roleParticipantError && token !== null,
+                enabled: !ciLoading && !roleParticipantLoading && !ciError && !roleParticipantError && token !== null && isLoggedIn,
             },
         },
     )
