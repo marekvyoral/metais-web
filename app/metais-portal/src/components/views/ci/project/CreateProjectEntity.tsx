@@ -156,6 +156,7 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
                     constraintsData={constraintsData}
                     unitsData={unitsData}
                     uploadError={uploadError}
+                    selectedOrg={publicAuthorityState?.selectedPublicAuthority}
                     onSubmit={(formData) =>
                         onSubmit({
                             formData,

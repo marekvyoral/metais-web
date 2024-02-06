@@ -5,6 +5,7 @@ export enum AttributesConfigTechNames {
     REFERENCE_ID = 'Gen_Profil_ref_id',
     EFF_DATE_FROM = 'Profil_Osobitny_Postup_datum_ucinnosti_od',
     EFF_DATE_TO = 'Profil_Osobitny_Postup_datum_ucinnosti_do',
+    EA_Profil_Projekt_prijimatel = 'EA_Profil_Projekt_prijimatel',
 }
 
 interface AttConfig {
