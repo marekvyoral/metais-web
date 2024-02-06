@@ -70,6 +70,11 @@ export const GoalsEvaluationAccordion: React.FC<IGoalsEvaluationAccordionProps> 
         })
     }, [selectedVersion, dataCommon, versionData?.length])
 
+    useEffect(() => {
+        refetch()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isGlobalAllowed])
+
     return (
         <QueryFeedback loading={isLoading || isFetching} error={isError} withChildren>
             <GridRow>

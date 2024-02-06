@@ -13,6 +13,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ColumnDef, Row } from '@tanstack/react-table'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 
 import { IResultCall } from '@/components/views/evaluation/EvaluationView'
 import styles from '@/components/views/evaluation/evaluationView.module.scss'
@@ -169,7 +170,7 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
         },
         {
             accessorFn: (row) => row?.isApproved,
-            id: 'isApproved',
+            id: CHECKBOX_CELL,
             header: () => {
                 const checkedAll = Object.values(getValues())?.every((row) => rowSelection.includes(row.name || ''))
 
