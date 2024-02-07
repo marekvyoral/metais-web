@@ -17,13 +17,16 @@ import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useEffect } from 'react'
 
 import { calcBlockedPublicAuthorities, isCiAlreadyAssigned } from '@/components/views/public-authorities/helpers/formatting'
 
 interface iUseAssignPublicAuthorities<T> {
     entityId: string
     entityName: string
-    onlyFreePO: boolean
     orgIco: string
     defaultFilterValues: T
     defaultFilterOperators?: T
@@ -32,12 +35,15 @@ interface iUseAssignPublicAuthorities<T> {
 export const useAssignPublicAuthorities = <T extends FieldValues & IFilterParams>({
     entityId,
     entityName,
-    onlyFreePO,
     orgIco,
     defaultFilterValues,
     defaultFilterOperators,
 }: iUseAssignPublicAuthorities<T>) => {
     const { t } = useTranslation()
+
+    const { getRequestStatus, isLoading: isStatusLoading, isError: isStatusError, isProcessedError, isTooManyFetchesError } = useGetStatus()
+    const { setIsActionSuccess } = useActionSuccess()
+
     const invalidatePODetail = useInvalidateCiListFilteredCache()
 
     const getGarpoAdmin = useFindEaGarpoAdminHook()
@@ -45,10 +51,17 @@ export const useAssignPublicAuthorities = <T extends FieldValues & IFilterParams
     const { data: relData, isLoading: relIsLoading, isError: relIsError } = useReadRelationships(entityId)
     const generateUUID = useGenerateUuidsHook()
     const getSuperiorPoRelationShip = useReadPoSuperiorPoRelationshipHook()
-    const { mutateAsync: storeGraph } = useStoreGraph({
+    const { mutateAsync: storeGraph, isLoading: isGraphLoading } = useStoreGraph({
         mutation: {
             onSuccess() {
                 invalidatePODetail.invalidate({ ciUuid: entityId })
+            },
+            onError() {
+                setIsActionSuccess({
+                    value: false,
+                    path: `${AdminRouteNames.PUBLIC_AUTHORITIES}/${entityId}/assigned`,
+                    additionalInfo: { type: 'error' },
+                })
             },
         },
     })
@@ -75,8 +88,8 @@ export const useAssignPublicAuthorities = <T extends FieldValues & IFilterParams
     }
     const {
         data: ciData,
-        isLoading: ciIsLoading,
         isError: ciIsError,
+        isFetching,
     } = useReadCiList1(
         {
             ...defaultRequestApi,
@@ -91,7 +104,7 @@ export const useAssignPublicAuthorities = <T extends FieldValues & IFilterParams
             metaAttributes: {
                 state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'],
             },
-            poUuid: !onlyFreePO ? entityId : undefined,
+            poUuid: undefined,
         },
     }
 
@@ -101,6 +114,7 @@ export const useAssignPublicAuthorities = <T extends FieldValues & IFilterParams
         ...filterToNeighborsApi,
         filter: {
             ...filterToNeighborsApi.filter,
+            poUuid: filterParams.onlyFreePO ? entityId : undefined,
             fullTextSearch: filterParams.fullTextSearch || '',
             attributes: mapFilterParamsToApi(filterParams, defaultFilterOperators),
         },
@@ -115,7 +129,7 @@ export const useAssignPublicAuthorities = <T extends FieldValues & IFilterParams
         })) ?? []
 
     const { data: integrityData } = useGetPoRelationshipIntegrityConstraints(poRelationships, {
-        query: { enabled: onlyFreePO },
+        query: { enabled: filterParams.onlyFreePO ? false : true },
     })
 
     const handleSave = async (selectedValues: ConfigurationItemUi[]) => {
@@ -125,31 +139,46 @@ export const useAssignPublicAuthorities = <T extends FieldValues & IFilterParams
 
         const relSet = Object.values(superiorData ?? {})
 
-        await storeGraph({
+        storeGraph({
             data: {
                 invalidateSet: {
                     relationshipSet: relSet,
                 },
                 storeSet: {
-                    relationshipSet: relSet?.map((rel, index) => {
+                    relationshipSet: selectedValues?.map((selectedPO, index) => {
                         return {
-                            attributes: rel?.attributes,
-                            startUuid: rel?.startUuid,
-                            owner: rel?.metaAttributes?.owner,
-                            type: rel?.type,
+                            attributes: [],
+                            startUuid: selectedPO?.uuid,
+                            owner: garpoAdminData.gid,
+                            type: 'PO_je_podriadenou_PO',
                             uuid: uuid?.[index],
-                            endUuid: isCiAlreadyAssigned(rel?.startUuid, ciData?.configurationItemSet) ? garpoAdminData?.orgId : entityId,
+                            endUuid: isCiAlreadyAssigned(selectedPO?.uuid, ciData?.configurationItemSet) ? garpoAdminData?.orgId : entityId,
                         }
                     }),
                 },
             },
+        }).then((res) => {
+            getRequestStatus(res.requestId ?? '', () => {
+                setIsActionSuccess({ value: true, path: `${AdminRouteNames.PUBLIC_AUTHORITIES}/${entityId}/assigned` })
+            })
         })
     }
 
-    const tableDataWithBlockAttribute = calcBlockedPublicAuthorities(tableData, integrityData, onlyFreePO, entityId, orgIco, t)
+    const tableDataWithBlockAttribute = calcBlockedPublicAuthorities(tableData, integrityData, filterParams.onlyFreePO, entityId, orgIco, t)
 
-    const isLoading = relIsLoading || (ciIsLoading && idsToFind?.length > 0)
-    const isError = relIsError || ciIsError
+    const isLoading = [relIsLoading, isFetching, isStatusLoading, isGraphLoading].some((item) => item)
+    const isError = [relIsError, ciIsError, isProcessedError, isStatusError, isTooManyFetchesError, isProcessedError].some((item) => item)
+
+    useEffect(() => {
+        if (isError) {
+            setIsActionSuccess({
+                value: false,
+                path: `${AdminRouteNames.PUBLIC_AUTHORITIES}/${entityId}/assigned`,
+                additionalInfo: { type: 'error' },
+            })
+        }
+    }, [entityId, isError, setIsActionSuccess])
+
     return {
         handleSave,
         tableDataWithBlockAttribute,

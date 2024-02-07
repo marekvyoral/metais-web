@@ -1,16 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { EnumType, useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import {
-    useStorePoWithHierarchyRel,
-    useStorePo,
-    useGetRequestStatusHook,
-    PoWithHierarchyUi,
-    ConfigurationItemUi,
-} from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useStorePoWithHierarchyRel, useStorePo, PoWithHierarchyUi, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 import { useTranslation } from 'react-i18next'
-import { useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useInvalidateCiListFilteredCache, useInvalidateCiReadCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { GET_ENUM } from '@isdd/metais-common/api/constants'
+import { useNavigate } from 'react-router-dom'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 export interface ICreatePublicAuthoritiesView {
     data: {
@@ -33,83 +31,77 @@ interface ICreatePublicAuthorities {
 
 export const CreatePublicAuthoritiesContainer: React.FC<ICreatePublicAuthorities> = ({ View }: ICreatePublicAuthorities) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const { data: personTypes, isLoading: personTypesLoading, isError: personTypesError } = useGetEnum(GET_ENUM.TYP_OSOBY)
     const { data: personCategories, isLoading: personCategoriesLoading, isError: personCategoriesError } = useGetEnum(GET_ENUM.KATEGORIA_OSOBA)
     const { data: sources, isLoading: sourcesLoading, isError: sourcesError } = useGetEnum(GET_ENUM.ZDROJ)
     const { data: replications, isLoading: replicationsLoading, isError: replicationsError } = useGetEnum(GET_ENUM.TYP_REPLIKACIE)
-    const checkProcessHook = useGetRequestStatusHook()
 
-    const { mutateAsync } = useStorePoWithHierarchyRel()
-    const { mutateAsync: updatePOMutation } = useStorePo()
-
-    const [isLoadingUpdatePO, setLoadingUpdatePO] = useState<boolean>(false)
-    const [isLoadingStorePO, setLoadingStorePO] = useState<boolean>(false)
-    const [errorUpdatePO, setErrorUpdatePO] = useState<string>()
-    const [errorStorePO, setErrorStorePO] = useState<string>()
-    const [isSuccess, setSuccess] = useState<boolean | undefined>(undefined)
+    const { mutateAsync, isError: isStoreError, isLoading: isStoreLoading } = useStorePoWithHierarchyRel()
+    const { mutateAsync: updatePOMutation, isError: isUpdateError, isLoading: isUpdateLoading } = useStorePo()
 
     const invalidatePOList = useInvalidateCiListFilteredCache()
+    const invalidatePO = useInvalidateCiReadCache()
+
+    const { setIsActionSuccess } = useActionSuccess()
+    const { getRequestStatus, isProcessedError, isError: isRedirectError, isLoading: isRedirectLoading, isTooManyFetchesError } = useGetStatus()
 
     const storePO = async (formData: PoWithHierarchyUi, poId: string, relId: string) => {
-        setLoadingStorePO(true)
-        setErrorStorePO(undefined)
         await mutateAsync({
             poId,
             relId,
             data: {
                 ...formData,
             },
+        }).then(async (res) => {
+            await getRequestStatus(res?.requestId ?? '', () => {
+                setIsActionSuccess({ value: true, path: `${AdminRouteNames.PUBLIC_AUTHORITIES}/${poId}`, additionalInfo: { type: 'create' } })
+                invalidatePOList.invalidate({})
+                invalidatePO.invalidate(poId)
+                navigate(`${AdminRouteNames.PUBLIC_AUTHORITIES}/${poId}`)
+            })
         })
-            .then(async (res) => {
-                await checkProcessHook(res?.requestId ?? '')
-                    .then((resB) => {
-                        setSuccess(resB?.processed)
-                        invalidatePOList.invalidate({})
-                    })
-                    .catch(() => {
-                        setSuccess(false)
-                    })
-            })
-            .catch((err) => {
-                setErrorStorePO(err)
-            })
-            .finally(() => {
-                setLoadingStorePO(false)
-            })
     }
 
     const updatePO = async (poId: string, formData: ConfigurationItemUi) => {
-        setErrorUpdatePO(undefined)
-        setLoadingUpdatePO(true)
         await updatePOMutation({
             poId,
             data: {
                 ...formData,
             },
+        }).then(async (res) => {
+            await getRequestStatus(res?.requestId ?? '', () => {
+                setIsActionSuccess({ value: true, path: `${AdminRouteNames.PUBLIC_AUTHORITIES}/${poId}`, additionalInfo: { type: 'edit' } })
+                invalidatePOList.invalidate({})
+                invalidatePO.invalidate(poId)
+                navigate(`${AdminRouteNames.PUBLIC_AUTHORITIES}/${poId}`)
+            })
         })
-            .then(async (res) => {
-                await checkProcessHook(res?.requestId ?? '')
-                    .then((resB) => {
-                        setSuccess(resB?.processed)
-                        invalidatePOList.invalidate({ ciUuid: poId })
-                    })
-                    .catch(() => {
-                        setSuccess(false)
-                    })
-            })
-            .catch((err) => {
-                setErrorUpdatePO(err)
-            })
-            .finally(() => {
-                setLoadingUpdatePO(false)
-            })
     }
-    const isLoading = personTypesLoading || personCategoriesLoading || sourcesLoading || replicationsLoading || isLoadingUpdatePO || isLoadingStorePO
-    const isError = personTypesError || personCategoriesError || sourcesError || replicationsError || !!errorUpdatePO || !!errorStorePO
+    const isLoading = [
+        personTypesLoading,
+        personCategoriesLoading,
+        sourcesLoading,
+        replicationsLoading,
+        isUpdateLoading,
+        isStoreLoading,
+        isRedirectLoading,
+    ].some((item) => item)
+    const isError = [
+        personTypesError,
+        personCategoriesError,
+        sourcesError,
+        replicationsError,
+        isUpdateError,
+        isStoreError,
+        isProcessedError,
+        isRedirectError,
+        isTooManyFetchesError,
+    ].some((item) => item)
 
     return (
         <>
-            {isSuccess !== undefined && <MutationFeedback success={isSuccess} error={isSuccess ? undefined : t('feedback.mutationErrorMessage')} />}
+            {isError && <MutationFeedback success={false} error={t('feedback.mutationErrorMessage')} />}
             <View
                 data={{
                     personCategories,

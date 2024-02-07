@@ -159,7 +159,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
             accessorFn: (row) => {
                 return row?.attributes?.find((i) => i.name === ATTRIBUTE_NAME.Gen_Profil_nazov)?.value
             },
-            enableSorting: true,
+            enableSorting: false,
             id: 'name',
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
@@ -171,7 +171,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
             accessorFn: (row) => {
                 return row?.attributes?.find((i) => i.name === ATTRIBUTE_NAME.EA_Profil_PO_ico)?.value
             },
-            enableSorting: true,
+            enableSorting: false,
             id: 'ico',
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
@@ -181,7 +181,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
         {
             header: t('table.valid'),
             accessorFn: (row) => row?.metaAttributes?.state,
-            enableSorting: true,
+            enableSorting: false,
             id: 'state',
             meta: {
                 getCellContext: (ctx) => {
@@ -192,7 +192,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
         },
         {
             header: t('actionsInTable.actions'),
-            enableSorting: true,
+            enableSorting: false,
             id: 'organizationsActions',
             cell: (ctx) =>
                 ctx?.row.original.metaAttributes?.state === 'NEW' && (

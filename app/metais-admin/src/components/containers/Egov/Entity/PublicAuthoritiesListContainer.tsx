@@ -1,7 +1,10 @@
-import { ConfigurationItemUiAttributes, useInvalidateConfigurationItem, useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import {
+    ConfigurationItemUiAttributes,
+    useInvalidateConfigurationItem,
+    useReadCiList1,
+    useRecycleInvalidatedCisBiznis,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useFilterForCiList, useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
-import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filter'
-import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { IListView } from '@isdd/metais-common/types/list'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
@@ -10,8 +13,10 @@ import { useIsIdentityAssignedToPOHook } from '@isdd/metais-common/api/generated
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers'
 export interface IActions {
     setInvalid?: (entityId: string | undefined, configurationItem: ConfigurationItemUiAttributes | undefined) => Promise<void>
+    setValid?: (ciIds: string[] | undefined) => Promise<void>
 }
 
 interface IPublicAuthoritiesListContainer<T> {
@@ -30,25 +35,33 @@ export const PublicAuthoritiesListContainer = <T extends FieldValues & IFilterPa
     setIsInvalidateError,
 }: IPublicAuthoritiesListContainer<T>) => {
     const { columnListData, saveColumnSelection, resetColumns, isLoading: isColumnsLoading, isError: isColumnsError } = useGetColumnData(entityName)
-    const { currentPreferences } = useUserPreferences()
-
-    const metaAttributes = currentPreferences.showInvalidatedItems
-        ? { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'] }
-        : { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'] }
+    const metaAttributesStates = ['AWAITING_APPROVAL', 'APPROVED_BY_OWNER']
 
     const defaultRequestApi = {
         filter: {
             type: [entityName],
-            metaAttributes,
+            metaAttributes: { state: metaAttributesStates },
             poUuid: entityId,
         },
     }
 
     const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, defaultRequestApi)
 
+    const getStates = (state: string): string[] => {
+        switch (state) {
+            case 'DRAFT':
+                return [...metaAttributesStates, 'DRAFT']
+            case 'INVALIDATED':
+                return [...metaAttributesStates, 'INVALIDATED']
+            default:
+                return [...metaAttributesStates, 'DRAFT', 'INVALIDATED']
+        }
+    }
+
     const {
         data: tableData,
         isLoading: isReadCiListLoading,
+        isFetching: isFetching,
         isError: isReadCiListError,
         refetch,
     } = useReadCiList1({
@@ -57,23 +70,51 @@ export const PublicAuthoritiesListContainer = <T extends FieldValues & IFilterPa
             ...filterToNeighborsApi.filter,
             fullTextSearch: filterParams.fullTextSearch || '',
             attributes: mapFilterParamsToApi(filterParams),
+            metaAttributes: {
+                state: getStates(filterParams.state) ?? [],
+            },
         },
     })
 
+    const { setIsActionSuccess } = useActionSuccess()
     const pagination = usePagination(tableData, filterParams)
+    const { getRequestStatus, isProcessedError, isError: isRedirectError, isLoading: isRedirectLoading, isTooManyFetchesError } = useGetStatus()
+    const onCreateSuccess = () => {
+        refetch()
+        setIsActionSuccess({ value: true, path: `${AdminRouteNames.PUBLIC_AUTHORITIES_LIST}`, additionalInfo: { type: 'invalid' } })
+    }
 
-    const { mutateAsync: setInvalid, isLoading: isInvalidating, isError: isInvalidateError } = useInvalidateConfigurationItem()
+    const onValidSuccess = () => {
+        refetch()
+        setIsActionSuccess({ value: true, path: `${AdminRouteNames.PUBLIC_AUTHORITIES_LIST}`, additionalInfo: { type: 'valid' } })
+    }
+    const {
+        mutateAsync: setInvalid,
+        isLoading: isInvalidating,
+        isError: isInvalidateError,
+    } = useInvalidateConfigurationItem({
+        mutation: {
+            onSuccess: (data) => {
+                getRequestStatus(data.requestId ?? '', onCreateSuccess)
+            },
+            onError: () => {
+                setIsActionSuccess({ value: false, path: `${AdminRouteNames.PUBLIC_AUTHORITIES_LIST}`, additionalInfo: { type: 'invalid' } })
+            },
+        },
+    })
+    const { mutateAsync: setValid, isLoading: isValidLoading } = useRecycleInvalidatedCisBiznis({
+        mutation: {
+            onSuccess: (data) => {
+                getRequestStatus(data.requestId ?? '', onValidSuccess)
+            },
+            onError: () => {
+                setIsActionSuccess({ value: false, path: `${AdminRouteNames.PUBLIC_AUTHORITIES_LIST}`, additionalInfo: { type: 'valid' } })
+            },
+        },
+    })
     const isAssignToPOHook = useIsIdentityAssignedToPOHook()
 
     const [isCheckError, setIsCheckError] = useState(false)
-
-    const { setIsActionSuccess } = useActionSuccess()
-    const { getRequestStatus, isProcessedError, isError: isRedirectError, isLoading: isRedirectLoading, isTooManyFetchesError } = useGetStatus()
-
-    const onCreateSuccess = () => {
-        refetch()
-        setIsActionSuccess({ value: true, path: `${AdminRouteNames.PUBLIC_AUTHORITIES_LIST}` })
-    }
 
     useEffect(() => {
         setIsInvalidateError([isCheckError, isProcessedError, isInvalidateError].some((item) => item))
@@ -99,21 +140,29 @@ export const PublicAuthoritiesListContainer = <T extends FieldValues & IFilterPa
             })
     }
 
-    const isLoading = [isReadCiListLoading, isColumnsLoading, isRedirectLoading].some((item) => item)
+    const validatePO = async (uuids: string[] | undefined) => {
+        await setValid({ data: { ciIdList: uuids } })
+    }
+
+    const isLoading = [isReadCiListLoading, isColumnsLoading, isRedirectLoading, isValidLoading].some((item) => item)
     const isError = [isReadCiListError, isColumnsError, isProcessedError, isRedirectError, isTooManyFetchesError].some((item) => item)
 
     return (
         <ListComponent
-            data={{ columnListData, tableData }}
+            data={{
+                columnListData,
+                tableData,
+            }}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
             resetUserSelectedColumns={resetColumns}
             storeUserSelectedColumns={saveColumnSelection}
             sort={filterParams?.sort ?? []}
             refetch={refetch}
-            isLoading={isLoading || isInvalidating}
+            isLoading={[isLoading, isInvalidating, isFetching].some((item) => item)}
             isError={isError}
             setInvalid={invalidateConfigurationItem}
+            setValid={validatePO}
         />
     )
 }

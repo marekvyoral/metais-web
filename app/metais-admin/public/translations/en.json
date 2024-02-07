@@ -447,8 +447,10 @@
         "successfulDeleted": "The item was successfully removed",
         "attrSuccessfulUpdated": "Attribute was successfully changed",
         "attrSuccessfulCreated": "Attribute was successfully created",
-        "invalidatePOSuccess": "Public authority successfully invalidate",
+        "invalidatePOSuccess": "Public authority successfully invalidated",
         "invalidatePOError": "Public authority invalidation failed",
+        "validatePOSuccess": "Public authority successfully validated",
+        "validatePOError": "Public authority validation failed",
         "metaColumnName": {
             "state": "Evidence status",
             "group": "Manager",
@@ -722,6 +724,11 @@
         "submit": "Submit form"
     },
     "publicAuthorities": {
+        "list": {
+            "all": "All",
+            "DRAFT": "Created",
+            "INVALIDATED": "Invalidated"
+        },
         "detail": {
             "title": "Detail of organization",
             "statutoryOfficer": "Statutory officer"
@@ -736,7 +743,8 @@
             "icoRequired": "Identification number is required",
             "icoExist": "Organization with this identification number already exist",
             "icoRegex": "Identification number is in incorrect format. Correct format is '00000000' or '000000000000'",
-            "loading": "Searching identification number"
+            "loading": "Searching identification number",
+            "ICOnotFoundMsg": "The required person with the requested ID number is not found in the MPIIÚ implemented by IS CSRU. You can create a PO manually by clicking the button below.."
         },
         "edit": {
             "updateExistingOrganization": "Edit organization"
@@ -781,7 +789,9 @@
             "isAssigned": "Organization can figure only as subject to only one superior organization!",
             "isCycleInHierarchy": "Organization can not be superior and subject at the same time for one organization!",
             "warningInfo": "You can not create relationship between similar identity!",
-            "topLevelOrg": "You can not assign organization main organization!"
+            "topLevelOrg": "You can not assign organization main organization!",
+            "successFeedback":"Relations successfully updated",
+            "unsuccessFeedback":"Relations update failed"
         },
         "massUpdate": {
             "title": "Mass update of mandatory persons",

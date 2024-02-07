@@ -15,6 +15,7 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ObjectSchema, lazy, number, object, string } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { TFunction } from 'i18next'
+import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 
 import { MoreActionsColumn } from './actions/MoreActionsColumn'
 import { AddAttributeModal } from './attributes/AddAttributeModal'
@@ -79,7 +80,7 @@ export const ProfileDetailView = <T,>({
     }, [isActionSuccess, scrollToMutationFeedback])
     const location = useLocation()
     const { openAddAttributeModal, setOpenAddAttributeModal } = openAddAttribudeModalState
-
+    const [sort, setSort] = useState<ColumnSort[]>([])
     const [selectedRows, setSelectedRows] = useState<Array<number>>([])
     const createDefaultData = (): {
         [x: string]: Attribute
@@ -401,7 +402,13 @@ export const ProfileDetailView = <T,>({
                 </div>
                 <div>
                     <TextHeading size="M">{t('egov.detail.profileAttributes')}</TextHeading>
-                    <Table columns={columns.map((column) => ({ ...column, size: 100 }))} data={profileData?.attributes ?? []} />
+                    <Table
+                        columns={columns.map((column) => ({ ...column, size: 100 }))}
+                        data={profileData?.attributes ?? []}
+                        manualSorting={false}
+                        sort={sort}
+                        onSortingChange={setSort}
+                    />
                     <div className={styles.underTableButton}>
                         <Button
                             label={t('egov.create.back')}
