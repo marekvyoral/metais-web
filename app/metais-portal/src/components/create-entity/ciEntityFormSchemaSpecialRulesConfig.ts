@@ -1,5 +1,5 @@
 import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
-import { ENTITY_KRIS, ENTITY_OSOBITNY_POSTUP, ENTITY_TRAINING } from '@isdd/metais-common/constants'
+import { ENTITY_KRIS, ENTITY_OSOBITNY_POSTUP, ENTITY_PROJECT, ENTITY_TRAINING } from '@isdd/metais-common/constants'
 import { TFunction } from 'i18next'
 import { DateTime } from 'luxon'
 import * as yup from 'yup'
@@ -89,9 +89,21 @@ export const specialRulesConfig = ({ required, t }: IRulesProps): ISpecialRulesC
             .date()
             .nullable()
             .transform((curr, orig) => (orig === '' ? null : curr))
-            .when('Profil_Osobitny_Postup_datum_ucinnosti_od', (trainingFrom, yupSchema) => {
-                return DateTime.fromJSDate(new Date(`${trainingFrom}`)).isValid
-                    ? yupSchema.min(trainingFrom, `${t('validation.dateMustBeGreaterThen')} ${t('form.specialRule.osobitnyPostupDateFrom')}`)
+            .when('Profil_Osobitny_Postup_datum_ucinnosti_od', (osobitnyPostupOd, yupSchema) => {
+                return DateTime.fromJSDate(new Date(`${osobitnyPostupOd}`)).isValid
+                    ? yupSchema.min(osobitnyPostupOd, `${t('validation.dateMustBeGreaterThen')} ${t('form.specialRule.osobitnyPostupDateFrom')}`)
+                    : yupSchema
+            }),
+    },
+    EA_Profil_Projekt_termin_ukoncenia: {
+        entityName: ENTITY_PROJECT,
+        rule: yup
+            .date()
+            .typeError(t('validation.required'))
+            .required(t('validation.required'))
+            .when('EA_Profil_Projekt_datum_zacatia', (projectStart, yupSchema) => {
+                return DateTime.fromJSDate(new Date(`${projectStart}`)).isValid
+                    ? yupSchema.min(projectStart, `${t('validation.dateMustBeGreaterThen')} ${t('form.specialRule.projectImplementationStart')}`)
                     : yupSchema
             }),
     },

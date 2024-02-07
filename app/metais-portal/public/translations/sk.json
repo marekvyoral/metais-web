@@ -309,7 +309,8 @@
         "cancel": "Zrušiť",
         "back": "Späť",
         "specialRule":{
-            "osobitnyPostupDateFrom": "Dátum účinnosti od"
+            "osobitnyPostupDateFrom": "Dátum účinnosti od",
+            "projectImplementationStart": "Dátum začatia realizačnej fázy"
         }
     },
     "languageSelector": {
