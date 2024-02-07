@@ -311,7 +311,8 @@
         "cancel": "Cancel",
         "back": "Back",
         "specialRule":{
-            "osobitnyPostupDateFrom": "Effective date from"
+            "osobitnyPostupDateFrom": "Effective date from",
+            "projectImplementationStart": "Begin date"
         }
     },
     "languageSelector": {
