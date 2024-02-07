@@ -9,6 +9,8 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { Program_financuje_Projekt, ROLES } from '@isdd/metais-common/constants'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { v4 as uuidV4 } from 'uuid'
+import { useGetProgramPartFinanceHook } from '@isdd/metais-common/api/generated/kris-swagger'
+import { FieldValues } from 'react-hook-form'
 
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from '@/components/create-entity/createEntityHelpers'
@@ -53,6 +55,7 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
     const onStatusSuccess = useCiCreateEditOnStatusSuccess()
     const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
     const { onSubmit, uploadError, setUploadError, configurationItemId } = useCiCreateUpdateOnSubmit(entityName)
+    const getApprovalProcess = useGetProgramPartFinanceHook()
 
     const storeGraph = useStoreGraph({
         mutation: {
@@ -110,6 +113,22 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
         },
     })
 
+    const checkApprovalProcessAndSubmit = async (formData: FieldValues) => {
+        const resp = await getApprovalProcess(formData['EA_Profil_Projekt_program'], {
+            projectType: formData['EA_Profil_Projekt_typ_investicie'],
+            financialValue: formData['Financny_Profil_Projekt_suma_vydavkov'],
+        })
+        formData['EA_Profil_Projekt_schvalovaci_proces'] = resp.approvalProcess?.technicalName
+
+        onSubmit({
+            formData,
+            updateCiItemId,
+            storeCiItem: storeConfigurationItem.mutateAsync,
+            ownerId: data.ownerId,
+            generatedEntityId,
+        })
+    }
+
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
     useEffect(() => {
         if (!(isRedirectError || isProcessedError || isRedirectLoading)) {
@@ -157,15 +176,7 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
                     unitsData={unitsData}
                     uploadError={uploadError}
                     selectedOrg={publicAuthorityState?.selectedPublicAuthority}
-                    onSubmit={(formData) =>
-                        onSubmit({
-                            formData,
-                            updateCiItemId,
-                            storeCiItem: storeConfigurationItem.mutateAsync,
-                            ownerId: data.ownerId,
-                            generatedEntityId,
-                        })
-                    }
+                    onSubmit={checkApprovalProcessAndSubmit}
                     defaultItemAttributeValues={defaultItemAttributeValues}
                     updateCiItemId={updateCiItemId}
                     isProcessing={storeConfigurationItem.isLoading}
