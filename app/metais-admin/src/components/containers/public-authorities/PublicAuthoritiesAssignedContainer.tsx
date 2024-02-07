@@ -32,7 +32,6 @@ interface IPublicAuthoritiesAssignedContainer<T> {
     defaultFilterValues: T
     defaultFilterOperators?: T
     icoOfDetailOrg: string
-    onlyFreePO: boolean
     View: React.FC<IPublicAuthoritiesAssignedContainerView>
 }
 
@@ -41,7 +40,6 @@ export const PublicAuthoritiesAssignedContainer = <T extends FieldValues & IFilt
     entityName,
     View,
     icoOfDetailOrg,
-    onlyFreePO,
     defaultFilterValues,
     defaultFilterOperators,
 }: IPublicAuthoritiesAssignedContainer<T>) => {
@@ -49,7 +47,6 @@ export const PublicAuthoritiesAssignedContainer = <T extends FieldValues & IFilt
         useAssignPublicAuthorities({
             entityId,
             entityName,
-            onlyFreePO,
             orgIco: icoOfDetailOrg,
             defaultFilterValues,
             defaultFilterOperators,

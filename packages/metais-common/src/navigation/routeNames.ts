@@ -173,6 +173,7 @@ export enum AdminRouteNames {
     PUBLIC_AUTHORITIES = '/public-authorities',
     PUBLIC_AUTHORITIES_LIST = '/public-authorities/list',
     PUBLIC_AUTHORITIES_FIND = '/public-authorities/find',
+    PUBLIC_AUTHORITIES_CREATE = '/public-authorities/:entityId/:ico/create',
     PUBLIC_AUTHORITIES_MASS_UPDATE = '/public-authorities/mass-update',
     CODELISTS = '/codelists-management',
     MONITORING = '/monitoring',

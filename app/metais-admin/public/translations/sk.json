@@ -489,7 +489,9 @@
         "attrSuccessfulUpdated": "Atribút bol úspešne  zmenený",
         "attrSuccessfulCreated": "Atribút bol úspešne pridaný",
         "invalidatePOSuccess": "Orgán riadenia bol úspešne zneplatnený",
-        "invalidatePOError": "Zneplatnenie Orgánu riadenia neúspešná",
+        "invalidatePOError": "Zneplatnenie Orgánu riadenia neúspešné",
+        "validatePOSuccess": "Orgán riadenia bol úspešne splatnený",
+        "validatePOError": "Splatnenie Orgánu riadenia neúspešné",
         "metaColumnName": {
             "state": "Stav",
             "group": "Manažér",
@@ -777,6 +779,11 @@
         "roleHasRelations": "Rola má vzťah k iným objektom"
     },
     "publicAuthorities": {
+        "list": {
+            "all": "Všetky",
+            "DRAFT": "Vytvorené",
+            "INVALIDATED":"Zneplatnené"
+        },
         "detail": {
             "title": "Detail povinnej osoby",
             "statutoryOfficer": "Štatutár"
@@ -791,13 +798,14 @@
             "icoRequired": "IČO je povinné",
             "icoExist": "Povinná osoba s daným IČO-m už v systéme existuje",
             "icoRegex": "IČO je v nesprávnom tvare. Správny tvar je '00000000' a '000000000000'",
-            "loading": "Vyhľadávam IČO"
+            "loading": "Vyhľadávam IČO",
+            "ICOnotFoundMsg":"Povinná osoba s hľadaným IČO sa nenachádza v MPIIÚ realizovaný IS CSRU. PO môžete založiť manuálne kliknutím na tlačidlo nižšie."
         },
         "edit": {
             "updateExistingOrganization": "Úprava povinnej osoby"
         },
         "create": {
-            "addNewOrganization": "Pridanie PO",
+            "addNewOrganization": "Pridať orgán riadenia",
             "name": "Názov",
             "category": "Kategória osoby",
             "organizationType": "Typ povinnej osoby",
@@ -834,9 +842,11 @@
             "heading": "Priradenie povinnej osoby nadradenej povinnej osobe",
             "save": "Uložiť",
             "isAssigned": "PO môže figurovať ako podriadená iba pre jednu nadriadenú PO!",
-            "isCycleInHierarchy": "V hierarchii PO nesmie vzniknúť cirkulárna referencia v rámci PO, teda PO nesmie byť nadradenou a zároveň podradenou pre tú istú PO!",
+            "isCycleInHierarchy": "V hierarchii PO nesmie vzniknúť cirkulárna referencia v rámci PO, teda PO nesmie byť nadradenou a zároveň podradenou pre tú istú PO!",
             "warningInfo": "Nemôžete vytvoriť vzťah medzi rovnakou identitou!",
-            "topLevelOrg": "Nemôžete priradiť povinnej osobe hlavnú povinnú osobu!"
+            "topLevelOrg": "Nemôžete priradiť povinnej osobe hlavnú povinnú osobu!",
+            "successFeedback":"Vzťahy úspešne aktualizované",
+            "unsuccessFeedback":"Vzťahy sa nepodarilo aktualizovať"
         },
         "massUpdate": {
             "title": "Hromadná aktualizácia povinných osôb",

@@ -8,3 +8,8 @@
 .boldText {
     font-weight: bold !important;
 }
+
+.invalidated {
+    color: govuk-colour('red') !important;
+    text-decoration: line-through;
+}

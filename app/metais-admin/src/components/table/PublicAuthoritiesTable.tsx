@@ -14,6 +14,7 @@ import { CreateEntityButton } from '@isdd/metais-common/components/actions-over-
 import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useGetTopLevelPoUuid } from '@isdd/metais-common/hooks/useGetTopLevelPoUuid'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 import { MoreActionsOverRow } from '@/components/views/public-authorities/actions/MoreActionsOverRow'
 import { IActions } from '@/components/containers/Egov/Entity/PublicAuthoritiesListContainer'
@@ -41,6 +42,7 @@ export const PublicAuthoritiesTable = ({
     isLoading,
     error,
     setInvalid,
+    setValid,
 }: PublicAuthoritiesTableProps & IActions) => {
     const { t } = useTranslation()
     const location = useLocation()
@@ -56,7 +58,7 @@ export const PublicAuthoritiesTable = ({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (ctx) => (
-                <Link to={'./' + ctx?.row.original.uuid} state={{ from: location }}>
+                <Link to={`${AdminRouteNames.PUBLIC_AUTHORITIES}/${ctx?.row.original.uuid}`} state={{ from: location }}>
                     {ctx?.getValue?.() as string}
                 </Link>
             ),
@@ -85,16 +87,14 @@ export const PublicAuthoritiesTable = ({
             header: t('actionsInTable.actions'),
             enableSorting: true,
             id: 'organizationsActions',
-            cell: (ctx) =>
-                ctx.row.original.metaAttributes?.state === 'DRAFT' ? (
-                    <MoreActionsOverRow setInvalid={setInvalid} ctx={ctx} disableEdit={ctx.row.original.uuid === eGovGarant.uuid} />
-                ) : (
-                    <></>
-                ),
+            size: 100,
+            cell: (ctx) => (
+                <MoreActionsOverRow setInvalid={setInvalid} ctx={ctx} setValid={setValid} disableEdit={ctx.row.original.uuid === eGovGarant.uuid} />
+            ),
         },
     ]
     return (
-        <div>
+        <QueryFeedback withChildren loading={isLoading} error={false}>
             <ActionsOverTable
                 pagination={pagination}
                 handleFilterChange={handleFilterChange}
@@ -110,8 +110,17 @@ export const PublicAuthoritiesTable = ({
                 }
                 hiddenButtons={{ SELECT_COLUMNS: true }}
             />
-            <Table data={data?.configurationItemSet} columns={columns} sort={sort} isLoading={isLoading} error={error} />
+            <Table
+                data={data?.configurationItemSet}
+                columns={columns}
+                onSortingChange={(columnSort) => {
+                    handleFilterChange({ sort: columnSort })
+                }}
+                sort={sort}
+                isLoading={isLoading}
+                error={error}
+            />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
-        </div>
+        </QueryFeedback>
     )
 }

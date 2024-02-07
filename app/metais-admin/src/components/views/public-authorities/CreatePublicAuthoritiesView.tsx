@@ -1,4 +1,4 @@
-import { Button, CheckBox, Input, SimpleSelect } from '@isdd/idsk-ui-kit'
+import { Button, CheckBox, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { QueryFeedback } from '@isdd/metais-common/index'
@@ -29,21 +29,24 @@ export const CreatePublicAuthoritiesView = (props: ICreatePublicAuthoritiesView)
             withChildren
         >
             <FlexColumnReverseWrapper>
-                <h1>{ico ? t('publicAuthorities.create.addNewOrganization') : t('publicAuthorities.edit.updateExistingOrganization')}</h1>
+                <TextHeading size="XL">
+                    {ico ? t('publicAuthorities.create.addNewOrganization') : t('publicAuthorities.edit.updateExistingOrganization')}
+                </TextHeading>
             </FlexColumnReverseWrapper>
             <div className={styles.form}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Input
                         {...register('Gen_Profil_nazov')}
-                        label={t('publicAuthorities.create.name')}
+                        label={`${t('publicAuthorities.create.name')} ${t('input.requiredField')}`}
                         error={formState?.errors?.Gen_Profil_nazov?.message}
                     />
                     <SimpleSelect
                         name="EA_Profil_PO_kategoria_osoby"
                         setValue={setValue}
-                        label={t('publicAuthorities.create.category')}
+                        label={`${t('publicAuthorities.create.category')} ${t('input.requiredField')}`}
                         options={personCategoriesOptions}
                         error={formState?.errors?.EA_Profil_PO_kategoria_osoby?.message}
+                        defaultValue={formState.defaultValues?.['EA_Profil_PO_kategoria_osoby']}
                     />
                     <SimpleSelect
                         name="EA_Profil_PO_typ_osoby"
@@ -52,6 +55,7 @@ export const CreatePublicAuthoritiesView = (props: ICreatePublicAuthoritiesView)
                         options={personTypesOptions}
                         error={formState?.errors?.EA_Profil_PO_typ_osoby?.message}
                         disabled={isTypePersonDisabled}
+                        defaultValue={formState.defaultValues?.['EA_Profil_PO_typ_osoby']}
                     />
 
                     <Input
@@ -75,6 +79,7 @@ export const CreatePublicAuthoritiesView = (props: ICreatePublicAuthoritiesView)
                         label={t('publicAuthorities.create.source')}
                         options={sourcesOptions}
                         error={formState?.errors?.Gen_Profil_zdroj?.message}
+                        defaultValue={formState.defaultValues?.['Gen_Profil_zdroj']}
                     />
                     <Input
                         {...register('Gen_Profil_kod_metais')}
@@ -157,6 +162,7 @@ export const CreatePublicAuthoritiesView = (props: ICreatePublicAuthoritiesView)
                         setValue={setValue}
                         options={replicationTypesOptions}
                         error={formState?.errors?.Gen_Profil_EA_typ_replikacie?.message}
+                        defaultValue={formState.defaultValues?.['Gen_Profil_EA_typ_replikacie']}
                     />
                     <Input
                         {...register('Gen_Profil_EA_pocet_replikacii')}
@@ -164,7 +170,7 @@ export const CreatePublicAuthoritiesView = (props: ICreatePublicAuthoritiesView)
                         error={formState?.errors?.Gen_Profil_EA_pocet_replikacii?.message}
                         type="number"
                     />
-                    <h2>{t('publicAuthorities.detail.statutoryOfficer')}</h2>
+                    <TextHeading size="L">{t('publicAuthorities.detail.statutoryOfficer')}</TextHeading>
 
                     <Input
                         {...register('Profil_PO_statutar_titul_pred_menom')}

@@ -1,8 +1,18 @@
 import React from 'react'
-import { ATTRIBUTE_NAME, GET_ENUM, STATUTAR_NAME } from '@isdd/metais-common'
-import { EnumItem, EnumType, useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { ConfigurationItemUi, useInvalidateConfigurationItem, useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { GET_ENUM } from '@isdd/metais-common'
+import { EnumType, useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import {
+    ConfigurationItemUi,
+    useInvalidateConfigurationItem,
+    useReadConfigurationItem,
+    useRecycleInvalidatedCisBiznis,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
+import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 export interface ParsedAttribute {
     label: string
@@ -11,13 +21,16 @@ export interface ParsedAttribute {
 }
 
 export interface IPublicAuthoritiesDetail {
-    configurationItem?: ConfigurationItemUi | undefined
-    personTypesCategories?: EnumType | undefined
-    personCategories?: EnumType | undefined
-    sources?: EnumType | undefined
-    parsedAttributes?: ParsedAttribute[]
-    statutarAttributes?: ParsedAttribute[]
+    configurationItem?: ConfigurationItemUi
+    ciTypeData?: CiType
+    constraintsData?: (EnumType | undefined)[]
+    unitsData?: EnumType
+    currentEntityCiTypeConstraintsData: Record<string, ConfigurationItemUi>
+    personTypesCategories?: EnumType
+    personCategories?: EnumType
+    sources?: EnumType
     setInvalid?: (entityId: string | undefined, configurationItem: ConfigurationItemUi | undefined) => Promise<void>
+    setValid?: (entityId: string[] | undefined) => Promise<void>
 }
 export interface IPublicAuthoritiesDetailContainerView {
     data: IPublicAuthoritiesDetail
@@ -30,63 +43,47 @@ interface IPublicAuthoritiesDetailContainer {
     View: React.FC<IPublicAuthoritiesDetailContainerView>
 }
 
-const allAttributes = Object.values(ATTRIBUTE_NAME)
-const allStatutarAttributes = Object.values(STATUTAR_NAME)
-
 export const PublicAuthoritiesDetailContainer: React.FC<IPublicAuthoritiesDetailContainer> = ({ entityId, View }) => {
     const { data: personTypesCategories } = useGetEnum(GET_ENUM.TYP_OSOBY)
     const { data: personCategories } = useGetEnum(GET_ENUM.KATEGORIA_OSOBA)
     const { data: sources } = useGetEnum(GET_ENUM.ZDROJ)
+    const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook('PO')
+    const { data: poData, refetch } = useReadConfigurationItem(entityId)
+    const { setIsActionSuccess } = useActionSuccess()
+    const {
+        isLoading: isCiConstraintLoading,
+        isError: isCiConstraintError,
+        uuidsToMatchedCiItemsMap,
+    } = useGetCiTypeConstraintsData(ciTypeData, [poData ?? {}])
+    const { getRequestStatus, isProcessedError, isError: isRedirectError, isLoading: isRedirectLoading, isTooManyFetchesError } = useGetStatus()
+    const currentEntityCiTypeConstraintsData = uuidsToMatchedCiItemsMap[poData?.uuid ?? '']
 
-    const { currentPreferences } = useUserPreferences()
-
-    const metaAttributes = currentPreferences.showInvalidatedItems
-        ? { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'] }
-        : { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'] }
-
-    const defaultRequestApi = {
-        filter: {
-            type: ['PO'],
-            uuid: [entityId],
-            metaAttributes,
+    const { mutateAsync: setInvalid, isLoading: isInvalidating } = useInvalidateConfigurationItem({
+        mutation: {
+            onSuccess: (data) => {
+                getRequestStatus(data.requestId ?? '', () => {
+                    refetch()
+                    setIsActionSuccess({
+                        value: true,
+                        path: `${AdminRouteNames.PUBLIC_AUTHORITIES}/${entityId}`,
+                        additionalInfo: { type: 'invalid' },
+                    })
+                })
+            },
         },
-    }
-
-    const { data, isLoading, isError } = useReadCiList1({
-        ...defaultRequestApi,
+    })
+    const { mutateAsync: setValid, isLoading: isValidating } = useRecycleInvalidatedCisBiznis({
+        mutation: {
+            onSuccess: (data) => {
+                getRequestStatus(data.requestId ?? '', () => {
+                    refetch()
+                    setIsActionSuccess({ value: true, path: `${AdminRouteNames.PUBLIC_AUTHORITIES}/${entityId}`, additionalInfo: { type: 'valid' } })
+                })
+            },
+        },
     })
 
-    const attributesPO = data?.configurationItemSet?.[0].attributes
-
-    const getValueFromEnumItems = (enumItems: EnumItem[], attribute: ATTRIBUTE_NAME) => {
-        return enumItems?.find((item) => item.code === attributesPO?.[attribute])?.description
-    }
-
-    const getValueFromEnumItemsSource = (enumItems: EnumItem[], attribute: ATTRIBUTE_NAME) => {
-        return enumItems?.find((item) => item.code === attributesPO?.[attribute])?.value
-    }
-    const translatePrefix = 'PO_Attributes.'
-
-    const parsedAttributes = allAttributes.map((attribute) => {
-        if (attribute === ATTRIBUTE_NAME.EA_Profil_PO_kategoria_osoby)
-            return { label: translatePrefix + attribute, value: getValueFromEnumItems(personCategories?.enumItems ?? [], attribute) }
-        if (attribute === ATTRIBUTE_NAME.EA_Profil_PO_typ_osoby)
-            return { label: translatePrefix + attribute, value: getValueFromEnumItems(personTypesCategories?.enumItems ?? [], attribute) }
-
-        if (attribute === ATTRIBUTE_NAME.Gen_Profil_zdroj) {
-            return { label: translatePrefix + attribute, value: getValueFromEnumItemsSource(sources?.enumItems ?? [], attribute) }
-        }
-
-        return { label: translatePrefix + attribute, value: attributesPO?.[attribute] }
-    })
-
-    const statutarAttributes = allStatutarAttributes.map((relation) => {
-        return { label: translatePrefix + relation, value: attributesPO?.[relation] }
-    })
-
-    const { mutateAsync: setInvalid } = useInvalidateConfigurationItem()
-
-    const InvalidateConfigurationItem = async (uuid: string | undefined, configurationItem: ConfigurationItemUi | undefined) => {
+    const invalidateConfigurationItem = async (uuid: string | undefined, configurationItem: ConfigurationItemUi | undefined) => {
         const attributes = configurationItem?.attributes
         if (!attributes) return
         await setInvalid({
@@ -99,19 +96,26 @@ export const PublicAuthoritiesDetailContainer: React.FC<IPublicAuthoritiesDetail
         })
     }
 
+    const validatePO = async (uuids: string[] | undefined) => {
+        await setValid({ data: { ciIdList: uuids } })
+    }
+
     return (
         <View
             data={{
-                configurationItem: data?.configurationItemSet?.[0],
+                configurationItem: poData,
                 personTypesCategories,
                 personCategories,
                 sources,
-                parsedAttributes,
-                statutarAttributes,
-                setInvalid: InvalidateConfigurationItem,
+                setInvalid: invalidateConfigurationItem,
+                setValid: validatePO,
+                constraintsData: constraintsData,
+                unitsData: unitsData,
+                currentEntityCiTypeConstraintsData: currentEntityCiTypeConstraintsData,
+                ciTypeData,
             }}
-            isError={isError}
-            isLoading={isLoading}
+            isError={[isAttError, isCiConstraintError, isProcessedError, isRedirectError, isTooManyFetchesError].some((item) => item)}
+            isLoading={[isAttLoading, isCiConstraintLoading, isInvalidating, isValidating, isRedirectLoading].some((item) => item)}
         />
     )
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { ConfigurationItemSetUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CsruOrganization, useGetOrganizationFromCsruHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { useTranslation } from 'react-i18next'
 
 export interface iFindView {
     data: {
@@ -20,6 +21,8 @@ interface ICreateEntity {
 }
 
 export const FindContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
+    const { t } = useTranslation()
+
     const [CSRUData, setCSRUData] = useState<CsruOrganization>()
     const [data, setData] = useState<ConfigurationItemSetUi>()
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -64,7 +67,7 @@ export const FindContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) 
                 setSame(true)
             }
         } catch (err) {
-            setError((err as Error).message)
+            setError(t('publicAuthorities.find.ICOnotFoundMsg'))
         } finally {
             setIsLoading(false)
         }
