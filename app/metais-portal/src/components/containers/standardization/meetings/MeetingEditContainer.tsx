@@ -3,6 +3,7 @@ import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import {
     ApiAttachment,
+    ApiLink,
     ApiMeetingRequest,
     useGetMeetingRequestDetail,
     useUpdateMeetingRequest,
@@ -77,7 +78,7 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
                 notifNewUsers: formData[MeetingFormEnum.NOTIF_NEW_USERS],
                 ignorePersonalSettings: formData[MeetingFormEnum.IGNORE_PERSONAL_SETTINGS],
                 meetingExternalActors: formData[MeetingFormEnum.MEETING_EXTERNAL_ACTORS],
-                meetingLinks: formData[MeetingFormEnum.MEETING_LINKS],
+                meetingLinks: formData[MeetingFormEnum.MEETING_LINKS].filter((meetingLink: ApiLink) => !!meetingLink),
                 meetingAttachments: attachments,
             },
             meetingRequestId: infoData?.id || 0,

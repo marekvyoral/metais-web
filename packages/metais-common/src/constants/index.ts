@@ -240,6 +240,9 @@ export const KRIScolumnsTechNames = [
 export const krisRelatedCiTabsNames = [ENTITY_KS, ENTITY_ISVS, ENTITY_PROJECT, ENTITY_ZS, ENTITY_AGENDA]
 export enum ROLES {
     EA_GARPO = 'EA_GARPO',
+    R_EGOV = 'R_EGOV',
+    R_ADMIN = 'R_ADMIN',
+    SKOLITEL = 'SKOLITEL',
 }
 export const NO_USER_COLUMNS_LS_KEY = 'METAIS_columns_noUser/'
 

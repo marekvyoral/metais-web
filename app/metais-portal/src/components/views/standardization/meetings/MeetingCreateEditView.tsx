@@ -104,10 +104,18 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
             [MeetingFormEnum.TIME_START]: formatDateTimeForDefaultValue(infoData?.beginDate ?? '', 'HH:mm'),
             [MeetingFormEnum.TIME_END]: formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'),
             [MeetingFormEnum.PLACE]: infoData?.place || '',
-            [MeetingFormEnum.MEETING_LINKS]: infoData?.meetingLinks || [],
+            [MeetingFormEnum.MEETING_LINKS]:
+                infoData?.meetingLinks?.map((link) => ({
+                    id: link.id,
+                    linkDescription: link.linkDescription,
+                    linkSize: link.linkSize,
+                    linkType: link.linkType,
+                    url: link.url,
+                })) || [],
         },
     })
     const meetingDescription = watch(MeetingFormEnum.DESCRIPTION)
+
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'meetingExternalActors',
@@ -157,6 +165,16 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                 name: actor.name || '',
                 email: actor.email || '',
                 description: actor.description || '',
+            })) || [],
+        )
+        setValue(
+            MeetingFormEnum.MEETING_LINKS,
+            infoData?.meetingLinks?.map((link) => ({
+                id: link.id,
+                linkDescription: link.linkDescription,
+                linkSize: link.linkSize,
+                linkType: link.linkType,
+                url: link.url,
             })) || [],
         )
         setValue(MeetingFormEnum.GROUP, infoData?.groups || [])
@@ -309,7 +327,9 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                         <TextHeading size="L">{t('meetings.form.heading.documents')}</TextHeading>
                         <TextHeading size="M">{t('meetings.form.heading.documentsDetail')}</TextHeading>
 
-                        <LinksImport defaultValues={infoData?.meetingLinks} register={register} unregister={unregister} errors={errors} />
+                        {infoData?.meetingLinks && (
+                            <LinksImport defaultValues={infoData?.meetingLinks ?? []} register={register} unregister={unregister} errors={errors} />
+                        )}
                         <TextHeading size="M">{t('meetings.form.heading.documentsExport')}</TextHeading>
                         <FileUpload
                             ref={fileUploadRef}
