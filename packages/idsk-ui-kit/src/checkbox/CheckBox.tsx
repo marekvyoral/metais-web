@@ -8,7 +8,7 @@ import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 interface ICheckBoxProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id: string
-    label: string
+    label: string | React.ReactNode
     name: string
     value?: string
     disabled?: boolean

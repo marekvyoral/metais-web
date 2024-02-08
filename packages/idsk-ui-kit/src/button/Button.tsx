@@ -13,12 +13,14 @@ interface IButton {
     value?: string
     id?: string
     bottomMargin?: boolean
+    autoFocus?: boolean
 }
 
 export const Button = forwardRef<HTMLButtonElement, IButton>(
-    ({ label, onClick, variant, disabled, type = 'button', className, value, id, onFocus, bottomMargin = true }, ref) => {
+    ({ label, onClick, variant, disabled, type = 'button', className, value, id, onFocus, bottomMargin = true, autoFocus }, ref) => {
         return (
             <button
+                autoFocus={autoFocus}
                 id={id}
                 value={value}
                 ref={ref}
