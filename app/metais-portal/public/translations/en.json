@@ -159,6 +159,7 @@
             "monitoringSet": "Set of monitoring parameters",
             "monitoringImport": "Import of monitored parameters",
             "monitoringServices": "Monitoring services",
+            "monitoringInsert": "Insert monitoring parameters",
             "evidenceObjects": "Evidence objects",
             "attributesEvidenceObjects": "Attributes of evidence objects",
             "servers": "Servers",
@@ -313,7 +314,7 @@
         "waitSending": "Wait please. I am sending the form.",
         "cancel": "Cancel",
         "back": "Back",
-        "specialRule":{
+        "specialRule": {
             "osobitnyPostupDateFrom": "Effective date from",
             "projectImplementationStart": "Begin date"
         }
@@ -344,6 +345,12 @@
         "back": "Back"
     },
     "errors": {
+        "import": {
+            "default": "Ups, something went wrong.",
+            "validateFile": "Validation failed",
+            "uploadFile": "File upload failed",
+            "successUload": "Upload file was successful"
+        },
         "NoChangesDetected": "No changes detected",
         "fixLink": "Correct",
         "invalidEntityId": "Invalid entity",
@@ -1688,6 +1695,7 @@
         "groupEdit": "Edit of group",
         "reports": "Reports",
         "monitoringServices": "Monitoring koncových a aplikačných služieb",
+        "monitoringInsert": "Insert monitoring parameters",
         "reportDetail": "Report detail",
         "ciList": "List of {{ci}} items",
         "ciDetail": "Detail of {{ci}} item",
@@ -1713,7 +1721,6 @@
         "meetingDetail": "Detail of meeting",
         "publicAuthoritiesHierarchy": "Hierarchy of public authorities",
         "relationsSearch": "Relationships search"
-       
     },
     "todo": {
         "header": "Page not found",
@@ -2333,6 +2340,17 @@
             "serviceType": "Type of service",
             "from": "Value from",
             "to": "Value to"
+        },
+        "detail": {
+            "toggleButton": "Show table",
+            "totalInPeriod": "Total in period",
+            "avarageInPeriod": "Average in period"
+        },
+        "filter": {
+            "responsibleAuthority": "Responsible authority",
+            "project": "Project",
+            "isvs": "Select ISVS",
+            "service": "Select service"
         }
     },
     "cookies": {
@@ -2513,15 +2531,15 @@
         "validityTo": "Valid to",
         "currentVersion": "Current version",
         "lastModifiedBy": "Last modified by"
-    }, 
-     "relationshipList": {
+    },
+    "relationshipList": {
         "startTypeName": "Type (source)",
         "startName": "Name (source)",
         "startKodMetaIS": "MetaIS code (source)",
         "endTypeName": "Type (target)",
         "endName": "Name (target)",
         "endKodMetaIS": "MetaIS code (target)",
-        "relType":"Relationship type"
+        "relType": "Relationship type"
     },
     "slaContracts": {
         "columns": {
@@ -2616,6 +2634,17 @@
         "headingAdd": "Add SLA with contractor",
         "headingEdit": "Edit SLA with contractor",
         "createButton": "Add new SLA with contractor"
+    },
+    "insertMonitoring": {
+        "columns": {
+            "parameterType": "Type of parameter",
+            "parameterDate": "Date from (reqiured)",
+            "parameterValue": "Value (reqiured)"
+        },
+        "buttonInsertParam": "Insert parameters",
+        "buttonInsertDescParam": "Insert param value will be valid for all seleceted services.",
+        "buttonInsertParamValue": "Add value of parameters",
+        "buttonSendForm": "Send"
     },
     "upload": {
         "success": "Document has been added successfully",

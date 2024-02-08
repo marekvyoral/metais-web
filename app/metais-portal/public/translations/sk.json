@@ -156,6 +156,7 @@
             "monitoringApp": "Monitorované parametre AS",
             "monitoringSet": "Zostava monitorovaných parametrov",
             "monitoringImport": "Import monitorovacích parametrov",
+            "monitoringInsert": "Vloženie monitorovacích údajov",
             "monitoringServices": "Monitoring služieb",
             "evidenceObjects": "Objekt evidencie",
             "attributesEvidenceObjects": "Atribút objektu evidencie",
@@ -311,7 +312,7 @@
         "waitSending": "Čakajte prosím. Odosielam formulár.",
         "cancel": "Zrušiť",
         "back": "Späť",
-        "specialRule":{
+        "specialRule": {
             "osobitnyPostupDateFrom": "Dátum účinnosti od",
             "projectImplementationStart": "Dátum začatia realizačnej fázy"
         }
@@ -336,6 +337,12 @@
         "moreTabs": "Viac"
     },
     "errors": {
+        "import": {
+            "default": "Ups, niečo sa pokazilo.",
+            "validateFile": "Validacia súboru zlyhala",
+            "uploadFile": "Nahrávanie súboru zlyhalo",
+            "successUload": "Nahrávanie súboru bolo úspešné"
+        },
         "NoChangesDetected": "Nezaznamenali sme žiadne zmeny",
         "fixLink": "Opraviť",
         "invalidEntityId": "Nevalidná entita",
@@ -1603,6 +1610,7 @@
         "groupEdit": "Úprava pracovnej skupiny",
         "reports": "Reporty a zostavy",
         "monitoringServices": "Monitoring koncových a aplikačných služieb",
+        "monitoringInsert": "Vloženie monitorovacích údajov",
         "reportDetail": "Detail reportu",
         "ciList": "Zoznam položiek {{ci}}",
         "ciDetail": "Detail položky {{ci}}",
@@ -2339,6 +2347,17 @@
             "serviceType": "Typ služby",
             "from": "Hodnoty od",
             "to": "Hodnoty do"
+        },
+        "detail": {
+            "toggleButton": "Zmeniť pohľad",
+            "totalInPeriod": "Spolu za vybrané obdobie",
+            "avarageInPeriod": "Priemer za vybrané obdobie"
+        },
+        "filter": {
+            "responsibleAuthority": "Povinná osoba",
+            "project": "Projekt",
+            "isvs": "Vyberte ISVS",
+            "service": "Vyberte službu"
         }
     },
     "cookies": {
@@ -2527,7 +2546,7 @@
         "endTypeName": "Typ (cieľ)",
         "endName": "Názov (cieľ)",
         "endKodMetaIS": "MetaIS kód (cieľ)",
-        "relType":"Typ vzťahu"
+        "relType": "Typ vzťahu"
     },
     "slaContracts": {
         "columns": {
@@ -2622,6 +2641,17 @@
         "headingAdd": "Pridat SLA s dodávateľom",
         "headingEdit": "Zmenit SLA s dodávateľom",
         "createButton": "Pridať novú SLA s dodávateľom"
+    },
+    "insertMonitoring": {
+        "columns": {
+            "parameterType": "Typ parametra",
+            "parameterDate": "Obdobie (berie sa len mesiac a rok) (povinné)",
+            "parameterValue": "Hodnota (povinné)"
+        },
+        "buttonInsertParam": "Pridať parametre",
+        "buttonInsertDescParam": "Vkladané hodnoty parametrov budú platné pre všetky vybrané služby.",
+        "buttonInsertParamValue": "Pridať hodnoty parametrov",
+        "buttonSendForm": "Odoslať"
     },
     "upload": {
         "success": "Dokument bol úspešne pridaný",
