@@ -12,6 +12,11 @@ body {
     margin: 0px
 }
 
+.idsk-table p{ 
+    overflow-y: visible !important;
+    overflow-x: visible !important;
+}
+
 .tooltipWidth500 {
     max-width: 500px;
 }

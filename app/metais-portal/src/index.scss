@@ -19,37 +19,52 @@ body {
     max-width: 500px;
 }
 
+.idsk-table p{ 
+        overflow-y: visible !important;
+        overflow-x: visible !important;
+}
+
 .wiki {
     h1:not([class*='govuk-accordion']) {
         @extend .govuk-heading-xl;
     }
+
     h2:not([class*='govuk-accordion']) {
         @extend .govuk-heading-l;
     }
+
     h3 {
         @extend .govuk-heading-m;
     }
+
     h4 {
         @extend .govuk-heading-s;
     }
+
     ul {
         @extend .govuk-list;
         @extend .govuk-list--bullet;
     }
+
     table {
         @extend .idsk-table;
+
         tr {
             @extend .idsk-table__row;
+
             th {
                 @extend .idsk-table__header;
             }
+
             td {
                 @extend .idsk-table__cell;
             }
         }
+
         thead {
             @extend .idsk-table__head;
         }
+
         tbody {
             @extend .idsk-table__body;
         }
