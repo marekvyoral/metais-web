@@ -23,14 +23,11 @@ export const CloneCiEntityView: React.FC<ICiCloneContainerView> = ({
     selectedRelationTypeState,
     isError,
     isLoading,
+    newCiCode,
 }) => {
     const { t, i18n } = useTranslation()
     const ciItemAttributes = ciItemData?.attributes
 
-    const entityIdToClone = {
-        cicode: ciItemAttributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais],
-        ciurl: ciItemAttributes?.[ATTRIBUTE_NAME.Gen_Profil_ref_id],
-    }
     const currentName =
         i18n.language == Languages.SLOVAK
             ? ciItemAttributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
@@ -47,7 +44,7 @@ export const CloneCiEntityView: React.FC<ICiCloneContainerView> = ({
                 cloneCiItemId={ciItemData?.uuid}
                 data={{
                     attributesData: { ciTypeData, constraintsData, unitsData },
-                    generatedEntityId: entityIdToClone,
+                    generatedEntityId: newCiCode,
                     relationData,
                     ciItemData: ciItemData,
                 }}

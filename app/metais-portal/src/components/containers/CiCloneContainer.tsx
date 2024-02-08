@@ -1,7 +1,13 @@
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { CiType, RelationshipType, useGetRelationshipTypeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import {
+    CiCode,
+    CiType,
+    RelationshipType,
+    useGenerateCodeAndURL,
+    useGetRelationshipTypeHook,
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
 import { Languages } from '@isdd/metais-common/localization/languages'
@@ -33,6 +39,7 @@ export interface ICiCloneContainerView {
     roleState: RoleState
     isLoading: boolean
     isError: boolean
+    newCiCode?: CiCode
 }
 
 interface ICiCloneContainer {
@@ -54,6 +61,7 @@ export const CiCloneContainer: React.FC<ICiCloneContainer> = ({ entityName, conf
     const [selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName] = useState<string>('')
     const [relationTypes, setRelationTypes] = useState<RelationshipType[]>([])
     const getRelationType = useGetRelationshipTypeHook()
+    const { data: newCiCode } = useGenerateCodeAndURL(entityName)
 
     useEffect(() => {
         const relationPromises = technicalNames.map((technicalName) => getRelationType(technicalName))
@@ -74,6 +82,7 @@ export const CiCloneContainer: React.FC<ICiCloneContainer> = ({ entityName, conf
 
     return (
         <View
+            newCiCode={newCiCode}
             entityName={entityName}
             entityId={configurationItemId}
             ciName={ciName}

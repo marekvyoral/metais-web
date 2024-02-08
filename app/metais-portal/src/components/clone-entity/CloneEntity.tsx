@@ -13,7 +13,7 @@ import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 import { createSimpleSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
@@ -56,6 +56,7 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
     const { setIsActionSuccess } = useActionSuccess()
     const { attributesData, generatedEntityId, relationData, ciItemData } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
