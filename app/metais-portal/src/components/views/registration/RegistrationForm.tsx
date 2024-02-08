@@ -1,19 +1,19 @@
-import { Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { CheckBox, Input, TextHeading, TextLink } from '@isdd/idsk-ui-kit/index'
+import { useRegisterUser } from '@isdd/metais-common/api/generated/claim-manager-swagger'
+import { FilterMetaAttributesUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useStripAccentsHook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { LOWER_CASE_NUMBER_DOT_REGEX, REGEX_TEL, SPACES_REGEX } from '@isdd/metais-common/constants'
+import { MutationFeedback, QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { FooterRouteNames, RegistrationRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { TFunction } from 'i18next'
 import React, { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { MutationFeedback, QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
-import { FilterMetaAttributesUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { mixed, object, string } from 'yup'
-import { TFunction } from 'i18next'
-import { useRegisterUser } from '@isdd/metais-common/api/generated/claim-manager-swagger'
-import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { useNavigate } from 'react-router-dom'
-import { RegistrationRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { useStripAccentsHook } from '@isdd/metais-common/api/generated/iam-swagger'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { LOWER_CASE_NUMBER_DOT_REGEX, SPACES_REGEX, REGEX_TEL } from '@isdd/metais-common/constants'
+import { boolean, mixed, object, string } from 'yup'
 
 import styles from './registration.module.scss'
 
@@ -29,10 +29,14 @@ export enum InputNames {
     PHONE = 'telephone',
     PO = 'po',
     LOGIN = 'identityLogin',
+    DATA_PROCESSING_CONSENT = 'dataProcessingConsent',
+    TERMS_OF_USE_CONSENT = 'termsOfUseConsent',
 }
 
 const getRegistrationSchema = (t: TFunction) => {
     const registrationFormSchema = object().shape({
+        [InputNames.DATA_PROCESSING_CONSENT]: boolean().oneOf([true], t('registration.required.default')),
+        [InputNames.TERMS_OF_USE_CONSENT]: boolean().oneOf([true], t('registration.required.default')),
         [InputNames.FIRST_NAME]: string().required(t('registration.required.firstName')),
         [InputNames.LAST_NAME]: string().required(t('registration.required.lastName')),
         [InputNames.EMAIL]: string().email(t('registration.format.email')).required(t('registration.required.email')),
@@ -207,6 +211,40 @@ export const RegistrationForm: React.FC<Props> = () => {
                         required
                         error={errors[InputNames.PO]?.message?.toString()}
                     />
+                    <CheckBox
+                        containerClassName={styles.checkboxBottomPadding}
+                        {...register(InputNames.DATA_PROCESSING_CONSENT)}
+                        id="dataProcessingConsent"
+                        label={
+                            <div className={styles.flexRow}>
+                                <span className={styles.flexNone}>{t('registration.consentWith')}</span>
+
+                                <TextLink newTab to={FooterRouteNames.PERSONAL_DATA_PROTECTION} className={styles.flexNone}>
+                                    {t('registration.dataProcessingConsent')}
+                                </TextLink>
+                            </div>
+                        }
+                        error={errors[InputNames.DATA_PROCESSING_CONSENT]?.message?.toString()}
+                        required
+                    />
+
+                    <CheckBox
+                        containerClassName={styles.checkboxBottomPadding}
+                        id="termsOfUseConsent"
+                        label={
+                            <div className={styles.flexRow}>
+                                <span className={styles.flexNone}>{t('registration.consentWith')}</span>
+
+                                <TextLink newTab to={FooterRouteNames.TERMS_OF_USE} className={styles.flexNone}>
+                                    {t('registration.termsOfUseConsent')}
+                                </TextLink>
+                            </div>
+                        }
+                        {...register(InputNames.TERMS_OF_USE_CONSENT)}
+                        error={errors[InputNames.TERMS_OF_USE_CONSENT]?.message?.toString()}
+                        required
+                    />
+
                     <SubmitWithFeedback submitButtonLabel={t('registration.submit')} loading={isRegisterLoading || isSubmitting || isValidating} />
                 </form>
             </QueryFeedback>

@@ -286,7 +286,10 @@ export interface NavigationItem {
 export enum FooterRouteNames {
     ACCESSIBILITY_DECLARATION = '/technical/declaration',
     WEB_RESIDENCY_MAP = '/sitemap',
-    GDPR_AND_COOKIES = '/cookies/info',
+    COOKIES = '/cookies/info',
+    PERSONAL_DATA_PROTECTION = '/cookies/personalDataProtection',
+    TERMS_OF_USE = '/cookies/termsOfUse',
+    COOKIES_SETTINGS = '/cookies/settings',
     TECHNICAL_OPERATOR = '/technical/help',
     CONTENT_ADMIN = '/technical/manager',
     RSS = '/rss',

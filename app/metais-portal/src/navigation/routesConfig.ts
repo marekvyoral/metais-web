@@ -127,6 +127,9 @@ import { OlaContractEdit } from '@/pages/ola-contract-list/edit'
 import { IntegrationLinkCreate } from '@/pages/ci/Integracia/create'
 import { EditIntegrationLinkPage } from '@/pages/ci/Integracia/[entityId]/edit'
 import RefIdentifierDetailPage from '@/pages/data-objects/ref-identifiers/[id]/detail'
+import PersonalDataInfoPage from '@/pages/cookies/personalDataProtection'
+import TermsOfUse from '@/pages/cookies/termsOfUse'
+import CookiesSettings from '@/pages/cookies/settings'
 
 export interface RouteConfig {
     path?: string
@@ -500,9 +503,24 @@ export const routesConfig: RouteConfig[] = [
                 component: ReferenceRegisters,
             },
             {
-                path: FooterRouteNames.GDPR_AND_COOKIES,
-                slug: FooterRouteNames.GDPR_AND_COOKIES,
+                path: FooterRouteNames.COOKIES,
+                slug: FooterRouteNames.COOKIES,
                 component: CookiesInfoPage,
+            },
+            {
+                path: FooterRouteNames.PERSONAL_DATA_PROTECTION,
+                slug: FooterRouteNames.PERSONAL_DATA_PROTECTION,
+                component: PersonalDataInfoPage,
+            },
+            {
+                path: FooterRouteNames.TERMS_OF_USE,
+                slug: FooterRouteNames.TERMS_OF_USE,
+                component: TermsOfUse,
+            },
+            {
+                path: FooterRouteNames.COOKIES_SETTINGS,
+                slug: FooterRouteNames.COOKIES_SETTINGS,
+                component: CookiesSettings,
             },
             {
                 path: RouterRoutes.REF_REGISTERS_DETAIL,
