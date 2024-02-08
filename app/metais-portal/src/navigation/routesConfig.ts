@@ -101,6 +101,9 @@ import VoteCreatePage from '@/pages/standardization/voteslist/create'
 import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
+import ImportParametersPage from '@/pages/monitoring/services/import'
+import DetailServicePage from '@/pages/monitoring/services/monitoras/[serviceUuid]'
+import InsertServicePage from '@/pages/monitoring/services/monitoras/insert/[serviceUuid]'
 import CreateITVSExceptionsPage from '@/pages/ci/OsobitnyPostup/create'
 import ITVSExceptionsEditPage from '@/pages/ci/OsobitnyPostup/[entityId]/edit'
 import CreateProjectPage from '@/pages/ci/Projekt/create'
@@ -368,14 +371,24 @@ export const routesConfig: RouteConfig[] = [
                 component: ReportsListPage,
             },
             {
-                path: RouterRoutes.REPORTS_LIST,
-                slug: RouterRoutes.REPORTS_LIST,
-                component: ReportsListPage,
+                path: RouterRoutes.IMPORT_MONITORING_PARAMETERS,
+                slug: RouterRoutes.IMPORT_MONITORING_PARAMETERS,
+                component: ImportParametersPage,
             },
             {
                 path: RouterRoutes.MONITORING_SERVICES,
                 slug: RouterRoutes.MONITORING_SERVICES,
                 component: ServicesListPage,
+            },
+            {
+                path: RouterRoutes.MONITORING_DETAIL,
+                slug: RouterRoutes.MONITORING_DETAIL,
+                component: DetailServicePage,
+            },
+            {
+                path: RouterRoutes.MONITORING_INSERT,
+                slug: RouterRoutes.MONITORING_INSERT,
+                component: InsertServicePage,
             },
             {
                 path: RouterRoutes.REPORTS_CREATE,

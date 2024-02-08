@@ -9,6 +9,10 @@ export interface MonitoringFilterData extends IFilterParams, FieldValues, IFilte
     intervalStart?: string
     intervalEnd?: string
     serviceType?: string
+    liableEntity?: string
+    project?: string
+    isvs?: string
+    service?: string
 }
 export interface IView {
     data?: ApiMonitoringOverviewList
@@ -39,6 +43,8 @@ export const MonitoringServiceListContainer: React.FC<IMonitoringServiceListCont
             perPageSize: filter.pageSize ?? BASE_PAGE_SIZE,
             intervalStart: filter.intervalStart ?? '',
             intervalEnd: filter.intervalEnd ?? '',
+            isvs: filter.isvs ?? '',
+            liableEntity: filter.liableEntity ?? '',
         },
         {
             query: {

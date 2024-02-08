@@ -182,7 +182,8 @@ export const getPortalNavigationItems = (
             icon: MonitoringIcon,
             subItems: [
                 { title: t('navMenu.reports'), path: RouteNames.REPORTS },
-                { title: t('navMenu.lists.monitoringServices'), path: RouteNames.MONITORING_SERVICES },
+                { title: t('navMenu.lists.monitoringServices'), path: RouterRoutes.MONITORING_SERVICES },
+                { title: t('navMenu.lists.monitoringImport'), path: RouterRoutes.IMPORT_MONITORING_PARAMETERS },
                 //{ title: t('navMenu.lists.monitoringEnd'), path: NavigationSubRoutes.MONITORING_KS },
                 //{ title: t('navMenu.lists.monitoringApp'), path: NavigationSubRoutes.MONITORING_AS },
                 //{ title: t('navMenu.lists.monitoringImport'), path: NavigationSubRoutes.MONITORING_IMPORT },

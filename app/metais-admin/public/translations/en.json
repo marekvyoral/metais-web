@@ -525,6 +525,7 @@
             "monitoringSet": "Set of monitoring parameters",
             "monitoringImport": "Import of monitored parameters",
             "monitoringServices": "Monitoring services",
+            "monitoringInsert": "Insert monitoring parameters",
             "evidenceObjects": "Evidence objects",
             "attributesEvidenceObjects": "Attributes of evidence objects",
             "servers": "Servers",
@@ -995,6 +996,8 @@
     },
     "errors": {
         "default": "Ups, something went wrong.",
+        "validateFile": "Validation failed",
+        "uploadFile": "File upload failed",
         "gnr403": "You do not have permission to call this API.",
         "gnr412": "Condition not met."
     },

@@ -1,0 +1,51 @@
+@import '../../../../utils.scss';
+
+.actionRow {
+    text-align: right;
+}
+
+.labelDiv {
+    display: flex;
+    position: relative;
+    align-items: flex-start;
+    gap: govuk-spacing(2);
+}
+
+.textHover {
+    color: black;
+}
+
+.buttonGroupEnd {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: govuk-spacing(2);
+
+    @include mq($until: tablet) {
+        flex-direction: column;
+    }
+}
+
+.buttonGroupStart {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: govuk-spacing(2);
+
+    @include mq($until: tablet) {
+        flex-direction: column;
+    }
+}
+
+.topSpace {
+    margin-top: govuk-spacing(4);
+}
+
+.paramGroup {
+    margin-bottom: govuk-spacing(5);
+}
+
+.clickable:hover {
+    cursor: pointer;
+}

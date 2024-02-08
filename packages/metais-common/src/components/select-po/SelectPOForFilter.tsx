@@ -22,6 +22,7 @@ interface ISelectPO {
     name: string
     isMulti: boolean
     disabled?: boolean
+    required?: boolean
     ciFilter?: CiFilterUi
 }
 
@@ -34,16 +35,18 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({
     name,
     ciFilter,
     disabled,
+    required,
     isMulti = false,
 }) => {
     const ciOptionsHook = useReadCiList1Hook()
-    const [keyCount, setKeyCount] = useState(0)
+    const [seed, setSeed] = useState(1)
+    const [selectedLiableEntities, setSelectedLiableEntities] = useState<ConfigurationItemUi[]>([])
 
-    const { data, isLoading, isError } = useReadCiList1(
+    const { data, isLoading, isError, refetch } = useReadCiList1(
         {
             filter: { type: [ciType], uuid: valuesAsUuids },
         },
-        { query: { enabled: valuesAsUuids.length > 0 && !!valuesAsUuids[0] } },
+        { query: { enabled: valuesAsUuids && valuesAsUuids?.length > 0 } },
     )
 
     const [value, setValue] = useState<ConfigurationItemUi | MultiValue<ConfigurationItemUi> | null>()
@@ -61,9 +64,16 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({
     }, [isLoading, isError])
 
     useEffect(() => {
-        setValue(null)
-        setKeyCount((prev) => prev + 1)
-    }, [ciFilter])
+        if (selectedLiableEntities.length === 0 && valuesAsUuids?.length > 0) {
+            refetch().then((res) => {
+                setSelectedLiableEntities(res.data?.configurationItemSet || [])
+            })
+        }
+    }, [valuesAsUuids, refetch, selectedLiableEntities])
+
+    useEffect(() => {
+        setSeed(Math.random())
+    }, [selectedLiableEntities, ciFilter])
 
     const loadCiOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined) => {
@@ -105,10 +115,11 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({
 
     return (
         <SelectLazyLoading<ConfigurationItemUi>
-            key={keyCount}
+            key={seed}
             isMulti={isMulti}
             placeholder={placeholder}
             disabled={disabled}
+            required={required}
             name={name}
             label={label}
             getOptionValue={(item) => item.uuid?.toString() || ''}
@@ -117,6 +128,7 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({
             value={value}
             onChange={(val) => setValue(val)}
             option={(props) => formatOption(props)}
+            defaultValue={selectedLiableEntities}
         />
     )
 }

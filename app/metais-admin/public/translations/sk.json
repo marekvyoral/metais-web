@@ -612,6 +612,7 @@
             "monitoringEnd": "Monitorované parametre KS",
             "monitoringApp": "Monitorované parametre AS",
             "monitoringSet": "Zostava monitorovaných parametrov",
+            "monitoringInsert": "Vloženie monitorovacích údajov",
             "monitoringImport": "Import monitorovacích parametrov",
             "monitoringServices": "Monitoring služieb",
             "evidenceObjects": "Objekt evidencie",
@@ -998,6 +999,8 @@
     },
     "errors": {
         "default": "Ups, niečo sa pokazilo.",
+        "validateFile": "Validacia súboru zlyhalo",
+        "uploadFile": "Nahrávanie súboru zlyhalo",
         "gnr403": "Na volanie nemáte oprávnenie.",
         "gnr412": "Podmienka nie je splnená."
     },
