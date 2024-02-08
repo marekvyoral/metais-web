@@ -9,7 +9,7 @@ import { Home } from '@/pages/Home'
 import { IdentityTermsPage } from '@/pages/IdentityTermsPage'
 import { LoginProblemsPage } from '@/pages/LoginProblemsPage'
 import AsEntityDetailPage from '@/pages/ci/AS/[entityId]'
-import CloneEntityPage from '@/pages/ci/AS/[entityId]/clone'
+import CloneASPage from '@/pages/ci/AS/[entityId]/clone'
 import ActivityEntityDetailPage from '@/pages/ci/Aktivita/[entityId]'
 import GoalEntityDetailPage from '@/pages/ci/Ciel/[entityId]'
 import { IntegrationLinkDetailPage } from '@/pages/ci/Integracia/[entityId]'
@@ -130,6 +130,7 @@ import { OlaContractEdit } from '@/pages/ola-contract-list/edit'
 import { IntegrationLinkCreate } from '@/pages/ci/Integracia/create'
 import { EditIntegrationLinkPage } from '@/pages/ci/Integracia/[entityId]/edit'
 import RefIdentifierDetailPage from '@/pages/data-objects/ref-identifiers/[id]/detail'
+import CloneKSPage from '@/pages/ci/KS/[entityId]/clone'
 import PersonalDataInfoPage from '@/pages/cookies/personalDataProtection'
 import TermsOfUse from '@/pages/cookies/termsOfUse'
 import CookiesSettings from '@/pages/cookies/settings'
@@ -218,9 +219,14 @@ const generalCiRoutes: RouteConfig[] = [
         component: EditEntityPage,
     },
     {
-        path: RouterRoutes.CI_CLONE,
-        slug: RouterRoutes.CI_CLONE,
-        component: CloneEntityPage,
+        path: RouterRoutes.CI_AS_CLONE,
+        slug: RouterRoutes.CI_AS_CLONE,
+        component: CloneASPage,
+    },
+    {
+        path: RouterRoutes.CI_KS_CLONE,
+        slug: RouterRoutes.CI_KS_CLONE,
+        component: CloneKSPage,
     },
     {
         path: RouterRoutes.CI_DETAIL,
