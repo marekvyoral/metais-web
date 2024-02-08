@@ -164,7 +164,7 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
                         onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
                         onChangeRole={roleState.setSelectedRole}
                         selectedOrg={publicAuthorityState.selectedPublicAuthority}
-                        ciRoles={[ROLES.EA_GARPO]}
+                        ciRoles={[ROLES.EA_GARPO, ROLES.R_EGOV, ROLES.R_ADMIN]}
                         disableRoleSelect
                     />
                 )}
