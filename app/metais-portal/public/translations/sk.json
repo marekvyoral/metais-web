@@ -1559,7 +1559,8 @@
             "chooseType": "Vyberte typ",
             "uri": "URI",
             "ownerUser": "Zadávateľ",
-            "catalogDataset": "Datasety katalógu"
+            "catalogDataset": "Datasety katalógu",
+            "poGestor": "PO je gestorom katalógu"
         }
     },
     "selectCiItem": {

@@ -1,7 +1,8 @@
-import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, ButtonGroupRow, ButtonLink, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
-import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes, RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 import { RefCatalogInfoView } from './RefCatalogInfoView'
 import { RefDataItemInfoView } from './RefDataItemInfoView'
@@ -12,6 +13,7 @@ import { RefIdentifierDetailContainerViewProps } from '@/components/containers/r
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewProps> = ({
+    ciItemId,
     entityItemName,
     ciItemData,
     attributes,
@@ -23,6 +25,7 @@ export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewP
     isError,
 }) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
 
     const renderInfoView = () => {
         switch (ciItemData?.type) {
@@ -92,7 +95,17 @@ export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewP
             <MainContentWrapper>
                 {isError && <QueryFeedback error={isError} loading={false} />}
                 <QueryFeedback loading={isLoading} error={false} withChildren>
+                    {/* <div className={styles.headerDiv}> */}
                     <TextHeading size="XL">{entityItemName}</TextHeading>
+                    <ButtonGroupRow>
+                        {/* <Can I={Actions.EDIT} a={Subjects.DETAIL}> */}
+                        <Button
+                            label={t('codeListDetail.button.edit')}
+                            onClick={() => navigate(`${NavigationSubRoutes.REF_IDENTIFIERS}/${ciItemId}/edit`)}
+                        />
+                        {/* </Can> */}
+                    </ButtonGroupRow>
+                    {/* </div> */}
                     {renderInfoView()}
                 </QueryFeedback>
             </MainContentWrapper>

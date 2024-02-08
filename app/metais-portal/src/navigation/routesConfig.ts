@@ -125,6 +125,7 @@ import { IntegrationLinkCreate } from '@/pages/ci/Integracia/create'
 import { EditIntegrationLinkPage } from '@/pages/ci/Integracia/[entityId]/edit'
 import RefIdentifierDetailPage from '@/pages/data-objects/ref-identifiers/[id]/detail'
 import RefIdentifierCreatePage from '@/pages/data-objects/ref-identifiers/create'
+import RefIdentifierEditPage from '@/pages/data-objects/ref-identifiers/[id]/edit'
 
 export interface RouteConfig {
     path?: string
@@ -496,6 +497,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_CREATE,
                 slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_CREATE,
                 component: RefIdentifierCreatePage,
+            },
+            {
+                path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_EDIT,
+                slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_EDIT,
+                component: RefIdentifierEditPage,
             },
             {
                 path: RouterRoutes.REF_REGISTERS_LIST,

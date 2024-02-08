@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 
 import { PublicAuthoritySelect } from '../../public-authorities-hierarchy/PublicAuthoritySelect'
 
-import { RefCatalogCreateFormEnum } from './refCreateSchema'
+import { RefCatalogFormTypeEnum } from './refCreateSchema'
 
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
 import { getFilteredAttributeProfilesBasedOnRole } from '@/components/create-entity/createEntityHelpers'
@@ -23,7 +23,6 @@ type RefDataItemFormPropsType = {
     attributes: Attribute[] | undefined
     constraintsData: (EnumType | undefined)[]
     ciTypeData: CiType | undefined
-    generatedEntityId: CiCode | undefined
     attributeProfiles: AttributeProfile[] | undefined
     unitsData: EnumType | undefined
     defaultItemAttributeValues?: ConfigurationItemUiAttributes
@@ -90,9 +89,9 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIKatalog_uri),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.DATASET}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_URIKatalog_uri}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
                 />
                 <Input
                     required
@@ -104,9 +103,9 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.DATASET}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
                 />
 
                 <Input
@@ -119,9 +118,9 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.DATASET}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_nazov}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
                 />
 
                 <Input
@@ -134,9 +133,9 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.DATASET}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
                 />
 
                 <Input
@@ -149,9 +148,9 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.DATASET}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
                 />
 
                 <Input
@@ -164,9 +163,9 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.DATASET}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
                 />
 
                 <PublicAuthoritySelect
@@ -226,7 +225,7 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis),
                     )}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_popis}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
                 />
             </form>
         </>

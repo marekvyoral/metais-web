@@ -18,6 +18,7 @@ export interface RefIdentifierDetailContainerViewProps {
     dataItemTypeState?: EnumType
     gestorName: string | undefined
     ciList: ConfigurationItemUi[] | undefined
+    ciItemId: string
     isLoading: boolean
     isError: boolean
 }
@@ -57,8 +58,7 @@ export const RefIdentifierDetailContainer: React.FC<RefIdentifierDetailContainer
     })
 
     const datasetUuids =
-        relationData?.endRelationshipSet?.filter((item) => item.type === 'URIDataset_patri_URIKatalog').map((item) => item.endUuid ?? '') ?? []
-
+        relationData?.endRelationshipSet?.filter((item) => item.type === 'URIDataset_patri_URIKatalog').map((item) => item.startUuid ?? '') ?? []
     const dataItemUuids =
         relationData?.startRelationshipSet
             ?.filter((item) => item.type === 'DatovyPrvok_sa_sklada_DatovyPrvok' && item.metaAttributes?.state !== 'INVALIDATED')
@@ -103,6 +103,7 @@ export const RefIdentifierDetailContainer: React.FC<RefIdentifierDetailContainer
     return (
         <>
             <RefIdentifierDetailView
+                ciItemId={id}
                 entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
                 ciItemData={ciItemData}
                 ciList={ciList?.configurationItemSet}

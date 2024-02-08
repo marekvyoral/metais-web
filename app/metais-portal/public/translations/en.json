@@ -1552,7 +1552,8 @@
             "chooseType": "Select a type",
             "uri": "URI",
             "ownerUser": "Proposer",
-            "catalogDataset": "Catalog datasets"
+            "catalogDataset": "Catalog datasets",
+            "poGestor": "PA is authority of catalogue"
         }
     },
     "selectCiItem": {

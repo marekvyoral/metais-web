@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 
 import { PublicAuthoritySelect } from '../../public-authorities-hierarchy/PublicAuthoritySelect'
 
-import { RefCatalogCreateFormEnum } from './refCreateSchema'
+import { RefCatalogFormTypeEnum } from './refCreateSchema'
 
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
 import { getFilteredAttributeProfilesBasedOnRole } from '@/components/create-entity/createEntityHelpers'
@@ -23,7 +23,6 @@ type RefDatasetFormPropsType = {
     attributes: Attribute[] | undefined
     constraintsData: (EnumType | undefined)[]
     ciTypeData: CiType | undefined
-    generatedEntityId: CiCode | undefined
     attributeProfiles: AttributeProfile[] | undefined
     unitsData: EnumType | undefined
     defaultItemAttributeValues?: ConfigurationItemUiAttributes
@@ -64,13 +63,12 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
         resolver: yupResolver(generateFormSchema(getFilteredAttributeProfilesBasedOnRole(combinedProfiles, ''), t, language)),
     })
 
-    const { register, formState, setValue, clearErrors, control } = methods
+    const { register, formState, setValue, handleSubmit, clearErrors, control } = methods
     const { errors } = formState
 
     return (
         <>
-            {/* <form onSubmit={handleSubmit(onSubmit)}> */}
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <SimpleSelect
                     label={t('refIdentifiers.create.ownerUser')}
                     name={'CodelistEnum.CATEGORY'}
@@ -90,9 +88,9 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.OWNER}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
                 />
                 <Input
                     required
@@ -104,9 +102,9 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.OWNER}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_nazov}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
                 />
 
                 <Input
@@ -119,9 +117,9 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.OWNER}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
                 />
                 <Input
                     required
@@ -133,9 +131,9 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_poznamka),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.OWNER}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_poznamka}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
                 />
 
                 <Input
@@ -148,9 +146,9 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIDataset_historicky_kod),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.OWNER}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_URIDataset_historicky_kod}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
                 />
             </form>
         </>

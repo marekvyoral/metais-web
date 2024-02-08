@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 
 import { PublicAuthoritySelect } from '../../public-authorities-hierarchy/PublicAuthoritySelect'
 
-import { RefCatalogCreateFormEnum } from './refCreateSchema'
+import { RefCatalogFormTypeEnum } from './refCreateSchema'
 
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
 import { getFilteredAttributeProfilesBasedOnRole } from '@/components/create-entity/createEntityHelpers'
@@ -23,7 +23,6 @@ type RefTemplateUriFormPropsType = {
     attributes: Attribute[] | undefined
     constraintsData: (EnumType | undefined)[]
     ciTypeData: CiType | undefined
-    generatedEntityId: CiCode | undefined
     attributeProfiles: AttributeProfile[] | undefined
     unitsData: EnumType | undefined
     defaultItemAttributeValues?: ConfigurationItemUiAttributes
@@ -90,9 +89,9 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.OWNER}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
                 />
                 <Input
                     required
@@ -104,9 +103,9 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.OWNER}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_nazov}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
                 />
 
                 <Input
@@ -119,9 +118,9 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
                     )}
-                    id={RefCatalogCreateFormEnum.URI}
+                    id={RefCatalogFormTypeEnum.OWNER}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
                 />
 
                 <SimpleSelect
@@ -167,7 +166,7 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis),
                     )}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_popis}`)}
-                    error={errors[RefCatalogCreateFormEnum.URI]?.message}
+                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
                 />
 
                 <DateInput
