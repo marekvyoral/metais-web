@@ -19,7 +19,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
 import { boolean, mixed, object, string } from 'yup'
 import { useQueryClient } from '@tanstack/react-query'
-import { getGetOlaContractQueryKey, getListOlaContractListQueryKey } from '@isdd/metais-common/api/generated/monitoring-swagger'
+import { RequestIdUi, getGetOlaContractQueryKey, getListOlaContractListQueryKey } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import { getGetHistoryQueryKey, getGetMetaQueryKey, useGetContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
@@ -102,7 +102,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
     const fileHistoryKey = getGetHistoryQueryKey(olaContract?.uuid ?? '')
     const relationsCountKey = getReadNeighboursConfigurationItemsCountQueryKey(olaContract?.uuid ?? '')
     const relationsKey = getReadCiNeighboursWithAllRelsQueryKey(olaContract?.uuid ?? '')
-    const { getRequestStatus } = useGetStatus()
+    const { getRequestStatus, isLoading: isRequestProcessing } = useGetStatus()
     const [showDocument, setShowDocument] = useState(false)
     const { setIsActionSuccess } = useActionSuccess()
     const location = useLocation()
@@ -137,7 +137,10 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                 owner: ownerGid,
             },
         })
-            .then(async () => {
+            .then(async (res) => {
+                if (olaContract) {
+                    await getRequestStatus((res as RequestIdUi).requestId ?? '', () => null)
+                }
                 if (olaContract && olaContract.contractorIsvsUuid != formData['contractorIsvsUuid']) {
                     const rels = await readRels(olaContract.uuid ?? '', {
                         neighboursFilter: { metaAttributes: { state: ['DRAFT'] }, relType: [OLA_Kontrakt_dodavatela_ISVS] },
@@ -219,7 +222,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                 {isEdit ? t('olaContracts.headingEdit', { itemName: olaContract?.name }) : t('olaContracts.headingAdd')}
             </TextHeading>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <QueryFeedback loading={isLoading} error={isError} withChildren>
+                <QueryFeedback loading={isLoading || isRequestProcessing} error={isError} withChildren>
                     <Input {...register('name')} label={t('olaContracts.filter.name')} required error={errors.name?.message} />
                     <Input {...register('nameEnglish')} label={t('olaContracts.filter.nameEnglish')} />
                     <Input {...register('description')} label={t('olaContracts.filter.description')} />

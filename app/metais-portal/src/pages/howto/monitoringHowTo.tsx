@@ -33,7 +33,7 @@ const HowToMonitoringPage = () => {
         isLoading: isLoadingAs,
         isError: isErrorAs,
     } = useListMonitoringOverview({
-        serviceType: 'AS',
+        serviceTypes: ['AS'],
         page: BASE_PAGE_NUMBER,
         perPageSize: BASE_PAGE_SIZE,
     })
@@ -43,7 +43,7 @@ const HowToMonitoringPage = () => {
         isLoading: isLoadingKs,
         isError: isErrorKs,
     } = useListMonitoringOverview({
-        serviceType: 'KS',
+        serviceTypes: ['KS'],
         page: BASE_PAGE_NUMBER,
         perPageSize: BASE_PAGE_SIZE,
     })

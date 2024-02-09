@@ -38,7 +38,7 @@ export const MonitoringServiceListContainer: React.FC<IMonitoringServiceListCont
         isFetching: isFetchingAs,
     } = useListMonitoringOverview(
         {
-            serviceType: filter.serviceType ?? defaultFilterValues.serviceType ?? 'AS',
+            serviceTypes: [filter.serviceType ?? defaultFilterValues.serviceType ?? 'AS'],
             page: filter.pageNumber ?? BASE_PAGE_NUMBER,
             perPageSize: filter.pageSize ?? BASE_PAGE_SIZE,
             intervalStart: filter.intervalStart ?? '',
