@@ -25,6 +25,7 @@ interface IInputProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLTe
 export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
     ({ id, label, name, rows, hint, info, error, disabled, correct, wrapperClassname, hasInputIcon = false, required, ...rest }, ref) => {
         const hintId = `${id}-hint`
+        const errorId = `${id}-error`
         const { t } = useTranslation()
         return (
             <div className={classNames('govuk-form-group', wrapperClassname, { 'govuk-form-group--error': !!error })}>
@@ -42,9 +43,9 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
                 )}
 
                 {error && (
-                    <>
-                        <span className="govuk-error-message">{error}</span>
-                    </>
+                    <span id={errorId} className="govuk-error-message">
+                        {error}
+                    </span>
                 )}
                 <div className={styles.inputWrapper}>
                     <textarea
@@ -55,8 +56,12 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
                         ref={ref}
                         {...rest}
                         disabled={disabled}
+                        aria-describedby={hint ? hintId : undefined}
+                        aria-errormessage={errorId}
                     />
-                    {correct && <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} />}
+                    {correct && (
+                        <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />
+                    )}
                 </div>
             </div>
         )

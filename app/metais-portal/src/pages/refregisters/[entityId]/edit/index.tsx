@@ -5,6 +5,7 @@ import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { EDIT_CONTACT } from '@isdd/metais-common/src/navigation/searchKeys'
 import { useTranslation } from 'react-i18next'
 import { useParams, useSearchParams } from 'react-router-dom'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CreateRefRegisterContainer } from '@/components/containers/refregisters/CreateRefRegisterContainer'
@@ -17,6 +18,7 @@ const RefRegistersEdit = () => {
     const { entityId } = useParams()
     const entityName = REFERENCE_REGISTER
     const { t } = useTranslation()
+    document.title = formatTitleString(t('breadcrumbs.refRegistersEdit'))
 
     return (
         <CreateRefRegisterContainer

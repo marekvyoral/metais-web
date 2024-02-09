@@ -53,13 +53,13 @@ export const Paginator: React.FC<PaginatorProps> = ({ pageNumber, pageSize, data
         >
             <Button
                 variant="secondary"
-                label={<img src={PaginatorStartArrowIcon} alt="start-icon" />}
+                label={<img src={PaginatorStartArrowIcon} alt={t('pagination.toFirst')} />}
                 onClick={jumpToFirstPage}
                 disabled={pageNumberInt === 1}
             />
             <Button
                 variant="secondary"
-                label={<img src={PaginatorLeftArrowIcon} alt="prev-icon" />}
+                label={<img src={PaginatorLeftArrowIcon} alt={t('pagination.toPrev')} />}
                 onClick={jumpToPreviousPage}
                 className={styles.paginatorStepButton}
                 disabled={pageNumberInt === 1}
@@ -70,7 +70,7 @@ export const Paginator: React.FC<PaginatorProps> = ({ pageNumber, pageSize, data
                 variant="secondary"
                 label={1}
             />
-            {pages.leftDots && <img src={DotsIcon} alt="dots" className={styles.paginatorItem} />}
+            {pages.leftDots && <img src={DotsIcon} alt={t('pagination.dots')} className={styles.paginatorItem} />}
             {pages.range.map((page) => (
                 <Button
                     key={page}
@@ -80,7 +80,7 @@ export const Paginator: React.FC<PaginatorProps> = ({ pageNumber, pageSize, data
                     className={classNames({ [styles.selectedButton]: pageNumberInt === page })}
                 />
             ))}
-            {pages.rightDots && <img src={DotsIcon} alt="dots" className={styles.paginatorItem} />}
+            {pages.rightDots && <img src={DotsIcon} alt={t('pagination.dots')} className={styles.paginatorItem} />}
             <Button
                 onClick={jumpToLastPage}
                 className={classNames({ [styles.selectedButton]: pageNumberInt === totalPageCount })}
@@ -89,14 +89,14 @@ export const Paginator: React.FC<PaginatorProps> = ({ pageNumber, pageSize, data
             />
             <Button
                 variant="secondary"
-                label={<img src={PaginatorRightArrowIcon} alt="next-icon" />}
+                label={<img src={PaginatorRightArrowIcon} alt={t('pagination.toNext')} />}
                 onClick={jumpToNextPage}
                 className={styles.paginatorStepButton}
                 disabled={pageNumberInt === totalPageCount}
             />
             <Button
                 variant="secondary"
-                label={<img src={PaginatorEndArrowIcon} alt="end-icon" />}
+                label={<img src={PaginatorEndArrowIcon} alt={t('pagination.toLast')} />}
                 onClick={jumpToLastPage}
                 disabled={pageNumberInt === totalPageCount}
             />

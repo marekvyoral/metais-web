@@ -37,7 +37,7 @@ export const DraftListRelatedDocuments: React.FC<Props> = ({ data }) => {
     const linkElements = showLinks
         ? requestData?.links?.map((link) => (
               <div key={link.id} className={styles.displayFlexCenter}>
-                  <img src={AttachmentIcon} alt="link-icon" />
+                  <img src={AttachmentIcon} alt="" />
                   <Link to={link?.url ?? ''} state={{ from: location }} target="_blank" className="govuk-link">
                       {link?.name as string}
                       <br />
@@ -49,7 +49,7 @@ export const DraftListRelatedDocuments: React.FC<Props> = ({ data }) => {
     const attachmentElements = showAttachments
         ? requestData?.attachments?.map((attachment) => (
               <div key={attachment.id} className={styles.displayFlexCenter}>
-                  <img src={DownloadIcon} alt="download-icon" />
+                  <img src={DownloadIcon} alt="" />
                   <Link to={`${DMS_DOWNLOAD_FILE}${attachment?.attachmentId}`} state={{ from: location }} target="_blank" className="govuk-link">
                       {attachment?.attachmentName as string}
                       <br />

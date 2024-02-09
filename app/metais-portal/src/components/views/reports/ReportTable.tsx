@@ -22,6 +22,7 @@ export const ReportTable: React.FC<IReportTable> = ({ data, pagination, handleFi
                 header: () => header?.name ?? '',
                 id: header?.name ?? '',
                 cell: (row: CellContext<unknown, IRowType>) => row?.getValue()?.values?.[index],
+                size: 200,
             }
         }) ?? []
 

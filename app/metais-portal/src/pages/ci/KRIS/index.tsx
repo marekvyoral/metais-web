@@ -8,6 +8,7 @@ import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagg
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { KrisListView } from '@/components/views/ci/kris/KrisListView'
+import { useCiListPageHeading } from '@/componentHelpers/ci'
 
 export interface KRISFilterType extends IFilterParams {
     owner?: string
@@ -17,7 +18,6 @@ export interface KRISFilterType extends IFilterParams {
 const KRISListPage: React.FC = () => {
     const ciType = ENTITY_KRIS
     const { t, i18n } = useTranslation()
-    document.title = `${t('titles.ciList', { ci: 'KRIT' })} | MetaIS`
 
     const defaultFilterValues: KRISFilterType = { owner: '', Profil_KRIS_stav_kris: '' }
     const defaultFilterOperators: KRISFilterType = { Profil_KRIS_stav_kris: OPERATOR_OPTIONS.EQUAL, owner: OPERATOR_OPTIONS.EQUAL }
@@ -26,7 +26,9 @@ const KRISListPage: React.FC = () => {
         isLoading: isCiTypeDataLoading,
         isError: isCiTypeDataError,
     } = useGetCiType(ciType, { query: { queryKey: [i18n.language, ciType] } })
-    const entityName = ciTypeData?.name
+
+    const { getTitle, getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
+    document.title = getTitle()
 
     return (
         <>
@@ -34,7 +36,7 @@ const KRISListPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: entityName ?? '', href: `/ci/${ciType}` },
+                    { label: getHeading(), href: `/ci/${ciType}` },
                 ]}
             />
 

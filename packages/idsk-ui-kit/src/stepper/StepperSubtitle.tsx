@@ -35,7 +35,7 @@ export const StepperSubtitle: React.FC<IStepperSubtitle> = ({ title, setSectionA
                 data-line1={t('stepper.openAll')}
                 data-line2={t('stepper.closeAll')}
             >
-                <button onClick={handleOpenAll} type="button" className="idsk-stepper__open-all" aria-expanded={isWholeArrayExpanded ? false : true}>
+                <button onClick={handleOpenAll} type="button" className="idsk-stepper__open-all" aria-expanded={isWholeArrayExpanded}>
                     {isWholeArrayExpanded ? t('stepper.closeAll') : t('stepper.openAll')}
                     <span className="govuk-visually-hidden">{t('stepper.sections')}</span>
                 </button>

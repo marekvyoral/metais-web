@@ -143,6 +143,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                     entityName=""
                     simpleTableColumnsSelect={{ sections: sectionsConfig, selectedColumns, resetSelectedColumns, saveSelectedColumns }}
                     handleFilterChange={handleFilterChange}
+                    selectedRowsCount={checkedRowItems}
                     bulkPopup={
                         <Tooltip
                             descriptionElement={errorMessage}

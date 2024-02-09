@@ -283,8 +283,8 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                 />
 
                 <Spacer vertical />
-                <TextHeading size="XL">{t('votes.voteEdit.documents.title')}</TextHeading>
-                <TextHeading size="L">{t('votes.voteEdit.documents.subtitle')}</TextHeading>
+                <TextHeading size="L">{t('votes.voteEdit.documents.title')}</TextHeading>
+                <TextHeading size="M">{t('votes.voteEdit.documents.subtitle')}</TextHeading>
 
                 <LinksImport defaultValues={existingVoteDataToEdit?.links} register={register} unregister={unregister} errors={formState.errors} />
 
@@ -312,7 +312,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                     onFilesProcessingSuccess={handleDeleteSuccess}
                 />
 
-                <TextHeading size="XL">{t('votes.voteEdit.invited.title')}</TextHeading>
+                <TextHeading size="L">{t('votes.voteEdit.invited.title')}</TextHeading>
 
                 <SelectVoteActors
                     setValue={setValue}

@@ -34,7 +34,7 @@ export const SidebarContentHolder = ({ section, onToggle, isExpanded, buttonId, 
                 >
                     {section.title}
                 </Link>
-                {section.subItems && <img src={ArrowDownIcon} className={classNames(styles.arrow, !isExpanded && styles.rotate)} alt="arrow-down" />}
+                {section.subItems && <img src={ArrowDownIcon} className={classNames(styles.arrow, !isExpanded && styles.rotate)} alt="" />}
             </div>
             <div className={classNames(styles.hide, isExpanded && styles.unhide)} aria-labelledby={buttonId}>
                 <div className="govuk-body" style={{ marginBottom: '0px' }}>

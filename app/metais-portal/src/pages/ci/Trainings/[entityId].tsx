@@ -12,20 +12,25 @@ import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { Languages } from '@isdd/metais-common/localization/languages'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
-import { getDefaultCiEntityTabList, getSuccessMessageKeyByType, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import {
+    getDefaultCiEntityTabList,
+    getSuccessMessageKeyByType,
+    useCiDetailPageTitle,
+    useCiListPageHeading,
+    useGetEntityParamsFromUrl,
+} from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { TrainingContainer } from '@/components/containers/TrainingContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { TrainingEntityIdHeader } from '@/components/views/ci/trainings/TrainingEntityIdHeader'
 
 const EntityDetailPage: React.FC = () => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const { isActionSuccess, setIsActionSuccess } = useActionSuccess()
 
     const {
@@ -57,8 +62,6 @@ const EntityDetailPage: React.FC = () => {
         },
     })
 
-    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
-    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
@@ -78,8 +81,11 @@ const EntityDetailPage: React.FC = () => {
         return ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Skolenie_pocet_volnych_miest] > 0
     }, [ciItemData])
 
-    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t })
+    const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
+    const { getTitle } = useCiDetailPageTitle(ciTypeData?.name ?? '', ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov], t)
+    document.title = getTitle()
 
+    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t })
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
@@ -99,7 +105,7 @@ const EntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: ciTypeName, href: `/ci/${entityName}` },
+                    { label: getHeading(), href: `/ci/${entityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
                         href: `/ci/${entityName}/${entityId}`,

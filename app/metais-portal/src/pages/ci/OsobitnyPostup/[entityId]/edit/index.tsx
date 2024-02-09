@@ -34,13 +34,16 @@ const ITVSExceptionsEditPage: React.FC = () => {
         cicode: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais],
         ciurl: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_ref_id],
     }
+
+    document.title = `${t('titles.ciEdit', { ci: ciTypeName, itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })} | MetaIS`
+
     return (
         <>
             <BreadCrumbs
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: ciTypeName, href: `/ci/${entityName}` },
+                    { label: t('titles.ciList', { ci: ciTypeName }), href: `/ci/${entityName}` },
                     { label: currentName ? currentName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
                     { label: t('breadcrumbs.ciEdit', { itemName: currentName }), href: `/ci/${entityName}/${entityId}/edit` },
                 ]}

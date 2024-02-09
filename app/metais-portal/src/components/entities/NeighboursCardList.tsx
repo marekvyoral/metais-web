@@ -80,7 +80,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
 
     return (
         <>
-            {<TextHeading size="XL">{t('neighboursCardList.heading')}</TextHeading>}
+            <TextHeading size="L">{t('neighboursCardList.heading')}</TextHeading>
             {isActionSuccess && isActionSuccess.additionalInfo?.type === 'relationCreated' && (
                 <div ref={wrapperRef}>
                     <MutationFeedback

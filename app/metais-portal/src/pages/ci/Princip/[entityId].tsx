@@ -10,25 +10,21 @@ import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-co
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Languages } from '@isdd/metais-common/localization/languages'
 
-import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { getDefaultCiEntityTabList, useCiDetailPageTitle, useCiListPageHeading, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
 
 const PrincipleEntityDetailPage: React.FC = () => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId } = useGetEntityParamsFromUrl()
     const navigate = useNavigate()
     const location = useLocation()
-
     const userAbility = useUserAbility()
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_PRINCIP)
-    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
-    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
@@ -40,6 +36,10 @@ const PrincipleEntityDetailPage: React.FC = () => {
         },
     })
 
+    const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
+    const { getTitle } = useCiDetailPageTitle(ciTypeData?.name ?? '', ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov], t)
+    document.title = getTitle()
+
     const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: ENTITY_PRINCIP, entityId: entityId ?? '', t })
 
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
@@ -50,7 +50,7 @@ const PrincipleEntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: ciTypeName, href: `/ci/${ENTITY_PRINCIP}` },
+                    { label: getHeading(), href: `/ci/${ENTITY_PRINCIP}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
                         href: `/ci/${ENTITY_PRINCIP}/${entityId}`,

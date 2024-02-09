@@ -18,6 +18,7 @@ export interface FormProps<T extends FieldValues & IFilterParams> {
     setValue: UseFormSetValue<T>
     watch: UseFormWatch<T>
     clearErrors: UseFormClearErrors<T>
+    isOpen: boolean
 }
 
 type FilterProps<T extends FieldValues & IFilterParams> = {
@@ -110,7 +111,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                     </div>
                 )}
                 {!onlySearch && (
-                    <div aria-hidden={!isOpen}>
+                    <div aria-hidden={!isOpen} className={classNames({ [styles.hidden]: !isOpen })}>
                         <form
                             className={classNames(styles.animate, isOpen && styles.grow, showScrollbar && styles.form)}
                             action="#"
@@ -121,7 +122,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                                     [styles.formWrapper]: true,
                                 })}
                             >
-                                {form({ register, control, filter, setValue, watch, clearErrors })}
+                                {form({ register, control, filter, setValue, watch, clearErrors, isOpen })}
                                 <div className={styles.actionRow}>
                                     <ButtonLink
                                         label={t('filter.reset')}

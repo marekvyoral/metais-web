@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { useDrag, useDrop } from 'react-dnd'
 import { useLocation, useNavigate } from 'react-router-dom'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { CHECKBOX_CELL, TOOLTIP_TEXT_BREAKER } from './constants'
 import styles from './table.module.scss'
@@ -33,6 +34,7 @@ export const TableDragRow = <T,>({
     isInvalidated,
     linkToNewTab,
 }: ITableDragRowProps<T>): JSX.Element => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
     const hasCheckbox = row.getVisibleCells().find((cell) => cell.column.id === CHECKBOX_CELL)
@@ -113,6 +115,7 @@ export const TableDragRow = <T,>({
                 )
                 return useHeader ? (
                     <th
+                        tabIndex={0}
                         scope="row"
                         className={classNames('idsk-table__cell', styles.fontWeightNormal, {
                             [styles.fontWeightBolder]: isRowBold && isRowBold(row),
@@ -125,12 +128,15 @@ export const TableDragRow = <T,>({
                         ref={index === 0 ? dropRef : null}
                     >
                         <div ref={index === 0 ? dragRef : null} className={styles.flexCenter}>
-                            {index === 0 && <img height={30} className={classNames({ [styles.handlePointer]: index === 0 })} src={DndIcon} />}
+                            {index === 0 && (
+                                <img height={30} className={classNames({ [styles.handlePointer]: index === 0 })} src={DndIcon} alt={t('dnd')} />
+                            )}
                             {cellContent}
                         </div>
                     </th>
                 ) : (
                     <td
+                        tabIndex={0}
                         className={classNames('idsk-table__cell', {
                             [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
                             [styles.rowSelected]: isRowSelected && isRowSelected(row),

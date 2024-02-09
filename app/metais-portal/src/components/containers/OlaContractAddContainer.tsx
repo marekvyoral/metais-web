@@ -39,6 +39,7 @@ export interface IOlaContractSaveView {
     olaContractDocument?: Metadata
     isOwnerOfContract?: boolean
     canChange?: boolean
+    isEdit?: boolean
 }
 
 interface IOlaContractAddContainer {

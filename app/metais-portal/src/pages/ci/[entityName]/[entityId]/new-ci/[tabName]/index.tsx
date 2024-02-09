@@ -3,8 +3,6 @@ import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/en
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { Languages } from '@isdd/metais-common/localization/languages'
 import { findCommonStrings } from '@isdd/metais-common/utils/utils'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
@@ -18,42 +16,45 @@ const CreateCiItemAndRelation: React.FC = () => {
     const { entityId } = useGetEntityParamsFromUrl()
     let { entityName } = useGetEntityParamsFromUrl()
     entityName = shouldEntityNameBePO(entityName ?? '')
-    const { t, i18n } = useTranslation()
-    const { data: ciTypeData } = useGetCiType(entityName)
-    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    const { t } = useTranslation()
+
     return (
         <>
             <CiCreateItemAndRelationContainer
                 configurationItemId={entityId}
                 entityName={entityName}
                 tabName={tabName ?? ''}
-                View={(props) => (
-                    <>
-                        <BreadCrumbs
-                            withWidthContainer
-                            links={[
-                                { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                                { label: ciTypeName ?? '', href: `/ci/${entityName}` },
-                                { label: props.ciName ? props.ciName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
-                                {
-                                    label: t('breadcrumbs.newCiAndRelation', { itemName: props.ciName }),
-                                    href: `/ci/${entityName}/${entityId}/new-ci/${tabName}`,
-                                },
-                            ]}
-                        />
-                        <MainContentWrapper>
-                            <RelationTypePermissionWrapper
-                                selectedRoleName={props.data.groupData?.roleName ?? ''}
-                                rolesToCompareWith={findCommonStrings(
-                                    props.data.relationData?.relationTypeData?.roleList ?? [],
-                                    props.data.attributesData?.ciTypeData?.roleList ?? [],
-                                )}
-                            >
-                                <NewCiWithRelationView {...props} />
-                            </RelationTypePermissionWrapper>
-                        </MainContentWrapper>
-                    </>
-                )}
+                View={(props) => {
+                    document.title = `${t('breadcrumbs.newCiAndRelation', { itemName: props.ciName })} | MetaIS`
+
+                    return (
+                        <>
+                            <BreadCrumbs
+                                withWidthContainer
+                                links={[
+                                    { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                                    { label: t('titles.ciList', { ci: props.data.attributesData.ciTypeData?.name }), href: `/ci/${entityName}` },
+                                    { label: props.ciName ? props.ciName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
+                                    {
+                                        label: t('breadcrumbs.newCiAndRelation', { itemName: props.ciName }),
+                                        href: `/ci/${entityName}/${entityId}/new-ci/${tabName}`,
+                                    },
+                                ]}
+                            />
+                            <MainContentWrapper>
+                                <RelationTypePermissionWrapper
+                                    selectedRoleName={props.data.groupData?.roleName ?? ''}
+                                    rolesToCompareWith={findCommonStrings(
+                                        props.data.relationData?.relationTypeData?.roleList ?? [],
+                                        props.data.attributesData?.ciTypeData?.roleList ?? [],
+                                    )}
+                                >
+                                    <NewCiWithRelationView {...props} />
+                                </RelationTypePermissionWrapper>
+                            </MainContentWrapper>
+                        </>
+                    )
+                }}
             />
         </>
     )

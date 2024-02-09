@@ -9,12 +9,11 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { Languages } from '@isdd/metais-common/localization/languages'
 import React, { PropsWithChildren, createContext, useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { getDefaultCiEntityTabList, useCiDetailPageTitle, useCiListPageHeading, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { KrisRelatedContainer } from '@/components/containers/KrisRelatedContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
@@ -46,7 +45,7 @@ export const useOutletContext = (): OutletContextProps => {
 }
 
 const KrisEntityDetailPage: React.FC = () => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId } = useGetEntityParamsFromUrl()
     const navigate = useNavigate()
@@ -66,8 +65,6 @@ const KrisEntityDetailPage: React.FC = () => {
     const showEvaluation =
         evaluationData && evaluationData.hasVersions && !evaluationData.municipality && (evaluationData.creator || evaluationData.evaluator)
     const { data: ciTypeData } = useGetCiType(ENTITY_KRIS)
-    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
-    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
@@ -79,6 +76,10 @@ const KrisEntityDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+
+    const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
+    const { getTitle } = useCiDetailPageTitle(ciTypeData?.name ?? '', ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov], t)
+    document.title = getTitle()
 
     const tabList: Tab[] = getDefaultCiEntityTabList({
         userAbility,
@@ -119,7 +120,7 @@ const KrisEntityDetailPage: React.FC = () => {
                     withWidthContainer
                     links={[
                         { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                        { label: ciTypeName, href: `/ci/${ENTITY_KRIS}` },
+                        { label: getHeading(), href: `/ci/${ENTITY_KRIS}` },
                         {
                             label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
                             href: `/ci/${ENTITY_KRIS}/${entityId}`,

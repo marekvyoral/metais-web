@@ -6,6 +6,7 @@ import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -19,6 +20,7 @@ const ComparePage: React.FC = () => {
     const { entityId } = useGetEntityParamsFromUrl()
     let { entityName } = useGetEntityParamsFromUrl()
     entityName = shouldEntityNameBePO(entityName ?? '')
+    const { data: ciTypeData } = useGetCiType(entityName)
     const { data: ciItemData } = useReadConfigurationItem(entityId ?? '', {
         query: {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
@@ -32,7 +34,7 @@ const ComparePage: React.FC = () => {
                     withWidthContainer
                     links={[
                         { label: t('breadcrumbs.home'), href: '/' },
-                        { label: entityName, href: `/ci/${entityName}` },
+                        { label: t('titles.ciList', { ci: ciTypeData?.name }), href: `/ci/${entityName}` },
                         {
                             label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
                             href: `/ci/${entityName}/${entityId}`,

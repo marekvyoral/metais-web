@@ -96,7 +96,7 @@
         "hideInformationAboutSite": "Skry informácie o stránke",
         "linksToWebs": "odkazy na webové stránky orgánov verejnej moci",
         "linkToHomePage": "Odkaz na hlavnú stránku",
-        "ministryName": "Ministerstvo investícií, regionálneho rozvoja a informatizácie SR",
+        "homeLogo": "MetaIS logo s odkazom na hlavnú stránku.",
         "notifications": "Notifikácie",
         "factChecker": "Fact-checker",
         "openMenu": "Otvor menu",
@@ -109,7 +109,7 @@
         "dataObjects": "Dátové objekty",
         "monitoringNav": "Zostavy a monitoring",
         "guides": "Postupy a návody",
-        "hide": "Skrt",
+        "hide": "Skry",
         "show": "Ukáž",
         "innerNav": "Vnútorná navigácia",
         "mainNav": "Hlavná navigácia",
@@ -202,7 +202,8 @@
         "hide": "SKRYŤ",
         "unhide": "ODKRYŤ",
         "expandableExpandItem": "Otvoriť položky menu {{name}}",
-        "expandableCloseItem": "Zatvoriť položky menu {{name}}"
+        "expandableCloseItem": "Zatvoriť položky menu {{name}}",
+        "groupLabel": "Skupina podpoložiek {{title}}"
     },
     "userManagement": {
         "error": {
@@ -330,7 +331,9 @@
         "openAll": "Zobraziť všetko",
         "closeAll": "Zatvoriť všetko",
         "sections": "sekcie",
-        "and": "a"
+        "and": "a",
+        "sectionError": "V tejto sekcii nastala chyba",
+        "sectionChange": "V tejto sekcii došlo k zmene"
     },
     "tab": {
         "contents": "Obsah",
@@ -742,6 +745,7 @@
         }
     },
     "historyTab": {
+        "comparingHistory": "Porovnanie histórie položky {{itemName}}",
         "configurationItem": " Informácie o zázname",
         "configurationItemTable": "Historické záznamy",
         "configurationItemView": {
@@ -868,9 +872,14 @@
         "pagination": "Tabuľková navigácia",
         "sortBy": "Zoraď podľa",
         "selectAllItems": "Vyber všetky položky",
+        "selectItem": "Vyber položku {{itemName}}",
         "noDataLoaded": "Nenačítali sa žiadne záznamy",
         "expandableExpandItem": "Otvoriť detail položky",
-        "expandableCloseItem": "Zatvoriť detail položky"
+        "expandableCloseItem": "Zatvoriť detail položky",
+        "sortButtonLabel": "Zoradiť podľa {{item}}, {{sortDirection}} ",
+        "asc": "vzostupne",
+        "desc": "zostupne",
+        "unsort": "Zrušit zoradenie podľa {{item}}"
     },
     "state": "Stav evidencie",
     "group": "Skupina",
@@ -880,7 +889,8 @@
     },
     "loading": {
         "loadingSubPage": "Načítavam podstránku",
-        "neighboursCardList": "Načítavam vzťahy na súvisiace položky"
+        "neighboursCardList": "Načítavam vzťahy na súvisiace položky",
+        "subitems": "Načítavam súvisiace podpoložky"
     },
     "actionOverTable": {
         "options": {
@@ -1120,7 +1130,7 @@
             "notFoundPO": "Chyba pri získávaní informácií o právach - pre dané položke nebola nájdená povinná osoba.",
             "notToClone": "Z tejto položky nie je možné vytvoriť inštanciu nakoľko táto položka je inštanciou a nie je možné vytvárať inštancie z inštancií"
         },
-        "iconAltText": "Popis {{text}}"
+        "iconAltText": "Popis položky {{text}}"
     },
     "addFileSuccess": "Dokument {{docs}} bol úspešne pridaný",
     "addFilesSuccess": "Dokumenty {{docs}} boli úspešne pridané",
@@ -1613,10 +1623,10 @@
         "monitoringInsert": "Vloženie monitorovacích údajov",
         "reportDetail": "Detail reportu",
         "ciList": "Zoznam položiek {{ci}}",
-        "ciDetail": "Detail položky {{ci}}",
+        "ciDetail": "Detail položky {{ci}}, {{itemName}}",
         "ciCreateEntity": "Vytvorenie položky {{ci}}",
         "ciEdit": "Úprava položky {{ci}}",
-        "ciClone": "Klonovanie položky {{ci}}",
+        "ciClone": "Klonovanie položky {{ci}}, {{itemName}}",
         "PO_IS": "Spracovatelia koncepcií rozvoja IT",
         "PO_ISDetail": "Detail IS",
         "PO_ISCreate": "Vytvorenie IS",
@@ -1634,7 +1644,8 @@
         "codeListDetail": "Detail číselníka",
         "refIdentifiers": "Referencovateľné identifikátory",
         "meetingsCreate": "Vytvorenie zasadnutia",
-        "meetingDetail": "Detail zasadnutia",
+        "meetingDetail": "Detail zasadnutia {{itemName}}",
+        "meetingEdit": "Úprava zasadnutia {{itemName}}",
         "relationsSearch": "Vyhľadávanie podľa vzťahov"
     },
     "refRegisters": {
@@ -2639,7 +2650,7 @@
         "title": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
         "heading": "Zoznam SLA s prevádzkovateľom",
         "headingAdd": "Pridat SLA s dodávateľom",
-        "headingEdit": "Zmenit SLA s dodávateľom",
+        "headingEdit": "Editovať {{itemName}} SLA s dodávateľom",
         "createButton": "Pridať novú SLA s dodávateľom"
     },
     "insertMonitoring": {
@@ -2655,6 +2666,40 @@
     },
     "upload": {
         "success": "Dokument bol úspešne pridaný",
-        "error": "Nastala chyba pri uploade dokumentu. Prosím, skúste to znova."
+        "error": "Nastala chyba pri uploade dokumentu. Prosím, skúste to znova.",
+        "itemError": "Error pri nahrávaní súboru {{itemName}}",
+        "itemSuccess": "Upload {{itemName}} bol úspešný",
+        "deleteItem": "Odstrániť {{itemName}} zo zoznamu"
+    },
+
+    "close": "Zatvoriť",
+    "closeFeedback": "Zatvoriť správu o spätnej väzbe",
+    "valid": "Hodnota vstupu je valídna",
+    "dnd": "Položku je možné ťahať a pustiť",
+    "delete": "Zmazať",
+    "progressStepper": {
+        "expand": "Rozbaliť",
+        "collapse": "Zbaliť",
+        "state": {
+            "current": "Aktuálny stav",
+            "finished": "Konečný stav",
+            "future": "Budúci stav"
+        }
+    },
+    "pagination": {
+        "toFirst": "Prejsť na prvú stránku",
+        "toPrev": "Prejsť na predchádzajúcu stránku",
+        "dots": "Trojbodka naznačujúca dostupnosť ďalších stránok",
+        "toNext": "Prejsť na ďalšiu stránku",
+        "toLast": "Prejsť na poslednú stránku"
+    },
+    "fileList": {
+        "delete": "Vymazať súbor {{fileName}} z listu"
+    },
+    "select": {
+        "noOptions": "Žiadne možnosti"
+    },
+    "aria": {
+        "selectedRowsCount": "Máte {{count}} vybraných riadkov v tabuľke"
     }
 }

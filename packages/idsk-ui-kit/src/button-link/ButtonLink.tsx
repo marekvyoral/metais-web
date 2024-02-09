@@ -48,7 +48,7 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({
                     disabled={disabled}
                     ref={ref}
                 >
-                    {icon && <img className={styles.iconInButtonLink} src={icon} />}
+                    {icon && <img className={styles.iconInButtonLink} src={icon} alt="" />}
                     {label ?? t('errors.fixLink')}
                 </button>
             )}

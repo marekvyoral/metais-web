@@ -48,6 +48,7 @@ export const MeetingActorsTable = ({ data, error, isLoading }: MeetingActorsTabl
                 getCellContext: (ctx: CellContext<ApiMeetingActor, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            size: 200,
         },
         {
             header: t('meetings.groupShortName'),
@@ -58,6 +59,7 @@ export const MeetingActorsTable = ({ data, error, isLoading }: MeetingActorsTabl
                 getCellContext: (ctx: CellContext<ApiMeetingActor, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            size: 200,
         },
         {
             header: t('meetings.userOrgName'),
@@ -68,6 +70,7 @@ export const MeetingActorsTable = ({ data, error, isLoading }: MeetingActorsTabl
                 getCellContext: (ctx: CellContext<ApiMeetingActor, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            size: 200,
         },
         {
             header: t('meetings.participation'),
@@ -83,6 +86,7 @@ export const MeetingActorsTable = ({ data, error, isLoading }: MeetingActorsTabl
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
+            size: 200,
         },
     ]
     return (

@@ -25,12 +25,14 @@ export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
         { id, label, error, name, disabled, value, info, title, labelClassName, containerClassName, className, htmlForDisabled = false, ...rest },
         ref,
     ) => {
+        const errorId = `${id}-error`
+
         return (
             <div className={classNames({ 'govuk-form-group--error': !!error })}>
                 {error && (
-                    <>
-                        <span className="govuk-error-message">{error}</span>
-                    </>
+                    <span id={errorId} className="govuk-error-message">
+                        {error}
+                    </span>
                 )}
                 <div className={classNames('govuk-checkboxes__item', containerClassName)}>
                     <div className={styles.checkboxWrap}>
@@ -44,6 +46,8 @@ export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
                             ref={ref}
                             {...rest}
                             title={title}
+                            aria-errormessage={errorId}
+                            aria-label={label?.toString()}
                         />
 
                         {label ? (

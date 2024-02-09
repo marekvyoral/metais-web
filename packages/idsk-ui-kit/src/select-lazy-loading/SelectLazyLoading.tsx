@@ -75,6 +75,7 @@ export const SelectLazyLoading = <T,>({
     tooltipPosition,
 }: ISelectProps<T>): JSX.Element => {
     const { t } = useTranslation()
+    const errorId = `${id}-error`
     const Option = (props: OptionProps<T>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
     }
@@ -108,7 +109,11 @@ export const SelectLazyLoading = <T,>({
                 </label>
                 {info && <Tooltip descriptionElement={info} position={tooltipPosition} altText={`Tooltip ${label}`} />}
             </div>
-            {!!error && <span className="govuk-error-message">{error}</span>}
+            {!!error && (
+                <span id={errorId} className="govuk-error-message">
+                    {error}
+                </span>
+            )}
             <AsyncPaginate<T, GroupBase<T>, { page: number } | undefined, boolean>
                 id={id}
                 name={name}
@@ -129,6 +134,7 @@ export const SelectLazyLoading = <T,>({
                 unstyled
                 onChange={handleOnChange}
                 isDisabled={disabled}
+                aria-errormessage={errorId}
             />
         </div>
     )

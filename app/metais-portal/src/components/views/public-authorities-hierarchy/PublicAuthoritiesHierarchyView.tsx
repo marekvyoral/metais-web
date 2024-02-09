@@ -45,6 +45,7 @@ export const PublicAuthoritiesHierarchyView: React.FC<IPublicAuthoritiesHierarch
     expandableRowIdLoading,
 }) => {
     const { t } = useTranslation()
+    const [expanded, setExpanded] = useState<ExpandedState>({})
 
     const columns: ColumnDef<PublicAuthoritiesHierarchyItem>[] = [
         {
@@ -52,17 +53,24 @@ export const PublicAuthoritiesHierarchyView: React.FC<IPublicAuthoritiesHierarch
             accessorKey: 'name',
             enableSorting: true,
             cell: ({ row }) => {
+                const isExpanded = row.getIsExpanded()
+
                 return (
                     <div className={styles.rowWrapper} style={{ paddingLeft: `${row.depth * 2}rem` }}>
                         <div className={styles.toggleWrapper}>
                             {(row.getCanExpand() || row.original.canExpand) &&
                                 (expandableRowIdLoading === row.original.uuid ? (
-                                    <img className={styles.spinner} src={CircleLoadingArrowIcon} />
+                                    <img className={styles.spinner} src={CircleLoadingArrowIcon} alt={t('loading.subitems')} />
                                 ) : (
                                     <TransparentButtonWrapper onClick={() => handleExpandClick(row)}>
                                         <img
                                             src={PaginatorRightArrowIcon}
-                                            className={classNames([styles.expandIcon, row.getIsExpanded() ? styles.rotate90 : styles.rotate0])}
+                                            className={classNames([styles.expandIcon, isExpanded ? styles.rotate90 : styles.rotate0])}
+                                            alt={
+                                                isExpanded
+                                                    ? t('publicAuthorities.collapse', { rowName: row.original.name })
+                                                    : t('publicAuthorities.expand', { rowName: row.original.name })
+                                            }
                                         />
                                     </TransparentButtonWrapper>
                                 ))}
@@ -77,8 +85,6 @@ export const PublicAuthoritiesHierarchyView: React.FC<IPublicAuthoritiesHierarch
             },
         },
     ]
-
-    const [expanded, setExpanded] = useState<ExpandedState>({})
 
     const expandableContent = (items: PublicAuthoritiesHierarchyItem[]): JSX.Element => {
         return (

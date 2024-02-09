@@ -390,6 +390,7 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                 pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
+                selectedRowsCount={Object.keys(rowSelection).length}
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
                 createButton={
                     <Button

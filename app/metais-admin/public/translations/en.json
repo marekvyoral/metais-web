@@ -71,6 +71,7 @@
         "closeMenu": "Close menu",
         "linksToWebs": "links to websites of public authorities",
         "linkToHomePage": "Link to home page",
+        "homeLogo": "MetaIS logo linking to homepage.",
         "ministryName": "Ministry of Investments, Regional Development and Informatization of the Slovak Republic",
         "showInformationAboutSite": "Show information about site",
         "hideInformationAboutSite": "Hide information about site",
@@ -119,7 +120,8 @@
         "viewButton": "View"
     },
     "table": {
-        "selectAllItems": "Select all items",
+        "selectAllItems": "Select all items in table",
+        "selectItem": "Select item {{itemName}}",
         "title": "Cities",
         "heading": "Filter Content",
         "unpack": "Unpack Filter Content",
@@ -376,7 +378,7 @@
         "engDescription": "English description",
         "valid": "Validity",
         "category": "Category",
-        "link": "Items",
+        "link": "Link to {{itemName}} detail",
         "edit": "Edit",
         "delete": "Invalidate",
         "save": "Save",
@@ -400,7 +402,9 @@
         "addNewCodelistDetail": "Add new detail item",
         "items": "Items",
         "tooltipOrder": "Drag and drop a row to change the order",
-        "codeExist": "The code is incorrect. This code already exists."
+        "codeExist": "The code is incorrect. This code already exists.",
+        "order": "Order",
+        "orderDescription": "Order column description"
     },
     "filter": {
         "expand": "Expand filter",
@@ -794,8 +798,8 @@
             "isCycleInHierarchy": "Organization can not be superior and subject at the same time for one organization!",
             "warningInfo": "You can not create relationship between similar identity!",
             "topLevelOrg": "You can not assign organization main organization!",
-            "successFeedback":"Relations successfully updated",
-            "unsuccessFeedback":"Relations update failed"
+            "successFeedback": "Relations successfully updated",
+            "unsuccessFeedback": "Relations update failed"
         },
         "massUpdate": {
             "title": "Mass update of mandatory persons",
@@ -937,7 +941,8 @@
             "name": "Parameter name",
             "defaultValue": "Default value",
             "required": "Required parameter",
-            "additionalParams": "Additional parameters"
+            "additionalParams": "Additional parameters",
+            "close": "Close parameter card"
         },
         "table": {
             "identificator": "Identificator",
@@ -1241,5 +1246,32 @@
     "autoLogout": {
         "warningMessage": "In {{countDown}} you will be logged out due to inactitvity.",
         "loading": "Proccessing logout"
+    },
+
+    "close": "Close",
+    "valid": "Input value is valid",
+    "dnd": "Item can be dragged and dropped",
+    "delete": "Delete",
+    "progressStepeer": {
+        "expand": "Expand",
+        "collapse": "Collapse",
+        "state": {
+            "current": "Current step",
+            "finished": "Finished step",
+            "future": "Future step"
+        }
+    },
+    "pagination": {
+        "toFirst": "To first page",
+        "toPrev": "To previous page",
+        "dots": "Ellipsis indicationg more pages available",
+        "toNext": "To next page",
+        "toLast": "To last page"
+    },
+    "fileList": {
+        "delete": "Delete file {{fileName}} from list"
+    },
+    "aria": {
+        "selectedRowsCount": "You have {{count}} rows selected in table"
     }
 }

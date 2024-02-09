@@ -3,12 +3,15 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { RegistrationRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { CenterWrapper } from '@isdd/metais-common/components/center-wrapper/CenterWrapper'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { RegistrationSuccess } from '@/components/views/registration/RegistrationSuccess'
 
 const Success = () => {
     const { t } = useTranslation()
+    document.title = formatTitleString(t('registration.title'))
+
     return (
         <>
             <BreadCrumbs

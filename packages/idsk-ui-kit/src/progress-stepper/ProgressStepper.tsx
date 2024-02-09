@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React, { useState } from 'react'
 import { useWindowWidthBreakpoints } from '@isdd/metais-common/src/hooks/window-size/useWindowWidthBreakpoints'
+import { useTranslation } from 'react-i18next'
 
 import styles from './styles.module.scss'
 
@@ -54,6 +55,7 @@ const lineColor = (position: 'before' | 'after', state?: PROGRESS_STATE, firstIt
 }
 
 export const Step: React.FC<IStep> = ({ keyNumber, name, date, description, state, firstItem, lastItem, isRed }) => {
+    const { t } = useTranslation()
     return (
         <div key={keyNumber} className={styles.step}>
             <div className={styles.stepIndicator}>
@@ -61,6 +63,13 @@ export const Step: React.FC<IStep> = ({ keyNumber, name, date, description, stat
                 <img
                     src={state == PROGRESS_STATE.CURRENT ? CurrentStepIcon : state == PROGRESS_STATE.FINISHED ? FinishedStepIcon : FutureStepIcon}
                     height={16}
+                    alt={
+                        state == PROGRESS_STATE.CURRENT
+                            ? t('progressStepper.state.current')
+                            : state == PROGRESS_STATE.FINISHED
+                            ? t('progressStepper.state.finished')
+                            : t('progressStepper.state.future')
+                    }
                 />
                 <div className={classNames(styles.line, styles[lineColor('after', state, firstItem, lastItem)])} />
             </div>
@@ -84,6 +93,7 @@ export const Step: React.FC<IStep> = ({ keyNumber, name, date, description, stat
 }
 
 export const MobileStep: React.FC<IStep> = ({ keyNumber, name, date, description, state, firstItem, lastItem, isRed, isExpanded, onExpand }) => {
+    const { t } = useTranslation()
     return (
         <div key={keyNumber} className={styles.mobileStep}>
             <div className={styles.mobileStepIndicator}>
@@ -91,6 +101,13 @@ export const MobileStep: React.FC<IStep> = ({ keyNumber, name, date, description
                 <img
                     src={state == PROGRESS_STATE.CURRENT ? CurrentStepIcon : state == PROGRESS_STATE.FINISHED ? FinishedStepIcon : FutureStepIcon}
                     height={16}
+                    alt={
+                        state == PROGRESS_STATE.CURRENT
+                            ? t('progressStepper.state.current')
+                            : state == PROGRESS_STATE.FINISHED
+                            ? t('progressStepper.state.finished')
+                            : t('progressStepper.state.future')
+                    }
                 />
                 <div className={classNames(styles.mobileLine, styles[lineColor('after', state, firstItem, lastItem)])} />
             </div>
@@ -116,7 +133,12 @@ export const MobileStep: React.FC<IStep> = ({ keyNumber, name, date, description
                     </TextBody>
                     {((state == PROGRESS_STATE.CURRENT && !isExpanded) || (lastItem && isExpanded)) && (
                         <TransparentButtonWrapper onClick={() => onExpand && onExpand(!isExpanded)}>
-                            <img height={10} className={classNames(styles.imageMargin, { [styles.rotate180]: isExpanded })} src={ArrowDownIcon} />
+                            <img
+                                height={10}
+                                className={classNames(styles.imageMargin, { [styles.rotate180]: isExpanded })}
+                                src={ArrowDownIcon}
+                                alt={isExpanded ? t('progressStepper.collapse') : t('progressStepper.expand')}
+                            />
                         </TransparentButtonWrapper>
                     )}
                 </div>

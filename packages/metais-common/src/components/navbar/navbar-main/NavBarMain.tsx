@@ -34,8 +34,8 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column govuk-grid-column-one-quarter-from-desktop">
                         <div className="idsk-header-web__main-headline">
-                            <Link to={isLoginApp ? PORTAL_URL + '/home' : '/'} title={t('navbar.linkToHomePage') ?? ''} state={{ from: location }}>
-                                <img src={LogoMirri} alt={t('navbar.ministryName') ?? ''} className="idsk-header-web__main-headline-logo" />
+                            <Link to={isLoginApp ? PORTAL_URL + '/home' : '/'} title={t('navbar.linkToHomePage')} state={{ from: location }}>
+                                <img src={LogoMirri} alt={t('navbar.homeLogo')} className="idsk-header-web__main-headline-logo" />
                             </Link>
 
                             <NavIconGroup isMobile />
@@ -43,10 +43,10 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
                             <button
                                 onClick={() => setIsMenuExpanded((prev) => !prev)}
                                 className="idsk-button idsk-header-web__main-headline-menu-button"
-                                aria-label={isMenuExpanded ? t('navbar.closeMenu') ?? '' : t('navbar.openMenu') ?? ''}
+                                aria-label={isMenuExpanded ? t('navbar.closeMenu') : t('navbar.openMenu')}
                                 aria-expanded={isMenuExpanded}
-                                data-text-for-show={t('navbar.openMenu') ?? ''}
-                                data-text-for-hide={t('navbar.closeMenu') ?? ''}
+                                data-text-for-show={t('navbar.openMenu')}
+                                data-text-for-hide={t('navbar.closeMenu')}
                             >
                                 {t('navbar.menu')}
                                 <span className="idsk-header-web__menu-open" />

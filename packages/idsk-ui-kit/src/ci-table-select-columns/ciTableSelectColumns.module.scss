@@ -52,6 +52,9 @@
 
     width: 300px !important;
     display: flex !important;
+    @include mq($until: tablet) {
+        width: initial !important;
+    }
 }
 
 .textHeader {
@@ -59,4 +62,9 @@
     margin-bottom: govuk-spacing(1) !important;
     overflow-y: visible !important;
     overflow-x: visible !important;
+}
+.fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
 }

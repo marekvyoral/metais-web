@@ -157,7 +157,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                             {infoData?.meetingAttachments?.map((index) => (
                                 <GridRow key={index?.id}>
                                     <GridCol setWidth="full">
-                                        <img src={IconDocument} className={styles.documentIcon} />
+                                        <img src={IconDocument} className={styles.documentIcon} alt="" />
                                         <TextLinkExternal
                                             key={index?.id}
                                             title={index?.attachmentName ?? ''}
@@ -178,7 +178,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                             {infoData?.meetingLinks?.map((index) => (
                                 <GridRow key={index?.id}>
                                     <GridCol setWidth="full">
-                                        <img src={IconLink} className={styles.documentLinkIcon} />
+                                        <img src={IconLink} className={styles.documentLinkIcon} alt="" />
                                         <TextLinkExternal
                                             key={index?.id}
                                             title={index?.linkDescription ?? ''}

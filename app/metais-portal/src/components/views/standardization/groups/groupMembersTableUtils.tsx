@@ -151,12 +151,12 @@ export const buildColumns = (
                 row.original.roleName !== KSISVS_ROLES.STD_KSPRE &&
                 (row.original.roleName !== GROUP_ROLES.STD_PSPRE ? (
                     <TransparentButtonWrapper onClick={() => setIdentityToDelete(row.original.uuid)}>
-                        <img src={DeleteForeverRed} height={24} />
+                        <img src={DeleteForeverRed} height={24} alt={t('delete')} />
                     </TransparentButtonWrapper>
                 ) : (
                     <Can I={Actions.EDIT} a={'groupMaster'}>
                         <TransparentButtonWrapper onClick={() => setIdentityToDelete(row.original.uuid)}>
-                            <img src={DeleteForeverRed} height={24} />
+                            <img src={DeleteForeverRed} height={24} alt={t('delete')} />
                         </TransparentButtonWrapper>
                     </Can>
                 )),

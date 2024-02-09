@@ -1,6 +1,4 @@
 import React, { PropsWithChildren } from 'react'
-import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
-import { InfoIconWithText } from '@isdd/idsk-ui-kit'
 
 import { DefinitionListItem } from '@isdd/metais-common/components/definition-list/DefinitionListItem'
 
@@ -27,18 +25,14 @@ export const InformationGridRow: React.FC<IInformationGridRowProps> = ({
 }) => {
     return (
         <DefinitionListItem
-            label={
-                <TextBody>
-                    <InfoIconWithText tooltip={tooltip} hideIcon={hideIcon} label={label}>
-                        {label}
-                    </InfoIconWithText>
-                </TextBody>
-            }
+            label={label}
             value={value}
             lang={lang}
             href={href}
             valueWarning={valueWarning}
             secColValue={secColValue}
+            tooltip={tooltip}
+            hideIcon={hideIcon}
         />
     )
 }

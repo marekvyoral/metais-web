@@ -8,18 +8,17 @@ import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbi
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Languages } from '@isdd/metais-common/localization/languages'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { POEntityDetailHeader } from './POEntityDetailHeader'
 
-import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { getDefaultCiEntityTabList, useCiDetailPageTitle, useCiListPageHeading, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 
 const POEntityDetailPage: React.FC = () => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId, entityName: urlEntityName } = useGetEntityParamsFromUrl()
 
@@ -39,12 +38,13 @@ const POEntityDetailPage: React.FC = () => {
         },
     })
 
+    const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
+    const { getTitle } = useCiDetailPageTitle(ciTypeData?.name ?? '', ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov], t)
+    document.title = getTitle()
+
     const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: urlEntityName ?? '', entityId: entityId ?? '', t })
 
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
-
-    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
-    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
 
     return (
         <>
@@ -52,7 +52,7 @@ const POEntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: ciTypeName, href: `/ci/${urlEntityName}` },
+                    { label: getHeading(), href: `/ci/${entityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
                         href: `/ci/${urlEntityName}/${entityId}`,
@@ -67,7 +67,7 @@ const POEntityDetailPage: React.FC = () => {
                                 isInvalidated={isInvalidated}
                                 entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
                             />
-                            <QueryFeedback loading={false} error={isCiItemDataError} />
+                            <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
                             {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
                                 <MutationFeedback
                                     error={false}

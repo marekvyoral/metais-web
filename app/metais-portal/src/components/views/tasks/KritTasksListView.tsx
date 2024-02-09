@@ -97,6 +97,7 @@ export const KritTasksListView: React.FC<IKritTasksListView> = ({
             },
             meta: { getCellContext: (ctx) => ctx?.getValue?.() as string },
             enableSorting: true,
+            size: 150,
         },
         { id: 'appId', header: t('tasks.tableHeaders.type'), accessorKey: 'appId', enableSorting: true, size: 120 },
         {

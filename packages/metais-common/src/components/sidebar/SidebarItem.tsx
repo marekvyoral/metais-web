@@ -70,24 +70,19 @@ export const SidebarItem = ({
                         )}
                         aria-expanded={isExpanded}
                         to={item.path}
-                        id={item.title}
                     >
                         {item.title}
                     </Link>
                     {item.subItems && isSidebarExpanded && (
-                        <img
-                            src={ArrowDownIcon}
-                            className={classNames(styles.arrow, !isExpanded && styles.rotate)}
-                            alt={
-                                isExpanded
-                                    ? t('sidebar.expandableCloseItem', { name: item.title })
-                                    : t('sidebar.expandableExpandItem', { name: item.title })
-                            }
-                        />
+                        <img src={ArrowDownIcon} className={classNames(styles.arrow, !isExpanded && styles.rotate)} alt="" />
                     )}
                 </div>
                 {item.subItems && isExpanded && isSidebarExpanded && (
-                    <div className={classNames(styles.hide, isExpanded && styles.unhide)} aria-labelledby={item.title}>
+                    <div
+                        className={classNames(styles.hide, isExpanded && styles.unhide)}
+                        aria-label={t('sidebar.groupLabel', { title: item.title })}
+                        role="group"
+                    >
                         <div className={styles.safeMargin}>
                             {item.subItems.map((subItem, indexSubItem) => {
                                 const isExpandedSub = expandedSubItemIndexes[indexSubItem]

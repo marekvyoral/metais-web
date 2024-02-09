@@ -2,7 +2,7 @@ import { AbilityTuple, MongoAbility, MongoQuery } from '@casl/ability'
 import { Tab } from '@isdd/idsk-ui-kit/index'
 import { ConfigurationItemUi, ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Attribute, AttributeAttributeTypeEnum, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { ciInformationTab } from '@isdd/metais-common/constants'
+import { META_IS_TITLE, ciInformationTab } from '@isdd/metais-common/constants'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { isFalsyStringValue, replaceDotForUnderscore } from '@isdd/metais-common/utils/utils'
@@ -239,5 +239,33 @@ export const getSuccessMessageKeyByType = (type?: string) => {
         default: {
             return 'mutationFeedback.success'
         }
+    }
+}
+
+export const useCiDetailPageTitle = (ciName: string, itemName: string, t: TFunction) => {
+    const getHeading = () => {
+        return t('titles.ciDetail', { ci: ciName, itemName: itemName })
+    }
+    const getTitle = () => {
+        return `${getHeading()} ${META_IS_TITLE}`
+    }
+
+    return {
+        getHeading,
+        getTitle,
+    }
+}
+
+export const useCiListPageHeading = (ciName: string, t: TFunction) => {
+    const getHeading = () => {
+        return t('titles.ciList', { ci: ciName })
+    }
+    const getTitle = () => {
+        return `${getHeading()} ${META_IS_TITLE}`
+    }
+
+    return {
+        getHeading,
+        getTitle,
     }
 }

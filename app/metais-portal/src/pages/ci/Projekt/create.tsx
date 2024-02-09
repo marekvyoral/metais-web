@@ -9,32 +9,34 @@ import { CreateProjectView } from '@/components/views/ci/project/CreateProjectVi
 
 const CreateProjectPage: React.FC = () => {
     const { t } = useTranslation()
-
     const entityName = ENTITY_PROJECT
-    document.title = `${t('titles.ciCreateEntity', { ci: entityName })} | MetaIS`
 
     return (
         <>
             <CiCreateEntityContainer
                 entityName={entityName ?? ''}
-                View={(props) => (
-                    <>
-                        <BreadCrumbs
-                            withWidthContainer
-                            links={[
-                                { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                                { label: entityName ?? '', href: `/ci/${entityName}` },
-                                {
-                                    label: t('breadcrumbs.ciCreateEntity', { entityName: props.data.attributesData.ciTypeData?.name }),
-                                    href: `/ci/create`,
-                                },
-                            ]}
-                        />
-                        <MainContentWrapper>
-                            <CreateProjectView {...props} />
-                        </MainContentWrapper>
-                    </>
-                )}
+                View={(props) => {
+                    document.title = `${t('titles.ciCreateEntity', { ci: props.ciTypeName })} | MetaIS`
+
+                    return (
+                        <>
+                            <BreadCrumbs
+                                withWidthContainer
+                                links={[
+                                    { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                                    { label: t('titles.ciList', { ci: props.ciTypeName }), href: `/ci/${entityName}` },
+                                    {
+                                        label: t('breadcrumbs.ciCreateEntity', { entityName: props.data.attributesData.ciTypeData?.name }),
+                                        href: `/ci/create`,
+                                    },
+                                ]}
+                            />
+                            <MainContentWrapper>
+                                <CreateProjectView {...props} />
+                            </MainContentWrapper>
+                        </>
+                    )
+                }}
             />
         </>
     )

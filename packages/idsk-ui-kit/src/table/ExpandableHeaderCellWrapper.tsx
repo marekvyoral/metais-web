@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { Table } from '@tanstack/react-table'
+import { useTranslation } from 'react-i18next'
 
 import styles from './table.module.scss'
 
@@ -11,6 +12,7 @@ interface ExpandableHeaderCellProps<T> extends PropsWithChildren {
 }
 
 export const ExpandableHeaderCellWrapper = <T,>({ table, children }: ExpandableHeaderCellProps<T>): JSX.Element => {
+    const { t } = useTranslation()
     return (
         <div className={styles.expandCheckboxCell}>
             {table.getCanSomeRowsExpand() && (
@@ -18,6 +20,7 @@ export const ExpandableHeaderCellWrapper = <T,>({ table, children }: ExpandableH
                     <img
                         src={PaginatorRightArrowIcon}
                         style={{ cursor: 'pointer', transform: table.getIsAllRowsExpanded() ? 'rotate(90deg)' : 'rotate(0deg)' }}
+                        alt={table.getIsAllRowsExpanded() ? t('table.expandableCloseItem') : t('table.expandableExpandItem')}
                     />
                 </TransparentButtonWrapper>
             )}

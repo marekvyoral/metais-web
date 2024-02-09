@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
-import { Button, CheckBox, Input } from '@isdd/idsk-ui-kit/index'
+import { Button, CheckBox, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import {
     getReadCiNeighboursWithAllRelsQueryKey,
     getReadNeighboursConfigurationItemsCountQueryKey,
@@ -65,6 +65,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
     olaContractDocument,
     canChange,
     isOwnerOfContract,
+    isEdit,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -213,75 +214,80 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
     }, [olaContractDocument])
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <QueryFeedback loading={isLoading} error={isError} withChildren>
-                <Input {...register('name')} label={t('olaContracts.filter.name')} required error={errors.name?.message} />
-                <Input {...register('nameEnglish')} label={t('olaContracts.filter.nameEnglish')} />
-                <Input {...register('description')} label={t('olaContracts.filter.description')} />
-                <Input {...register('descriptionEnglish')} label={t('olaContracts.filter.descriptionEnglish')} />
-                <Input {...register('contractCode')} label={t('olaContracts.filter.contractCode')} />
-                <Input {...register('code')} label={t('olaContracts.filter.code')} disabled />
-                <Input {...register('referencingIdentifier')} label={t('olaContracts.filter.referenceIdentifier')} disabled />
-                <DateInput
-                    handleDateChange={(date) =>
-                        setValue('validityStartDate', date ? formatDateForDefaultValue(date.toISOString(), API_DATE_FORMAT) : '')
-                    }
-                    clearErrors={clearErrors}
-                    control={control}
-                    name={'validityStartDate'}
-                    label={t('olaContracts.filter.intervalStart')}
-                    error={errors.validityStartDate?.message}
-                />
-                <DateInput
-                    handleDateChange={(date) =>
-                        setValue('validityEndDate', date ? formatDateForDefaultValue(date.toISOString(), API_DATE_FORMAT) : '')
-                    }
-                    name={'validityEndDate'}
-                    control={control}
-                    label={t('olaContracts.filter.intervalEnd')}
-                />
-                <Input {...register('crzLink')} label={t('olaContracts.filter.crzLink')} />
-                <CheckBox {...register('vendorLock')} label={t('olaContracts.filter.vendorLock')} id="vendorLock" />
-                <Spacer vertical />
-                <ISVSSelect
-                    errors={errors}
-                    setValue={setValue}
-                    name="contractorIsvsUuid"
-                    required
-                    clearErrors={clearErrors}
-                    uuid={olaContract?.contractorIsvsUuid}
-                    additionalName="contractorIsvsName"
-                />
-                {showDocument && (
-                    <InformationGridRow
-                        label={t('olaContracts.filter.document')}
-                        value={
-                            olaContractDocument?.filename ? (
-                                <Link to="#" onClick={() => downloadFile(olaContract?.uuid ?? '')}>
-                                    {olaContractDocument?.filename}
-                                </Link>
-                            ) : (
-                                t('olaContracts.detail.notEntered')
-                            )
+        <>
+            <TextHeading size="XL">
+                {isEdit ? t('olaContracts.headingEdit', { itemName: olaContract?.name }) : t('olaContracts.headingAdd')}
+            </TextHeading>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <QueryFeedback loading={isLoading} error={isError} withChildren>
+                    <Input {...register('name')} label={t('olaContracts.filter.name')} required error={errors.name?.message} />
+                    <Input {...register('nameEnglish')} label={t('olaContracts.filter.nameEnglish')} />
+                    <Input {...register('description')} label={t('olaContracts.filter.description')} />
+                    <Input {...register('descriptionEnglish')} label={t('olaContracts.filter.descriptionEnglish')} />
+                    <Input {...register('contractCode')} label={t('olaContracts.filter.contractCode')} />
+                    <Input {...register('code')} label={t('olaContracts.filter.code')} disabled />
+                    <Input {...register('referencingIdentifier')} label={t('olaContracts.filter.referenceIdentifier')} disabled />
+                    <DateInput
+                        handleDateChange={(date) =>
+                            setValue('validityStartDate', date ? formatDateForDefaultValue(date.toISOString(), API_DATE_FORMAT) : '')
                         }
+                        clearErrors={clearErrors}
+                        control={control}
+                        name={'validityStartDate'}
+                        label={t('olaContracts.filter.intervalStart')}
+                        error={errors.validityStartDate?.message}
                     />
-                )}
-                <FileUpload
-                    ref={fileUploadRef}
-                    allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
-                    multiple={false}
-                    isUsingUuidInFilePath
-                    fileMetaAttributes={fileMetaAttributes}
-                    onUploadSuccess={handleUploadSuccess}
-                    customUuid={olaContract?.uuid}
-                />
-                <SubmitWithFeedback
-                    disabled={!canChange || !isOwnerOfContract || !ownerGid}
-                    submitButtonLabel={t('codeListDetail.button.save')}
-                    loading={!!isLoading}
-                    additionalButtons={[<Button key={1} variant="secondary" label={t('votes.voteEdit.cancel')} onClick={() => navigate(-1)} />]}
-                />
-            </QueryFeedback>
-        </form>
+                    <DateInput
+                        handleDateChange={(date) =>
+                            setValue('validityEndDate', date ? formatDateForDefaultValue(date.toISOString(), API_DATE_FORMAT) : '')
+                        }
+                        name={'validityEndDate'}
+                        control={control}
+                        label={t('olaContracts.filter.intervalEnd')}
+                    />
+                    <Input {...register('crzLink')} label={t('olaContracts.filter.crzLink')} />
+                    <CheckBox {...register('vendorLock')} label={t('olaContracts.filter.vendorLock')} id="vendorLock" />
+                    <Spacer vertical />
+                    <ISVSSelect
+                        errors={errors}
+                        setValue={setValue}
+                        name="contractorIsvsUuid"
+                        required
+                        clearErrors={clearErrors}
+                        uuid={olaContract?.contractorIsvsUuid}
+                        additionalName="contractorIsvsName"
+                    />
+                    {showDocument && (
+                        <InformationGridRow
+                            label={t('olaContracts.filter.document')}
+                            value={
+                                olaContractDocument?.filename ? (
+                                    <Link to="#" onClick={() => downloadFile(olaContract?.uuid ?? '')}>
+                                        {olaContractDocument?.filename}
+                                    </Link>
+                                ) : (
+                                    t('olaContracts.detail.notEntered')
+                                )
+                            }
+                        />
+                    )}
+                    <FileUpload
+                        ref={fileUploadRef}
+                        allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
+                        multiple={false}
+                        isUsingUuidInFilePath
+                        fileMetaAttributes={fileMetaAttributes}
+                        onUploadSuccess={handleUploadSuccess}
+                        customUuid={olaContract?.uuid}
+                    />
+                    <SubmitWithFeedback
+                        disabled={!canChange || !isOwnerOfContract || !ownerGid}
+                        submitButtonLabel={t('codeListDetail.button.save')}
+                        loading={!!isLoading}
+                        additionalButtons={[<Button key={1} variant="secondary" label={t('votes.voteEdit.cancel')} onClick={() => navigate(-1)} />]}
+                    />
+                </QueryFeedback>
+            </form>
+        </>
     )
 }

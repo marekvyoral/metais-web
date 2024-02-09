@@ -30,7 +30,7 @@ interface CiInformationData {
     withoutDescription?: boolean
     withoutTime?: boolean
 }
-// Plánované ročné prevádzkové náklady projektu v EUR
+
 export const CiInformationAccordion: React.FC<CiInformationData> = ({
     data: { ciItemData, ciTypeData, constraintsData, unitsData },
     isLoading,

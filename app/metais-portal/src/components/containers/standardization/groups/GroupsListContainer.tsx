@@ -26,7 +26,7 @@ export const GroupsListContainer: React.FC = () => {
             header: t('groups.groupName'),
             accessorKey: 'name',
             enableSorting: true,
-            size: 500,
+            size: 200,
             cell: (ctx: CellContext<GroupWithMeetings, unknown>) => {
                 return <Link to={`${ctx.row.original.uuid}`}>{ctx.row.original.name as string}</Link>
             },

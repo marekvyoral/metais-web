@@ -105,40 +105,48 @@
     thead .headerRow {
         td:first-child {
             padding: govuk-spacing(2) govuk-spacing(4) govuk-spacing(2) govuk-spacing(2) !important;
-            position: sticky;
             left: 0;
             z-index: 1;
+            @include mq($from: desktop) {
+                position: sticky;
+            }
         }
         th:first-child {
             padding: govuk-spacing(2) govuk-spacing(4) govuk-spacing(2) govuk-spacing(2) !important;
-            position: sticky;
             left: 0;
             z-index: 1;
+            @include mq($from: desktop) {
+                position: sticky;
+            }
         }
     }
 
     thead .checkBoxHeaderRow {
         td:first-child {
             padding: govuk-spacing(2) govuk-spacing(4) govuk-spacing(2) govuk-spacing(2) !important;
-            position: sticky;
             left: 0;
             z-index: 1;
+            position: sticky;
         }
         th:nth-child(2) {
             padding: govuk-spacing(2) govuk-spacing(4) govuk-spacing(2) govuk-spacing(2) !important;
-            position: sticky;
             left: 50px;
             z-index: 1;
+            @include mq($from: desktop) {
+                position: sticky;
+            }
         }
     }
 
     tbody .tableRow {
         th:first-child {
-            position: sticky;
             left: 0;
             padding-left: govuk-spacing(2);
             background: govuk-colour('white');
             z-index: 1;
+            @include mq($from: desktop) {
+                position: sticky;
+            }
         }
         th:last-child {
             padding: govuk-spacing(2) govuk-spacing(4) govuk-spacing(2) 0px !important;
@@ -151,17 +159,19 @@
     tbody .checkBoxRow {
         td:first-child {
             padding-left: govuk-spacing(2);
-            position: sticky;
             left: 0;
             background: govuk-colour('white');
             z-index: 1;
+            position: sticky;
         }
         th:nth-child(2) {
-            position: sticky;
             left: 50px;
             padding-left: govuk-spacing(2);
             background: govuk-colour('white');
             z-index: 1;
+            @include mq($from: desktop) {
+                position: sticky;
+            }
         }
     }
 }

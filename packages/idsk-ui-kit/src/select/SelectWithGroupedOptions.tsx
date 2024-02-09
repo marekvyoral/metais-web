@@ -96,7 +96,7 @@ export const SelectWithGroupedOptions = ({
                         onChange(val as IOption<string>)
                     }}
                 />
-                {correct && <img src={GreenCheckMarkIcon} className={isClearable ? styles.isCorrectWithIcon : styles.isCorrect} />}
+                {correct && <img src={GreenCheckMarkIcon} className={isClearable ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />}
             </div>
         </div>
     )
