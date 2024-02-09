@@ -120,7 +120,6 @@ import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/informatio
 import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
 import HowToGenericPage from '@/pages/howto/[howToEnumType]'
 import ServicesListPage from '@/pages/monitoring/services/services'
-import CookiesInfoPage from '@/pages/cookies/info'
 import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
 import RelationListPage from '@/pages/relations'
 import { SlaContractList } from '@/pages/ci/Kontrakt/list'
@@ -134,6 +133,7 @@ import CloneKSPage from '@/pages/ci/KS/[entityId]/clone'
 import PersonalDataInfoPage from '@/pages/cookies/personalDataProtection'
 import TermsOfUse from '@/pages/cookies/termsOfUse'
 import CookiesSettings from '@/pages/cookies/settings'
+import CookiesInfoPage from '@/pages/cookies/info'
 
 export interface RouteConfig {
     path?: string
