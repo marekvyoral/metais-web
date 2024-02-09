@@ -8,6 +8,9 @@
     justify-content: center;
     width: 100%;
     gap: govuk-spacing(4);
+    @include mq($until: desktop) {
+        flex-direction: column;
+    }
 }
 
 .stickyStyles {
@@ -24,6 +27,12 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+
+.flexMobileClose {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
 }
 
 .flexRow {
