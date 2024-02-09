@@ -45,7 +45,7 @@ type SchemaType = {
         | MixedSchema
         | NullableDateSchema
         | NullableNumberSchema
-        | ArraySchema<(string | undefined)[] | undefined, AnyObject, '', ''>
+        | ArraySchema<(string | undefined)[] | undefined | null, AnyObject, '', ''>
         | ArraySchema<{ label?: string | undefined; value?: string | undefined }[] | undefined, AnyObject, '', ''>
         | ArraySchema<number[] | undefined, AnyObject, '', ''>
         | ArraySchema<(number | null | undefined)[] | undefined, AnyObject, '', ''>
@@ -110,19 +110,17 @@ export const generateFormSchema = (
                     }
                     break
                 }
-                case isArray && hasConstraints: {
+
+                case isArray: {
                     schema[attribute.technicalName] = array()
+                        .nullable()
                         .of(string())
                         .when('isRequired', (_, current) => {
-                            if (isRequired) {
+                            if (isRequired || hasConstraints) {
                                 return current.required(t('validation.required'))
                             }
                             return current
                         })
-                    break
-                }
-                case isArray && !hasConstraints: {
-                    schema[attribute.technicalName] = array().of(string().required(t('validation.required')))
 
                     break
                 }
