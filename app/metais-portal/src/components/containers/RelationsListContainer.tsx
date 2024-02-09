@@ -41,7 +41,11 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
     includeDeleted = false,
 }) => {
     const { data: ciTypeData } = useGetCiType(technicalName)
-    const { isLoading: areTypesLoading, isError: areTypesError, keysToDisplay } = useEntityRelationsTypesCount(entityId, technicalName)
+    const {
+        isLoading: areTypesLoading,
+        isError: areTypesError,
+        keysToDisplay,
+    } = useEntityRelationsTypesCount(entityId, technicalName, includeDeleted)
 
     const { data: relationTypes } = useListRelationshipTypes({ filter: { role: undefined } })
 

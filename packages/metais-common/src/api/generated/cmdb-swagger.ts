@@ -97,10 +97,24 @@ export type ReadNeighboursConfigurationItemsParams = {
 
 export type ReadNeighboursConfigurationItemsCount200 = { [key: string]: number }
 
+export type ReadNeighboursConfigurationItemsCountStatesItem =
+    (typeof ReadNeighboursConfigurationItemsCountStatesItem)[keyof typeof ReadNeighboursConfigurationItemsCountStatesItem]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReadNeighboursConfigurationItemsCountStatesItem = {
+    DRAFT: 'DRAFT',
+    AWAITING_APPROVAL: 'AWAITING_APPROVAL',
+    APPROVED_BY_OWNER: 'APPROVED_BY_OWNER',
+    INVALIDATED: 'INVALIDATED',
+    DELETED: 'DELETED',
+} as const
+
 export type ReadNeighboursConfigurationItemsCountParams = {
     'usageType.whiteList[]'?: string[]
     'usageType.blackList[]'?: string[]
     includeInvalidated?: boolean
+    includeDeleted?: boolean
+    states?: ReadNeighboursConfigurationItemsCountStatesItem[]
 }
 
 export type ReadRelationshipsParams = {
