@@ -10,10 +10,8 @@ import {
     useSaveReport,
 } from '@isdd/metais-common/api/generated/report-swagger'
 import { REPORTS_LIST_QUERY_KEY } from '@isdd/metais-common/constants'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useQueryClient } from '@tanstack/react-query'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 interface IMutationError {
@@ -28,15 +26,17 @@ export interface IView {
     mutationIsLoading: boolean
     runMutationIsSuccess: boolean
     mutationError: IMutationError
+    isLoading: boolean
+    isError: boolean
+    isMutationError: boolean
+    isMutationSuccess: boolean
 }
-
 interface IReportsDetailContainer {
     View: React.FC<IView>
 }
 
 export const ReportsDetailContainer: React.FC<IReportsDetailContainer> = ({ View }) => {
     const { entityId } = useParams()
-    const { t } = useTranslation()
     const queryClient = useQueryClient()
     const isEnabled = !!entityId
 
@@ -79,18 +79,19 @@ export const ReportsDetailContainer: React.FC<IReportsDetailContainer> = ({ View
     const isError = isErrorMeta || isErrorCategories
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                data={reportMetaData}
-                dataCategories={dataCategories}
-                saveReport={saveReport}
-                runReport={runReport}
-                saveIsLoading={saveIsLoading}
-                mutationIsLoading={mutationIsLoading}
-                runMutationIsSuccess={runMutationIsSuccess}
-                mutationError={mutationError as IMutationError}
-            />
-            <MutationFeedback success={saveMutationIsSuccess} error={saveMutationIsError ? t('feedback.mutationErrorMessage') : undefined} />
-        </QueryFeedback>
+        <View
+            data={reportMetaData}
+            dataCategories={dataCategories}
+            saveReport={saveReport}
+            runReport={runReport}
+            saveIsLoading={saveIsLoading}
+            mutationIsLoading={mutationIsLoading}
+            runMutationIsSuccess={runMutationIsSuccess}
+            mutationError={mutationError as IMutationError}
+            isLoading={isLoading}
+            isError={isError}
+            isMutationError={saveMutationIsError}
+            isMutationSuccess={saveMutationIsSuccess}
+        />
     )
 }

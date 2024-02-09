@@ -4,6 +4,7 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit'
 import { QueryFeedback } from '@isdd/metais-common'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useParams } from 'react-router-dom'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { DraftsListEditForm } from '@/components/entities/draftslist/DraftsListEditForm'
@@ -11,10 +12,12 @@ import { DraftsListFormContainer } from '@/components/containers/draftslist/Draf
 const DraftsListEditPage = () => {
     const { t } = useTranslation()
     const { entityId } = useParams()
+
     return (
         <DraftsListFormContainer
             entityId={entityId}
             View={({ data, isLoading }) => {
+                document.title = formatTitleString(data?.requestData?.srName ?? '')
                 return (
                     <>
                         <BreadCrumbs

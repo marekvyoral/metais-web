@@ -15,7 +15,7 @@ import { ReportsCard } from '@/components/views/reports/ReportsCard'
 import { ReportsFilterParameterWrapper } from '@/components/views/reports/ReportsFilterParameterWrapper'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-const ReportsDetailPage: React.FC = () => {
+export const ReportsDetailPage: React.FC = () => {
     const { t } = useTranslation()
     document.title = `${t('titles.reportDetail')} | MetaIS`
     const defaultFilterValues: IFilterParams & { [key: string]: string } = {}
@@ -72,5 +72,3 @@ const ReportsDetailPage: React.FC = () => {
         />
     )
 }
-
-export default ReportsDetailPage

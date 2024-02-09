@@ -173,6 +173,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                 entityName=""
                 handleFilterChange={handleFilterChange}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
+                selectedRowsCount={Object.keys(rowSelection).length}
                 createButton={
                     <Can I={Actions.CREATE} a={Subjects.ITEM}>
                         <CreateEntityButton label={t('codeListDetail.button.addNewItem')} onClick={() => handleOpenCreateItem()} />

@@ -61,12 +61,14 @@ export const KSEvaluationAccordion: React.FC<IKSEvaluationAccordionProps> = ({ e
                     </Link>
                 </ExpandableRowCellWrapper>
             ),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.code,
             header: t('evaluation.ksTable.ksName'),
             id: 'name',
             cell: (ctx) => ctx.row?.original?.name,
+            size: 200,
         },
         {
             accessorFn: (row) => row?.code,
@@ -77,6 +79,7 @@ export const KSEvaluationAccordion: React.FC<IKSEvaluationAccordionProps> = ({ e
                     {ctx.row?.original?.fazaName}
                 </Link>
             ),
+            size: 200,
         },
     ]
 

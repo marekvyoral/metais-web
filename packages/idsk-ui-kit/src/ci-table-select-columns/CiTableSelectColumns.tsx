@@ -49,28 +49,28 @@ export interface IColumnSectionProps {
 const ColumnSection: React.FC<IColumnSectionProps> = ({ sectionName, columns, updateSelectedValue, getIsColumnChecked }) => {
     if (columns.length === 0) return null
     return (
-        <>
-            <TextBody size="S" className={classNames('govuk-!-font-weight-bold', styles.textHeader)}>
-                {sectionName}
-            </TextBody>
-            <div className={classNames('govuk-checkboxes govuk-checkboxes--small')}>
-                {columns.map((column) => {
-                    return (
-                        <CheckBox
-                            labelClassName={styles.customLabelCheckbox}
-                            key={column.technicalName}
-                            label={column.name}
-                            id={column.technicalName}
-                            name={column.technicalName}
-                            value={column.technicalName}
-                            checked={getIsColumnChecked(column.technicalName)}
-                            onChange={(e) => updateSelectedValue(e.target.value, e.target.checked)}
-                            disabled={column.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov || column.technicalName === ATTRIBUTE_NAME.ISVS_Name}
-                        />
-                    )
-                })}
-            </div>
-        </>
+        <fieldset className={classNames(styles.fieldset, 'govuk-checkboxes govuk-checkboxes--small')}>
+            <legend>
+                <TextBody size="S" className={classNames('govuk-!-font-weight-bold', styles.textHeader)}>
+                    {sectionName}
+                </TextBody>
+            </legend>
+            {columns.map((column) => {
+                return (
+                    <CheckBox
+                        labelClassName={styles.customLabelCheckbox}
+                        key={column.technicalName}
+                        label={column.name}
+                        id={column.technicalName}
+                        name={column.technicalName}
+                        value={column.technicalName}
+                        checked={getIsColumnChecked(column.technicalName)}
+                        onChange={(e) => updateSelectedValue(e.target.value, e.target.checked)}
+                        disabled={column.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov || column.technicalName === ATTRIBUTE_NAME.ISVS_Name}
+                    />
+                )
+            })}
+        </fieldset>
     )
 }
 

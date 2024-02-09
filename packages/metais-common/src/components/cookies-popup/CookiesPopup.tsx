@@ -98,7 +98,7 @@ export const CookiesPopup: React.FC = () => {
                 </Link>
                 {windowWidth && windowWidth.desktop && (
                     <button className={styles.closeButton} onClick={() => setIsShown(false)}>
-                        <img src={NavigationCloseIcon} alt="navigation-close" />
+                        <img src={NavigationCloseIcon} alt={t('close')} />
                     </button>
                 )}
             </div>

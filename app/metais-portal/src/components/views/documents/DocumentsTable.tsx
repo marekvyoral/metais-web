@@ -135,7 +135,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             accessorFn: (row) => row?.configurationItem,
             header: t('documentsTab.table.name'),
             id: 'documentsTab.table.name',
-            size: 300,
+            size: 200,
             meta: {
                 getCellContext: (ctx: CellContext<ConfigurationItemUi, unknown>) =>
                     (ctx?.getValue?.() as ConfigurationItemUi).attributes?.Gen_Profil_nazo,
@@ -341,6 +341,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
+                selectedRowsCount={Object.keys(rowSelection).length}
                 createButton={
                     <Button
                         disabled={isInvalidated}

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
-import { GridCol, GridRow, TextBody } from '@isdd/idsk-ui-kit'
+import { GridCol, GridRow, InfoIconWithText, TextBody } from '@isdd/idsk-ui-kit'
 
 import styles from './definitionList.module.scss'
 
@@ -11,18 +11,25 @@ interface IDefinitionListItemProps extends PropsWithChildren {
     secColValue?: string | React.ReactNode | undefined
     lang?: string | undefined
     href?: string
+    tooltip?: string
+    hideIcon?: boolean
 }
 
-export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, value, secColValue, valueWarning, lang }) => {
+export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, value, secColValue, valueWarning, lang, tooltip, hideIcon }) => {
     return (
         <GridRow className={styles.groupRow}>
             {label && (
                 <GridCol setWidth="one-third">
-                    <dt className={classNames('govuk-label', styles.dt)}>{label}</dt>
+                    <TextBody className={styles.labelWrapper} lang={lang}>
+                        <dt tabIndex={0} className={classNames('govuk-label', styles.dt)}>
+                            {label}
+                        </dt>
+                        <InfoIconWithText tooltip={tooltip} hideIcon={hideIcon} label={label} />
+                    </TextBody>
                 </GridCol>
             )}
             <GridCol setWidth={secColValue ? (label ? 'one-third' : 'one-half') : 'two-thirds'}>
-                <dd className={styles.dd}>
+                <dd tabIndex={0} className={styles.dd}>
                     <TextBody className={classNames({ [styles.valueRed]: valueWarning })} lang={lang}>
                         {value}
                     </TextBody>
@@ -30,7 +37,7 @@ export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, 
             </GridCol>
             {secColValue && (
                 <GridCol setWidth={label ? 'one-third' : 'one-half'}>
-                    <dd className={styles.dd}>
+                    <dd tabIndex={0} className={styles.dd}>
                         <TextBody lang={lang}>{secColValue}</TextBody>
                     </dd>
                 </GridCol>

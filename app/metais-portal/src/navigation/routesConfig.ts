@@ -133,6 +133,7 @@ import CloneKSPage from '@/pages/ci/KS/[entityId]/clone'
 import PersonalDataInfoPage from '@/pages/cookies/personalDataProtection'
 import TermsOfUse from '@/pages/cookies/termsOfUse'
 import CookiesSettings from '@/pages/cookies/settings'
+import { ReportsDetailPage } from '@/pages/reports/[entityId]/report'
 import CookiesInfoPage from '@/pages/cookies/info'
 
 export interface RouteConfig {
@@ -372,9 +373,14 @@ export const routesConfig: RouteConfig[] = [
                 component: DraftsListEditPage,
             },
             {
+                path: RouterRoutes.REPORTS_DETAIL,
+                slug: RouterRoutes.REPORTS_DETAIL,
+                component: ReportsListPage,
+            },
+            {
                 path: RouterRoutes.REPORTS_LIST,
                 slug: RouterRoutes.REPORTS_LIST,
-                component: ReportsListPage,
+                component: ReportsDetailPage,
             },
             {
                 path: RouterRoutes.IMPORT_MONITORING_PARAMETERS,

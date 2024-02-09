@@ -351,6 +351,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         setPage && setPage(BASE_PAGE_NUMBER)
                     }
                 }}
+                selectedRowsCount={Object.keys(rowSelection).length}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, PAGING: !selectPageSize }}

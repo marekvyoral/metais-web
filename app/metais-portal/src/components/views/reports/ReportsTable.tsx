@@ -36,6 +36,7 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handle
                     {ctx.row.original.name as string}
                 </Link>
             ),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.category?.name,
@@ -44,6 +45,7 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handle
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (row) => row.getValue() as string,
+            size: 200,
         },
         {
             accessorFn: (row) => row?.description,
@@ -52,6 +54,7 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handle
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (row) => row.getValue() as string,
+            size: 200,
         },
     ]
 

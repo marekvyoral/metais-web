@@ -1,5 +1,6 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiListContainer } from '@/components/containers/CiListContainer'
@@ -8,7 +9,7 @@ import { POView } from '@/components/views/ci/PO/POView'
 
 const POPOListPage = () => {
     const { t } = useTranslation()
-    document.title = `${t('titles.PO_PO')}`
+    document.title = `${t('titles.PO_PO')} ${META_IS_TITLE}`
     const PO = 'PO'
     const PO_PO = 'PO_PO'
     const defaultFilterValues: POFilterData = {

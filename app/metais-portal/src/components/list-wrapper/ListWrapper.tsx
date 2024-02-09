@@ -34,6 +34,7 @@ import { ICiListContainerView } from '@/components/containers/CiListContainer'
 import { getRowSelectionUuids } from '@/componentHelpers/ci/ciTableHelpers'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { CIFilterData } from '@/pages/ci/[entityName]/entity'
+import { useCiListPageHeading } from '@/componentHelpers/ci'
 
 interface IListWrapper extends ICiListContainerView<CIFilterData> {
     isNewRelationModal?: boolean
@@ -114,14 +115,9 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         scrollToMutationFeedback()
     }, [bulkActionResult, scrollToMutationFeedback])
 
-    const ciName = useMemo(
-        () => (i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName),
-        [ciTypeData?.engName, ciTypeData?.name, i18n.language],
-    )
-
-    useEffect(() => {
-        document.title = `${t('titles.ciList', { ci: ciName })} | MetaIS`
-    }, [ciName, t])
+    const { getTitle, getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
+    const ciName = getHeading()
+    document.title = getTitle()
 
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
@@ -187,6 +183,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     attributes={attributes ?? []}
                     columnListData={columnListData}
                     ciTypeData={ciTypeData}
+                    selectedRowsCount={Object.keys(rowSelection).length}
                     createButton={
                         showCreateEntityButton && (
                             <CreateEntityButton

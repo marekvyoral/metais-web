@@ -85,6 +85,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
                     {ctx?.getValue?.() as string}
                 </Link>
             ),
+            size: 200,
         },
         {
             header: t('meetings.groupShortName'),
@@ -98,6 +99,8 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
                 getCellContext: (ctx: CellContext<ApiMeetingRequestPreview, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+
+            size: 200,
         },
         {
             header: t('meetings.groupName'),
@@ -111,6 +114,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
                 getCellContext: (ctx: CellContext<ApiMeetingRequestPreview, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            size: 200,
         },
         {
             header: t('meetings.beginDate'),
@@ -121,6 +125,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
                 getCellContext: (ctx: CellContext<ApiMeetingRequestPreview, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => formatDateTimeForDefaultValue(ctx.getValue() as string, 'dd.MM.yyyy, HH:mm'),
+            size: 200,
         },
         {
             header: t('meetings.state'),
@@ -131,6 +136,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
                 getCellContext: (ctx: CellContext<ApiMeetingRequestPreview, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => <span>{t(`meetings.stateValue.${ctx.row?.original?.state}`)}</span>,
+            size: 200,
         },
     ]
 

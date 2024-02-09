@@ -4,6 +4,8 @@ import { TextWarning } from '@isdd/idsk-ui-kit/src/typography/TextWarning'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
+import { v4 as uuidV4 } from 'uuid'
+import { TransparentButtonWrapper } from '@isdd/idsk-ui-kit'
 
 import styles from './mutationFeedback.module.scss'
 
@@ -26,6 +28,7 @@ interface MutationFeedbackProps {
 
 export const MutationFeedback: React.FC<MutationFeedbackProps> = ({ success, error, successMessage, onMessageClose }) => {
     const { t } = useTranslation()
+    const labelId = `${uuidV4()}-label`
     const { clearAction } = useActionSuccess()
     const [show, setShow] = useState(true)
     const closeMessage = () => {
@@ -39,22 +42,27 @@ export const MutationFeedback: React.FC<MutationFeedbackProps> = ({ success, err
     }, [success, error, successMessage])
 
     return show ? (
-        <>
-            <div className={styles.inline}>
-                {success && (
-                    <IconWithText icon={RoundCheckGreenIcon}>
-                        <div className={styles.successText}>{successMessage || t('mutationFeedback.successfulUpdated')}</div>
-                    </IconWithText>
-                )}
-                {error && <TextWarning>{error}</TextWarning>}
-                <Spacer horizontal />
-                {(success || error) && (
-                    <div onClick={closeMessage} className={classNames(styles.closeIconWrapper, 'govuk-body')}>
-                        <img src={CloseIcon} />
+        <div className={styles.inline}>
+            {success && (
+                <IconWithText icon={RoundCheckGreenIcon}>
+                    <div aria-live="assertive" className={styles.successText}>
+                        {successMessage || t('mutationFeedback.successfulUpdated')}
                     </div>
-                )}
-            </div>
-        </>
+                </IconWithText>
+            )}
+            {error && <TextWarning aria-live="assertive">{error}</TextWarning>}
+            <Spacer horizontal />
+            {(success || error) && (
+                <div className={classNames(styles.closeIconWrapper, 'govuk-body')}>
+                    <TransparentButtonWrapper onClick={closeMessage} aria-labelledby={labelId}>
+                        <span id={labelId} className="govuk-visually-hidden">
+                            {success ? successMessage || t('mutationFeedback.successfulUpdated') : error}
+                        </span>
+                        <img src={CloseIcon} className={styles.closeIcon} alt={t('closeFeedback')} lang="sk" />
+                    </TransparentButtonWrapper>
+                </div>
+            )}
+        </div>
     ) : (
         <></>
     )

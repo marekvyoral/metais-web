@@ -9,6 +9,7 @@ import { PropsWithChildren, default as React, useId } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './actionsOverTable.module.scss'
+import { SelectedRowsAriaRead } from './selected-rows-aria-read/SelectedRowsAriaRead'
 
 import { Attribute, AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { Actions, useCreateCiAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
@@ -53,6 +54,7 @@ interface IActionsOverTableProps extends PropsWithChildren {
     handlePagingSelect?: (page: string) => void
     simpleTableColumnsSelect?: ISimpleTableSelectParams
     pagination: Pagination
+    selectedRowsCount?: number
 }
 
 export enum FileImportStepEnum {
@@ -81,6 +83,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     simpleTableColumnsSelect,
     children,
     pagination,
+    selectedRowsCount,
 }) => {
     const ability = useCreateCiAbility(ciTypeData, entityName)
     const { t } = useTranslation()
@@ -125,7 +128,10 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                 {children}
                 {bulkPopup && !hiddenButtons?.BULK_ACTIONS && (
                     <Can I={Actions.BULK_ACTIONS} a={entityName} ability={ability}>
-                        <>{bulkPopup}</>
+                        <>
+                            {selectedRowsCount != undefined && <SelectedRowsAriaRead count={selectedRowsCount} />}
+                            {bulkPopup}
+                        </>
                     </Can>
                 )}
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>

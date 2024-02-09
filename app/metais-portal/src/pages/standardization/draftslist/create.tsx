@@ -10,6 +10,8 @@ import { DraftsListCreateContainer } from '@/components/containers/draftslist/Dr
 
 const DraftsListCreatePage: React.FC = () => {
     const { t } = useTranslation()
+    document.title = t('DraftsList.createForm.heading')
+
     return (
         <>
             <BreadCrumbs

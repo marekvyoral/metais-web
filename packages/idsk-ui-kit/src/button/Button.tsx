@@ -1,8 +1,8 @@
 import classnames from 'classnames'
-import React, { ReactNode, forwardRef } from 'react'
+import React, { DetailedHTMLProps, ReactNode, forwardRef } from 'react'
 
 import styles from './styles.module.scss'
-interface IButton {
+interface IButton extends DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     label: ReactNode
     disabled?: boolean
     variant?: 'secondary' | 'warning'
@@ -17,7 +17,7 @@ interface IButton {
 }
 
 export const Button = forwardRef<HTMLButtonElement, IButton>(
-    ({ label, onClick, variant, disabled, type = 'button', className, value, id, onFocus, bottomMargin = true, autoFocus }, ref) => {
+    ({ label, onClick, variant, disabled, type = 'button', className, value, id, onFocus, bottomMargin = true, autoFocus, ...rest }, ref) => {
         return (
             <button
                 autoFocus={autoFocus}
@@ -40,6 +40,7 @@ export const Button = forwardRef<HTMLButtonElement, IButton>(
                 disabled={disabled}
                 aria-disabled={disabled}
                 data-module="idsk-button"
+                {...rest}
             >
                 {label}
             </button>

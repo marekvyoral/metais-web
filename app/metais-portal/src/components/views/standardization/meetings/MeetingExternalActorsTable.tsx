@@ -56,6 +56,7 @@ export const MeetingExternalActorsTable = ({ data, error, isLoading }: MeetingEx
                 getCellContext: (ctx: CellContext<ApiMeetingExternalActor, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            size: 200,
         },
         {
             header: t('meetings.email'),
@@ -66,6 +67,7 @@ export const MeetingExternalActorsTable = ({ data, error, isLoading }: MeetingEx
                 getCellContext: (ctx: CellContext<ApiMeetingExternalActor, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            size: 200,
         },
         {
             header: t('meetings.description'),
@@ -76,6 +78,7 @@ export const MeetingExternalActorsTable = ({ data, error, isLoading }: MeetingEx
                 getCellContext: (ctx: CellContext<ApiMeetingExternalActor, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            size: 200,
         },
         {
             header: t('meetings.participation'),
@@ -91,6 +94,7 @@ export const MeetingExternalActorsTable = ({ data, error, isLoading }: MeetingEx
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
+            size: 200,
         },
     ]
     return (

@@ -16,9 +16,10 @@ interface IStepper {
     description?: string
     subtitleTitle: string
     stepperList: ISection[]
+    sectionsHeadingSize?: 'S' | 'M' | 'L' | 'XL'
 }
 
-export const Stepper: React.FC<IStepper> = ({ description, stepperList, subtitleTitle }) => {
+export const Stepper: React.FC<IStepper> = ({ description, stepperList, subtitleTitle, sectionsHeadingSize }) => {
     const defaultArray = Array<StepperArrayEnum>(stepperList.length).fill(StepperArrayEnum.CLOSED)
     if (stepperList) {
         stepperList.map((item, index) => {
@@ -38,7 +39,13 @@ export const Stepper: React.FC<IStepper> = ({ description, stepperList, subtitle
                         {item.isTitle ? (
                             <StepperSectionTitle index={index} title={item.title} sectionArray={sectionArray} setSectionArray={setSectionArray} />
                         ) : (
-                            <StepperSection index={index} section={item} sectionArray={sectionArray} setSectionArray={setSectionArray} />
+                            <StepperSection
+                                textHeadingSize={sectionsHeadingSize}
+                                index={index}
+                                section={item}
+                                sectionArray={sectionArray}
+                                setSectionArray={setSectionArray}
+                            />
                         )}
                     </React.Fragment>
                 ))}

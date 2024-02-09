@@ -14,12 +14,14 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { ciInformationTab } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { UserInformationPage } from '@isdd/metais-common/components/views/user-profile/user-informations/UserInformationPage'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { UserTrainingsPage } from '@/components/views/trainings/UserTrainingsPage'
 
 const UserProfilePage = () => {
     const { t } = useTranslation()
+    document.title = formatTitleString(t('userProfile.heading'))
     const [isRightsSettingsModalOpen, setIsRightsSettingsModalOpen] = useState(false)
     const [isDeletePersonalInfoModalOpen, setIsDeletePersonalInfoModalOpen] = useState(false)
     const {

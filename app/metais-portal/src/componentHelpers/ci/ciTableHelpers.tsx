@@ -208,6 +208,7 @@ export const useGetColumnsFromApiCellContent = () => {
                                     : StatusRedIcon
                             }
                             height={16}
+                            alt=""
                         />
                         <>{t(`metaAttributes.state.${ctx.getValue()}`)}</>
                     </div>

@@ -26,7 +26,7 @@ export const MainContentWrapper: React.FC<MainContentWrapperProps> = ({ children
 
     const { data: ksisvsGroup } = useFind2111({ shortName: KSIVS_SHORT_NAME })
     return (
-        <div className={classNames({ [styles.container]: !noSideMenu })} id="main-content">
+        <div className={classNames({ [styles.container]: !noSideMenu })}>
             {!globalSearch && !noSideMenu && (
                 <Sidebar
                     isSidebarExpanded={isSidebarExpanded}
@@ -38,6 +38,7 @@ export const MainContentWrapper: React.FC<MainContentWrapperProps> = ({ children
             {globalSearch && <GlobalSearchFilter />}
 
             <main
+                id="main-content"
                 className={classNames(
                     'govuk-main-wrapper govuk-main-wrapper--auto-spacing',
                     !noSideMenu && styles.content,

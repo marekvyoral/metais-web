@@ -3,6 +3,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { SlaParamsListContainer } from '@/components/containers/sla-params-list/SlaParamsListContainer'
@@ -16,6 +17,8 @@ export interface ReportsFilterData extends IFilterParams {
 const SLAParamsListPage: React.FC = () => {
     const { t } = useTranslation()
     const { entityName } = useParams()
+    document.title = formatTitleString(t('sla-params-list.slaList'))
+
     return (
         <>
             <BreadCrumbs

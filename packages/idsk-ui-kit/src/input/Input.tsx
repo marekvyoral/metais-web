@@ -48,15 +48,17 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
     ) => {
         const { t } = useTranslation()
         const hintId = `${id}-hint`
+        const errorId = `${id}-error`
         const dateProps = type == 'date' ? { max: '9999-12-31' } : {}
         return (
             <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
                 <div className={styles.labelDiv}>
-                    <label className="govuk-label" htmlFor={id}>
+                    <label className="govuk-label" htmlFor={id} lang="sk">
                         {label} {required && t('input.requiredField')}
                     </label>
                     {info && (
                         <Tooltip
+                            id={id}
                             altText={`Tooltip ${label}`}
                             descriptionElement={<div className="tooltipWidth500">{decodeHtmlEntities(info)}</div>}
                         />
@@ -69,9 +71,9 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                     </span>
                 )}
                 {error && (
-                    <>
-                        <span className="govuk-error-message">{error}</span>
-                    </>
+                    <span id={errorId} className="govuk-error-message">
+                        {error}
+                    </span>
                 )}
                 <div className={classNames(styles.inputWrapper, inputClassName)} style={{ position: 'relative' }}>
                     <input
@@ -83,10 +85,13 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                         {...rest}
                         {...dateProps}
                         aria-describedby={hint ? hintId : undefined}
+                        aria-errormessage={errorId}
                         disabled={disabled}
                         maxLength={maxLength}
                     />
-                    {correct && <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} />}
+                    {correct && (
+                        <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('correct')} />
+                    )}
                 </div>
             </div>
         )

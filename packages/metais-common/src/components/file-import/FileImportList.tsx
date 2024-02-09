@@ -2,6 +2,7 @@ import React from 'react'
 import { UppyFile } from '@uppy/core'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { TransparentButtonWrapper } from '@isdd/idsk-ui-kit'
+import { useTranslation } from 'react-i18next'
 
 import { formatBytes } from './fileImportUtils'
 import styles from './FileImport.module.scss'
@@ -29,6 +30,7 @@ export const FileImportList: React.FC<IFileImportList> = ({
     uploadFilesStatus,
     generalErrorMessages,
 }) => {
+    const { t } = useTranslation()
     const hasError = (file: UppyFile) => {
         const error = uploadFilesStatus.find((item) => item.fileId == file.id)?.uploadError
         return error ? error.length > 0 : false
@@ -44,7 +46,7 @@ export const FileImportList: React.FC<IFileImportList> = ({
                     <ul>
                         {generalErrorMessages.map((generalError, index) => (
                             <li key={index} className={styles.errorMessages}>
-                                <img src={ErrorTriangleIcon} />
+                                <img src={ErrorTriangleIcon} alt="" />
                                 <TextBody size="S" className={styles.textError}>
                                     {generalError}
                                 </TextBody>
@@ -54,7 +56,7 @@ export const FileImportList: React.FC<IFileImportList> = ({
                 </div>
                 {generalErrorMessages.length > 0 && (
                     <TransparentButtonWrapper onClick={() => removeGeneralErrorMessages()}>
-                        <img src={CloseIcon} />
+                        <img src={CloseIcon} alt={t('close')} />
                     </TransparentButtonWrapper>
                 )}
             </div>
@@ -69,15 +71,20 @@ export const FileImportList: React.FC<IFileImportList> = ({
                             <TextBody size="S">{`${file.name} (${formatBytes(file.size)})`}</TextBody>
                         </div>
                         <div>
-                            {hasError(file) && <img src={ErrorTriangleIcon} />}
-                            {isUploaded(file) && <img src={RoundCheckGreenIcon} />}
+                            {hasError(file) && <img src={ErrorTriangleIcon} alt={t('upload.itemError', { itemName: file.name })} />}
+                            {isUploaded(file) && <img src={RoundCheckGreenIcon} alt={t('upload.itemSuccess', { itemName: file.name })} />}
                             <TransparentButtonWrapper
                                 onClick={() => {
                                     handleRemoveFile(file.id)
                                     removeGeneralErrorMessages()
                                 }}
                             >
-                                <img src={ImportDeleteIcon} className={styles.clickable} hidden={isUploaded(file)} />
+                                <img
+                                    src={ImportDeleteIcon}
+                                    className={styles.clickable}
+                                    hidden={isUploaded(file)}
+                                    alt={t('upload.deleteItem', { itemName: file.name })}
+                                />
                             </TransparentButtonWrapper>
                         </div>
                     </li>

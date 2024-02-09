@@ -1,7 +1,7 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { ENTITY_AS } from '@isdd/metais-common/constants'
+import { ENTITY_AS, META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { MonitoringFilterData, MonitoringServiceListContainer } from '@/components/containers/MonitoringServiceListContainer'
 import { ServicesView } from '@/components/views/monitoring/services/ServicesView'
@@ -9,6 +9,7 @@ import { ServicesView } from '@/components/views/monitoring/services/ServicesVie
 const ServicesListPage: React.FC = () => {
     const { t } = useTranslation()
     const defaultFilterValues: MonitoringFilterData = { serviceType: ENTITY_AS, intervalStart: '', intervalEnd: '', isvs: '', liableEntity: '' }
+    document.title = `${t('titles.monitoringServices')} ${META_IS_TITLE}`
 
     return (
         <>

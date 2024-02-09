@@ -30,6 +30,7 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
     isError,
     isLoading,
     tabName,
+    ciName,
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
@@ -166,7 +167,8 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
     return (
         <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
-                <TextHeading size="XL">{t('newRelation.newCiWithRelationHeading', { entityName: tabName })}</TextHeading>
+                <TextHeading size="XL">{t('breadcrumbs.newCiAndRelation', { itemName: ciName })}</TextHeading>
+
                 <ElementToScrollTo isVisible={isError || isProcessedError || isTooManyFetchesError || isRequestStatusError}>
                     <QueryFeedback loading={false} error />
                 </ElementToScrollTo>

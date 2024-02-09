@@ -12,7 +12,7 @@ export const RegistrationFailed = () => {
     const navigate = useNavigate()
     return (
         <>
-            <img className={styles.icon} src={AlertTriangleIcon} />
+            <img className={styles.icon} src={AlertTriangleIcon} alt="" />
             <TextHeading className={styles.title} size="XL">
                 {t('registration.failed.title')}
             </TextHeading>

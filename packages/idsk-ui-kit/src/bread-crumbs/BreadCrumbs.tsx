@@ -38,7 +38,7 @@ const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({ icon, href, label, to
     return (
         <li className="govuk-breadcrumbs__list-item">
             <Link className="govuk-breadcrumbs__link" to="#" onClick={(e) => handleNavigate(e)}>
-                {icon && <img src={icon} alt=" " className={styles.linkIcon} />}
+                {icon && <img src={icon} alt="" className={styles.linkIcon} />}
                 {label}
             </Link>
         </li>
@@ -48,7 +48,7 @@ const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({ icon, href, label, to
 export const BreadCrumbs: React.FC<BreadCrumbsProps> = ({ links, withWidthContainer }) => {
     return (
         <div className={classNames(styles.marginBottom, { 'govuk-width-container': withWidthContainer })}>
-            <div className="govuk-breadcrumbs govuk-grid-row">
+            <div className={classNames(styles.paddingBreadcrumb, 'govuk-breadcrumbs', 'govuk-grid-row')}>
                 <ul className="govuk-breadcrumbs__list">
                     {links.map((value, index) => (
                         <BreadCrumbsItem

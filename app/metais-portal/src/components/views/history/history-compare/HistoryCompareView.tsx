@@ -1,4 +1,4 @@
-import { CheckBox } from '@isdd/idsk-ui-kit/index'
+import { CheckBox, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Stepper } from '@isdd/idsk-ui-kit/src/stepper/Stepper'
 import { ISection, IStepLabel } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { ConfigurationItemUiAttributes, HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -6,6 +6,7 @@ import { Attribute, AttributeConstraintEnumAllOf } from '@isdd/metais-common/api
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 import { HistoryCompareItemView } from './HistoryCompareItemView'
 import { RelationCompareItemView } from './RelationCompareItemView'
@@ -33,6 +34,11 @@ export const HistoryCompareView: React.FC<IHistoryItemsCompareContainerView> = (
     const [showOnlyChanges, setShowOnlyChanges] = useState<boolean>(false)
     const languageEn = 'en'
     const attProfiles = ciTypeData?.attributeProfiles?.map((profile) => profile) ?? []
+
+    const heading = t('historyTab.comparingHistory', {
+        itemName: dataFirst?.item?.attributes?.find((att: { name: string; value: string }) => att?.name == ATTRIBUTE_NAME.Gen_Profil_nazov)?.value,
+    })
+    document.title = `${heading} | MetaIS`
 
     const getEnumValue = (enumAttribute: AttributeConstraintEnumAllOf, value: string): string => {
         if (!enumAttribute) {
@@ -201,6 +207,7 @@ export const HistoryCompareView: React.FC<IHistoryItemsCompareContainerView> = (
 
     return (
         <>
+            <TextHeading size="XL">{heading}</TextHeading>
             {!isSimple && (
                 <CheckBox
                     label={t('historyTab.hideCheckButtonLabel')}

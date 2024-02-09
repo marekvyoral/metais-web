@@ -97,7 +97,7 @@
         "hideInformationAboutSite": "Hide information about site",
         "linksToWebs": "links to websites of public authorities",
         "linkToHomePage": "Link to home page",
-        "ministryName": "Ministry of Investments, Regional Development and Informatization of the Slovak Republic",
+        "homeLogo": "MetaIS logo linking to homepage.",
         "notifications": "Notifications",
         "factChecker": "Fact-checker",
         "openMenu": "Open menu",
@@ -332,7 +332,9 @@
         "openAll": "Open all",
         "closeAll": "Close all",
         "sections": "sections",
-        "and": "and"
+        "and": "and",
+        "sectionError": "This section has error",
+        "sectionChange": "This section has changed"
     },
     "tab": {
         "contents": "Contents",
@@ -744,6 +746,7 @@
         }
     },
     "historyTab": {
+        "comparingHistory": "History comparison of {{itemName}}",
         "configurationItem": "Information about record",
         "configurationItemTable": "Historic records",
         "configurationItemView": {
@@ -867,15 +870,21 @@
         "pagination": "Page navigation",
         "sortBy": "Sort by",
         "selectAllItems": "Select all items",
+        "selectItem": "Select item {{itemName}}",
         "noDataLoaded": "No data loaded",
         "expandableExpandItem": "Open item detail",
-        "expandableCloseItem": "Close item detail"
+        "expandableCloseItem": "Close item detail",
+        "sortButtonLabel": "Sort by {{item}}, {{sortDirection}} ",
+        "asc": "ascending",
+        "desc": "descending",
+        "unsort": "Cancel sort by {{item}}"
     },
     "state": "Evidence status",
     "group": "Group",
     "loading": {
         "loadingSubPage": "Loading sub-page",
-        "neighboursCardList": "Loading related item relationships"
+        "neighboursCardList": "Loading related item relationships",
+        "subitems": "Loading related subitems"
     },
     "actionOverTable": {
         "options": {
@@ -1015,7 +1024,8 @@
     },
     "accordion": {
         "openAll": "Open all",
-        "closeAll": "Close all"
+        "closeAll": "Close all",
+        "sectionError": "This section has error"
     },
     "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
     "date": "{{date, DATE_SHORT}}",
@@ -1114,7 +1124,7 @@
             "notFoundPO": "Error in rights - not find public authority.",
             "notToClone": "For this item, you can not create an instance because this item is an instance and can not create instances of instances"
         },
-        "iconAltText": "Description {{text}}"
+        "iconAltText": "Description of {{text}}"
     },
     "addFileSuccess": "Document {{docs}} has been added successfully",
     "addFilesSuccess": "Documents {{docs}} have been added successfully",
@@ -1698,10 +1708,10 @@
         "monitoringInsert": "Insert monitoring parameters",
         "reportDetail": "Report detail",
         "ciList": "List of {{ci}} items",
-        "ciDetail": "Detail of {{ci}} item",
+        "ciDetail": "Detail of {{ci}} item {{itemName}}",
         "ciCreateEntity": "Creation of {{ci}} item",
         "ciEdit": "Edit of {{ci}} item",
-        "ciClone": "Clone of {{ci}} item",
+        "ciClone": "Clone of {{ci}} item {{itemName}}",
         "PO_IS": "Processors of IT development concepts",
         "PO_ISDetail": "Detail of IS",
         "PO_ISCreate": "Creation of IS",
@@ -1718,7 +1728,8 @@
         "codeListDetail": "Detail codelist",
         "refIdentifiers": "Reference identifiers",
         "meetingsCreate": "Creation of meeting",
-        "meetingDetail": "Detail of meeting",
+        "meetingDetail": "Detail of meeting {{itemName}}",
+        "meetingEdit": "Edit of meeting {{itemName}}",
         "publicAuthoritiesHierarchy": "Hierarchy of public authorities",
         "relationsSearch": "Relationships search"
     },
@@ -2226,7 +2237,9 @@
         "action": "In relation with selected project"
     },
     "publicAuthorities": {
-        "hierarchy": "Hierarchy of public authorities"
+        "hierarchy": "Hierarchy of public authorities",
+        "expand": "Expand {{rowName}}",
+        "collapse": "Collapse {{rowName}}"
     },
     "publicspace": {
         "heading": "Standards of ISVS"
@@ -2632,7 +2645,7 @@
         "title": "SLA with vendor",
         "heading": "List of SLA with contractors",
         "headingAdd": "Add SLA with contractor",
-        "headingEdit": "Edit SLA with contractor",
+        "headingEdit": "Edit SLA item {{itemName}} with contractor",
         "createButton": "Add new SLA with contractor"
     },
     "insertMonitoring": {
@@ -2648,6 +2661,40 @@
     },
     "upload": {
         "success": "Document has been added successfully",
-        "error": "Error while uploading document. Please try again."
+        "error": "Error while uploading document. Please try again.",
+        "itemError": "Error while uploading {{itemName}}",
+        "itemSuccess": "Upload of {{itemName}} was successfull",
+        "deleteItem": "Remove {{itemName}} from list"
+    },
+
+    "close": "Close",
+    "closeFeedback": "Close feedback message",
+    "valid": "Input value is valid",
+    "dnd": "Item can be dragged and dropped",
+    "delete": "Delete",
+    "progressStepeer": {
+        "expand": "Expand",
+        "collapse": "Collapse",
+        "state": {
+            "current": "Current step",
+            "finished": "Finished step",
+            "future": "Future step"
+        }
+    },
+    "pagination": {
+        "toFirst": "To first page",
+        "toPrev": "To previous page",
+        "dots": "Ellipsis indicationg more pages available",
+        "toNext": "To next page",
+        "toLast": "To last page"
+    },
+    "fileList": {
+        "delete": "Delete file {{fileName}} from list"
+    },
+    "select": {
+        "noOptions": "No options"
+    },
+    "aria": {
+        "selectedRowsCount": "You have {{count}} rows selected in table"
     }
 }

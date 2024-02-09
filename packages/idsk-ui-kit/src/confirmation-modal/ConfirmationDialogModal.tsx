@@ -41,7 +41,7 @@ export const ConfirmationModal: React.FC<IConfirmationProps> = ({
                         {title}
                         {icon && (
                             <div className={styles.icon}>
-                                <img className={styles.iconWidth} src={icon} alt="modal-icon" />
+                                <img className={styles.iconWidth} src={icon} alt="" />
                             </div>
                         )}
                     </>

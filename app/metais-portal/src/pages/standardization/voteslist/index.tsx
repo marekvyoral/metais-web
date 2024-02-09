@@ -2,6 +2,7 @@ import React from 'react'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { VotesListContainer } from '@/components/containers/standardization/votes/VotesListContainer/VotesListContainer'
 import { VotesListView } from '@/components/views/standardization/votes/votesList/VoteListView'
@@ -10,6 +11,8 @@ import { VotesListPermissionsWrapper } from '@/components/permissions/VotesListP
 
 const VotesListPage: React.FC = () => {
     const { t } = useTranslation()
+    document.title = formatTitleString(t('votes.breadcrumbs.VotesLists'))
+
     return (
         <VotesListPermissionsWrapper>
             <>

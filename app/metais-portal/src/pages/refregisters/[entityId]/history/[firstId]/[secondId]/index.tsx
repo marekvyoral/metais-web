@@ -7,6 +7,7 @@ import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -24,6 +25,7 @@ const RefRegistersComparePage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+    document.title = formatTitleString(t('breadcrumbs.compareHistory'))
 
     return (
         <CiHistoryPermissionsWrapper entityId={entityId ?? ''} entityName={entityName ?? ''}>

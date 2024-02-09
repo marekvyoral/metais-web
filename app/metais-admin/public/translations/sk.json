@@ -93,6 +93,7 @@
         "hideInformationAboutSite": "Skry informácie o stránke",
         "linksToWebs": "odkazy na webové stránky orgánov verejnej moci",
         "linkToHomePage": "Odkaz na hlavnú stránku",
+        "homeLogo": "MetaIS logo s odkazom na hlavnú stránku.",
         "ministryName": "Ministerstvo investícií, regionálneho rozvoja a informatizácie SR",
         "notifications": "Notifikácie",
         "factChecker": "Fact-checker",
@@ -151,6 +152,7 @@
     },
     "table": {
         "selectAllItems": "Vyber všetky položky",
+        "selectItem": "Vyber položku {{itemName}}",
         "title": "Mestá",
         "heading": "Filtrovať obsah",
         "unpack": "Rozbaliť obsah filtra",
@@ -417,7 +419,7 @@
         "engDescription": "Anglický popis",
         "valid": "Validita",
         "category": "Kategória",
-        "link": "Položky",
+        "link": "Odkaz na detail {{itemName}}",
         "edit": "Upraviť",
         "delete": "Zneplatniť",
         "save": "Uložiť",
@@ -443,7 +445,8 @@
         "addNewCodelistDetail": "Pridať novú položku",
         "items": "Položky",
         "tooltipOrder": "Potiahni a pusti riadok pre zmenu poradia",
-        "codeExist": "Kód je nesprávny. Takýto kód už existuje."
+        "codeExist": "Kód je nesprávny. Takýto kód už existuje.",
+        "orderDescription": "Popis k stĺpcu poradie"
     },
     "adminRolesPage": {
         "addNewRole": "Pridať novú rolu",
@@ -940,7 +943,8 @@
             "name": "Názov parametra",
             "defaultValue": "Predvolená hodnota",
             "required": "Povinný parameter",
-            "additionalParams": "Doplňujúce parametre"
+            "additionalParams": "Doplňujúce parametre",
+            "close": "Zatvoriť kartu s parametrom"
         },
         "table": {
             "identificator": "Identifikátor",
@@ -1247,5 +1251,31 @@
     "autoLogout": {
         "warningMessage": "O {{countDown}} sekúnd budete kvôli inaktivite odhlásený.",
         "loading": "Spracúvame odhlásenie"
+    },
+    "close": "Zatvoriť",
+    "valid": "Hodnota vstupu je platná",
+    "dnd": "Položku je možné ťahať a pustiť",
+    "delete": "Zmazať",
+    "progressStepper": {
+        "expand": "Rozbaliť",
+        "collapse": "Zbaliť",
+        "state": {
+            "current": "Aktuálny stav",
+            "finished": "Konečný stav",
+            "future": "Budúci stav"
+        }
+    },
+    "pagination": {
+        "toFirst": "Prejsť na prvú stránku",
+        "toPrev": "Prejsť na predchádzajúcu stránku",
+        "dots": "Trojbodka naznačujúca dostupnosť ďalších stránok",
+        "toNext": "Prejsť na ďalšiu stránku",
+        "toLast": "Prejsť na poslednú stránku"
+    },
+    "fileList": {
+        "delete": "Vymazať súbor {{fileName}} z listu"
+    },
+    "aria": {
+        "selectedRowsCount": "Máte {{count}} vybraných riadkov v tabuľke"
     }
 }

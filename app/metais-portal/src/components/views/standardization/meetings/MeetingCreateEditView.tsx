@@ -10,6 +10,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagger'
 import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { v4 as uuidV4 } from 'uuid'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import styles from './createEditView.module.scss'
 import { MeetingFormEnum, createMeetingSchema, editMeetingSchema } from './meetingSchema'
@@ -34,6 +35,8 @@ import { LinksImport } from '@/components/LinksImport/LinksImport'
 
 export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, isLoading, isError }) => {
     const { t } = useTranslation()
+    document.title = formatTitleString(`${t('meetings.editMeeting')} - ${infoData?.name}`)
+
     const formRef = useRef<HTMLFormElement>(null)
     //files
     const fileUploadRef = useRef<IFileUploadRef>(null)

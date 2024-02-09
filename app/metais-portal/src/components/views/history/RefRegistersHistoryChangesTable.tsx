@@ -29,19 +29,21 @@ export const RefRegistersHistoryChangesTable: React.FC<IRefRegistersHistoryChang
 }) => {
     const { t } = useTranslation()
 
-    const additionalColumnsNullsafe = additionalColumns ?? []
+    const additionalColumnsNullsafe = additionalColumns?.map((c) => ({ ...c, size: 200 })) ?? []
     const columns: Array<ColumnDef<HistoryVersionUiConfigurationItemUi>> = [
         {
             accessorFn: (row) => row?.actionTime,
             header: t('historyTab.table.actionTime'),
             id: '1',
             cell: (row) => new Date(row.getValue() as string).toLocaleString(),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.item?.attributes?.[ATTRIBUTE_NAME.ReferenceRegisterHistory_Profile_stav],
             header: t('historyTab.table.targetStatus'),
             id: '2',
             cell: (row) => t(`refRegisters.table.state.${row?.getValue()}`),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.item?.attributes?.[ATTRIBUTE_NAME.ReferenceRegisterHistory_Profile_popis],
@@ -51,6 +53,7 @@ export const RefRegistersHistoryChangesTable: React.FC<IRefRegistersHistoryChang
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (row) => row?.getValue(),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.item?.attributes?.[ATTRIBUTE_NAME.ReferenceRegisterHistory_Profile_prilohy],
@@ -75,6 +78,7 @@ export const RefRegistersHistoryChangesTable: React.FC<IRefRegistersHistoryChang
                     )
                 return <></>
             },
+            size: 200,
         },
 
         ...additionalColumnsNullsafe,

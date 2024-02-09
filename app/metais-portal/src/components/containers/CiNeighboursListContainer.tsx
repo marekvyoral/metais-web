@@ -231,6 +231,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
                 meta: {
                     getCellContext: (ctx: CellContext<NeighbourPairUi, unknown>) => getColumnsFromApiCellContent(ctx, e.technicalName),
                 },
+                size: 150,
             }))
         return [
             {

@@ -16,8 +16,6 @@ const EditProjectPage = () => {
     const { entityId } = useParams()
     const entityName = ENTITY_PROJECT
 
-    document.title = `${t('titles.ciEdit', { ci: entityName })} | MetaIS`
-
     const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(entityId)
     const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(entityName)
 
@@ -26,13 +24,15 @@ const EditProjectPage = () => {
             ? ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
             : ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]
 
+    document.title = `${t('titles.ciEdit', { ci: ciTypeData?.name, itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })} | MetaIS`
+
     return (
         <>
             <BreadCrumbs
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: entityName, href: `/ci/${entityName}` },
+                    { label: t('titles.ciList', { ci: ciTypeData?.name }), href: `/ci/${entityName}` },
                     { label: currentName ? currentName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
                     { label: t('breadcrumbs.ciEdit', { itemName: currentName }), href: `/ci/${entityName}/${entityId}/edit` },
                 ]}

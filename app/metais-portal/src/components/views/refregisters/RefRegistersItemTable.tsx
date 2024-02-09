@@ -23,6 +23,7 @@ export const RefRegistersItemTable = ({
             header: t('refRegisters.detail.items.order'),
             id: '1',
             cell: ({ row }) => <ExpandableRowCellWrapper row={row}>{row?.original?.order}</ExpandableRowCellWrapper>,
+            size: 200,
         },
         {
             accessorFn: (row) => row?.itemName,
@@ -32,18 +33,21 @@ export const RefRegistersItemTable = ({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (row) => row?.getValue(),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.referenceRegisterGroup?.groupName,
             header: t('refRegisters.detail.items.group'),
             id: '3',
             cell: (row) => row.getValue(),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.referenceRegisterSubGroup?.groupName,
             header: t('refRegisters.detail.items.subGroup'),
             id: '4',
             cell: (row) => row.getValue(),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.subjectIdentification,
@@ -53,6 +57,7 @@ export const RefRegistersItemTable = ({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (row) => row?.getValue(),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.refID,
@@ -62,12 +67,14 @@ export const RefRegistersItemTable = ({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (row) => row?.getValue(),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.dataElementRefID,
             header: t('refRegisters.detail.items.dataElementRefID'),
             id: '7',
             cell: (row) => row?.getValue(),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.note,
@@ -77,6 +84,7 @@ export const RefRegistersItemTable = ({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (row) => row?.getValue(),
+            size: 200,
         },
     ]
 

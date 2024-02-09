@@ -20,7 +20,7 @@ export const FileImportHeader: React.FC<IFileImportHeader> = ({ setRadioButtonMe
     const { t } = useTranslation()
     return (
         <div className={styles.headerWrapper}>
-            <img src={ExportIcon} />
+            <img src={ExportIcon} alt="" />
             <TextHeading size="L">{t('fileImport.header')}</TextHeading>
 
             <div>

@@ -10,13 +10,11 @@ const Information = () => {
     const { ciItemData, gestorData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(entityId)
     const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(entityName)
     return (
-        <>
-            <CiInformationAccordion
-                data={{ ciItemData, gestorData, constraintsData, ciTypeData, unitsData }}
-                isError={[isCiItemError, isAttError].some((item) => item)}
-                isLoading={[isCiItemLoading, isAttLoading].some((item) => item)}
-            />
-        </>
+        <CiInformationAccordion
+            data={{ ciItemData, gestorData, constraintsData, ciTypeData, unitsData }}
+            isError={[isCiItemError, isAttError].some((item) => item)}
+            isLoading={[isCiItemLoading, isAttLoading].some((item) => item)}
+        />
     )
 }
 

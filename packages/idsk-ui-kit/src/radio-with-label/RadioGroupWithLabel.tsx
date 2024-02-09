@@ -1,6 +1,9 @@
 import React, { DetailedHTMLProps, forwardRef } from 'react'
 import { FieldError } from 'react-hook-form'
 import classNames from 'classnames'
+import { v4 as uuidV4 } from 'uuid'
+
+import styles from './radioGroupWithLabel.module.scss'
 
 import { RadioButtonGroup } from '@isdd/idsk-ui-kit/radio-button-group/RadioButtonGroup'
 
@@ -14,24 +17,29 @@ interface IRadioWithLabelProps extends DetailedHTMLProps<React.InputHTMLAttribut
 }
 export const RadioGroupWithLabel = forwardRef<HTMLDivElement, IRadioWithLabelProps>(
     ({ children, id, label, hint, error, disabled, className, inline, ...rest }, ref) => {
-        const hintId = `${id}-hint`
+        const aID = id ? id : uuidV4()
+        const hintId = `${aID}-hint`
+        const errorId = `${aID}-error`
         return (
-            <div className={classNames(className, 'govuk-form-group', { 'govuk-form-group--error': !!error })}>
-                <label className="govuk-label">{label}</label>
+            <fieldset
+                aria-errormessage={errorId}
+                className={classNames(className, styles.fieldset, 'govuk-form-group', { 'govuk-form-group--error': !!error })}
+            >
+                <legend className="govuk-label">{label}</legend>
                 {hint && (
                     <span className="govuk-hint" id={hintId}>
                         {hint}
                     </span>
                 )}
                 {error && error.message && (
-                    <>
-                        <span className="govuk-error-message">{error.message}</span>
-                    </>
+                    <span id={errorId} className="govuk-error-message">
+                        {error.message}
+                    </span>
                 )}
                 <RadioButtonGroup {...rest} inline={inline} aria-describedby={hint ? hintId : undefined} disabled={disabled} ref={ref}>
                     {children}
                 </RadioButtonGroup>
-            </div>
+            </fieldset>
         )
     },
 )

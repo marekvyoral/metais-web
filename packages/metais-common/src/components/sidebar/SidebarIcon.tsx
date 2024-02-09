@@ -25,7 +25,7 @@ export const SidebarIcon = ({ section, onToggle, setIsSidebarExpanded, isExpande
                 setIsSidebarExpanded(true)
             }}
         >
-            <img src={section.icon} className={styles.img} />
+            <img src={section.icon} className={styles.img} alt="" />
             <span
                 className={classNames(styles.sectionHeaderButton, styles.smallSidebarText, isExpanded && styles.expanded)}
                 aria-expanded={isExpanded}

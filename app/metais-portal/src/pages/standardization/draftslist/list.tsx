@@ -9,6 +9,7 @@ import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { DraftsListContainer } from '@/components/containers/draftslist/DraftsListContainer'
 import { DraftsListTable } from '@/components/entities/draftslist/DraftsListTable'
@@ -32,6 +33,8 @@ const DraftsListListPage: React.FC = () => {
         requestChannel: undefined,
         workGroupId: '',
     }
+
+    document.title = formatTitleString(t('breadcrumbs.draftsList'))
 
     return (
         <DraftsListContainer<GetFOPStandardRequestsParams>

@@ -13,3 +13,12 @@
 .circleZIndex {
     z-index: 2 !important;
 }
+
+.icons {
+    display: flex;
+    gap: govuk-spacing(2);
+    align-items: center;
+}
+.heading {
+    font-size: 1.5rem !important;
+}

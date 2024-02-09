@@ -153,6 +153,7 @@ export const CiListPageForModal: React.FC<Props> = ({ ciType, selectedItems, onS
                 attributes={attributes ?? []}
                 columnListData={columnListData}
                 ciTypeData={ciTypeData}
+                selectedRowsCount={Object.keys(rowSelection).length}
                 bulkPopup={<AddItemsButtonGroup handleItemsChange={handleRelationItemsChange} onCancel={() => closeOnClick()} />}
             />
             <CiTable

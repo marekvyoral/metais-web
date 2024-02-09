@@ -60,7 +60,7 @@ export const ExportCodeListModal: React.FC<ExportCodeListModalProps> = ({ code, 
             <div className={styles.modalContainer}>
                 <div className={styles.content}>
                     <div className={styles.icon}>
-                        <img className={styles.iconWidth} src={ExportIcon} alt="export-icon" />
+                        <img className={styles.iconWidth} src={ExportIcon} alt="" />
                     </div>
                     <TextHeading size={'L'} className={styles.heading}>
                         {t('codeListDetail.modal.title.export')}

@@ -12,9 +12,8 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useSetStatesHook } from '@isdd/metais-common/api/generated/kris-swagger'
-import { Languages } from '@isdd/metais-common/localization/languages'
 
-import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { getDefaultCiEntityTabList, useCiDetailPageTitle, useCiListPageHeading, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { ProjectStateContainer } from '@/components/containers/ProjectStateContainer'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
@@ -23,7 +22,7 @@ import { ProjectEntityIdHeader } from '@/components/views/ci/project/ProjectEnti
 import { ProjectStateView } from '@/components/views/ci/project/ProjectStateView'
 
 const ProjectEntityDetailPage: React.FC = () => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId } = useGetEntityParamsFromUrl()
     const navigate = useNavigate()
@@ -41,8 +40,6 @@ const ProjectEntityDetailPage: React.FC = () => {
     const setStates = useSetStatesHook()
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_PROJECT)
-    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
-    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
@@ -59,6 +56,9 @@ const ProjectEntityDetailPage: React.FC = () => {
         },
     })
 
+    const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
+    const { getTitle } = useCiDetailPageTitle(ciTypeData?.name ?? '', ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov], t)
+    document.title = getTitle()
     const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: ENTITY_PROJECT, entityId: entityId ?? '', t })
 
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
@@ -78,7 +78,7 @@ const ProjectEntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: ciTypeName, href: `/ci/${ENTITY_PROJECT}` },
+                    { label: getHeading(), href: `/ci/${ENTITY_PROJECT}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
                         href: `/ci/${ENTITY_PROJECT}/${entityId}`,

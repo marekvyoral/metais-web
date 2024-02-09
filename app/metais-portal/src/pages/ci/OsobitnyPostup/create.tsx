@@ -14,6 +14,7 @@ const CreateITVSExceptionsPage: React.FC = () => {
     const { entityName } = useGetEntityParamsFromUrl()
     const { data: ciTypeData } = useGetCiType(entityName ?? '')
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+
     return (
         <>
             <BreadCrumbs
@@ -25,7 +26,14 @@ const CreateITVSExceptionsPage: React.FC = () => {
                 ]}
             />
             <MainContentWrapper>
-                <CiCreateEntityContainer entityName={entityName ?? ''} View={(props) => <ITVSExceptionsCreateContainer {...props} />} />
+                <CiCreateEntityContainer
+                    entityName={entityName ?? ''}
+                    View={(props) => {
+                        document.title = `${t('titles.ciCreateEntity', { ci: props.ciTypeName })} | MetaIS`
+
+                        return <ITVSExceptionsCreateContainer {...props} />
+                    }}
+                />
             </MainContentWrapper>
         </>
     )
