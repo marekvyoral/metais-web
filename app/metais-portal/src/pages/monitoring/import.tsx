@@ -14,7 +14,7 @@ const ImportParametersPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: t('titles.monitoringServices') ?? '', href: RouterRoutes.MONITORING_SERVICES },
+                    { label: t('navMenu.lists.monitoringImport') ?? '', href: RouterRoutes.IMPORT_MONITORING_PARAMETERS },
                 ]}
             />
             <ImportParametersView />

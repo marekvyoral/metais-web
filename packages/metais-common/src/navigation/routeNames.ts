@@ -69,7 +69,7 @@ export enum RouterRoutes {
     STANDARDIZATION_DRAFTS_EDIT = '/standardization/draftslist/:entityId/edit',
     STANDARDIZATION_DRAFTS_CREATE = '/standardization/draftslist/create',
     REPORTS_LIST = '/reports',
-    IMPORT_MONITORING_PARAMETERS = '/monitoring/services/import',
+    IMPORT_MONITORING_PARAMETERS = '/monitoring/import',
     MONITORING_INSERT = '/monitoring/services/monitoras/insert',
     MONITORING_DETAIL = '/monitoring/services/monitoras',
     MONITORING_SERVICES = '/monitoring/services',
