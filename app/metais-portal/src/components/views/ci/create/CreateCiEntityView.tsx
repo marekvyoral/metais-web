@@ -3,6 +3,7 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
+import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
 
 import { CreateEntity, CreateEntityData } from '@/components/create-entity/CreateEntity'
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
@@ -25,7 +26,9 @@ export const CreateCiEntityView: React.FC<Props> = ({ data, entityName, ownerId,
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('ciType.createEntity', { entityName: data.attributesData.ciTypeData?.name })}</TextHeading>
-                {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
+                <ElementToScrollTo isVisible={isError}>
+                    <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
+                </ElementToScrollTo>
             </FlexColumnReverseWrapper>
             <CreateEntity
                 data={{ attributesData, generatedEntityId, ownerId }}

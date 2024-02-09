@@ -109,7 +109,13 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
                 }}
             >
                 <TextHeading size="L">{t('groups.addMember')}</TextHeading>
-                {addingGroupMemberError && <MutationFeedback success={!addingGroupMemberError} error={addingGroupMemberError} />}
+                {addingGroupMemberError && (
+                    <MutationFeedback
+                        success={!addingGroupMemberError}
+                        error={addingGroupMemberError}
+                        onMessageClose={() => setAddingGroupMemberError('')}
+                    />
+                )}
                 <QueryFeedback loading={addingGroupMember || isProfsLoading} withChildren>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <AddMemberSelect

@@ -34,7 +34,7 @@ const Entity: React.FC = () => {
                                     {props.isError && <QueryFeedback error loading={false} />}
                                 </FlexColumnReverseWrapper>
                                 <EntityFilter defaultFilterValues={defaultFilterValues} />
-                                <EgovTable data={props?.data} entityName={'entity'} />
+                                <EgovTable data={props?.data} entityName={'entity'} setSort={props.setSort} sort={props.sort} />
                             </QueryFeedback>
                         )
                     }}

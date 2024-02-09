@@ -110,6 +110,7 @@ export const ProjectEntityIdHeader: React.FC<Props> = ({
                     success={bulkActionResult?.isSuccess}
                     successMessage={bulkActionResult?.successMessage}
                     error={bulkActionResult?.isError ? bulkActionResult.errorMessage : ''}
+                    onMessageClose={() => setBulkActionResult(undefined)}
                 />
             )}
             <div className={styles.headerDiv}>

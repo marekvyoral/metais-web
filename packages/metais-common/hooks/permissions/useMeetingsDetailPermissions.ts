@@ -47,6 +47,8 @@ export const useMeetingsDetailPermissions = (meetingDetailData: ApiMeetingReques
         const canceledState = meetingDetailData?.state === MeetingStateEnum.CANCELED
         const summarizeState = meetingDetailData?.state === MeetingStateEnum.SUMMARIZED
         const pastState = meetingDetailData?.state === MeetingStateEnum.PAST
+        const nowState = meetingDetailData?.state === MeetingStateEnum.NOW
+        const userIsParticipate = meetingDetailData?.meetingActors?.find((guest) => guest.userName === user?.displayName)?.participation
         const createdByUser = meetingDetailData?.createdBy === user?.login
         const userIsGuest = meetingDetailData?.meetingActors?.some((guest: ApiMeetingActor) => guest.userName === user?.displayName)
         const dateNow = new Date()
@@ -56,7 +58,8 @@ export const useMeetingsDetailPermissions = (meetingDetailData: ApiMeetingReques
         const meetingIsStarting = startDateMeeting.getTime() - dateNow.getTime() > 0
 
         if ((createdByUser || canEditMeetingUserRole) && meetingIsStarting && !canceledState) can(Actions.EDIT, Subject.MEETING)
-        if (userIsGuest && !canceledState && !meetingIsFinished) can(Actions.SEE_PARTICIPATION_TO, Subject.MEETING)
+        if (userIsGuest && !canceledState && !meetingIsFinished && !(nowState && !userIsParticipate))
+            can(Actions.SEE_PARTICIPATION_TO, Subject.MEETING)
         if (createdByUser || canEditMeetingUserRole) can(Actions.SET_SUMMARIZE_LINK, Subject.MEETING)
         if (summarizeState && (createdByUser || canEditMeetingUserRole)) can(Actions.CHANGE_SUMMARIZE_LINK, Subject.MEETING)
         if (pastState || summarizeState) can(Actions.SEE_SUMMARIZE_LINK, Subject.MEETING)

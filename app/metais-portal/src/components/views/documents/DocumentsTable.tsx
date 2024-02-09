@@ -319,6 +319,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage + successfullyAdded.join(',')}
                         error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                        onMessageClose={() => setBulkActionResult(undefined)}
                     />
                 </div>
             )}
@@ -330,6 +331,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                             docs: successfullyAdded.join(', '),
                         })}
                         error={''}
+                        onMessageClose={() => setBulkActionResult(undefined)}
                     />
                 </div>
             )}

@@ -199,6 +199,7 @@ export const PO_IS = 'PO_IS'
 export const PO_PO = 'PO_PO'
 export const PO_IS_PO = 'PO_IS_PO'
 export const PO = 'PO'
+export const PROJECT = 'Projekt'
 export const ENTITY_KS = 'KS'
 export const ENTITY_AS = 'AS'
 export const ENTITY_ISVS = 'ISVS'
@@ -206,6 +207,7 @@ export const ENTITY_KONTRAKT = 'Kontrakt'
 export const ENTITY_MIGRATION = 'Migracia'
 export const ENTITY_INFRA_SLUZBA = 'InfraSluzba'
 export const ENTITY_TRAINING = 'Training'
+export const ENTITY_OSOBITNY_POSTUP = 'OsobitnyPostup'
 export const STANDARDIZATION_DRAFTS_LIST = 'draftsList'
 export const REFERENCE_REGISTER = 'ReferenceRegister'
 
@@ -239,6 +241,9 @@ export const KRIScolumnsTechNames = [
 export const krisRelatedCiTabsNames = [ENTITY_KS, ENTITY_ISVS, ENTITY_PROJECT, ENTITY_ZS, ENTITY_AGENDA]
 export enum ROLES {
     EA_GARPO = 'EA_GARPO',
+    R_EGOV = 'R_EGOV',
+    R_ADMIN = 'R_ADMIN',
+    SKOLITEL = 'SKOLITEL',
 }
 export const NO_USER_COLUMNS_LS_KEY = 'METAIS_columns_noUser/'
 
@@ -312,3 +317,8 @@ export const FAZA_KONTRAKTU = 'FAZA_KONTRAKTU'
 export const GET_DOCUMENT_GROUPS_QUERY_KEY = 'projectDocumentManagementGroups'
 export const Profil_Kontrakt = 'Profil_Kontrakt'
 export const Program_financuje_Projekt = 'Program_financuje_Projekt'
+export const GET_MEETING_REQUEST_DETAIL = 'getMeetingRequestDetail'
+export const SLA_SPRAVA = 'SLA_SPRAVA'
+export const OLA_Kontrakt = 'OLA_Kontrakt'
+export const Profil_OLA_Kontrakt = 'Profil_OLA_Kontrakt'
+export const OLA_Kontrakt_dodavatela_ISVS = 'OLA_Kontrakt_dodavatela_ISVS'

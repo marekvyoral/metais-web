@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, ButtonGroupRow, Tab, Tabs } from '@isdd/idsk-ui-kit'
+import { Button, ButtonGroupRow, Tab, Tabs, TextHeading } from '@isdd/idsk-ui-kit'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
@@ -79,7 +79,7 @@ export const RelationDetailView = ({
             <div className={styles.basicInformationSpace}>
                 <FlexColumnReverseWrapper>
                     <div className={styles.flexBetween}>
-                        <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
+                        <TextHeading size="XL">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</TextHeading>
                         <ButtonGroupRow>
                             <Button
                                 label={t('egov.edit')}
@@ -109,10 +109,8 @@ export const RelationDetailView = ({
                 />
             </div>
             <AddConnectionModal open={connectionsOpen} onClose={() => setConnectionsOpen(false)} addConnection={addNewConnectionToExistingRelation} />
-            <div>
-                <h3 className="govuk-heading-m">{t('egov.detail.profiles')}</h3>
-                <Tabs tabList={tabList} />
-            </div>
+            <TextHeading size="M">{t('egov.detail.profiles')}</TextHeading>
+            <Tabs tabList={tabList} />
         </QueryFeedback>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, MouseEvent } from 'react'
+import React, { useState, MouseEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { UseFormSetValue } from 'react-hook-form'
 import { TextWarning } from '@isdd/idsk-ui-kit'
@@ -14,7 +14,7 @@ interface DynamicElementsProps<T extends object> {
     defaultRenderableComponentData: T
     addItemButtonLabelText: string
     nonRemovableElementIndexes?: number[]
-    renderableComponent: (index: number | undefined, data: RenderableComponentProps<T>) => React.ReactNode
+    renderableComponent: (index: number | undefined, data: RenderableComponentProps<T>) => React.ReactNode | undefined
     setValue?: UseFormSetValue<T>
     onChange?: (data: T[]) => void
 }
@@ -30,18 +30,15 @@ export const DynamicElements: <T extends object>({
     renderableComponent,
     onChange,
 }) => {
-    const [dynamicElementsData, setDynamicElementsData] = useState(initialElementsData)
+    const [dynamicElementsData, setDynamicElementsData] = useState([...initialElementsData])
     const { t } = useTranslation()
     const [addRowError, setAddRowError] = useState<string>('')
-
-    useEffect(() => {
-        onChange?.(dynamicElementsData)
-    }, [dynamicElementsData, onChange])
 
     const removeRow = (index: number) => {
         const copyDynamicElementsData = [...dynamicElementsData]
         copyDynamicElementsData.splice(index, 1)
         setDynamicElementsData(copyDynamicElementsData)
+        onChange?.(copyDynamicElementsData)
     }
 
     const addRow = (e: MouseEvent<HTMLButtonElement>) => {
@@ -49,6 +46,7 @@ export const DynamicElements: <T extends object>({
 
         if (dynamicElementsData.length < MAX_DYNAMIC_ATTRIBUTES_LENGHT) {
             setDynamicElementsData([...dynamicElementsData, defaultRenderableComponentData])
+            onChange?.([...dynamicElementsData, defaultRenderableComponentData])
         } else {
             setAddRowError(t('customAttributeFilter.addRowErrorMessage', { value: MAX_DYNAMIC_ATTRIBUTES_LENGHT }))
         }
@@ -73,6 +71,7 @@ export const DynamicElements: <T extends object>({
                         const copyDynamicElementsData = [...dynamicElementsData]
                         copyDynamicElementsData[index] = newData
                         setDynamicElementsData(copyDynamicElementsData)
+                        onChange?.(copyDynamicElementsData)
                     }}
                 />
             ))}

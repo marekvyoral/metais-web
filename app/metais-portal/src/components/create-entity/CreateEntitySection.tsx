@@ -70,7 +70,7 @@ export const CreateEntitySection: React.FC<ISection> = ({
             <ErrorBlockList errorList={thisSectionErrorList} />
             {attributes?.map?.((attribute) => (
                 <React.Fragment key={attribute.technicalName}>
-                    {!attribute.invisible && (
+                    {!attribute.invisible && attribute.valid && (
                         <AttributeInput
                             control={control}
                             trigger={trigger}

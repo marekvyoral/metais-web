@@ -5,6 +5,7 @@ import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFil
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/index'
 import { Group, useFind2111 } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import React, { useMemo } from 'react'
+import { GET_MEETING_REQUEST_DETAIL } from '@isdd/metais-common/constants'
 
 import { MeetingsDetailPermissionsWrapper } from '@/components/permissions/MeetingsDetailPermissionsWrapper'
 
@@ -55,7 +56,11 @@ const MeetingDetailContainer: React.FC<MeetingDetailContainer> = ({ View, meetin
 
     const { filter, handleFilterChange } = useFilterParams<FilterParams>(identitiesFilter)
 
-    const { data: meetingDetailData, isLoading, refetch } = useGetMeetingRequestDetail(meetingId)
+    const {
+        data: meetingDetailData,
+        isLoading,
+        refetch,
+    } = useGetMeetingRequestDetail(meetingId, { query: { queryKey: [GET_MEETING_REQUEST_DETAIL] } })
     const { data: groups } = useFind2111({})
 
     const group = useMemo(() => {

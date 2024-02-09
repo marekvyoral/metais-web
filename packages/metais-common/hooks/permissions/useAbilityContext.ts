@@ -1,4 +1,4 @@
-import { defineAbility } from '@casl/ability'
+import { AbilityTuple, MongoAbility, MongoQuery, defineAbility } from '@casl/ability'
 import { createContextualCan, useAbility } from '@casl/react'
 import { createContext, useContext } from 'react'
 
@@ -13,7 +13,13 @@ export const AbilityContext = createContext(defaultAbility)
 export const useAbilityContext = () => useAbility(AbilityContext)
 export const Can = createContextualCan(AbilityContext.Consumer)
 
-export const AbilityContextWithFeedback = createContext({
+type AbilityWithFeedbackType = {
+    ability: MongoAbility<AbilityTuple, MongoQuery>
+    isError?: boolean
+    isLoading?: boolean
+}
+
+export const AbilityContextWithFeedback = createContext<AbilityWithFeedbackType>({
     ability: defaultAbility,
     isError: false,
     isLoading: false,

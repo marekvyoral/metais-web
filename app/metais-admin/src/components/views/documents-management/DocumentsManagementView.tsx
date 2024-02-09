@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import styles from './styles.module.scss'
 
@@ -32,7 +33,6 @@ export const DocumentsManagementView: React.FC<IView> = ({
     saveOrder,
     resetOrder,
     handleFilterChange,
-    refetchDocs,
     isFetching,
 }) => {
     const { t } = useTranslation()
@@ -45,12 +45,10 @@ export const DocumentsManagementView: React.FC<IView> = ({
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
     useEffect(() => {
-        if (isActionSuccess.value && filter.status) {
+        if (isActionSuccess.value) {
             scrollToMutationFeedback()
-            refetchDocs()
-            setIsActionSuccess({ value: false, path: '' })
         }
-    }, [filter.status, isActionSuccess, refetchDocs, scrollToMutationFeedback, setIsActionSuccess])
+    }, [isActionSuccess.value, scrollToMutationFeedback, setIsActionSuccess])
 
     const filteredTableData = useMemo(() => {
         const pageNumber = filter.pageNumber ?? 0
@@ -131,7 +129,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
 
     return (
         <>
-            <TextHeading size="L">{t('documentsManagement.heading')}</TextHeading>
+            <TextHeading size="XL">{t('documentsManagement.heading')}</TextHeading>
             <Filter<DocumentFilterData>
                 defaultFilterValues={defaultFilter}
                 onlyForm
@@ -193,7 +191,13 @@ export const DocumentsManagementView: React.FC<IView> = ({
                         variant="secondary"
                         bottomMargin={false}
                         label={t('documentsManagement.editPosition')}
-                        onClick={() => setEditingRowsPositions(true)}
+                        onClick={() => {
+                            setEditingRowsPositions(true)
+                            setIsActionSuccess({
+                                value: false,
+                                path: `${AdminRouteNames.DOCUMENTS_MANAGEMENT}`,
+                            })
+                        }}
                     />
                 ) : (
                     <>
@@ -208,6 +212,11 @@ export const DocumentsManagementView: React.FC<IView> = ({
                                         return { ...d, position: data.indexOf(d) }
                                     }),
                                 )
+                                setIsActionSuccess({
+                                    value: true,
+                                    path: `${AdminRouteNames.DOCUMENTS_MANAGEMENT}`,
+                                    additionalInfo: { type: 'editRow' },
+                                })
                             }}
                         />
                         <Button
@@ -227,7 +236,17 @@ export const DocumentsManagementView: React.FC<IView> = ({
                     onClick={() => navigate(`./create`, { state: { from: location } })}
                 />
             </ActionsOverTable>
-            <MutationFeedback error={false} success={isActionSuccess.value} successMessage={t('mutationFeedback.successfulCreated')} />
+            <MutationFeedback
+                error={false}
+                success={isActionSuccess.value}
+                successMessage={
+                    isActionSuccess?.additionalInfo?.type === 'delete'
+                        ? t('mutationFeedback.successfulDeleted')
+                        : isActionSuccess?.additionalInfo?.type === 'editRow'
+                        ? t('mutationFeedback.successfulUpdated')
+                        : t('mutationFeedback.successfulCreated')
+                }
+            />
             <div ref={wrapperRef} />
             <div className={classNames({ [styles.positionRelative]: isFetching })}>
                 {isFetching && <LoadingIndicator />}

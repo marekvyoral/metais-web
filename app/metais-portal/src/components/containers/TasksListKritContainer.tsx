@@ -31,6 +31,10 @@ export const TasksListKritContainer: React.FC<ITasksListKritContainerProps> = ({
             })
     }
 
+    const resetSuccessSave = () => {
+        setIsSuccessSave(false)
+    }
+
     return (
         <View
             entityId={entityId}
@@ -39,6 +43,7 @@ export const TasksListKritContainer: React.FC<ITasksListKritContainerProps> = ({
             isError={isError || isErrorSave}
             isLoading={isLoading || isLoadingSave}
             isSuccessSave={isSuccessSave}
+            resetSuccessSave={resetSuccessSave}
         />
     )
 }

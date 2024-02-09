@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { AttributeProfile, CiCode, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
-import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemUiAttributes, HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import { getFilteredAttributeProfilesBasedOnRole, getValidAndVisibleAttributes } from './createEntityHelpers'
 import { generateFormSchema } from './createCiEntityFormSchema'
@@ -29,6 +29,7 @@ type Props = {
     isUpdate: boolean
     setHasReset: Dispatch<SetStateAction<boolean>>
     isSubmitDisabled: boolean
+    selectedOrg?: HierarchyRightsUi | null
 }
 
 export const CiEntityFormBody: React.FC<Props> = ({
@@ -42,6 +43,7 @@ export const CiEntityFormBody: React.FC<Props> = ({
     isProcessing,
     isSubmitDisabled,
     ciTypeData,
+    selectedOrg,
 }) => {
     const navigate = useNavigate()
     const { t, i18n } = useTranslation()
@@ -52,8 +54,10 @@ export const CiEntityFormBody: React.FC<Props> = ({
             isUpdate ? combinedProfiles : getFilteredAttributeProfilesBasedOnRole(combinedProfiles, selectedRole?.roleName ?? ''),
             t,
             i18n.language,
+            null,
+            ciTypeData?.technicalName,
         )
-    }, [t, i18n.language, isUpdate, combinedProfiles, selectedRole?.roleName])
+    }, [isUpdate, combinedProfiles, selectedRole?.roleName, t, i18n.language, ciTypeData?.technicalName])
 
     const methods = useForm({
         defaultValues: formDefaultValues,
@@ -91,6 +95,10 @@ export const CiEntityFormBody: React.FC<Props> = ({
             }
         })
     }, [formState.defaultValues, formDefaultValues, setValue, generatedEntityId?.ciurl, generatedEntityId?.cicode])
+
+    useEffect(() => {
+        setValue(AttributesConfigTechNames.EA_Profil_Projekt_prijimatel, selectedOrg?.poName)
+    }, [selectedOrg, setValue])
 
     return (
         <FormProvider {...methods}>

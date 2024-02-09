@@ -221,7 +221,7 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
     }
     return (
         <>
-            <TextHeading size={'L'}>{t('projects.financeManagement.heading')}</TextHeading>
+            <TextHeading size={'XL'}>{t('projects.financeManagement.heading')}</TextHeading>
             <MutationFeedback
                 success={isSuccess}
                 error={isError ? t('relationDetail.editError', { relationName: program?.name }) : ''}

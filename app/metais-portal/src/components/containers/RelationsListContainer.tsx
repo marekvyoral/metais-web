@@ -28,6 +28,8 @@ interface IRelationsListContainer {
     technicalName: string
     showOnlyTabsWithRelations?: boolean
     hideButtons?: boolean
+    hidePageSizeSelect?: boolean
+    includeDeleted?: boolean
 }
 
 export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
@@ -35,6 +37,8 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
     technicalName,
     showOnlyTabsWithRelations = false,
     hideButtons = false,
+    hidePageSizeSelect = false,
+    includeDeleted = false,
 }) => {
     const { data: ciTypeData } = useGetCiType(technicalName)
     const { isLoading: areTypesLoading, isError: areTypesError, keysToDisplay } = useEntityRelationsTypesCount(entityId, technicalName)
@@ -50,7 +54,8 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
     }, [defaultCiType])
 
     const defaultPageConfig: ReadCiNeighboursWithAllRelsParams = useMemo(() => {
-        const state = currentPreferences.showInvalidatedItems ? ['DRAFT', 'INVALIDATED'] : ['DRAFT']
+        const invalidatedParams = includeDeleted ? ['DRAFT', 'INVALIDATED', 'DELETED'] : ['DRAFT', 'INVALIDATED']
+        const state = currentPreferences.showInvalidatedItems ? invalidatedParams : ['DRAFT']
         if (!defaultIsDerived) {
             return {
                 ciTypes: defaultCiTypes,
@@ -66,7 +71,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
                 state,
             }
         }
-    }, [currentPreferences.showInvalidatedItems, defaultCiTypes, defaultIsDerived])
+    }, [currentPreferences.showInvalidatedItems, defaultCiTypes, defaultIsDerived, includeDeleted])
 
     const [pageConfig, setPageConfig] = useState<ReadCiNeighboursWithAllRelsParams>(defaultPageConfig)
     const [isDerived, setIsDerived] = useState<boolean>(false)
@@ -118,6 +123,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
             setIsDerived={setIsDerived}
             ciTypeData={ciTypeData}
             hideButtons={hideButtons}
+            hidePageSizeSelect={hidePageSizeSelect}
         />
     )
 }

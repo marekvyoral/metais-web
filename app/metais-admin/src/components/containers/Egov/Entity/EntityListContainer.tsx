@@ -1,12 +1,15 @@
+import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 import { CiTypeFilter, CiTypePreview, useListCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { EntityFilterData, filterEntityData } from '@isdd/metais-common/componentHelpers/filter/feFilters'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import React, { useState } from 'react'
+import React, { SetStateAction, useState } from 'react'
 
 export interface IView {
     data?: CiTypePreview[]
     isLoading: boolean
     isError: boolean
+    sort: ColumnSort[]
+    setSort: React.Dispatch<SetStateAction<ColumnSort[]>>
 }
 
 interface IEntityListContainer {
@@ -25,5 +28,6 @@ export const EntityListContainer: React.FC<IEntityListContainer> = ({ View, defa
     const { data, isLoading, isError } = useListCiTypes({ filter: listQueryArgs })
     const { filter } = useFilterParams(defaultFilterValues ?? {})
     const filteredData = !defaultFilterValues ? data?.results : filterEntityData(filter, data?.results)
-    return <View data={filteredData} isLoading={isLoading} isError={isError} />
+    const [sort, setSort] = useState<ColumnSort[]>([])
+    return <View data={filteredData} isLoading={isLoading} isError={isError} setSort={setSort} sort={sort} />
 }

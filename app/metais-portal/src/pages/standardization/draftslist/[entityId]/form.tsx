@@ -1,4 +1,4 @@
-import React, { createContext } from 'react'
+import React, { FC, createContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit'
 import { QueryFeedback } from '@isdd/metais-common'
@@ -7,6 +7,9 @@ import { StandardDraftsDraftStates } from '@isdd/metais-common/types/api'
 import { standardDraftsListStateMachine } from '@isdd/metais-common/components/state-machine/standardDraftsListStateMachine'
 import { InterpreterFrom } from 'xstate'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { ApiStandardRequest, Group } from '@isdd/metais-common/api/generated/standards-swagger'
+import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import { DraftListDetailView } from '@/components/entities/draftslist/detail/DraftListDetailView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -19,8 +22,57 @@ export const StandardDraftsStateMachine = createContext({
     stateMachineService: {} as InterpreterFrom<typeof standardDraftsListStateMachine>,
 })
 
-const DraftDetail: React.FC = () => {
+type DraftDetailViewProps = {
+    entityId: string
+    isLoading: boolean
+    isError: boolean
+    data: {
+        requestData?: ApiStandardRequest | undefined
+        guiAttributes?: Attribute[] | undefined
+        workGroup?: Group | undefined
+    }
+}
+
+const DraftDetailView: FC<DraftDetailViewProps> = ({ entityId, isLoading, isError, data }) => {
     const { t } = useTranslation()
+    const { requestData } = data
+    const { isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
+
+    return (
+        <>
+            <BreadCrumbs
+                withWidthContainer
+                links={[
+                    { label: t('breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                    { label: t('breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
+                    { label: t('breadcrumbs.draftsList'), href: NavigationSubRoutes.ZOZNAM_NAVRHOV },
+                    {
+                        label: requestData?.srName ?? t('breadcrumbs.noName'),
+                        href: `${NavigationSubRoutes.ZOZNAM_NAVRHOV}/${entityId}`,
+                    },
+                ]}
+            />
+            <MainContentWrapper>
+                <QueryFeedback loading={isLoading || !!isAbilityLoading} error={isError || isAbilityError} withChildren>
+                    <DraftsListStateMachineWrapper data={requestData}>
+                        <>
+                            {!isLoading && (
+                                <DraftsListIdHeader
+                                    entityId={entityId ?? ''}
+                                    entityItemName={requestData?.srName ?? ''}
+                                    requestChannel={requestData?.requestChannel ?? ''}
+                                />
+                            )}
+                            <DraftListDetailView data={data} />
+                        </>
+                    </DraftsListStateMachineWrapper>
+                </QueryFeedback>
+            </MainContentWrapper>
+        </>
+    )
+}
+
+const DraftDetail: React.FC = () => {
     const { entityId } = useParams()
     return (
         <DraftsListFormContainer
@@ -28,45 +80,14 @@ const DraftDetail: React.FC = () => {
             View={({ data, isLoading, isError }) => {
                 const { requestData } = data
                 return (
-                    <>
-                        <StandardDraftsListPermissionsWrapper
-                            groupId={requestData?.workGroupId ?? ''}
-                            state={requestData?.standardRequestState as StandardDraftsDraftStates}
-                            links={requestData?.links ?? []}
-                            requestChannel={requestData?.requestChannel}
-                        >
-                            <>
-                                <BreadCrumbs
-                                    withWidthContainer
-                                    links={[
-                                        { label: t('breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
-                                        { label: t('breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
-                                        { label: t('breadcrumbs.draftsList'), href: NavigationSubRoutes.ZOZNAM_NAVRHOV },
-                                        {
-                                            label: requestData?.srName ?? t('breadcrumbs.noName'),
-                                            href: `${NavigationSubRoutes.ZOZNAM_NAVRHOV}/${entityId}`,
-                                        },
-                                    ]}
-                                />
-                                <MainContentWrapper>
-                                    <QueryFeedback loading={isLoading} error={isError} withChildren>
-                                        <DraftsListStateMachineWrapper data={requestData}>
-                                            <>
-                                                {!isLoading && (
-                                                    <DraftsListIdHeader
-                                                        entityId={entityId ?? ''}
-                                                        entityItemName={requestData?.srName ?? ''}
-                                                        requestChannel={requestData?.requestChannel ?? ''}
-                                                    />
-                                                )}
-                                                <DraftListDetailView data={data} />
-                                            </>
-                                        </DraftsListStateMachineWrapper>
-                                    </QueryFeedback>
-                                </MainContentWrapper>
-                            </>
-                        </StandardDraftsListPermissionsWrapper>
-                    </>
+                    <StandardDraftsListPermissionsWrapper
+                        groupId={requestData?.workGroupId ?? ''}
+                        state={requestData?.standardRequestState as StandardDraftsDraftStates}
+                        links={requestData?.links ?? []}
+                        requestChannel={requestData?.requestChannel}
+                    >
+                        <DraftDetailView entityId={entityId ?? ''} isError={isError} isLoading={isLoading} data={data} />
+                    </StandardDraftsListPermissionsWrapper>
                 )
             }}
         />

@@ -33,6 +33,7 @@ export interface IGroupEditViewParams {
     resultApiCall?: IResultApiCall
     isLoading: boolean
     uniqueConstraintError?: { [key: string]: string }
+    resetResultSuccessApiCall?: () => void
 }
 
 export interface IGroupEditContainer {
@@ -112,6 +113,14 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
         })
     }
 
+    const resetResultSuccessApiCall = () => {
+        setResultApiCall({
+            isError: false,
+            isSuccess: false,
+            message: undefined,
+        })
+    }
+
     return (
         <QueryFeedback loading={isLoading || isUpdating} error={isError} withChildren>
             <GroupCreateEditView
@@ -120,6 +129,7 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
                 infoData={{ ...infoData }}
                 isEdit
                 resultApiCall={resultApiCall}
+                resetResultSuccessApiCall={resetResultSuccessApiCall}
                 isLoading={isUpdating}
                 uniqueConstraintError={uniqueConstraintError}
             />

@@ -1,7 +1,7 @@
 import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block/ErrorBlock'
 import { ISection, IStepLabel } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { Gen_Profil } from '@isdd/metais-common/api/constants'
-import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemUiAttributes, HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { CiCode, CiType, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -38,6 +38,7 @@ interface ICreateCiEntityForm {
     isProcessing?: boolean
     withRelation?: boolean
     selectedRole?: GidRoleData | null
+    selectedOrg?: HierarchyRightsUi | null
 }
 
 export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
@@ -53,6 +54,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     isProcessing,
     withRelation,
     selectedRole,
+    selectedOrg,
 }) => {
     const { t, i18n } = useTranslation()
     const [hasReset, setHasReset] = useState(false)
@@ -194,6 +196,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 isUpdate={isUpdate}
                 setHasReset={setHasReset}
                 isSubmitDisabled={isSubmitDisabled}
+                selectedOrg={selectedOrg}
             />
         </>
     )

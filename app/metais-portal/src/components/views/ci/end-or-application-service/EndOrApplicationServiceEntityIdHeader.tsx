@@ -78,6 +78,7 @@ export const EndOrApplicationServiceEntityIdHeader: React.FC<Props> = ({
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage}
                         error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                        onMessageClose={() => setBulkActionResult(undefined)}
                     />
                 </div>
             )}
@@ -137,11 +138,11 @@ export const EndOrApplicationServiceEntityIdHeader: React.FC<Props> = ({
                                             key={'cloneCI'}
                                             descriptionElement={errorMessage}
                                             position={'top center'}
-                                            tooltipContent={() => (
+                                            tooltipContent={(open) => (
                                                 <div>
                                                     <ButtonLink
                                                         onClick={() =>
-                                                            handleClone(entityData, () => navigate(clonePath, { state: location.state }), open)
+                                                            handleClone(entityData, () => navigate(clonePath, { state: { from: location } }), open)
                                                         }
                                                         label={tooltipLabel}
                                                     />

@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { useQueryClient } from '@tanstack/react-query'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import styles from './styles.module.scss'
 
@@ -39,6 +40,9 @@ export const DocumentsGroupView: React.FC<IView> = ({
     const [deleteGroupModalOpen, setDeleteGroupModalOpen] = useState(false)
     const [documentToDelete, setDocumentToDelete] = useState<Document>()
     const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>(documentsManagementGroupDocumentsDefaultSelectedColumns(t))
+
+    const { isActionSuccess, setIsActionSuccess } = useActionSuccess()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
     useEffect(() => {
         refetchInfoData()
@@ -156,7 +160,8 @@ export const DocumentsGroupView: React.FC<IView> = ({
         setDeleteGroupModalOpen(false)
         refetchInfoData()
         queryClient.invalidateQueries([GET_DOCUMENT_GROUPS_QUERY_KEY])
-        navigate(-1)
+        setIsActionSuccess({ value: true, path: `${AdminRouteNames.DOCUMENTS_MANAGEMENT}`, additionalInfo: { type: 'delete' } })
+        navigate(AdminRouteNames.DOCUMENTS_MANAGEMENT, { state: { from: location } })
     }
 
     const deleteDocumentModal = async (id: number) => {
@@ -168,8 +173,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
     const resetSelectedColumns = () => {
         setSelectedColumns(documentsManagementGroupDocumentsDefaultSelectedColumns(t))
     }
-    const { isActionSuccess } = useActionSuccess()
-    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
     useEffect(() => {
         scrollToMutationFeedback()
         if (isActionSuccess.value && (isActionSuccess?.additionalInfo?.type == 'create' || isActionSuccess?.additionalInfo?.type == 'edit')) {

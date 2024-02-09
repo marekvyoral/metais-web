@@ -1,3 +1,4 @@
+import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 import {
     EnumType,
     EnumTypePreviewList,
@@ -9,7 +10,7 @@ import {
 } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { UseMutationResult, useQueryClient } from '@tanstack/react-query'
-import React from 'react'
+import React, { SetStateAction, useState } from 'react'
 import sift from 'sift'
 
 export enum CodelistFilterInputs {
@@ -67,6 +68,8 @@ export interface ICodelistContainerView {
     mutations: CodeListsMutations
     isLoading: boolean
     isError: boolean
+    sort: ColumnSort[]
+    setSort: React.Dispatch<SetStateAction<ColumnSort[]>>
 }
 
 interface ICodelistContainer {
@@ -90,7 +93,7 @@ export const CodelistContainer: React.FC<ICodelistContainer> = ({ View, defaults
     const queryClient = useQueryClient()
 
     const { filter } = useFilterParams(defaults)
-
+    const [sort, setSort] = useState<ColumnSort[]>([])
     const testFilter = sift({
         code: function (value: string) {
             return (
@@ -186,6 +189,8 @@ export const CodelistContainer: React.FC<ICodelistContainer> = ({ View, defaults
             mutations={{ updateEnum, deleteEnum, createEnum, validateEnum }}
             isLoading={isLoading || isFetching}
             isError={isError}
+            setSort={setSort}
+            sort={sort}
         />
     )
 }

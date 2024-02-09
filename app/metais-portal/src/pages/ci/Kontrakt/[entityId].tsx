@@ -11,6 +11,8 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { getSlaContractTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -19,7 +21,7 @@ import { RelationsListContainer } from '@/components/containers/RelationsListCon
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 
 export const SlaContractDetailPage: React.FC = () => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
     const navigate = useNavigate()
@@ -38,7 +40,9 @@ export const SlaContractDetailPage: React.FC = () => {
 
     const userAbility = useUserAbility()
     const entityItemName = ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
-    document.title = `${t('titles.ciDetail', { ci: entityItemName })} | MetaIS`
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
 
     const tabList: Tab[] = getSlaContractTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t })
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
@@ -64,7 +68,7 @@ export const SlaContractDetailPage: React.FC = () => {
 
             <MainContentWrapper>
                 <CiPermissionsWrapper entityId={entityId ?? ''} entityName={entityName ?? ''}>
-                    <QueryFeedback loading={isCiItemDataLoading}>
+                    <QueryFeedback loading={isCiItemDataLoading || isCiTypeDataLoading} error={isCiTypeDataError}>
                         <FlexColumnReverseWrapper>
                             <CiEntityIdHeader
                                 editButton={
@@ -99,7 +103,13 @@ export const SlaContractDetailPage: React.FC = () => {
 
                         <Tabs tabList={tabList} />
 
-                        <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} showOnlyTabsWithRelations hideButtons />
+                        <RelationsListContainer
+                            entityId={entityId ?? ''}
+                            technicalName={entityName ?? ''}
+                            showOnlyTabsWithRelations
+                            hideButtons
+                            hidePageSizeSelect
+                        />
                     </QueryFeedback>
                 </CiPermissionsWrapper>
             </MainContentWrapper>

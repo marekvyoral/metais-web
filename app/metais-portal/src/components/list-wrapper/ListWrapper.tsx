@@ -18,7 +18,7 @@ import { ImportButton } from '@isdd/metais-common/components/actions-over-table/
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_TRAINING } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_PROJECT, ENTITY_TRAINING, ROLES } from '@isdd/metais-common/constants'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
@@ -31,7 +31,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { ICiListContainerView } from '@/components/containers/CiListContainer'
-import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
+import { getRowSelectionUuids } from '@/componentHelpers/ci/ciTableHelpers'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { CIFilterData } from '@/pages/ci/[entityName]/entity'
 
@@ -59,6 +59,8 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     isLoading,
     isError,
     isNewRelationModal,
+    rowSelection,
+    setRowSelection,
 }) => {
     const { t, i18n } = useTranslation()
 
@@ -74,7 +76,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     const queryKey = getReadCiList1QueryKey({})
     const navigate = useNavigate()
     const location = useLocation()
-    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
 
     const checkedRowItems = Object.keys(rowSelection).length
     const isDisabledBulkButton = checkedRowItems === 0
@@ -88,7 +89,10 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     const checkedItemList = tableData?.configurationItemSet?.filter((i) => Object.keys(rowSelection).includes(i.uuid || '')) || []
     const queryClient = useQueryClient()
     const typeTraining = entityName === ENTITY_TRAINING
-    const isUserTrainer = user?.roles?.includes('SKOLITEL')
+    const typeProject = entityName === ENTITY_PROJECT
+    const isUserTrainer = user?.roles?.includes(ROLES.SKOLITEL)
+    const isUserAdminEgov = user?.roles?.includes(ROLES.R_EGOV)
+    const isUserAdmin = user?.roles?.includes(ROLES.R_ADMIN)
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: (value: React.SetStateAction<boolean>) => void) => {
         closeFunction(false)
         queryClient.invalidateQueries([queryKey[0]])
@@ -98,8 +102,11 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     const showCreateEntityButton = useMemo(() => {
         if (typeTraining) {
             return isUserTrainer ? true : false
+        }
+        if (typeProject) {
+            return isUserAdminEgov || isUserAdmin ? true : false
         } else return true
-    }, [isUserTrainer, typeTraining])
+    }, [isUserAdmin, isUserAdminEgov, isUserTrainer, typeProject, typeTraining])
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
@@ -107,7 +114,15 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         scrollToMutationFeedback()
     }, [bulkActionResult, scrollToMutationFeedback])
 
-    const ciName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    const ciName = useMemo(
+        () => (i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName),
+        [ciTypeData?.engName, ciTypeData?.name, i18n.language],
+    )
+
+    useEffect(() => {
+        document.title = `${t('titles.ciList', { ci: ciName })} | MetaIS`
+    }, [ciName, t])
+
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
@@ -121,6 +136,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                             success={bulkActionResult?.isSuccess}
                             successMessage={bulkActionResult?.successMessage}
                             error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
+                            onMessageClose={() => setBulkActionResult(undefined)}
                         />
                     </div>
                 )}
@@ -180,7 +196,13 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                         )
                     }
                     importButton={<ImportButton ciType={entityName ?? ''} />}
-                    exportButton={<ExportButton pagination={pagination} />}
+                    exportButton={
+                        <ExportButton
+                            defaultFilterValues={defaultFilterValues}
+                            checkedItemsUuids={getRowSelectionUuids(rowSelection)}
+                            pagination={pagination}
+                        />
+                    }
                     bulkPopup={
                         <Tooltip
                             descriptionElement={errorMessage}

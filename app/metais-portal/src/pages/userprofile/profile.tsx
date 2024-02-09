@@ -97,7 +97,12 @@ const UserProfilePage = () => {
                 <QueryFeedback error={isReadError} loading={isReadLoading}>
                     <FlexColumnReverseWrapper>
                         <TextHeading size="XL">{t('userProfile.heading')}</TextHeading>
-                        <MutationFeedback success={updateSuccess} error={isError} successMessage={t('mutationFeedback.successfulCreated')} />
+                        <MutationFeedback
+                            success={updateSuccess}
+                            error={isError}
+                            successMessage={t('mutationFeedback.successfulCreated')}
+                            onMessageClose={() => setUpdateSuccess(false)}
+                        />
                     </FlexColumnReverseWrapper>
                     <ButtonGroupRow>
                         <Button label={t('userProfile.requests.rightsSettings')} onClick={() => setIsRightsSettingsModalOpen(true)} />

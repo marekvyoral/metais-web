@@ -208,7 +208,11 @@ export const TOP_LEVEL_PO_ICO = '000000003001'
 
 export const MEASURE_UNIT = 'MERNA_JEDNOTKA'
 
-export const COOKIES_CONSENT = 'cookies_consent'
+export enum COOKIES_TYPES {
+    NECESSARILY_COOKIES_CONSENT = 'necessarily_cookies_consent',
+    ANALYTICALLY_COOKIES_CONSENT = 'analytically_cookies_consent',
+    PREFERENTIAL_COOKIES_CONSENT = 'preferential_cookies_consent',
+}
 
 export enum CATEGORY_ENUM {
     NOT_VISIBLE = 'NO',

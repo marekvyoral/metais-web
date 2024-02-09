@@ -12,7 +12,7 @@ import {
     Tabs,
     TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -61,6 +61,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     handleEdit,
 }) => {
     const { t } = useTranslation()
+    const { isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
 
     const {
         isActionSuccess: { value: isSuccessEdit, additionalInfo: isSuccessAdditionalInfo },
@@ -160,9 +161,14 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
         <>
             {breadcrumbs}
             <MainContentWrapper>
-                <MutationFeedback success={isMutationSuccess} successMessage={t('codeListDetail.feedback.translationCreated')} error={undefined} />
+                <MutationFeedback
+                    success={isMutationSuccess}
+                    successMessage={t('codeListDetail.feedback.translationCreated')}
+                    error={undefined}
+                    onMessageClose={() => setIsMutationSuccess(false)}
+                />
                 {isMutationSuccess && <TextWarning>{t('codeListDetail.feedback.translationWarning')}</TextWarning>}
-                <QueryFeedback loading={isLoading} error={false} withChildren>
+                <QueryFeedback loading={isLoading || !!isAbilityLoading} error={false} withChildren>
                     {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                     <div className={styles.headerDiv}>
                         <TextHeading size="XL">{title}</TextHeading>
@@ -275,7 +281,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                         </ButtonGroupRow>
                     </div>
 
-                    <QueryFeedback error={isError} loading={false} />
+                    <QueryFeedback error={isError || isAbilityError} loading={false} />
                     <div ref={wrapperRef}>
                         <MutationFeedback success={isSuccessMutation || isSuccessEdit} successMessage={mainSuccessMessage} error={null} />
                         {actionsErrorMessages.map((errorMessage, index) => (

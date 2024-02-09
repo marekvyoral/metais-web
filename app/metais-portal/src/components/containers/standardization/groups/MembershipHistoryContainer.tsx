@@ -2,11 +2,13 @@ import { Group, Person, StdHistory, useGetStdHistoryHook } from '@isdd/metais-co
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import { MembershipHistoryView } from '@/components/views/standardization/groups/MembershipHistoryView'
 
 export const MembershipHistoryContainer: React.FC = () => {
     const { t } = useTranslation()
+    const { isLoading: isAbilityLoading } = useAbilityContextWithFeedback()
 
     const historyColumns: ColumnDef<StdHistory>[] = [
         {
@@ -71,7 +73,7 @@ export const MembershipHistoryContainer: React.FC = () => {
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             handleSubmit={loadMembershipHistory}
-            isLoading={isLoading}
+            isLoading={isLoading || !!isAbilityLoading}
         />
     )
 }

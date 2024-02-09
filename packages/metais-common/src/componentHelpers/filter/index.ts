@@ -144,6 +144,8 @@ export enum FILTER_KEY {
     pageSize = 'pageSize',
     pageNumber = 'pageNumber',
     metaAttributeFilters = 'metaAttributeFilters',
+    state = 'state',
+    onlyFreePO = 'onlyFreePO',
 }
 
 //maps static inputs in <Filter> to their correct format needed for cilistfiltered filter
@@ -159,6 +161,8 @@ export const mapFilterParamsToApi = <T extends IFilterParams>(
         FILTER_KEY.metaAttributeFilters,
         FILTER_KEY.pageSize,
         FILTER_KEY.pageNumber,
+        FILTER_KEY.state,
+        FILTER_KEY.onlyFreePO,
     ])
 
     for (const [key, value] of Object.entries(filterParams)) {

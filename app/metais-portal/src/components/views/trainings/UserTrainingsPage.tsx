@@ -43,6 +43,7 @@ export const UserTrainingsPage = () => {
                 data={{ columnListData, tableData: mappedTableData, constraintsData, unitsData, entityStructure: ciTypeData, gestorsData }}
                 handleFilterChange={() => undefined}
                 sort={[]}
+                enableSorting={false}
                 pagination={pagination}
                 storeUserSelectedColumns={saveColumnSelection}
                 isLoading={isLoading}

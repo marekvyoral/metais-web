@@ -14,6 +14,8 @@ import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
+import { findCommonStrings } from '@isdd/metais-common/utils/utils'
+import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { ICiCreateItemAndRelationContainerView } from '@/components/containers/CiCreateItemAndRelationContainer'
@@ -165,8 +167,12 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
         <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('newRelation.newCiWithRelationHeading', { entityName: tabName })}</TextHeading>
-                {(isError || isProcessedError || isTooManyFetchesError || isRequestStatusError) && <QueryFeedback loading={false} error />}
-                {storeGraph.isError && <MutationFeedback success={false} error={t('newRelation.mutationError')} />}
+                <ElementToScrollTo isVisible={isError || isProcessedError || isTooManyFetchesError || isRequestStatusError}>
+                    <QueryFeedback loading={false} error />
+                </ElementToScrollTo>
+                <ElementToScrollTo isVisible={storeGraph.isError}>
+                    <MutationFeedback success={false} error={t('newRelation.mutationError')} />
+                </ElementToScrollTo>
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
 
@@ -175,7 +181,7 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
                 onChangeAuthority={setSelectedPublicAuthority}
                 onChangeRole={setSelectedRole}
                 selectedOrg={selectedPublicAuthority}
-                ciRoles={ciTypeData?.roleList ?? []}
+                ciRoles={findCommonStrings(relationData?.relationTypeData?.roleList ?? [], attributesData?.ciTypeData?.roleList ?? [])}
             />
 
             <SimpleSelect

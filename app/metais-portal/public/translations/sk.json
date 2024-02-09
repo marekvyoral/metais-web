@@ -18,6 +18,9 @@
         "accessibilityDeclaration": "Vyhlásenie o prístupnosti",
         "webResidencyMap": "Mapa webového sídla",
         "GDPRAndCookies": "GDPR a cookies",
+        "cookies": "Cookies",
+        "personalDataProtection": "Oznámenie o ochrane údajov",
+        "termsOfUse": "Podmienky používania MetaIS",
         "technicalOperator": "Technický prevádzkovateľ",
         "contentAdmin": "Správca obsahu",
         "RSS": "RSS",
@@ -153,6 +156,7 @@
             "monitoringApp": "Monitorované parametre AS",
             "monitoringSet": "Zostava monitorovaných parametrov",
             "monitoringImport": "Import monitorovacích parametrov",
+            "monitoringInsert": "Vloženie monitorovacích údajov",
             "monitoringServices": "Monitoring služieb",
             "evidenceObjects": "Objekt evidencie",
             "attributesEvidenceObjects": "Atribút objektu evidencie",
@@ -184,7 +188,7 @@
             "training": "Školenie"
         },
         "sla": {
-            "slaAndIntegrations": "Integrácie a SLA",
+            "slaAndIntegrations": "SLA",
             "integrationLinks": "Integračné väzby",
             "isla": "Integračné dohody o úrovni poskytovania služieb (ISLA)"
         }
@@ -307,7 +311,11 @@
         "editItem": "Editovať položku",
         "waitSending": "Čakajte prosím. Odosielam formulár.",
         "cancel": "Zrušiť",
-        "back": "Späť"
+        "back": "Späť",
+        "specialRule": {
+            "osobitnyPostupDateFrom": "Dátum účinnosti od",
+            "projectImplementationStart": "Dátum začatia realizačnej fázy"
+        }
     },
     "languageSelector": {
         "open": "Rozbaliť jazykové menu",
@@ -329,6 +337,12 @@
         "moreTabs": "Viac"
     },
     "errors": {
+        "import": {
+            "default": "Ups, niečo sa pokazilo.",
+            "validateFile": "Validacia súboru zlyhala",
+            "uploadFile": "Nahrávanie súboru zlyhalo",
+            "successUload": "Nahrávanie súboru bolo úspešné"
+        },
         "NoChangesDetected": "Nezaznamenali sme žiadne zmeny",
         "fixLink": "Opraviť",
         "invalidEntityId": "Nevalidná entita",
@@ -435,7 +449,8 @@
             "phone": "Telefónne číslo",
             "organization": "Organizácia",
             "registrationDate": "Dátum príhlásenia"
-        }
+        },
+        "from": "Začiatok školenia"
     },
     "listActions": {
         "selectView": "Zobraziť"
@@ -508,6 +523,11 @@
         "evaluatSection": "Vyhodnotenie",
         "suggestionNote": "Poznámka",
         "changeBtn": "Zmeniť",
+        "exportBtn": "Export",
+        "exportKris": "KRIT",
+        "exportIsvs": "ISVS",
+        "exportKrisLabel": "Vyberte si formát výstupného súboru",
+        "exportKs": "KS",
         "saveBtn": "Uložiť",
         "cancelBtn": "Zrušiť",
         "lastVerUPPVII": "Posledná verzia Hodnotenia ÚPPVII",
@@ -787,7 +807,7 @@
             "CREATE": "Vytvorenie položky",
             "CREATE_INCIDENT_REL": "Vytvorenie vzťahu ku položke",
             "UPDATE": "Aktualizácia položky",
-            "UPDATE_INCIDENT_REL": "Aktualizácia vzťahu",
+            "UDPATE_INCIDENT_REL": "Aktualizácia vzťahu",
             "CHANGE_OWNER": "Zmena vlastníka položky",
             "CHANGE_OWNER_INCIDENT_REL": "Zmena vlastníka vzťahu",
             "INVALIDATE": "Zneplatnenie položky",
@@ -1601,6 +1621,7 @@
         "groupEdit": "Úprava pracovnej skupiny",
         "reports": "Reporty a zostavy",
         "monitoringServices": "Monitoring koncových a aplikačných služieb",
+        "monitoringInsert": "Vloženie monitorovacích údajov",
         "reportDetail": "Detail reportu",
         "ciList": "Zoznam položiek {{ci}}",
         "ciDetail": "Detail položky {{ci}}",
@@ -1624,7 +1645,8 @@
         "codeListDetail": "Detail číselníka",
         "refIdentifiers": "Referencovateľné identifikátory",
         "meetingsCreate": "Vytvorenie zasadnutia",
-        "meetingDetail": "Detail zasadnutia"
+        "meetingDetail": "Detail zasadnutia",
+        "relationsSearch": "Vyhľadávanie podľa vzťahov"
     },
     "refRegisters": {
         "list": {
@@ -2210,7 +2232,10 @@
             "description": "Ospravedlňujeme sa, ale pri procese registrácie nastala chyba. Pokúste sa registráciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora emailom na <email>metais@mirri.gov.sk</email>.",
             "button": "Zopakovať registráciu"
         },
-        "error": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
+        "error": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
+        "consentWith": "Súhlasím s ",
+        "dataProcessingConsent": "podmienkami spracúvania osobných údajov",
+        "termsOfUseConsent": "podmienkami používania Centrálneho metainformačného systému verejnej správy"
     },
     "Aktivita": {
         "target": "Cieľ aktivity",
@@ -2333,23 +2358,97 @@
             "serviceType": "Typ služby",
             "from": "Hodnoty od",
             "to": "Hodnoty do"
+        },
+        "detail": {
+            "toggleButton": "Zmeniť pohľad",
+            "totalInPeriod": "Spolu za vybrané obdobie",
+            "avarageInPeriod": "Priemer za vybrané obdobie"
+        },
+        "filter": {
+            "responsibleAuthority": "Povinná osoba",
+            "project": "Projekt",
+            "isvs": "Vyberte ISVS",
+            "service": "Vyberte službu"
         }
     },
     "cookies": {
         "heading": "Informácie o používaní cookies",
-        "cookies": "Súbory cookie",
-        "cookiesDesc": "S cieľom zabezpečiť riadne fungovanie tejto webovej lokality ukladáme niekedy na vašom zariadení malé dátové súbory, tzv. cookie. Je to bežná prax väčšiny veľkých webových lokalít.",
-        "whatAreCookies": "Čo sú súbory cookie?",
-        "whatAreCookiesDesc": "Súbor cookie je malý textový súbor, ktorý webová lokalita ukladá vo vašom počítači alebo mobilnom zariadení pri jej prehliadaní. Vďaka tomuto súboru si webová lokalita na určitý čas uchováva informácie o vašich krokoch a preferenciách (ako sú prihlasovacie meno, jazyk, veľkosť písma a iné nastavenia zobrazovania), takže ich pri ďalšej návšteve lokality alebo prehliadaní jej jednotlivých stránok nemusíte opätovne uvádzať.",
-        "howDoWeUseCookies": "Ako používame súbory cookie?",
-        "howDoWeUseCookiesDesc": "Tieto webstránky používajú súbory cookies na zapamätanie si použivateľských nastavení a pre nevyhnutnú funkcionalitu webstránok.",
-        "howToControlCookies": "Ako kontrolovať súbory cookie",
-        "howToControlCookiesDesc": "Súbory cookie môžete kontrolovať alebo zmazať podľa uváženia – podrobnosti si pozrite na stránke aboutcookies.org. Môžete vymazať všetky súbory cookie uložené vo svojom počítači a väčšinu prehliadačov môžete nastaviť tak, aby ste im znemožnili ich ukladanie. V takomto prípade však pravdepodobne budete musieť pri každej návšteve webovej lokality manuálne upravovať niektoré nastavenia a niektoré služby a funkcie nebudú fungovať.",
-        "howRefuseTheUseOfCookies": "Ako odmietnuť používanie súborov cookie",
-        "howRefuseTheUseOfCookiesDesc": "Používanie súborov cookie je možné nastaviť pomocou Vášho internetového prehliadača. Väčšina prehliadačov súbory cookie automaticky prijíma už vo úvodnom nastavení.",
-        "thisPageUsesCookies": "Tento web používa súbory cookies. Prehliadaním webu vyjadrujete súhlas s ich používaním.",
+        "thisPageUsesCookies1": "Aby naša stránka fungovala, používame nevyhnutné cookies. Podrobnejšie informácie o súboroch cookies, ktoré používame, nájdete v ",
+        "thisPageUsesCookies2": "zásadách používania súborov cookies.",
         "accept": "Súhlasiť",
-        "moreInfo": "Viac informácií"
+        "moreInfo": "Viac informácií",
+        "settings": {
+            "save": "Uložiť nastavenia",
+            "heading": "Nastavenia cookies",
+            "acceptAll": "Prijať všetky cookie",
+            "refuseAll": "Odmietnuť všetky cookies",
+            "necessarily": "Nevyhnutne nutné súbory cookie",
+            "necessarilyDescription": "Sú to základné súbory cookie, ktoré umožňujú pohybovať sa po webovej stránke a používať jej funkcie. Tieto súbory cookie neukladajú žiadne informácie o vás, ktoré by sa dali použiť na marketing alebo na zapamätaniesi, čo ste si na internete pozerali.",
+            "analytically": "Analytické súbory cookie",
+            "analyticallyDescription": "Tieto súbory zbierajú informácie o tom, ako sa používala webová stránka, napríklad ktoré stránky najčastejšie navštevujete a či sa vám zobrazili chybové hlásenia. Nezbierajú informácie, na základe ktorých by bolo možné zistiť vašu totožnosť. Všetky informácie sú anonymné. Používajú sa na zlepšenie funkčnosti webových stránok.",
+            "preferential": "Preferenčné súbory cookie",
+            "preferentialDescription": "V týchto súboroch sa ukladajú vaše voľby (napr. jazykové preferencie) a osobné charakteristiky. Môžu sa v nich uložiť zmeny, ktore ste na webovej stránke urobili. Dá sa zabezpečiť, aby sa informácie zbierali anonymne. Na ich základe nie je možné zistiť, ktoré iné webové stránky ste navštívili."
+        },
+        "info": {
+            "heading1": "Čo sú cookies?",
+            "description1": "Pre pro-užívateľské webové stránky a prispôsobenie prevádzky našich webových stránok Vašim potrebám, náš portál používa súbory cookies. Súbor cookie je malý súbor, ktorý sa na Vašom počítači ukladá lokálne, keď navštívite webové stránky. Súbory cookies nám tiež umožňujú analyzovať používanie našich webových stránok. Nezahŕňajú žiadne osobné údaje a nie je možné Vás prostredníctvom nich identifikovať na webových stránkach tretích strán - vrátane stránok poskytovateľov analýzy.",
+            "heading2": "Aké cookies používame a prečo?",
+            "description2": "Používame iba nevyhnutné cookies, ktoré umožňujú základné funkcie fungovania našej webovej stránky (prevádzkovateľ: Ministerstvo investícií, regionálneho rozvoja a informatizácie Slovenskej republiky, Pribinova 25, 811 09 Bratislava, metais@mirri.gov.sk) a bezpečný prístup k webovej stránke. Naša webová stránka nemôže bez týchto cookies fungovať. K takémuto spracúvaniu údajov dochádza v súlade s ustanovením § 55 ods. 5 Zákona č. 351/2011 Z. z. o elektronických komunikáciách. Údaje nebudú zdieľané s tretími stranami ani prenášané do tretích krajín alebo medzinárodných organizácií.",
+            "heading3": "Nevyhnutné technické cookies",
+            "description3": "<ul> <li>Názov</li> <li>Poskytovateľ </li> <li>Účel </li> <li>Typ </li> <li>Lehota uloženia </li> </ul>",
+            "heading4": "Ako kontrolovať súbory cookies?",
+            "description4": "Nakoľko ide o technické cookies, nie je možné súbor cookies vymazať.",
+            "heading5": "Ako je možné zmeniť nastavenia cookies?",
+            "description5": "Cookies môžete prijať alebo odmietnuť - vrátane tých, ktoré sa používajú na sledovanie webových stránok - výberom vhodných nastavení pre Váš prehliadač. Môžete nastaviť prehliadač, aby Vás upozornil, keď dostanete nový súbor cookie, alebo ich úplne zablokovať. <br /> <br /> Viac informácií o tom, ako je možné spravovať cookies policy najviac používanými prehliadačmi sa dozviete: <ul> <li> Google Chrome: <br /> <a href=\"https://support.google.com/accounts/answer/61416?co=GENIE.Platform%3DDesktop&hl=en\"> https://support.google.com/accounts/answer/61416?co=GENIE.Platform%3DDesktop&hl=en </a> </li> <li> Microsoft Edge: <br /> <a href=\"https://support.microsoft.com/sk-sk/help/4468242/microsoft-edge-browsing-data-and-privacy-microsoft-privacy\"> https://support.microsoft.com/sk-sk/help/4468242/microsoft-edge-browsing-data-and-privacy-microsoft-privacy </a> </li> <li> Mozilla Firefox: <br /> <a href=\"https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences\"> https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences </a> </li> <li> Microsoft Internet Explorer: <br /> <a href=\"https://support.microsoft.com/en-gb/help/17442/windows-internet-explorer-delete-manage-cookies\"> https://support.microsoft.com/en-gb/help/17442/windows-internet-explorer-delete-manage-cookies </a> </li> <li> Opera: <br /> <a href=\"https://help.opera.com/cs/latest/\">https://help.opera.com/cs/latest/</a> </li> <li> Apple Safari: <br /> <a href=\"https://support.apple.com/en-gb/safari\">https://support.apple.com/en-gb/safari</a> </li> </ul> V prípade ďalších otázok Vašichtýkajúcich sa cookies kontaktujte zodpovednú osobu: <a href=\"mailto: metais@mirri.gov.sk\"> metais@mirri.gov.sk</a>."
+        },
+        "personalDataProtection": {
+            "heading1": "Ochrana osobných údajov",
+            "description1": "Ministerstvo investícií, regionálneho rozvoja a informatizácie SR (ďalej len “ministerstvo”) pre zabezpečenie komunikácie s povinnými osobami využíva Centrálny metainformačný systém verejnej správy SR. Centrálny metainformačný systém verejnej správy SR je najmä evidenčným portálom, ktorý obsahuje údaje a správu životného cyklu údajov o službách, informačných systémoch, číselníkoch, referenčných registroch a referencovateľných identifikátoroch, ako aj ďalších komponentoch eGovernmentu na Slovensku. Účelom systému je správnosť, kompletnosť a dostupnosť aktuálnych informácií. <br /> <br /> Ministerstvo je správcom Centrálneho metainformačného systému verejnej správy SR (ďalej len „MetaIS“). Ministerstvo spracúva informácie len v rozsahu nevyhnutnom na naplnenie účelu vzťahujúceho sa k činnostiam ministerstva ako orgánu verejnej moci, ktoré sú určené v § 81 Zákona č. 18/2018 Z. z. o ochrane osobných údajov a o zmene a doplnení niektorých zákonov (ďalej len „zákon o ochrane osobných údajov“) a podľa Nariadenia Európskeho Parlamentu a Rady (EÚ) 2016/679 z 27. apríla 2016 o ochrane fyzických osôb pri spracúvaní osobných údajov a o voľnom pohybe takýchto údajov, ktorým sa zrušuje smernica 95/46/ES (ďalej len „GDPR“).",
+            "heading2": "Kto je zodpovedný za spracúvanie Vašich osobných údajov na tomto webovom sídle?",
+            "description2": "Ministerstvo investícií, regionálneho rozvoja a informatizácie Slovenskej republiky <br /> Pribinova 25 <br /> 811 09 Bratislava <br /> <a href=\"mailto:metais@mirri.gov.sk\"> metais@mirri.gov.sk</a> <br /> <a href=\"mailto:zodpovedna.osoba@mirri.gov.sk.\"> zodpovedna.osoba@mirri.gov.sk",
+            "heading3": "Kontaktné údaje zodpovednej osoby",
+            "description3": "<a href=\"mailto: metais@mirri.gov.sk\"> metais@mirri.gov.sk</a> (na túto emailovú adresu môžete smerovať otázky týkajúce sa používania a problémov pri MetaIS) <br /> <a href=\"mailto: metais@mirri.gov.sk\"> metais@mirri.gov.sk</a> (na túto emailovú adresu môžete smerovať otázky o ochrane osobných údajov pri používaní MetaIS a uplatniť si práva podľa GDPR).",
+            "heading4": "Na aké účely spracúvame Vaše osobné údaje?",
+            "description4": "Ministerstvo spracúva Vaše osobnú údaje na tieto účely: <ul> <li>zaregistrovanie používateľa a vytvorenie používateľského konta,</li> <li>komunikácia s používateľom pri riešení požiadaviek a problémov pri používaní MetaIS,</li> <li>informovanie a komunikácia o pripomienkach a zmenách číselníkov, návrhov štandardov a agendách pracovných skupín.</li> </ul>",
+            "heading5": "Aké kategórie osobných údajov spracúvame? <br /> Spracúvame iba všeobecné kategórie osobných údajov.",
+            "description5": "<ol type=\"a\"> <li> Z registračného formulára spracúvame tieto osobné údaje: <ol type=\"a\"> <li>meno,</li> <li>priezvisko,</li> <li>telefónne číslo,</li> <li>funkcia (dobrovoľné)</li> <li>emailová adresa,</li> <li>názov inštitúcie verejnej správy.</li> </ol> </li> <li> Ak je používateľ aj členom niektorej pracovnej skupiny (komisie) tak aj: <ol type=\"a\"> <li>jeho zaradenie do pracovnej skupiny,</li> <li>jeho pozícia/rola v rámci pracovnej skupiny,</li> <li>jeho výber voľby vo verejnom hlasovaní.</li> </ol> </li> <li> O vecnom garantovi číselníkov sa spracovávajú tieto údaje: <ol type=\"a\"> <li>meno,</li> <li>priezvisko,</li> <li>telefónne číslo,</li> <li>emailová adresa.</li> </ol> </li> </ol>",
+            "heading6": "Na akom právnom základe spracúvame Vaše osobné údaje?",
+            "description6": "<ul> <li> Zákon č. 211/2000 Z. z. o slobodnom prístupe k informáciám a o zmene a doplnení niektorých zákonov (zákon o slobode informácií) v znení neskorších predpisov. </li> <li> Zákon č. 95/2019 Z. z. o informačných technológiách vo verejnej správe a o zmene a doplnení niektorých zákonov v znení neskorších predpisov. </li> </ul>",
+            "heading7": "Ako dlho Vaše osobné údaje uchovávame?",
+            "description7": "Všetky údaje sú uchovávané na 5 rokov.",
+            "heading8": "Kto bude mať prístup k Vašim osobným údajom?",
+            "description8": "Prístup k Vašim osobným údajom môžu mať poverení zamestnanci ministerstva.",
+            "heading9": "Budú Vaše osobné údaje prenášané do tretích krajín alebo medzinárodnej organizácii?",
+            "description9": "Vaše osobné údaje nie sú prenášané do tretích krajín ani medzinárodnej organizácii.",
+            "heading10": "Zahŕňa spracúvanie Vašich osobných údajov ministerstvom automatizované individuálne rozhodovanie alebo profilovanie?",
+            "description10": "Spracúvanie Vašich osobných údajov ministerstvom nezahŕňa automatizované individuálne rozhodovanie ani profilovanie.",
+            "heading11": "Aké sú Vaše práva a ako si ich môžete uplatniť?",
+            "description11": "Dotknutá osoba má právo od ministerstva požadovať: <ul> <li> vydanie potvrdenia či sú alebo nie sú jej osobné údaje spracúvané ministerstvom, ako aj prístup k jej osobným údajom a ďalším informáciám, </li> <li>opravu nesprávnych, nepresných alebo neúplných údajov, ktoré sa jej týkajú,</li> <li> • vymazanie (tzv. zabudnutie) osobných údajov, ktoré sa jej týkajú, ak je splnený jeden z dôvodov uvedený v čl. 17 GDPR, napríklad ak: <ul> <li>už ich ministerstvo nepotrebuje,</li> <li>ich ministerstvo spracúva nezákonne,</li> </ul> </li> <li>obmedzenie spracúvania osobných údajov, ktoré sa jej týkajú, ak je splnený jeden z prípadov uvedený v čl. 18 GDPR,</li> <li>právo namietať spracúvanie osobných údajov v čl. 21</li> </ul>",
+            "heading12": "Sú Vaše osobné údaje zdieľané so sociálnymi médiami?",
+            "description12": "Nie, Vaše osobné údaje nie sú zdieľané so sociálnymi médiami.",
+            "heading13": "Ako je zabezpečená bezpečnosť našej stránky?",
+            "description13": "Chránime Vaše údaje pri prenose medzi Vašim prehliadačom a našou stránkou používaním SSL Secure Code Protokolu.",
+            "heading14": "Koho osobné údaje spracúvame?",
+            "description14": "Spracúvame osobné údaje o registrovaných používateľoch, o členoch pracovných skupín a vecných garantoch číselníkov.",
+            "heading15": "Je poskytovanie osobných údajov zmluvnou alebo zákonnou požiadavkou?",
+            "description15": "Poskytovanie osobných údajov na uvedené účely je zmluvnou požiadavkou medzi ministerstvom a používateľom. A je požiadavkou na vytvorenie prístupu do MetaIS. V prípade, že sa rozhodnete neposkytnúť minimálne potrebné osobné údaje, budete môcť čítať a zapisovať len verejne dostupné údaje, ale nebudete mať prístup k čítaniu a zapisovaniu chránených údajov.",
+            "heading16": "Komu môžu byť Vaše osobné údaje poskytnuté?",
+            "description16": "Za určitých zákonných podmienok môžeme Vaše osobné údaje sprístupniť tretím stranám (ako napríklad orgánom činným v trestnom konaní), ak je to nevyhnutné a primerané vzhľadom k špecifickým a zákonne určeným účelom.",
+            "heading17": "Máte právo podať sťažnosť dozornému orgánu, ak sa domnievate, že sme s Vašimi osobnými údajmi manipulovali nezákonne.",
+            "description17": "zor návrhu na začatie konania o ochrane osobných údajov nájdete na stránke úradu: <a href=\"https://www.dataprotection.gov.sk/\"> www.dataprotection.gov.sk</a> → Tlačivá a vzory → Vzor návrhu na začatie konania o ochrane osobných údajov.",
+            "heading18": "Návrh na začatie konania o ochrane osobných údajov možno podať:",
+            "description18": "<ul> <li>písomne v listinnej podobe,</li> <li> písomne v elektronickej podobe autorizovaný podľa osobitného predpisu o elektronickej podobe výkonu verejnej moci; elektronické podanie bez autorizácie podľa osobitného predpisu o elektronickej podobe výkonu verejnej moci (t. j. bežný email bez zaručeného elektronického podpisu) treba do troch pracovných dní doplniť v listinnej podobe, </li> <li>osobne na úrade o ochrane osobných údajov ústnou formou do zápisnice.</li> </ul>"
+        },
+        "termsOfUse": {
+            "heading1": "Podmienky používania MetaIS",
+            "description1": "Ďakujeme Vám za používanie produktov a služieb Centrálneho metainformačného systému verejnej správy SR („Služby MetaIS”), ktorý sa skladá z webového sídla na adrese <a href=\"https://metais.slovensko.sk/\">https://metais.slovensko.sk.</a> Webové sídlo predstavuje používateľské rozhranie k systému a spôsob zadávania a prezentácie údajov. Je hlavným kanálom používateľa. <br /> <br /> Poverený zamestnanec orgánu riadenia alebo orgánu vedeniaje zodpovedný za konzistenciu, úplnosť a presnosť informácií predkladaných do MetaIS za tento orgán riadenia alebo orgán vedenia a jeho podriadené organizácie. Používaním služieb MetaIS vyjadrujete svoj súhlas s týmito zmluvnými podmienkami.",
+            "heading2": "Používanie služieb",
+            "description2": "Služby MetaIS nesmiete zneužívať. Môžeme Vám pozastaviť alebo zastaviť poskytovanie našich služieb, ak porušíte naše zmluvné podmienky alebo pravidlá, alebo keď budeme prešetrovať podozrenie z nevhodného používania. Veríme, že transparentná komunikácia, aká je bežná pri otvorených softvérových projektoch, je dobrou cestou vpred a že otvorenosť vytvára príležitosti: publikované dáta a publikovaný obsah sa môžu využiť novým a nečakaným spôsobom. Preto aj materiály, z ktorých niektoré sú určené pre konkrétne orgány verejnej správy, dávame k dispozícii online, všetkým. Na údaje získané používaním služieb MetaIS sa vzťahuje licencia/vyhlásenie o zrieknutí sa práv Creative Commons Zero, ak nie je uvedené inak, nakoľko sa jedná o otvorené údaje.",
+            "heading3": "Rozsah a obmedzenia",
+            "description3": "Naše služby poskytujeme s využitím primeraných obchodných schopností a starostlivosti a veríme, že Vám prinesú úžitok. Sú však veci, ktoré Vám v súvislosti so službami MetaIS nemôžeme sľúbiť. Ministerstvo investícií, regionálneho rozvoja a informatizácie SR ani jeho dodávatelia neposkytujú žiadne prísľuby týkajúce sa Služieb MetaIS s výnimkou tých, ktoré sú výslovne uvedené v týchto podmienkach alebo doplňujúcich podmienkach. Služby poskytujeme bez záruk „tak ako sú“. Ministerstvo investícií, regionálneho rozvoja a informatizácie SR ani jeho dodávatelia nie sú v žiadnom prípade zodpovední za žiadnu stratu alebo škodu, ktorá nie je v primeranej miere predvídateľná. Tieto podmienky používania Vám poskytujú len niektoré práva na používanie softvéru. Ministerstvo investícií, regionálneho rozvoja a informatizácie SR si vyhradzuje všetky ostatné práva. Softvér smiete používať výhradne spôsobom povoleným v týchto podmienkach. Musíte pri tom dodržiavať akékoľvek technické obmedzenia softvéru, ktoré ho umožňujú používať iba určitými spôsobmi. <br />Nesmiete: <ul> <li>obchádzať žiadne technické obmedzenia softvéru,</li> <li> spätne analyzovať, dekompilovať ani rozkladať softvér na súčasti s výnimkou takejto činnosti v rozsahu, v akom ju i napriek uvedeným obmedzeniam výslovne povoľuje príslušný právny poriadok SR, </li> <li> poskytovať softvér ostatným na kopírovanie, prenajímať, poskytovať na lízing ani požičiavať softvér, prevádzať softvér alebo túto zmluvu na tretiu stranu ani používať softvér na účely služieb komerčného hosťovania softvéru. </li> </ul> Ministerstvo investícií, regionálneho rozvoja a informatizácie SR si vyhradzuje právo na zmenu podmienok používania MetaIS.",
+            "heading4": "Váš účet",
+            "description4": "Na použitie niektorých Služieb MetaIS budete potrebovať účet. Účet Vám bude pridelený po registrácii a schválení žiadosti zástupcom Ministerstva investícií, regionálneho rozvoja a informatizácie SR. O vytvorení účtu budete notifikovaný prostredníctvom emailu, ktorý ste zadali pri vytvorení registrácie. <br /> <br /> Aby sa zaručila bezpečnosť Vášho účtu, heslo nikomu neprezrádzajte. Za aktivitu prebiehajúcu vo Vašom účte alebo údaje vložené a zmenené prostredníctvom neho nesiete plnú zodpovednosť. V aplikáciách tretích strán nepoužívajte rovnaké heslo ako pre účet v MetaIS. Ak zistíte akékoľvek neoprávnené použitie Vášho hesla alebo účtu, je potrebné túto skutočnosť nahlásiť správcovi MetaIS na adrese <a href=\"mailto: metais@mirri.gov.sk\"> metais@mirri.gov.sk</a>."
+        }
     },
     "sla-params-list": {
         "slaList": "Zoznam SLA parametrov",
@@ -2451,6 +2550,15 @@
         "currentVersion": "Aktuálna verzia",
         "lastModifiedBy": "Poslednú zmenu vykonal"
     },
+    "relationshipList": {
+        "startTypeName": "Typ (zdroj)",
+        "startName": "Názov (zdroja)",
+        "startKodMetaIS": "MetaIS kód (zdroja)",
+        "endTypeName": "Typ (cieľ)",
+        "endName": "Názov (cieľ)",
+        "endKodMetaIS": "MetaIS kód (cieľ)",
+        "relType": "Typ vzťahu"
+    },
     "slaContracts": {
         "columns": {
             "name": "Názov kontraktu",
@@ -2491,6 +2599,27 @@
         }
     },
     "olaContracts": {
+        "invalidateModal": {
+            "heading": "Zneplatnenie položky {{ name }}",
+            "warning": "Vybraná položka bude zneplatnená. Nebude ju možné editovať, ani nad ňou vykonávať ďalšie operácie. Jej zneplatnením sa zneplatnia aj všetky vzťahy k ostatným entitám (službám a pod.)",
+            "note": "Poznámka / Dôvod zneplatnenia",
+            "invalidation": "Zneplatnenie",
+            "cancel": "Zrušiť"
+        },
+        "revalidateModal": {
+            "heading": "Splatňovanie položky",
+            "warning": " Vybraná položka bude splatnená.",
+            "revalidateRels": "Splatniť vzťahy",
+            "validation": "Splatnenie",
+            "cancel": "Zrušiť"
+        },
+        "detail": {
+            "heading": "Detail SLA s dodávateľom",
+            "title": "Detail SLA s dodávateľom: {{name}}",
+            "edit": "Zmeniť",
+            "notEntered": "Nezadané",
+            "history": "História dokumentu"
+        },
         "columns": {
             "name": "Názov kontraktu",
             "contractCode": "Kód kontraktu",
@@ -2502,22 +2631,38 @@
         },
         "filter": {
             "name": "Názov kontraktu",
+            "nameEnglish": "Anglický názov kontraktu",
             "contractCode": "Kód kontraktu",
             "metaIsCode": "Kód metaIS",
-            "intervalStart": "Platnosť od",
+            "intervalStart": "Platnosť od (povinné)",
             "intervalEnd": "Platnosť do",
             "selectService": "ISVS",
             "liableEntities": "Správca ISVS",
             "description": "Popis kontraktu",
+            "descriptionEnglish": "Anglický popis kontraktu",
             "code": "Kód",
             "referenceIdentifier": "Referencovateľný identifikátor",
             "crzLink": "Linka do CRZ",
-            "vendorLock": "Vendor Lock"
+            "vendorLock": "Vendor Lock",
+            "contractorIsvsUuid": "ISVS",
+            "document": "Dokument SLA s dodávateľom"
         },
         "title": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
         "heading": "Zoznam SLA s prevádzkovateľom",
         "headingAdd": "Pridat SLA s dodávateľom",
+        "headingEdit": "Zmenit SLA s dodávateľom",
         "createButton": "Pridať novú SLA s dodávateľom"
+    },
+    "insertMonitoring": {
+        "columns": {
+            "parameterType": "Typ parametra",
+            "parameterDate": "Obdobie (berie sa len mesiac a rok) (povinné)",
+            "parameterValue": "Hodnota (povinné)"
+        },
+        "buttonInsertParam": "Pridať parametre",
+        "buttonInsertDescParam": "Vkladané hodnoty parametrov budú platné pre všetky vybrané služby.",
+        "buttonInsertParamValue": "Pridať hodnoty parametrov",
+        "buttonSendForm": "Odoslať"
     },
     "upload": {
         "success": "Dokument bol úspešne pridaný",

@@ -13,7 +13,7 @@ interface useGetRoleIdsForRoleProps {
 export const useGetRoleIdsForRole = ({ identityGids, gids, enabled = true }: useGetRoleIdsForRoleProps) => {
     const isInPoByGidsMutation = useIsInPoByGid1()
 
-    const { data } = useQuery({
+    const { data, isLoading, isError, fetchStatus } = useQuery({
         queryKey: [isInPoByGidsMutationKey, identityGids, gids],
         queryFn: async () => {
             return await isInPoByGidsMutation.mutateAsync({
@@ -28,5 +28,8 @@ export const useGetRoleIdsForRole = ({ identityGids, gids, enabled = true }: use
 
     return {
         data,
+        isLoading,
+        isError,
+        fetchStatus,
     }
 }

@@ -1,6 +1,6 @@
 import { ButtonLink, CheckBox, LoadingIndicator, PaginatorWrapper, Table, TextWarning } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
-import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 import {
     AttributeProfile,
     AttributeProfilePreview,
@@ -10,11 +10,11 @@ import {
     useStoreValid1,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
-import { BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ActionsOverTable, BulkPopup, CreateEntityButton } from '@isdd/metais-common/index'
 import { QueryObserverResult } from '@tanstack/react-query'
 import { ColumnDef, Row } from '@tanstack/react-table'
-import { useCallback, useState } from 'react'
+import { SetStateAction, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
@@ -27,6 +27,8 @@ type IListData = {
     entityName?: string
     refetch?: () => Promise<QueryObserverResult<AttributeProfilePreview, unknown>>
     isFetching?: boolean
+    sort: ColumnSort[]
+    setSort: React.Dispatch<SetStateAction<ColumnSort[]>>
 }
 interface IEgovTable {
     name?: string
@@ -35,7 +37,7 @@ interface IEgovTable {
     valid?: boolean
 }
 
-export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) => {
+export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort }: IListData) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -106,7 +108,6 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
                                         handleCheckboxChange(row)
                                     }}
                                     checked={row.original.technicalName ? !!rowSelection.includes(row.original.technicalName) : false}
-                                    //containerClassName={styles.marginBottom15}
                                 />
                             </div>
                         ) : (
@@ -158,21 +159,16 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
     const columnsWithPermissions = isUserLogged ? columns : columns.slice(1)
 
     const [pageSize, setPageSize] = useState<number>(10)
-    const [start, setStart] = useState<number>(0)
-    const [end, setEnd] = useState<number>(pageSize)
     const [pageNumber, setPageNumber] = useState<number>(1)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const handlePageChange = (filterPage: IFilter) => {
-        setPageNumber(filterPage?.pageNumber ?? 0)
-        setStart((filterPage?.pageNumber ?? 0) * pageSize - pageSize)
-        setEnd((filterPage?.pageNumber ?? 0) * pageSize)
+    const handlePageChange = (filter: IFilter) => {
+        setPageNumber(filter?.pageNumber ?? 0)
     }
 
-    const handleSetPageSize = (filterPage: IFilter) => {
-        setPageSize(filterPage?.pageSize ?? BASE_PAGE_SIZE)
-        setStart((pageNumber ?? 0) * (filterPage?.pageSize ?? 0) - (filterPage?.pageSize ?? 0))
-        setEnd((pageNumber ?? 0) * (filterPage?.pageSize ?? 0))
+    const handlePerPageChange = (filter: IFilter | undefined) => {
+        const newPageSize = Number(filter?.pageSize)
+        setPageSize(newPageSize)
     }
 
     const [errorMessageUnvalid, setErrorMessageUnvalid] = useState(false)
@@ -225,7 +221,7 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
                 {(isFetching || isLoading) && <LoadingIndicator />}
                 <ActionsOverTable
                     pagination={{ pageSize, pageNumber, dataLength: data?.length || 0 }}
-                    handleFilterChange={handleSetPageSize}
+                    handleFilterChange={handlePerPageChange}
                     pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                     entityName={entityName ?? ''}
                     createButton={
@@ -261,7 +257,15 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
                         />
                     }
                 />
-                <Table data={data?.slice(start, end)} columns={columnsWithPermissions} pagination={{ pageIndex: pageNumber, pageSize }} />
+                <Table<IEgovTable>
+                    data={data}
+                    columns={columnsWithPermissions}
+                    sort={sort}
+                    onSortingChange={setSort}
+                    manualSorting={false}
+                    manualPagination={false}
+                    pagination={{ pageIndex: pageNumber - 1, pageSize: pageSize }}
+                />
             </div>
             <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={data?.length || 0} handlePageChange={handlePageChange} />
         </div>

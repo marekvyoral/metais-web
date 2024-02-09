@@ -28,10 +28,12 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { Can, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useMeetingsDetailPermissions'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { MeetingActorsTable } from './MeetingActorsTable'
 import { MeetingExternalActorsTable } from './MeetingExternalActorsTable'
 import { MeetingCancelModal } from './MeetingCancelModal'
+import { MeetingStateEnum } from './MeetingsListView'
 
 import styles from '@/components/views/standardization/meetings/meetingStyles.module.scss'
 
@@ -57,6 +59,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
     const [summarizeLinkChange, setSummarizeLinkChange] = useState(!infoData?.summarizedLink)
     const summarizeLink = useSummarizeMeetingRequest()
     const ability = useAbilityContext()
+    const isMeetingFuture = infoData?.state === MeetingStateEnum.FUTURE
     const userIsParticipate = infoData?.meetingActors?.find((guest) => guest.userName === user?.displayName)?.participation
     const [editParticipate, setEditParticipate] = useState(!userIsParticipate)
     const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
@@ -68,7 +71,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
     const onClose = () => {
         setModalOpen(false)
     }
-
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
     const onSubmit = (fieldValues: FieldValues) => {
         if (infoData?.id && fieldValues.linkUrl) summarizeLink.mutateAsync({ meetingRequestId: infoData?.id, data: { linkUrl: fieldValues.linkUrl } })
     }
@@ -94,7 +97,11 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
             setEditParticipate(!userIsParticipate)
         }
     }, [userIsParticipate])
-
+    useEffect(() => {
+        if (isActionSuccess.value) {
+            scrollToMutationFeedback()
+        }
+    }, [isActionSuccess.value, scrollToMutationFeedback])
     const LinkProposals: React.FC = () => (
         <>
             {infoData?.standardRequestsNames?.map((proposal, index) => {
@@ -241,6 +248,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
     return (
         <>
             <MutationFeedback success={isActionSuccess.value} error={false} />
+            <div ref={wrapperRef} />
             <GridRow className={styles.row}>
                 <GridCol>
                     <TextHeading size="XL">{infoData?.name}</TextHeading>
@@ -317,7 +325,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                             <>
                                 <TextHeading size="L">{t('meetings.vote')}</TextHeading>
                                 <TextBody>{t(`meetings.voteValue.${userIsParticipate}`)}</TextBody>
-                                <Button label={t('meetings.changeVote')} onClick={() => setEditParticipate(true)} />
+                                {isMeetingFuture && <Button label={t('meetings.changeVote')} onClick={() => setEditParticipate(true)} />}
                             </>
                         )}
                     </QueryFeedback>

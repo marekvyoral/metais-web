@@ -1,4 +1,4 @@
-import { AbilityContext, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { AbilityContextWithFeedback, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { useRequestPermissions } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
 
 interface iRequestWrapper {
@@ -8,6 +8,6 @@ interface iRequestWrapper {
 
 export const RequestListPermissionsWrapper = ({ id, children }: iRequestWrapper) => {
     const ability = useAbilityContext()
-    useRequestPermissions(id)
-    return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
+    const { isLoading, isError } = useRequestPermissions(id)
+    return <AbilityContextWithFeedback.Provider value={{ ability, isError, isLoading }}>{children}</AbilityContextWithFeedback.Provider>
 }

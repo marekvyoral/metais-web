@@ -1,5 +1,12 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
 .lineMaxWidth {
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
+}
+
+.invalidated {
+    color: govuk-colour('red') !important;
+    text-decoration: line-through !important;
 }

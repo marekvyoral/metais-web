@@ -36,7 +36,6 @@ const EntityDetailPage: React.FC = () => {
     const location = useLocation()
     const [selectedTab, setSelectedTab] = useState<string>()
 
-    document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
     const userAbility = useUserAbility()
     const ability = useUserAbility(entityName)
     const { invalidate } = useInvalidateTrainingsCache(entityId ?? '')
@@ -59,6 +58,7 @@ const EntityDetailPage: React.FC = () => {
     })
 
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,

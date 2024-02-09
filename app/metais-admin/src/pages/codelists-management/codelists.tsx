@@ -26,7 +26,7 @@ const Codelists = () => {
             />
             <CodelistContainer
                 defaults={defaultFilterValues}
-                View={({ filteredData, mutations, isError, isLoading }) => {
+                View={({ filteredData, mutations, isError, isLoading, setSort, sort }) => {
                     return (
                         <MainContentWrapper>
                             <QueryFeedback loading={isLoading} error={false} withChildren>
@@ -55,7 +55,14 @@ const Codelists = () => {
                                     )}
                                 />
                                 {filteredData.results && (
-                                    <CodelistsTable filteredData={filteredData} mutations={mutations} isLoading={isLoading} isError={isError} />
+                                    <CodelistsTable
+                                        filteredData={filteredData}
+                                        mutations={mutations}
+                                        isLoading={isLoading}
+                                        isError={isError}
+                                        setSort={setSort}
+                                        sort={sort}
+                                    />
                                 )}
                             </QueryFeedback>
                         </MainContentWrapper>

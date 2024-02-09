@@ -9,6 +9,7 @@ import { TFunction } from 'i18next'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useEffect, useState } from 'react'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { IView } from '@/components/containers/documents-management/CreateDocumentContainer'
 
@@ -54,8 +55,12 @@ export const EditDocumentView: React.FC<IView> = ({ infoData, saveDocument, isLo
                 required: fieldValues[DOCUMENT_FIELDS.REQUIRED],
             })
                 .then(() => {
-                    setIsActionSuccess({ value: true, path: '/projects/documents/' + infoData.id, additionalInfo: { type: 'edit' } })
-                    navigate('/projects/documents/' + infoData.id, { state: { from: location } })
+                    setIsActionSuccess({
+                        value: true,
+                        path: AdminRouteNames.DOCUMENTS_MANAGEMENT + '/' + infoData.id,
+                        additionalInfo: { type: 'edit' },
+                    })
+                    navigate(AdminRouteNames.DOCUMENTS_MANAGEMENT + '/' + infoData.id, { state: { from: location } })
                 })
                 .catch(() => {
                     setIsError(true)

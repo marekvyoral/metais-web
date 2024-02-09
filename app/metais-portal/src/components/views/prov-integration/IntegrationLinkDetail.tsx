@@ -49,7 +49,7 @@ export const IntegrationLinkDetail: React.FC<Props> = ({ isLoading, isError, ent
     }, [isActionSuccess, scrollToMutationFeedback])
 
     return (
-        <QueryFeedback loading={isLoading || isAbilityLoading}>
+        <QueryFeedback loading={isLoading || !!isAbilityLoading}>
             <FlexColumnReverseWrapper>
                 <IntegrationDetailHeader
                     editButton={

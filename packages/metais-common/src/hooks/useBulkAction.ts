@@ -262,10 +262,12 @@ export const useBulkAction = (isRelation?: boolean) => {
                 return onSuccess()
             } else {
                 setErrorMessage(t('tooltip.rights.notToClone'))
+                setBulkLoading(false)
                 return onError()
             }
         } catch {
             setErrorMessage(t('feedback.queryErrorTitle'))
+            setBulkLoading(false)
             return onError()
         }
     }

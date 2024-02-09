@@ -17,7 +17,7 @@ const PublicAuthorities = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: t('navMenu.publicAuthorities.publicAuthorities') ?? '', href: AdminRouteNames.PUBLIC_AUTHORITIES },
+                    { label: t('navMenu.publicAuthorities.publicAuthorities') ?? '', href: AdminRouteNames.PUBLIC_AUTHORITIES_LIST },
                     { label: t('publicAuthorities.detail.title') ?? '', href: `${AdminRouteNames.PUBLIC_AUTHORITIES}/${entityId}` },
                 ]}
             />

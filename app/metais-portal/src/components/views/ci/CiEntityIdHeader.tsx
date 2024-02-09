@@ -71,6 +71,7 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage}
                         error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                        onMessageClose={() => setBulkActionResult(undefined)}
                     />
                 </div>
             )}
@@ -99,7 +100,9 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                                             <div>
                                                 <ButtonLink
                                                     disabled={isInvalidated}
-                                                    onClick={() => handleInvalidate(entityListData, () => setShowInvalidate(true), open)}
+                                                    onClick={() => {
+                                                        handleInvalidate(entityListData, () => setShowInvalidate(true), open)
+                                                    }}
                                                     label={t('ciType.invalidateItem')}
                                                 />
                                             </div>
@@ -114,7 +117,9 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                                             <div>
                                                 <ButtonLink
                                                     disabled={!isInvalidated}
-                                                    onClick={() => handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)}
+                                                    onClick={() => {
+                                                        handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)
+                                                    }}
                                                     label={t('ciType.revalidateItem')}
                                                 />
                                             </div>

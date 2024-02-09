@@ -232,7 +232,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 return (
                                     <CheckBox
                                         name={name}
-                                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` ?? ''}
+                                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
                                         error={error?.message?.toString()}
                                         id={attribute.technicalName ?? ''}
                                         info={attribute.description}
@@ -251,7 +251,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
             case isCiTypeConstraint && !!ciType: {
                 return (
                     <CiLazySelect
-                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` ?? '' + requiredLabel}
+                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
                         name={attribute.technicalName ?? '' + nameSufix}
                         ciType={ciType}
                         setValue={setValue}
@@ -271,7 +271,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                             <MultiSelect
                                 id={attribute.technicalName ?? ''}
                                 name={attribute.technicalName ?? '' + nameSufix}
-                                label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` ?? '' + requiredLabel}
+                                label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
                                 correct={isCorrect}
                                 options={createOptions(constraints)}
                                 setValue={setValue}
@@ -289,7 +289,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         return (
                             <SimpleSelect
                                 id={attribute.technicalName ?? ''}
-                                label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` ?? '' + requiredLabel}
+                                label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
                                 error={error?.message?.toString()}
                                 info={attribute.description}
                                 correct={isCorrect}

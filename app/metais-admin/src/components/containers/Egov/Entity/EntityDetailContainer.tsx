@@ -11,10 +11,12 @@ import {
     useStoreUnvalid,
     useStoreValid,
     useSetSummarizingCard,
-    useStoreAttributeTextation,
-    useDeleteAttributeTextation,
+    useStoreAttributeTextation1,
+    useDeleteAttributeTextation1,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FindAll11200, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 export interface IEntityDetailContainerView {
     data: {
@@ -54,8 +56,10 @@ export const EntityDetailContainer: React.FC<IEntityDetailContainer> = ({ entity
     const { mutateAsync: setEntityAsInvalid } = useStoreUnvalid()
     const { mutateAsync: setEntityAsValid } = useStoreValid()
     const { mutateAsync: setShowOwner } = useSetSummarizingCard()
-    const { mutateAsync: saveAttribute } = useStoreAttributeTextation()
-    const { mutateAsync: resetAttribute } = useDeleteAttributeTextation()
+    const { mutateAsync: saveAttribute } = useStoreAttributeTextation1()
+    const { mutateAsync: resetAttribute } = useDeleteAttributeTextation1()
+
+    const { setIsActionSuccess } = useActionSuccess()
 
     const setValidityOfEntity = async (technicalName?: string) => {
         setValidity(technicalName, ciTypeData?.valid, setEntityAsValid, setEntityAsInvalid, refetch)
@@ -85,6 +89,11 @@ export const EntityDetailContainer: React.FC<IEntityDetailContainer> = ({ entity
             },
         })
             .then(() => {
+                setIsActionSuccess({
+                    value: true,
+                    path: `${AdminRouteNames.EGOV_ENTITY}/${ciTypeData?.technicalName}`,
+                    additionalInfo: { type: 'attrEdit' },
+                })
                 refetch()
             })
             .catch(() => {

@@ -120,7 +120,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
             gids: [entityData?.metaAttributes?.owner ?? ''],
             login: user?.login,
         },
-        { query: { enabled: entityData && token !== null && !!user?.uuid } },
+        { query: { enabled: entityData?.metaAttributes?.owner !== undefined && token !== null && !!user?.uuid } },
     )
     const { data: dataPoRole, isLoading: isLoadingDataPoRole } = useGetRoleParticipant(entityData?.metaAttributes?.owner ?? '')
 
@@ -452,6 +452,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage}
                         error={bulkActionResult?.isError || isError ? t('feedback.mutationErrorMessage') : ''}
+                        onMessageClose={() => setBulkActionResult(undefined)}
                     />
                 </div>
             )}
@@ -459,6 +460,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                 success={succesMessage !== undefined}
                 successMessage={succesMessage}
                 error={isError || isErrorNeighbours ? t('feedback.mutationErrorMessage') : ''}
+                onMessageClose={() => setSuccesMessage(undefined)}
             />
             {showWarning && <TextWarning>{t('modalKris.generatePdf.docGenStart')}</TextWarning>}
             <div className={styles.headerDiv}>

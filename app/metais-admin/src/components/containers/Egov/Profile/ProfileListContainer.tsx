@@ -1,3 +1,4 @@
+import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 import {
     AttributeProfile,
     AttributeProfilePreview,
@@ -7,7 +8,7 @@ import {
 import { EntityFilterData, filterEntityData } from '@isdd/metais-common/componentHelpers/filter/feFilters'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryObserverResult } from '@tanstack/react-query'
-import React from 'react'
+import React, { SetStateAction, useState } from 'react'
 
 export interface IView {
     data?: AttributeProfile[] | undefined
@@ -15,6 +16,8 @@ export interface IView {
     isFetching?: boolean
     isLoading: boolean
     isError: boolean
+    sort: ColumnSort[]
+    setSort: React.Dispatch<SetStateAction<ColumnSort[]>>
 }
 
 interface IProfileListContainer {
@@ -30,5 +33,8 @@ export const ProfileListContainer: React.FC<IProfileListContainer> = ({ View, de
     const list: AttributeProfile[] = [...(data?.attributeProfileList ?? []), ...(genericData?.attributeProfileList ?? [])]
     const { filter } = useFilterParams(defaultFilterValues ?? {})
     const filteredData = !defaultFilterValues ? list : filterEntityData(filter, list)
-    return <View data={filteredData} refetch={refetch} isFetching={isFetching} isLoading={isLoading} isError={isError} />
+    const [sort, setSort] = useState<ColumnSort[]>([])
+    return (
+        <View data={filteredData} refetch={refetch} isFetching={isFetching} isLoading={isLoading} isError={isError} setSort={setSort} sort={sort} />
+    )
 }

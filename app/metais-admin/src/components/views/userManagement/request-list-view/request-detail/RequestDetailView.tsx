@@ -74,7 +74,7 @@ export const RequestDetailView: React.FC<IRequestDetailProps> = ({
         <>
             {(successesMutation || errorMessage) && <MutationFeedback success={successesMutation} error={errorMessage} />}
             <div className={styles.basicInformationSpace}>
-                <TextHeading size="M">{t('requestList.identityDetail')}</TextHeading>
+                <TextHeading size="L">{t('requestList.identityDetail')}</TextHeading>
                 <DefinitionList>
                     {detailRows.map((item, index) => (
                         <InformationGridRow key={index} label={item.label} value={item.value} hideIcon />
@@ -82,7 +82,7 @@ export const RequestDetailView: React.FC<IRequestDetailProps> = ({
                 </DefinitionList>
             </div>
             <div className={styles.basicInformationSpace}>
-                <TextHeading size="M">{t('requestList.requestDetail')}</TextHeading>
+                <TextHeading size="L">{t('requestList.requestDetail')}</TextHeading>
                 <DefinitionList>
                     {detailRequestRows.map((item, index) => (
                         <InformationGridRow key={index} label={item.label} value={item.value} hideIcon />

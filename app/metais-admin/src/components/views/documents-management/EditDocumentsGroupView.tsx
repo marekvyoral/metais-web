@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { DOCUMENT_FIELDS } from './CreateDocumentsGroupView'
 
@@ -36,9 +37,13 @@ export const EditDocumentsGroupView: React.FC<IView> = ({ infoData, projectStatu
                 descriptionEng: fieldValues[DOCUMENT_FIELDS.DESCRIPTION_ENG],
             })
                 .then(() => {
-                    setIsActionSuccess({ value: true, path: '/projects/documents/' + infoData.id, additionalInfo: { type: 'editGroup' } })
+                    setIsActionSuccess({
+                        value: true,
+                        path: AdminRouteNames.DOCUMENTS_MANAGEMENT + '/' + infoData.id,
+                        additionalInfo: { type: 'editGroup' },
+                    })
                     refetchInfoData()
-                    navigate('/projects/documents/' + infoData.id, { state: { from: location } })
+                    navigate(AdminRouteNames.DOCUMENTS_MANAGEMENT + '/' + infoData.id, { state: { from: location } })
                 })
                 .catch(() => {
                     setUpdateError(true)

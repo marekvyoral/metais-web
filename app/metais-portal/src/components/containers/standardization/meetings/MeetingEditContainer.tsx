@@ -3,12 +3,15 @@ import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import {
     ApiAttachment,
+    ApiLink,
     ApiMeetingRequest,
     useGetMeetingRequestDetail,
     useUpdateMeetingRequest,
 } from '@isdd/metais-common/api/generated/standards-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useQueryClient } from '@tanstack/react-query'
+import { GET_MEETING_REQUEST_DETAIL } from '@isdd/metais-common/constants'
 
 import { MeetingCreateEditView } from '@/components/views/standardization/meetings/MeetingCreateEditView'
 import { MeetingFormEnum } from '@/components/views/standardization/meetings/meetingSchema'
@@ -39,8 +42,8 @@ interface IMeetingEditContainer {
 export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) => {
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
-    const { data: infoData, isLoading: meetingDetailLoading, isError: meetingDetailError } = useGetMeetingRequestDetail(Number(id))
-
+    const { data: infoData, isLoading: meetingDetailLoading, isError: meetingDetailError, refetch } = useGetMeetingRequestDetail(Number(id))
+    const queryClient = useQueryClient()
     const goBack = () => {
         navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}`)
     }
@@ -52,6 +55,8 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
         mutation: {
             onSuccess() {
                 setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}` })
+                queryClient.invalidateQueries([GET_MEETING_REQUEST_DETAIL])
+                refetch()
                 goBack()
             },
         },
@@ -73,7 +78,7 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
                 notifNewUsers: formData[MeetingFormEnum.NOTIF_NEW_USERS],
                 ignorePersonalSettings: formData[MeetingFormEnum.IGNORE_PERSONAL_SETTINGS],
                 meetingExternalActors: formData[MeetingFormEnum.MEETING_EXTERNAL_ACTORS],
-                meetingLinks: formData[MeetingFormEnum.MEETING_LINKS],
+                meetingLinks: formData[MeetingFormEnum.MEETING_LINKS].filter((meetingLink: ApiLink) => !!meetingLink),
                 meetingAttachments: attachments,
             },
             meetingRequestId: infoData?.id || 0,

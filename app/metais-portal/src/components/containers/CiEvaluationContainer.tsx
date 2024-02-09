@@ -28,6 +28,7 @@ export interface ICiContainerView {
     isLoading: boolean
     isError: boolean
     resultSuccessApiCall: IResultCall
+    resetResultSuccessApiCall: () => void
     onApprove: (approve: boolean) => void
     onApproveGoals: (approve: boolean, note: string, type: EContainerType, refetchData: () => void) => void
     onResponseGoals: (note: string, refetchData: () => void) => void
@@ -55,8 +56,8 @@ export const CiEvaluationContainer: React.FC<ICiEvaluationContainer> = ({ entity
         setApproveLoading(true)
         approveHook(entityId, { manualApproved: approve })
             .then(() => {
-                refetchKrisData()
                 setResultSuccessApiCall({ isSuccess: true, message: t('evaluation.saveSuccess') })
+                refetchKrisData()
             })
             .catch((err) => {
                 setApproveError(err)
@@ -103,6 +104,10 @@ export const CiEvaluationContainer: React.FC<ICiEvaluationContainer> = ({ entity
     const isLoading = [isLoadingRoles, isLoadingVersionData, isApproveLoading, isLoadingKrisData, isFetching].some((item) => item)
     const isError = [isErrorRoles, isErrorVersionData, isApproveError, isErrorKrisData].some((item) => item)
 
+    const resetResultSuccessApiCall = () => {
+        setResultSuccessApiCall({ isSuccess: false, message: '' })
+    }
+
     return (
         <View
             isLoading={isLoading}
@@ -114,6 +119,7 @@ export const CiEvaluationContainer: React.FC<ICiEvaluationContainer> = ({ entity
             dataRights={dataRights}
             krisData={krisData}
             resultSuccessApiCall={resultSuccessApiCall}
+            resetResultSuccessApiCall={resetResultSuccessApiCall}
         />
     )
 }

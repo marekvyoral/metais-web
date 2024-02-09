@@ -102,8 +102,16 @@ export const getPortalFooterMetaList = (t: TFunction, isAdmin?: boolean): Footer
             href: urlPrefix + FooterRouteNames.WEB_RESIDENCY_MAP,
         },
         {
-            label: t('footer.GDPRAndCookies'),
-            href: urlPrefix + FooterRouteNames.GDPR_AND_COOKIES,
+            label: t('footer.cookies'),
+            href: urlPrefix + FooterRouteNames.COOKIES,
+        },
+        {
+            label: t('footer.personalDataProtection'),
+            href: urlPrefix + FooterRouteNames.PERSONAL_DATA_PROTECTION,
+        },
+        {
+            label: t('footer.termsOfUse'),
+            href: urlPrefix + FooterRouteNames.TERMS_OF_USE,
         },
         {
             label: t('footer.technicalOperator'),

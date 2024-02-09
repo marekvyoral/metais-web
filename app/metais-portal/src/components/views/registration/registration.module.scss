@@ -15,3 +15,18 @@
 .title {
     margin-bottom: govuk-spacing(4) !important;
 }
+
+.checkboxBottomPadding {
+    padding-bottom: govuk-spacing(4) !important;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: govuk-spacing(1);
+}
+
+.flexNone {
+    flex: none;
+}

@@ -7,6 +7,7 @@ import {
     getReadCiHistoryVersionsQueryKey,
     getReadCiList1QueryKey,
     getReadCiNeighboursWithAllRelsQueryKey,
+    getReadConfigurationItemQueryKey,
     getReadNeighboursConfigurationItemsCountQueryKey,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
@@ -215,6 +216,16 @@ export const useInvalidateRelationsCountCache = () => {
     const invalidate = (uuid: string) => {
         const ciNeighboursCountQueryKey = getReadNeighboursConfigurationItemsCountQueryKey(uuid)
         queryClient.invalidateQueries(ciNeighboursCountQueryKey)
+    }
+    return { invalidate }
+}
+
+export const useInvalidateCiReadCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (uuid: string) => {
+        const ciQueryKey = getReadConfigurationItemQueryKey(uuid)
+        queryClient.invalidateQueries(ciQueryKey)
     }
     return { invalidate }
 }

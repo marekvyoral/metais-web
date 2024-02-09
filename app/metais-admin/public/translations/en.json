@@ -14,6 +14,9 @@
         "accessibilityDeclaration": "Accessibility declaration",
         "webResidencyMap": "Web residency map",
         "GDPRAndCookies": "GDPR and cookies",
+        "cookies": "Cookies",
+        "personalDataProtection": "Oznámenie o ochrane údajov",
+        "termsOfUse": "Podmienky používania MetaIS",
         "technicalOperator": "Technical operator",
         "contentAdmin": "Admin of content",
         "RSS": "RSS",
@@ -307,7 +310,7 @@
     },
     "userManagement": {
         "title": "Users",
-        "fullName": "Name and surname",
+        "fullName": "Surname and name",
         "login": "Login",
         "phone": "Phone",
         "mobile": "Mobile",
@@ -444,10 +447,13 @@
         "runMutationError": "Script execution failed, check the validity of the code",
         "successfulUpdated": "The item was successfully changed",
         "successfulCreated": "The item was successfully created",
+        "successfulDeleted": "The item was successfully removed",
         "attrSuccessfulUpdated": "Attribute was successfully changed",
         "attrSuccessfulCreated": "Attribute was successfully created",
-        "invalidatePOSuccess": "Public authority successfully invalidate",
+        "invalidatePOSuccess": "Public authority successfully invalidated",
         "invalidatePOError": "Public authority invalidation failed",
+        "validatePOSuccess": "Public authority successfully validated",
+        "validatePOError": "Public authority validation failed",
         "metaColumnName": {
             "state": "Evidence status",
             "group": "Manager",
@@ -519,6 +525,7 @@
             "monitoringSet": "Set of monitoring parameters",
             "monitoringImport": "Import of monitored parameters",
             "monitoringServices": "Monitoring services",
+            "monitoringInsert": "Insert monitoring parameters",
             "evidenceObjects": "Evidence objects",
             "attributesEvidenceObjects": "Attributes of evidence objects",
             "servers": "Servers",
@@ -699,10 +706,11 @@
         "systemRole": "System role",
         "assignedUsers": "Assigned users",
         "edit": "Edit",
-        "deactivate": "Deactivate",
+        "deactivate": "Delete",
         "all": "All",
         "rolesList": "Roles list",
         "newRole": "New role",
+        "editRole": "Role edit",
         "none": "None",
         "areYouSure": "Action confirmation",
         "deleteRoleText": "Do you want to invalidate the role?",
@@ -720,6 +728,11 @@
         "submit": "Submit form"
     },
     "publicAuthorities": {
+        "list": {
+            "all": "All",
+            "DRAFT": "Created",
+            "INVALIDATED": "Invalidated"
+        },
         "detail": {
             "title": "Detail of organization",
             "statutoryOfficer": "Statutory officer"
@@ -734,7 +747,8 @@
             "icoRequired": "Identification number is required",
             "icoExist": "Organization with this identification number already exist",
             "icoRegex": "Identification number is in incorrect format. Correct format is '00000000' or '000000000000'",
-            "loading": "Searching identification number"
+            "loading": "Searching identification number",
+            "ICOnotFoundMsg": "The required person with the requested ID number is not found in the MPIIÚ implemented by IS CSRU. You can create a PO manually by clicking the button below.."
         },
         "edit": {
             "updateExistingOrganization": "Edit organization"
@@ -779,7 +793,9 @@
             "isAssigned": "Organization can figure only as subject to only one superior organization!",
             "isCycleInHierarchy": "Organization can not be superior and subject at the same time for one organization!",
             "warningInfo": "You can not create relationship between similar identity!",
-            "topLevelOrg": "You can not assign organization main organization!"
+            "topLevelOrg": "You can not assign organization main organization!",
+            "successFeedback":"Relations successfully updated",
+            "unsuccessFeedback":"Relations update failed"
         },
         "massUpdate": {
             "title": "Mass update of mandatory persons",
@@ -980,6 +996,8 @@
     },
     "errors": {
         "default": "Ups, something went wrong.",
+        "validateFile": "Validation failed",
+        "uploadFile": "File upload failed",
         "gnr403": "You do not have permission to call this API.",
         "gnr412": "Condition not met."
     },

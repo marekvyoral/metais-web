@@ -36,6 +36,7 @@ interface NeighboursCardListProps {
     setIsDerived: (value: React.SetStateAction<boolean>) => void
     ciTypeData: CiType | undefined
     hideButtons: boolean
+    hidePageSizeSelect: boolean
 }
 
 export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
@@ -51,6 +52,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     setIsDerived,
     ciTypeData,
     hideButtons,
+    hidePageSizeSelect,
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
@@ -103,26 +105,26 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                                     errorProps={{ errorMessage: t('feedback.failedFetch') }}
                                     withChildren
                                 >
-                                    {!hideButtons && (
-                                        <div className={classNames([styles.tableActionsWrapper, key.isDerived && styles.flexEnd])}>
-                                            {!key.isDerived && (
-                                                <ButtonGroupRow>
-                                                    <Button
-                                                        className={'marginBottom0'}
-                                                        label={t('neighboursCardList.buttonAddNewRelation')}
-                                                        variant="secondary"
-                                                        disabled={!canCreateRelation}
-                                                        onClick={() => navigate(`new-relation/${key.technicalName}`, { state: { from: location } })}
-                                                    />
-                                                    <Button
-                                                        className={'marginBottom0'}
-                                                        onClick={() => navigate(`new-ci/${key.technicalName}`, { state: { from: location } })}
-                                                        label={t('neighboursCardList.buttonAddNewRelationCard')}
-                                                        variant="secondary"
-                                                        disabled={!canCreateRelation || !canCreateCi || disabledCreateCI}
-                                                    />
-                                                </ButtonGroupRow>
-                                            )}
+                                    <div className={classNames([styles.tableActionsWrapper, (key.isDerived || hideButtons) && styles.flexEnd])}>
+                                        {!key.isDerived && !hideButtons && (
+                                            <ButtonGroupRow>
+                                                <Button
+                                                    className={'marginBottom0'}
+                                                    label={t('neighboursCardList.buttonAddNewRelation')}
+                                                    variant="secondary"
+                                                    disabled={!canCreateRelation}
+                                                    onClick={() => navigate(`new-relation/${key.technicalName}`, { state: { from: location } })}
+                                                />
+                                                <Button
+                                                    className={'marginBottom0'}
+                                                    onClick={() => navigate(`new-ci/${key.technicalName}`, { state: { from: location } })}
+                                                    label={t('neighboursCardList.buttonAddNewRelationCard')}
+                                                    variant="secondary"
+                                                    disabled={!canCreateRelation || !canCreateCi || disabledCreateCI}
+                                                />
+                                            </ButtonGroupRow>
+                                        )}
+                                        {!hidePageSizeSelect && (
                                             <PageSizeSelect
                                                 id="relationPerPage"
                                                 className={styles.perPageSelectWrapper}
@@ -135,8 +137,9 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                                                     })
                                                 }}
                                             />
-                                        </div>
-                                    )}
+                                        )}
+                                    </div>
+
                                     <CardColumnList>
                                         {relationsList?.ciWithRels?.map((ciWithRel) => {
                                             const formatedCiWithRel = formatRelationAttributes({

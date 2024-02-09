@@ -65,5 +65,13 @@ export const useGetStatus = (awaitForStatus?: string) => {
         }
     }
 
-    return { getRequestStatus, callStatusInCycles, isError, isLoading, isSuccess, isProcessedError, isTooManyFetchesError }
+    const resetSuccess = () => {
+        setIsSuccess(false)
+    }
+
+    const resetError = () => {
+        setIsError(false)
+    }
+
+    return { getRequestStatus, callStatusInCycles, isError, isLoading, isSuccess, isProcessedError, isTooManyFetchesError, resetSuccess, resetError }
 }

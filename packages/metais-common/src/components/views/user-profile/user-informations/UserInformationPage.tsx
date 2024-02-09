@@ -12,7 +12,12 @@ export const UserInformationPage = () => {
     const [isChangeSuccess, setIsChangeSuccess] = useState(false)
     return (
         <div>
-            <MutationFeedback success={isChangeSuccess} error={false} successMessage={t('userProfile.changedUserInformation')} />
+            <MutationFeedback
+                success={isChangeSuccess}
+                error={false}
+                successMessage={t('userProfile.changedUserInformation')}
+                onMessageClose={() => setIsChangeSuccess(false)}
+            />
             {isEditable && <EditableUserInformation setIsEditable={setIsEditable} setIsChangeSuccess={setIsChangeSuccess} />}
             {!isEditable && <UserInformation setIsEditable={setIsEditable} setIsChangeSuccess={setIsChangeSuccess} />}
         </div>

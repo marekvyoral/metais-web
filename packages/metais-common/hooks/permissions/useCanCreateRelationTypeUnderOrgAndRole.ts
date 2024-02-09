@@ -4,13 +4,10 @@ import { useEffect } from 'react'
 import { useAbilityContext } from './useAbilityContext'
 import { Actions } from './useUserAbility'
 
-import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
-
-export const useCanCreateRelationTypeUnderOrgAndRole = (selectedRoleName: string, selectedCiRelationType: RelatedCiTypePreview | undefined) => {
+export const useCanCreateRelationTypeUnderOrgAndRole = (selectedRoleName: string, rolesToCompareWith: string[]) => {
     const abilityContext = useAbilityContext()
 
-    const relationTypeRoles = selectedCiRelationType?.relationshipRoleList
-    const hasRoleToCreateRelationType = !!relationTypeRoles?.find((roleName) => roleName === selectedRoleName)
+    const hasRoleToCreateRelationType = !!rolesToCompareWith?.find((roleName) => roleName === selectedRoleName)
 
     useEffect(() => {
         const { can, rules } = new AbilityBuilder(createMongoAbility)

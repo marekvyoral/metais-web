@@ -24,7 +24,6 @@ const UserManagementListPage = () => {
                         data,
                         filter,
                         handleFilterChange,
-                        handleRowAction,
                         handleBlockRowsAction,
                         handleExport,
                         isError,
@@ -33,12 +32,12 @@ const UserManagementListPage = () => {
                         isLoadingExport,
                         isMutationError,
                         isMutationSuccess,
+                        updateIdentityStateBatchMutation,
                     }) => (
                         <UserManagementListPageView
                             data={data}
                             filter={filter}
                             handleFilterChange={handleFilterChange}
-                            handleRowAction={handleRowAction}
                             handleBlockRowsAction={handleBlockRowsAction}
                             handleExport={handleExport}
                             isError={isError}
@@ -47,6 +46,7 @@ const UserManagementListPage = () => {
                             isLoadingExport={isLoadingExport}
                             isMutationError={isMutationError}
                             isMutationSuccess={isMutationSuccess}
+                            updateIdentityStateBatchMutation={updateIdentityStateBatchMutation}
                         />
                     )}
                 />

@@ -43,6 +43,7 @@ interface ICiTable {
     linkToNewTab?: boolean
     baseHref?: string
     itemUuidsWithoutCheckboxes?: string[]
+    enableSorting?: boolean
 }
 
 export const CiTable: React.FC<ICiTable> = ({
@@ -58,6 +59,7 @@ export const CiTable: React.FC<ICiTable> = ({
     linkToNewTab,
     baseHref,
     itemUuidsWithoutCheckboxes,
+    enableSorting = true,
 }) => {
     const { t } = useTranslation()
     const { getColumnsFromApiCellContent } = useGetColumnsFromApiCellContent()
@@ -152,7 +154,7 @@ export const CiTable: React.FC<ICiTable> = ({
                     getCellContext: (ctx: CellContext<ColumnsOutputDefinition, unknown>) =>
                         getColumnsFromApiCellContent({ index, ctx, technicalName, schemaAttributes, data, rowSelectionState }),
                 },
-                enableSorting: true,
+                enableSorting: enableSorting,
             }
         }) ?? []
 
@@ -184,6 +186,7 @@ export const CiTable: React.FC<ICiTable> = ({
                           )
                       },
                       id: CHECKBOX_CELL,
+
                       cell: ({ row }: { row: Row<ColumnsOutputDefinition> }) => {
                           const shouldNotHaveCheckbox = itemUuidsWithoutCheckboxes?.includes(row.original.uuid ?? '')
 

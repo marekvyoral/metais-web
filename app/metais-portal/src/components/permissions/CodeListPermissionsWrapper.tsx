@@ -1,4 +1,4 @@
-import { AbilityContext, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { AbilityContextWithFeedback, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { PropsWithChildren } from 'react'
 import { useCodeListPermissions } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 
@@ -8,6 +8,6 @@ interface CodeListPermissionsWrapperProps extends PropsWithChildren {
 
 export const CodeListPermissionsWrapper: React.FC<CodeListPermissionsWrapperProps> = ({ id, children }) => {
     const ability = useAbilityContext()
-    useCodeListPermissions(id)
-    return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
+    const { isLoading, isError } = useCodeListPermissions(id)
+    return <AbilityContextWithFeedback.Provider value={{ ability, isError, isLoading }}>{children}</AbilityContextWithFeedback.Provider>
 }

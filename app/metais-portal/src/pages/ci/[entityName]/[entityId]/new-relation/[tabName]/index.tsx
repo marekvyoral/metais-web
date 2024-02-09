@@ -7,7 +7,6 @@ import { Languages } from '@isdd/metais-common/localization/languages'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
-import { findRelationType } from '@/componentHelpers/new-relation'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { NewCiRelationContainer } from '@/components/containers/NewCiRelationContainer'
 import { RelationTypePermissionWrapper } from '@/components/permissions/CreateRelationPermissionWrapper'
@@ -43,10 +42,7 @@ const NewCiRelationPage: React.FC = () => {
                     <MainContentWrapper>
                         <RelationTypePermissionWrapper
                             selectedRoleName={props.groupData?.roleName ?? ''}
-                            selectedCiRelationType={findRelationType(props.selectedRelationTypeState.selectedRelationTypeTechnicalName, [
-                                ...(props.relationData?.relatedListAsSources ?? []),
-                                ...(props.relationData?.relatedListAsTargets ?? []),
-                            ])}
+                            rolesToCompareWith={props.relationData?.relationTypeData?.roleList ?? []}
                         >
                             <NewRelationView {...props} />
                         </RelationTypePermissionWrapper>

@@ -18,11 +18,19 @@ export interface PublicAuthoritiesFilterData extends IFilterParams {
     EA_Profil_PO_typ_osoby?: string[]
     EA_Profil_PO_ico?: string
     EA_Profil_PO_kategoria_osoby?: string
+    state?: string
+    onlyFreePO?: boolean
 }
 
 const PublicAuthoritiesPage = () => {
     const entityName = 'PO'
-    const defaultFilterValues: PublicAuthoritiesFilterData = { Gen_Profil_nazov: '', EA_Profil_PO_typ_osoby: [], EA_Profil_PO_ico: '' }
+    const defaultFilterValues: PublicAuthoritiesFilterData = {
+        Gen_Profil_nazov: '',
+        EA_Profil_PO_typ_osoby: [],
+        EA_Profil_PO_ico: '',
+        state: 'ALL',
+        onlyFreePO: true,
+    }
     const { t } = useTranslation()
     const { wrapperRef: mutationRef, scrollToMutationFeedback: mutationScroll } = useScroll()
     const { isActionSuccess } = useActionSuccess()
@@ -31,8 +39,7 @@ const PublicAuthoritiesPage = () => {
         if (isActionSuccess.value || isInvalidateError) {
             mutationScroll()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isActionSuccess.value, isInvalidateError])
+    }, [isActionSuccess, isInvalidateError, mutationScroll])
     return (
         <>
             <BreadCrumbs
@@ -56,6 +63,7 @@ const PublicAuthoritiesPage = () => {
                     isError,
                     isLoading,
                     setInvalid,
+                    setValid,
                 }) => {
                     return (
                         <MainContentWrapper>
@@ -65,13 +73,23 @@ const PublicAuthoritiesPage = () => {
                                     {(isInvalidateError || isActionSuccess.value) && (
                                         <div ref={mutationRef}>
                                             <MutationFeedback
-                                                error={!isActionSuccess.value ? t('mutationFeedback.invalidatePOError') : ''}
+                                                error={
+                                                    !isActionSuccess.value
+                                                        ? isActionSuccess.additionalInfo?.type === 'invalid'
+                                                            ? t('mutationFeedback.invalidatePOError')
+                                                            : t('mutationFeedback.validatePOError')
+                                                        : ''
+                                                }
                                                 success={isActionSuccess.value}
-                                                successMessage={t('mutationFeedback.invalidatePOSuccess')}
+                                                successMessage={
+                                                    isActionSuccess.additionalInfo?.type === 'invalid'
+                                                        ? t('mutationFeedback.invalidatePOSuccess')
+                                                        : t('mutationFeedback.validatePOSuccess')
+                                                }
+                                                onMessageClose={() => setIsInvalidateError(false)}
                                             />
                                         </div>
                                     )}
-                                    {isError && <QueryFeedback error={isError} loading={false} />}
                                 </FlexColumnReverseWrapper>
                                 <OrganizationFilter defaultFilterValues={defaultFilterValues} />
                                 <PublicAuthoritiesTable
@@ -84,6 +102,7 @@ const PublicAuthoritiesPage = () => {
                                     isLoading={isLoading}
                                     error={isError}
                                     setInvalid={setInvalid}
+                                    setValid={setValid}
                                 />
                             </QueryFeedback>
                         </MainContentWrapper>

@@ -24,7 +24,6 @@ const ActivityEntityDetailPage: React.FC = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    document.title = `${t('titles.ciDetail', { ci: ENTITY_ACTIVITY })} | MetaIS`
     const userAbility = useUserAbility()
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_ACTIVITY)
@@ -43,6 +42,7 @@ const ActivityEntityDetailPage: React.FC = () => {
     const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: ENTITY_ACTIVITY, entityId: entityId ?? '', t })
 
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
+    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
 
     return (
         <>

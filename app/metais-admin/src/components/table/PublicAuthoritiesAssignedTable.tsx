@@ -10,6 +10,7 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 import { Dispatch, FormEvent, SetStateAction, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import styles from './egovTable.module.scss'
 
@@ -61,42 +62,9 @@ export const PublicAuthoritiesAssignedTable = ({
     const isRowDanger = (row: Row<ConfItemWithBlockedAndMessage>) => row.original.blocked
     const columns: Array<ColumnDef<ConfItemWithBlockedAndMessage>> = [
         {
-            header: t('table.name'),
-            accessorFn: (row) => row?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
-            enableSorting: true,
-            id: 'name',
-            meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
-            },
-            cell: (ctx) => (
-                <Link to={'/organizations/' + ctx?.row?.original?.uuid} state={{ from: location }}>
-                    {ctx?.getValue?.() as string}
-                </Link>
-            ),
-        },
-        {
-            header: t('table.ico'),
-            accessorFn: (row) => row?.attributes?.[ATTRIBUTE_NAME.EA_Profil_PO_ico],
-            enableSorting: true,
-            id: 'technicalName',
-            meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
-            },
-            cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
-        },
-        {
-            header: t('table.adress'),
-            accessorFn: (row) => createFullAdressFromAttributes(row?.attributes),
-            enableSorting: true,
-            id: 'adress',
-            meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
-            },
-            cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
-        },
-        {
             header: t('actionsInTable.assignment'),
             id: 'organizationsActions',
+            size: 80,
             cell: (ctx) => {
                 const isDefaultChecked = assignedOrganizations?.some((ci) => ci?.uuid === ctx?.row?.original?.uuid)
                 const isCurrentlySelected = selectedRows?.some((ci) => ci?.uuid === ctx?.row?.original?.uuid)
@@ -135,11 +103,55 @@ export const PublicAuthoritiesAssignedTable = ({
                 )
             },
         },
+        {
+            header: t('table.name'),
+            accessorFn: (row) => row?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+            enableSorting: true,
+            id: ATTRIBUTE_NAME.Gen_Profil_nazov,
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
+            cell: (ctx) => (
+                <Link to={`${AdminRouteNames.PUBLIC_AUTHORITIES}/${ctx?.row?.original?.uuid}`} state={{ from: location }}>
+                    {ctx?.getValue?.() as string}
+                </Link>
+            ),
+        },
+        {
+            header: t('table.ico'),
+            accessorFn: (row) => row?.attributes?.[ATTRIBUTE_NAME.EA_Profil_PO_ico],
+            enableSorting: true,
+            id: ATTRIBUTE_NAME.EA_Profil_PO_ico,
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
+            cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+        },
+        {
+            header: t('table.adress'),
+            accessorFn: (row) => createFullAdressFromAttributes(row?.attributes),
+            enableSorting: false,
+            id: 'adress',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
+            cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+        },
     ]
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <Table data={data ?? []} columns={columns} sort={sort} isLoading={isLoading} error={error} isRowDanger={isRowDanger} />
+                <Table
+                    data={data ?? []}
+                    columns={columns}
+                    sort={sort}
+                    isLoading={isLoading}
+                    error={error}
+                    isRowDanger={isRowDanger}
+                    onSortingChange={(columnSort) => {
+                        handleFilterChange({ sort: columnSort })
+                    }}
+                />
                 <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
                 <div className={styles.submitButtonPadding}>
                     <Button label={t('publicAuthorities.assigned.save')} type="submit" disabled={!selectedRows?.length} />

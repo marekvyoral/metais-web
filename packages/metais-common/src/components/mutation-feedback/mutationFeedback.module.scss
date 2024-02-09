@@ -12,3 +12,17 @@
     margin-bottom: govuk-spacing(6);
     gap: govuk-spacing(3);
 }
+
+.inline {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.closeIconWrapper {
+    display: flex;
+    align-items: center;
+    &:hover{
+        cursor: pointer;
+    }
+}

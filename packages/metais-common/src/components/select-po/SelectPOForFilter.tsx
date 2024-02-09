@@ -4,7 +4,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { MultiValue, OptionProps } from 'react-select'
 import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 
-import { ConfigurationItemUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import {
+    CiFilterUi,
+    CiListFilterContainerUi,
+    ConfigurationItemUi,
+    useReadCiList1,
+    useReadCiList1Hook,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 interface ISelectPO {
@@ -15,16 +21,32 @@ interface ISelectPO {
     placeholder?: string
     name: string
     isMulti: boolean
+    disabled?: boolean
+    required?: boolean
+    ciFilter?: CiFilterUi
 }
 
-export const SelectPOForFilter: React.FC<ISelectPO> = ({ ciType, valuesAsUuids, label, onChange, placeholder, name, isMulti = false }) => {
+export const SelectPOForFilter: React.FC<ISelectPO> = ({
+    ciType,
+    valuesAsUuids,
+    label,
+    onChange,
+    placeholder,
+    name,
+    ciFilter,
+    disabled,
+    required,
+    isMulti = false,
+}) => {
     const ciOptionsHook = useReadCiList1Hook()
+    const [seed, setSeed] = useState(1)
+    const [selectedLiableEntities, setSelectedLiableEntities] = useState<ConfigurationItemUi[]>([])
 
-    const { data, isLoading, isError } = useReadCiList1(
+    const { data, isLoading, isError, refetch } = useReadCiList1(
         {
             filter: { type: [ciType], uuid: valuesAsUuids },
         },
-        { query: { enabled: valuesAsUuids.length > 0 && !!valuesAsUuids[0] } },
+        { query: { enabled: valuesAsUuids && valuesAsUuids?.length > 0 } },
     )
 
     const [value, setValue] = useState<ConfigurationItemUi | MultiValue<ConfigurationItemUi> | null>()
@@ -41,17 +63,31 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({ ciType, valuesAsUuids, 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLoading, isError])
 
+    useEffect(() => {
+        if (selectedLiableEntities.length === 0 && valuesAsUuids?.length > 0) {
+            refetch().then((res) => {
+                setSelectedLiableEntities(res.data?.configurationItemSet || [])
+            })
+        }
+    }, [valuesAsUuids, refetch, selectedLiableEntities])
+
+    useEffect(() => {
+        setSeed(Math.random())
+    }, [selectedLiableEntities, ciFilter])
+
     const loadCiOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined) => {
             const page = !additional?.page ? 1 : (additional?.page || 0) + 1
 
-            const ciResponse = await ciOptionsHook({
+            const defaultFilterValues = {
                 page,
                 perpage: 20,
                 sortBy: 'Gen_Profil_nazov',
                 sortType: SortType.ASC,
-                filter: { type: [ciType], searchFields: ['Gen_Profil_nazov'], fullTextSearch: searchQuery },
-            })
+                filter: ciFilter ? ciFilter : { type: [ciType], searchFields: ['Gen_Profil_nazov'], fullTextSearch: searchQuery },
+            } as CiListFilterContainerUi
+
+            const ciResponse = await ciOptionsHook(defaultFilterValues)
 
             return {
                 options: ciResponse.configurationItemSet || [],
@@ -61,7 +97,7 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({ ciType, valuesAsUuids, 
                 },
             }
         },
-        [ciOptionsHook, ciType],
+        [ciFilter, ciOptionsHook, ciType],
     )
 
     const formatOption = (props: OptionProps<ConfigurationItemUi>) => {
@@ -79,8 +115,11 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({ ciType, valuesAsUuids, 
 
     return (
         <SelectLazyLoading<ConfigurationItemUi>
+            key={seed}
             isMulti={isMulti}
             placeholder={placeholder}
+            disabled={disabled}
+            required={required}
             name={name}
             label={label}
             getOptionValue={(item) => item.uuid?.toString() || ''}
@@ -89,6 +128,7 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({ ciType, valuesAsUuids, 
             value={value}
             onChange={(val) => setValue(val)}
             option={(props) => formatOption(props)}
+            defaultValue={selectedLiableEntities}
         />
     )
 }

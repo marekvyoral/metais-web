@@ -24,6 +24,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
     resultApiCall,
     isLoading,
     uniqueConstraintError,
+    resetResultSuccessApiCall,
 }) => {
     const { t } = useTranslation()
 
@@ -131,7 +132,11 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
                     <TextHeading size="XL">{isEdit ? `${t('groups.editGroup')} - ${infoData?.name}` : t('groups.addNewGroup')}</TextHeading>
                     {(resultApiCall?.isError || resultApiCall?.isSuccess) && (
                         <div ref={wrapperRef}>
-                            <MutationFeedback error={resultApiCall.message} success={resultApiCall.isSuccess} />
+                            <MutationFeedback
+                                error={resultApiCall.message}
+                                success={resultApiCall.isSuccess}
+                                onMessageClose={resetResultSuccessApiCall}
+                            />
                         </div>
                     )}
                 </FlexColumnReverseWrapper>

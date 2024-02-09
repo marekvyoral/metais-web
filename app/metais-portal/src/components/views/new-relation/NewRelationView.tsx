@@ -32,6 +32,7 @@ import {
     useInvalidateRelationsCountCache,
 } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
 
 import styles from './newRelationView.module.scss'
 
@@ -89,7 +90,6 @@ export const NewRelationView: React.FC<Props> = ({
     const relatedListAsTargets = relationData?.relatedListAsTargets
     const constraintsData = relationData?.constraintsData ?? []
     const unitsData = relationData?.unitsData
-    const ciTypeData = relationData?.ciTypeData
 
     const { register, handleSubmit: handleFormSubmit, formState, setValue, clearErrors, trigger, control } = useForm()
     const relationSchema = relationData?.relationTypeData
@@ -243,29 +243,33 @@ export const NewRelationView: React.FC<Props> = ({
                   ),
                   content: (
                       <>
-                          {relationSchemaCombinedAttributes.map((attribute) => (
-                              <AttributeInput
-                                  key={`${attribute?.id}+${item.uuid}`}
-                                  attribute={attribute ?? {}}
-                                  register={register}
-                                  setValue={setValue}
-                                  clearErrors={clearErrors}
-                                  trigger={trigger}
-                                  isSubmitted={formState.isSubmitted}
-                                  error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
-                                  nameSufix={JOIN_OPERATOR + item.uuid}
-                                  hint={attribute?.description}
-                                  hasResetState={{ hasReset, setHasReset }}
-                                  constraints={findAttributeConstraint(
-                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      //@ts-ignore
-                                      attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
-                                      constraintsData,
-                                  )}
-                                  unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
-                                  control={control}
-                              />
-                          ))}
+                          {relationSchemaCombinedAttributes.map(
+                              (attribute) =>
+                                  attribute?.valid &&
+                                  !attribute.invisible && (
+                                      <AttributeInput
+                                          key={`${attribute?.id}+${item.uuid}`}
+                                          attribute={attribute ?? {}}
+                                          register={register}
+                                          setValue={setValue}
+                                          clearErrors={clearErrors}
+                                          trigger={trigger}
+                                          isSubmitted={formState.isSubmitted}
+                                          error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
+                                          nameSufix={JOIN_OPERATOR + item.uuid}
+                                          hint={attribute?.description}
+                                          hasResetState={{ hasReset, setHasReset }}
+                                          constraints={findAttributeConstraint(
+                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                              //@ts-ignore
+                                              attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
+                                              constraintsData,
+                                          )}
+                                          unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                                          control={control}
+                                      />
+                                  ),
+                          )}
                       </>
                   ),
               }))
@@ -275,9 +279,9 @@ export const NewRelationView: React.FC<Props> = ({
         <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('newRelation.heading')}</TextHeading>
-                {(isError || storeGraph.isError || isRequestStatusError || isProcessedError || isTooManyFetchesError) && (
+                <ElementToScrollTo isVisible={isError || storeGraph.isError || isRequestStatusError || isProcessedError || isTooManyFetchesError}>
                     <QueryFeedback loading={false} error />
-                )}
+                </ElementToScrollTo>
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} ciType={ciItemData?.type ?? ''} />
             <SelectPublicAuthorityAndRole
@@ -285,7 +289,7 @@ export const NewRelationView: React.FC<Props> = ({
                 onChangeRole={(val) => roleState.setSelectedRole(val)}
                 selectedRole={roleState.selectedRole ?? {}}
                 selectedOrg={publicAuthorityState.selectedPublicAuthority}
-                ciRoles={ciTypeData?.roleList ?? []}
+                ciRoles={relationData?.relationTypeData?.roleList ?? []}
             />
 
             <SimpleSelect

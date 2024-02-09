@@ -26,6 +26,7 @@ export interface IKritTasksListView {
     isLoading: boolean
     isError: boolean
     isSuccessSave: boolean
+    resetSuccessSave: () => void
     onSaveForm: (task: Task, callback: () => void) => void
 }
 
@@ -51,7 +52,15 @@ export interface IItemTask {
     }>
 }
 
-export const KritTasksListView: React.FC<IKritTasksListView> = ({ entityId, appIds, onSaveForm, isLoading, isError, isSuccessSave }) => {
+export const KritTasksListView: React.FC<IKritTasksListView> = ({
+    entityId,
+    appIds,
+    onSaveForm,
+    isLoading,
+    isError,
+    isSuccessSave,
+    resetSuccessSave,
+}) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -207,7 +216,12 @@ export const KritTasksListView: React.FC<IKritTasksListView> = ({ entityId, appI
 
     return (
         <QueryFeedback loading={isLoadingTasks} error={isErrorTasks} withChildren>
-            <MutationFeedback success={isSuccessSave} successMessage={t('tasksKris.successMsg')} error={undefined} />
+            <MutationFeedback
+                success={isSuccessSave}
+                successMessage={t('tasksKris.successMsg')}
+                error={undefined}
+                onMessageClose={resetSuccessSave}
+            />
             {showForm ? (
                 <form onSubmit={handleSubmit(onSave)}>
                     <GridRow>

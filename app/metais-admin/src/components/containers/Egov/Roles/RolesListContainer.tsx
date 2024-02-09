@@ -77,16 +77,15 @@ const RoleListContainer: React.FC<IRolesList> = ({ View }) => {
     const {
         data: roles,
         isLoading,
+        isFetching,
         isError,
         refetch,
     } = useFindByNameWithParams(pagination.pageNumber, pagination.pageSize, {
-        ...pagination,
-        ...filter,
         name: filter.fullTextSearch ?? defaultFilterValues.name,
         system: filter.system ?? defaultFilterValues.system,
         group: filter.group ?? defaultFilterValues.group,
         orderBy: sorting.length > 0 ? sorting[0].orderBy : 'name',
-        direction: sorting.length > 0 ? sorting[0].sortDirection : 'asc',
+        direction: sorting.length > 0 ? sorting[0].sortDirection.toLowerCase() : 'asc',
     })
 
     const [tableRoleGroups, setTableRoleGroups] = useState(roleGroups)
@@ -116,7 +115,7 @@ const RoleListContainer: React.FC<IRolesList> = ({ View }) => {
     return (
         <View
             isError={isError}
-            isLoading={isLoading}
+            isLoading={isLoading || isFetching}
             filter={filter}
             tableRoleGroups={tableRoleGroups}
             tableData={tableData}

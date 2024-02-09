@@ -5,10 +5,8 @@ import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useMutation } from '@tanstack/react-query'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useRevokeUserBatch } from '@isdd/metais-common/hooks/useRevokeUser'
-import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useGetOrganizationsForIdentitiesList } from '@isdd/metais-common/hooks/useGetOrganizationsForIdentitiesList'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
@@ -19,7 +17,7 @@ import {
     mapDataToManagementList as mapResponsesToManagementListData,
 } from './UserManagementListUtils'
 
-import { UserManagementActionsOverRowEnum, UserManagementListPageViewProps } from '@/components/views/userManagement/userManagementListWrapper'
+import { UserManagementListPageViewProps } from '@/components/views/userManagement/userManagementListWrapper'
 
 interface UserManagementContainerProps {
     View: React.FC<UserManagementListPageViewProps>
@@ -29,8 +27,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
     const {
         state: { user, token },
     } = useAuth()
-    const navigate = useNavigate()
-    const location = useLocation()
+
     const { filter, handleFilterChange } = useFilterParams<UserManagementFilterData>({
         sort: [
             {
@@ -63,6 +60,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
     const {
         data: identitiesList,
         isLoading: isLoadingManagementList,
+        isFetching,
         isError: isErrorManagementList,
         refetch: refetchManagementList,
     } = useFind1(filter.pageNumber ?? BASE_PAGE_NUMBER, filter.pageSize ?? BASE_PAGE_SIZE, {
@@ -71,7 +69,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
         orgId: filter.orgId ?? '',
         roleUuid: filter.roleUuid ?? '',
         orderBy: filter.sort?.[0]?.orderBy ?? '',
-        direction: filter.sort?.[0]?.sortDirection ?? '',
+        direction: filter.sort?.[0]?.sortDirection.toLowerCase() ?? '',
     })
 
     const identitiesUuids = identitiesList?.map((item) => item?.uuid || '').filter((item) => item) ?? []
@@ -151,26 +149,6 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
         [revokeUserBatchMutation, updateIdentityStateBatchMutation, token],
     )
 
-    const handleRowAction = useCallback(
-        (identity: { uuid: string; login: string }, action: UserManagementActionsOverRowEnum, isCurrentlyBlocked?: boolean) => {
-            if (action === UserManagementActionsOverRowEnum.EDIT) {
-                navigate(`${AdminRouteNames.USER_MANAGEMENT}/edit/${identity.uuid}`, { state: { from: location } })
-            }
-            if (action === UserManagementActionsOverRowEnum.CHANGE_PASSWORD) {
-                navigate(`${AdminRouteNames.USER_MANAGEMENT}/password/${identity.uuid}`, { state: { from: location } })
-            }
-            if (action === UserManagementActionsOverRowEnum.BLOCK && isCurrentlyBlocked !== undefined) {
-                if (identity.uuid) {
-                    updateIdentityStateBatchMutation.mutate({ uuids: [identity.uuid], activate: isCurrentlyBlocked === true })
-                    if (identity.login && token && !isCurrentlyBlocked) {
-                        revokeUserBatchMutation([{ token: token, login: identity.login }])
-                    }
-                }
-            }
-        },
-        [navigate, revokeUserBatchMutation, updateIdentityStateBatchMutation, token, location],
-    )
-
     const handleExport = useCallback(() => {
         refetchExportIdentities()
     }, [refetchExportIdentities])
@@ -183,6 +161,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
         isLoadingUpdateIdentityStateMutation,
         isLoadingUpdateIdentityStateMutationBatch,
         IsLoadingRevokeUserBatch,
+        isFetching,
     ].some((item) => item)
     const isQueryError = [isErrorTotalCount, isErrorManagementList, isErrorOrganizationsForList, isErrorCiList, IsErrorRevokeUserBatch].some(
         (item) => item,
@@ -201,7 +180,6 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
             data={data}
             filter={filter ?? defaultFilterValues}
             handleFilterChange={handleFilterChange}
-            handleRowAction={handleRowAction}
             handleBlockRowsAction={handleBlockRowsAction}
             handleExport={handleExport}
             isLoading={isLoading}
@@ -210,6 +188,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
             isErrorExport={isErrorExport}
             isMutationError={isMutationError}
             isMutationSuccess={isMutationSuccess}
+            updateIdentityStateBatchMutation={updateIdentityStateBatchMutation}
         />
     )
 }

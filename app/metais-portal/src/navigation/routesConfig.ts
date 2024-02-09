@@ -9,7 +9,7 @@ import { Home } from '@/pages/Home'
 import { IdentityTermsPage } from '@/pages/IdentityTermsPage'
 import { LoginProblemsPage } from '@/pages/LoginProblemsPage'
 import AsEntityDetailPage from '@/pages/ci/AS/[entityId]'
-import CloneEntityPage from '@/pages/ci/AS/[entityId]/clone'
+import CloneASPage from '@/pages/ci/AS/[entityId]/clone'
 import ActivityEntityDetailPage from '@/pages/ci/Aktivita/[entityId]'
 import GoalEntityDetailPage from '@/pages/ci/Ciel/[entityId]'
 import { IntegrationLinkDetailPage } from '@/pages/ci/Integracia/[entityId]'
@@ -30,26 +30,13 @@ import { SlaContractDetailPage } from '@/pages/ci/Kontrakt/[entityId]'
 import { SlaContractHistory } from '@/pages/ci/Kontrakt/[entityId]/history'
 import { SlaContractInformation } from '@/pages/ci/Kontrakt/[entityId]/information'
 import { SlaContractSupportContact } from '@/pages/ci/Kontrakt/[entityId]/supportContact'
-import ITVSExceptionsEditPage from '@/pages/ci/OsobitnyPostup/[entityId]/edit'
-import CreateITVSExceptionsPage from '@/pages/ci/OsobitnyPostup/create'
 import POIsListPage from '@/pages/ci/PO_IS'
-import PO_ISEntityDetailPage from '@/pages/ci/PO_IS/[entityId]'
-import PO_ISInformationOutlet from '@/pages/ci/PO_IS/[entityId]/information'
 import POIsPOListPage from '@/pages/ci/PO_IS_PO'
-import PO_IS_POEntityDetailPage from '@/pages/ci/PO_IS_PO/[entityId]'
-import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/information'
 import POPOListPage from '@/pages/ci/PO_PO'
-import PO_POEntityDetailPage from '@/pages/ci/PO_PO/[entityId]'
-import PO_PODocumentsOutlet from '@/pages/ci/PO_PO/[entityId]/documents'
-import PO_POHistoryOutlet from '@/pages/ci/PO_PO/[entityId]/history'
-import PO_POInformationOutlet from '@/pages/ci/PO_PO/[entityId]/information'
-import PO_PORelationshipOutlet from '@/pages/ci/PO_PO/[entityId]/relationships'
 import PrincipleEntityDetailPage from '@/pages/ci/Princip/[entityId]'
 import ProjectEntityDetailPage from '@/pages/ci/Projekt/[entityId]'
 import ActivitiesListPage from '@/pages/ci/Projekt/[entityId]/activities'
 import ProjectDocumentsListPage from '@/pages/ci/Projekt/[entityId]/documents'
-import EditProjectPage from '@/pages/ci/Projekt/[entityId]/edit'
-import CreateProjectPage from '@/pages/ci/Projekt/create'
 import TrainingEntityDetailPage from '@/pages/ci/Trainings/[entityId]'
 import TrainingInvitePage from '@/pages/ci/Trainings/[entityId]/invite'
 import EntityDetailPage from '@/pages/ci/[entityName]/[entityId]'
@@ -64,7 +51,6 @@ import NewCiRelationPage from '@/pages/ci/[entityName]/[entityId]/new-relation/[
 import RelationshipsAccordionPage from '@/pages/ci/[entityName]/[entityId]/relationships'
 import CreateEntityPage from '@/pages/ci/[entityName]/create'
 import CiListPage from '@/pages/ci/[entityName]/entity'
-import CookiesInfoPage from '@/pages/cookies/info'
 import CodeListDetailPage from '@/pages/data-objects/codelists/[id]/detail'
 import EditCodeListPage from '@/pages/data-objects/codelists/[id]/edit'
 import CodeListPage from '@/pages/data-objects/codelists/list'
@@ -76,9 +62,6 @@ import RequestListPage from '@/pages/data-objects/requestlist/requestList'
 import GlobalSearchPage from '@/pages/global/search/search'
 import TutorialPage from '@/pages/help'
 import GeneralHowTo from '@/pages/howto'
-import HowToGenericPage from '@/pages/howto/[howToEnumType]'
-import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
-import ServicesListPage from '@/pages/monitoring/services/services'
 import NotificationsPage from '@/pages/notifications'
 import NotificationsDetailPage from '@/pages/notifications/[id]'
 import { OlaContractList } from '@/pages/ola-contract-list'
@@ -99,7 +82,6 @@ import Success from '@/pages/registration/success'
 import RelationDetailPage from '@/pages/relation/[entityName]/[entityId]/[relationshipId]'
 import ReportsListPage from '@/pages/reports/reports'
 import SLADetailPage from '@/pages/sla-detail'
-import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
 import DraftsListEditPage from '@/pages/standardization/draftslist/[entityId]/edit'
 import DraftDetail from '@/pages/standardization/draftslist/[entityId]/form'
 import DraftsListCreatePage from '@/pages/standardization/draftslist/create'
@@ -119,13 +101,41 @@ import VoteCreatePage from '@/pages/standardization/voteslist/create'
 import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
+import ImportParametersPage from '@/pages/monitoring/import'
+import DetailServicePage from '@/pages/monitoring/services/monitoras/[serviceUuid]'
+import InsertServicePage from '@/pages/monitoring/services/monitoras/insert/[serviceUuid]'
+import CreateITVSExceptionsPage from '@/pages/ci/OsobitnyPostup/create'
+import ITVSExceptionsEditPage from '@/pages/ci/OsobitnyPostup/[entityId]/edit'
+import CreateProjectPage from '@/pages/ci/Projekt/create'
+import EditProjectPage from '@/pages/ci/Projekt/[entityId]/edit'
+import PO_POEntityDetailPage from '@/pages/ci/PO_PO/[entityId]'
+import PO_ISEntityDetailPage from '@/pages/ci/PO_IS/[entityId]'
+import PO_IS_POEntityDetailPage from '@/pages/ci/PO_IS_PO/[entityId]'
+import PO_POInformationOutlet from '@/pages/ci/PO_PO/[entityId]/information'
+import PO_PODocumentsOutlet from '@/pages/ci/PO_PO/[entityId]/documents'
+import PO_PORelationshipOutlet from '@/pages/ci/PO_PO/[entityId]/relationships'
+import PO_POHistoryOutlet from '@/pages/ci/PO_PO/[entityId]/history'
+import PO_ISInformationOutlet from '@/pages/ci/PO_IS/[entityId]/information'
+import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/information'
+import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
+import HowToGenericPage from '@/pages/howto/[howToEnumType]'
+import ServicesListPage from '@/pages/monitoring/services/services'
+import CookiesInfoPage from '@/pages/cookies/info'
+import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
+import RelationListPage from '@/pages/relations'
 import { SlaContractList } from '@/pages/ci/Kontrakt/list'
 import { OlaContractAdd } from '@/pages/ola-contract-list/add'
+import { OlaContractDetail } from '@/pages/ola-contract-list/detail'
+import { OlaContractEdit } from '@/pages/ola-contract-list/edit'
 import { IntegrationLinkCreate } from '@/pages/ci/Integracia/create'
 import { EditIntegrationLinkPage } from '@/pages/ci/Integracia/[entityId]/edit'
 import RefIdentifierDetailPage from '@/pages/data-objects/ref-identifiers/[id]/detail'
 import RefIdentifierCreatePage from '@/pages/data-objects/ref-identifiers/create'
 import RefIdentifierEditPage from '@/pages/data-objects/ref-identifiers/[id]/edit'
+import CloneKSPage from '@/pages/ci/KS/[entityId]/clone'
+import PersonalDataInfoPage from '@/pages/cookies/personalDataProtection'
+import TermsOfUse from '@/pages/cookies/termsOfUse'
+import CookiesSettings from '@/pages/cookies/settings'
 
 export interface RouteConfig {
     path?: string
@@ -211,9 +221,14 @@ const generalCiRoutes: RouteConfig[] = [
         component: EditEntityPage,
     },
     {
-        path: RouterRoutes.CI_CLONE,
-        slug: RouterRoutes.CI_CLONE,
-        component: CloneEntityPage,
+        path: RouterRoutes.CI_AS_CLONE,
+        slug: RouterRoutes.CI_AS_CLONE,
+        component: CloneASPage,
+    },
+    {
+        path: RouterRoutes.CI_KS_CLONE,
+        slug: RouterRoutes.CI_KS_CLONE,
+        component: CloneKSPage,
     },
     {
         path: RouterRoutes.CI_DETAIL,
@@ -364,14 +379,24 @@ export const routesConfig: RouteConfig[] = [
                 component: ReportsListPage,
             },
             {
-                path: RouterRoutes.REPORTS_LIST,
-                slug: RouterRoutes.REPORTS_LIST,
-                component: ReportsListPage,
+                path: RouterRoutes.IMPORT_MONITORING_PARAMETERS,
+                slug: RouterRoutes.IMPORT_MONITORING_PARAMETERS,
+                component: ImportParametersPage,
             },
             {
                 path: RouterRoutes.MONITORING_SERVICES,
                 slug: RouterRoutes.MONITORING_SERVICES,
                 component: ServicesListPage,
+            },
+            {
+                path: RouterRoutes.MONITORING_DETAIL,
+                slug: RouterRoutes.MONITORING_DETAIL,
+                component: DetailServicePage,
+            },
+            {
+                path: RouterRoutes.MONITORING_INSERT,
+                slug: RouterRoutes.MONITORING_INSERT,
+                component: InsertServicePage,
             },
             {
                 path: RouterRoutes.REPORTS_CREATE,
@@ -509,9 +534,24 @@ export const routesConfig: RouteConfig[] = [
                 component: ReferenceRegisters,
             },
             {
-                path: FooterRouteNames.GDPR_AND_COOKIES,
-                slug: FooterRouteNames.GDPR_AND_COOKIES,
+                path: FooterRouteNames.COOKIES,
+                slug: FooterRouteNames.COOKIES,
                 component: CookiesInfoPage,
+            },
+            {
+                path: FooterRouteNames.PERSONAL_DATA_PROTECTION,
+                slug: FooterRouteNames.PERSONAL_DATA_PROTECTION,
+                component: PersonalDataInfoPage,
+            },
+            {
+                path: FooterRouteNames.TERMS_OF_USE,
+                slug: FooterRouteNames.TERMS_OF_USE,
+                component: TermsOfUse,
+            },
+            {
+                path: FooterRouteNames.COOKIES_SETTINGS,
+                slug: FooterRouteNames.COOKIES_SETTINGS,
+                component: CookiesSettings,
             },
             {
                 path: RouterRoutes.REF_REGISTERS_DETAIL,
@@ -811,6 +851,16 @@ export const routesConfig: RouteConfig[] = [
                 component: OlaContractAdd,
             },
             {
+                path: RouterRoutes.OLA_CONTRACT_DETAIL,
+                slug: RouterRoutes.OLA_CONTRACT_DETAIL,
+                component: OlaContractDetail,
+            },
+            {
+                path: RouterRoutes.OLA_CONTRACT_EDIT,
+                slug: RouterRoutes.OLA_CONTRACT_EDIT,
+                component: OlaContractEdit,
+            },
+            {
                 path: RouterRoutes.SLA_CONTRACT_DETAIL,
                 slug: RouterRoutes.SLA_CONTRACT_DETAIL,
                 component: SlaContractDetailPage,
@@ -842,6 +892,11 @@ export const routesConfig: RouteConfig[] = [
                 path: SLARouteNames.SLAParamsList,
                 slug: SLARouteNames.SLAParamsList,
                 component: SLAParamsListPage,
+            },
+            {
+                path: RouterRoutes.RELATION_LIST,
+                slug: RouterRoutes.RELATION_LIST,
+                component: RelationListPage,
             },
             {
                 path: '*',

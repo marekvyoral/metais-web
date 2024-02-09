@@ -16,7 +16,7 @@ export interface CIFilterData extends IFilterParams {
 const CiListPage: React.FC = () => {
     const { entityName: ciType } = useGetEntityParamsFromUrl()
     const { t, i18n } = useTranslation()
-    document.title = `${t('titles.ciList', { ci: ciType })} | MetaIS`
+
     const defaultFilterValues: CIFilterData = { Gen_Profil_nazov: '', Gen_Profil_kod_metais: '' }
 
     return (

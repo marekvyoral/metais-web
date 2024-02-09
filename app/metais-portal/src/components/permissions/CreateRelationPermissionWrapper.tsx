@@ -1,15 +1,14 @@
 import React, { PropsWithChildren } from 'react'
 import { AbilityContext, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useCanCreateRelationTypeUnderOrgAndRole } from '@isdd/metais-common/hooks/permissions/useCanCreateRelationTypeUnderOrgAndRole'
 
 interface Props extends PropsWithChildren {
     selectedRoleName: string
-    selectedCiRelationType: RelatedCiTypePreview | undefined
+    rolesToCompareWith: string[]
 }
 
-export const RelationTypePermissionWrapper: React.FC<Props> = ({ children, selectedRoleName, selectedCiRelationType }) => {
+export const RelationTypePermissionWrapper: React.FC<Props> = ({ children, selectedRoleName, rolesToCompareWith }) => {
     const ability = useAbilityContext()
-    useCanCreateRelationTypeUnderOrgAndRole(selectedRoleName, selectedCiRelationType)
+    useCanCreateRelationTypeUnderOrgAndRole(selectedRoleName, rolesToCompareWith)
     return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
 }

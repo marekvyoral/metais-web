@@ -1,6 +1,6 @@
 import { BreadCrumbs, Button, HomeIcon, PaginatorWrapper, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
-import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -41,7 +41,7 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
     isLoading,
 }) => {
     const { t } = useTranslation()
-
+    const { isError: isAbilityError, isLoading: isAbilityLoading } = useAbilityContextWithFeedback()
     const { isActionSuccess } = useActionSuccess()
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
@@ -135,8 +135,8 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                     )}
                 </div>
                 <QueryFeedback
-                    loading={isLoading || isIdentitiesLoading}
-                    error={isIdentitiesError}
+                    loading={isLoading || isIdentitiesLoading || !!isAbilityLoading}
+                    error={isIdentitiesError || isAbilityError}
                     errorProps={{ errorMessage: error?.message, errorTitle: error?.type }}
                     withChildren
                 >

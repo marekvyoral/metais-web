@@ -14,6 +14,7 @@ import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import { IRequestListFilterView, RequestListType } from '@/components/containers/ManagementList/RequestListContainer'
 
@@ -37,6 +38,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
     isLoading,
 }) => {
     const { t, i18n } = useTranslation()
+    const { isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
     const entityName = 'requestList'
     const columns: Array<ColumnDef<ClaimUi>> = [
         {
@@ -49,7 +51,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
             },
             cell: (ctx) => (
                 <TextLink to={`${route}/detail/${listType?.toLowerCase()}/${ctx?.row?.original?.uuid}`}>
-                    {ctx?.row?.original?.identityFirstName + ' ' + ctx?.row?.original?.identityLastName}
+                    {`${ctx?.row?.original?.identityLastName} ${ctx?.row?.original?.identityFirstName}`}
                 </TextLink>
             ),
         },
@@ -117,20 +119,23 @@ export const RequestListView: React.FC<IRequestListView> = ({
             meta: {
                 getCellContext: (ctx) => ctx?.row?.original?.poName,
             },
-            cell: (ctx) => <span className="govuk-body-s">{ctx?.row?.original?.poName}</span>,
+            cell: (ctx) => <span>{ctx?.row?.original?.poName}</span>,
         },
     ]
 
     return (
         <>
-            <QueryFeedback loading={isLoading} error={false} withChildren>
+            <QueryFeedback loading={isLoading || !!isAbilityLoading} error={false} withChildren>
                 <FlexColumnReverseWrapper>
                     <TextHeading size="XL">
                         {listType === RequestListType.GDPR && t('requestList.gdprTitle')}
                         {listType === RequestListType.REGISTRATION && t('requestList.registrationLitle')}
                         {listType === RequestListType.REQUESTS && t('requestList.title')}
                     </TextHeading>
-                    {isError && <QueryFeedback error loading={false} errorProps={{ errorMessage: t('managementList.containerQueryError') }} />}
+                    {isError ||
+                        (isAbilityError && (
+                            <QueryFeedback error loading={false} errorProps={{ errorMessage: t('managementList.containerQueryError') }} />
+                        ))}
                 </FlexColumnReverseWrapper>
                 <Filter<IRequestListFilterView>
                     defaultFilterValues={defaultFilterParams}
