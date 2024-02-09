@@ -10,6 +10,7 @@ import styles from './styles.module.scss'
 
 import { FooterRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { COOKIES_TYPES } from '@isdd/metais-common/src/api/constants'
+import { useWindowWidthBreakpoints } from '@isdd/metais-common/src/hooks/window-size/useWindowWidthBreakpoints'
 
 export const setCookiesConsent = (cookies: Cookies, values: { [key in COOKIES_TYPES]: boolean }, onCookiesSet?: () => void) => {
     const date = new Date()
@@ -23,6 +24,7 @@ export const setCookiesConsent = (cookies: Cookies, values: { [key in COOKIES_TY
 export const CookiesPopup: React.FC = () => {
     const { t } = useTranslation()
     const cookies = new Cookies()
+    const windowWidth = useWindowWidthBreakpoints()
     const getIsShownCookies = () => {
         if (
             cookies.get(COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT) == undefined &&
@@ -51,12 +53,19 @@ export const CookiesPopup: React.FC = () => {
     return isShown ? (
         <StickyBox bottom offsetBottom={0} className={styles.stickyStyles}>
             <div className={styles.popupBoxStyle} tabIndex={1}>
-                <TextHeading className={classNames(styles.marginBottom0)} size={'S'}>
-                    {t('cookies.thisPageUsesCookies1')}
-                    <Link to={FooterRouteNames.COOKIES}>
-                        <TextBody className={styles.marginBottom0}>{t('cookies.thisPageUsesCookies2')} </TextBody>
-                    </Link>
-                </TextHeading>
+                <div className={styles.flexMobileClose}>
+                    <TextHeading className={classNames(styles.marginBottom0)} size={'S'}>
+                        {t('cookies.thisPageUsesCookies1')}
+                        <Link to={FooterRouteNames.COOKIES}>
+                            <TextBody className={styles.marginBottom0}>{t('cookies.thisPageUsesCookies2')} </TextBody>
+                        </Link>
+                    </TextHeading>
+                    {windowWidth && !windowWidth.desktop && (
+                        <button className={styles.closeButton} onClick={() => setIsShown(false)}>
+                            <img src={NavigationCloseIcon} alt="navigation-close" />
+                        </button>
+                    )}
+                </div>
                 <Button
                     label={t('cookies.settings.refuseAll')}
                     bottomMargin={false}
@@ -87,9 +96,11 @@ export const CookiesPopup: React.FC = () => {
                 <Link to={FooterRouteNames.COOKIES_SETTINGS}>
                     <TextBody className={styles.marginBottom0}>{t('cookies.settings.heading')} </TextBody>
                 </Link>
-                <button className={styles.closeButton} onClick={() => setIsShown(false)}>
-                    <img src={NavigationCloseIcon} alt="navigation-close" />
-                </button>
+                {windowWidth && windowWidth.desktop && (
+                    <button className={styles.closeButton} onClick={() => setIsShown(false)}>
+                        <img src={NavigationCloseIcon} alt="navigation-close" />
+                    </button>
+                )}
             </div>
         </StickyBox>
     ) : null
