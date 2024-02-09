@@ -4,7 +4,12 @@ import { useTranslation } from 'react-i18next'
 
 import { ReInvalidateView } from './ReInvalidateBulkView'
 
-import { ConfigurationItemUi, useRecycleInvalidatedCisBiznis, useRecycleInvalidatedRels } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import {
+    ConfigurationItemUi,
+    RelationshipUi,
+    useRecycleInvalidatedCisBiznis,
+    useRecycleInvalidatedRels,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { useInvalidateCiHistoryListCache } from '@isdd/metais-common/hooks/invalidate-cache'
@@ -14,7 +19,7 @@ export interface IReInvalidateBulkModalProps {
     multiple?: boolean
     onClose: () => void
     onSubmit: (result: IBulkActionResult) => void
-    items: ConfigurationItemUi[]
+    items: ConfigurationItemUi[] | RelationshipUi[]
     isRelation?: boolean
 }
 
