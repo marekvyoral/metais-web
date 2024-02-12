@@ -253,6 +253,7 @@ export enum NavigationSubRoutes {
     IDENTIFIERS_LIST = '/uri/list/accepted',
     OVERVIEWS = '/overviews',
     EDUCATIONAL_COURSES = '/courses',
+    RELATIONS_LIST = '/relations',
     RELATIONS_INSPECTION = '/relations-inspection',
     ARCHITECTONIC_REPOSITORY = '/architectonic-repository',
     TOTAL_COST_OF_OWNERSHIP = '/howto/TOTAL_OWNERSHIP_COSTS_HOWTO',
