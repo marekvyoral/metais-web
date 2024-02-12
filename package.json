@@ -57,6 +57,7 @@
         "react-google-recaptcha-v3": "^1.10.1",
         "react-hook-form": "^7.43.9",
         "react-i18next": "^12.2.2",
+        "react-joyride": "^2.7.2",
         "react-modal": "^3.16.1",
         "react-oauth2-code-pkce": "^1.15.2",
         "react-quill": "^2.0.0",

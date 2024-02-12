@@ -10,6 +10,7 @@ export enum UserPreferencesFormNamesEnum {
     DEFAULT_PER_PAGE = 'defaultPerPage',
     DEFAULT_LANG = 'defaultLanguage',
     MY_PO = 'myPO',
+    DISABLE_WIZARD = 'disableWizard',
 }
 
 export interface IUserPreferences {
@@ -17,6 +18,21 @@ export interface IUserPreferences {
     [UserPreferencesFormNamesEnum.DEFAULT_PER_PAGE]: string
     [UserPreferencesFormNamesEnum.DEFAULT_LANG]: string
     [UserPreferencesFormNamesEnum.MY_PO]: string
+    [UserPreferencesFormNamesEnum.DISABLE_WIZARD]: boolean
+}
+
+export enum WizardTypes {
+    SEARCH = 'searchWizard',
+    FILTER = 'filterWizard',
+    ACTIONS = 'actionsWizard',
+    RELATIONS = 'relationsWizard',
+}
+
+export interface WizardSettings {
+    [WizardTypes.SEARCH]?: boolean
+    [WizardTypes.FILTER]?: boolean
+    [WizardTypes.ACTIONS]?: boolean
+    [WizardTypes.RELATIONS]?: boolean
 }
 
 export enum UpdatePreferencesReturnEnum {
@@ -25,15 +41,20 @@ export enum UpdatePreferencesReturnEnum {
 }
 
 interface UserPreferencesContextValue {
-    currentPreferences: IUserPreferences
-    updateUserPreferences: (preferencesData: IUserPreferences) => UpdatePreferencesReturnEnum
+    currentPreferences: IUserPreferences & WizardSettings
+    updateUserPreferences: (preferencesData: IUserPreferences & WizardSettings) => UpdatePreferencesReturnEnum
 }
 
-const DEFAULT_PREFERENCES: IUserPreferences = {
+const DEFAULT_PREFERENCES: IUserPreferences & WizardSettings = {
     [UserPreferencesFormNamesEnum.SHOW_INVALIDATED]: false,
     [UserPreferencesFormNamesEnum.DEFAULT_PER_PAGE]: '',
     [UserPreferencesFormNamesEnum.DEFAULT_LANG]: '',
     [UserPreferencesFormNamesEnum.MY_PO]: '',
+    [UserPreferencesFormNamesEnum.DISABLE_WIZARD]: true,
+    [WizardTypes.SEARCH]: true,
+    [WizardTypes.FILTER]: true,
+    [WizardTypes.ACTIONS]: true,
+    [WizardTypes.RELATIONS]: true,
 }
 
 const UserPreferences = createContext<UserPreferencesContextValue>({
@@ -47,7 +68,8 @@ const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }
         state: { user },
     } = useAuth()
     const storedPreferences = localStorage.getItem(META_PREFERENCES_KEY + user?.login)
-    const [currentPreferences, setCurrentPreferences] = useState<IUserPreferences>(DEFAULT_PREFERENCES)
+
+    const [currentPreferences, setCurrentPreferences] = useState<IUserPreferences & WizardSettings>(DEFAULT_PREFERENCES)
     useEffect(() => {
         if (storedPreferences) setCurrentPreferences(JSON.parse(storedPreferences))
     }, [storedPreferences])
@@ -58,7 +80,7 @@ const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }
         }
     }, [currentPreferences.defaultLanguage, i18n])
 
-    const updateUserPreferences = (preferencesData: IUserPreferences) => {
+    const updateUserPreferences = (preferencesData: IUserPreferences & WizardSettings) => {
         try {
             localStorage.setItem(META_PREFERENCES_KEY + user?.login, JSON.stringify(preferencesData))
             setCurrentPreferences(preferencesData)

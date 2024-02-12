@@ -89,9 +89,10 @@ const TabItemContent: React.FC<ITabItemContent> = ({ tab, handleMobileSelect, is
 interface ITabs {
     tabList: Tab[]
     onSelect?: (selected: Tab) => void
+    id?: string
 }
 
-export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
+export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected, id }) => {
     const { t, i18n } = useTranslation()
     const { pathname } = useLocation()
     const location = useLocation()
@@ -178,7 +179,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     return (
         <div className="idsk-tabs" data-module="idsk-tabs">
             <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
-            <ul className={classnames('idsk-tabs__list')} role="tablist">
+            <ul className={classnames('idsk-tabs__list')} role="tablist" id={id}>
                 {newTabList?.slice(0, MAX_SHOWN_TABS).map((tab) => (
                     <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={activeTab?.id === tab.id} tab={tab} />
                 ))}
@@ -210,7 +211,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
                     </li>
                 )}
             </ul>
-            <ul className="idsk-tabs__list--mobile" role="tablist">
+            <ul className="idsk-tabs__list--mobile" role="tablist" id={id}>
                 {tabList.map((tab) => (
                     <TabItemContent key={tab.id} handleMobileSelect={handleMobileSelect} tab={tab} isSelected={activeTab?.id === tab.id} />
                 ))}

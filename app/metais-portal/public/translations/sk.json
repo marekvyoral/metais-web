@@ -1762,6 +1762,7 @@
         "trainingsHeading": "Moje školenia",
         "notificationsSettings": "Správa notifikácií",
         "passwordChange": "Zmena hesla",
+        "wizards": "Wizardy",
         "oldPassword": "Staré heslo",
         "newPassword": "Nové heslo",
         "repeatPassword": "Potvrdenie nového hesla",
@@ -2704,5 +2705,37 @@
     },
     "aria": {
         "selectedRowsCount": "Máte {{count}} vybraných riadkov v tabuľke"
+    },
+    "wizard": {
+        "search": "Vyhľadávanie",
+        "relations": "Vzťahy",
+        "filter": "Filtrovanie",
+        "bulkActions": "Hromadné akcie",
+        "show": "Zobraziť wizardy",
+        "success": "Nastavenie wizardov úspešne uložené",
+        "actions": {
+            "back": "Späť",
+            "next": "Pokračovať",
+            "close": "Zatvoriť"
+        },
+        "searchContent": {
+            "step1": "Na hlavné vyhľadávanie v celej aplikácii slúži hlavný vyhľadávací box, ktorý po vpísaní textu ponúkne navrhované výsledky podľa relevantnosti. Čím dlhší je vpísaný textový reťazec, tým sú výsledky presnejšie. Vyhľadávanie prebieha vo všetkých textových poliach.",
+            "step2": "Doplnkové vyhľadávanie nad tabuľkou so zoznamom záznamov vyhľadáva len v textových poliach nachádzajúcich sa v zvolenej tabuľke (t.j. na všetkých stránkach, vo všetkých záznamoch danej tabuľky)."
+        },
+        "filterContent": {
+            "step1": "Nad každou tabuľkovým zobrazením  so zoznamom záznamov je dodatočné filtrovanie. Ponuku filtrov je možné „Zbaliť filter“ a následne zase zbaliť. Ponuka filtrovaniach prvkov je relevantná k zvolenej tabuľke.",
+            "step2": "Kliknutím na hlavné tlačidlo „Filtrovať“ sa aplikujú vyššie zvolené parametre filtrovania.",
+            "step3": "Voľba „Vyčistiť kritéria filtrovania“  zruší filtrovanie tabuľky a zobrazí všetky položky tabuľky. Možnosť „Vyčisti kritéria filtrovania“ odstráni všetky vybrané hodnoty vo filtri ale nezruší samotné vyfiltrované hodnoty."
+        },
+        "bulkActionsContent": {
+            "step1": "Každý zoznam (tabuľka záznamov) obsahuje možnosti hromadnej zmeny. Tlačidlo „Hromadné úkony“ sa nachádza nad tabuľkou so zoznamom záznamov.",
+            "step2": "Po jeho rozbalení sa zobrazia možnosti zmien nad danou skupinou vybraných záznamov. ",
+            "step3": "Výber položiek sa vykonáva zaškrtnutím check boxu na začiatku každého riadku."
+        },
+        "relationContent": {
+            "step1": "Vzťahy je možné vytvárať pomocou kariet, ktoré reprezentujú väzby na súvisiace položky.",
+            "step2": "V rámci daných kariet je možne pridať položku k práve prezeranej položky kliknutím na tlačidlo „Pridať nový vzťah“, čo z hľadiska vzťahov predstavuje vytvorenie nového vzťahu medzi prezeranou položkou a už existujúcou položkou vybraného typu. ",
+            "step3": "V rámci daných kariet je možné vytvoriť aj novú položku vybraného typu kliknutím na tlačidlo „Pridať novú položku a vzťah“, pričom sa okrem vytvorenia položky, vytvorí aj nový vzťah medzi práve prezeranou položkou a vytvorenou položkou. "
+        }
     }
 }
