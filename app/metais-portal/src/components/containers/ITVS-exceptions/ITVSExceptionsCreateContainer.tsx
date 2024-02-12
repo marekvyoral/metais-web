@@ -163,6 +163,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                 relationshipSet: relationshipSet
                     ? relationshipSet.map((rel) => ({
                           ...rel,
+                          type: rel.type === 'ISVS' ? 'osobitny_postup_vztah_ISVS' : 'osobitny_postup_vztah_PO',
                           startUuid: configurationItemId,
                           owner: updateCiItemId ? ciItemData?.metaAttributes?.owner : ownerId,
                           attributes: [
