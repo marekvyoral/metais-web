@@ -158,6 +158,13 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                                 uuid: n.relationship?.uuid,
                             })
                             await getRequestStatus(request.requestId ?? '', () => null)
+
+                            queryClient.invalidateQueries(relationsCountKey)
+                            queryClient.invalidateQueries(relationsKey)
+
+                            navigate(olaContract ? RouterRoutes.OLA_CONTRACT_LIST + '/' + olaContract.uuid : RouterRoutes.OLA_CONTRACT_LIST, {
+                                state: { from: location },
+                            })
                         })
                 }
             })
@@ -170,11 +177,6 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                             queryClient.invalidateQueries(fileHistoryKey)
                         }
 
-                        if (olaContract && olaContract.contractorIsvsUuid != formData['contractorIsvsUuid']) {
-                            queryClient.invalidateQueries(relationsCountKey)
-                            queryClient.invalidateQueries(relationsKey)
-                        }
-
                         queryClient.invalidateQueries(contractKey)
                     }
                     setIsActionSuccess({
@@ -182,6 +184,8 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                         path: olaContract ? RouterRoutes.OLA_CONTRACT_LIST + '/' + olaContract.uuid : RouterRoutes.OLA_CONTRACT_LIST,
                         additionalInfo: { type: olaContract ? 'edit' : 'create' },
                     })
+                }
+                if (!olaContract || olaContract.contractorIsvsUuid == formData['contractorIsvsUuid']) {
                     navigate(olaContract ? RouterRoutes.OLA_CONTRACT_LIST + '/' + olaContract.uuid : RouterRoutes.OLA_CONTRACT_LIST, {
                         state: { from: location },
                     })
