@@ -161,6 +161,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
 
                             queryClient.invalidateQueries(relationsCountKey)
                             queryClient.invalidateQueries(relationsKey)
+                            queryClient.invalidateQueries(contractKey)
 
                             navigate(olaContract ? RouterRoutes.OLA_CONTRACT_LIST + '/' + olaContract.uuid : RouterRoutes.OLA_CONTRACT_LIST, {
                                 state: { from: location },
