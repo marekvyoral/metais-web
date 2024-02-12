@@ -9,8 +9,8 @@
         "MIRRI": "Ministerstvo investícií, regionálneho rozvoja a informatizácie Slovenskej republiky",
         "operatorMIRRI": "Prevádzkovateľom služby je Ministerstvo investícií, regionálneho rozvoja a informatizácie SR.",
         "idsk": "Jednotným dizajn manuálom elektronických služieb.",
-        "createdInAccordance": "Vytvorené v sulade s ",
-        "exceptionsLegislation": "Osobitný postup",
+        "createdInAccordance": "Vytvorené v súlade s",
+        "exceptionsLegislation": "Osobitné postupy",
         "accessibilityDeclaration": "Vyhlásenie o prístupnosti",
         "webResidencyMap": "Mapa webového sídla",
         "GDPRAndCookies": "GDPR a cookies",
@@ -73,10 +73,10 @@
         "domain": "Doména gov.sk je oficálna",
         "officialSite": "Toto je oficiálna webová stránka orgánu verejnej moci Slovenskej republiky. Oficiálne stránky využívajú najmä doménu gov.sk.",
         "link": "Odkazy na jednotlivé webové sídla orgánov verejnej moci nájdete na tomto odkaze",
-        "security": "Táto stránka je zabezpečená",
-        "safety": "Buďte pozorní a vždy sa uistite, že zdieľate informácie iba cez zabezpečenú webovú stránku verejnej správy SR.Zabezpečená stránka vždy začína https:// pred názvom domény webového sídla.",
+        "security": "Táto stránka je zabezpečená.",
+        "safety": "Buďte pozorní a vždy sa uistite, že zdieľate informácie iba cez zabezpečenú webovú stránku verejnej správy SR. Zabezpečená stránka vždy začína https:// pred názvom domény webového sídla.",
         "menu": "Menu",
-        "search": "Search",
+        "search": "Hľadať",
         "searchPlaceholder": "Zadajte hľadaný výraz",
         "eurofonds": "Eurofondy",
         "development": "Regionálny rozvoj",
@@ -90,7 +90,7 @@
         "profile": "Profil",
         "profileImage": "Profilový obrázok",
         "showInformationAboutSite": "Rozbaľ informácie o stránke",
-        "hideInformationAboutSite": "Skry informácie o stránke",
+        "hideInformationAboutSite": "Skryť informácie o stránke",
         "linksToWebs": "odkazy na webové stránky orgánov verejnej moci",
         "linkToHomePage": "Odkaz na hlavnú stránku",
         "homeLogo": "MetaIS logo s odkazom na hlavnú stránku.",
@@ -98,15 +98,15 @@
         "notifications": "Notifikácie",
         "factChecker": "Fact-checker",
         "openMenu": "Otvor menu",
-        "closeMenu": "Skry menu"
+        "closeMenu": "Skryť menu"
     },
     "radioButton": {
         "yes": "Áno",
         "no": "Nie"
     },
     "sidebar": {
-        "hide": "SKRYŤ",
-        "unhide": "ODKRYŤ",
+        "hide": "Skryť",
+        "unhide": "Odkryť",
         "expandableExpandItem": "Otvoriť položky menu {{name}}",
         "expandableCloseItem": "Zatvoriť položky menu {{name}}"
     },
@@ -115,16 +115,16 @@
         "chooseValue": "Vyberte hodnotu",
         "publicAuthorities": {
             "name": "Meno",
-            "ICO": "ICO",
-            "onlyFreePO": "Iba voľné povinné osoby",
+            "ICO": "IČO",
+            "onlyFreePO": "Iba voľné orgány riadenia",
             "state": "Stav",
-            "poName": "Povinná osoba"
+            "poName": "orgán riadenia"
         },
         "PO": {
             "name": "Názov",
             "itIsChapter": "Je kapitola",
             "personsCategory": "Kategória osoby",
-            "publicAuthorityType": "Typ povinnej osoby",
+            "publicAuthorityType": "Typ orgánu riadenia",
             "evidenceStatus": "Stav evidencie"
         },
         "egov": {
@@ -175,10 +175,10 @@
         "technicalName": "Technické meno",
         "type": "Typ",
         "valid": "Stav",
-        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
-        "paginationSummaryEmpty": "Zobrazených 0 z celkových 0 záznamov",
-        "noRowsFound": "Nenašli sa žiadne záznamy",
-        "ico": "ICO",
+        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov.",
+        "paginationSummaryEmpty": "Zobrazených 0 z celkových 0 záznamov.",
+        "noRowsFound": "Nenašli sa žiadne záznamy.",
+        "ico": "IČO",
         "adress": "Adresa",
         "expandableExpandItem": "Otvoriť detail položky",
         "expandableCloseItem": "Zatvoriť detail položky"
@@ -198,7 +198,7 @@
         "close": "Skryť jazykové menu"
     },
     "language": {
-        "sk": "Slovenčina",
+        "sk": "Slovenský jazyk",
         "en": "English",
         "cimode": "Preklady"
     },
@@ -220,7 +220,7 @@
         "type": "Typ",
         "state": "Stav",
         "engName": "Anglický názov",
-        "codePrefix": "Prefix metais kódu",
+        "codePrefix": "Prefix MetaIS kódu",
         "uriPrefix": "URI prefix",
         "valid": "Stav",
         "mandatory": "Povinný",
@@ -283,10 +283,10 @@
             "profileList": "Zoznam profilov"
         },
         "create": {
-            "requiredField": "Toto pole je povinné",
+            "requiredField": "Toto pole je povinné.",
             "requiredOneSourceOneDestination": "Musíte vyplniť aspoň jeden zdroj a cieľ",
-            "codePrefixRegex": "Povolenými znakmi pre prefix sú 'a'..'z', a oddelovač '_'.",
-            "technicalNameRegex": "Technické meno môže byť len z písmen abecedy alebo podčiarkovníka",
+            "codePrefixRegex": "Povolenými znakmi pre prefix sú \"a\", \"z\", a oddelovač \"_\".",
+            "technicalNameRegex": "Technické meno môže byť len z písmen abecedy alebo podčiarkovníka.",
             "addProfile": "Pridať profil",
             "removeProfile": "Odstrániť profil",
             "addConnection": "Pridať prepojenie",
@@ -295,30 +295,30 @@
             "integer": "Integer",
             "boolean": "Boolean",
             "long": "Long",
-            "date": "Date",
+            "date": "Dátum",
             "string": "String",
             "double": "Double",
             "enum": "Interný číselník",
             "regex": "Regulárny výraz",
             "interval": "Intervalové rozloženie",
             "ciType": "Entita",
-            "mustBeNumber": "Hodnota musí byť číslo",
-            "minCharacters": "Toto pole musí obsahovať minimálne {{min}} znaky"
+            "mustBeNumber": "Hodnota musí byť číslo.",
+            "minCharacters": "Toto pole musí obsahovať minimálne {{min}} znaky."
         },
         "entity": {
             "editHeader": "Editácia entity",
             "createHeader": "Vytvorenie nového typu entity",
             "detailHeading": "Detail entity",
-            "technicalNameAlreadyExists": "Zvolené technické meno už exituje"
+            "technicalNameAlreadyExists": "Zvolené technické meno už exituje. Technické meno musí byť jedinečné."
         },
         "profile": {
             "editHeader": "Editácia profilu atribútov",
             "createHeader": "Vytvorenie nového profilu atribútov",
             "detailHeading": "Detail profilu",
-            "nameError": "Meno je povinné",
+            "nameError": "Meno je povinný údaj.",
             "descriptionError": "Popis je povinný",
-            "engNameError": "Anglické meno je povinné",
-            "engDescriptionError": "Anglický popis je povinný"
+            "engNameError": "Anglické meno je povinný údaj.",
+            "engDescriptionError": "Anglický popis je povinný údaj."
         },
         "relation": {
             "editHeader": "Editácia vzťahu",
@@ -339,10 +339,10 @@
     "userManagement": {
         "title": "Používatelia",
         "fullName": "Meno a priezvisko",
-        "login": "Login",
+        "login": "Používateľské meno",
         "phone": "Tel.č.",
         "mobile": "Mobil",
-        "organization": "Povinná osoba",
+        "organization": "Orgán riadenia",
         "state": "Stav",
         "states": {
             "BLOCKED": "Blokovaný",
@@ -363,13 +363,13 @@
                 "activated": "Aktivované"
             },
             "role": "Rola",
-            "organization": "Povinná osoba"
+            "organization": "Orgán riadenia"
         },
         "error": {
-            "query": "Chyba pri načítavaní údajov",
-            "mutation": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
-            "export": "Chyba pri príprave exportu",
-            "uniqueLogin": "Login musí byť jedinečný"
+            "query": "Nastala chyba pri načítavaní údajov.",
+            "mutation": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: <email><email>metais@mirri.gov.sk</email></email>.",
+            "export": "Nastala chyba pri príprave exportu.",
+            "uniqueLogin": "Používateľské meno musí byť jedinečné."
         },
         "creationLoading": "Vytváram nového použivateľa",
         "editLoading": "Upravujem používateľa"
@@ -387,7 +387,7 @@
     "actionOverTable": {
         "import": "Import",
         "export": "Export",
-        "addISVSitem": "Pridať ISVS položku",
+        "addISVSitem": "Pridať ITVS položku",
         "selectColumn": "Stĺpce",
         "view": "Zobraziť",
         "actions": "Hromadné úkony",
@@ -431,21 +431,21 @@
         "valueDescription": "Popis hodnoty",
         "heading": "Interné číselníky",
         "moreActions": "Viac",
-        "codeError": "Kód je povinný",
-        "nameError": "Názov je povinný",
-        "nameMaxError": "Maximálna dĺžka názvu je 255 znakov",
-        "descriptionMaxError": "Maximálna dĺžka popisu je {{charNumber}} znakov",
-        "descriptionError": "Popis je povinný",
-        "valueError": "Hodnota je povinná",
-        "engValueError": "Anglická hodnota je povinná",
-        "engDescriptionError": "Anglický Popis je povinný",
+        "codeError": "Kód je povinný údaj.",
+        "nameError": "Názov je povinný.",
+        "nameMaxError": "Maximálna dĺžka názvu je 255 znakov.",
+        "descriptionMaxError": "Maximálna dĺžka popisu je 255 znakov.",
+        "descriptionError": "Popis je povinný údaj.",
+        "valueError": "Hodnota je povinná.",
+        "engValueError": "Anglická hodnota je povinná.",
+        "engDescriptionError": "Anglický popis je povinný údaj.",
         "wrongRegex": "Formát môže obsahovať len písmená {{letters}} a tieto znaky {{signs}}",
         "actions": "Úkony",
         "order": "Poradie",
         "addNewCodelistDetail": "Pridať novú položku",
         "items": "Položky",
         "tooltipOrder": "Potiahni a pusti riadok pre zmenu poradia",
-        "codeExist": "Kód je nesprávny. Takýto kód už existuje.",
+        "codeExist": "Takýto kód už existuje. Kód musí byť jedinečný.",
         "orderDescription": "Popis k stĺpcu poradie"
     },
     "adminRolesPage": {
@@ -466,14 +466,14 @@
         "deleteRoleText": "Naozaj si želáte zneplatniť nasledujúcu rolu?",
         "fullName": "Meno",
         "login": "Login",
-        "email": "Email",
+        "email": "E-mailová adresa",
         "obligedPerson": "Povinná osoba",
         "requiredName": "Povinné meno",
         "requiredDesc": "Povinný popis",
         "yes": "Áno",
         "no": "Nie",
         "show": "Zobraziť",
-        "entities": "záznamy",
+        "entities": "Záznamy",
         "submit": "Odoslať formulár",
         "cancel": "Zrušiť"
     },
@@ -487,15 +487,15 @@
         "search": "Hľadať"
     },
     "mutationFeedback": {
-        "successfulUpdated": "Položka bola úspešne zmenená",
-        "runMutationSuccess": "Skript bol úspešne vykonaný",
-        "runMutationError": "Vykonávanie skriptu zlyhalo, skontrolujte platnosť kódu",
-        "successfulCreated": "Položka bola úspešne pridaná",
+        "successfulUpdated": "Položka bola úspešne zmenená.",
+        "runMutationSuccess": "Skript bol úspešne vykonaný.",
+        "runMutationError": "Vykonávanie skriptu zlyhalo, skontrolujte, prosím, platnosť kódu.",
+        "successfulCreated": "Položka bola úspešne pridaná.",
         "successfulDeleted": "Položka bola úspešne odstránená",
-        "attrSuccessfulUpdated": "Atribút bol úspešne  zmenený",
-        "attrSuccessfulCreated": "Atribút bol úspešne pridaný",
+        "attrSuccessfulUpdated": "Atribút bol úspešne  zmenený.",
+        "attrSuccessfulCreated": "Atribút bol úspešne pridaný.",
         "invalidatePOSuccess": "Orgán riadenia bol úspešne zneplatnený",
-        "invalidatePOError": "Zneplatnenie Orgánu riadenia neúspešné",
+        "invalidatePOError": "Zneplatnenie orgánu riadenia bolo neúspešné.",
         "validatePOSuccess": "Orgán riadenia bol úspešne splatnený",
         "validatePOError": "Splatnenie Orgánu riadenia neúspešné",
         "metaColumnName": {
@@ -520,19 +520,19 @@
         "firstName": "Krstné meno",
         "lastName": "Priezvisko",
         "displayName": "Zobrazujúce sa meno",
-        "email": "Email",
+        "email": "E-mailová adresa",
         "position": "Pozícia",
-        "phone": "Telefón",
+        "phone": "Telefónne číslo",
         "mobile": "Mobil",
-        "login": "Login",
+        "login": "Používateľské meno",
         "detailHeading": "Detail používateľa",
         "detailEditHeading": "Upravenie existujúceho používateľa",
         "detailCreateHeading": "Vytvorenie nového používateľa",
         "passwordChange": "Zmena hesla",
         "password": "Heslo",
         "newPassword": "Nové heslo",
-        "passwordChangeInProgress": "Prebieha zmena hesla",
-        "passwordChangeError": "Zmena hesla skončila chybou",
+        "passwordChangeInProgress": "Prebieha zmena hesla.",
+        "passwordChangeError": "Zmena hesla skončila chybou.",
         "save": "Uložiť",
         "cancel": "Zrušiť",
         "back": "Späť",
@@ -548,16 +548,16 @@
         "roleGroups": "Skupiny rolí",
         "singleRoles": "Jednotlivé role",
         "selectPlaceholder": "Vyber povinnú osobu...",
-        "formError": "Chyba pri kontrole dostupného loginu",
-        "required": "Položka {{value}} je povinná",
+        "formError": "Nastala chyba pri kontrole dostupného loginu.",
+        "required": "Položka {{value}} je povinná.",
         "containerQueryError": "Loading of data for user management failed.",
         "noUserId": "There was mistake in fetching data.",
         "mutationError": "Počas akcie došlo k chybe.",
         "emailFormat": "Formát emailu je zlý",
         "phoneFormat": "Formát tel. čísla je zlý",
         "noChangesDetected": "Neboli zaznamenané žiadne zmeny.",
-        "noSpacesError": "Položka {{value}} nesmie obsahovať medzery",
-        "loginFormat": "Login akceptuje iba malé písmená, čísla a bodky.",
+        "noSpacesError": "Položka {{value}} nesmie obsahovať medzery.",
+        "loginFormat": "Prihlasovacie meno môže obsahovať iba malé písmená, čísla a bodky.",
         "MustBeMaximum": "môže mať maximálne {{charsNumber}} znakov"
     },
     "accordion": {
@@ -571,7 +571,7 @@
         "dataObjects": "Dátové objekty",
         "monitoringNav": "Zostavy a monitoring",
         "guides": "Postupy a návody",
-        "hide": "Skrt",
+        "hide": "Skryť",
         "show": "Ukáž",
         "innerNav": "Vnútorná navigácia",
         "mainNav": "Hlavná navigácia",
@@ -596,10 +596,10 @@
             "webAddress": "Webové sídla",
             "authorities": "Orgány verejnej moci",
             "otherComponents": "Ostatné komponenty",
-            "standards": "Štandardy ISVS",
+            "standards": "Štandardy ITVS",
             "procedures": "Osobitné postupy",
-            "commission": "Komisia na štandardizáciu ITVS",
-            "groups": "Pracovné skupiny v pôsobnosti komisie pre štandardizáciu ITVS",
+            "commission": "Komisia pre štandardizáciu ITVS",
+            "groups": "Pracovné skupiny v pôsobnosti Komisie pre štandardizáciu ITVS",
             "concept": "Tvorba návrhu",
             "concepts": "Zoznam návrhov predložených prostredníctvom MetaIS",
             "votes": "Zoznam hlasovaní",
@@ -634,7 +634,7 @@
             "codelistsRequestsList": "Zoznam žiadostí o pridanie číselníka",
             "referenceIdentifiersList": "Zoznam referenčných identifikátorov",
             "referenceIdentifiersRequestsList": "Zoznam žiadostí o pridanie referenčného identifikátora",
-            "personalProcedures": "Osobitný postup",
+            "personalProcedures": "Osobitné postupy",
             "educationalCourses": "Školenia",
             "publicAuthorityHierarchy": "Hierarchia orgánov riadenia",
             "webResidence": "Webové sídla",
@@ -728,7 +728,7 @@
         "table": {
             "name": "Meno",
             "technicalName": "Technické meno",
-            "description": "Popis(Tooltip)",
+            "description": "Popis (Tooltip)",
             "engDescription": "Anglický popis",
             "order": "Poradie",
             "engName": "Anglický názov",
@@ -736,8 +736,8 @@
             "defaultValue": "Prednastavená hodnota",
             "edit": "Zmeniť"
         },
-        "unvalidTextWarning": "Niektoré z vami vybraných položiek sú už zneplatnené",
-        "validTextWarning": "Niektoré z vami vybraných položiek sú už splatnené",
+        "unvalidTextWarning": "Niektoré z Vami vybraných položiek sú už zneplatnené.",
+        "validTextWarning": "Niektoré z Vami vybraných položiek sú už splatnené.",
         "codelists": "Interné číselníky"
     },
     "eko": {
@@ -758,7 +758,7 @@
             "requiredField": "Povinné pole",
             "maxLength": "Maximálna dĺžka je {{length}} znakov",
             "exactLength": "Hodnota musí mať {{length}} znakov",
-            "uniqueEkoCode": "Kód musí byť unikátny"
+            "uniqueEkoCode": "Kód musí byť jedinčený."
         },
         "invalidateCodes": "Zneplatniť položky",
         "deleteCodes": "Zmazanie položiek",
@@ -770,52 +770,52 @@
         "invalidateModalOkButtonLabel": "Zneplatniť vybrané EKO kódy"
     },
     "feedback": {
-        "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova.",
-        "queryErrorTitle": "Nastala chyba",
-        "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba. Skúste stránku znova načítať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na adrese ",
-        "mutationErrorTitle": "Akcia zlyhala",
-        "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na ",
-        "executingScript": "Script sa vykonáva",
+        "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím, skúste akciu zopakovať.",
+        "queryErrorTitle": "Nastala chyba.",
+        "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba. Pokúste sa stránku znova načítať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte, prosím, administrátora e-mailom na adrese:",
+        "mutationErrorTitle": "Akcia zlyhala.",
+        "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:",
+        "executingScript": "Akcia sa vykonáva.",
         "saving": "Ukladá sa...",
         "approveSuccess": "Schválené",
         "approveSaved": "Uložené",
-        "returnToWorkSuccess": "KRIT bol úspešne vrátený na prepracovanie!",
-        "sendToApprover": "KRIT bol úspešne poslaný na schválenie!",
-        "codeAlreadyExists": "Interný číselník s takýmto kódom už existuje",
-        "sendToRevalidate": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení.",
-        "roleHasRelations": "Rola má vzťah k iným objektom"
+        "returnToWorkSuccess": "KRIT bol úspešne vrátený na prepracovanie.",
+        "sendToApprover": "KRIT bol úspešne poslaný na schválenie.",
+        "codeAlreadyExists": "Interný číselník s takýmto kódom už existuje.",
+        "sendToRevalidate": "Položka bola poslaná na spracovanie, prosím, počkajte na notifikáciu o splatnení.",
+        "roleHasRelations": "Rola má vzťah k iným objektom."
     },
     "publicAuthorities": {
         "list": {
             "all": "Všetky",
             "DRAFT": "Vytvorené",
-            "INVALIDATED":"Zneplatnené"
+            "INVALIDATED": "Zneplatnené"
         },
         "detail": {
-            "title": "Detail povinnej osoby",
+            "title": "Detail orgánu riadenia",
             "statutoryOfficer": "Štatutár"
         },
         "find": {
-            "new": "Tvorba povinnej osoby",
+            "new": "Tvorba orgánu riadenia",
             "ico": "Zadajte IČO",
-            "icoPlaceholder": "Zadajte IČO povinnej osoby, ktorá sa má vyhľadať v CSRU. Správny tvar je 00000000 a 000000000000",
+            "icoPlaceholder": "Zadajte IČO orgánu riadenia, ktore sa má vyhľadať v CSRU. Správny tvar je 00000000 a 000000000000.",
             "search": "Vyhľadať",
             "cancel": "Zrušiť",
-            "createNew": "Vytvoriť novú povinnú osobu",
-            "icoRequired": "IČO je povinné",
-            "icoExist": "Povinná osoba s daným IČO-m už v systéme existuje",
-            "icoRegex": "IČO je v nesprávnom tvare. Správny tvar je '00000000' a '000000000000'",
+            "createNew": "Vytvoriť orgán riadenia",
+            "icoRequired": "IČO je povinný údaj.",
+            "icoExist": "Orgán riadenia s daným IČO-m už v systéme existuje.",
+            "icoRegex": "IČO je v nesprávnom tvare. Správny tvar je \"00000000\" a \"000000000000\".",
             "loading": "Vyhľadávam IČO",
-            "ICOnotFoundMsg":"Povinná osoba s hľadaným IČO sa nenachádza v MPIIÚ realizovaný IS CSRU. PO môžete založiť manuálne kliknutím na tlačidlo nižšie."
+            "ICOnotFoundMsg": "Povinná osoba s hľadaným IČO sa nenachádza v MPIIÚ realizovaný IS CSRU. PO môžete založiť manuálne kliknutím na tlačidlo nižšie."
         },
         "edit": {
-            "updateExistingOrganization": "Úprava povinnej osoby"
+            "updateExistingOrganization": "Úprava orgánu riadenia"
         },
         "create": {
-            "addNewOrganization": "Pridať orgán riadenia",
+            "addNewOrganization": "Pridanie orgánu riadenia",
             "name": "Názov",
             "category": "Kategória osoby",
-            "organizationType": "Typ povinnej osoby",
+            "organizationType": "Typ orgánu riadenia",
             "engName": "Anglický názov",
             "description": "Popis",
             "engDescription": "Anglický popis",
@@ -826,7 +826,7 @@
             "note": "Poznámka",
             "ico": "IČO",
             "psc": "PSČ",
-            "city": "Mesto / Obec",
+            "city": "Mesto/Obec",
             "street": "Ulica",
             "number": "Orientačné číslo",
             "district": "Okres",
@@ -836,24 +836,24 @@
             "linkReference": "Odkaz na referenciu",
             "numberOfReplication": "Počet replikácii",
             "replicationType": "Typ replikácie",
-            "postalCodeRegex": "PSČ je v nesprávnom tvare. Správny tvar je '00000' a povolené znaky sú 0-9",
+            "postalCodeRegex": "PSČ je v nesprávnom tvare. Správny tvar je '00000' a povolené znaky sú 0-9.",
             "officer": {
                 "titleBeforeName": "Titul pred menom",
                 "name": "Meno",
                 "lastName": "Priezvisko",
                 "titleAfterName": "Titul za menom"
             },
-            "savingPO": "Ukladám povinnú osobu"
+            "savingPO": "Ukladám orgán riadenia"
         },
         "assigned": {
             "heading": "Priradenie povinnej osoby nadradenej povinnej osobe",
             "save": "Uložiť",
-            "isAssigned": "PO môže figurovať ako podriadená iba pre jednu nadriadenú PO!",
-            "isCycleInHierarchy": "V hierarchii PO nesmie vzniknúť cirkulárna referencia v rámci PO, teda PO nesmie byť nadradenou a zároveň podradenou pre tú istú PO!",
-            "warningInfo": "Nemôžete vytvoriť vzťah medzi rovnakou identitou!",
-            "topLevelOrg": "Nemôžete priradiť povinnej osobe hlavnú povinnú osobu!",
-            "successFeedback":"Vzťahy úspešne aktualizované",
-            "unsuccessFeedback":"Vzťahy sa nepodarilo aktualizovať"
+            "isAssigned": "Orgán riadenia môže figurovať ako podriadený iba pre jeden nadriadený orgán riadenia.",
+            "isCycleInHierarchy": "V hierarchii orgánovu riadenia nesmie vzniknúť cirkulárna referencia v rámci orgánu riadenia, teda orgán riadenia nesmie byť nadradeným a zároveň podradeným pre ten istý orgán riadenia.",
+            "warningInfo": "Nemôžete vytvoriť vzťah medzi rovnakou identitou.",
+            "topLevelOrg": "Nemôžete priradiť orgánu riadenia hlavnému orgánu riadenia!",
+            "successFeedback": "Vzťahy úspešne aktualizované",
+            "unsuccessFeedback": "Vzťahy sa nepodarilo aktualizovať"
         },
         "massUpdate": {
             "title": "Hromadná aktualizácia povinných osôb",
@@ -869,12 +869,12 @@
             },
             "feedback": {
                 "approve": {
-                    "success": "Organizačné zmeny boli akceptované",
-                    "error": "Chyba pri akceptovaní zmien"
+                    "success": "Organizačné zmeny boli akceptované.",
+                    "error": "Nastala chyba pri akceptovaní zmien."
                 },
                 "reject": {
-                    "success": "Organizačné zmeny boli zamietnuté",
-                    "error": "Chyba pri zamietnutí zmien"
+                    "success": "Organizačné zmeny boli zamietnuté.",
+                    "error": "Nastala chyba pri zamietnutí zmien."
                 }
             }
         }
@@ -887,7 +887,7 @@
     "PO_Attributes": {
         "Gen_Profil_nazov": "Názov",
         "EA_Profil_PO_kategoria_osoby": "Kategória osoby",
-        "EA_Profil_PO_typ_osoby": "Typ povinnej osoby",
+        "EA_Profil_PO_typ_osoby": "Typ orgánu riadenia",
         "Gen_Profil_anglicky_nazov": "Anglický názov",
         "Gen_Profil_popis": "Popis",
         "Gen_Profil_anglicky_popis": "Anglický popis",
@@ -898,7 +898,7 @@
         "Gen_Profil_poznamka": "Poznámka",
         "EA_Profil_PO_ico": "IČO",
         "EA_Profil_PO_psc": "PSČ",
-        "EA_Profil_PO_obec": "Mesto / Obec",
+        "EA_Profil_PO_obec": "Mesto/Obec",
         "EA_Profil_PO_ulica": "Ulica",
         "EA_Profil_PO_cislo": "Orientačné číslo",
         "EA_Profil_PO_okres": "Okres",
@@ -918,7 +918,7 @@
         "cancelButtonLabel": "Zrušiť"
     },
     "loading": {
-        "loadingSubPage": "Načítavám podstránku",
+        "loadingSubPage": "Podstránka sa načítava.",
         "export": "Preparing export"
     },
     "report": {
@@ -964,13 +964,13 @@
         "registrationLitle": "Zoznam registrácií",
         "gdprTitle": "Zoznam GDPR žiadostí",
         "fullName": "Priezvisko a meno",
-        "identityLogin": "Login",
+        "identityLogin": "Používateľské meno",
         "telephone": "Telefón",
-        "mobile": "Mobil",
-        "email": "Email",
+        "mobile": "Telefónne číslo",
+        "email": "E-mailová adresa",
         "createdAt": "Vytvorené",
         "claimState": "Stav žiadosti",
-        "poName": "Povinná osoba",
+        "poName": "Ogán riadenia",
         "stateEnum": {
             "WAITING": "Vytvorená",
             "ACCEPTED": "Akceptovaná",
@@ -999,21 +999,22 @@
         "approve": "Schváliť",
         "decline": "Zamietnuť",
         "modalLabel": "Zamietnutie žiadosti",
-        "modalTextPlaceHolder": "Sem môžete napísať dôvod zamietnutia žiadosti"
+        "modalTextPlaceHolder": "Sem môžete napísať dôvod zamietnutia žiadosti."
     },
     "errors": {
         "default": "Ups, niečo sa pokazilo.",
         "validateFile": "Validacia súboru zlyhalo",
         "uploadFile": "Nahrávanie súboru zlyhalo",
-        "gnr403": "Na volanie nemáte oprávnenie.",
+        "gnr403": "Na akciu nemáte dostatočné oprávnenie.",
         "gnr412": "Podmienka nie je splnená."
     },
     "todo": {
-        "header": "Stránka nenájdená",
-        "description": "Stránka, ktorú hľadáte nebola nájdená alebo neexistuje",
+        "header": "Stránka nenájdená.",
+        "description": "Stránka, ktorú hľadáte nebola nájdená alebo neexistuje.",
         "homeButton": "Domovská stránka"
     },
     "breadcrumbs": {
+        "404": "Chyba",
         "home": "Domov",
         "ciEdit": "Editácia {{itemName}}",
         "noName": "Bez mena",
@@ -1023,18 +1024,17 @@
         "reports-management": "Správa zostáv",
         "reportsCreate": "Nový report",
         "reportsEdit": "Upraviť report",
-        "ciEditEntity": "Editácia položky",
-        "404": "Chyba"
+        "ciEditEntity": "Editácia položky"
     },
     "userProfile": {
         "heading": "Profil a oprávnenia",
         "changeInformationsButton": "Upraviť informácie",
         "information": {
-            "header": "Moje informácie",
+            "header": "Základné informácie",
             "name": "Meno",
             "position": "Funkcia",
             "phoneNumber": "Telefónne číslo",
-            "email": "Emailová adresa"
+            "email": "E-mailová adresa"
         },
         "settings": "Osobné preferencie",
         "rights": "Oprávnenia",
@@ -1044,9 +1044,9 @@
         "cancel": "Zrušiť",
         "showInvalidated": "Zobraziť zneplatnené položky",
         "savePreferences": "Uložiť nastavenia",
-        "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené",
-        "changedUserInformation": "Osobné informácie boli úspešne zmenené",
-        "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova.",
+        "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené.",
+        "changedUserInformation": "Osobné informácie boli úspešne zmenené.",
+        "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím, skúste vykonať zmeny znova.",
         "defaultPerPage": "Prednastavený počet riadkov v tabuľke",
         "defaultLang": "Prednastavený jazyk",
         "myPoSelect": "Vyberte PO",
@@ -1057,9 +1057,9 @@
         "repeatPassword": "Opakované heslo"
     },
     "validation": {
-        "required": "Toto pole je povinné",
-        "minCharacters": "{{itemName}} musí obsahovať aspoň {{min}} znakov",
-        "maxCharacters": "{{itemName}} môže obsahovať maximálne {{max}} znakov",
+        "required": "Toto pole je povinné.",
+        "minCharacters": "{{itemName}} musí obsahovať aspoň {{min}} znakov.",
+        "maxCharacters": "{{itemName}} môže obsahovať maximálne {{max}} znakov.",
         "password": "Heslo musí obsahovať aspoň jeden veľký znak, aspoň jeden malý znak a aspoň jeden iný znak."
     },
     "documentsManagement": {
@@ -1071,9 +1071,9 @@
         "resetPosition": "Zrušiť editáciu",
         "addNewGroup": "Nová skupina dokumentov",
         "name": "Názov",
-        "nameEng": "Názov Eng",
+        "nameEng": "Anglický názov",
         "description": "Popis",
-        "descriptionEng": "Popis Eng",
+        "descriptionEng": "Anglický popis",
         "projectPhase": "Fáza projektu",
         "projectStatus": "Stav projektu",
         "confluence": "Confluence",
@@ -1088,7 +1088,7 @@
         "baseInfo": "Základné informácie",
         "docId": "Identifikátor dokumentu",
         "docTemplate": "Šablóna dokumentu",
-        "useTemplate": "Vložiť predvypľnený obsah šablóny",
+        "useTemplate": "Vložiť predvyplnený obsah šablóny.",
         "addDocument": "Pridať dokument",
         "editDocument": "Upraviť dokument",
         "selectedDocumentsGroup": "Vybraná skupina dokumentov",
@@ -1101,7 +1101,7 @@
         "deleteTooltip": "Odstránenie je povolené len pre prázdne skupiny (najskôr odstráňte existujúce dokumenty)"
     },
     "homePage": {
-        "placeholder": "Domov - pre zobrazenie navigácie je potrebné prihlásiť sa",
+        "placeholder": "Domov - pre zobrazenie navigácie je potrebné sa prihlásiť.",
         "loggedInPlaceholder": "Vitajte."
     },
     "notifications": {
@@ -1240,16 +1240,16 @@
     },
     "relationDetail": {
         "editSuccess": "Úprava {{relationName}} prebehla úspešne.",
-        "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Skúste akciu zopakovať a ak chyba pretrváva, kontaktujte podporu."
+        "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Pokúste sa úpravy zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk"
     },
     "crash": {
-        "heading": "Ups, niečo sa pokazilo",
-        "description": "Zaznamenali sme interný problém s aplikáciou",
+        "heading": "Ups, niečo sa pokazilo.",
+        "description": "Zaznamenali sme interný problém s aplikáciou.",
         "reload": "Obnoviť stránku",
-        "copyError": "Skopírovať error"
+        "copyError": "Skopírovať chybu"
     },
     "autoLogout": {
-        "warningMessage": "O {{countDown}} sekúnd budete kvôli inaktivite odhlásený.",
+        "warningMessage": "Z dôvodu nečinnosti budete o {{countDown}} sekúnd automaticky odhlásený z MetaIS.",
         "loading": "Spracúvame odhlásenie"
     },
     "close": "Zatvoriť",
