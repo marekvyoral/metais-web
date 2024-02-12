@@ -2671,7 +2671,9 @@
         "itemSuccess": "Upload {{itemName}} bol úspešný",
         "deleteItem": "Odstrániť {{itemName}} zo zoznamu"
     },
-
+    "technical": {
+        "declaration": "Vyhlásenie o prístupnosti"
+    },
     "close": "Zatvoriť",
     "closeFeedback": "Zatvoriť správu o spätnej väzbe",
     "valid": "Hodnota vstupu je valídna",

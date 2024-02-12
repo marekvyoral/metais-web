@@ -2666,7 +2666,9 @@
         "itemSuccess": "Upload of {{itemName}} was successfull",
         "deleteItem": "Remove {{itemName}} from list"
     },
-
+    "technical": {
+        "declaration": "Declaration"
+    },
     "close": "Close",
     "closeFeedback": "Close feedback message",
     "valid": "Input value is valid",

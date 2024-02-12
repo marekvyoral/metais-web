@@ -135,6 +135,7 @@ import TermsOfUse from '@/pages/cookies/termsOfUse'
 import CookiesSettings from '@/pages/cookies/settings'
 import { ReportsDetailPage } from '@/pages/reports/[entityId]/report'
 import CookiesInfoPage from '@/pages/cookies/info'
+import DeclarationPage from '@/pages/technical/declaration'
 
 export interface RouteConfig {
     path?: string
@@ -531,6 +532,11 @@ export const routesConfig: RouteConfig[] = [
                 path: FooterRouteNames.COOKIES,
                 slug: FooterRouteNames.COOKIES,
                 component: CookiesInfoPage,
+            },
+            {
+                path: FooterRouteNames.ACCESSIBILITY_DECLARATION,
+                slug: FooterRouteNames.ACCESSIBILITY_DECLARATION,
+                component: DeclarationPage,
             },
             {
                 path: FooterRouteNames.PERSONAL_DATA_PROTECTION,

@@ -294,6 +294,7 @@ export const LOWER_CASE_NUMBER_DOT_REGEX = /^[a-z0-9.]*$/
 export const SPACES_REGEX = /\s+/g
 export const baseWikiUrl = import.meta.env.VITE_REST_CLIENT_WIKI_BASE_URL
 export const STAV_DIZ_ENUM_CODE = 'STAV_DIZ'
+export const DECLARATION_ID = 'isvs_63'
 
 export const categoryParameterMap = new Map<string, string>([
     ['AS', 'c_typ_parametra_kategoria.3'],
