@@ -185,7 +185,8 @@
             "totalCostOfOwnership": "Celkové náklady na vlastníctvo",
             "serviceLevelAgreementsWithOperator": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
             "integrationAgreementsOnServiceLevel": "Integračné dohody o úrovni poskytovania služieb (ISLA)",
-            "training": "Školenie"
+            "training": "Školenie",
+            "relationsSearch": "Vyhľadávanie podľa vzťahov"
         },
         "sla": {
             "slaAndIntegrations": "SLA",

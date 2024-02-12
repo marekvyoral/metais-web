@@ -187,7 +187,8 @@
             "totalCostOfOwnership": "Total costs of ownership",
             "serviceLevelAgreementsWithOperator": "Service level agreements with the Operator (SLA)",
             "integrationAgreementsOnServiceLevel": "Integration agreements on the level of service provided (ISLA)",
-            "training": "Trainings"
+            "training": "Trainings",
+            "relationsSearch": "Relationships search"
         },
         "sla": {
             "slaAndIntegrations": "SLA",
