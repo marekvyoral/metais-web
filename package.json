@@ -121,7 +121,8 @@
         "postinstall": "patch-package",
         "generate-api-development": "yarn build:script:transform && cross-env DOTENV_CONFIG_PATH=./.env.development orval --config ./orval.config.ts",
         "generate-api-production": "yarn build:script:transform && cross-env DOTENV_CONFIG_PATH=./.env.production orval --config ./orval.config.ts",
-        "export-locale": "tsx export-locale.ts"
+        "export-locale": "tsx export-locale.ts",
+        "import-locale": "tsx import-locale.ts"
     },
     "eslintConfig": {
         "extends": [
@@ -169,6 +170,8 @@
         "eslint-plugin-react": "^7.32.2",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-storybook": "^0.6.12",
+        "fast-csv": "^5.0.0",
+        "lodash": "^4.17.21",
         "orval": "^6.16.0",
         "prettier": "^2.8.8",
         "prop-types": "^15.8.1",

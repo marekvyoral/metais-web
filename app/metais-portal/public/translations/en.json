@@ -325,7 +325,7 @@
         "close": "Close language menu"
     },
     "language": {
-        "sk": "Slovenčina",
+        "sk": "Slovenský jazyk",
         "en": "English",
         "cimode": "Translations"
     },
@@ -465,7 +465,7 @@
         "basicInformation": "Basic information",
         "relations": "Relations",
         "owner": "Manager",
-        "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by e-mail."
+        "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by at metais@mirri.gov.sk"
     },
     "tasksKris": {
         "createTask": "Add new task",
@@ -845,7 +845,7 @@
     "createEntity": {
         "required": "required",
         "errorTitle": "Error occured",
-        "errorMessage": "We apologize, but a technical error occurred during your action. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
+        "errorMessage": "We apologize, but a technical error occurred while editing the item. Try submitting the form again. If the error occurs repeatedly, contact the administrator at: metais@mirri.gov.sk",
         "select": "Select...",
         "email": "metais@mirri.gov.sk",
         "publicAuthority": "Public Authority",
@@ -1008,7 +1008,7 @@
         "error": "Error while fetching data",
         "failedFetch": "There was a problem with fetching data. Please try again.",
         "queryErrorTitle": "Error occured",
-        "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",
+        "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator at:",
         "mutationErrorTitle": "Action failed",
         "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at",
         "saving": "Saving",
@@ -1204,6 +1204,7 @@
         }
     },
     "breadcrumbs": {
+        "404": "Error",
         "home": "Home",
         "ciEdit": "Edit of {{itemName}}",
         "ciClone": "Clone of {{itemName}}",
@@ -1225,7 +1226,6 @@
         "compareHistory": "Compare history",
         "ciEditEntity": "Edit of component",
         "ciCloneEntity": "Clone of component",
-        "404": "Error",
         "prelogin": "Login",
         "login": "Name and password",
         "loginProblems": "Problems with login",
@@ -1717,11 +1717,11 @@
         "PO_ISDetail": "Detail of IS",
         "PO_ISCreate": "Creation of IS",
         "PO_PO": "Subordinates",
-        "PO_PODetail": "Detail PO",
-        "PO_POCreate": "Vytvorenie PO",
+        "PO_PODetail": "Detail OR",
+        "PO_POCreate": "Creation of OR",
         "PO_IS_PO": "IS operators",
-        "PO_IS_PODetail": "Detail of IS PO",
-        "PO_IS_POCreate": "Creation of IS PO",
+        "PO_IS_PODetail": "Detail of IS OR",
+        "PO_IS_POCreate": "Creation of IS OR",
         "meetings": "Meetings",
         "codeListRequestsList": "Request list",
         "codeListRequestsDetail": "Request detail",
@@ -1867,8 +1867,7 @@
             }
         },
         "create": {
-            "heading": "Create draft",
-            "warning": "The criteria below should be evaluated before approving the draft standard, but this does not mean that each of them must be 'met' (not every criterion is relevant to each proposal). If applicant does not know to judge a criterion, than answer the whole sentence, not just 'yes/no'."
+            "heading": "Create draft"
         }
     },
     "meetings": {
@@ -2136,8 +2135,8 @@
             },
             "secretVote": "Secret vote",
             "date": {
-                "fromDate": "Date from (required):",
-                "toDate": "Date to (required):"
+                "fromDate": "Date from (required)",
+                "toDate": "Date to (required)"
             },
             "answers": {
                 "title": "Answer definitions",
@@ -2279,10 +2278,10 @@
         "target": "Goal",
         "name": "Sub-goal",
         "description": "Goal description",
-        "action": "In relation with selected KRIS",
+        "action": "In relation with selected KRIT",
         "haveNoRights": "You do not have rights to edit this input.",
         "commitmentHeader": "Commitment to the observance of the goals and principles of the National Informatization Concept of Public Administration",
-        "commitmentLabel": "We declare that the building and developing ISVS will meet our defined objectives, sub-objectives and adhere to the principles of the National Informatization Concept of Public Administration",
+        "commitmentLabel": "We declare that the building and developing ITVS will meet our defined objectives, sub-objectives and adhere to the principles of the National Informatization Concept of Public Administration",
         "noCheckedItems": "Before confirming the commitment to comply with the goals and principles of the National Concept of Informatization of Public Administration, it is necessary to select at least one goal."
     },
     "crash": {
@@ -2303,20 +2302,20 @@
         "Error": "Before using the Central Public Administration Metainformation System, you must agree to the terms",
         "Detail": {
             "Title": "Terms of use of the Central Metainformation System of Public Administration",
-            "TitleText": "Thank you for using the products and services of the Central Public Administration Metainformation System („MetaIS Services”), which consists of a web portal at metais.finance.gov.sk, an architecture modeling tool and a plugin for synchronizing data between the tool itself and the portal. The web portal represents the user interface to the system and the method of entering and presenting data. It is the main channel of the user. BizzDesign Enterprise Studio (hereinafter referred to as „BES”) is a MetaIS component used to enter architectural data in graphical form. This data is synchronized with the web portal, where it can then be supplemented by the user. Synchronization is provided by the so-called synchronization plugin (hereinafter referred to as „plugin”). The plugin enables simple mass changes through the BES tool, and it is therefore up to the authorized employee of the obliged entity (hereinafter referred to as the „user”) to use the plugin exclusively in accordance with the manual and instructions, since incorrect use can cause inconsistencies and errors, which are subsequently difficult to remove. The authorized employee of the liable entity is responsible for the consistency, completeness and accuracy of the information submitted to the central public administration meta-information system (MetaIS) for the liable entity and its subordinate organizations. By using MetaIS services, you agree to these terms and conditions.",
+            "TitleText": "Thank you for using the products and services of the Central Public Administration Metainformation System („MetaIS\"), which consists of a web portal at metais.mirri.gov.sk, an architecture modeling tool and a plugin for synchronizing data between the tool itself and the portal. The web portal represents the user interface to the system and the method of entering and presenting data. It is the main channel of the user. BizzDesign Enterprise Studio (hereinafter referred to as „BES”) is a MetaIS component used to enter architectural data in graphical form. This data is synchronized with the web portal, where it can then be supplemented by the user. Synchronization is provided by the so-called synchronization plugin (hereinafter referred to as „plugin”). The plugin enables simple mass changes through the BES tool, and it is therefore up to the authorized employee of the obliged entity (hereinafter referred to as the „user”) to use the plugin exclusively in accordance with the manual and instructions, since incorrect use can cause inconsistencies and errors, which are subsequently difficult to remove. The authorized employee of the liable entity is responsible for the consistency, completeness and accuracy of the information submitted to the MetaIS for the liable entity and its subordinate organizations. By using MetaIS services, you agree to these terms and conditions.",
             "Usage": "Use of Services",
             "UsageText": "You must not abuse MetaIS services. We may suspend or stop providing you with our Services if you violate our terms of service or rules, or when we investigate suspected inappropriate use. We believe that transparent communication, as is common in open software projects, is a good way forward and that openness creates opportunities to: published data and published content can be used in new and unexpected ways. That's why we also make materials, some of which are intended for specific state administration bodies, available online to everyone. Data obtained through the use of MetaIS services is subject to the Creative Commons Zero license / disclaimer, unless otherwise stated, as it is open data.",
             "Range": "Scope and limitations",
-            "RangeText": "We provide our Services using reasonable business skill and care and believe that they will benefit you. However, there are things that we cannot promise you in connection with the MetaIS Services. Neither the Ministry of Finance of the Slovak Republic nor its suppliers make any promises regarding the MetaIS Services, except for those expressly stated in these terms and conditions or supplementary terms. We provide the Services „as is” without warranty. The Ministry of Finance of the Slovak Republic and its suppliers are in no way responsible for any loss or damage that is not reasonably foreseeable. These terms of use only grant you certain rights to use the software. The Ministry of Finance of the Slovak Republic reserves all other rights. You may use the Software only as permitted by these Terms. In doing so, you must comply with any technical restrictions on the software that only allow you to use it in certain ways. ",
+            "RangeText": "We provide our Services using reasonable business skill and care and believe that they will benefit you. However, there are things that we cannot promise you in connection with the MetaIS Services. Neither the Ministry of Ministry of Investments, Regional Development and Informatization of the Slovak Rebublic of the Slovak Republic nor its suppliers make any promises regarding the MetaIS Services, except for those expressly stated in these terms and conditions or supplementary terms. We provide the Services „as is” without warranty. The Ministry of Ministry of Investments, Regional Development and Informatization of the Slovak Rebublic of the Slovak Republic and its suppliers are in no way responsible for any loss or damage that is not reasonably foreseeable. These terms of use only grant you certain rights to use the software. The Ministry of Finance of the Slovak Republic reserves all other rights. You may use the Software only as permitted by these Terms. In doing so, you must comply with any technical restrictions on the software that only allow you to use it in certain ways.",
             "MustNot": {
                 "Title": "You may not:",
-                "Change": "The Ministry of Finance of the Slovak Republic reserves the right to change the conditions of use of MetaIS.",
+                "Change": "Ministry of Investments, Regional Development and Informatization of the Slovak Rebublic",
                 "First": "circumvent any technical limitations of the software,",
                 "Second": "reverse-analyze, decompile or disassemble the software into components, with the exception of such activity to the extent that it is expressly permitted by the relevant legal order of the Slovak Republic, despite the aforementioned restrictions,",
                 "Third": "provide the Software to others to copy, rent, lease, or loan the Software, transfer the Software or this Agreement to a third party, or use the Software for commercial software hosting services."
             },
             "Account": "Your Account",
-            "AccountText": "You will need an account to use some of the MetaIS Services. The account can be assigned to you by your administrator (who has the role of HKO - main contact person of the liable person). To ensure the security of your account, do not disclose your password to anyone. You bear full responsibility for the activity taking place in your account or the data entered and changed through it. Do not use the same password for the account in third-party applications. If you discover any unauthorized use of your password or account, you must report this fact to the MetaIS administrator at metais@mfsr.sk.",
+            "AccountText": "You will need an account to use some of the MetaIS Services. The account can be assigned to you by your administrator (who has the role of HKO - main contact person of the liable person). To ensure the security of your account, do not disclose your password to anyone. You bear full responsibility for the activity taking place in your account or the data entered and changed through it. Do not use the same password for the account in third-party applications. If you discover any unauthorized use of your password or account, you must report this fact to the MetaIS administrator at metais@mirri.gov.sk",
             "Protection": "Privacy",
             "ProtectionText": "The organization or individual providing information to MetaIS is responsible for the compliance of the submitted information with the law, especially with regard to the Personal Data Protection Act No. 428/2002 Coll. and Art. 13 and 14 GDPR/ § 19 and 20 of Act no. 18/2018 Coll. on the protection of personal data. By using the MetaIS Services, you express your consent to the provision of the following data to MetaIS and to its processing: ",
             "ProcessInformation": {
@@ -2327,7 +2326,7 @@
                 "PO": "obliged person (employer)"
             }
         },
-        "Confirm": "Potvrtiť"
+        "Confirm": "Confirm"
     },
     "loginProblems": {
         "heading": "Do you have problems logging into the system?",

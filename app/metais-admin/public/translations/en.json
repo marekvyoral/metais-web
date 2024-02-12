@@ -22,7 +22,6 @@
         "RSS": "RSS",
         "appVersion": "App version",
         "home": "Home",
-
         "services": {
             "title": "Services and Information",
             "rations": "Rations",
@@ -167,7 +166,7 @@
         "close": "Close language menu"
     },
     "language": {
-        "sk": "Slovenčina",
+        "sk": "Slovenský jazyk",
         "en": "English",
         "cimode": "Translations"
     },
@@ -361,7 +360,7 @@
     "actionOverTable": {
         "import": "Import",
         "export": "Export",
-        "addISVSitem": "Add ISVS item",
+        "addISVSitem": "Add ITVS item",
         "selectColumn": "Columns",
         "view": "View",
         "actions": "Bulk actions",
@@ -1012,6 +1011,7 @@
         "homeButton": "Home page"
     },
     "breadcrumbs": {
+        "404": "Error",
         "home": "Home",
         "ciEdit": "Edit of {{itemName}}",
         "noName": "No name",
@@ -1021,8 +1021,7 @@
         "reports-management": "Reports management",
         "reportsCreate": "New report",
         "reportsEdit": "Edit report",
-        "ciEditEntity": "Edit of component",
-        "404": "Error"
+        "ciEditEntity": "Edit of component"
     },
     "userProfile": {
         "heading": "Profile and rights",
@@ -1235,7 +1234,7 @@
     },
     "relationDetail": {
         "editSuccess": "Edit of {{relationName}} was successful.",
-        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support."
+        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support at metais@mirri.gov.sk"
     },
     "crash": {
         "heading": "Ups, unexpected error occured",
@@ -1247,7 +1246,6 @@
         "warningMessage": "In {{countDown}} you will be logged out due to inactitvity.",
         "loading": "Proccessing logout"
     },
-
     "close": "Close",
     "valid": "Input value is valid",
     "dnd": "Item can be dragged and dropped",

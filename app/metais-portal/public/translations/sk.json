@@ -13,8 +13,8 @@
         "MIRRI": "Ministerstvo investícií, regionálneho rozvoja a informatizácie Slovenskej republiky",
         "operatorMIRRI": "Prevádzkovateľom služby je Ministerstvo investícií, regionálneho rozvoja a informatizácie SR.",
         "idsk": "Jednotným dizajn manuálom elektronických služieb.",
-        "createdInAccordance": "Vytvorené v sulade s ",
-        "exceptionsLegislation": "Osobitný postup",
+        "createdInAccordance": "Vytvorené v súlade s",
+        "exceptionsLegislation": "Osobitné postupy",
         "accessibilityDeclaration": "Vyhlásenie o prístupnosti",
         "webResidencyMap": "Mapa webového sídla",
         "GDPRAndCookies": "GDPR a cookies",
@@ -77,9 +77,9 @@
         "officialSite": "Toto je oficiálna webová stránka orgánu verejnej moci Slovenskej republiky. Oficiálne stránky využívajú najmä doménu gov.sk.",
         "link": "Odkazy na jednotlivé webové sídla orgánov verejnej moci nájdete na tomto odkaze",
         "security": "Táto stránka je zabezpečená",
-        "safety": "Buďte pozorní a vždy sa uistite, že zdieľate informácie iba cez zabezpečenú webovú stránku verejnej správy SR.Zabezpečená stránka vždy začína https:// pred názvom domény webového sídla.",
+        "safety": "Buďte pozorní a vždy sa uistite, že zdieľate informácie iba cez zabezpečenú webovú stránku verejnej správy SR. Zabezpečená stránka vždy začína https:// pred názvom domény webového sídla.",
         "menu": "Menu",
-        "search": "Search",
+        "search": "Hľadať",
         "searchPlaceholder": "Zadajte hľadaný výraz",
         "eurofonds": "Eurofondy",
         "development": "Regionálny rozvoj",
@@ -93,14 +93,14 @@
         "profile": "Profil",
         "profileImage": "Profilový obrázok",
         "showInformationAboutSite": "Rozbaľ informácie o stránke",
-        "hideInformationAboutSite": "Skry informácie o stránke",
+        "hideInformationAboutSite": "Skryť informácie o stránke",
         "linksToWebs": "odkazy na webové stránky orgánov verejnej moci",
         "linkToHomePage": "Odkaz na hlavnú stránku",
         "homeLogo": "MetaIS logo s odkazom na hlavnú stránku.",
         "notifications": "Notifikácie",
         "factChecker": "Fact-checker",
         "openMenu": "Otvor menu",
-        "closeMenu": "Skry menu"
+        "closeMenu": "Skryť menu"
     },
     "navMenu": {
         "publicAuthoritiesNav": "Orgány riadenia",
@@ -109,7 +109,7 @@
         "dataObjects": "Dátové objekty",
         "monitoringNav": "Zostavy a monitoring",
         "guides": "Postupy a návody",
-        "hide": "Skry",
+        "hide": "Skryť",
         "show": "Ukáž",
         "innerNav": "Vnútorná navigácia",
         "mainNav": "Hlavná navigácia",
@@ -134,10 +134,10 @@
             "webAddress": "Webové sídla",
             "authorities": "Orgány verejnej moci",
             "otherComponents": "Ostatné komponenty",
-            "standards": "Štandardy ISVS",
+            "standards": "Štandardy ITVS",
             "procedures": "Osobitné postupy",
             "commission": "Komisia na štandardizáciu ITVS",
-            "groups": "Pracovné skupiny v pôsobnosti komisie pre štandardizáciu ITVS",
+            "groups": "Pracovné skupiny v pôsobnosti Komisie pre štandardizáciu ITVS",
             "concept": "Tvorba návrhu",
             "concepts": "Zoznam návrhov predložených prostredníctvom MetaIS",
             "votes": "Zoznam hlasovaní",
@@ -172,9 +172,9 @@
             "registersRequestsList": "Zoznam žiadostí o pridanie referenčného registra",
             "codelistsList": "Zoznam číselníkov",
             "codelistsRequestsList": "Zoznam žiadostí o pridanie číselníka",
-            "referenceIdentifiersList": "Zoznam referenčných identifikátorov",
-            "referenceIdentifiersRequestsList": "Zoznam žiadostí o pridanie referenčného identifikátora",
-            "personalProcedures": "Osobitný postup",
+            "referenceIdentifiersList": "Zoznam referencovateľných identifikátorov",
+            "referenceIdentifiersRequestsList": "Zoznam žiadostí o pridanie referencovateľného identifikátora",
+            "personalProcedures": "Osobitné postupy",
             "educationalCourses": "Školenia",
             "publicAuthorityHierarchy": "Hierarchia orgánov riadenia",
             "webResidence": "Webové sídla",
@@ -254,7 +254,7 @@
             "name": "Názov",
             "itIsChapter": "Je kapitola",
             "personsCategory": "Kategória osoby",
-            "publicAuthorityType": "Typ povinnej osoby",
+            "publicAuthorityType": "Typ orgánu riadenia",
             "evidenceStatus": "Stav evidencie"
         },
         "metaisCode": {
@@ -275,7 +275,7 @@
     },
     "customAttributeFilter": {
         "add": "+ Pridať filter",
-        "remove": "Vymazat",
+        "remove": "Vymazať",
         "value": {
             "label": "Hodnota",
             "labelYes": "Áno",
@@ -308,10 +308,10 @@
         "select": {
             "country": "Výber krajiny"
         },
-        "submit": "Odoslať formulár",
+        "submit": "Uložiť zmeny",
         "save": "Uložiť formulár",
         "editItem": "Editovať položku",
-        "waitSending": "Čakajte prosím. Odosielam formulár.",
+        "waitSending": "Čakajte, prosím, formulár sa odosiela.",
         "cancel": "Zrušiť",
         "back": "Späť",
         "specialRule": {
@@ -324,8 +324,8 @@
         "close": "Skryť jazykové menu"
     },
     "language": {
-        "sk": "Slovenčina",
-        "en": "English",
+        "sk": "Slovenský jazyk",
+        "en": "Anglický jazyk",
         "cimode": "Preklady"
     },
     "stepper": {
@@ -347,7 +347,7 @@
             "uploadFile": "Nahrávanie súboru zlyhalo",
             "successUload": "Nahrávanie súboru bolo úspešné"
         },
-        "NoChangesDetected": "Nezaznamenali sme žiadne zmeny",
+        "NoChangesDetected": "Nezaznamenali sme žiadne zmeny.",
         "fixLink": "Opraviť",
         "invalidEntityId": "Nevalidná entita",
         "codeList": {
@@ -404,13 +404,13 @@
     },
     "mutationFeedback": {
         "success": "Akcia bola úspešná",
-        "successfulUpdated": "Položka bola úspešne zmenená",
-        "successfulCreated": "Položka bola úspešne vytvorená",
-        "successfulCloned": "Položka bola úspešne klonovaná",
+        "successfulUpdated": "Položka bola úspešne zmenená.",
+        "successfulCreated": "Položka bola úspešne vytvorená.",
+        "successfulCloned": "Položka bola úspešne klonovaná.",
         "successfulRegistered": "Používateľ bol úspešne prihlásený",
         "successfulUnregistered": "Používateľ bol úspešne odhlásený",
         "successfulInvalidated": "Položka bola úspešne zneplatnená",
-        "successfulUpdatedList": "Položky boli úspešne zmenené",
+        "successfulUpdatedList": "Položky boli úspešne zmenené.",
         "successfulRelationCreated": "Vzťah bol úspešne vytvorený."
     },
     "button": {
@@ -424,7 +424,7 @@
         "codeMetaIS": "Kód MetaIS",
         "admin": "Správca",
         "relations": "Vzťahy",
-        "status": "Stav evidencie:",
+        "status": "Stav evidencie",
         "statusTrue": "Vytvorené",
         "statusFalse": "Zneplatnené"
     },
@@ -464,7 +464,7 @@
         "basicInformation": "Základné informácie",
         "relations": "Vzťahy",
         "owner": "Správca",
-        "error": "Pri načítavaní dát sa vyskytla technická chyba a niektoré položky nemusia mať priradené hodnoty. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom."
+        "error": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba a niektoré položky nemusia mať priradené hodnoty. V prípade, že sa chyba vyskytuje opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk"
     },
     "tasksKris": {
         "createTask": "Pridať novú úlohu",
@@ -474,7 +474,7 @@
         "description": "Popis",
         "deadline": "Deadline",
         "user": "Priradené",
-        "successMsg": "Úloha bola úspešne vytvorená",
+        "successMsg": "Úloha bola úspešne vytvorená.",
         "requiredField": "Povinné pole"
     },
     "modalKris": {
@@ -507,8 +507,8 @@
             "isvs": "Vyberte ISVS",
             "allProjects": "Všetky projekty",
             "allISVS": "Všetky ISVS",
-            "docGenStart": "Generovanie dokumentu zahájené. Táto operácia môže v závislosti od komplexnosti KRIT trvať až niekoľko minút.",
-            "tooBigToGenerate": "Generovanie KRITu nie je momentálne možné z dôvodu rozsiahlosti štruktúry tohoto KRIT"
+            "docGenStart": "Generovanie dokumentu sa začalo. Táto operácia môže v závislosti od komplexnosti KRIT trvať až niekoľko minút.",
+            "tooBigToGenerate": "Generovanie KRITu nie je momentálne možné z dôvodu rozsiahlosti štruktúry tohoto KRIT."
         }
     },
     "evaluation": {
@@ -534,8 +534,8 @@
         "exportKs": "KS",
         "saveBtn": "Uložiť",
         "cancelBtn": "Zrušiť",
-        "lastVerUPPVII": "Posledná verzia Hodnotenia ÚPPVII",
-        "evalUPPVII": "Hodnotenie ÚPPVII",
+        "lastVerUPPVII": "Posledná verzia Hodnotenia MIRRI",
+        "evalUPPVII": "Hodnotenie MIRRI",
         "editor": "Zadávateľ KRIT_TO_BE",
         "table": {
             "isvsCode": "Kód ISVS",
@@ -545,17 +545,17 @@
             "modulIsvs": "Je modulom materského ISVS"
         },
         "detailTable": {
-            "lastEvaluation": "Posledná verzia Hodnotenia ÚPPVII",
+            "lastEvaluation": "Posledná verzia Hodnotenia MIRRI",
             "createdBy": "Zadávateľ KRIT_TO_BE",
             "isApproved": "Schvalené",
-            "evaluation": "Hodnotenie ÚPPVII"
+            "evaluation": "Hodnotenie MIRRI"
         },
         "ksTable": {
             "ksCode": "Kód KS",
             "ksName": "Názov KS",
             "ksPhases": "Názov fázy životného cyklu KS"
         },
-        "saveSuccess": "Zmena bola úspešne uložená"
+        "saveSuccess": "Zmena bola úspešne uložená."
     },
     "ciType": {
         "ISVS": "ISVS",
@@ -624,26 +624,26 @@
                 "return": "Vrátiť stav"
             },
             "error": {
-                "approvedBudget": "Pre schválenie je potrebné doplnenie \"Schválené ročné prevádzkové náklady projektu v EUR:\" a \"Schválený rozpočet projektu v EUR:\" na záložke \"detailne informácie\" v profile Finančné informácie\"",
-                "approvedDoc": "Pre schválenie je potrebná dokumntácia Hodnotenie projektu."
+                "approvedBudget": "Pre schválenie je potrebné doplnenie \"Schválené ročné prevádzkové náklady projektu v EUR:\" a \"Schválený rozpočet projektu v EUR:\" na záložke \"detailne informácie\" v profile \"Finančné informácie\"",
+                "approvedDoc": "Pre schválenie sa vyžaduje dokumentácia „Hodnotenie projektu“."
             }
         },
         "messages": {
-            "success": "Projekt bol posunutý do ďalšej fázy",
-            "successReturned": "Projekt vrátený na dopracovanie",
-            "error": "Pri odoslaní projektu nastala chyba",
-            "errorDocuments": "Nie sú vytvorené povinné dokumenty",
-            "errorRelations": "Nie je vytvorený povinný vzťah na ISVS, Program alebo Miesto prevádzky",
-            "errorRelationsAsKsFaza": "Položka má fázu životného cyklu \"Ostrá prevádzka",
+            "success": "Projekt bol posunutý do ďalšej fázy.",
+            "successReturned": "Projekt vrátený na dopracovanie.",
+            "error": "Pri odosielaní projektu nastala chyba.",
+            "errorDocuments": "Nie sú vytvorené povinné dokumenty.",
+            "errorRelations": "Nie je vytvorený povinný vzťah na ISVS alebo \"Miesto prevádzky\".",
+            "errorRelationsAsKsFaza": "Položka má fázu životného cyklu \"Ostrá prevádzka\".",
             "errorNotApprovedKS": "Koncové služby je potrebné vyplniť a vypublikovať.",
             "errorNotAllowedApprove": "Používateľ nemá práva na schválenie projektu.",
-            "docUploadSuccess": "Dokument bol nahraný",
-            "docRefreshSuccess": "Dokument bol obnovený",
-            "docRefreshError": "Dokument sa nepodarilo obnoviť",
+            "docUploadSuccess": "Dokument bol nahraný.",
+            "docRefreshSuccess": "Dokument bol obnovený.",
+            "docRefreshError": "Dokument sa nepodarilo obnoviť.",
             "docRefreshDatabaseError": "Ukládanie dokumentu do databázy zlyhalo.",
-            "docUploadError": "Dokument {{name}} nie je vytvorený",
-            "successProjectReturn": "Projekt vratený do predchadzajúceho stavu",
-            "successProjectCanceled": "Projekt bol zrušený",
+            "docUploadError": "Dokument {{name}} nie je vytvorený.",
+            "successProjectReturn": "Projekt vratený do predchadzajúceho stavu.",
+            "successProjectCanceled": "Projekt bol zrušený.",
             "docNotExist": "Daný dokument nie je vytvorený."
         },
         "meta": {
@@ -670,11 +670,11 @@
         "dropHere": "Potiahnite a pustite súbory sem",
         "or": "Alebo",
         "chooseFile": "Vybrať súbor",
-        "browse": "Nie je vybratý žiadny súbor (Max. veľkosť súboru 20MB)",
+        "browse": "Nie je vybratý žiadny súbor (max. veľkosť súboru 20MB).",
         "import": "Importovať",
         "cancel": "Zrušiť",
         "validate": "Zvalidovať",
-        "done": "Súbory sú naimportované!"
+        "done": "Súbory sú naimportované."
     },
     "exportItemsOrRelations": {
         "header": "Export položiek alebo vzťahov",
@@ -747,7 +747,7 @@
     },
     "historyTab": {
         "comparingHistory": "Porovnanie histórie položky {{itemName}}",
-        "configurationItem": " Informácie o zázname",
+        "configurationItem": "Informácie o zázname",
         "configurationItemTable": "Historické záznamy",
         "configurationItemView": {
             "state": "Stav evidencie",
@@ -823,14 +823,14 @@
     },
     "download": "Stiahnuť",
     "validation": {
-        "required": "Toto pole je povinné",
+        "required": "Toto pole je povinné.",
         "invalidEmail": "Zadajte platný e-mail",
         "invalidPhone": "Zadajte platné telefónne číslo",
         "wrongRegex": "Formát sa musí zhodovať s {{regexFormat}}",
         "minValue": "Hodnota musí byť aspoň",
         "maxValue": "Hodnota nesmie byť väčšia ako",
-        "character": "Zadaný môže byť len jeden znak",
-        "canNotBeDecimal": "Toto číslo musí byť celé číslo",
+        "character": "Zadaný môže byť len jeden znak.",
+        "canNotBeDecimal": "Číslo musí byť celým číslom.",
         "mustBeChecked": "Toto musí byť zaškrtnuté, ak chcete pokračovať",
         "dateMustBeGreaterThen": "Dátum musí byť neskorší ako",
         "dateMustBeEqualOrGreaterThen": "Dátum musí byť rovnaký alebo neskorší ako",
@@ -846,35 +846,35 @@
     },
     "createEntity": {
         "required": "povinné",
-        "errorTitle": "Nastala chyba",
-        "errorMessage": "Ospravedlňujeme sa, ale pri vykonávaní vašej akcie nastala technická chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
+        "errorTitle": "Nastala chyba.",
+        "errorMessage": "Ospravedlňujeme sa, ale pri úprave položky nastala technická chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, prosím, kontaktujte administrátora MetaIS e-mailom na adrese:",
         "select": "Vyber...",
         "email": "metais@mirri.gov.sk",
         "publicAuthority": "Povinná osoba",
         "role": "Rola",
         "addNewRow": "Pridať nový riadok",
         "units": "(Hodnota v {{units}})",
-        "redirectLoading": "Spracúva sa vytvorenie novej položky",
-        "redirectLoadingEdit": "Prebieha aktualizácia údajov na entite",
+        "redirectLoading": "Vytvorenie novej položky sa spracováva.",
+        "redirectLoadingEdit": "Prebieha aktualizácia údajov na entite.",
         "redirectError": "Nepodarilo sa spracovať vytvorenie novej položky. Ďalšie informácie nájdete v upozorneniach.",
         "redirectErrorEdit": "Nepodarila sa spracovať aktualizáciu novej položky. Ďalšie informácie nájdete v upozorneniach.",
-        "mutationError": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
+        "mutationError": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk",
         "tooManyFetchesError": "Pri spracovaní došlo k chybe. Akcia trvala príliš dlho. Ďalšie informácie nájdete v upozorneniach.",
         "orgAndRoleError": {
-            "title": "Chýbajúce práva pre organizáciu",
-            "message": "Chýbajú vám práva na vytvorenie položky pod touto organizáciou"
+            "title": "Chýbajúce práva pre organizáciu.",
+            "message": "Pre vytvorenie položky pod touto organizáciou nemáte dostatočné oprávnenia."
         },
         "ownerError": "Vo vytváraní nie je možné pokračovať, pretože nie ste vlastníkom tejto položky."
     },
     "table": {
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
-        "paginationSummaryEmpty": "Zobrazených 0 z celkových 0 záznamov",
-        "noRowsFound": "Nenašli sa žiadne záznamy",
+        "paginationSummaryEmpty": "Zobrazených 0 z celkových 0 záznamov.",
+        "noRowsFound": "Nenašli sa žiadne záznamy.",
         "pagination": "Tabuľková navigácia",
         "sortBy": "Zoraď podľa",
         "selectAllItems": "Vyber všetky položky",
         "selectItem": "Vyber položku {{itemName}}",
-        "noDataLoaded": "Nenačítali sa žiadne záznamy",
+        "noDataLoaded": "Nenačítali sa žiadne záznamy.",
         "expandableExpandItem": "Otvoriť detail položky",
         "expandableCloseItem": "Zatvoriť detail položky",
         "sortButtonLabel": "Zoradiť podľa {{item}}, {{sortDirection}} ",
@@ -889,8 +889,8 @@
         "cancelButtonLabel": "Zrušiť"
     },
     "loading": {
-        "loadingSubPage": "Načítavam podstránku",
-        "neighboursCardList": "Načítavam vzťahy na súvisiace položky",
+        "loadingSubPage": "Načítavam podstránku.",
+        "neighboursCardList": "Načítavam vzťahy na súvisiace položky.",
         "subitems": "Načítavam súvisiace podpoložky"
     },
     "actionOverTable": {
@@ -938,7 +938,7 @@
         "all": "Všetky",
         "active": "Aktívne",
         "done": "Hotové",
-        "selectType": "Vyberte typ:",
+        "selectType": "Vyberte typ",
         "createdFrom": "Vytvorené od:",
         "createdTo": "Vytvorené do:",
         "state": "Stav",
@@ -1005,25 +1005,25 @@
             "eventType": "Typ udalosti",
             "id": "Identifikátor",
             "message": "Správa",
-            "sendToUserIdSet": "Odoslané zostave používateľov",
+            "sendToUserIdSet": "Odoslané zostave používateľov.",
             "targetUri": "Cieľová URL",
             "userId": "ID používateľa"
         }
     },
     "feedback": {
         "loading": "Načítavajú sa údaje...",
-        "error": "Chyba pri načítavaní údajov.",
-        "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova.",
+        "error": "Nastala chyba pri načítavaní údajov.",
+        "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím, skúste akciu zopakovať.",
         "queryErrorTitle": "Nastala chyba",
-        "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba. Skúste stránku znova načítať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na adrese ",
+        "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba. Pokúste sa stránku znova načítať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte, prosím, administrátora e-mailom na adrese:",
         "mutationErrorTitle": "Akcia zlyhala",
-        "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na ",
+        "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:",
         "saving": "Vykonávam akciu",
-        "mutationCreateSuccessMessage": "Položka bola úspešne vytvorená",
+        "mutationCreateSuccessMessage": "Položka bola úspešne vytvorená.",
         "approveSuccess": "Schválené",
         "approveSaved": "Uložené",
-        "returnToWorkSuccess": "KRIT bol úspešne vrátený na prepracovanie!",
-        "sendToApprover": "KRIT bol úspešne poslaný na schválenie!",
+        "returnToWorkSuccess": "KRIT bol úspešne vrátený na prepracovanie.",
+        "sendToApprover": "KRIT bol úspešne poslaný na schválenie.",
         "codeAlreadyExists": "An internal codelist with such a code already exists",
         "sendToRevalidate": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení.",
         "passwordChanged": "Heslo bolo úspešne zmenené",
@@ -1052,15 +1052,15 @@
         "GHz": "{{val}} GHz"
     },
     "selectPublicAuthority": {
-        "error": "Chyba pri načítavaní údajov pre orgány verejnej moci.",
-        "loading": "Načítavajú sa údaje pre orgány verejnej moci.",
-        "missingRightsError": "Chýbajú vám práva na vytváranie {{item}} pod touto organizáciou",
+        "error": "Nastala chyba pri načítavaní údajov pre orgány riadenia.",
+        "loading": "Načítavajú sa údaje pre orgány riadenia.",
+        "missingRightsError": "Chýbajú Vám oprávnenia na vytváranie {{item}} pod touto organizáciou.",
         "relations": "vzťahov",
         "entity": "entít"
     },
     "selectRole": {
-        "error": "Chyba pri načítavaní údajov pre role.",
-        "loading": "Načítavajú sa údaje pre role.",
+        "error": "Nastala chyba pri načítavaní údajov pre role.",
+        "loading": "Údaje pre role sa načítavajú.",
         "required": "Rola je povinná"
     },
     "groups": {
@@ -1086,50 +1086,50 @@
         "professionals": "Odborná verejnosť",
         "addToOngoingSession": "Pridať do prebiehajúcich zasadnutí",
         "addToOngoingPolls": "Pridať do prebiehajúcich hlasovaní",
-        "seeEmailAddresses": "Vidí e-mailové adresy",
+        "seeEmailAddresses": "Vidí e-mailové adresy.",
         "editItem": "Upraviť položku",
         "description": "Popis",
         "shortName": "Skratka názvu",
-        "removeGroupMember": "Odstrániť člena skupiny",
-        "sureRemoveMember": "Naozaj chcete odstrániť člena skupiny?",
+        "removeGroupMember": "Odstránenie člena zo skupiny",
+        "sureRemoveMember": "Naozaj chcete odstrániť člena zo skupiny?",
         "export": "Export",
-        "sendEmail": "Poslať email",
+        "sendEmail": "Poslať e-mail.",
         "display": "Zobraziť",
         "showRecords": "záznamov",
-        "name": "Meno",
+        "name": "Meno a priezvisko",
         "action": "Akcia",
-        "email": "Email",
+        "email": "E-mailová adresa",
         "listOfMembers": "Zoznam členov",
         "successfulMemberUpdated": "Rola bola úspešne zmenená",
         "successfulMemberAdded": "Člen úspešne pridaný",
         "successfulMemberDeleted": "Člen bol úspešne odstránený zo skupiny",
         "mandatory": "povinné",
         "editGroup": "Zmena skupiny",
-        "addingMember": "Pridávam nového člena",
+        "addingMember": "Pridávam nového člena.",
         "removingMember": "Odstraňujem člena",
         "errors": {
-            "groupNameRequired": "Názov skupiny je povinný",
-            "groupShortNameRequired": "Skratka skupiny je povinná",
-            "descriptionRequired": "Popis je povinný",
-            "chairmanRequired": "Predseda skupiny je povinný",
-            "organizationRequired": "Organizácia je povinná",
+            "groupNameRequired": "Názov skupiny je povinný údaj.",
+            "groupShortNameRequired": "Skratka skupiny je povinný údaj.",
+            "descriptionRequired": "Popis je povinný údaj.",
+            "chairmanRequired": "Predseda skupiny je povinný údaj.",
+            "organizationRequired": "Organizácia je povinný údaj.",
             "uniqueName": "Názov skupiny musí byť jedinečný",
             "uniqueShortName": "Skratka skupiny musí byť jedinečná"
         },
-        "creatingGroup": "Vytváram novú skupinu",
-        "editingGroup": "Upravujem skupinu"
+        "creatingGroup": "Vytváram novú skupinu.",
+        "editingGroup": "Upravujem skupinu."
     },
     "tooltip": {
-        "NO_FUTURE_PDF_GOALS": "Prosím potvrďte záväzok dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy na záložke Ciele",
+        "NO_FUTURE_PDF_GOALS": "Potvrďte, prosím, záväzok dodržiavať ciele a princípy Národnej koncepcie informatizácie verejnej správy na záložke Ciele.",
         "rights": {
-            "missingPermission": "Na vykonanie operácie vám chýbajú potrebné oprávnenia",
+            "missingPermission": "Na vykonanie operácie Vám chýbajú potrebné oprávnenia.",
             "noSelectedList": "Neboli vybrané žiadne položky, nie je možné vykonať vybranú operáciu.",
-            "invalidSelectedList": "Niektoré z vami vybraných položiek sú zneplatnené, nie je možné nad nimi vykonať vybranú operáciu.",
-            "validSelectedList": "Niektoré z vami vybraných položiek sú platné, nie je možné nad nimi vykonať vybranú operáciu.",
+            "invalidSelectedList": "Niektoré z Vami vybraných položiek sú zneplatnené, nie je možné nad nimi vykonať vybranú operáciu.",
+            "validSelectedList": "Niektoré z Vami vybraných položiek sú platné, nie je možné nad nimi vykonať vybranú operáciu.",
             "invalidItem": "Položka je zneplatnená, nie je možné nad ňou vykonať vybranú operáciu.",
             "validItem": "Položka je platná, nie je možné nad ňou vykonať vybranú operáciu.",
-            "notFoundPO": "Chyba pri získávaní informácií o právach - pre dané položke nebola nájdená povinná osoba.",
-            "notToClone": "Z tejto položky nie je možné vytvoriť inštanciu nakoľko táto položka je inštanciou a nie je možné vytvárať inštancie z inštancií"
+            "notFoundPO": "Nastala chyba pri získavaní informácií o právach - pre dané položke nebola nájdená povinná osoba.",
+            "notToClone": "Z tejto položky nie je možné vytvoriť inštanciu keďže táto položka je inštanciou a nie je možné vytvárať inštancie z inštancií."
         },
         "iconAltText": "Popis položky {{text}}"
     },
@@ -1151,29 +1151,29 @@
             "warningText": "Vybrané dokumenty budú aktualizované. Vzťahy, ktoré obsahujú, nebudú zmenené.",
             "listText": "Chystáte sa aktualizovať tieto vybrané záznamy ({{count}}):",
             "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
-            "reason": "Poznámka / Dôvod",
+            "reason": "Poznámka/Dôvod",
             "updateFile": "Aktualizácia dokumentu",
-            "successList": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o aktualizácí dokumentov."
+            "successList": "Položky boli odoslané na spracovanie, prosím, počkajte na notifikáciu o aktualizácii dokumentov."
         },
         "deleteFile": {
             "title": "Zmazanie dokumentov",
             "warningText": "Vybrané dokumenty budú zmazané. Ich obnovenie nebude možné.",
             "listText": "Chystáte sa zmazať tieto vybrané dokumenty ({{count}}):",
             "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
-            "reason": "Poznámka / Dôvod zmazania",
+            "reason": "Poznámka/Dôvod zmazania",
             "deleteFile": "Zmazanie",
-            "success": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o odstránení dokumentov."
+            "success": "Položky boli odoslané na spracovanie, prosím, počkajte na notifikáciu o odstránení dokumentov."
         },
         "invalidate": {
             "title": "Zneplatnenie položky",
             "titleList": "Zneplatnenie položiek",
-            "warningText": "Vybrané záznamy budú zneplatnené. Nebude ich možné editovať, ani nad nimi vykonávať ďalšie operácie.Ich zneplatnením sa zneplatnia aj všetky vzťahy k ostatným entitám (službám a pod.)",
+            "warningText": "Vybrané záznamy budú zneplatnené. Nebude ich možné editovať, ani nad nimi vykonávať ďalšie operácie. Ich zneplatnením sa zneplatnia aj všetky vzťahy k ostatným entitám (službám a pod.).",
             "listText": "Chystáte sa zneplatniť tieto vybrané záznamy ({{count}}):",
             "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
-            "reason": "Poznámka / Dôvod zneplatnenia",
+            "reason": "Poznámka/Dôvod zneplatnenia",
             "invalidate": "Zneplatnenie",
-            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o zneplatnení.",
-            "successList": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o zneplatnení."
+            "success": "Položka bola odoslaná na spracovanie, prosím, počkajte na notifikáciu o zneplatnení.",
+            "successList": "Položky boli odoslané na spracovanie, prosím, počkajte na notifikáciu o zneplatnení."
         },
         "reInvalidate": {
             "title": "Splatňovanie položky",
@@ -1181,10 +1181,10 @@
             "warningText": "Vybrané záznamy budú splatnené. Vzťahy, ktoré obsahujú, nebudú zmenené.",
             "listText": "Chystáte sa splatniť tieto vybrané záznamy ({{count}}):",
             "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
-            "reason": "Poznámka / Dôvod zneplatnenia:",
+            "reason": "Poznámka/Dôvod zneplatnenia:",
             "reInvalidate": "Splatnenie",
-            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení.",
-            "successList": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o splatnení."
+            "success": "Položka bola odoslaná na spracovanie, prosím, počkajte na notifikáciu o splatnení.",
+            "successList": "Položky boli odoslané na spracovanie, prosím, počkajte na notifikáciu o splatnení."
         },
         "changeOwner": {
             "title": "Zmena vlastníka",
@@ -1205,11 +1205,12 @@
                 "changeCmdbItemAndRelatedCmdbItems": "Zmeniť všetky položky bez ohľadu na rozdieľnosť vlastníka",
                 "changeCmdbItem": "Zmeniť len vlastníka vybraných položiek, nemeniť vlastníka relácií"
             },
-            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o zmene vlastníka.",
-            "successList": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o zmene vlastníka."
+            "success": "Položka bola odoslaná na spracovanie, prosím, počkajte na notifikáciu o zmene vlastníka.",
+            "successList": "Položky boli odoslané na spracovanie, prosím, počkajte na notifikáciu o zmene vlastníka."
         }
     },
     "breadcrumbs": {
+        "404": "Chyba",
         "home": "Domov",
         "ciEdit": "Editácia {{itemName}}",
         "ciClone": "Klonovanie {{itemName}}",
@@ -1222,22 +1223,21 @@
         "refRegistersEdit": "Zmena údajov o referenčnom registri",
         "refIdentifiers": "Zoznam referencovateľných identifikátorov",
         "dataObjects": "Dátové objekty",
-        "requestList": "Zoznam žiadostí založenia číselníka",
-        "requestCreate": "Žiadosť o zaradenie číselníka",
+        "requestList": "Zoznam žiadostí o vytvorenie číselníka",
+        "requestCreate": "Žiadosť o vytvorenie číselníka",
         "ciCreateEntity": "Vytvorenie novej položky typu {{entityName}}",
         "compareHistory": "Porovnávanie histórie",
         "standardization": "Štandardizácia",
         "draftsList": "Zoznam návrhov",
         "ciEditEntity": "Editácia položky",
         "ciCloneEntity": "Klonovanie položky",
-        "404": "Chyba",
         "prelogin": "Prihlásenie",
         "login": "Meno a heslo",
         "loginProblems": "Problémy s prihlásením",
         "forgottenPassword": "Obnova hesla",
         "registerForTraining": "Prihlásení na školenie",
         "wiki": {
-            "EGOV_HOWTO": "e-Government Komponenty",
+            "EGOV_HOWTO": "e-Government komponenty",
             "IKT_ADMINISTRATION_HOWTO": "",
             "IKT_MIGRATION_HOWTO": "",
             "IKT_HOWTO": "",
@@ -1265,9 +1265,9 @@
             "codeLists": "Číselníky",
             "codeListsList": "Zoznam číselníkov",
             "publicCodeListsList": "Zoznam publikovaných číselníkov",
-            "requestList": "Zoznam žiadostí číselníkov",
-            "requestCreate": "Vytvoriť žiadosť číselníka",
-            "requestEdit": "Editovať žiadosť číselníka",
+            "requestList": "Zoznam žiadostí o vytvorenie číselníka",
+            "requestCreate": "Vytvoriť žiadosť o vytvorenie číselníka",
+            "requestEdit": "Editovať žiadosť o vytvorenie číselníka",
             "detail": "Detail číselníka",
             "detailEdit": "Upraviť číselník"
         },
@@ -1313,8 +1313,8 @@
             "PUBLISHED": "Publikovaná",
             "UPDATING": "Rozpracovaná",
             "ISVS_PROCESSING": "Spracovávaná ISVS",
-            "KS_ISVS_REJECTED": "Zamietnuté v Komisii pre štandardizáciu ISVS",
-            "KS_ISVS_ACCEPTED": "Akceptované v Komisii pre štandardizáciu ISVS"
+            "KS_ISVS_REJECTED": "Zamietnuté v Komisii pre štandardizáciu ITVS.",
+            "KS_ISVS_ACCEPTED": "Akceptované v Komisii pre štandardizáciu ITVS."
         },
         "table": {
             "code": "Kód",
@@ -1340,7 +1340,7 @@
             }
         },
         "feedback": {
-            "editCodeListItems": "Položky číselníka boli zmenené",
+            "editCodeListItems": "Položky číselníka boli zmenené.",
             "editItemSuccess": "Položka číselníka bola zmenená",
             "createItemSuccess": "Položka číselníka bola vytvorená",
             "translationCreated": "Jazyková verzia číselníka bola vytvorená. Teraz môžete pridávať preklad položiek v tomto jazyku.",
@@ -1360,7 +1360,7 @@
                 "export": "Export číselníka",
                 "import": "Import číselníka",
                 "addLanguageVersion": "Pridať jazykovú verziu",
-                "sendToIsvs": "Presunúť do Komisie pre štandardizáciu ISVS",
+                "sendToIsvs": "Presunúť do Komisie pre štandardizáciu ITVS",
                 "sendToSzzc": "Presunúť na správcu zoznamu ZČ",
                 "returnToMainGestor": "Vrátiť hlavnému gestorovi",
                 "publishCodeList": "Publikovať číselník",
@@ -1386,12 +1386,12 @@
         "selectedSuffix": " (zvolený)",
         "button": {
             "edit": "Zmeniť",
-            "more": "Viac akcií",
+            "more": "Viac možností",
             "save": "Uložiť",
             "language": "Jazyk",
             "exportCodelist": "Export číselníka",
             "importCodelist": "Import číselníka",
-            "sendToIsvs": "Presunúť do Komisie pre štandardizáciu ISVS",
+            "sendToIsvs": "Presunúť do Komisie pre štandardizáciu ITVS",
             "publishCodelist": "Publikovať",
             "publishCodelistItems": "Publikovať položky",
             "sendToSzzc": "Presunúť na správcu zoznamu ZČ",
@@ -1407,20 +1407,20 @@
         },
         "warning": {
             "codelistLocked": "Vykonávaním zmien ste atomaticky uzamkli číselník a jeho položky voči zmenám iných osôb",
-            "itemLocked": "Toto je rozpracovaná verzia oprávneným používateľom {{user}} zo dňa {{date}}",
-            "workVersion": "Toto je rozpracovaná verzia",
-            "updatingVersion": "Upravujete rozpracovanú verziu oprávneným používateľom {{user}} zo dňa {{day}}",
+            "itemLocked": "Toto je rozpracovaná verzia oprávneným používateľom {{user}} zo dňa {{date}}.",
+            "workVersion": "Toto je rozpracovaná verzia.",
+            "updatingVersion": "Upravujete rozpracovanú verziu oprávneným používateľom {{user}} zo dňa {{day}}.",
             "workingLanguageNotice": "Aktuálne upravujete jazyk: {{language}}"
         },
         "validation": {
-            "code": "Kód položky je povinné pole",
-            "name": "Názov položky je povinné pole",
-            "effectiveFrom": "Začiatok účinnosti je povinné pole"
+            "code": "Kód položky je povinné pole.",
+            "name": "Názov položky je povinné pole.",
+            "effectiveFrom": "Začiatok účinnosti je povinné pole."
         }
     },
     "codeListList": {
         "title": "Číselníky",
-        "requestTitle": "Žiadosť o zaradenie číselníka",
+        "requestTitle": "Žiadosť o vytvorenie číselníka",
         "requestTitleContact": "Kontaktná osoba k číselníku",
         "codeListSubtitle": "Zoznam číselníkov",
         "publicCodeListSubtitle": "Zoznam publikovaných číselníkov",
@@ -1435,7 +1435,7 @@
             "title": "Upraviť číselník",
             "dateValid": "Dátum platnosti",
             "dateFrom": "Dátum platnosti",
-            "dateTo": " Dátum platnosti do",
+            "dateTo": "Dátum platnosti do",
             "newMainGestor": "Nový hlavný gestor",
             "addNewGestor": "Pridať nového hlavného gestora",
             "cancelAddNewGestor": "Zrušiť pridanie nového hlavného gestora",
@@ -1450,31 +1450,31 @@
             "codeListTableTitle": "Položky číselníka",
             "codeId": "Kód",
             "codeName": "Názov položky",
-            "addBtn": "Žiadosť o zaradenie číselníka",
+            "addBtn": "Žiadosť o vytvorenie číselníka",
             "addItemBtn": "Pridať novú položku",
             "saveBtn": "Uložiť",
             "submitBtn": "Odoslať žiadosť"
         },
         "requestValidations": {
-            "codelistName": "Názov číselníka je povinné pole",
-            "codelistCodeFormat": "Kód číselníka je v zlom formáte",
-            "codelistCode": "Kód číselníka je povinné pole",
-            "resortCode": "Rezortný kód je povinné pole",
-            "refIndicator": "Referencovateľný identifikátor je povinné pole",
-            "mainGestor": "Hlavný gestor je povinné pole",
-            "name": "Meno je povinné pole",
-            "lastName": "Priezvisko je povinné pole",
-            "email": "Email je povinné pole",
+            "codelistName": "Názov číselníka je povinné pole.",
+            "codelistCodeFormat": "Kód číselníka je v zlom formáte.",
+            "codelistCode": "Kód číselníka je povinné pole.",
+            "resortCode": "Rezortný kód je povinné pole.",
+            "refIndicator": "Referencovateľný identifikátor je povinné pole.",
+            "mainGestor": "Hlavný gestor je povinné pole.",
+            "name": "Meno je povinný údaj.",
+            "lastName": "Priezvisko je povinný údaj.",
+            "email": "E-mailová adresa je povinný údaj.",
             "emailFormat": "Email je v nesprávnom tvare",
-            "phone": "Telefónne číslo je povinné pole",
+            "phone": "Telefónne číslo je povinný údaj.",
             "phoneFormat": "Telefónne číslo je v nesprávnom tvare",
             "orderFormat": "Hodnota nie je číslo",
             "dateFormat": "Dátum je v nesprávnom formáte",
-            "dateFrom": "Dátum platnosti je povinné pole",
+            "dateFrom": "Dátum platnosti je povinné pole.",
             "dateGreaterThan": "Dátum do musí byť väčší ako dátum od",
-            "effectiveFrom": "Začiatok účinnosti je povinné pole",
-            "itemCode": "Kód položky je povinné pole",
-            "itemName": "Názov položky je povinné pole"
+            "effectiveFrom": "Začiatok účinnosti je povinné pole.",
+            "itemCode": "Kód položky je povinné pole.",
+            "itemName": "Názov položky je povinné pole."
         },
         "requestModal": {
             "yes": "Áno",
@@ -1483,7 +1483,7 @@
             "startDate": "Začiatok účinnosti",
             "endDate": "Koniec účinnosti",
             "acceptTitle": "Akceptácia žiadosti",
-            "acceptDesc": "Akceptáciou žiadosti sa návrh základného číselníka odošle na schválanie Komisii pre štandardizáciu ISVS. Po jeho schválaní sa presunie do zoznamu číselníkov a príslušný gestor bude vyzvaný na doplnenie položiek číselníka  v zákonnej lehote.",
+            "acceptDesc": "Akceptáciou žiadosti sa návrh základného číselníka odošle na schválanie Komisii pre štandardizáciu ITVS. Po jeho schválaní sa presunie do zoznamu číselníkov a príslušný gestor bude vyzvaný na doplnenie položiek číselníka.",
             "acceptSzzcTitle": "Akceptácia žiadosti správcom",
             "acceptSzzcDesc": "Naozaj chcete akceptovať žiadosť?",
             "cancelReqTitle": "Zrušiť žiadosť",
@@ -1510,12 +1510,12 @@
             "NEW": "Nová",
             "UPDATING": "Upravovaný",
             "READY_TO_PUBLISH": "Pripravený na publikovanie",
-            "ISVS_PROCESSING": "Odoslaný na schválenie na KS ISVS",
+            "ISVS_PROCESSING": "Odoslaný na schválenie na KS ITVS",
             "ISVS_ACCEPTED": "Akceptovaná ISVS",
             "ISVS_REJECTED": "Zamietnutá ISVS",
             "PUBLISHED": "Publikovaný",
-            "KS_ISVS_REJECTED": "Zamietnuté v Komisii pre štandardizáciu ISVS",
-            "KS_ISVS_ACCEPTED": "Akceptované v Komisii pre štandardizáciu ISVS",
+            "KS_ISVS_REJECTED": "Zamietnuté v Komisii pre štandardizáciu ITVS.",
+            "KS_ISVS_ACCEPTED": "Akceptované v Komisii pre štandardizáciu ITVS.",
             "DRAFT": "Rozpracovaná",
             "ACCEPTED": "Akceptovaná",
             "NEW_REQUEST": "Nespracovaná",
@@ -1531,7 +1531,7 @@
             "state": "Stav"
         },
         "buttons": {
-            "MOVE_TO_KSISVS": "Presunúť do Komisie pre štandardizáciu ISVS",
+            "MOVE_TO_KSISVS": "Presunúť do Komisie pre štandardizáciu ITVS",
             "REJECT": "Zamietnuť",
             "ACCEPT": "Akceptovať",
             "ACCEPT_SZZC": "Akceptovať správcom ZČ",
@@ -1585,8 +1585,8 @@
     },
     "selectCiItem": {
         "label": "Položky",
-        "loading": "Načítavanie konfiguračných položiek",
-        "error": "Chyba pri načítavaní údajov o konfiguračných položkách."
+        "loading": "Konfiguračné položky sa načítavajú.",
+        "error": "Nastala chyba pri načítavaní údajov o konfiguračných položkách."
     },
     "newRelation": {
         "or": "Alebo",
@@ -1605,9 +1605,9 @@
         "relation": "Vzťah",
         "email": "metais@mirri.gov.sk",
         "errorTitle": "Nastala chyba",
-        "errorMessage": "Ospravedlňujeme sa, ale pri vytváraní nového vzťahu nastala chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
-        "selectRelTypeError": "Na vytvorenie tohto typu vzťahu Vám chýbajú potrebné práva",
-        "wrongRoleRelTypeError": "Vybraná rola nemá právo vytvoriť daný typ vzťahu"
+        "errorMessage": "Ospravedlňujeme sa, ale pri vytváraní nového vzťahu nastala chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:",
+        "selectRelTypeError": "Na vytvorenie tohto typu vzťahu Vám chýbajú potrebné oprávnenia.",
+        "wrongRoleRelTypeError": "Vybraná rola nemá právo vytvoriť daný typ vzťahu."
     },
     "titles": {
         "mainPage": "Hlavná stránka",
@@ -1615,7 +1615,7 @@
         "taskDetail": "Detail úlohy",
         "notifications": "Notifikácie",
         "notificationDetail": "Detail notifikácie",
-        "groupsOfCommission": "Pracovné skupiny komisie",
+        "groupsOfCommission": "Pracovné skupiny Komisie pre štandardizáciu ITVS",
         "groupDetail": "Detail pracovnej skupiny",
         "groupCreate": "Vytvorenie pracovnej skupiny",
         "groupEdit": "Úprava pracovnej skupiny",
@@ -1632,11 +1632,11 @@
         "PO_ISDetail": "Detail IS",
         "PO_ISCreate": "Vytvorenie IS",
         "PO_PO": "Podriadené osoby",
-        "PO_PODetail": "Detail PO",
-        "PO_POCreate": "Vytvorenie PO",
-        "PO_IS_PO": "Prevádzkovatelia IS PO",
-        "PO_IS_PODetail": "Detail IS PO",
-        "PO_IS_POCreate": "Vytvorenie IS PO",
+        "PO_PODetail": "Detail orgánu riadenia",
+        "PO_POCreate": "Vytvorenie orgánu riadenia",
+        "PO_IS_PO": "Prevádzkovatelia IS orgánu riadenia",
+        "PO_IS_PODetail": "Detail IS orgánu riadenia",
+        "PO_IS_POCreate": "Vytvorenie IS orgánu riadenia",
         "meetings": "Zoznam zasadnutí",
         "codeListRequestsList": "Zoznam žiadostí",
         "codeListRequestsDetail": "Detail žiadosti",
@@ -1663,8 +1663,8 @@
             "name": "Názov",
             "firstName": "Meno",
             "lastName": "Priezvisko",
-            "email": "Email",
-            "phoneNumber": "Tel. číslo",
+            "email": "E-mailová adresa",
+            "phoneNumber": "Telefónne číslo",
             "managerContact": "Kontakt na správcu referenčného registra",
             "registratorContact": "Kontakt na registrátora referenčného registra",
             "save": "Odoslať žiadosť"
@@ -1690,7 +1690,7 @@
             "muk": {
                 "heading": "MUK",
                 "NONE": "Žiadne",
-                "BOTH": "Oboje",
+                "BOTH": "Obidve možnosti",
                 "MV": "MV",
                 "MF": "MF"
             }
@@ -1703,8 +1703,8 @@
             "informations": "Základné informácie",
             "history": "História zmien",
             "historyChanges": "História zmeny stavov",
-            "isvsRefId": "Referenčný identifikátor",
-            "isvsRefTooltip": "Tooltip pre referenčný identifikátor",
+            "isvsRefId": "Referencovateľný identifikátor",
+            "isvsRefTooltip": "Nápoveda pre referencovateľný identifikátor",
             "items": {
                 "edit": "Zmeniť",
                 "delete": "Zmazať",
@@ -1727,80 +1727,80 @@
         "header": {
             "description": "Poznámka k zmene ref.registra",
             "submit": "Potvrdiť",
-            "submitMPK": "Vygenerovať podklad a zmeniť stav registra na 'Návrh do MPK'",
+            "submitMPK": "Vygenerovať podklad a zmeniť stav registra na \"Návrh do MPK\"",
             "generateProposition": "Vygenerovať pracovný návrh",
             "changeContact": "Zmeniť kontaktné údaje",
             "changeManagerInfo": "Zmeniť údaje o oprávnení správcu",
             "delete": "Zmazať",
             "inConstructionPrefix": "Vrátiť do stavu '{{ itemName }}'",
             "othersPrefix": "Posunúť do stavu '{{ itemName }}'",
-            "generateProp1": "Vážený používateľ, po kliknutí na button Vám bude vygenerovaný pracovný návrh Referenčného registra. Stav registra zostane nezmenený, takisto tento úkon nebude zaznamenaný v histórií. Súbor bude uložený lokálne na Vašom počítači. Odporúčame zmeniť jeho názov a umiestnenie. ",
+            "generateProp1": "Vážený používateľ, po kliknutí na Tlačidlo Vám bude vygenerovaný pracovný návrh „Referenčného registra“. Stav registra zostane nezmenený, takisto tento úkon nebude zaznamenaný v histórii. Súbor bude uložený lokálne na Vašom počítači. Odporúčame zmeniť jeho názov a umiestnenie.",
             "generateProp2": "(Ak ste práve vložili referenčné údaje, prípadne robili inú úpravu, odporúčame chvíľu počkať na uloženie údajov a potom akciu potvrdiť.)",
             "generateProp": "Vygenerovať pracovný návrh",
-            "MPKheading1": "Vážený používateľ, po potvrdení zmeny stavu na 'Návrh do MPK' Vám bude vygenerovaný súbor, ktorý slúži ako podklad pre pripomienkovanie MPK. Súbor bude uložený lokálne na Vašom počítači.",
+            "MPKheading1": "Vážený používateľ, po potvrdení zmeny stavu na „Návrh do MPK“ Vám bude vygenerovaný súbor, ktorý slúži ako podklad pre pripomienkovanie MPK. Súbor bude uložený lokálne na Vašom počítači.",
             "MPKheading2": "Odporúčame upraviť jeho názov a umiestnenie."
         }
     },
     "todo": {
-        "header": "Stránka nenájdená",
-        "description": "Stránka, ktorú hľadáte nebola nájdená alebo neexistuje",
+        "header": "Stránka nenájdená.",
+        "description": "Stránka, ktorú hľadáte nebola nájdená alebo neexistuje.",
         "homeButton": "Domovská stránka"
     },
     "userProfile": {
         "heading": "Profil a oprávnenia",
         "changeInformationsButton": "Upraviť informácie",
         "information": {
-            "header": "Moje informácie",
-            "name": "Meno",
+            "header": "Základné informácie",
+            "name": "Meno a priezvisko",
             "position": "Funkcia",
             "phoneNumber": "Telefónne číslo",
-            "email": "Emailová adresa"
+            "email": "E-mailová adresa"
         },
         "settings": "Osobné preferencie",
-        "rights": "Oprávnenia",
+        "rights": "Priradené role",
         "trainings": "Školenia",
         "trainingsHeading": "Moje školenia",
         "notificationsSettings": "Správa notifikácií",
         "passwordChange": "Zmena hesla",
         "oldPassword": "Staré heslo",
         "newPassword": "Nové heslo",
-        "repeatPassword": "Opakované heslo",
+        "repeatPassword": "Potvrdenie nového hesla",
         "save": "Uložiť",
         "cancel": "Zrušiť",
         "showInvalidated": "Zobraziť zneplatnené položky",
         "savePreferences": "Uložiť nastavenia",
-        "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené",
-        "changedUserInformation": "Osobné informácie boli úspešne zmenené",
-        "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova.",
+        "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené.",
+        "changedUserInformation": "Osobné informácie boli úspešne zmenené.",
+        "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím, skúste vykonať zmeny znova.",
         "defaultPerPage": "Prednastavený počet riadkov v tabuľke",
         "defaultLang": "Prednastavený jazyk",
-        "myPoSelect": "Vyberte PO",
-        "isMyPoEnabled": "Zobrazovať položky mojej PO",
+        "myPoSelect": "Vyberte orgán riadenia",
+        "isMyPoEnabled": "Zobrazovať položky môjho orgánu riadenia",
         "rightsHeading": "Moje role a zastupujúce subjekty",
         "requests": {
-            "po": "Povinná osoba",
+            "po": "Orgán riadenia",
             "phone": "Telefónne číslo",
-            "email": "Emailová adresa",
+            "email": "E-mailová adresa",
             "description": "Popis žiadosti",
-            "poRequired": "Povinná osoba je povinná",
-            "phoneRequired": "Telefónne číslo je povinné",
-            "emailRequired": "Emailová adresa je povinná",
+            "poRequired": "Názov orgánu riadenia je povinný.",
+            "phoneRequired": "Telefónne číslo je povinný údaj.",
+            "emailRequired": "E-mailová adresa je povinný údaj.",
             "descriptionRequired": "Popis žiadosti je povinný",
             "rightsSettings": "Žiadosť o nastavenie oprávnení",
             "required": "povinné",
             "placeholder": "Zadajte",
-            "placeholderPO": "Vyberte povinnú osobu",
+            "placeholderPO": "Vyberte orgán riadenia",
             "cancel": "Zrušiť",
             "submit": "Odoslať",
             "deletePersonalInfo": "Žiadosť o vymazanie osobných údajov"
         },
         "deletePersonalInfo": {
-            "description": "Pre vymazanie účtu je nutné zadat vaše aktuálne heslo.",
+            "description": "Pre vymazanie účtu je nutné zadať Vaše aktuálne heslo.",
             "password": "Vaše heslo",
             "invalidPassword": "Nesprávne heslo",
             "submit": "Vymazať účet a moje údaje",
             "heading": "Naozaj si želáte vymazanie osobných údajov?",
-            "passwordPlaceholder": "Zadajte vaše heslo"
+            "passwordPlaceholder": "Zadajte Vaše heslo"
         }
     },
     "DraftsList": {
@@ -1809,7 +1809,7 @@
             "version": "Verzia",
             "name": "Predkladateľ",
             "srName": "Názov návrhu",
-            "standardRequestState": "Stav",
+            "standardRequestState": "Stav návrhu",
             "requestChannel": "Typ návrhu",
             "createdAt": "Dátum zadania návrhu",
             "workGroup": "Pracovná skupina"
@@ -1839,7 +1839,7 @@
         "detail": {
             "noDocuments": "Nie sú priložené žiadne dokumenty",
             "assignedToGroup": "Pridelený skupine",
-            "missingRejectReason": "Nebol zadaný dôvod zrušenia",
+            "missingRejectReason": "Nebol zadaný dôvod zrušenia.",
             "accordion": {
                 "basicInformation": "Základné informácie",
                 "generalDescription": "Všeobecný popis návrhu",
@@ -1848,12 +1848,12 @@
         },
         "create": {
             "heading": "Tvorba návrhu",
-            "warning": "Kritériá, uvádzané nižšie, je potrebné pred schválením návrhu štandardu vyhodnotiť, neznamená to však, že každé z nich musí byť „splnené“ (nie každé kritérium je relevantné pre každý návrh). Pokiaľ predkladateľ nevie niektoré kritérium posúdiť alebo ho uviesť, v odpovedi uvedie takúto informáciu. V rámci možností odpovedajte celou vetou, nie len „áno/nie“."
+            "warning": "\"Kritériá uvádzané nižšie je potrebné pred schválením návrhu štandardu vyhodnotiť, neznamená to však, že každé z nich musí byť „splnené“ (nie každé kritérium je relevantné pre každý návrh). Ak neviete niektoré kritérium posúdiť alebo ho uviesť, v odpovedi uveďte takúto informáciu. V rámci možností, prosím, odpovedajte celou vetou, nie len „áno/nie“."
         },
         "createForm": {
             "heading": "Znenie návrhu",
             "name": "Meno a priezvisko",
-            "email": "Email",
+            "email": "E-mailová adresa",
             "userHeading": "Identifikácia používateľa",
             "submit": "Pridať návrh",
             "cancel": "Zrušiť",
@@ -1900,7 +1900,7 @@
         "meetingActors": "Pozvaní členovia",
         "meetingExternalActors": "Hostia",
         "userName": "Meno",
-        "email": "Emailová adresa",
+        "email": "E-mailová adresa",
         "linkChange": "Zmeniť záznam",
         "linkSave": "Uložiť záznam",
         "participation": "Potvrdenie o účasti",
@@ -1944,7 +1944,7 @@
             "group": "Pozvané skupiny",
             "meetingActors": "Pozvaní používatelia",
             "externalActorName": "Meno a priezvisko",
-            "externalActorEmail": "Emailová adresa",
+            "externalActorEmail": "E-mailová adresa",
             "externalActorDescription": "Doplnkový popis",
             "addExternalActors": "+ Pridať ďalšieho hosťa",
             "program": "Agenda",
@@ -1965,7 +1965,7 @@
             "srName": "Názov návrhu",
             "requestChannelValue": {
                 "RI": "Referencovateľný identifikátor",
-                "ZC_Request": "Žiadosť o pridanie nového ZČ",
+                "ZC_Request": "Žiadosť o vytvorenie nového ZČ",
                 "ZC_Header": "Žiadosť o zmenu ZČ",
                 "RR": "Referenčný register",
                 "WEB": "Všeobecný"
@@ -1981,32 +1981,32 @@
         "notificationUser": "Poslať notifikáciu len novým účastníkom",
         "notification": "Ignorovať osobné nastavenia notifikácií",
         "filter": {
-            "meetingOption": "Zobraziť",
+            "meetingOption": "Zobraziť zasadnutie",
             "meetingOptionValue": {
                 "all": "Všetky zasadnutia",
                 "my": "Len moje zasadnutia"
             },
             "group": "Pridelená pracovná skupina",
-            "state": "Stav",
-            "startDate": "Prijaté v období od",
-            "endDate": "Prijaté v období do"
+            "state": "Stav zasadnutia",
+            "startDate": "Realizované v období od",
+            "endDate": "Realizované v období do"
         },
         "canseledMeeting": "Zasadnutie bolo zrušené",
         "canseledMeetingReason": "Dôvod zrušenia",
-        "noDocumentsAttached": "Nie sú priložené žiadne dokumenty",
-        "noDocumentsLinkAttached": "Nie sú priložené žiadne odkazy na dokumenty",
+        "noDocumentsAttached": "Nie sú priložené žiadne dokumenty.",
+        "noDocumentsLinkAttached": "Nie sú priložené žiadne odkazy na dokumenty.",
         "documentLinks": "Linky na dokumenty",
         "otherDocuments": "Iné dokumenty",
         "errors": {
-            "meetingNameRequired": "Názov stretnutia je povinný",
-            "meetingDateRequired": "Dátum stretnutia je povinný",
-            "meetingTimeStartRequired": "Čas je povinný",
-            "meetingTimeEndRequired": "Čas je povinný",
-            "meetingPlaceRequired": "Miesto stretnutia je povinné",
-            "meetingActorsRequired": "Pozvaní používatelia sú povinní",
+            "meetingNameRequired": "Názov stretnutia je povinný údaj.",
+            "meetingDateRequired": "Dátum stretnutia je povinný údaj.",
+            "meetingTimeStartRequired": "Čas je povinný údaj.",
+            "meetingTimeEndRequired": "Čas je povinný údaj.",
+            "meetingPlaceRequired": "Miesto stretnutia je povinný údaj.",
+            "meetingActorsRequired": "Pozvaní používatelia je povinný údaj.",
             "meetingDescriptionRequired": "Opis stretnutia je povinný",
-            "meetingExternalActorsNameRequired": "Meno použivateľa je povinné",
-            "meetingExternalActorsEmailRequired": "Email je povinný"
+            "meetingExternalActorsNameRequired": "Meno je povinný údaj.",
+            "meetingExternalActorsEmailRequired": "E-mailová adresa je povinný údaj."
         },
         "": ""
     },
@@ -2046,8 +2046,8 @@
     },
     "votes": {
         "actions": {
-            "sent": "Váš hlas bol odoslaný.",
-            "failedToSend": "Váš hlas sa nepodarilo odoslať."
+            "sent": "Ďakujeme, Váš hlas bol odoslaný.",
+            "failedToSend": "Váš hlas sa nepodarilo odoslať. Pokúste sa hlasovanie zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora štandardizácie e-mailom na adrese: standard@mirri.gov.sk"
         },
         "breadcrumbs": {
             "home": "Domov",
@@ -2059,18 +2059,18 @@
         },
         "votesList": {
             "title": "Zoznam hlasovaní",
-            "tooltipText": "Pre neprihláseného sa nezobrazia stĺpce Právo hlasovať a Hlasoval za subjekt.",
+            "tooltipText": "Pre neprihláseného sa nezobrazia stĺpce „Právo hlasovať“ a „Hlasoval za subjekt“.",
             "table": {
                 "effectiveFrom": "Dátum spustenia",
                 "effectiveTo": "Dátum ukončenia",
-                "voteState": "Stav",
+                "voteState": "Stav hlasovania",
                 "canCast": "Právo hlasovať",
                 "hasCast": "Hlasované za subjekt",
                 "name": "Predmet hlasovania (znenie otázky)"
             },
             "filter": {
                 "title": "Filter",
-                "votesTypeToShow": "Zobraziť",
+                "votesTypeToShow": "Zobraziť hlasovanie",
                 "voteState": "Stav hlasovania",
                 "fromDate": "Prebiehajúce v období od",
                 "toDate": "Prebiehajúce v období do"
@@ -2078,8 +2078,8 @@
         },
         "voteDetail": {
             "created": "Hlasovanie bolo vytvorené",
-            "date": "Dátum",
-            "voteType": "Typ Hlasovania",
+            "date": "Dátum hlasovania",
+            "voteType": "Typ hlasovania",
             "relatedDocuments": "Súvisiace dokumenty",
             "standardRequestTitle": "Hlasovanie sa týka návrhu",
             "links": "Linky na dokumenty",
@@ -2102,20 +2102,20 @@
             "changeDescription": "Popis Zmeny",
             "voteChoiceLabel": {
                 "cannotCast": "Hlasovať može iba prihlásený a oprávnený používateľ.",
-                "canCast": "Máte oprávnenie hlasovať",
-                "alreadyVoted": "Už ste zahlasovali za tento návrh"
+                "canCast": "Máte oprávnenie hlasovať.",
+                "alreadyVoted": "Za tento hávrh ste už hlasovali."
             },
             "voteVetoChoiceLabel": "Vetovať hlasovanie",
-            "description": "Poznámka",
+            "description": "Poznámka k hlasovaniu",
             "voteConclusion": "Záver hlasovania",
             "voteState": "Stav hlasovania ",
-            "vetoed": "Návrh bol vetovaný",
+            "vetoed": "Návrh bol vetovaný.",
             "vetoedBy": "Vetoval",
-            "vetoedDescription": "Dôvod",
+            "vetoedDescription": "Dôvod vetovania",
             "table": {
-                "name": "Meno",
+                "name": "Meno a priezvisko",
                 "organization": "Organizácia",
-                "role": "Pozícia"
+                "role": "Rola"
             }
         },
         "voteEdit": {
@@ -2149,11 +2149,11 @@
             "answers": {
                 "title": "Definícia odpovedí",
                 "particularAnswerTitle": "odpoveď",
-                "addNext": "Pridať ďalšiu definíciu",
+                "addNext": "Pridať ďalšiu odpoveď",
                 "veto": "Povoliť právo veta",
-                "yes": "Áno",
-                "no": "Nie",
-                "didNotVote": "Zdržal sa hlasovania"
+                "yes": "Áno, súhlasím",
+                "no": "Nie, nesúhlasím",
+                "didNotVote": "Zdržím sa hlasovania"
             },
             "cancel": "Zrušiť",
             "callVote": "Vytvoriť hlasovanie",
@@ -2189,51 +2189,51 @@
             },
             "cancel": "Zrušiť",
             "select": "Vybrať",
-            "loadingData": "Načítavam údaje",
-            "callingVote": "Spracovávam hlasovanie"
+            "loadingData": "Prebieha načítavenie údajov.",
+            "callingVote": "Prebieha spracovanie hlasovania."
         },
         "error": {
             "errorTitle": "Nastala chyba",
-            "errorMessage": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
+            "errorMessage": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk"
         }
     },
     "registration": {
-        "uniqueLogin": "Používateľ s týmto prihlasovacím menom už existuje. Prihlásenie musí byť jedinečné, dostupné prihlasovacie meno je napríklad {{available}}",
-        "uniqueEmail": "Používateľ s týmto e-mailom už existuje. E-mail musí byť unikátny.",
+        "uniqueLogin": "Používateľ s týmto prihlasovacím menom je už registrovaný. Prihlasovacie meno musí byť jedinečné, dostupné prihlasovacie meno je napríklad {{available}}.",
+        "uniqueEmail": "Používateľ s týmto e-mailom je už registrovaný. E-mailová adresa musí byť jedinečná.",
         "firstName": "Meno",
         "lastName": "Priezvisko",
-        "email": "Emailová adresa",
+        "email": "E-mailová adresa",
         "phone": "Telefónne číslo",
         "po": "Zástupca za subjekt",
         "login": "Prihlasovacie meno",
         "required": {
-            "firstName": "Vaše meno je povinný údaj pre registráciu.",
-            "lastName": "Vaše priezvisko je povinný údaj pre registráciu.",
-            "phone": "Telefónne číslo je povinný údaj",
-            "email": "Email je povinný údaj",
+            "firstName": "Meno je povinný údaj.",
+            "lastName": "Priezvisko je povinný údaj.",
+            "phone": "Telefónne číslo je povinný údaj.",
+            "email": "E-mailová adresa je povinný údaj.",
             "default": "Táto položka je povinná"
         },
         "format": {
-            "name": "Toto pole nesme obsahovať špeciálne znaky ako '@,&' atď.",
+            "name": "Toto pole nesmie obsahovať špeciálne znaky ako „@, &“ atď.",
             "email": "Emial zadávajte vo formáte napríklad meno.priezvisko@domena.sk",
             "phone": "Skontrolujte si prosím formát telefónneho čísla.",
-            "login": "Prihlasovacie meno akceptuje iba malé písmená, čísla a bodky.",
-            "noSpaces": "Táto položka nesmie obsahovať medzery"
+            "login": "Prihlasovacie meno môže obsahovať iba malé písmená, čísla a bodky.",
+            "noSpaces": "Táto položka nesmie obsahovať medzery."
         },
         "submit": "Registrovať",
         "title": "Registrácia",
-        "phoneHint": "Telefónne číslo zadávajte v medzinárodnom tvare (napr. +421 123 456 789 ).",
+        "phoneHint": "Telefónne číslo zadávajte, prosím, v medzinárodnom tvare (napr. +421 123 456 789 ).",
         "success": {
-            "title": "Vaša registrácia prebehla úspešne",
-            "description": "Po schválení Vašej registrácie administrátorom MetaIS Vám bude, na zadanú e-mailovú adresu, doručený notifikačný email s odkazom na aktiváciu konta a vytvorenie hesla. Platnosť notifikačného emailu je 48 hodín.",
+            "title": "Vaša registrácia prebehla úspešne.",
+            "description": "Po schválení Vašej registrácie administrátorom MetaIS Vám bude na zadanú e-mailovú adresu doručený notifikačný e-mail s odkazom na aktiváciu konta a vytvorenie hesla. Platnosť notifikačného e-mailu je 48 hodín.",
             "button": "Na úvodnú stránku"
         },
         "failed": {
             "title": "Vaša registrácia zlyhala",
-            "description": "Ospravedlňujeme sa, ale pri procese registrácie nastala chyba. Pokúste sa registráciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora emailom na <email>metais@mirri.gov.sk</email>.",
+            "description": "Ospravedlňujeme sa, ale pri procese registrácie nastala chyba. Pokúste sa registráciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: <email>metais@mirri.gov.sk</email>.",
             "button": "Zopakovať registráciu"
         },
-        "error": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
+        "error": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk",
         "consentWith": "Súhlasím s ",
         "dataProcessingConsent": "podmienkami spracúvania osobných údajov",
         "termsOfUseConsent": "podmienkami používania Centrálneho metainformačného systému verejnej správy"
@@ -2242,13 +2242,13 @@
         "target": "Cieľ aktivity",
         "name": "Aktivity NKIVS",
         "description": "Popis aktivity",
-        "action": "V relácií s vybraným Projektom"
+        "action": "V relácii s vybraným Projektom"
     },
     "publicAuthorities": {
         "hierarchy": "Hierarchia orgánov riadenia"
     },
     "publicspace": {
-        "heading": "Štandardy ISVS"
+        "heading": "Štandardy ITVS"
     },
     "draftsList": {
         "heading": "Zoznam návrhov predložených prostredníctvom MetaIS"
@@ -2266,14 +2266,14 @@
         "submit": "Odoslať",
         "cancel": "Zrušiť",
         "editSuccess": "Úprava {{relationName}} prebehla úspešne.",
-        "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Skúste akciu zopakovať a ak chyba pretrváva, kontaktujte podporu."
+        "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Pokúste sa úpravy zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk"
     },
     "autoLogout": {
-        "warningMessage": "O {{countDown}} sekúnd budete kvôli inaktivite odhlásený.",
+        "warningMessage": "Z dôvodu nečinnosti budete o {{countDown}} sekúnd automaticky odhlásený z MetaIS.",
         "loading": "Spracúvame odhlásenie"
     },
     "KRIS": {
-        "responsibleAuthority": "Aktuálne zodpovedná povinná osoba",
+        "responsibleAuthority": "Aktuálne zodpovedný orgán riadenia",
         "table": {
             "code": "Kód",
             "name": "Názov",
@@ -2282,24 +2282,24 @@
     },
     "Ciel": {
         "target": "Cieľ",
-        "name": "Pod-cieľ",
+        "name": "Podcieľ",
         "description": "Popis cieľa",
-        "action": "V relácií s vybraným KRIS",
-        "haveNoRights": "Na editovanie tejto položky nemáte prísluľné práva.",
+        "action": "V relácii s vybraným KRIT",
+        "haveNoRights": "Na editovanie tejto položky nemáte dostatočné oprávnenie.",
         "commitmentHeader": "Záväzok dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy",
-        "commitmentLabel": "Týmto prehlasujeme, že pri budovaní a rozvoji ISVS budeme napĺňať nami definované ciele, podciele a dodržiavať princípy Národnej koncepcie informatizácie verejnej správy.",
+        "commitmentLabel": "Týmto prehlasujeme, že pri budovaní a rozvoji ITVS budeme napĺňať nami definované ciele, podciele a dodržiavať princípy Národnej koncepcie informatizácie verejnej správy.",
         "noCheckedItems": "Pred potvrdením záväzku dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy je potrebné vybrať aspoň jeden cieľ."
     },
     "crash": {
         "heading": "Ups, niečo sa pokazilo",
-        "description": "Zaznamenali sme interný problém s aplikáciou",
+        "description": "Zaznamenali sme interný problém s aplikáciou.",
         "reload": "Obnoviť stránku",
-        "copyError": "Skopírovať error"
+        "copyError": "Skopírovať chybu"
     },
     "ITVSExceptions": {
         "vynimky_ITVS": "Osobitný postup",
         "relatedISVS": "Súvisiace ISVS",
-        "relatedPO": "Súvisiace Orgány riadenia",
+        "relatedPO": "Súvisiace orgány riadenia",
         "note": "Poznámka"
     },
     "LicenseAgreement": {
@@ -2308,49 +2308,49 @@
         "Error": "Pred používaním Centrálneho metainformačného systému verejnej správy musíte súhlasiť s podmienkami",
         "Detail": {
             "Title": "Podmienky používania Centrálneho metainformačného systému verejnej správy",
-            "TitleText": "Ďakujeme Vám za používanie produktov a služieb Centrálneho metainformačného systému verejnej správy („Služby MetaIS”), ktorý sa skladá z webového portálu na adrese metais.finance.gov.sk, nástroja na modelovanie architektúry a pluginu na synchronizáciu údajov medzi samotným nástrojom a portálom. Webový portál predstavuje používateľské rozhranie k systému a spôsob zadávania a prezentácie údajov. Je hlavným kanálom používateľa. Nástroj BizzDesign Enterprise Studio (ďalej aj ako „BES“) je komponentom MetaIS, ktorý slúži na zadávanie údajov o architektúre v grafickej forme. Tieto údaje sú synchronizované s webovým portálom, kde môžu byť následne používateľom doplnené. Synchronizáciu zabezpečuje tzv. plugin na synchronizáciu (ďalej aj ako „plugin“). Plugin umožňuje jednoduché hromadné zmeny prostredníctvom nástroja BES a je teda na poverenom zamestnancovi povinnej osoby (ďalej aj ako “používateľ”), aby plugin používal výhradne v súlade s manuálom a inštrukciami, keďže nesprávnym používaním je možné sposobiť nekonzistenciu a chyby, ktoré je následne časovo náročné odstrániť. Poverený zamestnanec povinnej osoby je zodpovedný za konzistenciu, úplnosť a presnosť informácií predkladaných do centrálneho metainformačného systému verejnej správy (MetaIS) za povinnú osobu a jej podriadené organizácie. Použitím služieb MetaIS vyjadrujete svoj súhlas s týmito zmluvnými podmienkami.",
+            "TitleText": "Ďakujeme Vám za používanie produktov a služieb Centrálneho metainformačného systému verejnej správy („Služby MetaIS”), ktorý sa skladá z webového portálu na adrese metais.mirri.gov.sk, nástroja na modelovanie architektúry a pluginu na synchronizáciu údajov medzi samotným nástrojom a portálom. Webový portál predstavuje používateľské rozhranie k systému a spôsob zadávania a prezentácie údajov. Je hlavným kanálom používateľa. Nástroj BizzDesign Enterprise Studio (ďalej aj ako „BES“) je komponentom MetaIS, ktorý slúži na zadávanie údajov o architektúre v grafickej forme. Tieto údaje sú synchronizované s webovým portálom, kde môžu byť následne používateľom doplnené. Synchronizáciu zabezpečuje tzv. plugin na synchronizáciu (ďalej aj ako „plugin“). Plugin umožňuje jednoduché hromadné zmeny prostredníctvom nástroja BES a je teda na poverenom zamestnancovi povinnej osoby (ďalej aj ako “používateľ”), aby plugin používal výhradne v súlade s manuálom a inštrukciami, keďže nesprávnym používaním je možné sposobiť nekonzistenciu a chyby, ktoré je následne časovo náročné odstrániť. Poverený zamestnanec povinnej osoby je zodpovedný za konzistenciu, úplnosť a presnosť informácií predkladaných do MetaIS za orgán riadenia a jej podriadené organizácie. Použitím služieb MetaIS vyjadrujete svoj súhlas s týmito zmluvnými podmienkami.",
             "Usage": "Používanie služieb",
             "UsageText": "Služby MetaIS nesmiete zneužívať. Môžeme Vám pozastaviť alebo zastaviť poskytovanie našich Služieb, ak porušíte naše zmluvné podmienky alebo pravidlá, alebo keď budeme prešetrovať podozrenie z nevhodného používania.Veríme, že transparentná komunikácia, aká je bežná pri otvorených softvérových projektoch, je dobrou cestou vpred a že otvorenosť vytvára príležitosti: publikované dáta a publikovaný obsah sa môžu využiť novým a nečakaným spôsobom. Preto aj materiály, z ktorých niektoré sú určené pre konkrétne orgány štátnej správy, dávame k dispozícii online, všetkým. Na údaje získané používaním služieb MetaIS sa vzťahuje licencia / vyhlásenie o zrieknutí sa práv Creative Commons Zero, ak nie je uvedené inak, nakoľko sa jedná o otvorené údaje.",
             "Range": "Rozsah a obmedzenia",
-            "RangeText": "Naše Služby poskytujeme s využitím primeraných obchodných schopností a starostlivosti a veríme, že Vám prinesú úžitok. Sú však veci, ktoré Vám v súvislosti so Službami MetaIS nemôžeme sľúbiť. Ministerstvo financií SR ani jeho dodávatelia neposkytujú žiadne prísľuby týkajúce sa Služieb MetaIS s výnimkou tých, ktoré sú výslovne uvedené v týchto podmienkach alebo doplňujúcich podmienkach. Služby poskytujeme bez záruk „tak ako sú“. Ministerstvo financií SR ani jeho dodávatelia nie sú v žiadnom prípade zodpovední za žiadnu stratu alebo škodu, ktorá nie je v primeranej miere predvídateľná. Tieto podmienky používania Vám poskytujú len niektoré práva na používanie softvéru. Ministerstvo financií SR si vyhradzuje všetky ostatné práva. Softvér smiete používať výhradne spôsobom povoleným v týchto podmienkach. Musíte pri tom dodržiavať akékoľvek technické obmedzenia softvéru, ktoré ho umožňujú používať iba určitými spôsobmi. ",
+            "RangeText": "Naše Služby poskytujeme s využitím primeraných obchodných schopností a starostlivosti a veríme, že Vám prinesú úžitok. Sú však veci, ktoré Vám v súvislosti so Službami MetaIS nemôžeme sľúbiť. Ministerstvo financií SR ani jeho dodávatelia neposkytujú žiadne prísľuby týkajúce sa Služieb MetaIS s výnimkou tých, ktoré sú výslovne uvedené v týchto podmienkach alebo doplňujúcich podmienkach. Služby poskytujeme bez záruk „tak ako sú“. Ministerstvo investícií, regionálneho rozvoja a informatizácie SR ani jeho dodávatelia nie sú v žiadnom prípade zodpovední za žiadnu stratu alebo škodu, ktorá nie je v primeranej miere predvídateľná. Tieto podmienky používania Vám poskytujú len niektoré práva na používanie softvéru. Ministerstvo investícií, regionálneho rozvoja a informatizácie SR si vyhradzuje všetky ostatné práva. Softvér smiete používať výhradne spôsobom povoleným v týchto podmienkach. Musíte pri tom dodržiavať akékoľvek technické obmedzenia softvéru, ktoré ho umožňujú používať iba určitými spôsobmi.",
             "MustNot": {
                 "Title": "Nesmiete:",
-                "Change": "Ministerstvo financií SR si vyhradzuje právo na zmenu podmienok používania MetaIS.",
+                "Change": "Ministerstvo investícií, regionálneho rozvoja a informatizácie Slovenskej republiky si vyhradzuje právo na zmenu podmienok používania MetaIS.",
                 "First": "obchádzať žiadne technické obmedzenia softvéru,",
                 "Second": "spätne analyzovať, dekompilovať ani rozkladať softvér na súčasti s výnimkou takejto činnosti v rozsahu, v akom ju i napriek uvedeným obmedzeniam výslovne povoľuje príslušný právny poriadok SR,",
                 "Third": "poskytovať softvér ostatným na kopírovanie,prenajímať, poskytovať na lízing ani požičiavať softvér, prevádzať softvér alebo túto zmluvu na tretiu stranu ani používať softvér na účely služieb komerčného hosťovania softvéru."
             },
             "Account": "Váš účet",
-            "AccountText": "Na použitie niektorých Služieb MetaIS budete potrebovať účet. Účet Vám môže byť pridelený Vaším správcom (ktorý má rolu HKO – hlavná kontaktná osoba povinnej osoby). Aby sa zaručila bezpečnosť Vášho účtu, heslo nikomu neprezrádzajte. Za aktivitu prebiehajúcu vo Vašom účte alebo údaje vložené a zmenené prostredníctvom neho nesiete plnú zodpovednosť. V aplikáciách tretích strán nepoužívajte rovnaké heslo ako pre účet. Ak zistíte akékoľvek neoprávnené použitie Vášho hesla alebo účtu, je potrebné túto skutočnosť nahlásiť správcovi MetaIS na adrese metais@mfsr.sk.",
+            "AccountText": "Na použitie niektorých Služieb MetaIS budete potrebovať účet. Účet Vám môže byť pridelený Vaším správcom (ktorý má rolu HKO – hlavná kontaktná osoba orgánu riadenia). Aby sa zaručila bezpečnosť Vášho účtu, heslo nikomu neprezrádzajte. Za aktivitu prebiehajúcu vo Vašom účte alebo údaje vložené a zmenené prostredníctvom neho nesiete plnú zodpovednosť. V aplikáciách tretích strán nepoužívajte rovnaké heslo ako pre účet. Ak zistíte akékoľvek neoprávnené použitie Vášho hesla alebo účtu, je potrebné túto skutočnosť nahlásiť správcovi MetaIS na adrese metais@mirri.gov.sk",
             "Protection": "Ochrana osobných údajov",
             "ProtectionText": "Organizácia alebo jednotlivec poskytujúci informácie do MetaIS je zodpovedný za súlad predkladaných informácii so zákonom, predovšetkým s ohľadom na zákon o ochrane osobných údajov č. 428/2002 Z. z. a čl. 13 a 14 GDPR/ § 19 a 20 zákona č. 18/2018 Z. z. o ochrane osobných údajov. Použitím Služieb MetaIS vyjadrujete váš súhlas s poskytnutím  nižšie uvedených údajov  údajov do MetaIS a s ich spracovaním: ",
             "ProcessInformation": {
                 "Name": "meno,",
                 "Surname": "priezvisko,",
-                "Email": "pracovný email, ",
+                "Email": "pracovná e-mailová adresa",
                 "Phone": "pracovné telefónne číslo,",
                 "PO": "povinná osoba (zamestnávateľ)"
             }
         },
-        "Confirm": "Potvrtiť"
+        "Confirm": "Potvrdiť"
     },
     "loginProblems": {
         "heading": "Máte problémy s prihlásením sa do systému?",
-        "description": "Kontaktujte prosím administrátora e-mailom na"
+        "description": "Kontaktujte, prosím, administrátora MetaIS e-mailom na adresu: <email>metais@mirri.gov.sk</email>"
     },
     "forgottenPassword": {
         "heading": "Zabudli ste svoje heslo?",
-        "description": "Zadajte Vašu emailovú adresu, na ktorú Vám bude doručený odkaz na vytvorenie nového hesla.",
+        "description": "Zadajte, prosím, Vašu e-mailovú adresu, na ktorú Vám zašleme odkaz na vytvorenie nového hesla.",
         "button": "Obnoviť heslo",
-        "email": "Emailová adresa",
+        "email": "E-mailová adresa",
         "success": {
-            "title": "Obnova hesla prebehla úspešne",
-            "description": "Na Vami zadanú emailovú adresu sme zaslali informácie s postupom ako obnoviť heslo.",
+            "title": "Obnova hesla prebehla úspešne.",
+            "description": "Na Vami zadanú e-mailovú adresu sme zaslali informácie s postupom, ako obnoviť heslo.",
             "button": "Späť na úvodnú stránku"
         },
-        "sendingRequest": "Odosiela sa požiadavka na obnovu hesla",
-        "emailFormatError": "Neplatný formát e-mailu: Zadajte platnú e-mailovú adresu vo formáte 'meno@example.com'",
-        "emailRequiredError": "E-mailová adresa je povinná pre žiadosť o obnovenie hesla."
+        "sendingRequest": "Odosiela sa požiadavka na obnovu hesla.",
+        "emailFormatError": "Neplatný tvar e-mailovej adresy. Zadajte, prosím, platnú e-mailovú adresu v tvare 'meno@example.com'.",
+        "emailRequiredError": "E-mailová adresa je povinný údaj v žiadosti o obnovenie hesla."
     },
     "monitoringServices": {
         "table": {
@@ -2376,7 +2376,7 @@
         "heading": "Informácie o používaní cookies",
         "thisPageUsesCookies1": "Aby naša stránka fungovala, používame nevyhnutné cookies. Podrobnejšie informácie o súboroch cookies, ktoré používame, nájdete v ",
         "thisPageUsesCookies2": "zásadách používania súborov cookies.",
-        "accept": "Súhlasiť",
+        "accept": "Súhlasím",
         "moreInfo": "Viac informácií",
         "settings": {
             "save": "Uložiť nastavenia",
