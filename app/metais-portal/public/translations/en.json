@@ -1755,6 +1755,7 @@
         "trainingsHeading": "My trainings",
         "notificationsSettings": "Notifications preferences",
         "passwordChange": "Password change",
+        "wizards": "Wizardy",
         "oldPassword": "Old passwrod",
         "newPassword": "New password",
         "repeatPassword": "Repeat password",
@@ -2698,5 +2699,37 @@
     },
     "aria": {
         "selectedRowsCount": "You have {{count}} rows selected in table"
+    },
+    "wizard": {
+        "search": "Searching",
+        "relations": "Relationships",
+        "filter": "Filtering",
+        "bulkActions": "Bulk Actions",
+        "show": "Enable wizards",
+        "success": "Wizard settings successfuly saved",
+        "actions": {
+            "back": "Back",
+            "next": "Next",
+            "close": "Close"
+        },
+        "searchContent": {
+            "step1": "The main search box is used for the main search in the entire application, which offers suggested results according to relevance after entering the text. The longer the entered text string, the more accurate the results. The search takes place in all text fields.",
+            "step2": "Additional search above the table with a list of records searches only in the text fields located in the selected table (i.e. on all pages, in all records of the given table)."
+        },
+        "filterContent": {
+            "step1": "Above each tabular view with a list of records is additional filtering. The filter menu can be „Collapse filter“ and then collapsed again. The element filtering menu is relevant to the selected table.",
+            "step2": "By clicking on the main „Filter“ button, the previously selected filtering parameters are applied.",
+            "step3": "Selecting „Clear Filtering Criteria“ will unfilter the table and display all table entries. The „Clear filter criteria“ option removes all selected values in the filter but does not cancel the filtered values themselves."
+        },
+        "bulkActionsContent": {
+            "step1": "Each list (table of records) contains mass change options. The „Bulk Actions“ button is located above the table with the list of records.",
+            "step2": "After expanding it, the options for changes above the given group of selected records will be displayed.",
+            "step3": "Items are selected by ticking the check box at the beginning of each line."
+        },
+        "relationContent": {
+            "step1": "Relationships can be created using cards that represent links to related items.",
+            "step2": "Within the given tabs, it is possible to add an item to the currently viewed item by clicking the 'Add new relationship' button, which in terms of relationships represents the creation of a new relationship between the viewed item and an existing item of the selected type.",
+            "step3": "Within the given cards, it is also possible to create a new item of the selected type by clicking the 'Add new item and relationship' button, while in addition to creating the item, a new relationship is also created between the currently viewed item and the created item.."
+        }
     }
 }

@@ -7,6 +7,7 @@ import { UserRightsPage } from '@isdd/metais-common/components/views/user-profil
 import { UserNotificationsSettings } from '@isdd/metais-common/components/views/user-profile/UserNotificationsSettings'
 import { UserPasswordChangePage } from '@isdd/metais-common/components/views/user-profile/UserPasswordChangePage'
 import { UserProfileRequestRightsModal } from '@isdd/metais-common/src/components/views/user-profile/modals/UserProfileRequestRightsModal'
+import { UserWizards } from '@isdd/metais-common/components/views/user-profile/UserWizards'
 import { ClaimEvent, useProcessEvent, useReadList1 } from '@isdd/metais-common/api/generated/claim-manager-swagger'
 import { DeletePersonalInfoModal } from '@isdd/metais-common/src/components/views/user-profile/modals/DeletePersonalInfoModal'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
@@ -83,6 +84,11 @@ const UserProfilePage = () => {
             id: 'password-change',
             title: t('userProfile.passwordChange'),
             content: <UserPasswordChangePage />,
+        },
+        {
+            id: 'wizards',
+            title: t('userProfile.wizards'),
+            content: <UserWizards />,
         },
     ]
 

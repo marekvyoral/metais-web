@@ -197,7 +197,7 @@ export const CiTable: React.FC<ICiTable> = ({
                           }
 
                           return (
-                              <div className="govuk-checkboxes govuk-checkboxes--small">
+                              <div className="govuk-checkboxes govuk-checkboxes--small" id={`checkbox_cell_${row.id}`}>
                                   <CheckBox
                                       label=""
                                       title={t('table.selectItem', { itemName: row.original.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })}

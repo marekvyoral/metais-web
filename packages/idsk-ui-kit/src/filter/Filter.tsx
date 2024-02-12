@@ -87,7 +87,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
     }
 
     return (
-        <div data-module="idsk-table-filter" className={classNames('idsk-table-filter', styles.filter)}>
+        <div id="tableFilter" data-module="idsk-table-filter" className={classNames('idsk-table-filter', styles.filter)}>
             <div className={classNames('idsk-table-filter__panel idsk-table-filter__inputs', { 'idsk-table-filter--expanded': isOpen })}>
                 {!onlyForm && (
                     <div className={styles.headingWrapper}>
@@ -97,6 +97,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                         {!onlySearch && (
                             <div className={styles.expandButton}>
                                 <button
+                                    id="expandFilter"
                                     onClick={handleOpenCloseForm}
                                     className="govuk-body govuk-link idsk-filter-menu__toggle"
                                     tabIndex={0}
@@ -125,12 +126,13 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                                 {form({ register, control, filter, setValue, watch, clearErrors, isOpen })}
                                 <div className={styles.actionRow}>
                                     <ButtonLink
+                                        id="resetFilter"
                                         label={t('filter.reset')}
                                         onClick={customReset ? customReset : reset}
                                         className={styles.clearButton}
                                         type="reset"
                                     />
-                                    <Button label={t('filter.submit')} type="submit" />
+                                    <Button label={t('filter.submit')} type="submit" id="submitFilter" />
                                 </div>
                             </div>
                         </form>

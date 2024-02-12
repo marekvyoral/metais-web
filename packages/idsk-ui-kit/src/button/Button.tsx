@@ -1,12 +1,12 @@
 import classnames from 'classnames'
-import React, { DetailedHTMLProps, ReactNode, forwardRef } from 'react'
+import React, { DetailedHTMLProps, MouseEventHandler, ReactNode, forwardRef } from 'react'
 
 import styles from './styles.module.scss'
 interface IButton extends DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     label: ReactNode
     disabled?: boolean
     variant?: 'secondary' | 'warning'
-    onClick?: () => void
+    onClick?: (() => void) | MouseEventHandler<HTMLElement>
     onFocus?: () => void
     type?: 'button' | 'reset' | 'submit'
     className?: string
