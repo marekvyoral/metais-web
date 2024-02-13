@@ -391,7 +391,7 @@ form.waitSending;Odosielanie;;Sending;
 homePage.loggedInPlaceholder;Vitajte.;;Welcome.;
 homePage.placeholder;Domov - pre zobrazenie navigácie je potrebné prihlásiť sa;Domov - pre zobrazenie navigácie je potrebné sa prihlásiť.;Home - login to see navigation items;
 input.requiredField;(povinné);;(required);
-language.en;English;Anglický jazyk;English;
+language.en;English;English;English;
 language.ge;German;Nemecký jazyk;;
 language.sk;Slovenčina;Slovenský jazyk;Slovenčina;
 languageSelector.close;Skryť jazykové menu;;Close language menu;
@@ -684,7 +684,7 @@ publicAuthorities.massUpdate.stateEnum.REJECTED;Zamietnutá;;Rejected;
 publicAuthorities.massUpdate.title;Hromadná aktualizácia povinných osôb;;Mass update of mandatory persons;
 radioButton.no;Nie;;No;
 radioButton.yes;Áno;;Yes;
-relationDetail.editError;Pri úprave {{relationName}} sa vyskytla chyba. Skúste akciu zopakovať a ak chyba pretrváva, kontaktujte podporu.;Pri úprave {{relationName}} sa vyskytla chyba. Pokúste sa úpravy zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk;There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support.;There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support at metais@mirri.gov.sk
+relationDetail.editError;Pri úprave {{relationName}} sa vyskytla chyba. Skúste akciu zopakovať a ak chyba pretrváva, kontaktujte podporu.;Pri úprave {{relationName}} sa vyskytla chyba. Pokúste sa úpravy zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: ;There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support.;There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support at: 
 relationDetail.editSuccess;Úprava {{relationName}} prebehla úspešne.;;Edit of {{relationName}} was successful.;
 report.cards.additionalParams;Doplňujúce parametre;;Additional parameters;
 report.cards.defaultValue;Predvolená hodnota;;Default value;
@@ -840,7 +840,7 @@ userManagement.creationLoading;Vytváram nového použivateľa;;Creating new use
 userManagement.edit;Upraviť;;Edit;
 userManagement.editLoading;Upravujem používateľa;;Updating user data;
 userManagement.error.export;Chyba pri príprave exportu;Nastala chyba pri príprave exportu.;Error while preparing export;
-userManagement.error.mutation;Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.;Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: <email><email>metais@mirri.gov.sk</email></email>.;Error while performing action. Please try again or contact support.;
+userManagement.error.mutation;Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.;Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: ;Error while performing action. Please try again or contact support at: ;
 userManagement.error.query;Chyba pri načítavaní údajov;Nastala chyba pri načítavaní údajov.;Error while fetching data;
 userManagement.error.uniqueLogin;Login musí byť jedinečný;Používateľské meno musí byť jedinečné.;Property login must be unique;
 userManagement.filter.listTypeLabel;Typ zoznamu;;List type;

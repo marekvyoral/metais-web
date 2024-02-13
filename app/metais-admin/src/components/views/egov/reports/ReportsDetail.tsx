@@ -182,7 +182,6 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
 
                 <Button label={t('report.detail.addParameter')} onClick={addNewParameter} className={styles.addConnection} />
                 <SubmitWithFeedback submitButtonLabel={t('report.detail.save')} loading={saveIsLoading} />
-
                 {saveIsLoading && <LoadingIndicator label={t('feedback.saving')} />}
             </div>
         </form>

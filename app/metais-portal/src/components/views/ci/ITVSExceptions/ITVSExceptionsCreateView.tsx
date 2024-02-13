@@ -177,7 +177,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                     <>
                                         {t('createEntity.errorMessage')}
                                         <Link className="govuk-link" state={{ from: location }} to={`mailto:${metaisEmail}`}>
-                                            {t('createEntity.email')}
+                                            {metaisEmail}
                                         </Link>
                                     </>
                                 }

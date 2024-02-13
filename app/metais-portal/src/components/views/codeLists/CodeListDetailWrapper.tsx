@@ -285,7 +285,12 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                     <div ref={wrapperRef}>
                         <MutationFeedback success={isSuccessMutation || isSuccessEdit} successMessage={mainSuccessMessage} error={null} />
                         {actionsErrorMessages.map((errorMessage, index) => (
-                            <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                            <MutationFeedback
+                                success={false}
+                                key={index}
+                                showSupportEmail
+                                error={t([errorMessage, 'feedback.mutationErrorMessage'])}
+                            />
                         ))}
                     </div>
                     {data.codeList?.temporal && data.codeList.locked && (

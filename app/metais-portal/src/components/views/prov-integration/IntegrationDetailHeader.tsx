@@ -108,6 +108,7 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
                 <MutationFeedback
                     success={bulkActionResult?.isSuccess || isSuccess}
                     successMessage={bulkActionResult?.successMessage}
+                    showSupportEmail
                     error={bulkActionResult?.isError || isError ? t('feedback.mutationErrorMessage') : ''}
                 />
             </ElementToScrollTo>

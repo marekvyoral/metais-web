@@ -40,6 +40,7 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
             {isLoading && <LoadingIndicator label={t('exportItemsOrRelations.loading')} />}
             <MutationFeedback
                 success={isActionSuccess.value}
+                showSupportEmail
                 error={isError ? t('feedback.mutationErrorMessage') : undefined}
                 successMessage={t('exportItemsOrRelations.exportSuccess')}
             />

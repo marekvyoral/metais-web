@@ -1234,7 +1234,7 @@
     },
     "relationDetail": {
         "editSuccess": "Edit of {{relationName}} was successful.",
-        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support at metais@mirri.gov.sk"
+        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support at:"
     },
     "crash": {
         "heading": "Ups, unexpected error occured",

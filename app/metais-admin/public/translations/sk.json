@@ -367,7 +367,7 @@
         },
         "error": {
             "query": "Nastala chyba pri načítavaní údajov.",
-            "mutation": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: <email><email>metais@mirri.gov.sk</email></email>.",
+            "mutation": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:",
             "export": "Nastala chyba pri príprave exportu.",
             "uniqueLogin": "Používateľské meno musí byť jedinečné."
         },
@@ -1240,7 +1240,7 @@
     },
     "relationDetail": {
         "editSuccess": "Úprava {{relationName}} prebehla úspešne.",
-        "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Pokúste sa úpravy zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk"
+        "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Pokúste sa úpravy zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:"
     },
     "crash": {
         "heading": "Ups, niečo sa pokazilo.",

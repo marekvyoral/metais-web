@@ -56,7 +56,11 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                         <TextHeading size="XL">{t('notifications.notifications')}</TextHeading>
                         {isError && <QueryFeedback loading={false} error={isError} />}
                         {(isMutateError || isMutateSuccess) && (
-                            <MutationFeedback success={isMutateSuccess} error={isMutateError ? t('feedback.mutationErrorMessage') : ''} />
+                            <MutationFeedback
+                                success={isMutateSuccess}
+                                showSupportEmail
+                                error={isMutateError ? t('feedback.mutationErrorMessage') : ''}
+                            />
                         )}
                     </FlexColumnReverseWrapper>
                     <Filter<FilterData>

@@ -318,6 +318,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage + successfullyAdded.join(',')}
+                        showSupportEmail
                         error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
                         onMessageClose={() => setBulkActionResult(undefined)}
                     />

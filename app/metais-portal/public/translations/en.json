@@ -465,7 +465,7 @@
         "basicInformation": "Basic information",
         "relations": "Relations",
         "owner": "Manager",
-        "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by at metais@mirri.gov.sk"
+        "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by at:"
     },
     "tasksKris": {
         "createTask": "Add new task",
@@ -845,9 +845,8 @@
     "createEntity": {
         "required": "required",
         "errorTitle": "Error occured",
-        "errorMessage": "We apologize, but a technical error occurred while editing the item. Try submitting the form again. If the error occurs repeatedly, contact the administrator at: metais@mirri.gov.sk",
+        "errorMessage": "We apologize, but a technical error occurred while editing the item. Try submitting the form again. If the error occurs repeatedly, contact the administrator at:",
         "select": "Select...",
-        "email": "metais@mirri.gov.sk",
         "publicAuthority": "Public Authority",
         "role": "Role",
         "addNewRow": "Add new row",
@@ -1598,7 +1597,6 @@
         "relation": "Relation",
         "errorTitle": "Error occured",
         "errorMessage": "We apologize, but an error occurred while creating new relation. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
-        "email": "metais@mirri.gov.sk",
         "wrongRoleRelTypeError": "Selected role do not have right to create this relation type",
         "selectRelTypeError": "You are missing needed rights to create this relation type"
     },
@@ -2187,7 +2185,7 @@
         },
         "error": {
             "errorTitle": "Error occured",
-            "errorMessage": "We apologize, but an error occurred durring processing. Try submitting the form again. If the error occurs repeatedly, contact the administrator"
+            "errorMessage": "We apologize, but an error occurred durring processing. Try submitting the form again. If the error occurs repeatedly, contact the support at:"
         }
     },
     "registration": {
@@ -2223,10 +2221,10 @@
         },
         "failed": {
             "title": "Your registration failed",
-            "description": "We are sorry, but during registration process error occurred. Try to register again. In case that error occurs repeatedly, contact administrator by email at <email>metais@mirri.gov.sk</email>.",
+            "description": "We are sorry, but during registration process error occurred. Try to register again. In case that error occurs repeatedly, contact administrator by email at:",
             "button": "Repeat registration"
         },
-        "error": "Error while executing your action. Please try again or contact support.",
+        "error": "Error while executing your action. Please try again or contact support at:",
         "consentWith": "I agree with ",
         "dataProcessingConsent": "terms of personal data processing",
         "termsOfUseConsent": "terms of use of the Central Metainformation System of Public Administration"
@@ -2261,7 +2259,7 @@
         "submit": "Submit",
         "cancel": "Cancel",
         "editSuccess": "Edit of {{relationName}} was successful.",
-        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support."
+        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support at:"
     },
     "autoLogout": {
         "warningMessage": "In {{countDown}} you will be logged out due to inactitvity.",
@@ -2316,7 +2314,7 @@
                 "Third": "provide the Software to others to copy, rent, lease, or loan the Software, transfer the Software or this Agreement to a third party, or use the Software for commercial software hosting services."
             },
             "Account": "Your Account",
-            "AccountText": "You will need an account to use some of the MetaIS Services. The account can be assigned to you by your administrator (who has the role of HKO - main contact person of the liable person). To ensure the security of your account, do not disclose your password to anyone. You bear full responsibility for the activity taking place in your account or the data entered and changed through it. Do not use the same password for the account in third-party applications. If you discover any unauthorized use of your password or account, you must report this fact to the MetaIS administrator at metais@mirri.gov.sk",
+            "AccountText": "You will need an account to use some of the MetaIS Services. The account can be assigned to you by your administrator (who has the role of HKO - main contact person of the liable person). To ensure the security of your account, do not disclose your password to anyone. You bear full responsibility for the activity taking place in your account or the data entered and changed through it. Do not use the same password for the account in third-party applications. If you discover any unauthorized use of your password or account, you must report this fact to the MetaIS administrator at",
             "Protection": "Privacy",
             "ProtectionText": "The organization or individual providing information to MetaIS is responsible for the compliance of the submitted information with the law, especially with regard to the Personal Data Protection Act No. 428/2002 Coll. and Art. 13 and 14 GDPR/ § 19 and 20 of Act no. 18/2018 Coll. on the protection of personal data. By using the MetaIS Services, you express your consent to the provision of the following data to MetaIS and to its processing: ",
             "ProcessInformation": {
@@ -2331,7 +2329,7 @@
     },
     "loginProblems": {
         "heading": "Do you have problems logging into the system?",
-        "description": "Please contact administrator by email on"
+        "description": "Please contact administrator by email at:"
     },
     "forgottenPassword": {
         "heading": "Did you forget your password?",

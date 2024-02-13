@@ -18,7 +18,7 @@ export const CodelistsFeedback: React.FC<ICodelistSucces> = ({ mutations, isFetc
 
     return (
         <>
-            <MutationFeedback success={isSuccess} error={isError ? t('feedback.mutationErrorMessage') : undefined} />
+            <MutationFeedback success={isSuccess} showSupportEmail error={isError ? t('feedback.mutationErrorMessage') : undefined} />
             <QueryFeedback loading={false} error={isFetchError} withChildren />
         </>
     )

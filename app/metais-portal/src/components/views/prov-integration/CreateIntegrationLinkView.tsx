@@ -172,7 +172,7 @@ export const CreateAndEditIntegrationLinkView: React.FC<ICreateIntegrationLinkCo
     return (
         <QueryFeedback loading={isLoading || createIntegrationLink.isLoading || uploadLoading} withChildren>
             <ElementToScrollTo isVisible={createIntegrationLink.isError}>
-                <MutationFeedback success={false} error={t('createEntity.mutationError')} />
+                <MutationFeedback success={false} showSupportEmail error={t('createEntity.mutationError')} />
             </ElementToScrollTo>
 
             <ElementToScrollTo isVisible={ownerError}>
@@ -186,7 +186,7 @@ export const CreateAndEditIntegrationLinkView: React.FC<ICreateIntegrationLinkCo
                         <>
                             {t('createEntity.errorMessage')}
                             <Link className="govuk-link" state={{ from: location }} to={`mailto:${metaisEmail}`}>
-                                {t('createEntity.email')}
+                                {metaisEmail}
                             </Link>
                         </>
                     }

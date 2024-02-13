@@ -258,7 +258,11 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
             </FlexColumnReverseWrapper>
             {!(isRedirectError || isProcessedError || isRedirectLoading) && (
                 <div ref={mutationRef}>
-                    <MutationFeedback success={false} error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''} />
+                    <MutationFeedback
+                        success={false}
+                        showSupportEmail
+                        error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
+                    />
                 </div>
             )}
             {(isRedirectError || isProcessedError || isTooManyFetchesError) && <div ref={wrapperRef} />}

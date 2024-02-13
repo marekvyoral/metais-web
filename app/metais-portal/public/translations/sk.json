@@ -464,7 +464,7 @@
         "basicInformation": "Základné informácie",
         "relations": "Vzťahy",
         "owner": "Správca",
-        "error": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba a niektoré položky nemusia mať priradené hodnoty. V prípade, že sa chyba vyskytuje opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk"
+        "error": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba a niektoré položky nemusia mať priradené hodnoty. V prípade, že sa chyba vyskytuje opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:"
     },
     "tasksKris": {
         "createTask": "Pridať novú úlohu",
@@ -849,7 +849,6 @@
         "errorTitle": "Nastala chyba.",
         "errorMessage": "Ospravedlňujeme sa, ale pri úprave položky nastala technická chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, prosím, kontaktujte administrátora MetaIS e-mailom na adrese:",
         "select": "Vyber...",
-        "email": "metais@mirri.gov.sk",
         "publicAuthority": "Povinná osoba",
         "role": "Rola",
         "addNewRow": "Pridať nový riadok",
@@ -858,7 +857,7 @@
         "redirectLoadingEdit": "Prebieha aktualizácia údajov na entite.",
         "redirectError": "Nepodarilo sa spracovať vytvorenie novej položky. Ďalšie informácie nájdete v upozorneniach.",
         "redirectErrorEdit": "Nepodarila sa spracovať aktualizáciu novej položky. Ďalšie informácie nájdete v upozorneniach.",
-        "mutationError": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk",
+        "mutationError": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:",
         "tooManyFetchesError": "Pri spracovaní došlo k chybe. Akcia trvala príliš dlho. Ďalšie informácie nájdete v upozorneniach.",
         "orgAndRoleError": {
             "title": "Chýbajúce práva pre organizáciu.",
@@ -1603,7 +1602,6 @@
         "selectTarget": "Cieľ (Vybraný objekt)",
         "newCiWithRelationHeading": "Pridať novú položku a vzťah {{entityName}}",
         "relation": "Vzťah",
-        "email": "metais@mirri.gov.sk",
         "errorTitle": "Nastala chyba",
         "errorMessage": "Ospravedlňujeme sa, ale pri vytváraní nového vzťahu nastala chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:",
         "selectRelTypeError": "Na vytvorenie tohto typu vzťahu Vám chýbajú potrebné oprávnenia.",
@@ -2195,7 +2193,7 @@
         },
         "error": {
             "errorTitle": "Nastala chyba",
-            "errorMessage": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk"
+            "errorMessage": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:"
         }
     },
     "registration": {
@@ -2231,10 +2229,10 @@
         },
         "failed": {
             "title": "Vaša registrácia zlyhala",
-            "description": "Ospravedlňujeme sa, ale pri procese registrácie nastala chyba. Pokúste sa registráciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: <email>metais@mirri.gov.sk</email>.",
+            "description": "Ospravedlňujeme sa, ale pri procese registrácie nastala chyba. Pokúste sa registráciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:",
             "button": "Zopakovať registráciu"
         },
-        "error": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk",
+        "error": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:",
         "consentWith": "Súhlasím s ",
         "dataProcessingConsent": "podmienkami spracúvania osobných údajov",
         "termsOfUseConsent": "podmienkami používania Centrálneho metainformačného systému verejnej správy"
@@ -2267,7 +2265,7 @@
         "submit": "Odoslať",
         "cancel": "Zrušiť",
         "editSuccess": "Úprava {{relationName}} prebehla úspešne.",
-        "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Pokúste sa úpravy zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese: metais@mirri.gov.sk"
+        "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Pokúste sa úpravy zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:"
     },
     "autoLogout": {
         "warningMessage": "Z dôvodu nečinnosti budete o {{countDown}} sekúnd automaticky odhlásený z MetaIS.",
@@ -2322,7 +2320,7 @@
                 "Third": "poskytovať softvér ostatným na kopírovanie,prenajímať, poskytovať na lízing ani požičiavať softvér, prevádzať softvér alebo túto zmluvu na tretiu stranu ani používať softvér na účely služieb komerčného hosťovania softvéru."
             },
             "Account": "Váš účet",
-            "AccountText": "Na použitie niektorých Služieb MetaIS budete potrebovať účet. Účet Vám môže byť pridelený Vaším správcom (ktorý má rolu HKO – hlavná kontaktná osoba orgánu riadenia). Aby sa zaručila bezpečnosť Vášho účtu, heslo nikomu neprezrádzajte. Za aktivitu prebiehajúcu vo Vašom účte alebo údaje vložené a zmenené prostredníctvom neho nesiete plnú zodpovednosť. V aplikáciách tretích strán nepoužívajte rovnaké heslo ako pre účet. Ak zistíte akékoľvek neoprávnené použitie Vášho hesla alebo účtu, je potrebné túto skutočnosť nahlásiť správcovi MetaIS na adrese metais@mirri.gov.sk",
+            "AccountText": "Na použitie niektorých Služieb MetaIS budete potrebovať účet. Účet Vám môže byť pridelený Vaším správcom (ktorý má rolu HKO – hlavná kontaktná osoba orgánu riadenia). Aby sa zaručila bezpečnosť Vášho účtu, heslo nikomu neprezrádzajte. Za aktivitu prebiehajúcu vo Vašom účte alebo údaje vložené a zmenené prostredníctvom neho nesiete plnú zodpovednosť. V aplikáciách tretích strán nepoužívajte rovnaké heslo ako pre účet. Ak zistíte akékoľvek neoprávnené použitie Vášho hesla alebo účtu, je potrebné túto skutočnosť nahlásiť správcovi MetaIS na adrese:",
             "Protection": "Ochrana osobných údajov",
             "ProtectionText": "Organizácia alebo jednotlivec poskytujúci informácie do MetaIS je zodpovedný za súlad predkladaných informácii so zákonom, predovšetkým s ohľadom na zákon o ochrane osobných údajov č. 428/2002 Z. z. a čl. 13 a 14 GDPR/ § 19 a 20 zákona č. 18/2018 Z. z. o ochrane osobných údajov. Použitím Služieb MetaIS vyjadrujete váš súhlas s poskytnutím  nižšie uvedených údajov  údajov do MetaIS a s ich spracovaním: ",
             "ProcessInformation": {
@@ -2337,7 +2335,7 @@
     },
     "loginProblems": {
         "heading": "Máte problémy s prihlásením sa do systému?",
-        "description": "Kontaktujte, prosím, administrátora MetaIS e-mailom na adresu: <email>metais@mirri.gov.sk</email>"
+        "description": "Kontaktujte, prosím, administrátora MetaIS e-mailom na adresu:"
     },
     "forgottenPassword": {
         "heading": "Zabudli ste svoje heslo?",

@@ -147,6 +147,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                 {errorFromBE && (
                     <MutationFeedback
                         error={errorFromBE === CHYBA_BE ? t('registration.error') : getTranslatedError(errorFromBE)}
+                        showSupportEmail={errorFromBE === CHYBA_BE}
                         success={false}
                         onMessageClose={() => setErrorFromBE('')}
                     />
