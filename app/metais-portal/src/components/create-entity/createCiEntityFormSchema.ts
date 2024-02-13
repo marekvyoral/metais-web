@@ -76,8 +76,6 @@ export const generateFormSchema = (
 
         const isRequired = attribute?.mandatory?.type === 'critical' && !attribute.readOnly
 
-        const hasConstraints = attribute?.constraints && attribute.constraints.length > 0
-
         const isDate = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.DATE
         const isBoolean = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.BOOLEAN
         const isFile = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.IMAGE
@@ -114,9 +112,10 @@ export const generateFormSchema = (
                 case isArray: {
                     schema[attribute.technicalName] = array()
                         .nullable()
+                        .transform((curr, orig) => (orig === '' ? null : curr))
                         .of(string())
                         .when('isRequired', (_, current) => {
-                            if (isRequired || hasConstraints) {
+                            if (isRequired) {
                                 return current.required(t('validation.required'))
                             }
                             return current
@@ -124,6 +123,7 @@ export const generateFormSchema = (
 
                     break
                 }
+
                 case isRegex: {
                     if (attribute.constraints) {
                         const regexConstraints = attribute.constraints[0] as AttributeConstraintRegexAllOf
