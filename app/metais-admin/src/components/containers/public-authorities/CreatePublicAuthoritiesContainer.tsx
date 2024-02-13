@@ -101,7 +101,7 @@ export const CreatePublicAuthoritiesContainer: React.FC<ICreatePublicAuthorities
 
     return (
         <>
-            {isError && <MutationFeedback success={false} error={t('feedback.mutationErrorMessage')} />}
+            {isError && <MutationFeedback success={false} showSupportEmail error={t('feedback.mutationErrorMessage')} />}
             <View
                 data={{
                     personCategories,

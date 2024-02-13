@@ -324,7 +324,7 @@ export const NewRelationView: React.FC<Props> = ({
                             <>
                                 {t('newRelation.errorMessage')}
                                 <Link className="govuk-link" state={{ from: location }} to={`mailto:${metaisEmail}`}>
-                                    {t('newRelation.email')}
+                                    {metaisEmail}
                                 </Link>
                             </>
                         }

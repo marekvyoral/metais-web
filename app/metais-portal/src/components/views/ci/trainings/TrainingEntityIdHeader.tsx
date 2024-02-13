@@ -72,6 +72,7 @@ export const TrainingEntityIdHeader: React.FC<Props> = ({
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage}
+                        showSupportEmail
                         error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
                         onMessageClose={() => setBulkActionResult(undefined)}
                     />

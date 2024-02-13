@@ -6,9 +6,11 @@ import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import { v4 as uuidV4 } from 'uuid'
 import { TransparentButtonWrapper } from '@isdd/idsk-ui-kit'
+import { Link } from 'react-router-dom'
 
 import styles from './mutationFeedback.module.scss'
 
+import { metaisEmail } from '@isdd/metais-common/constants'
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { CloseIcon } from '@isdd/metais-common/assets/images'
@@ -23,10 +25,11 @@ interface MutationFeedbackProps {
     success: boolean
     successMessage?: string
     error: React.ReactNode
+    showSupportEmail?: boolean
     onMessageClose?: () => void
 }
 
-export const MutationFeedback: React.FC<MutationFeedbackProps> = ({ success, error, successMessage, onMessageClose }) => {
+export const MutationFeedback: React.FC<MutationFeedbackProps> = ({ success, error, showSupportEmail, successMessage, onMessageClose }) => {
     const { t } = useTranslation()
     const labelId = `${uuidV4()}-label`
     const { clearAction } = useActionSuccess()
@@ -50,7 +53,14 @@ export const MutationFeedback: React.FC<MutationFeedbackProps> = ({ success, err
                     </div>
                 </IconWithText>
             )}
-            {error && <TextWarning aria-live="assertive">{error}</TextWarning>}
+            {error && (
+                <TextWarning aria-live="assertive">
+                    <div className={styles.column}>
+                        {error}
+                        {showSupportEmail && <Link to={`mailto:${metaisEmail}`}>{metaisEmail}</Link>}
+                    </div>
+                </TextWarning>
+            )}
             <Spacer horizontal />
             {(success || error) && (
                 <div className={classNames(styles.closeIconWrapper, 'govuk-body')}>

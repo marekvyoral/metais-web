@@ -94,6 +94,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
         <QueryFeedback
             loading={isLoading || isCiConstraintLoading}
             error={isError || isCiConstraintError}
+            showSupportEmail
             errorProps={{ errorMessage: isCiConstraintError ? t('ciInformationAccordion.error') : undefined }}
             withChildren
         >

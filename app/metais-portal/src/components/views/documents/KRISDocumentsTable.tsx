@@ -368,6 +368,7 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage + successfullyAdded.join(',')}
+                        showSupportEmail
                         error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
                         onMessageClose={() => setBulkActionResult(undefined)}
                     />

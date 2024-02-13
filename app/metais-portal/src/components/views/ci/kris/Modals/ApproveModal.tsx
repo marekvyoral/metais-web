@@ -82,6 +82,7 @@ export const ApproveModal: React.FC<IApproveModalProps> = ({ user, uuid, open, o
                                 <MutationFeedback
                                     error={isError ? t('feedback.mutationErrorMessage') : ''}
                                     success={false}
+                                    showSupportEmail
                                     onMessageClose={() => setIsError(false)}
                                 />
                             )}

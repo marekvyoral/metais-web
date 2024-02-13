@@ -30,3 +30,11 @@
 .flexNone {
     flex: none;
 }
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+

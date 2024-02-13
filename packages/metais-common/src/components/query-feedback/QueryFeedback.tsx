@@ -21,9 +21,18 @@ interface IQueryFeedbackProps extends PropsWithChildren {
     indicatorProps?: ILoadingIndicatorProps
     errorProps?: ErrorBlockProps
     withChildren?: boolean
+    showSupportEmail?: boolean
 }
 
-export const QueryFeedback: React.FC<IQueryFeedbackProps> = ({ loading, error, children, indicatorProps, errorProps, withChildren }) => {
+export const QueryFeedback: React.FC<IQueryFeedbackProps> = ({
+    loading,
+    error,
+    showSupportEmail,
+    children,
+    indicatorProps,
+    errorProps,
+    withChildren,
+}) => {
     const { t } = useTranslation()
     const labelId = `${uuidV4()}-label`
     const { clearAction } = useActionSuccess()
@@ -50,9 +59,11 @@ export const QueryFeedback: React.FC<IQueryFeedbackProps> = ({ loading, error, c
             {error && show && (
                 <TextWarning>
                     <div className={styles.inline} aria-live="assertive">
-                        {errorMessage}
+                        <div className={styles.column}>
+                            {errorMessage}
+                            {showSupportEmail && <Link to={`mailto:${metaisEmail}`}>{metaisEmail}</Link>}
+                        </div>
                         <Spacer horizontal />
-
                         <div onClick={closeMessage} className={classNames(styles.closeIconWrapper, 'govuk-body')}>
                             <TransparentButtonWrapper onClick={closeMessage} aria-labelledby={labelId}>
                                 <span id={labelId} className="govuk-visually-hidden">

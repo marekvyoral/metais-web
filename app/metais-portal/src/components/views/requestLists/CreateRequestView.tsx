@@ -524,6 +524,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <MutationFeedback
                                 success={isSuccessSetDates ?? false}
                                 successMessage={t('codeListDetail.feedback.editCodeListItems')}
+                                showSupportEmail
                                 error={errorMessageSetDates && t([errorMessageSetDates, 'feedback.mutationErrorMessage'])}
                             />
                             <ActionsOverTable
@@ -587,7 +588,12 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 handlePageChange={(filter) => setPagination({ ...pagination, pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER })}
                             />
                             {errorMessages.map((errorMessage, index) => (
-                                <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                                <MutationFeedback
+                                    success={false}
+                                    key={index}
+                                    showSupportEmail={!errorMessage}
+                                    error={t([errorMessage, 'feedback.mutationErrorMessage'])}
+                                />
                             ))}
                             <ButtonGroupRow>
                                 <Button

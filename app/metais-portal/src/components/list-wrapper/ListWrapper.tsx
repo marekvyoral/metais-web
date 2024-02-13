@@ -131,6 +131,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                         <MutationFeedback
                             success={bulkActionResult?.isSuccess}
                             successMessage={bulkActionResult?.successMessage}
+                            showSupportEmail
                             error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
                             onMessageClose={() => setBulkActionResult(undefined)}
                         />

@@ -32,6 +32,7 @@ const ReportsDetailPage: React.FC = () => {
                             <QueryFeedback loading={props.isLoading} error={props.isError}>
                                 <MutationFeedback
                                     success={props.isMutationSuccess}
+                                    showSupportEmail
                                     error={props.isMutationError ? t('feedback.mutationErrorMessage') : undefined}
                                 />
                                 <TextHeading size="L">{t('breadcrumbs.reportsEdit')}</TextHeading>

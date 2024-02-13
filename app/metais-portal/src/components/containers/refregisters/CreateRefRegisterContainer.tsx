@@ -123,6 +123,7 @@ export const CreateRefRegisterContainer = ({ entityName, entityId, View }: ICrea
             <MutationFeedback
                 success={isSuccess}
                 error={isMutationError ? t('feedback.mutationErrorMessage') : undefined}
+                showSupportEmail
                 successMessage={saveMutationIsSuccess ? t('feedback.mutationCreateSuccessMessage') : undefined}
             />
             <View
