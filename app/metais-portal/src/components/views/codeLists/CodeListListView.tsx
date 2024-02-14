@@ -1,17 +1,23 @@
-import { BreadCrumbs, Filter, HomeIcon, Input, PaginatorWrapper, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, ButtonLink, CheckBox, Filter, HomeIcon, Input, PaginatorWrapper, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { TextLink } from '@isdd/idsk-ui-kit/typography/TextLink'
 import { RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ApiCodelistItemName, ApiCodelistManager, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, BulkPopup, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import { ColumnDef, Table as ITable, Row } from '@tanstack/react-table'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { SelectFilterOrganization } from '@isdd/metais-common/components/select-organization/SelectFilterOrganization'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
+import { useAddFavorite } from '@isdd/metais-common/hooks/useAddFavorite'
+import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
+import { NotificationBlackIcon } from '@isdd/metais-common/assets/images'
+import actionsOverTableStyles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { selectBasedOnLanguageAndDate } from '@/components/views/codeLists/CodeListDetailUtils'
 import {
@@ -32,6 +38,15 @@ const getMainGestor = (codeListManager: ApiCodelistManager[], roleParticipants: 
     return participant?.configurationItemUi?.attributes?.Gen_Profil_nazov
 }
 
+export const reduceTableDataToObject = <T extends { id?: number }>(array: T[]): Record<string, T> => {
+    return array.reduce<Record<string, T>>((result, item) => {
+        if (item.id) {
+            result[item.id] = item
+        }
+        return result
+    }, {})
+}
+
 export const CodeListListView: React.FC<CodeListListViewProps> = ({
     data,
     filter,
@@ -44,8 +59,111 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
     const {
         isActionSuccess: { value: isExternalSuccess },
     } = useActionSuccess()
+    const {
+        addFavorite,
+        error: errorAddToFavorite,
+        isLoading: isLoadingAddToFavorite,
+        isSuccess: isSuccessAddToFavorite,
+        resetState,
+        successMessage,
+    } = useAddFavorite()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    const [rowSelection, setRowSelection] = useState<Record<string, ApiCodelistPreview>>({})
+
+    const selectedUuids = useMemo(() => {
+        return Object.values(rowSelection).map((i) => i.id)
+    }, [rowSelection])
+
+    const handleCheckboxChange = useCallback(
+        (row: Row<ApiCodelistPreview>) => {
+            if (row.original.id) {
+                const newRowSelection = { ...rowSelection }
+                if (rowSelection[row.original.id]) {
+                    delete newRowSelection[row.original.id]
+                } else {
+                    newRowSelection[row.original.id] = row.original
+                }
+                setRowSelection(newRowSelection)
+            }
+        },
+        [rowSelection, setRowSelection],
+    )
+
+    const clearSelectedRows = useCallback(() => setRowSelection({}), [setRowSelection])
+
+    const handleAllCheckboxChange = useCallback(
+        (rows: ApiCodelistPreview[]) => {
+            const checked = rows.every(({ id }) => (id ? !!rowSelection[id] : false))
+            const newRowSelection = { ...rowSelection }
+            if (checked) {
+                rows.forEach(({ id }) => id && delete newRowSelection[id])
+                setRowSelection(newRowSelection)
+            } else {
+                setRowSelection((prevRowSelection) => ({ ...prevRowSelection, ...reduceTableDataToObject(rows) }))
+            }
+        },
+        [rowSelection, setRowSelection],
+    )
+
+    const isRowSelected = useCallback(
+        (row: Row<ApiCodelistPreview>) => {
+            return row.original.id ? !!rowSelection[row.original.id] : false
+        },
+        [rowSelection],
+    )
+
+    const handleAddToFavorite = () => {
+        addFavorite(
+            selectedUuids.map((item) => String(item)),
+            FollowedItemItemType.CODELIST,
+        )
+    }
+
+    useEffect(() => {
+        scrollToMutationFeedback()
+    }, [isError, isExternalSuccess, isSuccessAddToFavorite, errorAddToFavorite, scrollToMutationFeedback])
 
     const columns: Array<ColumnDef<ApiCodelistPreview>> = [
+        {
+            header: ({ table }: { table: ITable<ApiCodelistPreview> }) => {
+                const checked = table.getRowModel().rows.every((row) => (row.original.id ? !!rowSelection[row.original.id] : false))
+                return (
+                    <div className="govuk-checkboxes govuk-checkboxes--small">
+                        <CheckBox
+                            label=""
+                            name="checkbox"
+                            id="checkbox-all"
+                            value="checkbox-all"
+                            onChange={(event) => {
+                                event.stopPropagation()
+                                handleAllCheckboxChange(data?.list || [])
+                            }}
+                            onClick={(event) => event.stopPropagation()}
+                            checked={checked}
+                            title={t('table.selectAllItems')}
+                        />
+                    </div>
+                )
+            },
+            id: CHECKBOX_CELL,
+            cell: ({ row }: { row: Row<ApiCodelistPreview> }) => (
+                <div className="govuk-checkboxes govuk-checkboxes--small">
+                    <CheckBox
+                        label=""
+                        title={`checkbox_${row.id}`}
+                        name="checkbox"
+                        id={`checkbox_${row.id}`}
+                        value="true"
+                        onChange={(event) => {
+                            event.stopPropagation()
+                            handleCheckboxChange(row)
+                        }}
+                        onClick={(event) => event.stopPropagation()}
+                        checked={row.original.id ? !!rowSelection[row.original.id] : false}
+                    />
+                </div>
+            ),
+        },
         {
             id: 'codelistName',
             header: t('codeListList.table.name'),
@@ -125,11 +243,19 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                 ]}
             />
             <MainContentWrapper>
-                <QueryFeedback loading={isLoading} error={false} withChildren>
+                <QueryFeedback loading={isLoading || isLoadingAddToFavorite} error={false} withChildren>
                     <FlexColumnReverseWrapper>
                         <TextHeading size="XL">{t('codeListList.title')}</TextHeading>
-                        {isError && <QueryFeedback error={isError} loading={false} />}
-                        {isExternalSuccess && <MutationFeedback success error={false} />}
+                        <div ref={wrapperRef}>
+                            <MutationFeedback
+                                success={isSuccessAddToFavorite}
+                                successMessage={successMessage}
+                                error={errorAddToFavorite ? t('userProfile.notifications.feedback.error') : undefined}
+                                onMessageClose={() => resetState()}
+                            />
+                            {isError && <QueryFeedback error loading={false} />}
+                            {isExternalSuccess && <MutationFeedback success error={false} />}
+                        </div>
                     </FlexColumnReverseWrapper>
                     {isOnlyPublishedPage ? (
                         <TextHeading size="L">{t('codeListList.publicCodeListSubtitle')}</TextHeading>
@@ -186,17 +312,38 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                             pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
                             dataLength: data?.dataLength ?? 0,
                         }}
+                        bulkPopup={
+                            <BulkPopup
+                                checkedRowItems={selectedUuids.length}
+                                disabled={!selectedUuids.length}
+                                items={(closePopup) => [
+                                    <ButtonLink
+                                        key={'favorite'}
+                                        label={t('codeListList.buttons.addToFavorites')}
+                                        icon={NotificationBlackIcon}
+                                        className={actionsOverTableStyles.buttonLinkWithIcon}
+                                        onClick={() => {
+                                            handleAddToFavorite()
+                                            setRowSelection({})
+                                            closePopup()
+                                        }}
+                                    />,
+                                ]}
+                            />
+                        }
                         entityName=""
                         handleFilterChange={handleFilterChange}
                         pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                         hiddenButtons={{ SELECT_COLUMNS: true }}
                     />
-                    <Table
+                    <Table<ApiCodelistPreview>
                         data={data?.list}
                         columns={columns}
                         sort={filter.sort ?? []}
+                        isRowSelected={isRowSelected}
                         onSortingChange={(columnSort) => {
                             handleFilterChange({ sort: columnSort })
+                            clearSelectedRows()
                         }}
                     />
                     <PaginatorWrapper

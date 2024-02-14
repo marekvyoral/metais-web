@@ -404,9 +404,10 @@
     },
     "mutationFeedback": {
         "success": "Akcia bola úspešná",
-        "successfulUpdated": "Položka bola úspešne zmenená.",
-        "successfulCreated": "Položka bola úspešne vytvorená.",
-        "successfulCloned": "Položka bola úspešne klonovaná.",
+        "successfulUpdated": "Položka bola úspešne zmenená",
+        "successfulCreated": "Položka bola úspešne vytvorená",
+        "successfulRemoved": "Položka bola úspešne odstránená",
+        "successfulCloned": "Položka bola úspešne klonovaná",
         "successfulRegistered": "Používateľ bol úspešne prihlásený",
         "successfulUnregistered": "Používateľ bol úspešne odhlásený",
         "successfulInvalidated": "Položka bola úspešne zneplatnená",
@@ -1538,7 +1539,8 @@
             "EDIT": "Upraviť",
             "CANCEL_REQUEST": "Zrušit žiadosť",
             "IMPORT": "Import číselníka",
-            "EXPORT": "Export"
+            "EXPORT": "Export",
+            "addToFavorites": "Pridať medzi obľúbené"
         }
     },
     "refIdentifiers": {
@@ -1799,6 +1801,95 @@
             "invalidPassword": "Nesprávne heslo",
             "submit": "Vymazať účet a moje údaje",
             "heading": "Naozaj si želáte vymazanie osobných údajov?",
+            "passwordPlaceholder": "Zadajte vaše heslo"
+        },
+        "notifications": {
+            "save": "Uložiť",
+            "edit": "Upraviť",
+            "confirmRemove": "Naozaj chcete odstrániť položky z obľúbených?",
+            "feedback": {
+                "editSuccess": "Nastavenia notifikácií boli úspešne uložené",
+                "addSuccess_few": "Položky boli úspešne pridané do obľúbených",
+                "addSuccess_other": "Položky boli úspešne pridané do obľúbených",
+                "addSuccess_one": "Položka bola úspešne pridaná do obľúbených",
+                "removeSuccess": "Položky boli úspešne odstránené z obľúbených",
+                "removeSuccessSingle": "Položka bola úspešne odstránená z obľúbených",
+                "error": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
+            },
+            "table": {
+                "name": "Názov položky",
+                "settings": "Nastavenie notifikácií",
+                "portal": "Portál",
+                "email": "Email",
+                "delete": "Odstrániť z obľúbených",
+                "add": "Pridať do obľúbených"
+            },
+            "settings": {
+                "tabs": {
+                    "FAVORITES": "Obľúbené",
+                    "ITEMS": "Položky",
+                    "RELATIONS": "Vzťahy",
+                    "TASKS": "Úlohy",
+                    "INTEGRATIONS": "Integrácie",
+                    "STANDARDIZATION": "Štandardizácia",
+                    "LICENSES": "Licencie",
+                    "CODELIST": "Číselníky",
+                    "PROJECTS": "Projekty",
+                    "USER": "Používateľ"
+                },
+                "ITEMS": {
+                    "ITEM_SAVED": "Uloženie položky",
+                    "ITEM_CHANGED": "Zmena položky",
+                    "ITEM_INVALIDATED": "Zneplatnenie položky",
+                    "ITEM_VALIDATED": "Splatnenie položky",
+                    "ITEM_CHANGED_OWNER": "Zmena vlastníka položky"
+                },
+                "RELATIONS": {
+                    "RELATION_SAVED": "Uloženie vzťahu",
+                    "RELATION_CHANGED": "Zmena vzťahu",
+                    "RELATION_INVALIDATED": "Zneplatnenie vzťahu",
+                    "RELATION_VALIDATED": "Splatnenie vzťahu",
+                    "RELATION_CHANGED_OWNER": "Zmena vlastníka vzťahu"
+                },
+                "TASKS": {
+                    "TASK_CREATED": "Notifikácia o vytvorení nového tasku",
+                    "TASK_CHANGED_ASSIGNEE": "Notifikácia o presunutí tasku na iného používateľa",
+                    "TASK_CLOSED": "Notifikácia o zatvorení tasku"
+                },
+                "INTEGRATIONS": {
+                    "INTEGRATION_STARTED": "Notifikácia o naštartovaní integrácie",
+                    "INTEGRATION_DELAYED": "Notifikácia o meškajúcej integrácií"
+                },
+                "STANDARDIZATION": {
+                    "STANDARD_REQUEST": "Notifikácie pre návrhy",
+                    "STANDARD_MEETING": "Notifikácie pre zasadnutie",
+                    "STANDARD_VOTE": "Notifikácie pre hlasovanie",
+                    "STANDARD_CODELIST": "Notifikácie pre číselníky",
+                    "STANDARD_USERS_IN_GROUP": "Notifikácie pre použivateľov v pracovných skupinách",
+                    "STANDARD_CSRU_SYNC": "Notifikácia o aktualizácií údajov z CSRU"
+                },
+                "USER": {
+                    "USER_IMPORTED": "Hromadne spracovanie (import z nástroja na modelovanie architektúry)",
+                    "USER_CHANGED": "Zmena údajov používatela",
+                    "USER_ACCEPTED": "Schválenie žiadosti o nastavenie oprávnenia",
+                    "USER_REFUSED": "Zamietnutie žiadosti o nastavenie oprávnenia"
+                },
+                "LICENSES": {
+                    "LICENSE_ADDED": "Notifikácie o presunoch licencií",
+                    "LICENSE_MOVED": "Notifikácia o pridaní licencie",
+                    "LICENSE_CHANGED_UNUSED": "Notifikácia o zmene počtu nepouživaných licencií"
+                },
+                "CODELIST": {
+                    "CODELIST_REQUEST": "Notifikácie k žiadosti o číselník",
+                    "CODELIST_CHANGE_STATUS": "Notifikácie k zmene stavu číselníka",
+                    "CODELIST_CHANGE_ITEM": "Notifikácie k zmene stavu položiek",
+                    "CODELIST_SELECT_ALL": "Zapnúť všetky notifikácie"
+                },
+                "PROJECT": {
+                    "PROJECT_CHOOSE": "Vybrať projekt:",
+                    "PROJECT_NOTIFICATIONS": "Notifikácie k projektom:"
+                }
+            },
             "passwordPlaceholder": "Zadajte Vaše heslo"
         }
     },

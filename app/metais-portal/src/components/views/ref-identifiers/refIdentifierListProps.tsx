@@ -1,10 +1,11 @@
-import { IOption } from '@isdd/idsk-ui-kit/index'
+import { CheckBox, IOption } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, RefIdentifierTypeEnum } from '@isdd/metais-common/api'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
-import { ColumnDef } from '@tanstack/react-table'
+import { ColumnDef, Row, Table } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
 import { Link } from 'react-router-dom'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 
 import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
 
@@ -36,7 +37,54 @@ export const refIdentifierViewOptions = (t: TFunction): IOption<string>[] => {
     ]
 }
 
-export const refIdentifierColumns = (t: TFunction, language: string, stateEnum: EnumType | undefined): Array<ColumnDef<ColumnsOutputDefinition>> => [
+export const refIdentifierColumns = (
+    t: TFunction,
+    language: string,
+    stateEnum: EnumType | undefined,
+    rowSelection: Record<string, ColumnsOutputDefinition>,
+    handleCheckboxChange: (row: Row<ColumnsOutputDefinition>) => void,
+    handleAllCheckboxChange: () => void,
+): Array<ColumnDef<ColumnsOutputDefinition>> => [
+    {
+        header: ({ table }: { table: Table<ColumnsOutputDefinition> }) => {
+            const checked = table.getRowModel().rows.every((row) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false))
+            return (
+                <div className="govuk-checkboxes govuk-checkboxes--small">
+                    <CheckBox
+                        label=""
+                        name="checkbox"
+                        id="checkbox-all"
+                        value="checkbox-all"
+                        onChange={(event) => {
+                            event.stopPropagation()
+                            handleAllCheckboxChange()
+                        }}
+                        onClick={(event) => event.stopPropagation()}
+                        checked={checked}
+                        title={t('table.selectAllItems')}
+                    />
+                </div>
+            )
+        },
+        id: CHECKBOX_CELL,
+        cell: ({ row }: { row: Row<ColumnsOutputDefinition> }) => (
+            <div className="govuk-checkboxes govuk-checkboxes--small">
+                <CheckBox
+                    label=""
+                    title={`checkbox_${row.id}`}
+                    name="checkbox"
+                    id={`checkbox_${row.id}`}
+                    value="true"
+                    onChange={(event) => {
+                        event.stopPropagation()
+                        handleCheckboxChange(row)
+                    }}
+                    onClick={(event) => event.stopPropagation()}
+                    checked={row.original.uuid ? !!rowSelection[row.original.uuid] : false}
+                />
+            </div>
+        ),
+    },
     {
         id: 'technicalName',
         header: t('refIdentifiers.table.name'),

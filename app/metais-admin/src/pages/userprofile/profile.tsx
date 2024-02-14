@@ -5,7 +5,7 @@ import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { UserInformationPage } from '@isdd/metais-common/components/views/user-profile/user-informations/UserInformationPage'
 import { UserPreferencesPage } from '@isdd/metais-common/components/views/user-profile/user-preferences/UserPreferencesPage'
 import { UserRightsPage } from '@isdd/metais-common/components/views/user-profile/user-rights/UserRightsPage'
-import { UserNotificationsSettings } from '@isdd/metais-common/components/views/user-profile/UserNotificationsSettings'
+import { UserNotificationsSettings } from '@isdd/metais-common/components/views/user-profile/user-notifications/UserNotificationsSettings'
 import { UserPasswordChangePage } from '@isdd/metais-common/components/views/user-profile/UserPasswordChangePage'
 import { ciInformationTab } from '@isdd/metais-common/constants'
 

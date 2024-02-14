@@ -3,7 +3,7 @@ import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { Input, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { getReadCiList1QueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
+import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, NotificationBlackIcon } from '@isdd/metais-common/assets/images'
 import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import {
     BulkPopup,
@@ -29,6 +29,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
 
 import { ICiListContainerView } from '@/components/containers/CiListContainer'
 import { getRowSelectionUuids } from '@/componentHelpers/ci/ciTableHelpers'
@@ -73,7 +74,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     const {
         state: { user },
     } = useAuth()
-    const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction()
+    const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner, handleAddToFavorite } = useBulkAction()
     const queryKey = getReadCiList1QueryKey({})
     const navigate = useNavigate()
     const location = useLocation()
@@ -241,6 +242,21 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                                 }}
                                                 icon={ChangeIcon}
                                                 label={t('actionOverTable.changeOwner')}
+                                            />,
+                                            <ButtonLink
+                                                key={'favorite'}
+                                                className={styles.buttonLinkWithIcon}
+                                                onClick={() => {
+                                                    const ids = checkedItemList.map((item) => item.uuid ?? '')
+                                                    handleAddToFavorite(ids, FollowedItemItemType.CI, (actionResponse) =>
+                                                        handleCloseBulkModal(actionResponse, () => {
+                                                            return
+                                                        }),
+                                                    )
+                                                    closePopup()
+                                                }}
+                                                icon={NotificationBlackIcon}
+                                                label={t('userProfile.notifications.table.add')}
                                             />,
                                         ]}
                                     />
