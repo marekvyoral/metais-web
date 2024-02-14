@@ -21,7 +21,8 @@ import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { numericProperties } from './createEntityHelpers'
-import { getSpecialRule } from './ciEntityFormSchemaSpecialRulesConfig'
+
+import { getSpecialRule } from '@/componentHelpers/ci/ciEntityFormSchemaSpecialRulesConfig'
 
 export enum ByteInterval {
     MIN = -128,
