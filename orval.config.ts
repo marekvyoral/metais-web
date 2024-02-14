@@ -223,7 +223,7 @@ export default defineConfig({
         input: {
             target: process.env.VITE_REST_CLIENT_USER_CONFIG_REPO_SWAGGER_URL ?? '',
             filters: {
-                tags: ['favorites-columns-controller'],
+                tags: ['favorites-columns-controller', 'followed-items-controller'],
             },
         },
         output: {
@@ -232,6 +232,18 @@ export default defineConfig({
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useUserConfigSwaggerClient.ts',
                     name: 'useUserConfigSwaggerClient',
+                },
+                operations: {
+                    execute: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
+                    getFollowedItems: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
                 },
             },
             ...defaultOutputOptions,

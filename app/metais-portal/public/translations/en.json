@@ -413,6 +413,7 @@
         "success": "Success",
         "successfulUpdated": "The item was successfully changed",
         "successfulCreated": "The item was successfully created",
+        "successfulRemoved": "The item was successfully created removed",
         "successfulCloned": "The item was successfully cloned",
         "successfulRegistered": "User was successfully registered",
         "successfulUnregistered": "User was successfully unregistered",
@@ -1531,7 +1532,8 @@
             "EDIT": "Edit",
             "CANCEL_REQUEST": "Cancel request",
             "IMPORT": "Import codelist",
-            "EXPORT": "Export"
+            "EXPORT": "Export",
+            "addToFavorites": "Add to favorites"
         }
     },
     "refIdentifiers": {
@@ -1793,6 +1795,94 @@
             "submit": "Delete my account and personal information",
             "heading": "Do you really wish to delete your personal information?",
             "passwordPlaceholder": "Enter your password"
+        },
+        "notifications": {
+            "save": "Save",
+            "edit": "Edit",
+            "confirmRemove": "Are you sure you want to remove these items from your favorites?",
+            "feedback": {
+                "editSuccess": "Notification settings have been saved successfully.",
+                "addSuccess_few": "Items have been successfully added to favorites.",
+                "addSuccess_other": "Items have been successfully added to favorites.",
+                "addSuccess_one": "Item have been successfully added to favorites.",
+                "removeSuccess": "Items have been successfully removed from favorites.",
+                "removeSuccessSingle": "Item has been successfully removed from favorites.",
+                "error": "Error performing your action. Please try again or contact support."
+            },
+            "table": {
+                "name": "Item name",
+                "settings": "Notifications settings",
+                "portal": "Portal",
+                "email": "Email",
+                "delete": "Remove from favorites",
+                "add": "Add to favorites"
+            },
+            "settings": {
+                "tabs": {
+                    "FAVORITES": "Favorites",
+                    "ITEMS": "Items",
+                    "RELATIONS": "Relations",
+                    "TASKS": "Tasks",
+                    "INTEGRATIONS": "Integration",
+                    "STANDARDIZATION": "Standardization",
+                    "LICENSES": "License",
+                    "USER": "User",
+                    "CODELIST": "Codelists",
+                    "PROJECTS": "Projects"
+                },
+                "ITEMS": {
+                    "ITEM_SAVED": "Item saved",
+                    "ITEM_CHANGED": "Item changed",
+                    "ITEM_INVALIDATED": "Item invalidated",
+                    "ITEM_VALIDATED": "Item validated",
+                    "ITEM_CHANGED_OWNER": "Item changed owner"
+                },
+                "RELATIONS": {
+                    "RELATION_SAVED": "Relation saved",
+                    "RELATION_CHANGED": "Relation changed",
+                    "RELATION_INVALIDATED": "Relation invalidated",
+                    "RELATION_VALIDATED": "Relation validated",
+                    "RELATION_CHANGED_OWNER": "Relation changed owner"
+                },
+                "TASKS": {
+                    "TASK_CREATED": "Task created",
+                    "TASK_CHANGED_ASSIGNEE": "Task changed assignee",
+                    "TASK_CLOSED": "Task closed"
+                },
+                "INTEGRATIONS": {
+                    "INTEGRATION_STARTED": "Integration started",
+                    "INTEGRATION_DELAYED": "Integration delayed"
+                },
+                "STANDARDIZATION": {
+                    "STANDARD_REQUEST": "Request",
+                    "STANDARD_MEETING": "Meeting",
+                    "STANDARD_VOTE": "Vote",
+                    "STANDARD_CODELIST": "Codelist",
+                    "STANDARD_USERS_IN_GROUP": "Users in group",
+                    "STANDARD_CSRU_SYNC": "CSRU synchronization"
+                },
+                "USER": {
+                    "USER_IMPORTED": "Import",
+                    "USER_CHANGED": "User changed",
+                    "USER_ACCEPTED": "Claim accepted",
+                    "USER_REFUSED": "Claim refused"
+                },
+                "LICENSES": {
+                    "LICENSE_ADDED": "License moved",
+                    "LICENSE_MOVED": "License added",
+                    "LICENSE_CHANGED_UNUSED": "License changed unused count"
+                },
+                "CODELIST": {
+                    "CODELIST_REQUEST": "Codelist requests notifications",
+                    "CODELIST_CHANGE_STATUS": "Codelist status change notifications",
+                    "CODELIST_CHANGE_ITEM": "Codelist items status change notifications",
+                    "CODELIST_SELECT_ALL": "Turn on all notifications"
+                },
+                "PROJECT": {
+                    "PROJECT_CHOOSE": "Select project:",
+                    "PROJECT_NOTIFICATIONS": "Projects notifications:"
+                }
+            }
         }
     },
     "DraftsList": {

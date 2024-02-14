@@ -15,7 +15,9 @@ import {
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 
+import { useRowSelectionState } from '@/hooks/useRowSelectionState'
 import { RefRegisterFilter } from '@/types/filters'
+import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
 
 export interface RefRegisterListContainerView {
     data: {
@@ -36,6 +38,8 @@ export interface RefRegisterListContainerView {
     sort: ColumnSort[]
     isLoading: boolean
     isError: boolean
+    rowSelection: Record<string, ColumnsOutputDefinition>
+    setRowSelection: React.Dispatch<React.SetStateAction<Record<string, ColumnsOutputDefinition>>>
 }
 
 interface IRefRegisterListContainer {
@@ -53,6 +57,7 @@ export const RefRegisterListContainer = ({ View, entityName }: IRefRegisterListC
         ...defaultFilterValues,
         sort: [{ orderBy: ATTRIBUTE_NAME.ISVS_Name, sortDirection: SortType.ASC }],
     })
+    const { rowSelection, setRowSelection } = useRowSelectionState(entityName)
 
     const {
         attributeProfiles,
@@ -106,6 +111,8 @@ export const RefRegisterListContainer = ({ View, entityName }: IRefRegisterListC
             sort={filterParams?.sort ?? []}
             isLoading={isLoading}
             isError={isError}
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
         />
     )
 }

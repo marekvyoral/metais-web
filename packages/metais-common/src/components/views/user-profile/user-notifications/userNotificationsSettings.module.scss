@@ -1,0 +1,12 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+
+    @include mq($until: desktop) {
+        flex-direction: column;
+    }
+}

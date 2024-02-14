@@ -1,9 +1,24 @@
-import { TextHeading } from '@isdd/idsk-ui-kit/index'
+import { ButtonLink, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { getRefRegsDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { ActionsOverTable, CreateEntityButton, QueryFeedback, Reference_Registers, distinctAttributesMetaAttributes } from '@isdd/metais-common/index'
+import {
+    ActionsOverTable,
+    BulkPopup,
+    CreateEntityButton,
+    MutationFeedback,
+    QueryFeedback,
+    Reference_Registers,
+    distinctAttributesMetaAttributes,
+} from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
+import { useEffect, useState } from 'react'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { NotificationBlackIcon } from '@isdd/metais-common/assets/images'
+import actionsOverTableStyles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 
 import { RefRegistersFilter } from './RefRegistersFilter'
 
@@ -20,20 +35,64 @@ export const RefRegisterListView = ({
     handleFilterChange,
     isLoading,
     isError,
+    rowSelection,
+    setRowSelection,
 }: RefRegisterListContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
+    const { handleAddToFavorite, isBulkLoading } = useBulkAction()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
+
+    const checkedRowItems = Object.keys(rowSelection).length
+    const isDisabledBulkButton = checkedRowItems === 0
+
+    useEffect(() => {
+        scrollToMutationFeedback()
+    }, [bulkActionResult, scrollToMutationFeedback])
 
     return (
-        <QueryFeedback loading={isLoading} error={isError} withChildren>
-            <TextHeading size="XL">{t('refRegisters.title')}</TextHeading>
+        <QueryFeedback loading={isLoading || isBulkLoading} error={isError} withChildren>
+            <FlexColumnReverseWrapper>
+                <TextHeading size="XL">{t('refRegisters.title')}</TextHeading>
+                {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
+                    <div ref={wrapperRef}>
+                        <MutationFeedback
+                            success={bulkActionResult?.isSuccess}
+                            successMessage={bulkActionResult?.successMessage}
+                            error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
+                            onMessageClose={() => setBulkActionResult(undefined)}
+                        />
+                    </div>
+                )}
+            </FlexColumnReverseWrapper>
             <RefRegistersFilter defaultFilterValues={defaultFilterValues} />
             <ActionsOverTable
                 pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={Reference_Registers}
+                bulkPopup={
+                    <BulkPopup
+                        disabled={isDisabledBulkButton}
+                        checkedRowItems={checkedRowItems}
+                        items={(closePopup) => [
+                            <ButtonLink
+                                key={'favorite'}
+                                className={actionsOverTableStyles.buttonLinkWithIcon}
+                                label={t('codeListList.buttons.addToFavorites')}
+                                icon={NotificationBlackIcon}
+                                onClick={() => {
+                                    const ids = Object.values(rowSelection).map((row) => row.uuid ?? '')
+                                    handleAddToFavorite(ids, FollowedItemItemType.REF_REGISTER, (actionResult) => setBulkActionResult(actionResult))
+                                    setRowSelection({})
+                                    closePopup()
+                                }}
+                            />,
+                        ]}
+                    />
+                }
                 createButton={
                     <CreateEntityButton
                         label={t('refRegisters.createBtn')}
@@ -61,6 +120,7 @@ export const RefRegisterListView = ({
                     entityStructure: { ...ciTypeData, attributes: [...(renamedAttributes ?? []), ...guiAttributes] },
                     gestorsData: undefined,
                 }}
+                rowSelectionState={{ rowSelection, setRowSelection }}
                 handleFilterChange={handleFilterChange}
                 pagination={pagination}
                 sort={sort}
