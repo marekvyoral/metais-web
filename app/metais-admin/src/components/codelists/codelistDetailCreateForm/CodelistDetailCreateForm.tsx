@@ -5,6 +5,7 @@ import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import React from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
 import { CodelistDetailEnum, codeListDetailCreateSchema } from './codeListDetailCreateSchema'
 import styles from './codelistDetailCreateForm.module.scss'
@@ -22,7 +23,9 @@ interface Props {
 
 export const CodelistDetailCreateForm: React.FC<Props> = ({ onSubmit, closeModal, data, resultCreateEnum, isLoading, setResultCreateEnum }) => {
     const { t } = useTranslation()
+    const { enumCode } = useParams()
     const order = (data?.enumItems?.length || 0) + 1
+    const code = 'c_' + enumCode?.toLowerCase() + '.' + order
     const {
         register,
         handleSubmit,
@@ -30,7 +33,7 @@ export const CodelistDetailCreateForm: React.FC<Props> = ({ onSubmit, closeModal
         clearErrors,
     } = useForm({
         resolver: yupResolver(codeListDetailCreateSchema(t, data?.enumItems?.map((item) => item.code) || [])),
-        defaultValues: { [CodelistDetailEnum.ORDER]: order },
+        defaultValues: { [CodelistDetailEnum.ORDER]: order, [CodelistDetailEnum.CODE]: code },
     })
 
     return (

@@ -439,6 +439,7 @@
         "valueError": "Hodnota je povinná.",
         "engValueError": "Anglická hodnota je povinná.",
         "engDescriptionError": "Anglický popis je povinný údaj.",
+        "forbiddenSymbols": "Formát nemôže obsahovať nasledujúce znaky {{signs}}",
         "wrongRegex": "Formát môže obsahovať len písmená {{letters}} a tieto znaky {{signs}}",
         "actions": "Úkony",
         "order": "Poradie",
