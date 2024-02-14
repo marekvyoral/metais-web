@@ -54,10 +54,11 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
     } = useUpdateMeetingRequest({
         mutation: {
             onSuccess() {
-                setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}` })
-                queryClient.invalidateQueries([GET_MEETING_REQUEST_DETAIL])
-                refetch()
-                goBack()
+                refetch().then(() => {
+                    setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}` })
+                    queryClient.invalidateQueries([GET_MEETING_REQUEST_DETAIL])
+                    goBack()
+                })
             },
         },
     })
