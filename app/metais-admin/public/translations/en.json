@@ -396,6 +396,7 @@
         "engValueError": "English Value is required",
         "descriptionError": "Description is required",
         "engDescriptionError": "English Description is required",
+        "forbiddenSymbols": "You can't use {{signs}}",
         "wrongRegex": "You can use only {{letters}} and {{signs}}",
         "actions": "Actions",
         "addNewCodelistDetail": "Add new detail item",
