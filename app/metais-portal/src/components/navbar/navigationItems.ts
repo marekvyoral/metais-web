@@ -20,6 +20,10 @@ const removeSubItemsForLoggedInUser = (subItems?: NavigationSubItem[]): Navigati
     return subItems?.filter((item) => !item.isLoginRequired).map((item) => ({ ...item, subItems: removeSubItemsForLoggedInUser(item.subItems) }))
 }
 
+const removeItemsForLoggedInUser = (items?: NavigationItem[]): NavigationItem[] => {
+    return items?.filter((item) => !item.isLoginRequired) || []
+}
+
 const getDataObjectSubItems = (t: TFunction, isSideMenu?: boolean) => {
     const dataObjectSubItemsTopMenu = [
         {
@@ -67,6 +71,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         {
             title: t('navMenu.sla.slaAndIntegrations'),
             path: RouterRoutes.OLA_CONTRACT_LIST,
+            isLoginRequired: true,
         },
         { title: t('navMenu.lists.infrastructures'), path: NavigationSubRoutes.INFRASCTRUCTURES },
         { title: t('navMenu.lists.webResidence'), path: NavigationSubRoutes.WEBOVE_SIDLO },
@@ -198,5 +203,7 @@ export const getPortalNavigationItems = (
         },
     ]
 
-    return isAuthorized ? navigationItems : navigationItems.map((item) => ({ ...item, subItems: removeSubItemsForLoggedInUser(item.subItems) }))
+    return isAuthorized
+        ? navigationItems
+        : removeItemsForLoggedInUser(navigationItems).map((item) => ({ ...item, subItems: removeSubItemsForLoggedInUser(item.subItems) }))
 }

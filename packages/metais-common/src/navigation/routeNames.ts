@@ -283,6 +283,7 @@ export interface NavigationItem {
     title: string
     path: string
     icon?: string
+    isLoginRequired?: boolean
     subItems?: NavigationSubItem[]
     role?: AdminRouteRoles[]
 }
