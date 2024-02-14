@@ -330,9 +330,8 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                         <TextHeading size="L">{t('meetings.form.heading.documents')}</TextHeading>
                         <TextHeading size="M">{t('meetings.form.heading.documentsDetail')}</TextHeading>
 
-                        {infoData?.meetingLinks && (
-                            <LinksImport defaultValues={infoData?.meetingLinks ?? []} register={register} unregister={unregister} errors={errors} />
-                        )}
+                        <LinksImport defaultValues={infoData?.meetingLinks ?? []} register={register} unregister={unregister} errors={errors} />
+
                         <TextHeading size="M">{t('meetings.form.heading.documentsExport')}</TextHeading>
                         <FileUpload
                             ref={fileUploadRef}
