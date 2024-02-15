@@ -2,7 +2,6 @@ import { BreadCrumbs, Filter, HomeIcon, IOption, PaginatorWrapper, SimpleSelect,
 import React from 'react'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
-import { CiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { RelationshipUi } from '@isdd/metais-common/api/generated/iam-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
@@ -15,7 +14,7 @@ import { RelationshipsFilterData, defaultFilterValues } from '@/components/conta
 
 export interface IRelationListView {
     relTypeOptions: IOption<string>[]
-    ciTypes: CiTypePreview[]
+    ciTypeOptions: IOption<string>[]
     relations: RelationshipUi[]
     filter: RelationshipsFilterData
     totalItems: number
@@ -23,6 +22,7 @@ export interface IRelationListView {
     handleFilterChange: (changedFilter: IFilter) => void
     onSourceTypeChange: (val: string | undefined) => void
     onTargetTypeChange: (val: string | undefined) => void
+    seed: number
     //onRelTypeChange: (val: string | undefined) => void
     // relAttributes: Attribute[] | undefined
     // relAttributeProfiles: AttributeProfile[] | undefined
@@ -30,7 +30,7 @@ export interface IRelationListView {
 
 export const RelationListView: React.FC<IRelationListView> = ({
     relTypeOptions,
-    ciTypes,
+    ciTypeOptions,
     relations,
     filter: defFilter,
     totalItems,
@@ -38,6 +38,8 @@ export const RelationListView: React.FC<IRelationListView> = ({
     handleFilterChange,
     onSourceTypeChange,
     onTargetTypeChange,
+    seed,
+
     //onRelTypeChange,
     // relAttributes,
     // relAttributeProfiles,
@@ -129,6 +131,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
 
             <MainContentWrapper>
                 <TextHeading size="XL">{t('titles.relationsSearch')}</TextHeading>
+
                 <Filter<RelationshipsFilterData>
                     heading={t('codeList.filter.title')}
                     defaultFilterValues={defaultFilterValues}
@@ -143,27 +146,25 @@ export const RelationListView: React.FC<IRelationListView> = ({
                                 defaultValue={filter.relType}
                                 //onChange={onRelTypeChange}
                             />
+
                             <SimpleSelect
+                                key={seed}
                                 id="sourceType"
                                 name="sourceType"
                                 label={t('relationshipList.startTypeName')}
-                                options={ciTypes?.map((type) => ({
-                                    value: type.technicalName ?? '',
-                                    label: type.name ?? '',
-                                }))}
+                                options={ciTypeOptions}
                                 setValue={setValue}
                                 defaultValue={filter.sourceType}
                                 onChange={onSourceTypeChange}
                                 disabled={!!watch('relType')}
                             />
+
                             <SimpleSelect
+                                key={seed + 1}
                                 id="targetType"
                                 name="targetType"
                                 label={t('relationshipList.endTypeName')}
-                                options={ciTypes?.map((type) => ({
-                                    value: type.technicalName ?? '',
-                                    label: type.name ?? '',
-                                }))}
+                                options={ciTypeOptions}
                                 setValue={setValue}
                                 onChange={onTargetTypeChange}
                                 defaultValue={filter.targetType}
@@ -172,26 +173,27 @@ export const RelationListView: React.FC<IRelationListView> = ({
                             {/* Zistit ci chceme filter podla attrs kedze ich nezobrazujeme */}
                             {/* {watch('relType') && (
                                 <DynamicFilterAttributes
-                                    setValue={setValue}
-                                    defaults={defaultFilterValues}
-                                    filterData={{
-                                        attributeFilters: filter.attributeFilters ?? {},
-                                        metaAttributeFilters: filter.metaAttributeFilters ?? {},
-                                    }}
-                                    attributes={relAttributes}
-                                    attributeProfiles={relAttributeProfiles}
-                                    constraintsData={undefined}
-                                    ignoreInputNames={[
-                                        MetainformationColumns.OWNER,
-                                        MetainformationColumns.CREATED_AT,
-                                        MetainformationColumns.STATE,
-                                        MetainformationColumns.LAST_MODIFIED_AT,
-                                    ]}
+                                setValue={setValue}
+                                defaults={defaultFilterValues}
+                                filterData={{
+                                    attributeFilters: filter.attributeFilters ?? {},
+                                    metaAttributeFilters: filter.metaAttributeFilters ?? {},
+                                }}
+                                attributes={relAttributes}
+                                attributeProfiles={relAttributeProfiles}
+                                constraintsData={undefined}
+                                ignoreInputNames={[
+                                    MetainformationColumns.OWNER,
+                                    MetainformationColumns.CREATED_AT,
+                                    MetainformationColumns.STATE,
+                                    MetainformationColumns.LAST_MODIFIED_AT,
+                                ]}
                                 />
                             )} */}
                         </div>
                     )}
                 />
+
                 <QueryFeedback loading={isLoadingRelations} withChildren>
                     <ActionsOverTable
                         pagination={{

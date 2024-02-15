@@ -37,7 +37,6 @@ export const UserPreferencesPage: React.FC = () => {
     const [defaultPerPage, setDefaultPerPage] = useState('')
     const [myPO, setMyPO] = useState<ConfigurationItemUi>()
     const [defaultLang, setDefaultLang] = useState('')
-    const [disableWizard, setDisableWizard] = useState(true)
 
     const DEFAULT_LANGUAGE_OPTIONS = [
         { value: Languages.SLOVAK, label: t(`language.${Languages.SLOVAK}`) },
@@ -49,14 +48,7 @@ export const UserPreferencesPage: React.FC = () => {
         setDefaultPerPage(currentPreferences.defaultPerPage)
         setDefaultLang(currentPreferences.defaultLanguage)
         setIsMyPOEnabled(!!currentPreferences.myPO)
-        setDisableWizard(currentPreferences.disableWizard)
-    }, [
-        currentPreferences.defaultLanguage,
-        currentPreferences.showInvalidatedItems,
-        currentPreferences.myPO,
-        currentPreferences.defaultPerPage,
-        currentPreferences.disableWizard,
-    ])
+    }, [currentPreferences.defaultLanguage, currentPreferences.showInvalidatedItems, currentPreferences.myPO, currentPreferences.defaultPerPage])
 
     const {
         data: defaultMyPOData,
@@ -108,7 +100,6 @@ export const UserPreferencesPage: React.FC = () => {
             [UserPreferencesFormNamesEnum.SHOW_INVALIDATED]: showInvalidated,
             [UserPreferencesFormNamesEnum.DEFAULT_PER_PAGE]: defaultPerPage,
             [UserPreferencesFormNamesEnum.DEFAULT_LANG]: defaultLang,
-            [UserPreferencesFormNamesEnum.DISABLE_WIZARD]: disableWizard,
         }
         setHasError(false)
         i18n.changeLanguage(formData.defaultLanguage)
@@ -182,18 +173,6 @@ export const UserPreferencesPage: React.FC = () => {
                             options={DEFAULT_LANGUAGE_OPTIONS}
                             value={defaultLang}
                             onChange={(val) => setDefaultLang(val ?? '')}
-                        />
-                    </GridCol>
-                </GridRow>
-                <GridRow>
-                    <GridCol setWidth="one-third">
-                        <CheckBox
-                            labelClassName={styles.noWrap}
-                            label={'disable wizard//trans'}
-                            id="disable-wizard"
-                            name="isable-wizard"
-                            onChange={() => setDisableWizard((prev) => !prev)}
-                            checked={disableWizard}
                         />
                     </GridCol>
                 </GridRow>
