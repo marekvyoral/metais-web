@@ -142,6 +142,11 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
             icon: InstructionsIcon,
             role: [AdminRouteRoles.ADMIN],
         },
+        {
+            title: t('navMenu.systemState.heading'),
+            path: AdminRouteNames.SYSTEM_STATUS_SETTINGS,
+            role: [AdminRouteRoles.ADMIN],
+        },
     ]
 
     if (userRoles == null || userRoles.length == 0) return []

@@ -254,6 +254,10 @@ export const SlaViewOptions = [
 export const TYP_HODNOTY = 'TYP_HODNOTY'
 export const TYP_PARAMETROV_JEDNOTKA = 'TYP_PARAMETROV_JEDNOTKA'
 
+export const SYSTEM_STATE = 'SYSTEM_STATE'
+export const SYSTEM_STATE_COLOR = 'SYSTEM_STATE_COLOR'
+export const SHOW_SYSTEM_STATE_BAR = 'show-system-state-bar'
+
 export enum RefIdentifierTypeEnum {
     Individuum = 'Individuum',
     URIKatalog = 'URIKatalog',

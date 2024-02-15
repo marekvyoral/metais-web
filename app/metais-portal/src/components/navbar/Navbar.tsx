@@ -1,5 +1,5 @@
 import { useFind2111 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { NotificationIcon } from '@isdd/metais-common/assets/images'
+import { NavigationCloseIcon, NotificationIcon } from '@isdd/metais-common/assets/images'
 import { NavBarHeader } from '@isdd/metais-common/components/navbar/navbar-header/NavBarHeader'
 import { IconWithNotification } from '@isdd/metais-common/components/navbar/navbar-main/IconWithNotification'
 import { NavBarMain } from '@isdd/metais-common/components/navbar/navbar-main/NavBarMain'
@@ -10,13 +10,17 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 import { useGetNotificationsWithRefresh } from '@isdd/metais-common/hooks/useGetNotificationsWithRefresh'
+import { useGetCurrentSystemState } from '@isdd/metais-common/api/generated/monitoring-swagger'
+import { InformationBar } from '@isdd/idsk-ui-kit/index'
+import { Languages } from '@isdd/metais-common/localization/languages'
+import { SHOW_SYSTEM_STATE_BAR } from '@isdd/metais-common/api'
 
 import { getPortalNavigationItems } from './navigationItems'
+import styles from './styles.module.scss'
 
 import { TasksPopup } from '@/components/tasks-popup/TasksPopup'
-
 export const Navbar: React.FC = () => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const {
         state: { user },
     } = useAuth()
@@ -38,11 +42,16 @@ export const Navbar: React.FC = () => {
     )
 
     const { data: ksisvsGroup } = useFind2111({ shortName: KSIVS_SHORT_NAME })
-
     const iconGroupItems: React.FC[] = [TasksPopup, Notifications]
     const topMenuPortalRoutes = getPortalNavigationItems(t, !!user, Array.isArray(ksisvsGroup) ? ksisvsGroup[0].uuid : ksisvsGroup?.uuid)
     const topMenuWithoutPOAndMonitoring = topMenuPortalRoutes.filter((item) => item.path != RouteNames.HOW_TO_KRIS_STUDIES_PROJECTS)
 
+    const { data: currentSystemState } = useGetCurrentSystemState()
+    const [showInfoBar, setShowInfoBar] = useState(sessionStorage.getItem(SHOW_SYSTEM_STATE_BAR) !== 'false')
+    const closeInfoBar = () => {
+        setShowInfoBar(false)
+        sessionStorage.setItem(SHOW_SYSTEM_STATE_BAR, 'false')
+    }
     return (
         <>
             <header className="idsk-header-web " data-module="idsk-header-web">
@@ -54,8 +63,23 @@ export const Navbar: React.FC = () => {
                     <NavBarMain isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} iconGroupItems={iconGroupItems} />
 
                     <div className="idsk-header-web__nav--divider" />
-
                     <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={topMenuWithoutPOAndMonitoring} />
+                    {!!currentSystemState?.text && showInfoBar && (
+                        <div className={styles.modalContent}>
+                            <button className={styles.closeButton} onClick={() => closeInfoBar()}>
+                                <img src={NavigationCloseIcon} alt={t('close')} />
+                            </button>
+                            <InformationBar
+                                color={currentSystemState?.systemStateColor?.value}
+                                text={currentSystemState?.text}
+                                status={
+                                    i18n.language == Languages.SLOVAK
+                                        ? currentSystemState?.systemState?.description ?? ''
+                                        : currentSystemState?.systemState?.engDescription ?? ''
+                                }
+                            />
+                        </div>
+                    )}
                 </div>
             </header>
         </>
