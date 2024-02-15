@@ -1207,6 +1207,7 @@
         "refRegistersEdit": "Edit reference register",
         "refIdentifiers": "Reference identifiers",
         "refIdentifiersCreate": "New reference identifier",
+        "refIdentifiersEdit": "Edit reference identifier",
         "dataObjects": "Data objects",
         "codeLists": "Codelists",
         "requestList": "List of requests to add a codelist",
@@ -1567,13 +1568,23 @@
         },
         "create": {
             "title": "New reference identifier",
+            "editTitle": "Edit reference identifier",
             "refTypeTitle": "Reference identifier type",
             "refInfoTitle": "Reference identifier information",
             "chooseType": "Select a type",
             "uri": "URI",
             "ownerUser": "Proposer",
             "catalogDataset": "Catalog datasets",
-            "poGestor": "PA is authority of catalogue"
+            "poGestor": "PA is authority of catalogue",
+            "templateUriType": "Individual is data element type",
+            "templateUriExample": "URI templates",
+            "dataElement": "Data element consists of data elements",
+            "dataElementType": "Data element consists of data elements",
+            "datasetIncludesType": "Dataset contains items of data element type",
+            "datasetDefines": "Dataset defines base counter",
+            "saveRequest": "Save",
+            "finishRequest": "Enter request",
+            "cancelRequest": "Cancel request"
         }
     },
     "selectCiItem": {

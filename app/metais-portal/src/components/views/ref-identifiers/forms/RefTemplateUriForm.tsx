@@ -1,86 +1,102 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
-import { IOption, Input, RadioButton, RadioGroupWithLabel, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit/index'
+import { Button, ButtonGroupRow, IOption, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
-import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/kris-swagger'
-import { Attribute, AttributeProfile, CiCode, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { DateTime } from 'luxon'
 import React from 'react'
+import { createPortal } from 'react-dom'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
-import { PublicAuthoritySelect } from '../../public-authorities-hierarchy/PublicAuthoritySelect'
+import { REF_PORTAL_SUBMIT_ID } from '../RefIdentifierCreateView'
 
-import { RefCatalogFormTypeEnum } from './refCreateSchema'
+import { RefTemplateUriFormType, RefTemplateUriFormTypeEnum, refIdentifierCreateTemplateUriSchema } from './refCreateSchema'
 
-import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
-import { getFilteredAttributeProfilesBasedOnRole } from '@/components/create-entity/createEntityHelpers'
 import { getDescriptionByAttribute, getNameByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
-import { PublicAuthorityState } from '@/hooks/usePublicAuthorityAndRole.hook'
 
 type RefTemplateUriFormPropsType = {
-    onSubmit: () => void
+    onSubmit: (data: RefTemplateUriFormType, isSend: boolean) => void
+    isDisabled?: boolean
+    isUpdate: boolean
+    ciItemData?: ConfigurationItemUi
+    ciCode?: string
     attributes: Attribute[] | undefined
-    constraintsData: (EnumType | undefined)[]
-    ciTypeData: CiType | undefined
-    attributeProfiles: AttributeProfile[] | undefined
-    unitsData: EnumType | undefined
-    defaultItemAttributeValues?: ConfigurationItemUiAttributes
-    publicAuthorityState: PublicAuthorityState
-    ownerOptions: IOption<string>[] | undefined
+    ownerOptions: IOption<string>[]
+    templateUriOptions: IOption<string>[]
+    defaultTemplateUri?: string
 }
 
 export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
     onSubmit,
-    publicAuthorityState,
+    isUpdate,
+    ciItemData,
+    ciCode,
     attributes,
-    ciTypeData,
-    attributeProfiles,
     ownerOptions,
+    templateUriOptions,
+    defaultTemplateUri,
 }) => {
     const {
         t,
         i18n: { language },
     } = useTranslation()
 
+    const navigate = useNavigate()
+
     const attributeList = [
         ATTRIBUTE_NAME.Gen_Profil_nazov,
         ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov,
         ATTRIBUTE_NAME.Gen_Profil_popis,
-        ATTRIBUTE_NAME.Profil_URIKatalog_uri,
-        ATTRIBUTE_NAME.Profil_URIKatalog_platne_od,
-        ATTRIBUTE_NAME.Profil_URIKatalog_platne_do,
+        ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri,
+        ATTRIBUTE_NAME.Profil_Individuum_platne_od,
+        ATTRIBUTE_NAME.Profil_Individuum_platne_do,
         ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie,
+        ATTRIBUTE_NAME.Profil_Individuum_versions,
         ATTRIBUTE_NAME.Gen_Profil_kod_metais,
         ATTRIBUTE_NAME.Gen_Profil_ref_id,
     ]
 
-    const combinedProfiles = [ciTypeData as AttributeProfile, ...(attributeProfiles ?? [])]
-    // const fromDefaultValues = formatForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes)
-    const methods = useForm({
-        defaultValues: {},
+    const attributesDefaultValues = attributeList.map((item) => [item, ciItemData?.attributes?.[item]])
+
+    const methods = useForm<RefTemplateUriFormType>({
+        defaultValues: {
+            [RefTemplateUriFormTypeEnum.OWNER]: ownerOptions?.at(0)?.value,
+            [RefTemplateUriFormTypeEnum.TEMPLATE_URI]: defaultTemplateUri,
+            attributes: Object.fromEntries(attributesDefaultValues),
+        },
         mode: 'onChange',
-        resolver: yupResolver(generateFormSchema(getFilteredAttributeProfilesBasedOnRole(combinedProfiles, ''), t, language)),
+        resolver: yupResolver(refIdentifierCreateTemplateUriSchema(t)),
     })
 
-    const { register, formState, setValue, clearErrors, control } = methods
+    const { register, formState, setValue, watch, handleSubmit, clearErrors, control } = methods
     const { errors } = formState
+
+    const buttonRefId = document.getElementById(REF_PORTAL_SUBMIT_ID)
+
+    const currentUri = watch(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri}`)
+    const uriExample = currentUri ? `${currentUri}/${ciCode?.split('_')?.[1]}` : ''
 
     return (
         <>
-            {/* <form onSubmit={handleSubmit(onSubmit)}> */}
             <form>
-                <SimpleSelect
-                    label={t('refIdentifiers.create.ownerUser')}
-                    name={'CodelistEnum.CATEGORY'}
-                    options={ownerOptions || []}
-                    // setValue={setValue}
-                    isClearable={false}
-                    clearErrors={clearErrors}
-                />
-
+                {!isUpdate && (
+                    <SimpleSelect
+                        label={t('refIdentifiers.create.ownerUser')}
+                        options={ownerOptions ?? []}
+                        setValue={setValue}
+                        name={'owner'}
+                        isClearable={false}
+                        clearErrors={clearErrors}
+                        defaultValue={ownerOptions?.at(0)?.value}
+                        error={errors?.[RefTemplateUriFormTypeEnum.OWNER]?.message}
+                    />
+                )}
                 <Input
                     required
+                    disabled={isDisabled}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri),
@@ -89,12 +105,25 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri),
                     )}
-                    id={RefCatalogFormTypeEnum.OWNER}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri}`)}
-                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri]?.message}
                 />
                 <Input
                     required
+                    label={getNameByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_kod),
+                    )}
+                    info={getDescriptionByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_kod),
+                    )}
+                    {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_kod}`)}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_Individuum_kod]?.message}
+                />
+                <Input
+                    required
+                    disabled={isDisabled}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
@@ -103,13 +132,13 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
                     )}
-                    id={RefCatalogFormTypeEnum.OWNER}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_nazov}`)}
-                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]?.message}
                 />
 
                 <Input
                     required
+                    disabled={isDisabled}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
@@ -118,44 +147,55 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
                     )}
-                    id={RefCatalogFormTypeEnum.OWNER}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov}`)}
-                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]?.message}
                 />
+
+                <Input name={'uriExample'} label={t('refIdentifiers.create.templateUriExample')} value={uriExample} disabled />
 
                 <SimpleSelect
-                    label={t('refIdentifiers.create.ownerUser')}
-                    name={'CodelistEnum.CATEGORY'}
-                    options={ownerOptions || []}
-                    // setValue={setValue}
+                    label={t('refIdentifiers.create.templateUriType')}
+                    options={templateUriOptions ?? []}
+                    setValue={setValue}
+                    name={RefTemplateUriFormTypeEnum.TEMPLATE_URI}
                     isClearable={false}
                     clearErrors={clearErrors}
+                    defaultValue={defaultTemplateUri}
+                    error={errors?.[RefTemplateUriFormTypeEnum.TEMPLATE_URI]?.message}
                 />
 
-                <RadioGroupWithLabel
+                <DateInput
+                    required
+                    handleDateChange={(date, name) => date && setValue(name as keyof RefTemplateUriFormType, DateTime.fromJSDate(date).toISO() ?? '')}
+                    {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_platne_od}`)}
+                    control={control}
                     label={getNameByAttribute(
                         language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_versions),
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_od),
                     )}
-                    className="govuk-radios--small"
-                    inline
-                >
-                    <RadioButton
-                        id={'itIsChapter.yes'}
-                        value={'true'}
-                        label={t('radioButton.yes')}
-                        {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_versions}`)}
-                    />
-                    <RadioButton
-                        id={'itIsChapter.no'}
-                        value={'false'}
-                        label={t('radioButton.no')}
-                        {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_versions}`)}
-                    />
-                </RadioGroupWithLabel>
+                    info={getDescriptionByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_od),
+                    )}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_Individuum_platne_od]?.message}
+                />
+
+                <DateInput
+                    handleDateChange={(date, name) => date && setValue(name as keyof RefTemplateUriFormType, DateTime.fromJSDate(date).toISO() ?? '')}
+                    {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_platne_do}`)}
+                    control={control}
+                    label={getNameByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_do),
+                    )}
+                    info={getDescriptionByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_do),
+                    )}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_Individuum_platne_do]?.message}
+                />
 
                 <TextArea
-                    required
                     rows={3}
                     label={getNameByAttribute(
                         language,
@@ -166,37 +206,18 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis),
                     )}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_popis}`)}
-                    error={errors[RefCatalogFormTypeEnum.OWNER]?.message}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_popis]?.message}
                 />
 
-                <DateInput
-                    required
-                    handleDateChange={(date) => setValue('validityEndDate', date)}
-                    {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_platne_od}`)}
-                    control={control}
-                    label={getNameByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_od),
+                {buttonRefId &&
+                    createPortal(
+                        <ButtonGroupRow>
+                            <Button onClick={handleSubmit((data) => onSubmit(data, true))} label={t('refIdentifiers.create.finishRequest')} />
+                            <Button onClick={handleSubmit((data) => onSubmit(data, false))} label={t('refIdentifiers.create.saveRequest')} />
+                            <Button variant="secondary" label={t('refRegisters.detail.items.cancel')} onClick={() => navigate(-1)} />
+                        </ButtonGroupRow>,
+                        buttonRefId,
                     )}
-                    info={getDescriptionByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_od),
-                    )}
-                />
-
-                <DateInput
-                    handleDateChange={(date) => setValue('validityEndDate', date)}
-                    {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_platne_od}`)}
-                    control={control}
-                    label={getNameByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_od),
-                    )}
-                    info={getDescriptionByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_od),
-                    )}
-                />
             </form>
         </>
     )

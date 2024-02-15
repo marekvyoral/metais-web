@@ -1211,6 +1211,7 @@
         "refRegistersEdit": "Zmena údajov o referenčnom registri",
         "refIdentifiers": "Zoznam referencovateľných identifikátorov",
         "refIdentifiersCreate": "Nový referencovateľný identifikátor",
+        "refIdentifiersEdit": "Zmena referencovateľného identifikátora",
         "dataObjects": "Dátové objekty",
         "requestList": "Zoznam žiadostí založenia číselníka",
         "requestCreate": "Žiadosť o zaradenie číselníka",
@@ -1574,13 +1575,23 @@
         },
         "create": {
             "title": "Nový referencovateľný identifikátor",
+            "editTitle": "Zmena referencovateľného identifikátora",
             "refTypeTitle": "Typ referencovateľného identifikátora",
             "refInfoTitle": "Informácie o referencovateľnom identifikátori",
             "chooseType": "Vyberte typ",
             "uri": "URI",
             "ownerUser": "Zadávateľ",
             "catalogDataset": "Datasety katalógu",
-            "poGestor": "PO je gestorom katalógu"
+            "poGestor": "PO je gestorom katalógu",
+            "templateUriType": "Typ indivídua",
+            "templateUriExample": "Náhľad referencovateľného identifikátora aj s parametrami",
+            "dataElement": "Dátový prvok pozostáva z dátových prvkov",
+            "dataElementType": "Dátový prvok sa skladá z dátových prvkov",
+            "datasetIncludesType": "Dataset obsahuje položky typu dátový prvok",
+            "datasetDefines": "Dataset definuje základný číselník",
+            "saveRequest": "Uložiť",
+            "finishRequest": "Odoslať žiadosť",
+            "cancelRequest": "Zrušit žiadosť"
         }
     },
     "selectCiItem": {

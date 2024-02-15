@@ -4,14 +4,23 @@ import { useStoreConfigurationItem, useStoreRelationship } from '@isdd/metais-co
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect, useState } from 'react'
+import { FieldValues } from 'react-hook-form'
 import { v4 as uuidV4 } from 'uuid'
 
 import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from '@/components/create-entity/createEntityHelpers'
 import { RefIdentifierCreateView } from '@/components/views/ref-identifiers/RefIdentifierCreateView'
-import { RefCatalogFormType, RefCatalogFormTypeEnum } from '@/components/views/ref-identifiers/forms/refCreateSchema'
+import {
+    RefCatalogFormType,
+    RefCatalogFormTypeEnum,
+    RefDataItemFormType,
+    RefDataItemFormTypeEnum,
+    RefDatasetFormType,
+    RefDatasetFormTypeEnum,
+    RefTemplateUriFormType,
+    RefTemplateUriFormTypeEnum,
+} from '@/components/views/ref-identifiers/forms/refCreateSchema'
 import { RefIdentifierListShowEnum } from '@/components/views/ref-identifiers/refIdentifierListProps'
 import { useRefIdentifierHook } from '@/hooks/useRefIdentifier.hook'
 
@@ -32,6 +41,8 @@ export const RefIdentifierCreateContainer: React.FC = () => {
         datasetOptions,
         generatedEntityId,
         ownerOptions,
+        templateUriOptions,
+        dataItemTypeOptions,
         groupDataFiltered,
         isLoading: isRefLoading,
         isError: isRefError,
@@ -39,7 +50,7 @@ export const RefIdentifierCreateContainer: React.FC = () => {
 
     const onStatusSuccess = useCiCreateEditOnStatusSuccess(`${RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS}`)
     const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
-    const { onSubmit, uploadError, setUploadError, configurationItemId } = useCiCreateUpdateOnSubmit(type)
+    const { onSubmit, setUploadError, configurationItemId } = useCiCreateUpdateOnSubmit(type)
     const storeConfigurationItem = useStoreConfigurationItem({
         mutation: {
             onError() {
@@ -55,12 +66,7 @@ export const RefIdentifierCreateContainer: React.FC = () => {
         },
     })
 
-    const {
-        isLoading: isStoreRelationsLoading,
-        isError: isStoreRelationsError,
-        mutateAsync: createRelations,
-        isSuccess: isStoreSuccess,
-    } = useStoreRelationship()
+    const { isLoading: isStoreRelationsLoading, isError: isStoreRelationsError, mutateAsync: createRelations } = useStoreRelationship()
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
@@ -73,15 +79,14 @@ export const RefIdentifierCreateContainer: React.FC = () => {
     const isLoading = [isRefLoading, isStoreRelationsLoading].some((item) => item)
     const isError = [isRefError, isStoreRelationsError].some((item) => item)
 
-    const handleCatalogSubmit = async (formData: RefCatalogFormType) => {
+    const createCiItem = async (formData: FieldValues, isSend: boolean) => {
+        const registrationState = isSend ? 'c_stav_registracie.4' : 'c_stav_registracie.1'
         const owner = groupDataFiltered.find((item) => item.orgId === formData[RefCatalogFormTypeEnum.OWNER])
         const ownerRoleGid = owner?.roles.find((role) => role.roleName == 'REFID_URI_DEF')?.gid
         const attributeList = {
             ...formData.attributes,
-            [ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie]: 'c_stav_registracie.1',
+            [ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie]: registrationState,
             [ATTRIBUTE_NAME.Gen_Profil_kod_metais]: generatedEntityId?.cicode,
-            [ATTRIBUTE_NAME.Profil_URIKatalog_platne_od]: formatDateForDefaultValue(formData.attributes[ATTRIBUTE_NAME.Profil_URIKatalog_platne_od]),
-            [ATTRIBUTE_NAME.Profil_URIKatalog_platne_do]: formatDateForDefaultValue(formData.attributes[ATTRIBUTE_NAME.Profil_URIKatalog_platne_do]),
             [ATTRIBUTE_NAME.Gen_Profil_ref_id]: generatedEntityId?.ciurl,
         }
         const uuid = await onSubmit({
@@ -90,6 +95,77 @@ export const RefIdentifierCreateContainer: React.FC = () => {
             ownerId: ownerRoleGid,
             generatedEntityId,
         })
+
+        return { ownerRoleGid, uuid }
+    }
+
+    const handleTemplateUriSubmit = async (formData: RefTemplateUriFormType, isSend: boolean) => {
+        const { ownerRoleGid, uuid } = await createCiItem(formData, isSend)
+        await createRelations({
+            data: {
+                type: 'Individuum_je_typu_DatovyPrvok',
+                startUuid: formData[RefTemplateUriFormTypeEnum.TEMPLATE_URI],
+                uuid: uuidV4(),
+                endUuid: uuid,
+                owner: ownerRoleGid,
+                attributes: [],
+            },
+        })
+    }
+
+    const handleDatasetSubmit = async (formData: RefDatasetFormType, isSend: boolean) => {
+        const { ownerRoleGid, uuid } = await createCiItem(formData, isSend)
+
+        await createRelations({
+            data: {
+                type: 'URIDataset_definuje_uri_ZC',
+                startUuid: formData[RefDatasetFormTypeEnum.DATA_CODE],
+                uuid: uuidV4(),
+                endUuid: uuid,
+                owner: ownerRoleGid,
+                attributes: [],
+            },
+        })
+        await createRelations({
+            data: {
+                type: 'URIDataset_obsahuje_DatovyPrvok',
+                startUuid: formData[RefDatasetFormTypeEnum.DATA_ITEM],
+                uuid: uuidV4(),
+                endUuid: uuid,
+                owner: ownerRoleGid,
+                attributes: [],
+            },
+        })
+    }
+    const handleDataItemSubmit = async (formData: RefDataItemFormType, isSend: boolean) => {
+        const { ownerRoleGid, uuid } = await createCiItem(formData, isSend)
+        await createRelations({
+            data: {
+                type: 'PO_je_gestor_DatovyPrvok',
+                startUuid: uuid,
+                uuid: uuidV4(),
+                endUuid: formData[RefDataItemFormTypeEnum.PO],
+                owner: ownerRoleGid,
+                attributes: [],
+            },
+        })
+
+        formData[RefDataItemFormTypeEnum.DATA_ITEM].forEach((itemId) => {
+            createRelations({
+                data: {
+                    type: 'DatovyPrvok_sa_sklada_DatovyPrvok',
+                    startUuid: uuid,
+                    uuid: uuidV4(),
+                    endUuid: itemId,
+                    owner: ownerRoleGid,
+                    attributes: [],
+                },
+            })
+        })
+    }
+
+    const handleCatalogSubmit = async (formData: RefCatalogFormType, isSend: boolean) => {
+        const { ownerRoleGid, uuid } = await createCiItem(formData, isSend)
 
         await createRelations({
             data: {
@@ -101,11 +177,11 @@ export const RefIdentifierCreateContainer: React.FC = () => {
                 attributes: [],
             },
         })
-        formData[RefCatalogFormTypeEnum.DATASET].forEach((datasetId) => {
+        formData[RefCatalogFormTypeEnum.DATASET].forEach((itemId) => {
             createRelations({
                 data: {
                     type: 'URIDataset_patri_URIKatalog',
-                    startUuid: datasetId,
+                    startUuid: itemId,
                     uuid: uuidV4(),
                     endUuid: uuid,
                     owner: ownerRoleGid,
@@ -123,9 +199,15 @@ export const RefIdentifierCreateContainer: React.FC = () => {
             attributes={attributes}
             ownerOptions={ownerOptions}
             datasetOptions={datasetOptions}
+            templateUriOptions={templateUriOptions}
+            dataItemTypeOptions={dataItemTypeOptions}
             type={type}
+            ciCode={generatedEntityId?.cicode}
             setType={setType}
+            handleDataItemSubmit={handleDataItemSubmit}
+            handleTemplateUriSubmit={handleTemplateUriSubmit}
             handleCatalogSubmit={handleCatalogSubmit}
+            handleDatasetSubmit={handleDatasetSubmit}
             wrapperRef={wrapperRef}
             isUpdate={false}
             isProcessedError={isProcessedError}

@@ -1,16 +1,22 @@
-import { BreadCrumbs, Button, ButtonGroupRow, ButtonLink, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ATTRIBUTE_NAME, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
+import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { RefCatalogInfoView } from './RefCatalogInfoView'
 import { RefDataItemInfoView } from './RefDataItemInfoView'
 import { RefDatasetInfoView } from './RefDatasetInfoView'
+import styles from './refIdentifiers.module.scss'
 import { RefTemplateUriInfoView } from './RefTemplateUriInfoView'
 
 import { RefIdentifierDetailContainerViewProps } from '@/components/containers/ref-identifiers/RefIdentifierDetailContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 
 export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewProps> = ({
     ciItemId,
@@ -26,6 +32,8 @@ export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewP
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+
+    const { isActionSuccess } = useActionSuccess()
 
     const renderInfoView = () => {
         switch (ciItemData?.type) {
@@ -93,21 +101,37 @@ export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewP
             />
 
             <MainContentWrapper>
-                {isError && <QueryFeedback error={isError} loading={false} />}
-                <QueryFeedback loading={isLoading} error={false} withChildren>
-                    {/* <div className={styles.headerDiv}> */}
-                    <TextHeading size="XL">{entityItemName}</TextHeading>
-                    <ButtonGroupRow>
-                        {/* <Can I={Actions.EDIT} a={Subjects.DETAIL}> */}
-                        <Button
-                            label={t('codeListDetail.button.edit')}
-                            onClick={() => navigate(`${NavigationSubRoutes.REF_IDENTIFIERS}/${ciItemId}/edit`)}
-                        />
-                        {/* </Can> */}
-                    </ButtonGroupRow>
-                    {/* </div> */}
-                    {renderInfoView()}
-                </QueryFeedback>
+                <CiPermissionsWrapper entityName={ciItemData?.type ?? ''} entityId={ciItemId ?? ''}>
+                    <>
+                        {isError && <QueryFeedback error={isError} loading={false} />}
+
+                        <ElementToScrollTo isVisible={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}>
+                            <MutationFeedback
+                                error={false}
+                                success={isActionSuccess.value}
+                                successMessage={
+                                    isActionSuccess.additionalInfo?.type === 'create'
+                                        ? t('mutationFeedback.successfulCreated')
+                                        : t('mutationFeedback.successfulUpdated')
+                                }
+                            />
+                        </ElementToScrollTo>
+                        <QueryFeedback loading={isLoading} error={false} withChildren>
+                            <div className={styles.headerDiv}>
+                                <TextHeading size="XL">{entityItemName}</TextHeading>
+                                <ButtonGroupRow>
+                                    <Can I={Actions.EDIT} a={`ci.${ciItemId}`}>
+                                        <Button
+                                            label={t('codeListDetail.button.edit')}
+                                            onClick={() => navigate(`${NavigationSubRoutes.REF_IDENTIFIERS}/${ciItemId}/edit`)}
+                                        />
+                                    </Can>
+                                </ButtonGroupRow>
+                            </div>
+                            {renderInfoView()}
+                        </QueryFeedback>
+                    </>
+                </CiPermissionsWrapper>
             </MainContentWrapper>
         </>
     )

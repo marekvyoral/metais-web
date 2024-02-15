@@ -1,17 +1,20 @@
 import { BreadCrumbs, HomeIcon, IOption, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Stepper } from '@isdd/idsk-ui-kit/stepper/Stepper'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ApiError } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Attribute, CiCode, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Group } from '@isdd/metais-common/contexts/auth/authContext'
 import { MutationFeedback, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
 import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
-import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { Attribute, CiCode, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { Group } from '@isdd/metais-common/contexts/auth/authContext'
-import { ApiError } from '@isdd/metais-common/api/generated/iam-swagger'
 
 import { RefCatalogForm } from './forms/RefCatalogForm'
+import { RefDataItemForm } from './forms/RefDataItemForm'
+import { RefDatasetForm } from './forms/RefDatasetForm'
+import { RefTemplateUriForm } from './forms/RefTemplateUriForm'
+import { RefCatalogFormType, RefDataItemFormType, RefDatasetFormType, RefTemplateUriFormType } from './forms/refCreateSchema'
 import { refIdentifierTypeOptions } from './refIdentifierListProps'
-import { RefCatalogFormType } from './forms/refCreateSchema'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
@@ -21,6 +24,7 @@ export interface RefIdentifierCreateViewPropsType {
     ciItemData?: ConfigurationItemUi
     attributes: Attribute[] | undefined
     type?: RefIdentifierTypeEnum
+    ciCode?: string
     groupData: Group[]
     setType?: (type: RefIdentifierTypeEnum) => void
     ciTypeData: CiType | undefined
@@ -28,12 +32,22 @@ export interface RefIdentifierCreateViewPropsType {
     ownerId?: string
     ownerOptions: IOption<string>[]
     datasetOptions: IOption<string>[]
+    templateUriOptions: IOption<string>[]
+    dataItemTypeOptions: IOption<string>[]
     defaultDatasets?: string[]
     defaultPo?: string
+    defaultTemplateUri?: string
+    defaultDataItemTemplateUriUuids?: string[]
+    defaultDatasetZC?: string
+    defaultDatasetItem?: string
     updateCiItemId?: string
     wrapperRef: React.RefObject<HTMLTableSectionElement>
-    handleCatalogSubmit: (formData: RefCatalogFormType) => void
+    handleCatalogSubmit: (formData: RefCatalogFormType, isSend: boolean) => void
+    handleTemplateUriSubmit: (formData: RefTemplateUriFormType, isSend: boolean) => void
+    handleDataItemSubmit: (formData: RefDataItemFormType, isSend: boolean) => void
+    handleDatasetSubmit: (formData: RefDatasetFormType, isSend: boolean) => void
     isUpdate: boolean
+    isDisabled?: boolean
     isLoading: boolean
     isError: boolean
     isRedirectError: boolean
@@ -49,11 +63,22 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
     ownerOptions,
     datasetOptions,
     defaultDatasets,
+    templateUriOptions,
+    dataItemTypeOptions,
     defaultPo,
+    defaultTemplateUri,
+    defaultDatasetZC,
+    defaultDatasetItem,
+    defaultDataItemTemplateUriUuids,
     type,
+    ciCode,
     setType,
     handleCatalogSubmit,
+    handleTemplateUriSubmit,
+    handleDataItemSubmit,
+    handleDatasetSubmit,
     wrapperRef,
+    isDisabled,
     isUpdate,
     isError,
     isLoading,
@@ -97,6 +122,8 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
                     <>
                         {type === RefIdentifierTypeEnum.URIKatalog && (
                             <RefCatalogForm
+                                isUpdate={isUpdate}
+                                isDisabled={isDisabled}
                                 onSubmit={handleCatalogSubmit}
                                 ciItemData={ciItemData}
                                 attributes={attributes}
@@ -106,44 +133,50 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
                                 defaultPo={defaultPo}
                             />
                         )}
-                        {/* {type === RefIdentifierTypeEnum.Individuum && (
+                        {type === RefIdentifierTypeEnum.Individuum && (
                             <RefTemplateUriForm
-                                onSubmit={() => undefined}
-                                attributeProfiles={attributeProfiles}
-                                publicAuthorityState={publicAuthorityState}
+                                isUpdate={isUpdate}
+                                isDisabled={isDisabled}
+                                onSubmit={handleTemplateUriSubmit}
+                                ciItemData={ciItemData}
+                                ciCode={ciCode}
+                                templateUriOptions={templateUriOptions}
                                 attributes={attributes}
-                                unitsData={unitsData}
-                                constraintsData={constraintsData}
-                                ciTypeData={ciTypeData}
                                 ownerOptions={ownerOptions}
+                                defaultTemplateUri={defaultTemplateUri}
                             />
                         )}
 
                         {type === RefIdentifierTypeEnum.DatovyPrvok && (
                             <RefDataItemForm
-                                onSubmit={() => undefined}
-                                attributeProfiles={attributeProfiles}
-                                publicAuthorityState={publicAuthorityState}
+                                isUpdate={isUpdate}
+                                isDisabled={isDisabled}
+                                onSubmit={handleDataItemSubmit}
+                                ciItemData={ciItemData}
+                                templateUriOptions={templateUriOptions}
+                                dataItemTypeOptions={dataItemTypeOptions}
                                 attributes={attributes}
-                                unitsData={unitsData}
-                                constraintsData={constraintsData}
-                                ciTypeData={ciTypeData}
                                 ownerOptions={ownerOptions}
+                                datasetOptions={datasetOptions}
+                                defaultDatasets={defaultDatasets}
+                                defaultDataItemTemplateUriUuids={defaultDataItemTemplateUriUuids}
+                                defaultPo={defaultPo}
                             />
                         )}
 
                         {type === RefIdentifierTypeEnum.URIDataset && (
                             <RefDatasetForm
-                                onSubmit={() => undefined}
-                                attributeProfiles={attributeProfiles}
-                                publicAuthorityState={publicAuthorityState}
+                                isUpdate={isUpdate}
+                                isDisabled={isDisabled}
+                                onSubmit={handleDatasetSubmit}
+                                ciItemData={ciItemData}
+                                templateUriOptions={templateUriOptions}
                                 attributes={attributes}
-                                unitsData={unitsData}
-                                constraintsData={constraintsData}
-                                ciTypeData={ciTypeData}
                                 ownerOptions={ownerOptions}
+                                defaultDatasetZC={defaultDatasetZC}
+                                defaultDatasetItem={defaultDatasetItem}
                             />
-                        )} */}
+                        )}
                     </>
                 ),
             },
@@ -157,7 +190,10 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
                     { label: t('breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
                     { label: t('breadcrumbs.refIdentifiers'), href: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS },
-                    { label: t('breadcrumbs.refIdentifiersCreate'), href: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS },
+                    {
+                        label: isUpdate ? t('breadcrumbs.refIdentifiersEdit') : t('breadcrumbs.refIdentifiersCreate'),
+                        href: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS,
+                    },
                 ]}
             />
 
@@ -168,7 +204,7 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
                     </div>
                 )}
                 <QueryFeedback
-                    loading={isRedirectLoading}
+                    loading={isRedirectLoading || isLoading}
                     error={isRedirectError || isProcessedError || isTooManyFetchesError}
                     indicatorProps={{
                         label: isUpdate ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
@@ -182,7 +218,8 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
                     }}
                     withChildren
                 >
-                    <TextHeading size="XL">{t('refIdentifiers.create.title')}</TextHeading>
+                    {isError && <QueryFeedback error loading={false} />}
+                    <TextHeading size="XL">{isUpdate ? t('refIdentifiers.create.editTitle') : t('refIdentifiers.create.title')}</TextHeading>
                     <Stepper subtitleTitle="" stepperList={sections} />
 
                     <div id={REF_PORTAL_SUBMIT_ID} />

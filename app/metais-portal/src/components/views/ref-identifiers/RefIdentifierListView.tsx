@@ -4,10 +4,10 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { ActionsOverTable, CreateEntityButton, MutationFeedback, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
+import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { refIdentifierColumns, refIdentifierStateOptions, refIdentifierTypeOptions, refIdentifierViewOptions } from './refIdentifierListProps'
 

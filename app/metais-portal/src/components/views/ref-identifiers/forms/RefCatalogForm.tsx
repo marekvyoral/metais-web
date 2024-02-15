@@ -5,12 +5,12 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
+import { DateTime } from 'luxon'
 import React from 'react'
 import { createPortal } from 'react-dom'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 
 import { REF_PORTAL_SUBMIT_ID } from '../RefIdentifierCreateView'
 
@@ -18,8 +18,10 @@ import { RefCatalogFormType, RefCatalogFormTypeEnum, refIdentifierCreateCatalogS
 
 import { getDescriptionByAttribute, getNameByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
 
-interface RefCatalogFormPropsType<T extends FieldValues> {
-    onSubmit: SubmitHandler<T>
+interface RefCatalogFormPropsType {
+    onSubmit: (data: RefCatalogFormType, send: boolean) => void
+    isUpdate?: boolean
+    isDisabled?: boolean
     ciItemData?: ConfigurationItemUi
     attributes: Attribute[] | undefined
     ownerOptions: IOption<string>[]
@@ -28,8 +30,10 @@ interface RefCatalogFormPropsType<T extends FieldValues> {
     defaultPo?: string
 }
 
-export const RefCatalogForm: React.FC<RefCatalogFormPropsType<RefCatalogFormType>> = ({
+export const RefCatalogForm: React.FC<RefCatalogFormPropsType> = ({
     onSubmit,
+    isUpdate,
+    isDisabled,
     ciItemData,
     attributes,
     ownerOptions,
@@ -52,41 +56,43 @@ export const RefCatalogForm: React.FC<RefCatalogFormPropsType<RefCatalogFormType
         ATTRIBUTE_NAME.Profil_URIKatalog_platne_od,
         ATTRIBUTE_NAME.Profil_URIKatalog_platne_do,
     ]
-    console.log('bugi', defaultDatasets)
+
     const attributesDefaultValues = attributeList.map((item) => [item, ciItemData?.attributes?.[item]])
+
     const methods = useForm<RefCatalogFormType>({
         defaultValues: {
             [RefCatalogFormTypeEnum.OWNER]: ownerOptions?.at(0)?.value,
             [RefCatalogFormTypeEnum.DATASET]: defaultDatasets,
+            [RefCatalogFormTypeEnum.PO]: defaultPo,
             attributes: Object.fromEntries(attributesDefaultValues),
         },
         mode: 'onChange',
         resolver: yupResolver(refIdentifierCreateCatalogSchema(t)),
     })
 
-    const { register, formState, handleSubmit, watch, getValues, setValue, clearErrors, control } = methods
+    const { register, formState, handleSubmit, watch, setValue, clearErrors, control } = methods
     const { errors } = formState
-    console.log('dodo errors', {
-        [RefCatalogFormTypeEnum.OWNER]: ownerOptions?.at(0)?.value,
-        [RefCatalogFormTypeEnum.DATASET]: defaultDatasets,
-        attributes: Object.fromEntries(attributesDefaultValues),
-    })
+
     const buttonRefId = document.getElementById(REF_PORTAL_SUBMIT_ID)
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <SimpleSelect
-                label={t('refIdentifiers.create.ownerUser')}
-                options={ownerOptions ?? []}
-                setValue={setValue}
-                name={'owner'}
-                isClearable={false}
-                clearErrors={clearErrors}
-                defaultValue={ownerOptions?.at(0)?.value}
-            />
+        <form>
+            {!isUpdate && (
+                <SimpleSelect
+                    label={t('refIdentifiers.create.ownerUser')}
+                    options={ownerOptions ?? []}
+                    setValue={setValue}
+                    name={RefCatalogFormTypeEnum.OWNER}
+                    isClearable={false}
+                    clearErrors={clearErrors}
+                    defaultValue={ownerOptions?.at(0)?.value}
+                    error={errors?.[RefCatalogFormTypeEnum.OWNER]?.message}
+                />
+            )}
 
             <Input
                 required
+                disabled={isDisabled}
                 label={getNameByAttribute(
                     language,
                     attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIKatalog_uri),
@@ -100,6 +106,7 @@ export const RefCatalogForm: React.FC<RefCatalogFormPropsType<RefCatalogFormType
             />
             <Input
                 required
+                disabled={isDisabled}
                 label={getNameByAttribute(
                     language,
                     attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
@@ -114,6 +121,7 @@ export const RefCatalogForm: React.FC<RefCatalogFormPropsType<RefCatalogFormType
 
             <Input
                 required
+                disabled={isDisabled}
                 label={getNameByAttribute(
                     language,
                     attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
@@ -127,6 +135,7 @@ export const RefCatalogForm: React.FC<RefCatalogFormPropsType<RefCatalogFormType
             />
 
             <CiLazySelect
+                disabled={isDisabled}
                 ciType="PO"
                 label={t('refIdentifiers.create.poGestor')}
                 setValue={setValue}
@@ -142,9 +151,7 @@ export const RefCatalogForm: React.FC<RefCatalogFormPropsType<RefCatalogFormType
 
             <DateInput
                 required
-                handleDateChange={(date, name) =>
-                    setValue(name as keyof RefCatalogFormType, formatDateForDefaultValue(date?.toISOString() ?? '', 'YYYY-MM-DD'))
-                }
+                handleDateChange={(date, name) => date && setValue(name as keyof RefCatalogFormType, DateTime.fromJSDate(date).toISO() ?? '')}
                 {...register(`attributes.${ATTRIBUTE_NAME.Profil_URIKatalog_platne_od}`)}
                 control={control}
                 label={getNameByAttribute(
@@ -159,9 +166,7 @@ export const RefCatalogForm: React.FC<RefCatalogFormPropsType<RefCatalogFormType
             />
 
             <DateInput
-                handleDateChange={(date, name) =>
-                    setValue(name as keyof RefCatalogFormType, formatDateForDefaultValue(date?.toISOString() ?? '', 'YYYY-MM-DD'))
-                }
+                handleDateChange={(date, name) => date && setValue(name as keyof RefCatalogFormType, DateTime.fromJSDate(date).toISO() ?? '')}
                 {...register(`attributes.${ATTRIBUTE_NAME.Profil_URIKatalog_platne_do}`)}
                 control={control}
                 label={getNameByAttribute(
@@ -182,6 +187,7 @@ export const RefCatalogForm: React.FC<RefCatalogFormPropsType<RefCatalogFormType
                 setValue={setValue}
                 value={watch()?.[RefCatalogFormTypeEnum.DATASET]?.map((item) => item ?? '')}
                 clearErrors={clearErrors}
+                defaultValue={defaultDatasets}
                 error={errors?.[RefCatalogFormTypeEnum.DATASET]?.message}
             />
 
@@ -202,8 +208,8 @@ export const RefCatalogForm: React.FC<RefCatalogFormPropsType<RefCatalogFormType
             {buttonRefId &&
                 createPortal(
                     <ButtonGroupRow>
-                        {/* <Button onClick={handleSubmit(onSubmit)} label={t('refRegisters.create.save')} /> */}
-                        <Button onClick={handleSubmit(onSubmit)} label={t('refRegisters.create.save')} />
+                        <Button onClick={handleSubmit((data) => onSubmit(data, true))} label={t('refIdentifiers.create.finishRequest')} />
+                        <Button onClick={handleSubmit((data) => onSubmit(data, false))} label={t('refIdentifiers.create.saveRequest')} />
                         <Button variant="secondary" label={t('refRegisters.detail.items.cancel')} onClick={() => navigate(-1)} />
                     </ButtonGroupRow>,
                     buttonRefId,

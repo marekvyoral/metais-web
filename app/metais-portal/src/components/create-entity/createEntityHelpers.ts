@@ -285,7 +285,7 @@ export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
             })
         }
 
-        deleteCacheMutation.mutateAsync(undefined, {
+        await deleteCacheMutation.mutateAsync(undefined, {
             onSuccess: () => handleStoreConfigurationItem(),
         })
 

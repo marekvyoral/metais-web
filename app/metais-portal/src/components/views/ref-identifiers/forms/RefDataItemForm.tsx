@@ -1,100 +1,171 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
-import { IOption, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit/index'
+import { Button, ButtonGroupRow, IOption, Input, MultiSelect, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
-import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/kris-swagger'
-import { Attribute, AttributeProfile, CiCode, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
+import { DateTime } from 'luxon'
 import React from 'react'
+import { createPortal } from 'react-dom'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
-import { PublicAuthoritySelect } from '../../public-authorities-hierarchy/PublicAuthoritySelect'
+import { REF_PORTAL_SUBMIT_ID } from '../RefIdentifierCreateView'
 
-import { RefCatalogFormTypeEnum } from './refCreateSchema'
+import { RefDataItemFormType, RefDataItemFormTypeEnum, refIdentifierCreateDataItemSchema } from './refCreateSchema'
 
-import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
-import { getFilteredAttributeProfilesBasedOnRole } from '@/components/create-entity/createEntityHelpers'
 import { getDescriptionByAttribute, getNameByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
-import { PublicAuthorityState } from '@/hooks/usePublicAuthorityAndRole.hook'
 
 type RefDataItemFormPropsType = {
-    onSubmit: () => void
+    onSubmit: (data: RefDataItemFormType, isSend: boolean) => void
+    isUpdate: boolean
+    ciItemData?: ConfigurationItemUi
     attributes: Attribute[] | undefined
-    constraintsData: (EnumType | undefined)[]
-    ciTypeData: CiType | undefined
-    attributeProfiles: AttributeProfile[] | undefined
-    unitsData: EnumType | undefined
-    defaultItemAttributeValues?: ConfigurationItemUiAttributes
-    publicAuthorityState: PublicAuthorityState
-    ownerOptions: IOption<string>[] | undefined
+    ownerOptions: IOption<string>[]
+    datasetOptions: IOption<string>[]
+    templateUriOptions: IOption<string>[]
+    dataItemTypeOptions: IOption<string>[]
+    defaultDatasets?: string[]
+    defaultDataItemTemplateUriUuids?: string[]
+    defaultPo?: string
+    isDisabled?: boolean
 }
 
 export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
     onSubmit,
-    publicAuthorityState,
+    isUpdate,
+    ciItemData,
     attributes,
-    ciTypeData,
-    attributeProfiles,
     ownerOptions,
+    dataItemTypeOptions,
+    templateUriOptions,
+    defaultDataItemTemplateUriUuids,
+    defaultPo,
+    isDisabled,
 }) => {
     const {
         t,
         i18n: { language },
     } = useTranslation()
 
+    const navigate = useNavigate()
+
     const attributeList = [
         ATTRIBUTE_NAME.Gen_Profil_nazov,
         ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov,
         ATTRIBUTE_NAME.Gen_Profil_popis,
         ATTRIBUTE_NAME.Profil_URIKatalog_uri,
-        ATTRIBUTE_NAME.Profil_URIKatalog_platne_od,
-        ATTRIBUTE_NAME.Profil_URIKatalog_platne_do,
-        ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie,
+        ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku,
+        ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku,
+        ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod,
+        ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti,
+        ATTRIBUTE_NAME.Profil_DatovyPrvok_koniec_ucinnosti,
         ATTRIBUTE_NAME.Gen_Profil_kod_metais,
         ATTRIBUTE_NAME.Gen_Profil_ref_id,
     ]
 
-    const combinedProfiles = [ciTypeData as AttributeProfile, ...(attributeProfiles ?? [])]
-    // const fromDefaultValues = formatForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes)
-    const methods = useForm({
-        defaultValues: {},
+    const attributesDefaultValues = Object.fromEntries(attributeList.map((item) => [item, ciItemData?.attributes?.[item]]))
+
+    const methods = useForm<RefDataItemFormType>({
+        defaultValues: {
+            [RefDataItemFormTypeEnum.OWNER]: ownerOptions?.at(0)?.value,
+            [RefDataItemFormTypeEnum.DATA_ITEM]: defaultDataItemTemplateUriUuids,
+            [RefDataItemFormTypeEnum.PO]: defaultPo,
+            attributes: attributesDefaultValues,
+        },
         mode: 'onChange',
-        resolver: yupResolver(generateFormSchema(getFilteredAttributeProfilesBasedOnRole(combinedProfiles, ''), t, language)),
+        resolver: yupResolver(refIdentifierCreateDataItemSchema(t)),
     })
 
-    const { register, formState, setValue, clearErrors, control } = methods
+    const { register, formState, setValue, watch, handleSubmit, clearErrors, control } = methods
     const { errors } = formState
+
+    const buttonRefId = document.getElementById(REF_PORTAL_SUBMIT_ID)
 
     return (
         <>
-            {/* <form onSubmit={handleSubmit(onSubmit)}> */}
             <form>
+                {!isUpdate && (
+                    <SimpleSelect
+                        label={t('refIdentifiers.create.ownerUser')}
+                        options={ownerOptions ?? []}
+                        setValue={setValue}
+                        name={RefDataItemFormTypeEnum.OWNER}
+                        isClearable={false}
+                        clearErrors={clearErrors}
+                        defaultValue={ownerOptions?.at(0)?.value}
+                        error={errors?.[RefDataItemFormTypeEnum.OWNER]?.message}
+                    />
+                )}
+                <Input
+                    required
+                    disabled={isDisabled}
+                    label={getNameByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
+                    )}
+                    info={getDescriptionByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
+                    )}
+                    {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_nazov}`)}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]?.message}
+                />
+
+                <Input
+                    required
+                    disabled={isDisabled}
+                    label={getNameByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
+                    )}
+                    info={getDescriptionByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
+                    )}
+                    {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov}`)}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]?.message}
+                />
+
+                <Input
+                    required
+                    disabled={isDisabled}
+                    label={getNameByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku),
+                    )}
+                    info={getDescriptionByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku),
+                    )}
+                    {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku}`)}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku]?.message}
+                />
+
                 <SimpleSelect
-                    label={t('refIdentifiers.create.ownerUser')}
-                    name={'CodelistEnum.CATEGORY'}
-                    options={ownerOptions || []}
-                    // setValue={setValue}
+                    disabled={isDisabled}
+                    label={getNameByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku),
+                    )}
+                    info={getDescriptionByAttribute(
+                        language,
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku),
+                    )}
+                    options={dataItemTypeOptions ?? []}
+                    setValue={setValue}
+                    name={`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku}`}
                     isClearable={false}
                     clearErrors={clearErrors}
+                    defaultValue={attributesDefaultValues?.[ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku]}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku]?.message}
                 />
 
                 <Input
                     required
-                    label={getNameByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIKatalog_uri),
-                    )}
-                    info={getDescriptionByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIKatalog_uri),
-                    )}
-                    id={RefCatalogFormTypeEnum.DATASET}
-                    {...register(`attributes.${ATTRIBUTE_NAME.Profil_URIKatalog_uri}`)}
-                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
-                />
-                <Input
-                    required
+                    disabled={isDisabled}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod),
@@ -103,80 +174,38 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod),
                     )}
-                    id={RefCatalogFormTypeEnum.DATASET}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod}`)}
-                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod]?.message}
                 />
 
-                <Input
+                <CiLazySelect
+                    ciType="PO"
+                    label={t('refIdentifiers.create.poGestor')}
+                    setValue={setValue}
+                    clearErrors={clearErrors}
+                    name={RefDataItemFormTypeEnum.PO}
+                    defaultValue={defaultPo}
+                    metaAttributes={{
+                        state: ['DRAFT'],
+                    }}
                     required
-                    label={getNameByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
-                    )}
-                    info={getDescriptionByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
-                    )}
-                    id={RefCatalogFormTypeEnum.DATASET}
-                    {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_nazov}`)}
-                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
+                    error={errors?.[RefDataItemFormTypeEnum.PO]?.message}
                 />
 
-                <Input
-                    required
-                    label={getNameByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
-                    )}
-                    info={getDescriptionByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
-                    )}
-                    id={RefCatalogFormTypeEnum.DATASET}
-                    {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov}`)}
-                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
-                />
-
-                <Input
-                    required
-                    label={getNameByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku),
-                    )}
-                    info={getDescriptionByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku),
-                    )}
-                    id={RefCatalogFormTypeEnum.DATASET}
-                    {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku}`)}
-                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
-                />
-
-                <Input
-                    required
-                    label={getNameByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku),
-                    )}
-                    info={getDescriptionByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku),
-                    )}
-                    id={RefCatalogFormTypeEnum.DATASET}
-                    {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku}`)}
-                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
-                />
-
-                <PublicAuthoritySelect
-                    onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
-                    selectedOrg={publicAuthorityState.selectedPublicAuthority}
-                    // ciRoles={['REFID_URI_DEF']}
+                <MultiSelect
+                    label={t('refIdentifiers.create.dataElementType')}
+                    name={RefDataItemFormTypeEnum.DATA_ITEM}
+                    options={templateUriOptions || {}}
+                    setValue={setValue}
+                    value={watch()?.[RefDataItemFormTypeEnum.DATA_ITEM]?.map((item) => item ?? '')}
+                    defaultValue={defaultDataItemTemplateUriUuids}
+                    clearErrors={clearErrors}
+                    error={errors?.[RefDataItemFormTypeEnum.DATA_ITEM]?.message}
                 />
 
                 <DateInput
                     required
-                    handleDateChange={(date) => setValue('validityEndDate', date)}
+                    handleDateChange={(date, name) => date && setValue(name as keyof RefDataItemFormType, DateTime.fromJSDate(date).toISO() ?? '')}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti}`)}
                     control={control}
                     label={getNameByAttribute(
@@ -187,20 +216,11 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti),
                     )}
-                />
-                <SimpleSelect
-                    label={t('refIdentifiers.create.catalogDataset')}
-                    name={'CodelistEnum.CATEGORY'}
-                    options={[
-                        { label: '-', value: '' },
-                        { label: 'LICENSE', value: 'LICENSE' },
-                    ]}
-                    // setValue={setValue}
-                    clearErrors={clearErrors}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti]?.message}
                 />
 
                 <DateInput
-                    handleDateChange={(date) => setValue('validityEndDate', date)}
+                    handleDateChange={(date, name) => date && setValue(name as keyof RefDataItemFormType, DateTime.fromJSDate(date).toISO() ?? '')}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_koniec_ucinnosti}`)}
                     control={control}
                     label={getNameByAttribute(
@@ -211,10 +231,10 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_koniec_ucinnosti),
                     )}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_DatovyPrvok_koniec_ucinnosti]?.message}
                 />
 
                 <TextArea
-                    required
                     rows={3}
                     label={getNameByAttribute(
                         language,
@@ -225,8 +245,18 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis),
                     )}
                     {...register(`attributes.${ATTRIBUTE_NAME.Gen_Profil_popis}`)}
-                    error={errors[RefCatalogFormTypeEnum.DATASET]?.message}
+                    error={errors?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_popis]?.message}
                 />
+
+                {buttonRefId &&
+                    createPortal(
+                        <ButtonGroupRow>
+                            <Button onClick={handleSubmit((data) => onSubmit(data, true))} label={t('refIdentifiers.create.finishRequest')} />
+                            <Button onClick={handleSubmit((data) => onSubmit(data, false))} label={t('refIdentifiers.create.saveRequest')} />
+                            <Button variant="secondary" label={t('refRegisters.detail.items.cancel')} onClick={() => navigate(-1)} />
+                        </ButtonGroupRow>,
+                        buttonRefId,
+                    )}
             </form>
         </>
     )

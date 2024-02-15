@@ -1,15 +1,22 @@
 import { IOption } from '@isdd/idsk-ui-kit/index'
 import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useGenerateCodeAndURL } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { TYP_DATOVEHO_PRVKU } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { OPERATOR_OPTIONS } from '@isdd/metais-common/hooks/useFilter'
 import { ATTRIBUTE_NAME, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
+import { Languages } from '@isdd/metais-common/localization/languages'
+import { useTranslation } from 'react-i18next'
 
 export const useRefIdentifierHook = (type?: string) => {
     const {
         state: { user },
     } = useAuth()
+    const {
+        i18n: { language },
+    } = useTranslation()
 
     const { ciTypeData, attributeProfiles, attributes, isError: isAttributesError, isLoading: isAttributesLoading } = useAttributesHook(type)
 
@@ -66,6 +73,49 @@ export const useRefIdentifierHook = (type?: string) => {
         { query: { enabled: groupDataUuids?.length > 0 } },
     )
 
+    const {
+        data: dataItemTypeState,
+        isLoading: isDataItemTypeStatesLoading,
+        isError: isDataItemTypeStatesError,
+    } = useGetValidEnum(TYP_DATOVEHO_PRVKU)
+
+    const {
+        data: templateUriData,
+        isLoading: isTemplateUriDataLoading,
+        isError: isTemplateUriDataError,
+    } = useReadCiList1(
+        {
+            filter: {
+                metaAttributes: {
+                    state: ['DRAFT'],
+                },
+                attributes: [
+                    {
+                        name: ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie,
+                        filterValue: [
+                            { value: 'c_stav_registracie.1', equality: OPERATOR_OPTIONS.EQUAL },
+                            { value: 'c_stav_registracie.2', equality: OPERATOR_OPTIONS.EQUAL },
+                            { value: 'c_stav_registracie.4', equality: OPERATOR_OPTIONS.EQUAL },
+                        ],
+                    },
+                    {
+                        name: 'Profil_DatovyPrvok_typ_datoveho_prvku',
+                        filterValue: [{ value: 'c_typ_dp.1', equality: OPERATOR_OPTIONS.EQUAL }],
+                    },
+                ],
+                searchFields: [ATTRIBUTE_NAME.Gen_Profil_nazov],
+                type: [RefIdentifierTypeEnum.DatovyPrvok],
+            },
+        },
+        { query: {} },
+    )
+
+    const templateUriOptions =
+        templateUriData?.configurationItemSet?.map((item) => ({
+            value: item.uuid ?? '',
+            label: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+        })) ?? []
+
     const ownerOptions: IOption<string>[] =
         ciDataByUuids?.configurationItemSet?.map((item) => ({
             value: item.uuid ?? '',
@@ -78,12 +128,32 @@ export const useRefIdentifierHook = (type?: string) => {
             label: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
         })) ?? []
 
+    const dataItemTypeOptions =
+        dataItemTypeState?.enumItems?.map((item) => ({
+            value: item.code ?? '',
+            label: (language === Languages.ENGLISH ? item.engDescription : item.description) ?? '',
+        })) ?? []
+
     const attributesArrays = attributeProfiles?.map((item) => item.attributes || []) || []
 
     const attributeList = attributes?.concat(...attributesArrays)
 
-    const isLoading = [isAttributesLoading, isGeneratedIdLoading, isReadCiListLoading, isDatasetLoading].some((item) => item)
-    const isError = [isAttributesError, isGeneratedIdError, isReadCiListError, isDatasetError].some((item) => item)
+    const isLoading = [
+        isAttributesLoading,
+        isGeneratedIdLoading,
+        isReadCiListLoading,
+        isDatasetLoading,
+        isTemplateUriDataLoading,
+        isDataItemTypeStatesLoading,
+    ].some((item) => item)
+    const isError = [
+        isAttributesError,
+        isGeneratedIdError,
+        isReadCiListError,
+        isDatasetError,
+        isTemplateUriDataError,
+        isDataItemTypeStatesError,
+    ].some((item) => item)
 
     return {
         groupDataFiltered,
@@ -92,6 +162,8 @@ export const useRefIdentifierHook = (type?: string) => {
         attributes: attributeList,
         ownerOptions,
         datasetOptions,
+        templateUriOptions,
+        dataItemTypeOptions,
         isError,
         isLoading,
     }
