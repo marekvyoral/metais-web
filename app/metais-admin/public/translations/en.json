@@ -601,6 +601,9 @@
             "publicAuthorities": "Public authorities",
             "massActualizations": "Mass updates",
             "massUpdate": "Mass update"
+        },
+        "systemState": {
+            "heading": "System status settings"
         }
     },
     "tooltip": {
@@ -1360,5 +1363,12 @@
     },
     "aria": {
         "selectedRowsCount": "You have {{count}} rows selected in table"
+    },
+    "systemState": {
+        "deleteInfo": "Clear system status information",
+        "delete": "Delete status",
+        "requiredText": "Text (required)",
+        "color": "Color",
+        "status": "Status"
     }
 }

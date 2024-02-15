@@ -690,6 +690,9 @@
             "publicAuthorities": "Orgány riadenia",
             "massActualizations": "Hromadné aktualizácie",
             "massUpdate": "Hromadné aktualizácie"
+        },
+        "systemState": {
+            "heading": "Nastavenie stavu systému"
         }
     },
     "tooltip": {
@@ -1366,5 +1369,12 @@
     },
     "aria": {
         "selectedRowsCount": "Máte {{count}} vybraných riadkov v tabuľke"
+    },
+    "systemState": {
+        "deleteInfo": "Vymazať informácie o stave systému",
+        "delete": "Vymazať informácie",
+        "requiredText": "Poznámka (povinné)",
+        "color": "Farba",
+        "status": "Stav"
     }
 }
