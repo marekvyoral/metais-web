@@ -996,6 +996,8 @@
         "eventType": "Typ notifikacií",
         "created": "Vytvorené",
         "description": "Popis",
+        "deleteAllModal": "Naozaj chcete vymazať všetky upozornenia?",
+        "cancel": "Zrušiť",
         "columnsNames": {
             "messagePerex": "Názov",
             "createdAt": "Dátum vytvorenia",

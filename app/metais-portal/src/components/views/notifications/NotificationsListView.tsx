@@ -1,7 +1,18 @@
-import { BreadCrumbs, Button, CheckBox, Filter, HomeIcon, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import {
+    BaseModal,
+    BreadCrumbs,
+    Button,
+    CheckBox,
+    Filter,
+    HomeIcon,
+    PaginatorWrapper,
+    SimpleSelect,
+    Table,
+    TextHeading,
+} from '@isdd/idsk-ui-kit/index'
 import { Notification } from '@isdd/metais-common/api/generated/notifications-swagger'
 import { ALL_EVENT_TYPES, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
-import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, ModalButtons, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { Row } from '@tanstack/react-table'
 import React, { useCallback, useState } from 'react'
@@ -28,13 +39,14 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
     handleFilterChange,
     isMutateError,
     isMutateLoading,
-    isMutateSuccess,
+    isMutateDeleteSuccess,
+    isSetAllAsReadSuccess,
     filterParams,
 }) => {
     const { t } = useTranslation()
 
     const [rowSelection, setRowSelection] = useState<Record<string, Notification>>({})
-
+    const [deleteAllModalOpen, setDeleteAllModalOpen] = useState(false)
     const isRowSelected = (row: Row<Notification>) => (row.original.id ? !!rowSelection[row.original.id] : false)
     const isRowBold = (row: Row<Notification>) => !row.original.readedAt
 
@@ -55,11 +67,14 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                     <FlexColumnReverseWrapper>
                         <TextHeading size="XL">{t('notifications.notifications')}</TextHeading>
                         {isError && <QueryFeedback loading={false} error={isError} />}
-                        {(isMutateError || isMutateSuccess) && (
+                        {(isMutateError || isMutateDeleteSuccess || isSetAllAsReadSuccess) && (
                             <MutationFeedback
-                                success={isMutateSuccess}
+                                success={isMutateDeleteSuccess || isSetAllAsReadSuccess}
                                 showSupportEmail
                                 error={isMutateError ? t('feedback.mutationErrorMessage') : ''}
+                                successMessage={
+                                    isMutateDeleteSuccess ? t('mutationFeedback.successfulRemoved') : t('mutationFeedback.successfulUpdated')
+                                }
                             />
                         )}
                     </FlexColumnReverseWrapper>
@@ -100,7 +115,10 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                                 label={t('notifications.deleteSelected') + '(' + idArray.length + ')'}
                                 disabled={idArray.length == 0}
                                 variant="warning"
-                                onClick={() => mutateDelete({ params: { idList: idArray } })}
+                                onClick={() => {
+                                    mutateDelete({ params: { idList: idArray } })
+                                    clearSelectedRows()
+                                }}
                             />
                             <Button
                                 className={styles.marginBottom0}
@@ -112,7 +130,7 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                                 className={styles.marginBottom0}
                                 label={t('notifications.deleteAll')}
                                 variant="warning"
-                                onClick={() => mutateAllDelete({ params: { onlyUnread: false } })}
+                                onClick={() => setDeleteAllModalOpen(true)}
                             />
                         </div>
                     </ActionsOverTable>
@@ -136,6 +154,18 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                         handlePageChange={(filterChange) => handleFilterChange({ pageNumber: filterChange.pageNumber })}
                     />
                 </QueryFeedback>
+                <BaseModal isOpen={deleteAllModalOpen} close={() => setDeleteAllModalOpen(false)}>
+                    <TextHeading size="L">{t('notifications.deleteAllModal')}</TextHeading>
+                    <ModalButtons
+                        submitButtonLabel={t('notifications.deleteAll')}
+                        onSubmit={() => {
+                            mutateAllDelete({ params: { onlyUnread: false } })
+                            setDeleteAllModalOpen(false)
+                        }}
+                        closeButtonLabel={t('notifications.cancel')}
+                        onClose={() => setDeleteAllModalOpen(false)}
+                    />
+                </BaseModal>
             </MainContentWrapper>
         </>
     )
