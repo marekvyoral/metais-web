@@ -38,6 +38,7 @@ interface iCreateFormOutput {
             sourceCardinality?: Cardinality | undefined
             targets: CiTypePreview[] | undefined
             targetCardinality?: Cardinality | undefined
+            color?: string
         },
         unknown,
         undefined

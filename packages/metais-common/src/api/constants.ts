@@ -264,3 +264,15 @@ export enum RefIdentifierTypeEnum {
     DatovyPrvok = 'DatovyPrvok',
     URIDataset = 'URIDataset',
 }
+
+export enum EntityColorEnum {
+    customEntity = '#dfdfdf',
+    systemEntity = '#ffe4af',
+    businessLayer = '#ffffaf',
+    appAndDataLayer = '#afffff',
+    technologicalLayer = '#afffaf',
+    implementationAndMigration = '#ffe0e0',
+    implementationAndMigration2 = '#e0ffe0',
+    motivationalEntity = '#ffccff',
+    motivationalEntity2 = '#ccccff',
+}

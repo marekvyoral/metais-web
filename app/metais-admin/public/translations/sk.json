@@ -227,6 +227,15 @@
         "description": "Popis",
         "engDescription": "Anglický popis",
         "color": "Farebné označenie",
+        "colorSelect": {
+            "customEntity": "Vlastná entita",
+            "systemEntity": "Systémová entita",
+            "businessLayer": "Biznis vrstva",
+            "appAndDataLayer": "Aplikačná a dátová vrstva",
+            "technologicalLayer": "Technologická vrstva",
+            "implementationAndMigration": "Implementácia a Migrácia",
+            "motivationalEntity": "Motivačná entita"
+        },
         "roles": "Oprávnené role",
         "order": "Poradie",
         "invisible": "Viditeľnosť",
