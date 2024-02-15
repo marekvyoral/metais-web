@@ -63,7 +63,8 @@ export interface NotificationsListViewParams {
         unknown
     >
     handleFilterChange: (changedFilter: IFilter) => void
-    isMutateSuccess: boolean
+    isMutateDeleteSuccess: boolean
+    isSetAllAsReadSuccess: boolean
     filterParams: FilterData
 }
 
@@ -206,7 +207,7 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location, selectedColumns, t, i18n.language])
 
-    const isMutateSuccess = isSetAllAsReadSuccess || isDeleteAllSuccess || isDeleteSuccess
+    const isMutateDeleteSuccess = isDeleteAllSuccess || isDeleteSuccess
     const isMutateLoading = isSetAllAsReadLoading || isDeleteAllLoading || isDeleteLoading
     const isMutateError = isDeleteAllError || isDeleteError || isSetAllAsReadError
 
@@ -226,7 +227,8 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
             mutateDelete={mutateDelete}
             isMutateLoading={isMutateLoading}
             isMutateError={isMutateError}
-            isMutateSuccess={isMutateSuccess}
+            isMutateDeleteSuccess={isMutateDeleteSuccess}
+            isSetAllAsReadSuccess={isSetAllAsReadSuccess}
             filterParams={filter}
         />
     )

@@ -989,6 +989,8 @@
         "eventType": "Event Type",
         "created": "Created",
         "description": "Description",
+        "deleteAllModal": "Do you really want to delete all notifications?",
+        "cancel": "Cancel",
         "columnsNames": {
             "messagePerex": "Name",
             "createdAt": "Created at",
