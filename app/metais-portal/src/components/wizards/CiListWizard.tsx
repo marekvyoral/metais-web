@@ -3,7 +3,7 @@ import { WizardState, Wizard } from '@isdd/metais-common/components/onboarding-w
 import { WizardTypes, useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CallBackProps, ACTIONS, STATUS, Step, Placement } from 'react-joyride'
+import { CallBackProps, ACTIONS, Step, Placement } from 'react-joyride'
 
 export const CiListWizard: React.FC = () => {
     const { currentPreferences, updateUserPreferences } = useUserPreferences()
@@ -141,7 +141,7 @@ export const CiListWizard: React.FC = () => {
     }, [currentPreferences, searchSteps, filterSteps, bulkActionsSteps])
 
     const searchCallback = (data: CallBackProps) => {
-        if (data.action === ACTIONS.CLOSE && data.status === STATUS.FINISHED) {
+        if (data.action === ACTIONS.CLOSE) {
             setSearchWizard({ steps: [], run: false })
             updateUserPreferences({ ...currentPreferences, [WizardTypes.SEARCH]: false })
             if (currentPreferences[WizardTypes.FILTER]) {
@@ -150,13 +150,10 @@ export const CiListWizard: React.FC = () => {
                 setBulkActionsWizard({ steps: bulkActionsSteps, run: true })
             }
         }
-        if (data.action === ACTIONS.CLOSE && data.status === STATUS.RUNNING) {
-            setSearchWizard({ steps: [], run: false })
-        }
     }
 
     const filterCallback = (data: CallBackProps) => {
-        if (data.action === ACTIONS.CLOSE && data.status === STATUS.FINISHED) {
+        if (data.action === ACTIONS.CLOSE) {
             setFilterWizard({ steps: [], run: false })
             updateUserPreferences({ ...currentPreferences, [WizardTypes.FILTER]: false })
             if (currentPreferences[WizardTypes.SEARCH]) {
@@ -165,13 +162,10 @@ export const CiListWizard: React.FC = () => {
                 setBulkActionsWizard({ steps: bulkActionsSteps, run: true })
             }
         }
-        if (data.action === ACTIONS.CLOSE && data.status === STATUS.RUNNING) {
-            setFilterWizard({ steps: [], run: false })
-        }
     }
 
     const bulkActionsCallback = (data: CallBackProps) => {
-        if (data.action === ACTIONS.CLOSE && data.status === STATUS.FINISHED) {
+        if (data.action === ACTIONS.CLOSE) {
             setBulkActionsWizard({ steps: [], run: false })
             updateUserPreferences({ ...currentPreferences, [WizardTypes.ACTIONS]: false })
             if (currentPreferences[WizardTypes.SEARCH]) {
@@ -179,9 +173,6 @@ export const CiListWizard: React.FC = () => {
             } else if (currentPreferences[WizardTypes.FILTER]) {
                 setFilterWizard({ steps: filterSteps, run: true })
             }
-        }
-        if (data.action === ACTIONS.CLOSE && data.status === STATUS.RUNNING) {
-            setBulkActionsWizard({ steps: [], run: false })
         }
     }
     return (
