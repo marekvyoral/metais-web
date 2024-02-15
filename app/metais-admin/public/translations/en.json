@@ -195,6 +195,15 @@
         "description": "Description",
         "engDescription": "English description",
         "color": "Color",
+        "colorSelect": {
+            "customEntity": "Custom entity",
+            "systemEntity": "System entity",
+            "businessLayer": "Business layer",
+            "appAndDataLayer": "Application and data layer",
+            "technologicalLayer": "Technological layer",
+            "implementationAndMigration": "Implementation and Migration",
+            "motivationalEntity": "Motivational entity"
+        },
         "roles": "Allowed Roles",
         "order": "Order",
         "invisible": "Visibility",

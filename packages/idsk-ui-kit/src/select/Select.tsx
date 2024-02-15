@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import ReactSelect, { GroupBase, MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
 import { useTranslation } from 'react-i18next'
 
@@ -11,7 +11,7 @@ import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 export interface IOption<T> {
     value: T
-    label: string
+    label: string | ReactElement
     disabled?: boolean
 }
 
