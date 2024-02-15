@@ -1,5 +1,5 @@
 import React, { SetStateAction } from 'react'
-import Joyride, { Step, CallBackProps, ACTIONS, STATUS } from 'react-joyride'
+import Joyride, { Step, CallBackProps, ACTIONS } from 'react-joyride'
 
 import { WizardTooltip } from './WizardTooltip'
 
@@ -21,10 +21,8 @@ export const Wizard: React.FC<WizardProps> = ({ state, setState, callback, type 
     const { currentPreferences, updateUserPreferences } = useUserPreferences()
 
     const defaultCallback = (data: CallBackProps) => {
-        if (data.action === ACTIONS.CLOSE && data.status === STATUS.FINISHED) {
+        if (data.action === ACTIONS.CLOSE) {
             updateUserPreferences({ ...currentPreferences, [type]: false })
-        }
-        if (data.action === ACTIONS.CLOSE && data.status === STATUS.RUNNING) {
             setState({ ...state, run: false })
         }
     }

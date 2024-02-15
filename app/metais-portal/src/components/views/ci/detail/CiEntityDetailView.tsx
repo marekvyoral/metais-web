@@ -69,6 +69,9 @@ export const CiEntityDetailView: FC<Props> = ({ isLoading, isError, entityName, 
                         }
                     />
                 </ElementToScrollTo>
+                <ElementToScrollTo isVisible={!isActionSuccess.value && isActionSuccess.additionalInfo?.type === 'createRelationError'}>
+                    <MutationFeedback error={t('ciType.messages.errorRelationsCreation')} success={isActionSuccess.value} />
+                </ElementToScrollTo>
             </FlexColumnReverseWrapper>
 
             <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
