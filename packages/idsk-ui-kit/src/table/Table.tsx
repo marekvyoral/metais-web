@@ -105,6 +105,7 @@ export const Table = <T,>({
     const table = useReactTable({
         data: data ?? [],
         columns,
+        sortDescFirst: false,
         state: {
             ...(pagination && { pagination }),
             columnOrder: columnOrderState,
