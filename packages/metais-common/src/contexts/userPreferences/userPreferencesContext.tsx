@@ -10,7 +10,6 @@ export enum UserPreferencesFormNamesEnum {
     DEFAULT_PER_PAGE = 'defaultPerPage',
     DEFAULT_LANG = 'defaultLanguage',
     MY_PO = 'myPO',
-    DISABLE_WIZARD = 'disableWizard',
 }
 
 export interface IUserPreferences {
@@ -18,7 +17,6 @@ export interface IUserPreferences {
     [UserPreferencesFormNamesEnum.DEFAULT_PER_PAGE]: string
     [UserPreferencesFormNamesEnum.DEFAULT_LANG]: string
     [UserPreferencesFormNamesEnum.MY_PO]: string
-    [UserPreferencesFormNamesEnum.DISABLE_WIZARD]: boolean
 }
 
 export enum WizardTypes {
@@ -50,7 +48,6 @@ const DEFAULT_PREFERENCES: IUserPreferences & WizardSettings = {
     [UserPreferencesFormNamesEnum.DEFAULT_PER_PAGE]: '',
     [UserPreferencesFormNamesEnum.DEFAULT_LANG]: '',
     [UserPreferencesFormNamesEnum.MY_PO]: '',
-    [UserPreferencesFormNamesEnum.DISABLE_WIZARD]: true,
     [WizardTypes.SEARCH]: true,
     [WizardTypes.FILTER]: true,
     [WizardTypes.ACTIONS]: true,
