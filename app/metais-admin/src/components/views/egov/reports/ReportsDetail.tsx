@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Input, LoadingIndicator, SimpleSelect, TextArea, TextBody } from '@isdd/idsk-ui-kit/index'
+import { AccordionContainer, Button, Input, LoadingIndicator, SimpleSelect, TextArea, TextBody } from '@isdd/idsk-ui-kit/index'
 import {
     CategoryHeaderList,
     Parameter,
@@ -16,6 +16,7 @@ import { MutationFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 
 import styles from './reportsDetail.module.scss'
 import { IReportCardFormData, ReportsParameterCard } from './ReportsParameterCard'
+import { ReportTable } from './ReportTable'
 
 import { mapFormDataToReportDefinition, mapFormDataToScriptExecute, reportCreateSchema } from '@/componentHelpers/reports'
 
@@ -25,6 +26,7 @@ interface IReportsDetail {
     saveReport: (data: ReportDefinition) => Promise<ReportDefinition>
     runReport: (data: ScriptExecute) => Promise<ReportResultObject>
     saveIsLoading: boolean
+    isSaveError?: boolean
     mutationIsLoading: boolean
     runMutationIsSuccess: boolean
     mutationError: { message: string }
@@ -77,6 +79,7 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
     saveIsLoading,
     mutationIsLoading,
     mutationError,
+    isSaveError,
     runMutationIsSuccess,
     categories,
 }) => {
@@ -115,11 +118,12 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.submitArea}>
-                <Input label={t('report.detail.name')} {...register('report.name')} error={formState.errors?.report?.name?.message} />
+                <Input label={t('report.detail.name')} {...register('report.name')} error={formState.errors?.report?.name?.message} required />
                 <Input
                     label={t('report.detail.identificator')}
                     {...register('report.identificator')}
                     error={formState.errors?.report?.identificator?.message}
+                    required
                 />
                 <SimpleSelect
                     id={'report.language'}
@@ -133,6 +137,7 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
                     setValue={setValue}
                     clearErrors={clearErrors}
                     error={formState.errors?.report?.language?.message}
+                    required
                 />
                 <SimpleSelect
                     id={'report.category'}
@@ -167,6 +172,16 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
                     />
                 </div>
                 <TextArea label={t('report.detail.results')} rows={10} {...register('report.results')} value={JSON.stringify(reportResult)} />
+                {reportResult?.result && (
+                    <AccordionContainer
+                        sections={[
+                            {
+                                title: t('report.detail.resultsTable'),
+                                content: <ReportTable data={reportResult?.result} isLoading={false} isError={false} />,
+                            },
+                        ]}
+                    />
+                )}
                 {parameters?.map((parameter, index) => (
                     <ReportsParameterCard
                         key={index}
@@ -179,9 +194,9 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
                         clearErrors={clearErrors}
                     />
                 ))}
-
                 <Button label={t('report.detail.addParameter')} onClick={addNewParameter} className={styles.addConnection} />
                 <SubmitWithFeedback submitButtonLabel={t('report.detail.save')} loading={saveIsLoading} />
+                <MutationFeedback error={isSaveError ? <>{t('feedback.mutationErrorMessage')}</> : undefined} success={false} showSupportEmail />
                 {saveIsLoading && <LoadingIndicator label={t('feedback.saving')} />}
             </div>
         </form>

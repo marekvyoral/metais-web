@@ -4,6 +4,7 @@ import {
     ParameterType,
     ReportDefinition,
     ReportDefinitionLanguage,
+    ReportDefinitionReportType,
     ScriptExecute,
 } from '@isdd/metais-common/api/generated/report-swagger'
 import { array, mixed, object, ObjectSchema, string } from 'yup'
@@ -51,6 +52,8 @@ export const mapFormDataToReportDefinition = (formData: IReportFormData, data?: 
             body: formData.report.script,
         },
         parameters: parametersEdited,
+        publikovany: false,
+        reportType: ReportDefinitionReportType.INTERNY,
     }
 }
 

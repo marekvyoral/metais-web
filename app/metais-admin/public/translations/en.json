@@ -946,6 +946,7 @@
             "script": "Script",
             "runScript": "Run script",
             "results": "Script results",
+            "resultsTable": "Script results in form of table",
             "addParameter": "Add parameter",
             "save": "Save"
         },
@@ -964,7 +965,11 @@
             "description": "Description",
             "category": "Category",
             "published": "Published",
-            "actions": "Actions"
+            "actions": "Actions",
+            "edit": "Edit",
+            "publish": "Publish",
+            "unpublish": "Unpublish",
+            "remove": "Remove"
         },
         "filter": {
             "category": "Category"

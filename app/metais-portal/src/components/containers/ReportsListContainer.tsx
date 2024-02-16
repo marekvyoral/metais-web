@@ -12,8 +12,10 @@ export interface IView {
     data?: ReportHeader[]
     categories?: CategoryHeaderList
     pagination: Pagination
+    filter: IFilter
     handleFilterChange: (filter: IFilter) => void
     isLoading: boolean
+    isFetching: boolean
     isError: boolean
 }
 
@@ -25,7 +27,7 @@ interface IReportsListContainer {
 export const ReportsListContainer: React.FC<IReportsListContainer> = ({ View, defaultFilterValues }) => {
     const { filter: filterParams, handleFilterChange } = useFilterParams<FieldValues & IFilterParams & IFilter>(defaultFilterValues)
 
-    const { isLoading, isError, data } = useListReport(mapFilterToReportsParams(filterParams))
+    const { isLoading, isFetching, isError, data } = useListReport(mapFilterToReportsParams(filterParams))
     const { isLoading: isLoadingCategories, isError: isErrorCategories, data: dataCategories } = useListCategories()
 
     const pagination = mapGenericTypeToPagination(filterParams, data)
@@ -33,9 +35,11 @@ export const ReportsListContainer: React.FC<IReportsListContainer> = ({ View, de
         <View
             data={data?.reportHeaders ?? []}
             categories={dataCategories}
+            filter={filterParams}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
             isLoading={isLoading || isLoadingCategories}
+            isFetching={isFetching}
             isError={isError || isErrorCategories}
         />
     )

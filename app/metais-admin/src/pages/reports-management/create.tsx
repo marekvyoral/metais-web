@@ -29,7 +29,6 @@ const ReportsDetailPage: React.FC = () => {
                         return (
                             <>
                                 <TextHeading size="L">{t('breadcrumbs.reportsCreate')}</TextHeading>
-
                                 <ReportsDetail
                                     categories={props.dataCategories}
                                     saveReport={props.saveReport}
@@ -38,6 +37,7 @@ const ReportsDetailPage: React.FC = () => {
                                     mutationIsLoading={props.mutationIsLoading}
                                     runMutationIsSuccess={props.runMutationIsSuccess}
                                     mutationError={props.mutationError}
+                                    isSaveError={props.isMutationError}
                                 />
                             </>
                         )

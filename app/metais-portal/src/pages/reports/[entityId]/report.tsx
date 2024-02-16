@@ -6,7 +6,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import { ReportsDetailContainer } from '@/components/containers/ReportsDetailContainer'
@@ -38,6 +38,11 @@ export const ReportsDetailPage: React.FC = () => {
                                 <FlexColumnReverseWrapper>
                                     <TextHeading size="L">{props.data?.name}</TextHeading>
                                     {props.isError && <QueryFeedback loading={false} error={props.isError} />}
+                                    <MutationFeedback
+                                        success={!!props?.reportResult}
+                                        successMessage={t('mutationFeedback.runMutationSuccess')}
+                                        error={props.isError ? <>{t('mutationFeedback.runMutationError')}</> : undefined}
+                                    />
                                 </FlexColumnReverseWrapper>
                                 <ReportsCard data={props.data} />
                                 <ReportsFilterParameterWrapper
@@ -45,6 +50,7 @@ export const ReportsDetailPage: React.FC = () => {
                                     parameters={props.data?.parameters}
                                     filterEnumData={props.filterEmumData}
                                 />
+
                                 <ActionsOverTable
                                     pagination={props.pagination}
                                     handleFilterChange={props.handleFilterChange}
@@ -61,8 +67,9 @@ export const ReportsDetailPage: React.FC = () => {
 
                                 <ReportTable
                                     data={props?.reportResult}
-                                    pagination={props?.pagination}
+                                    sort={props?.filterParams?.sort ?? []}
                                     handleFilterChange={props?.handleFilterChange}
+                                    pagination={props.pagination}
                                 />
                             </QueryFeedback>
                         </MainContentWrapper>

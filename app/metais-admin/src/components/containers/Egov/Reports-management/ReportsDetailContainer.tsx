@@ -10,9 +10,11 @@ import {
     useSaveReport,
 } from '@isdd/metais-common/api/generated/report-swagger'
 import { REPORTS_LIST_QUERY_KEY } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useQueryClient } from '@tanstack/react-query'
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 interface IMutationError {
     message: string
@@ -39,6 +41,9 @@ export const ReportsDetailContainer: React.FC<IReportsDetailContainer> = ({ View
     const { entityId } = useParams()
     const queryClient = useQueryClient()
     const isEnabled = !!entityId
+    const navigate = useNavigate()
+
+    const { setIsActionSuccess } = useActionSuccess()
 
     const { isLoading: isLoadingMeta, isError: isErrorMeta, data: reportMetaData } = useGetReport1(entityId ?? '', { query: { enabled: isEnabled } })
     const { isLoading: isLoadingCategories, isError: isErrorCategories, data: dataCategories } = useListCategories()
@@ -77,6 +82,18 @@ export const ReportsDetailContainer: React.FC<IReportsDetailContainer> = ({ View
 
     const isLoading = (isLoadingMeta && isEnabled) || isLoadingCategories
     const isError = isErrorMeta || isErrorCategories
+
+    useEffect(() => {
+        if (saveMutationIsSuccess) {
+            setIsActionSuccess({
+                value: true,
+                path: `${AdminRouteNames.REPORTS_MANAGEMENT}`,
+                additionalInfo: { type: 'create' },
+            })
+            navigate(`${AdminRouteNames.REPORTS_MANAGEMENT}`)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [saveMutationIsSuccess])
 
     return (
         <View

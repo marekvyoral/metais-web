@@ -3,7 +3,7 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ReportHeader } from '@isdd/metais-common/api/generated/report-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { QueryFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -14,56 +14,69 @@ export interface TableCols extends ReportHeader {
 }
 interface IReportsTable {
     data?: TableCols[]
+    filter: IFilter
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
+    isFetching?: boolean
 }
 
-export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handleFilterChange }) => {
+export const ReportsTable: React.FC<IReportsTable> = ({ data, filter, pagination, handleFilterChange, isFetching }) => {
     const { t } = useTranslation()
     const location = useLocation()
-    const {
-        state: { user },
-    } = useAuth()
-    const isUserLogged = !!user
     const columns: Array<ColumnDef<TableCols>> = [
         {
+            accessorFn: (row) => row?.name,
             header: t('reports.table.name'),
+            id: 'name',
             meta: {
                 getCellContext: (ctx) => ctx?.row.original.name,
             },
             cell: (ctx) => (
-                <Link to={'./' + ctx.row.original.lookupKey ?? ''} state={{ from: location }} className="govuk-link">
+                <Link to={'./' + encodeURIComponent(ctx.row.original.lookupKey ?? '')} state={{ from: location }} className="govuk-link">
                     {ctx.row.original.name as string}
                 </Link>
             ),
+            enableSorting: true,
             size: 200,
         },
         {
             accessorFn: (row) => row?.category?.name,
+            id: 'category',
             header: t('reports.table.category'),
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (row) => row.getValue() as string,
+            enableSorting: true,
             size: 200,
         },
         {
             accessorFn: (row) => row?.description,
             header: t('reports.table.description'),
+            id: 'description',
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (row) => row.getValue() as string,
+            enableSorting: true,
             size: 200,
         },
     ]
 
-    const columnsWithPermissions = isUserLogged ? columns : columns.slice(1)
     return (
         <>
             <TextHeading size="XL">{t('navMenu.reports')}</TextHeading>
-            <Table columns={columnsWithPermissions} data={data} />
-            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+            <QueryFeedback loading={!!isFetching} error={false} withChildren>
+                <Table
+                    columns={columns}
+                    data={data}
+                    sort={filter.sort ?? []}
+                    onSortingChange={(columnSort) => {
+                        handleFilterChange({ sort: columnSort })
+                    }}
+                />
+                <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+            </QueryFeedback>
         </>
     )
 }

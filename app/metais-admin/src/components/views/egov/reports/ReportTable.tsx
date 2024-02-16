@@ -1,20 +1,15 @@
-import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
-import { Table } from '@isdd/idsk-ui-kit/table/Table'
-import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import React from 'react'
-import { QueryFeedback } from '@isdd/metais-common/index'
 import { ReportResultObjectResult } from '@isdd/metais-common/api/generated/report-swagger'
 import { CellContext } from '@tanstack/react-table'
+import { TableWithPagination } from '@isdd/metais-common/components/TableWithPagination/TableWithPagination'
 
 interface IReportTable {
     data?: ReportResultObjectResult
     isLoading: boolean
     isError: boolean
-    pagination: Pagination
-    handleFilterChange: (filter: IFilter) => void
 }
 
-export const ReportTable: React.FC<IReportTable> = ({ data, isLoading, isError, pagination, handleFilterChange }) => {
+export const ReportTable: React.FC<IReportTable> = ({ data, isLoading, isError }) => {
     const columnsFromApi =
         data?.headers?.map((header: { name: string; type: string }, index: number) => {
             return {
@@ -25,13 +20,21 @@ export const ReportTable: React.FC<IReportTable> = ({ data, isLoading, isError, 
                     getCellContext: (ctx: CellContext<unknown, { values: string[] }>) => ctx?.getValue?.(),
                 },
                 cell: (row: CellContext<unknown, { values: string[] }>) => row?.getValue()?.values?.[index],
+                size: 200,
             }
         }) ?? []
 
     return (
-        <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent' }}>
-            <Table columns={columnsFromApi} data={data?.rows} />
-            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
-        </QueryFeedback>
+        <>
+            {data?.rows && (
+                <TableWithPagination
+                    tableColumns={columnsFromApi}
+                    tableData={data?.rows}
+                    hiddenButtons={{ SELECT_COLUMNS: true }}
+                    isLoading={isLoading}
+                    isError={isError}
+                />
+            )}
+        </>
     )
 }

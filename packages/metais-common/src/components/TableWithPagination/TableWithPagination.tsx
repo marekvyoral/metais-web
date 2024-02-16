@@ -1,10 +1,12 @@
 import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
-import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, HiddenButtons, QueryFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
-import { SetStateAction, useState } from 'react'
+import React, { SetStateAction, useState } from 'react'
 
-type ISimpleTable<T> = {
+import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, HiddenButtons, QueryFeedback } from '@isdd/metais-common/index'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+
+type ITableWithPagination<T> = {
     tableData: Array<T>
     tableColumns: ColumnDef<T>[]
     sort?: ColumnSort[]
@@ -14,7 +16,12 @@ type ISimpleTable<T> = {
     hiddenButtons?: Partial<HiddenButtons>
 }
 
-export const TableWithPagination: <T>({ tableData, sort, tableColumns, hiddenButtons }: ISimpleTable<T>) => React.ReactElement<ISimpleTable<T>> = ({
+export const TableWithPagination: <T>({
+    tableData,
+    sort,
+    tableColumns,
+    hiddenButtons,
+}: ITableWithPagination<T>) => React.ReactElement<ITableWithPagination<T>> = ({
     tableData,
     sort,
     tableColumns,
@@ -24,7 +31,7 @@ export const TableWithPagination: <T>({ tableData, sort, tableColumns, hiddenBut
     hiddenButtons,
 }) => {
     const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
-    const [pageNumber, setPageNumber] = useState<number>(1)
+    const [pageNumber, setPageNumber] = useState<number>(BASE_PAGE_NUMBER)
     const dataStart = pageNumber * pageSize - pageSize
     const dataEnd = pageNumber * pageSize
     const data = tableData.slice(dataStart, dataEnd)
@@ -35,6 +42,7 @@ export const TableWithPagination: <T>({ tableData, sort, tableColumns, hiddenBut
                 entityName=""
                 handlePagingSelect={(newPageSize) => setPageSize(Number(newPageSize))}
                 hiddenButtons={hiddenButtons}
+                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 pagination={{
                     pageNumber: pageNumber || BASE_PAGE_NUMBER,
                     pageSize: pageSize || BASE_PAGE_SIZE,
@@ -48,7 +56,7 @@ export const TableWithPagination: <T>({ tableData, sort, tableColumns, hiddenBut
                 pageNumber={pageNumber}
                 pageSize={pageSize}
                 dataLength={tableData?.length ?? 0}
-                handlePageChange={(filter) => setPageNumber(filter?.pageNumber ?? 0)}
+                handlePageChange={(filter) => setPageNumber(filter?.pageNumber ?? BASE_PAGE_NUMBER)}
             />
         </div>
     )

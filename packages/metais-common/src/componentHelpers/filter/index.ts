@@ -1,4 +1,4 @@
-import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import { FieldValues } from 'react-hook-form'
 
 import { transformOperatorsFromUrl } from './transformOperators'
@@ -64,7 +64,7 @@ export const mapFilterToReportsParams = (filterParams: FieldValues & IFilterPara
         perPage: pageSize ?? BASE_PAGE_SIZE,
         sortBy: sort?.map((s) => s.orderBy) ?? [],
         published: true,
-        ascending: true,
+        ascending: sort?.[0]?.sortDirection === SortType.ASC,
         ...(filterParams?.category && { category: filterParams?.category }),
         ...(filterParams.fullTextSearch && { fulltext: filterParams.fullTextSearch }),
     }
@@ -72,10 +72,11 @@ export const mapFilterToReportsParams = (filterParams: FieldValues & IFilterPara
 
 export const mapFilterToReportsParamsAdmin = (filterParams: FieldValues & IFilterParams & IFilter): ListReportParams => {
     const { pageNumber, pageSize, sort } = filterParams
+    const orderBy = sort?.map((s) => s.orderBy)
     return {
         page: pageNumber ?? BASE_PAGE_NUMBER,
         perPage: pageSize ?? BASE_PAGE_SIZE,
-        sortBy: sort?.map((s) => s.orderBy) ?? ['name'],
+        ...(orderBy && { sortBy: orderBy.length === 0 ? ['name'] : orderBy }),
         ascending: true,
         showAllLanguages: true,
         ...(filterParams?.category && { category: filterParams?.category }),

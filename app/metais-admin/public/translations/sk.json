@@ -949,6 +949,7 @@
             "script": "Script",
             "runScript": "Spustiť script",
             "results": "Výsledok scriptu",
+            "resultsTable": "Výsledok scriptu vo forme tabuľky",
             "addParameter": "Pridať parameter",
             "save": "Uložiť"
         },
@@ -967,7 +968,11 @@
             "description": "Popis",
             "category": "Kategória",
             "published": "Publikovaný",
-            "actions": "Úkony"
+            "actions": "Úkony", 
+            "edit": "Upraviť",
+            "publish": "Publikovať",
+            "unpublish": "Nepublikovať",
+            "remove": "Odstrániť"
         },
         "filter": {
             "category": "Kategória"
