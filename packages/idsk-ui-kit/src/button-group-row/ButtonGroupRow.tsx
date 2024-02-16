@@ -8,7 +8,7 @@ interface IButtonGroupParams extends PropsWithChildren {
     type?: 'row' | 'column'
 }
 
-export const ButtonGroupRow: React.FC<IButtonGroupParams> = ({ children, className, type }) => {
-    const rowType = type === 'row' ? styles.buttonGroupRow : styles.buttonGroupColumn
-    return <div className={classNames(className, rowType, 'idsk-feedback__buttons')}>{children}</div>
+export const ButtonGroupRow: React.FC<IButtonGroupParams> = ({ children, className, type = 'row' }) => {
+    const columnType = type === 'column' ? styles.buttonGroupColumn : styles.buttonGroupRow
+    return <div className={classNames(className, columnType, 'idsk-feedback__buttons')}>{children}</div>
 }
