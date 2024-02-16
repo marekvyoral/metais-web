@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, Input, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, Input, LoadingIndicator, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import React, { useEffect } from 'react'
@@ -26,6 +26,8 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
     entityId,
     ciTypeData,
     ciItemData,
+    organizationOptions,
+    isLoggedIn,
     entityName,
     isError,
     errorMessages,
@@ -40,14 +42,26 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
     const { schema } = useTrainingInviteSchema()
     const navigate = useNavigate()
 
-    const { register, handleSubmit, formState, reset } = useForm<ITrainingInviteForm>({
+    const { register, handleSubmit, formState, setValue, clearErrors, reset } = useForm<ITrainingInviteForm>({
         resolver: yupResolver(schema),
-        defaultValues: { firstName: user?.name, lastName: user?.lastName, organization: '', phone: user?.phone, email: user?.email },
+        defaultValues: {
+            firstName: user?.name,
+            lastName: user?.lastName,
+            organization: organizationOptions.at(0)?.value,
+            phone: user?.phone,
+            email: user?.email,
+        },
     })
 
     useEffect(() => {
-        reset({ firstName: user?.name, lastName: user?.lastName, organization: '', phone: user?.phone, email: user?.email })
-    }, [user, reset])
+        reset({
+            firstName: user?.name,
+            lastName: user?.lastName,
+            organization: organizationOptions.at(0)?.value,
+            phone: user?.phone,
+            email: user?.email,
+        })
+    }, [user, organizationOptions, reset])
 
     const onHandleSubmit = (formData: ITrainingInviteForm) => {
         handleInvite(formData)
@@ -73,7 +87,7 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
                 ]}
             />
             <MainContentWrapper>
-                <QueryFeedback loading={isLoading} error={isError} withChildren>
+                <QueryFeedback loading={isLoading} error={isError}>
                     {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                     <TextHeading size="XL">{t('trainings.invitedTitle')}</TextHeading>
                     <form onSubmit={handleSubmit(onHandleSubmit)}>
@@ -92,13 +106,28 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
                             {...register(RequestFormEnum.LAST_NAME)}
                             error={formState.errors[RequestFormEnum.LAST_NAME]?.message}
                         />
-                        <Input
-                            required
-                            label={t('trainings.table.organization')}
-                            id={RequestFormEnum.ORGANIZATION}
-                            {...register(RequestFormEnum.ORGANIZATION)}
-                            error={formState.errors[RequestFormEnum.ORGANIZATION]?.message}
-                        />
+                        {isLoggedIn ? (
+                            <SimpleSelect
+                                required
+                                label={t('trainings.table.organization')}
+                                options={organizationOptions}
+                                setValue={setValue}
+                                name={RequestFormEnum.ORGANIZATION}
+                                isClearable={false}
+                                clearErrors={clearErrors}
+                                error={formState.errors?.[RequestFormEnum.ORGANIZATION]?.message}
+                                defaultValue={organizationOptions.at(0)?.value}
+                            />
+                        ) : (
+                            <Input
+                                required
+                                label={t('trainings.table.organization')}
+                                id={RequestFormEnum.ORGANIZATION}
+                                {...register(RequestFormEnum.ORGANIZATION)}
+                                error={formState.errors[RequestFormEnum.ORGANIZATION]?.message}
+                            />
+                        )}
+
                         <Input
                             required
                             label={t('trainings.table.email')}

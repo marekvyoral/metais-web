@@ -1,4 +1,4 @@
-import { ConfigurationItemUi, useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemUi, useReadCiList1, useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useRegisterTrainee } from '@isdd/metais-common/api/generated/trainings-swagger'
 import { CiType, useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
@@ -9,6 +9,8 @@ import React from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { IOption } from '@isdd/idsk-ui-kit/index'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 import { TrainingInviteView } from '@/components/views/trainings/TrainingInviteView'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
@@ -28,6 +30,8 @@ export interface TrainingInviteContainerViewProps {
     entityId: string
     ciTypeData?: CiType | null
     ciItemData: ConfigurationItemUi | undefined
+    organizationOptions: IOption<string>[]
+    isLoggedIn: boolean
     isLoading: boolean
     isLoadingMutation: boolean
     isError: boolean
@@ -47,6 +51,26 @@ export const TrainingInviteContainer: React.FC = () => {
     const navigate = useNavigate()
     const { invalidate } = useInvalidateTrainingsCache(entityId ?? '')
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+
+    const groupDataUuids = user?.groupData.map((item) => item.orgId) || []
+
+    const isLoggedIn = !!user
+
+    const {
+        data: ciDataByUuids,
+        isFetching: isReadCiListFetching,
+        isError: isReadCiListError,
+    } = useReadCiList1(
+        {
+            filter: {
+                metaAttributes: {
+                    state: ['DRAFT'],
+                },
+                uuid: groupDataUuids,
+            },
+        },
+        { query: { enabled: groupDataUuids?.length > 0 } },
+    )
 
     const {
         data: ciItemData,
@@ -71,7 +95,7 @@ export const TrainingInviteContainer: React.FC = () => {
 
     const handleInvite = async (data: ITrainingInviteForm) => {
         if (!entityId) return
-        if (!user) {
+        if (!isLoggedIn) {
             if (!executeRecaptcha) {
                 return
             }
@@ -88,8 +112,14 @@ export const TrainingInviteContainer: React.FC = () => {
         }
     }
 
-    const isLoading = [isCiItemDataLoading, isCiTypeDataLoading].some((item) => item)
-    const isError = [isCiItemDataError, isCiTypeDataError].some((item) => item)
+    const organizationOptions: IOption<string>[] =
+        ciDataByUuids?.configurationItemSet?.map((item) => ({
+            value: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+            label: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+        })) ?? []
+
+    const isLoading = [isCiItemDataLoading, isCiTypeDataLoading, isReadCiListFetching].some((item) => item)
+    const isError = [isCiItemDataError, isCiTypeDataError, isReadCiListError].some((item) => item)
     const errorMessages = getErrorTranslateKeys([registerTrainee.error].map((item) => item as { message: string }))
 
     return (
@@ -99,6 +129,8 @@ export const TrainingInviteContainer: React.FC = () => {
             entityId={entityId ?? ''}
             ciItemData={ciItemData}
             ciTypeData={ciTypeData}
+            organizationOptions={organizationOptions}
+            isLoggedIn={isLoggedIn}
             isLoading={isLoading}
             isLoadingMutation={registerTrainee.isLoading}
             isError={isError}
