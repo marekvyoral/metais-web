@@ -294,6 +294,7 @@ export const LOWER_CASE_NUMBER_DOT_REGEX = /^[a-z0-9.]*$/
 export const SPACES_REGEX = /\s+/g
 export const baseWikiUrl = import.meta.env.VITE_REST_CLIENT_WIKI_BASE_URL
 export const STAV_DIZ_ENUM_CODE = 'STAV_DIZ'
+export const DECLARATION_ID = 'isvs_63'
 
 export const categoryParameterMap = new Map<string, string>([
     ['AS', 'c_typ_parametra_kategoria.3'],
@@ -322,3 +323,4 @@ export const SLA_SPRAVA = 'SLA_SPRAVA'
 export const OLA_Kontrakt = 'OLA_Kontrakt'
 export const Profil_OLA_Kontrakt = 'Profil_OLA_Kontrakt'
 export const OLA_Kontrakt_dodavatela_ISVS = 'OLA_Kontrakt_dodavatela_ISVS'
+export const META_IS_TITLE = '| MetaIS'

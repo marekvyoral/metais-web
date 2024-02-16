@@ -98,19 +98,18 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
         <fieldset className={styles.fieldset}>
             <legend className="govuk-label">{name + requiredLabel}</legend>
             <div className={classNames('govuk-form-group', styles.formGroup)}>
-                <div className={styles.infoDiv}>{info && <Tooltip descriptionElement={info} />}</div>
                 <div className={styles.buttonDiv}>
                     <Button
                         disabled={attribute.readOnly || disabled}
                         label={
                             <div className={styles.buttonWithIcon}>
-                                <img className={styles.iconAddItems} src={PlusIcon} />
+                                <img className={styles.iconAddItems} src={PlusIcon} alt="" />
                                 {t('createEntity.addNewRow')}
                             </div>
                         }
                         onClick={() => setInputList((prev) => [...prev, ''])}
                     />
-                    {info && <Tooltip descriptionElement={info} />}
+                    {info && <Tooltip id={attribute.technicalName ?? ''} descriptionElement={info} />}
                 </div>
             </div>
 
@@ -119,7 +118,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                     {isTextarea && (
                         <div className={styles.inputWithCloseIconDivTextarea}>
                             <TransparentButtonWrapper onClick={() => handleDeleteInput(index)}>
-                                <img src={CloseIcon} />
+                                <img src={CloseIcon} alt={t('close')} />
                             </TransparentButtonWrapper>
                             <TextArea
                                 name={`${id}${index}`}
@@ -137,7 +136,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                     {!isTextarea && (
                         <div className={styles.inputWithCloseIconDivInput}>
                             <TransparentButtonWrapper onClick={() => handleDeleteInput(index)}>
-                                <img src={CloseIcon} />
+                                <img src={CloseIcon} alt={t('close')} />
                             </TransparentButtonWrapper>
                             <Input
                                 name={`${id}${index}`}

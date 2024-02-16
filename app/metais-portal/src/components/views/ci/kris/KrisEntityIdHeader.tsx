@@ -451,6 +451,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage}
+                        showSupportEmail
                         error={bulkActionResult?.isError || isError ? t('feedback.mutationErrorMessage') : ''}
                         onMessageClose={() => setBulkActionResult(undefined)}
                     />
@@ -459,6 +460,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
             <MutationFeedback
                 success={succesMessage !== undefined}
                 successMessage={succesMessage}
+                showSupportEmail
                 error={isError || isErrorNeighbours ? t('feedback.mutationErrorMessage') : ''}
                 onMessageClose={() => setSuccesMessage(undefined)}
             />

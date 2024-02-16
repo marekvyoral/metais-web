@@ -4,6 +4,7 @@ import { useDrag, useDrop } from 'react-dnd'
 import classNames from 'classnames'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
 import './header.scss'
+import { useTranslation } from 'react-i18next'
 
 import styles from './table.module.scss'
 import { CHECKBOX_CELL } from './constants'
@@ -27,10 +28,12 @@ type TableHeaderProps<T> = {
 }
 
 export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeaderProps<T>): JSX.Element => {
+    const { t, i18n } = useTranslation()
     const { getState, setColumnOrder } = table
     const { columnOrder } = getState()
     const { column, colSpan, getContext, isPlaceholder, id } = header
     const columnHeader = column.columnDef.header
+    const headerString = typeof columnHeader == 'string' ? columnHeader : columnHeader?.(getContext())
     const columnEnabledSorting = header.column.columnDef.enableSorting
 
     const [, dropRef] = useDrop({
@@ -50,10 +53,23 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
         type: 'column',
     })
 
+    const isNotSorted = column.getIsSorted() != 'asc' && column.getIsSorted() != 'desc'
+    const sortedAsc = column.getIsSorted() == 'asc'
+    const sortDesc = column.getIsSorted() == 'desc'
+    const ariaLabelForSortButton = sortDesc
+        ? t('table.unsort', { item: headerString })
+        : t('table.sortButtonLabel', {
+              item: headerString,
+              sortDirection: sortedAsc ? t('table.desc') : isNotSorted ? t('table.asc') : '',
+          })
+
     return id === CHECKBOX_CELL ? (
-        <td className={classNames('idsk-table__header', styles.header, styles.checkBoxCell)}>{flexRender(columnHeader, getContext())}</td>
+        <td tabIndex={0} className={classNames('idsk-table__header', styles.header, styles.checkBoxCell)}>
+            {flexRender(columnHeader, getContext())}
+        </td>
     ) : (
         <th
+            tabIndex={0}
             scope="col"
             id={header.id}
             ref={dropRef}
@@ -76,6 +92,8 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
                                         { arrowBtnAsc: column.getIsSorted() === 'asc' },
                                     )}
                                     onClick={column.getToggleSortingHandler()}
+                                    aria-label={ariaLabelForSortButton}
+                                    lang={i18n.language}
                                 />
                             )}
                         </strong>

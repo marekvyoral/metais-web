@@ -40,13 +40,14 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
             {isLoading && <LoadingIndicator label={t('exportItemsOrRelations.loading')} />}
             <MutationFeedback
                 success={isActionSuccess.value}
+                showSupportEmail
                 error={isError ? t('feedback.mutationErrorMessage') : undefined}
                 successMessage={t('exportItemsOrRelations.exportSuccess')}
             />
             <div className={styles.modalContainer}>
                 <div className={styles.content}>
                     <div className={styles.icon}>
-                        <img className={styles.iconWidth} src={ExportIcon} alt="export-icon" />
+                        <img className={styles.iconWidth} src={ExportIcon} alt="" />
                     </div>
                     <TextHeading size={'L'} className={styles.heading}>
                         {t('exportItemsOrRelations.header')}

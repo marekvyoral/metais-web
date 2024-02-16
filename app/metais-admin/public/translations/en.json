@@ -22,7 +22,6 @@
         "RSS": "RSS",
         "appVersion": "App version",
         "home": "Home",
-
         "services": {
             "title": "Services and Information",
             "rations": "Rations",
@@ -71,6 +70,7 @@
         "closeMenu": "Close menu",
         "linksToWebs": "links to websites of public authorities",
         "linkToHomePage": "Link to home page",
+        "homeLogo": "MetaIS logo linking to homepage.",
         "ministryName": "Ministry of Investments, Regional Development and Informatization of the Slovak Republic",
         "showInformationAboutSite": "Show information about site",
         "hideInformationAboutSite": "Hide information about site",
@@ -119,7 +119,8 @@
         "viewButton": "View"
     },
     "table": {
-        "selectAllItems": "Select all items",
+        "selectAllItems": "Select all items in table",
+        "selectItem": "Select item {{itemName}}",
         "title": "Cities",
         "heading": "Filter Content",
         "unpack": "Unpack Filter Content",
@@ -165,7 +166,7 @@
         "close": "Close language menu"
     },
     "language": {
-        "sk": "Slovenčina",
+        "sk": "Slovenský jazyk",
         "en": "English",
         "cimode": "Translations"
     },
@@ -194,6 +195,15 @@
         "description": "Description",
         "engDescription": "English description",
         "color": "Color",
+        "colorSelect": {
+            "customEntity": "Custom entity",
+            "systemEntity": "System entity",
+            "businessLayer": "Business layer",
+            "appAndDataLayer": "Application and data layer",
+            "technologicalLayer": "Technological layer",
+            "implementationAndMigration": "Implementation and Migration",
+            "motivationalEntity": "Motivational entity"
+        },
         "roles": "Allowed Roles",
         "order": "Order",
         "invisible": "Visibility",
@@ -359,7 +369,7 @@
     "actionOverTable": {
         "import": "Import",
         "export": "Export",
-        "addISVSitem": "Add ISVS item",
+        "addISVSitem": "Add ITVS item",
         "selectColumn": "Columns",
         "view": "View",
         "actions": "Bulk actions",
@@ -376,7 +386,7 @@
         "engDescription": "English description",
         "valid": "Validity",
         "category": "Category",
-        "link": "Items",
+        "link": "Link to {{itemName}} detail",
         "edit": "Edit",
         "delete": "Invalidate",
         "save": "Save",
@@ -395,12 +405,15 @@
         "engValueError": "English Value is required",
         "descriptionError": "Description is required",
         "engDescriptionError": "English Description is required",
+        "forbiddenSymbols": "You can't use {{signs}}",
         "wrongRegex": "You can use only {{letters}} and {{signs}}",
         "actions": "Actions",
         "addNewCodelistDetail": "Add new detail item",
         "items": "Items",
         "tooltipOrder": "Drag and drop a row to change the order",
-        "codeExist": "The code is incorrect. This code already exists."
+        "codeExist": "The code is incorrect. This code already exists.",
+        "order": "Order",
+        "orderDescription": "Order column description"
     },
     "filter": {
         "expand": "Expand filter",
@@ -447,6 +460,7 @@
         "runMutationError": "Script execution failed, check the validity of the code",
         "successfulUpdated": "The item was successfully changed",
         "successfulCreated": "The item was successfully created",
+        "successfulRemoved": "The item was successfully created removed",
         "successfulDeleted": "The item was successfully removed",
         "attrSuccessfulUpdated": "Attribute was successfully changed",
         "attrSuccessfulCreated": "Attribute was successfully created",
@@ -596,6 +610,9 @@
             "publicAuthorities": "Public authorities",
             "massActualizations": "Mass updates",
             "massUpdate": "Mass update"
+        },
+        "systemState": {
+            "heading": "System status settings"
         }
     },
     "tooltip": {
@@ -794,8 +811,8 @@
             "isCycleInHierarchy": "Organization can not be superior and subject at the same time for one organization!",
             "warningInfo": "You can not create relationship between similar identity!",
             "topLevelOrg": "You can not assign organization main organization!",
-            "successFeedback":"Relations successfully updated",
-            "unsuccessFeedback":"Relations update failed"
+            "successFeedback": "Relations successfully updated",
+            "unsuccessFeedback": "Relations update failed"
         },
         "massUpdate": {
             "title": "Mass update of mandatory persons",
@@ -937,7 +954,8 @@
             "name": "Parameter name",
             "defaultValue": "Default value",
             "required": "Required parameter",
-            "additionalParams": "Additional parameters"
+            "additionalParams": "Additional parameters",
+            "close": "Close parameter card"
         },
         "table": {
             "identificator": "Identificator",
@@ -1007,6 +1025,7 @@
         "homeButton": "Home page"
     },
     "breadcrumbs": {
+        "404": "Error",
         "home": "Home",
         "ciEdit": "Edit of {{itemName}}",
         "noName": "No name",
@@ -1016,8 +1035,7 @@
         "reports-management": "Reports management",
         "reportsCreate": "New report",
         "reportsEdit": "Edit report",
-        "ciEditEntity": "Edit of component",
-        "404": "Error"
+        "ciEditEntity": "Edit of component"
     },
     "userProfile": {
         "heading": "Profile and rights",
@@ -1046,7 +1064,94 @@
         "rightsHeading": "My roles and representative entities",
         "oldPassword": "Old passwrod",
         "newPassword": "New password",
-        "repeatPassword": "Repeat password"
+        "repeatPassword": "Repeat password",
+        "notifications": {
+            "save": "Save",
+            "edit": "Edit",
+            "confirmRemove": "Are you sure you want to remove these items from your favorites?",
+            "feedback": {
+                "editSuccess": "Notification settings have been saved successfully.",
+                "addSuccess_few": "Items have been successfully added to favorites.",
+                "addSuccess_other": "Items have been successfully added to favorites.",
+                "addSuccess_one": "Item have been successfully added to favorites.",
+                "removeSuccess": "Items have been successfully removed from favorites.",
+                "removeSuccessSingle": "Item has been successfully removed from favorites.",
+                "error": "Error performing your action. Please try again or contact support."
+            },
+            "table": {
+                "name": "Item name",
+                "settings": "Notifications settings",
+                "portal": "Portal",
+                "email": "Email",
+                "delete": "Remove from favorites"
+            },
+            "settings": {
+                "tabs": {
+                    "FAVORITES": "Favorites",
+                    "ITEMS": "Items",
+                    "RELATIONS": "Relations",
+                    "TASKS": "Tasks",
+                    "INTEGRATIONS": "Integration",
+                    "STANDARDIZATION": "Standardization",
+                    "LICENSES": "License",
+                    "USER": "User",
+                    "CODELIST": "Codelists",
+                    "PROJECTS": "Projects"
+                },
+                "ITEMS": {
+                    "ITEM_SAVED": "Item saved",
+                    "ITEM_CHANGED": "Item changed",
+                    "ITEM_INVALIDATED": "Item invalidated",
+                    "ITEM_VALIDATED": "Item validated",
+                    "ITEM_CHANGED_OWNER": "Item changed owner"
+                },
+                "RELATIONS": {
+                    "RELATION_SAVED": "Relation saved",
+                    "RELATION_CHANGED": "Relation changed",
+                    "RELATION_INVALIDATED": "Relation invalidated",
+                    "RELATION_VALIDATED": "Relation validated",
+                    "RELATION_CHANGED_OWNER": "Relation changed owner"
+                },
+                "TASKS": {
+                    "TASK_CREATED": "Task created",
+                    "TASK_CHANGED_ASSIGNEE": "Task changed assignee",
+                    "TASK_CLOSED": "Task closed"
+                },
+                "INTEGRATIONS": {
+                    "INTEGRATION_STARTED": "Integration started",
+                    "INTEGRATION_DELAYED": "Integration delayed"
+                },
+                "STANDARDIZATION": {
+                    "STANDARD_REQUEST": "Request",
+                    "STANDARD_MEETING": "Meeting",
+                    "STANDARD_VOTE": "Vote",
+                    "STANDARD_CODELIST": "Codelist",
+                    "STANDARD_USERS_IN_GROUP": "Users in group",
+                    "STANDARD_CSRU_SYNC": "CSRU synchronization"
+                },
+                "USER": {
+                    "USER_IMPORTED": "Import",
+                    "USER_CHANGED": "User changed",
+                    "USER_ACCEPTED": "Claim accepted",
+                    "USER_REFUSED": "Claim refused"
+                },
+                "LICENSES": {
+                    "LICENSE_ADDED": "License moved",
+                    "LICENSE_MOVED": "License added",
+                    "LICENSE_CHANGED_UNUSED": "License changed unused count"
+                },
+                "CODELIST": {
+                    "CODELIST_REQUEST": "Codelist requests notifications",
+                    "CODELIST_CHANGE_STATUS": "Codelist status change notifications",
+                    "CODELIST_CHANGE_ITEM": "Codelist items status change notifications",
+                    "CODELIST_SELECT_ALL": "Turn on all notifications"
+                },
+                "PROJECT": {
+                    "PROJECT_CHOOSE": "Select project:",
+                    "PROJECT_NOTIFICATIONS": "Projects notifications:"
+                }
+            }
+        }
     },
     "validation": {
         "required": "This field is required",
@@ -1230,7 +1335,7 @@
     },
     "relationDetail": {
         "editSuccess": "Edit of {{relationName}} was successful.",
-        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support."
+        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support at:"
     },
     "crash": {
         "heading": "Ups, unexpected error occured",
@@ -1241,5 +1346,38 @@
     "autoLogout": {
         "warningMessage": "In {{countDown}} you will be logged out due to inactitvity.",
         "loading": "Proccessing logout"
+    },
+    "close": "Close",
+    "valid": "Input value is valid",
+    "dnd": "Item can be dragged and dropped",
+    "delete": "Delete",
+    "progressStepeer": {
+        "expand": "Expand",
+        "collapse": "Collapse",
+        "state": {
+            "current": "Current step",
+            "finished": "Finished step",
+            "future": "Future step"
+        }
+    },
+    "pagination": {
+        "toFirst": "To first page",
+        "toPrev": "To previous page",
+        "dots": "Ellipsis indicationg more pages available",
+        "toNext": "To next page",
+        "toLast": "To last page"
+    },
+    "fileList": {
+        "delete": "Delete file {{fileName}} from list"
+    },
+    "aria": {
+        "selectedRowsCount": "You have {{count}} rows selected in table"
+    },
+    "systemState": {
+        "deleteInfo": "Clear system status information",
+        "delete": "Delete status",
+        "requiredText": "Text (required)",
+        "color": "Color",
+        "status": "Status"
     }
 }

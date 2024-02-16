@@ -215,7 +215,9 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                         <span className={styles.tooltipIcon}>{t('codelists.order')}</span>
                         {isUserLogged && (
                             <Tooltip
-                                tooltipContent={(open, close) => <img onMouseOver={open} onMouseOut={close} src={InfoIcon} />}
+                                tooltipContent={(open, close) => (
+                                    <img onMouseOver={open} onMouseOut={close} src={InfoIcon} alt={t('codelists.orderDescription')} />
+                                )}
                                 descriptionElement={t('codelists.tooltipOrder')}
                                 position={'right bottom'}
                                 arrow={false}

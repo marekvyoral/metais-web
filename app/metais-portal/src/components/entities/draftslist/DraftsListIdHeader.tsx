@@ -90,6 +90,7 @@ export const DraftsListIdHeader: React.FC<Props> = ({ entityId, entityItemName, 
         <>
             <MutationFeedback
                 success={mutationIsSuccess || isSuccess}
+                showSupportEmail
                 error={mutationIsError || isError ? t('feedback.mutationErrorMessage') : undefined}
             />
             {(mutationIsLoading || isLoading) && <LoadingIndicator label={t('feedback.saving')} />}

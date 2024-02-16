@@ -157,7 +157,11 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
         <>
             <div ref={wrapperRef}>
                 {!(isRedirectError || isProcessedError || isRedirectLoading) && (
-                    <MutationFeedback success={false} error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''} />
+                    <MutationFeedback
+                        success={false}
+                        showSupportEmail
+                        error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
+                    />
                 )}
             </div>
             <QueryFeedback

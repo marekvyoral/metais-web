@@ -5,7 +5,6 @@
     flex-direction: column;
 }
 .dt {
-    flex-basis: 20%;
     font-weight: bold !important;
     p,
     span {
@@ -24,5 +23,13 @@
 .groupRow {
     @include mq($until: tablet) {
         margin-bottom: govuk-spacing(0);
+    }
+}
+.labelWrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: left;
+    dt {
+        margin: 0;
     }
 }

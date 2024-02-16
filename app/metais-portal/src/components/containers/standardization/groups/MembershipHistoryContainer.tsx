@@ -25,6 +25,7 @@ export const MembershipHistoryContainer: React.FC = () => {
                     </span>
                 )
             },
+            size: 200,
         },
         {
             id: 'orgName',

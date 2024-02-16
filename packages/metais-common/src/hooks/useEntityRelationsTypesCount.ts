@@ -26,7 +26,7 @@ interface IRelationCount {
 
 const DERIVED_PREFIX = 'DERIVED_'
 
-export const useEntityRelationsTypesCount = (id: string, technicalName: string) => {
+export const useEntityRelationsTypesCount = (id: string, technicalName: string, includeDeleted?: boolean) => {
     const {
         state: { user },
     } = useAuth()
@@ -34,7 +34,11 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
     const isUserLogged = !!user
     const includeInvalidated = currentPreferences.showInvalidatedItems ?? false
 
-    const { isLoading, isError, data: countData } = useReadNeighboursConfigurationItemsCount(id, { includeInvalidated })
+    const {
+        isLoading,
+        isError,
+        data: countData,
+    } = useReadNeighboursConfigurationItemsCount(id, { includeInvalidated: includeInvalidated, includeDeleted: includeDeleted && includeInvalidated })
     const { isLoading: isLoadingDerived, isError: isErrorDerived, data: countDerivedData } = useReadCiDerivedRelTypesCount(id, { includeInvalidated })
     const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName)
 

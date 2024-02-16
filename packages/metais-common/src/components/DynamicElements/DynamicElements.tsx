@@ -1,8 +1,9 @@
-import React, { useState, MouseEvent } from 'react'
+import React, { useState, MouseEvent, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { UseFormSetValue } from 'react-hook-form'
 import { TextWarning } from '@isdd/idsk-ui-kit'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
+import isEqual from 'lodash/isEqual'
 
 import style from './customElement.module.scss'
 import { DynamicRow, RenderableComponentProps } from './DynamicRow'
@@ -33,6 +34,11 @@ export const DynamicElements: <T extends object>({
     const [dynamicElementsData, setDynamicElementsData] = useState([...initialElementsData])
     const { t } = useTranslation()
     const [addRowError, setAddRowError] = useState<string>('')
+
+    useEffect(() => {
+        if (!isEqual(dynamicElementsData, initialElementsData) && !!initialElementsData.length) setDynamicElementsData(initialElementsData)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initialElementsData])
 
     const removeRow = (index: number) => {
         const copyDynamicElementsData = [...dynamicElementsData]

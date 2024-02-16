@@ -278,7 +278,10 @@ export const NewRelationView: React.FC<Props> = ({
     return (
         <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
-                <TextHeading size="XL">{t('newRelation.heading')}</TextHeading>
+                <TextHeading size="XL">
+                    {t('breadcrumbs.newRelation', { itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })}
+                </TextHeading>
+
                 <ElementToScrollTo isVisible={isError || storeGraph.isError || isRequestStatusError || isProcessedError || isTooManyFetchesError}>
                     <QueryFeedback loading={false} error />
                 </ElementToScrollTo>
@@ -321,7 +324,7 @@ export const NewRelationView: React.FC<Props> = ({
                             <>
                                 {t('newRelation.errorMessage')}
                                 <Link className="govuk-link" state={{ from: location }} to={`mailto:${metaisEmail}`}>
-                                    {t('newRelation.email')}
+                                    {metaisEmail}
                                 </Link>
                             </>
                         }

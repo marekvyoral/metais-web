@@ -4,9 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { UserPreferencesPage } from '@isdd/metais-common/components/views/user-profile/user-preferences/UserPreferencesPage'
 import { UserRightsPage } from '@isdd/metais-common/components/views/user-profile/user-rights/UserRightsPage'
-import { UserNotificationsSettings } from '@isdd/metais-common/components/views/user-profile/UserNotificationsSettings'
+import { UserNotificationsSettings } from '@isdd/metais-common/components/views/user-profile/user-notifications/UserNotificationsSettings'
 import { UserPasswordChangePage } from '@isdd/metais-common/components/views/user-profile/UserPasswordChangePage'
 import { UserProfileRequestRightsModal } from '@isdd/metais-common/src/components/views/user-profile/modals/UserProfileRequestRightsModal'
+import { UserWizards } from '@isdd/metais-common/components/views/user-profile/UserWizards'
 import { ClaimEvent, useProcessEvent, useReadList1 } from '@isdd/metais-common/api/generated/claim-manager-swagger'
 import { DeletePersonalInfoModal } from '@isdd/metais-common/src/components/views/user-profile/modals/DeletePersonalInfoModal'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
@@ -14,12 +15,14 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { ciInformationTab } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { UserInformationPage } from '@isdd/metais-common/components/views/user-profile/user-informations/UserInformationPage'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { UserTrainingsPage } from '@/components/views/trainings/UserTrainingsPage'
 
 const UserProfilePage = () => {
     const { t } = useTranslation()
+    document.title = formatTitleString(t('userProfile.heading'))
     const [isRightsSettingsModalOpen, setIsRightsSettingsModalOpen] = useState(false)
     const [isDeletePersonalInfoModalOpen, setIsDeletePersonalInfoModalOpen] = useState(false)
     const {
@@ -81,6 +84,11 @@ const UserProfilePage = () => {
             id: 'password-change',
             title: t('userProfile.passwordChange'),
             content: <UserPasswordChangePage />,
+        },
+        {
+            id: 'wizards',
+            title: t('userProfile.wizards'),
+            content: <UserWizards />,
         },
     ]
 

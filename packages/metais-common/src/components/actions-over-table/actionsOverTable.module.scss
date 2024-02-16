@@ -35,6 +35,10 @@
         margin-right: govuk-spacing(3);
         margin-bottom: govuk-spacing(0) !important;
     }
+    @include mq($until: tablet) {
+        min-width: 130px;
+        justify-content: end;
+    }
 }
 
 .buttonGroup {
@@ -51,6 +55,7 @@
     display: flex;
     flex-direction: row;
     gap: govuk-spacing(2);
+    justify-content: space-between;
 }
 
 .whiteText {
@@ -89,6 +94,12 @@
     flex-direction: column;
     align-items: flex-start;
     width: 300px;
+    @include mq($until: tablet) {
+        width: 250px;
+    }
+    @include mq($until: mobile) {
+        width: auto;
+    }
 }
 
 .buttonImportExport {
@@ -140,4 +151,16 @@
 
 .bottomMargin0 {
     margin-bottom: 0 !important;
+}
+
+.visuallyHidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
 }

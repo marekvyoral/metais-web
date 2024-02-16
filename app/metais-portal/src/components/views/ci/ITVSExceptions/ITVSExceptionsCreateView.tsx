@@ -177,7 +177,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                     <>
                                         {t('createEntity.errorMessage')}
                                         <Link className="govuk-link" state={{ from: location }} to={`mailto:${metaisEmail}`}>
-                                            {t('createEntity.email')}
+                                            {metaisEmail}
                                         </Link>
                                     </>
                                 }
@@ -220,7 +220,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                     hasResetState={{ hasReset, setHasReset }}
                     constraintsData={relationData?.constraintsData ?? []}
                     unitsData={unitsData}
-                    relationType="osobitny_postup_vztah_ISVS"
+                    relationType="osobitny_postup_vztah_PO"
                     relationshipSetState={relationshipSetState}
                     label={t('ITVSExceptions.relatedPO')}
                     existingRelations={existingRelations}

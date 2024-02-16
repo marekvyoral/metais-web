@@ -70,6 +70,7 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage}
+                        showSupportEmail
                         error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
                         onMessageClose={() => setBulkActionResult(undefined)}
                     />
@@ -91,40 +92,67 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                         popupContent={() => {
                             return (
                                 <div className={styles.buttonLinksDiv}>
-                                    <Tooltip
-                                        key={'invalidateItem'}
-                                        descriptionElement={errorMessage}
-                                        position={'top center'}
-                                        on={'right-click'}
-                                        tooltipContent={(open) => (
-                                            <div>
-                                                <ButtonLink
-                                                    disabled={isInvalidated}
-                                                    onClick={() => {
-                                                        handleInvalidate(entityListData, () => setShowInvalidate(true), open)
-                                                    }}
-                                                    label={t('ciType.invalidateItem')}
-                                                />
-                                            </div>
-                                        )}
-                                    />
+                                    {errorMessage ? (
+                                        <Tooltip
+                                            key={'invalidateItem'}
+                                            descriptionElement={errorMessage}
+                                            position={'top center'}
+                                            tooltipContent={(open) => (
+                                                <div>
+                                                    <ButtonLink
+                                                        disabled={isInvalidated}
+                                                        onClick={() => {
+                                                            handleInvalidate(entityListData, () => setShowInvalidate(true), open)
+                                                        }}
+                                                        label={t('ciType.invalidateItem')}
+                                                    />
+                                                </div>
+                                            )}
+                                        />
+                                    ) : (
+                                        <ButtonLink
+                                            disabled={isInvalidated}
+                                            onClick={() => {
+                                                handleInvalidate(
+                                                    entityListData,
+                                                    () => setShowInvalidate(true),
+                                                    () => null,
+                                                )
+                                            }}
+                                            label={t('ciType.invalidateItem')}
+                                        />
+                                    )}
 
-                                    <Tooltip
-                                        key={'revalidateItem'}
-                                        descriptionElement={errorMessage}
-                                        position={'top center'}
-                                        tooltipContent={(open) => (
-                                            <div>
-                                                <ButtonLink
-                                                    disabled={!isInvalidated}
-                                                    onClick={() => {
-                                                        handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)
-                                                    }}
-                                                    label={t('ciType.revalidateItem')}
-                                                />
-                                            </div>
-                                        )}
-                                    />
+                                    {errorMessage ? (
+                                        <Tooltip
+                                            key={'revalidateItem'}
+                                            descriptionElement={errorMessage}
+                                            position={'top center'}
+                                            tooltipContent={(open) => (
+                                                <div>
+                                                    <ButtonLink
+                                                        disabled={!isInvalidated}
+                                                        onClick={() => {
+                                                            handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)
+                                                        }}
+                                                        label={t('ciType.revalidateItem')}
+                                                    />
+                                                </div>
+                                            )}
+                                        />
+                                    ) : (
+                                        <ButtonLink
+                                            disabled={!isInvalidated}
+                                            onClick={() => {
+                                                handleReInvalidate(
+                                                    entityListData,
+                                                    () => setShowReInvalidate(true),
+                                                    () => null,
+                                                )
+                                            }}
+                                            label={t('ciType.revalidateItem')}
+                                        />
+                                    )}
 
                                     <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
                                         <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />

@@ -15,16 +15,27 @@ $formMaxHeight: 500px;
     width: 200px;
     display: flex;
     justify-content: flex-end;
+    @include mq($until: tablet) {
+        width: auto;
+        white-space: nowrap;
+        margin-left: govuk-spacing(3);
+    }
 }
 
 .heading {
     width: calc(100% - 200px);
+    @include mq($until: tablet) {
+        width: 100%;
+    }
 }
 
 .headingWrapper {
     display: flex;
     flex-direction: row;
     margin-bottom: govuk-spacing(2);
+    @include mq($until: tablet) {
+        justify-content: space-between;
+    }
 }
 
 .clearButton {
@@ -59,4 +70,15 @@ $formMaxHeight: 500px;
 
 .form {
     overflow: auto;
+}
+
+.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0s ease 0.5s;
+}
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0s ease 0.5s;
 }

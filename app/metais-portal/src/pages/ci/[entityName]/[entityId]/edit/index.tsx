@@ -17,6 +17,8 @@ const EditEntityPage = () => {
     const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(entityId)
     const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(entityName)
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    document.title = `${t('titles.ciEdit', { ci: ciTypeName, itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })} | MetaIS`
+
     const currentName =
         i18n.language == Languages.SLOVAK
             ? ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
@@ -29,7 +31,7 @@ const EditEntityPage = () => {
                     withWidthContainer
                     links={[
                         { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                        { label: ciTypeName, href: `/ci/${entityName}` },
+                        { label: t('titles.ciList', { ci: ciTypeName }), href: `/ci/${entityName}` },
                         { label: currentName ? currentName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
                         { label: t('breadcrumbs.ciEdit', { itemName: currentName }), href: `/ci/${entityName}/${entityId}/edit` },
                     ]}

@@ -7,24 +7,27 @@ import MeetingDetailView from '@/components/views/standardization/meetings/Meeti
 
 const MeetingDetailPage: React.FC = () => {
     const { t } = useTranslation()
-    document.title = `${t('titles.meetingDetail')} | MetaIS`
     const { meetingId } = useParams()
 
     return (
         <MeetingDetailContainer
             meetingId={Number(meetingId) ?? ''}
-            View={(props) => (
-                <MeetingDetailView
-                    isLoading={props.isLoading}
-                    filter={props.filter}
-                    handleFilterChange={props.handleFilterChange}
-                    group={props.group}
-                    user={props.user}
-                    meetingId={props.meetingId}
-                    meetingDetailData={props.meetingDetailData}
-                    refetch={props.refetch}
-                />
-            )}
+            View={(props) => {
+                document.title = `${t('titles.meetingDetail', { itemName: props.meetingDetailData?.name })} | MetaIS`
+
+                return (
+                    <MeetingDetailView
+                        isLoading={props.isLoading}
+                        filter={props.filter}
+                        handleFilterChange={props.handleFilterChange}
+                        group={props.group}
+                        user={props.user}
+                        meetingId={props.meetingId}
+                        meetingDetailData={props.meetingDetailData}
+                        refetch={props.refetch}
+                    />
+                )
+            }}
         />
     )
 }

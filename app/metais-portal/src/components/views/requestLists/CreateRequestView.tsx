@@ -296,6 +296,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
             header: t('codeListList.requestCreate.codeId'),
             accessorFn: (row: IItemForm) => row?.codeItem,
             id: 'name',
+            size: 200,
             cell: (ctx: CellContext<IItemForm, unknown>) => <span>{ctx?.row?.original?.codeItem}</span>,
         },
         {
@@ -303,12 +304,14 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
             accessorFn: (row: IItemForm) => row?.codeName,
             id: 'ekoCodeState',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
+            size: 200,
             cell: (ctx: CellContext<IItemForm, unknown>) => <span>{ctx?.row?.original?.codeName}</span>,
         },
         {
             header: '',
             accessorFn: (row: IItemForm) => row?.codeItem,
             id: 'btn',
+            size: 200,
             cell: (ctx: CellContext<IItemForm, unknown>) =>
                 canEdit && (
                     <Button
@@ -521,6 +524,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <MutationFeedback
                                 success={isSuccessSetDates ?? false}
                                 successMessage={t('codeListDetail.feedback.editCodeListItems')}
+                                showSupportEmail
                                 error={errorMessageSetDates && t([errorMessageSetDates, 'feedback.mutationErrorMessage'])}
                             />
                             <ActionsOverTable
@@ -539,6 +543,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                         </Can>
                                     )
                                 }
+                                selectedRowsCount={Object.keys(rowSelection).length}
                                 bulkPopup={
                                     !!editData && (
                                         <BulkPopup
@@ -583,7 +588,12 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 handlePageChange={(filter) => setPagination({ ...pagination, pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER })}
                             />
                             {errorMessages.map((errorMessage, index) => (
-                                <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                                <MutationFeedback
+                                    success={false}
+                                    key={index}
+                                    showSupportEmail={!errorMessage}
+                                    error={t([errorMessage, 'feedback.mutationErrorMessage'])}
+                                />
                             ))}
                             <ButtonGroupRow>
                                 <Button

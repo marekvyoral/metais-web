@@ -368,6 +368,7 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage + successfullyAdded.join(',')}
+                        showSupportEmail
                         error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
                         onMessageClose={() => setBulkActionResult(undefined)}
                     />
@@ -390,6 +391,7 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                 pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
+                selectedRowsCount={Object.keys(rowSelection).length}
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
                 createButton={
                     <Button

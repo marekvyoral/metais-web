@@ -30,7 +30,7 @@ interface CiInformationData {
     withoutDescription?: boolean
     withoutTime?: boolean
 }
-// Plánované ročné prevádzkové náklady projektu v EUR
+
 export const CiInformationAccordion: React.FC<CiInformationData> = ({
     data: { ciItemData, ciTypeData, constraintsData, unitsData },
     isLoading,
@@ -94,6 +94,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
         <QueryFeedback
             loading={isLoading || isCiConstraintLoading}
             error={isError || isCiConstraintError}
+            showSupportEmail
             errorProps={{ errorMessage: isCiConstraintError ? t('ciInformationAccordion.error') : undefined }}
             withChildren
         >

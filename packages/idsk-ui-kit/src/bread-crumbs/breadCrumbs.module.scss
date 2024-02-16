@@ -7,3 +7,10 @@
 .marginBottom {
     margin-bottom: govuk-spacing(8);
 }
+
+.paddingBreadcrumb {
+    @include mq($until: tablet) {
+        padding-left: govuk-spacing(4);
+        padding-right: govuk-spacing(4);
+    }
+}

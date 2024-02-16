@@ -6,6 +6,9 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { OLA_Kontrakt, SLA_SPRAVA } from '@isdd/metais-common/constants'
+import { useTranslation } from 'react-i18next'
+import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { IOlaContractSaveView } from './OlaContractAddContainer'
 
@@ -22,6 +25,7 @@ interface IOlaContractEditContainer {
 
 export const OlaContractEditContainer: React.FC<IOlaContractEditContainer> = ({ View }) => {
     const { entityId } = useParams()
+    const { t } = useTranslation()
 
     const { data: olaContract, isLoading: isOlaContractLoading, isError: isOlaContractError } = useGetOlaContract(entityId ?? '')
 
@@ -58,25 +62,35 @@ export const OlaContractEditContainer: React.FC<IOlaContractEditContainer> = ({ 
     }, [roleData, user?.groupData])
 
     return (
-        <MainContentWrapper>
-            <View
-                canChange={canEditOlaContract(user, ciType)}
-                isOwnerOfContract={isOwnerOfContract}
-                olaContractDocument={olaContractDocument}
-                olaContract={olaContract}
-                ownerGid={ownerGid}
-                saveContract={saveContract}
-                saveDoc={saveDoc}
-                isLoading={
-                    isCiTypeLoading ||
-                    isSaveLoading ||
-                    isOwnerByGidLoading ||
-                    isSaveDocLoading ||
-                    isOlaContractLoading ||
-                    (!isOlaContractdocumentError && isOlaContractDocumentLoading)
-                }
-                isError={isSaveError || isSaveDocError || isOlaContractError || isOwnerByGidError || isCiTypeError}
+        <>
+            <BreadCrumbs
+                withWidthContainer
+                links={[
+                    { label: t('breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                    { label: t('olaContracts.heading'), href: RouterRoutes.OLA_CONTRACT_LIST },
+                    { label: t('olaContracts.headingEdit', { itemName: olaContract?.name }), href: RouterRoutes.OLA_CONTRACT_ADD },
+                ]}
             />
-        </MainContentWrapper>
+            <MainContentWrapper>
+                <View
+                    canChange={canEditOlaContract(user, ciType)}
+                    isOwnerOfContract={isOwnerOfContract}
+                    olaContractDocument={olaContractDocument}
+                    olaContract={olaContract}
+                    ownerGid={ownerGid}
+                    saveContract={saveContract}
+                    saveDoc={saveDoc}
+                    isLoading={
+                        isCiTypeLoading ||
+                        isSaveLoading ||
+                        isOwnerByGidLoading ||
+                        isSaveDocLoading ||
+                        isOlaContractLoading ||
+                        (!isOlaContractdocumentError && isOlaContractDocumentLoading)
+                    }
+                    isError={isSaveError || isSaveDocError || isOlaContractError || isOwnerByGidError || isCiTypeError}
+                />
+            </MainContentWrapper>
+        </>
     )
 }

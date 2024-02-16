@@ -176,7 +176,6 @@ export const UserPreferencesPage: React.FC = () => {
                         />
                     </GridCol>
                 </GridRow>
-
                 <SubmitWithFeedback submitButtonLabel={t('userProfile.savePreferences')} loading={false} />
             </form>
         </QueryFeedback>

@@ -193,6 +193,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
                         loading={false}
                         error={!!loadErrorMessage}
                         errorProps={{ errorMessage: t([loadErrorMessage, 'feedback.queryErrorMessage']) }}
+                        showSupportEmail
                     />
                 )}
                 {!loadErrorMessage && (

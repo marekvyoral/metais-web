@@ -11,7 +11,7 @@ export const RegistrationSuccess = () => {
     const navigate = useNavigate()
     return (
         <>
-            <img className={styles.icon} src={GreenCheckOutlineIcon} />
+            <img className={styles.icon} src={GreenCheckOutlineIcon} alt="" />
             <TextHeading className={styles.title} size="XL">
                 {t('registration.success.title')}
             </TextHeading>

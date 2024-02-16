@@ -171,7 +171,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
 
             <FlexColumnReverseWrapper>
                 <TextHeading size="L">{t('DraftsList.createForm.heading')}</TextHeading>
-                {isError && <MutationFeedback error={t('feedback.mutationErrorMessage')} success={false} />}
+                {isError && <MutationFeedback error={t('feedback.mutationErrorMessage')} showSupportEmail success={false} />}
             </FlexColumnReverseWrapper>
 
             <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>

@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import ReactSelect, { GroupBase, MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
 import { useTranslation } from 'react-i18next'
 
@@ -11,7 +11,7 @@ import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 export interface IOption<T> {
     value: T
-    label: string
+    label: string | ReactElement
     disabled?: boolean
 }
 
@@ -62,7 +62,7 @@ export const Select = <T,>({
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
     }
     const { t } = useTranslation()
-
+    const errorId = `${id}-error`
     return (
         <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
             <div className={styles.labelDiv}>
@@ -71,10 +71,15 @@ export const Select = <T,>({
                 </label>
                 {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
             </div>
-            {!!error && <span className="govuk-error-message">{error}</span>}
+            {!!error && (
+                <span id={errorId} className="govuk-error-message">
+                    {error}
+                </span>
+            )}
             <div className={styles.inputWrapper}>
                 <ReactSelect<IOption<T>, boolean, GroupBase<IOption<T>>>
-                    id={id}
+                    inputId={id}
+                    aria-label={label}
                     name={name}
                     value={value}
                     defaultValue={defaultValue}
@@ -92,8 +97,10 @@ export const Select = <T,>({
                     isClearable={isClearable}
                     isOptionDisabled={(opt) => !!opt.disabled}
                     onChange={onChange}
+                    noOptionsMessage={() => t('select.noOptions')}
+                    aria-errormessage={errorId}
                 />
-                {correct && <img src={GreenCheckMarkIcon} className={isClearable ? styles.isCorrectWithIcon : styles.isCorrect} />}
+                {correct && <img src={GreenCheckMarkIcon} className={isClearable ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />}
             </div>
         </div>
     )

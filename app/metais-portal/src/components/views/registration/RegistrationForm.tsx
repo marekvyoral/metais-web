@@ -147,6 +147,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                 {errorFromBE && (
                     <MutationFeedback
                         error={errorFromBE === CHYBA_BE ? t('registration.error') : getTranslatedError(errorFromBE)}
+                        showSupportEmail={errorFromBE === CHYBA_BE}
                         success={false}
                         onMessageClose={() => setErrorFromBE('')}
                     />
@@ -166,6 +167,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         {...register(InputNames.FIRST_NAME)}
                         required
                         type="text"
+                        autoComplete="given-name"
                     />
                     <Input
                         error={errors[InputNames.LAST_NAME]?.message?.toString()}
@@ -174,6 +176,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         {...register(InputNames.LAST_NAME)}
                         required
                         type="text"
+                        autoComplete="family-name"
                     />
                     <Input
                         error={errors[InputNames.LOGIN]?.message?.toString()}
@@ -190,6 +193,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         {...register(InputNames.EMAIL)}
                         required
                         type="email"
+                        autoComplete="email"
                     />
                     <Input
                         error={errors[InputNames.PHONE]?.message?.toString()}
@@ -200,6 +204,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         type="tel"
                         required
                         inputClassName={styles.halfWidth}
+                        autoComplete="tel"
                     />
                     <CiLazySelect
                         ciType="PO"

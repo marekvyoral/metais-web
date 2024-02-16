@@ -90,6 +90,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                 <MutationFeedback
                     success={bulkActionResult?.isSuccess}
                     successMessage={bulkActionResult?.successMessage}
+                    showSupportEmail
                     error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
                     onMessageClose={() => setBulkActionResult(undefined)}
                 />
@@ -143,6 +144,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                     entityName=""
                     simpleTableColumnsSelect={{ sections: sectionsConfig, selectedColumns, resetSelectedColumns, saveSelectedColumns }}
                     handleFilterChange={handleFilterChange}
+                    selectedRowsCount={checkedRowItems}
                     bulkPopup={
                         <Tooltip
                             descriptionElement={errorMessage}

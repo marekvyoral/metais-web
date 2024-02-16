@@ -15,6 +15,7 @@ interface ButtonLinkProps {
     hidden?: boolean
     onMouseOver?: React.MouseEventHandler<HTMLButtonElement>
     onMouseOut?: React.MouseEventHandler<HTMLButtonElement>
+    id?: string
 }
 
 export const ButtonLink: React.FC<ButtonLinkProps> = ({
@@ -28,6 +29,7 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({
     onMouseOver,
     onMouseOut,
     hidden = false,
+    id,
 }) => {
     const { t } = useTranslation()
     const ref = useRef<HTMLButtonElement>(null)
@@ -47,8 +49,9 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({
                     type={type}
                     disabled={disabled}
                     ref={ref}
+                    id={id}
                 >
-                    {icon && <img className={styles.iconInButtonLink} src={icon} />}
+                    {icon && <img className={styles.iconInButtonLink} src={icon} alt="" />}
                     {label ?? t('errors.fixLink')}
                 </button>
             )}

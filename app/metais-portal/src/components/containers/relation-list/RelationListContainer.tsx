@@ -35,9 +35,12 @@ export const RelationListContainer: React.FC<RelationListContainerProps> = ({ Vi
     const [relTypeOptions, setRelTypeOptions] = useState<IOption<string>[]>()
     const [sourceOptions, setSourceOptions] = useState<IOption<string>[]>()
     const [targetOptions, setTargetOptions] = useState<IOption<string>[]>()
+    const [ciTypesOptions, setCiTypesOptions] = useState<IOption<string>[]>()
 
     // const [relAttributes, setRelAttributes] = useState<Attribute[] | undefined>()
     // const [relAttributeProfiles, setRelAttributeProfiles] = useState<AttributeProfile[] | undefined>()
+
+    const [seed, setSeed] = useState(1)
 
     const { filter, handleFilterChange } = useFilterParams<RelationshipsFilterData>({
         sort: [
@@ -86,21 +89,60 @@ export const RelationListContainer: React.FC<RelationListContainerProps> = ({ Vi
     }
 
     useEffect(() => {
+        onSourceTypeChange(filter.sourceType)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filter.sourceType])
+
+    useEffect(() => {
+        onTargetTypeChange(filter.targetType)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filter.targetType])
+
+    useEffect(() => {
+        setSeed(Math.random())
+    }, [ciTypesOptions])
+
+    const compareOptions = (a: IOption<string>, b: IOption<string>) => {
+        const labelA = a.label as string
+        const labelB = b.label as string
+        if (labelA.toUpperCase() < labelB.toUpperCase()) {
+            return -1
+        }
+        if (labelA.toUpperCase() > labelB.toUpperCase()) {
+            return 1
+        }
+        return 0
+    }
+
+    useEffect(() => {
+        if (ciTypes?.results) {
+            setCiTypesOptions(
+                ciTypes?.results
+                    ?.map((type) => ({
+                        value: type.technicalName ?? '',
+                        label: type.name ?? '',
+                    }))
+                    .sort(compareOptions),
+            )
+        }
+    }, [ciTypes?.results])
+
+    useEffect(() => {
         const isSourceAndTarget = !!(sourceOptions && targetOptions)
         const isOnlySource = !!(sourceOptions && !targetOptions)
         const isOnlyTarget = !!(!sourceOptions && targetOptions)
         switch (true) {
             case isSourceAndTarget:
-                setRelTypeOptions(sourceOptions?.filter((rel1) => targetOptions?.some((rel2) => rel2.value === rel1.value)))
+                setRelTypeOptions(sourceOptions?.filter((rel1) => targetOptions?.some((rel2) => rel2.value === rel1.value))?.sort(compareOptions))
                 break
             case isOnlySource:
-                setRelTypeOptions(sourceOptions)
+                setRelTypeOptions(sourceOptions?.sort(compareOptions))
                 break
             case isOnlyTarget:
-                setRelTypeOptions(targetOptions)
+                setRelTypeOptions(targetOptions?.sort(compareOptions))
                 break
             default:
-                setRelTypeOptions(relTypes?.results?.map((rel) => ({ value: rel.technicalName ?? '', label: rel.name ?? '' })))
+                setRelTypeOptions(relTypes?.results?.map((rel) => ({ value: rel.technicalName ?? '', label: rel.name ?? '' }))?.sort(compareOptions))
                 break
         }
     }, [relTypes?.results, sourceOptions, targetOptions])
@@ -164,13 +206,14 @@ export const RelationListContainer: React.FC<RelationListContainerProps> = ({ Vi
         <View
             relations={relationships}
             relTypeOptions={relTypeOptions ?? []}
-            ciTypes={ciTypes?.results ?? []}
+            ciTypeOptions={ciTypesOptions ?? []}
             filter={filter}
             totalItems={totaltems}
             isLoadingRelations={isLoading}
             handleFilterChange={handleFilterChange}
             onSourceTypeChange={onSourceTypeChange}
             onTargetTypeChange={onTargetTypeChange}
+            seed={seed}
             //onRelTypeChange={onRelTypeChange}
             // relAttributes={relAttributes}
             // relAttributeProfiles={relAttributeProfiles}

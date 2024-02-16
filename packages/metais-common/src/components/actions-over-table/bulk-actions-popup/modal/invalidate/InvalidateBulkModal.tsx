@@ -9,6 +9,7 @@ import { useDeleteContentHook } from '@isdd/metais-common/api/generated/dms-swag
 import {
     ConfigurationItemUi,
     RelationshipInvalidateUi,
+    RelationshipUi,
     useInvalidateRelationship,
     useInvalidateSet,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -21,7 +22,7 @@ export interface IInvalidateBulkModalProps {
     multiple?: boolean
     onClose: () => void
     onSubmit: (result: IBulkActionResult) => void
-    items: ConfigurationItemUi[]
+    items: ConfigurationItemUi[] | RelationshipUi[]
     deleteFile?: boolean
     isRelation?: boolean
     isRelationList?: boolean

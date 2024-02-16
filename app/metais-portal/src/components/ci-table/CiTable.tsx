@@ -10,6 +10,7 @@ import { CellContext, ColumnDef, ColumnOrderState, Table as ITable, Row, Updater
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 import styles from './ciTable.module.scss'
 
@@ -133,9 +134,9 @@ export const CiTable: React.FC<ICiTable> = ({
 
             return {
                 accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
-                header: () => <span>{attributeHeader ?? technicalName}</span>,
+                header: () => attributeHeader ?? technicalName,
                 id: technicalName ?? '',
-                size: index === 0 ? 300 : 200,
+                size: 200,
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
                     <TextBody lang={setEnglishLangForAttr(technicalName ?? '')} size="S" className={'marginBottom0'}>
                         {getColumnsFromApiCellContent({
@@ -166,6 +167,7 @@ export const CiTable: React.FC<ICiTable> = ({
                           const checked = table
                               .getRowModel()
                               .rows.every((row) => (row.original.uuid ? !!rowSelectionState?.rowSelection[row.original.uuid] : false))
+
                           return (
                               <div className="govuk-checkboxes govuk-checkboxes--small">
                                   <CheckBox
@@ -195,10 +197,10 @@ export const CiTable: React.FC<ICiTable> = ({
                           }
 
                           return (
-                              <div className="govuk-checkboxes govuk-checkboxes--small">
+                              <div className="govuk-checkboxes govuk-checkboxes--small" id={`checkbox_cell_${row.id}`}>
                                   <CheckBox
                                       label=""
-                                      title={`checkbox_${row.id}`}
+                                      title={t('table.selectItem', { itemName: row.original.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })}
                                       name="checkbox"
                                       id={`checkbox_${row.id}`}
                                       value="true"

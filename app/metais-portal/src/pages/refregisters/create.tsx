@@ -11,6 +11,7 @@ import { RefRegisterCreateView } from '@/components/views/refregisters/createVie
 const RefRegistersCreate = () => {
     const entityName = REFERENCE_REGISTER
     const { t } = useTranslation()
+    document.title = t('refRegisters.create.title')
 
     return (
         <>

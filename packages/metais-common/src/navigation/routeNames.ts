@@ -192,6 +192,7 @@ export enum AdminRouteNames {
     PROJECTS_FINANCE_MANAGEMENT = '/projects/finance-management',
     DOCUMENTS_MANAGEMENT = '/projects/documents',
     TEMPLATE_REFERENCE_IDENTIFIERS = '/template-reference-identifiers',
+    SYSTEM_STATUS_SETTINGS = '/system-status-settings',
 }
 
 export enum NavigationSubRoutes {
@@ -255,6 +256,7 @@ export enum NavigationSubRoutes {
     IDENTIFIERS_LIST = '/uri/list/accepted',
     OVERVIEWS = '/overviews',
     EDUCATIONAL_COURSES = '/courses',
+    RELATIONS_LIST = '/relations',
     RELATIONS_INSPECTION = '/relations-inspection',
     ARCHITECTONIC_REPOSITORY = '/architectonic-repository',
     TOTAL_COST_OF_OWNERSHIP = '/howto/TOTAL_OWNERSHIP_COSTS_HOWTO',
@@ -284,6 +286,7 @@ export interface NavigationItem {
     title: string
     path: string
     icon?: string
+    isLoginRequired?: boolean
     subItems?: NavigationSubItem[]
     role?: AdminRouteRoles[]
 }

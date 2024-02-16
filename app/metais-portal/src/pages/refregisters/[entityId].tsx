@@ -10,6 +10,7 @@ import { InterpreterFrom } from 'xstate'
 import { QueryKeysByEntity } from '@isdd/metais-common/index'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ciInformationTab } from '@isdd/metais-common/constants'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { RefRegisterItemsContainer } from '@/components/containers/refregisters/RefRegisterItemsContainer'
 import { RefRegisterIdHeader } from '@/components/views/refregisters/RefRegisterIdHeader'
@@ -77,6 +78,7 @@ const RefRegistersDetail = () => {
     }, [referenceRegisterData, isLoading, currentState, stateMachineService])
     const refRegisterIdHeaderIsLoading = isLoading && currentState !== StateMachineStatesExtension.FETCHING
 
+    document.title = formatTitleString(referenceRegisterData?.isvsName ?? '')
     return (
         <>
             <BreadCrumbs

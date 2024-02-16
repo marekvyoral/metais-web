@@ -64,24 +64,28 @@ export const IsvsEvaluationAccordion: React.FC<IIsvsEvaluationAccordionProps> = 
                     </Link>
                 </ExpandableRowCellWrapper>
             ),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.code,
             header: t('evaluation.table.name'),
             id: 'name',
             cell: (ctx) => ctx.row?.original?.name,
+            size: 200,
         },
         {
             accessorFn: (row) => row?.code,
             header: t('evaluation.table.state'),
             id: 'state',
             cell: (ctx) => dataEnumsState?.enumItems?.find((item) => item.code === ctx.row?.original?.isvsState)?.description,
+            size: 200,
         },
         {
             accessorFn: (row) => row?.code,
             header: t('evaluation.table.type'),
             id: 'type',
             cell: (ctx) => dataEnumsType?.enumItems?.find((item) => item.code === ctx.row?.original?.isvsType)?.description,
+            size: 200,
         },
         {
             accessorFn: (row) => row?.code,
@@ -92,6 +96,7 @@ export const IsvsEvaluationAccordion: React.FC<IIsvsEvaluationAccordionProps> = 
                     {ctx.row?.original?.modulName}
                 </Link>
             ),
+            size: 200,
         },
     ]
 

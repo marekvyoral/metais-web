@@ -2,6 +2,7 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useParams } from 'react-router-dom'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import HowToContent from './howToContent'
 
@@ -11,6 +12,7 @@ const HowToGenericPage = () => {
     const { t } = useTranslation()
     const location = useLocation()
     const { howToEnumType } = useParams()
+    document.title = `${t(`breadcrumbs.wiki.${howToEnumType}`)} ${META_IS_TITLE}`
 
     return (
         <>

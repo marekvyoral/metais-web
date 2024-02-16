@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
 
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
+
 export const isObjectEmpty = (obj: unknown) => {
     if (obj != null && typeof obj == 'object') {
         return Object.keys(obj).length == 0
@@ -108,6 +110,10 @@ export const splitList = (firstList: string[], secondList: string[]) => {
     })
 
     return { notInList1, notInList2 }
+}
+
+export const formatTitleString = (value: string) => {
+    return `${value} ${META_IS_TITLE}`
 }
 
 export const findCommonStrings = (array1: string[], array2: string[]) => {

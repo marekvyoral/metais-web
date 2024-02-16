@@ -10,6 +10,7 @@ import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/
 import { ApiStandardRequest, Group } from '@isdd/metais-common/api/generated/standards-swagger'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { DraftListDetailView } from '@/components/entities/draftslist/detail/DraftListDetailView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -37,6 +38,7 @@ const DraftDetailView: FC<DraftDetailViewProps> = ({ entityId, isLoading, isErro
     const { t } = useTranslation()
     const { requestData } = data
     const { isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
+    document.title = formatTitleString(requestData?.srName ?? '')
 
     return (
         <>

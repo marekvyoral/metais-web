@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useBulkActionHelpers } from './useBulkActionHelpers'
+import { useAddFavorite } from './useAddFavorite'
 
 import { ApiError, ConfigurationItemUi, useReadCiNeighboursHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Confirm200, ReturnProject200, useConfirm, useReturnProject } from '@isdd/metais-common/api/generated/kris-swagger'
 import { APPROVAL_PROCESS, ATTRIBUTE_NAME, PROJECT_STATE_ENUM } from '@isdd/metais-common/index'
 import { ENTITY_AS, ENTITY_KS } from '@isdd/metais-common/constants'
+import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
 
 export interface IBulkActionResult {
     isSuccess: boolean
@@ -20,6 +22,7 @@ export const useBulkAction = (isRelation?: boolean) => {
     const { t } = useTranslation()
 
     const { bulkCheck, bulkRelationCheck, checkChangeOfOwner, ciInvalidFilter, hasOwnerRights } = useBulkActionHelpers()
+    const { addFavoriteAsync } = useAddFavorite()
 
     const [errorMessage, setErrorMessage] = useState<string | undefined>()
     const [isBulkLoading, setBulkLoading] = useState<boolean>(false)
@@ -272,6 +275,24 @@ export const useBulkAction = (isRelation?: boolean) => {
         }
     }
 
+    const handleAddToFavorite = async (ids: string[], type: FollowedItemItemType, onSuccess: (result: IBulkActionResult) => void) => {
+        setBulkLoading(true)
+        addFavoriteAsync(ids, type)
+            .then(() => {
+                return onSuccess({
+                    isSuccess: true,
+                    isError: false,
+                    successMessage: t('userProfile.notifications.feedback.addSuccess', { count: ids.length }),
+                })
+            })
+            .catch(() => {
+                return onSuccess({ isSuccess: false, isError: true, errorMessage: t('feedback.queryErrorTitle') })
+            })
+            .finally(() => {
+                setBulkLoading(false)
+            })
+    }
+
     return {
         errorMessage,
         isBulkLoading,
@@ -283,5 +304,6 @@ export const useBulkAction = (isRelation?: boolean) => {
         handleConfirmProject,
         handleProjectReturn,
         handleClone,
+        handleAddToFavorite,
     }
 }

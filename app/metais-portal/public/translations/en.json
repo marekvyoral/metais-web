@@ -97,7 +97,7 @@
         "hideInformationAboutSite": "Hide information about site",
         "linksToWebs": "links to websites of public authorities",
         "linkToHomePage": "Link to home page",
-        "ministryName": "Ministry of Investments, Regional Development and Informatization of the Slovak Republic",
+        "homeLogo": "MetaIS logo linking to homepage.",
         "notifications": "Notifications",
         "factChecker": "Fact-checker",
         "openMenu": "Open menu",
@@ -187,7 +187,8 @@
             "totalCostOfOwnership": "Total costs of ownership",
             "serviceLevelAgreementsWithOperator": "Service level agreements with the Operator (SLA)",
             "integrationAgreementsOnServiceLevel": "Integration agreements on the level of service provided (ISLA)",
-            "training": "Trainings"
+            "training": "Trainings",
+            "relationsSearch": "Relationships search"
         },
         "sla": {
             "slaAndIntegrations": "SLA",
@@ -324,7 +325,7 @@
         "close": "Close language menu"
     },
     "language": {
-        "sk": "Slovenčina",
+        "sk": "Slovenský jazyk",
         "en": "English",
         "cimode": "Translations"
     },
@@ -332,7 +333,9 @@
         "openAll": "Open all",
         "closeAll": "Close all",
         "sections": "sections",
-        "and": "and"
+        "and": "and",
+        "sectionError": "This section has error",
+        "sectionChange": "This section has changed"
     },
     "tab": {
         "contents": "Contents",
@@ -410,6 +413,7 @@
         "success": "Success",
         "successfulUpdated": "The item was successfully changed",
         "successfulCreated": "The item was successfully created",
+        "successfulRemoved": "The item was successfully created removed",
         "successfulCloned": "The item was successfully cloned",
         "successfulRegistered": "User was successfully registered",
         "successfulUnregistered": "User was successfully unregistered",
@@ -462,7 +466,7 @@
         "basicInformation": "Basic information",
         "relations": "Relations",
         "owner": "Manager",
-        "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by e-mail."
+        "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by at:"
     },
     "tasksKris": {
         "createTask": "Add new task",
@@ -634,6 +638,7 @@
             "errorRelationsAsKsFaza": "The item has a life cycle phase of \"Live Operation",
             "errorNotApprovedKS": "End services need to be completed and published.",
             "errorNotAllowedApprove": "The user has no right to approve the project.",
+            "errorRelationsCreation":"Relations haven't been created successfully. Please create relations by default funcionality within \"Related item relationships section\".",
             "docUploadSuccess": "The document has been uploaded",
             "docRefreshSuccess": "Document was refreshed",
             "docRefreshError": "Document was not refreshed",
@@ -744,6 +749,7 @@
         }
     },
     "historyTab": {
+        "comparingHistory": "History comparison of {{itemName}}",
         "configurationItem": "Information about record",
         "configurationItemTable": "Historic records",
         "configurationItemView": {
@@ -841,9 +847,8 @@
     "createEntity": {
         "required": "required",
         "errorTitle": "Error occured",
-        "errorMessage": "We apologize, but a technical error occurred during your action. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
+        "errorMessage": "We apologize, but a technical error occurred while editing the item. Try submitting the form again. If the error occurs repeatedly, contact the administrator at:",
         "select": "Select...",
-        "email": "metais@mirri.gov.sk",
         "publicAuthority": "Public Authority",
         "role": "Role",
         "addNewRow": "Add new row",
@@ -867,15 +872,21 @@
         "pagination": "Page navigation",
         "sortBy": "Sort by",
         "selectAllItems": "Select all items",
+        "selectItem": "Select item {{itemName}}",
         "noDataLoaded": "No data loaded",
         "expandableExpandItem": "Open item detail",
-        "expandableCloseItem": "Close item detail"
+        "expandableCloseItem": "Close item detail",
+        "sortButtonLabel": "Sort by {{item}}, {{sortDirection}} ",
+        "asc": "ascending",
+        "desc": "descending",
+        "unsort": "Cancel sort by {{item}}"
     },
     "state": "Evidence status",
     "group": "Group",
     "loading": {
         "loadingSubPage": "Loading sub-page",
-        "neighboursCardList": "Loading related item relationships"
+        "neighboursCardList": "Loading related item relationships",
+        "subitems": "Loading related subitems"
     },
     "actionOverTable": {
         "options": {
@@ -979,6 +990,8 @@
         "eventType": "Event Type",
         "created": "Created",
         "description": "Description",
+        "deleteAllModal": "Do you really want to delete all notifications?",
+        "cancel": "Cancel",
         "columnsNames": {
             "messagePerex": "Name",
             "createdAt": "Created at",
@@ -998,7 +1011,7 @@
         "error": "Error while fetching data",
         "failedFetch": "There was a problem with fetching data. Please try again.",
         "queryErrorTitle": "Error occured",
-        "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",
+        "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator at:",
         "mutationErrorTitle": "Action failed",
         "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at",
         "saving": "Saving",
@@ -1015,7 +1028,8 @@
     },
     "accordion": {
         "openAll": "Open all",
-        "closeAll": "Close all"
+        "closeAll": "Close all",
+        "sectionError": "This section has error"
     },
     "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
     "date": "{{date, DATE_SHORT}}",
@@ -1114,7 +1128,7 @@
             "notFoundPO": "Error in rights - not find public authority.",
             "notToClone": "For this item, you can not create an instance because this item is an instance and can not create instances of instances"
         },
-        "iconAltText": "Description {{text}}"
+        "iconAltText": "Description of {{text}}"
     },
     "addFileSuccess": "Document {{docs}} has been added successfully",
     "addFilesSuccess": "Documents {{docs}} have been added successfully",
@@ -1193,6 +1207,7 @@
         }
     },
     "breadcrumbs": {
+        "404": "Error",
         "home": "Home",
         "ciEdit": "Edit of {{itemName}}",
         "ciClone": "Clone of {{itemName}}",
@@ -1216,7 +1231,6 @@
         "compareHistory": "Compare history",
         "ciEditEntity": "Edit of component",
         "ciCloneEntity": "Clone of component",
-        "404": "Error",
         "prelogin": "Login",
         "login": "Name and password",
         "loginProblems": "Problems with login",
@@ -1523,7 +1537,8 @@
             "EDIT": "Edit",
             "CANCEL_REQUEST": "Cancel request",
             "IMPORT": "Import codelist",
-            "EXPORT": "Export"
+            "EXPORT": "Export",
+            "addToFavorites": "Add to favorites"
         }
     },
     "refIdentifiers": {
@@ -1609,7 +1624,6 @@
         "relation": "Relation",
         "errorTitle": "Error occured",
         "errorMessage": "We apologize, but an error occurred while creating new relation. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
-        "email": "metais@mirri.gov.sk",
         "wrongRoleRelTypeError": "Selected role do not have right to create this relation type",
         "selectRelTypeError": "You are missing needed rights to create this relation type"
     },
@@ -1720,19 +1734,19 @@
         "monitoringInsert": "Insert monitoring parameters",
         "reportDetail": "Report detail",
         "ciList": "List of {{ci}} items",
-        "ciDetail": "Detail of {{ci}} item",
+        "ciDetail": "Detail of {{ci}} item {{itemName}}",
         "ciCreateEntity": "Creation of {{ci}} item",
         "ciEdit": "Edit of {{ci}} item",
-        "ciClone": "Clone of {{ci}} item",
+        "ciClone": "Clone of {{ci}} item {{itemName}}",
         "PO_IS": "Processors of IT development concepts",
         "PO_ISDetail": "Detail of IS",
         "PO_ISCreate": "Creation of IS",
         "PO_PO": "Subordinates",
-        "PO_PODetail": "Detail PO",
-        "PO_POCreate": "Vytvorenie PO",
+        "PO_PODetail": "Detail OR",
+        "PO_POCreate": "Creation of OR",
         "PO_IS_PO": "IS operators",
-        "PO_IS_PODetail": "Detail of IS PO",
-        "PO_IS_POCreate": "Creation of IS PO",
+        "PO_IS_PODetail": "Detail of IS OR",
+        "PO_IS_POCreate": "Creation of IS OR",
         "meetings": "Meetings",
         "codeListRequestsList": "Request list",
         "codeListRequestsDetail": "Request detail",
@@ -1740,7 +1754,8 @@
         "codeListDetail": "Detail codelist",
         "refIdentifiers": "Reference identifiers",
         "meetingsCreate": "Creation of meeting",
-        "meetingDetail": "Detail of meeting",
+        "meetingDetail": "Detail of meeting {{itemName}}",
+        "meetingEdit": "Edit of meeting {{itemName}}",
         "publicAuthoritiesHierarchy": "Hierarchy of public authorities",
         "relationsSearch": "Relationships search"
     },
@@ -1765,6 +1780,7 @@
         "trainingsHeading": "My trainings",
         "notificationsSettings": "Notifications preferences",
         "passwordChange": "Password change",
+        "wizards": "Wizardy",
         "oldPassword": "Old passwrod",
         "newPassword": "New password",
         "repeatPassword": "Repeat password",
@@ -1804,6 +1820,94 @@
             "submit": "Delete my account and personal information",
             "heading": "Do you really wish to delete your personal information?",
             "passwordPlaceholder": "Enter your password"
+        },
+        "notifications": {
+            "save": "Save",
+            "edit": "Edit",
+            "confirmRemove": "Are you sure you want to remove these items from your favorites?",
+            "feedback": {
+                "editSuccess": "Notification settings have been saved successfully.",
+                "addSuccess_few": "Items have been successfully added to favorites.",
+                "addSuccess_other": "Items have been successfully added to favorites.",
+                "addSuccess_one": "Item have been successfully added to favorites.",
+                "removeSuccess": "Items have been successfully removed from favorites.",
+                "removeSuccessSingle": "Item has been successfully removed from favorites.",
+                "error": "Error performing your action. Please try again or contact support."
+            },
+            "table": {
+                "name": "Item name",
+                "settings": "Notifications settings",
+                "portal": "Portal",
+                "email": "Email",
+                "delete": "Remove from favorites",
+                "add": "Add to favorites"
+            },
+            "settings": {
+                "tabs": {
+                    "FAVORITES": "Favorites",
+                    "ITEMS": "Items",
+                    "RELATIONS": "Relations",
+                    "TASKS": "Tasks",
+                    "INTEGRATIONS": "Integration",
+                    "STANDARDIZATION": "Standardization",
+                    "LICENSES": "License",
+                    "USER": "User",
+                    "CODELIST": "Codelists",
+                    "PROJECTS": "Projects"
+                },
+                "ITEMS": {
+                    "ITEM_SAVED": "Item saved",
+                    "ITEM_CHANGED": "Item changed",
+                    "ITEM_INVALIDATED": "Item invalidated",
+                    "ITEM_VALIDATED": "Item validated",
+                    "ITEM_CHANGED_OWNER": "Item changed owner"
+                },
+                "RELATIONS": {
+                    "RELATION_SAVED": "Relation saved",
+                    "RELATION_CHANGED": "Relation changed",
+                    "RELATION_INVALIDATED": "Relation invalidated",
+                    "RELATION_VALIDATED": "Relation validated",
+                    "RELATION_CHANGED_OWNER": "Relation changed owner"
+                },
+                "TASKS": {
+                    "TASK_CREATED": "Task created",
+                    "TASK_CHANGED_ASSIGNEE": "Task changed assignee",
+                    "TASK_CLOSED": "Task closed"
+                },
+                "INTEGRATIONS": {
+                    "INTEGRATION_STARTED": "Integration started",
+                    "INTEGRATION_DELAYED": "Integration delayed"
+                },
+                "STANDARDIZATION": {
+                    "STANDARD_REQUEST": "Request",
+                    "STANDARD_MEETING": "Meeting",
+                    "STANDARD_VOTE": "Vote",
+                    "STANDARD_CODELIST": "Codelist",
+                    "STANDARD_USERS_IN_GROUP": "Users in group",
+                    "STANDARD_CSRU_SYNC": "CSRU synchronization"
+                },
+                "USER": {
+                    "USER_IMPORTED": "Import",
+                    "USER_CHANGED": "User changed",
+                    "USER_ACCEPTED": "Claim accepted",
+                    "USER_REFUSED": "Claim refused"
+                },
+                "LICENSES": {
+                    "LICENSE_ADDED": "License moved",
+                    "LICENSE_MOVED": "License added",
+                    "LICENSE_CHANGED_UNUSED": "License changed unused count"
+                },
+                "CODELIST": {
+                    "CODELIST_REQUEST": "Codelist requests notifications",
+                    "CODELIST_CHANGE_STATUS": "Codelist status change notifications",
+                    "CODELIST_CHANGE_ITEM": "Codelist items status change notifications",
+                    "CODELIST_SELECT_ALL": "Turn on all notifications"
+                },
+                "PROJECT": {
+                    "PROJECT_CHOOSE": "Select project:",
+                    "PROJECT_NOTIFICATIONS": "Projects notifications:"
+                }
+            }
         }
     },
     "DraftsList": {
@@ -1877,8 +1981,7 @@
             }
         },
         "create": {
-            "heading": "Create draft",
-            "warning": "The criteria below should be evaluated before approving the draft standard, but this does not mean that each of them must be 'met' (not every criterion is relevant to each proposal). If applicant does not know to judge a criterion, than answer the whole sentence, not just 'yes/no'."
+            "heading": "Create draft"
         }
     },
     "meetings": {
@@ -2146,8 +2249,8 @@
             },
             "secretVote": "Secret vote",
             "date": {
-                "fromDate": "Date from (required):",
-                "toDate": "Date to (required):"
+                "fromDate": "Date from (required)",
+                "toDate": "Date to (required)"
             },
             "answers": {
                 "title": "Answer definitions",
@@ -2197,7 +2300,7 @@
         },
         "error": {
             "errorTitle": "Error occured",
-            "errorMessage": "We apologize, but an error occurred durring processing. Try submitting the form again. If the error occurs repeatedly, contact the administrator"
+            "errorMessage": "We apologize, but an error occurred durring processing. Try submitting the form again. If the error occurs repeatedly, contact the support at:"
         }
     },
     "registration": {
@@ -2233,10 +2336,10 @@
         },
         "failed": {
             "title": "Your registration failed",
-            "description": "We are sorry, but during registration process error occurred. Try to register again. In case that error occurs repeatedly, contact administrator by email at <email>metais@mirri.gov.sk</email>.",
+            "description": "We are sorry, but during registration process error occurred. Try to register again. In case that error occurs repeatedly, contact administrator by email at:",
             "button": "Repeat registration"
         },
-        "error": "Error while executing your action. Please try again or contact support.",
+        "error": "Error while executing your action. Please try again or contact support at:",
         "consentWith": "I agree with ",
         "dataProcessingConsent": "terms of personal data processing",
         "termsOfUseConsent": "terms of use of the Central Metainformation System of Public Administration"
@@ -2248,7 +2351,9 @@
         "action": "In relation with selected project"
     },
     "publicAuthorities": {
-        "hierarchy": "Hierarchy of public authorities"
+        "hierarchy": "Hierarchy of public authorities",
+        "expand": "Expand {{rowName}}",
+        "collapse": "Collapse {{rowName}}"
     },
     "publicspace": {
         "heading": "Standards of ISVS"
@@ -2269,7 +2374,7 @@
         "submit": "Submit",
         "cancel": "Cancel",
         "editSuccess": "Edit of {{relationName}} was successful.",
-        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support."
+        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support at:"
     },
     "autoLogout": {
         "warningMessage": "In {{countDown}} you will be logged out due to inactitvity.",
@@ -2287,10 +2392,10 @@
         "target": "Goal",
         "name": "Sub-goal",
         "description": "Goal description",
-        "action": "In relation with selected KRIS",
+        "action": "In relation with selected KRIT",
         "haveNoRights": "You do not have rights to edit this input.",
         "commitmentHeader": "Commitment to the observance of the goals and principles of the National Informatization Concept of Public Administration",
-        "commitmentLabel": "We declare that the building and developing ISVS will meet our defined objectives, sub-objectives and adhere to the principles of the National Informatization Concept of Public Administration",
+        "commitmentLabel": "We declare that the building and developing ITVS will meet our defined objectives, sub-objectives and adhere to the principles of the National Informatization Concept of Public Administration",
         "noCheckedItems": "Before confirming the commitment to comply with the goals and principles of the National Concept of Informatization of Public Administration, it is necessary to select at least one goal."
     },
     "crash": {
@@ -2311,20 +2416,20 @@
         "Error": "Before using the Central Public Administration Metainformation System, you must agree to the terms",
         "Detail": {
             "Title": "Terms of use of the Central Metainformation System of Public Administration",
-            "TitleText": "Thank you for using the products and services of the Central Public Administration Metainformation System („MetaIS Services”), which consists of a web portal at metais.finance.gov.sk, an architecture modeling tool and a plugin for synchronizing data between the tool itself and the portal. The web portal represents the user interface to the system and the method of entering and presenting data. It is the main channel of the user. BizzDesign Enterprise Studio (hereinafter referred to as „BES”) is a MetaIS component used to enter architectural data in graphical form. This data is synchronized with the web portal, where it can then be supplemented by the user. Synchronization is provided by the so-called synchronization plugin (hereinafter referred to as „plugin”). The plugin enables simple mass changes through the BES tool, and it is therefore up to the authorized employee of the obliged entity (hereinafter referred to as the „user”) to use the plugin exclusively in accordance with the manual and instructions, since incorrect use can cause inconsistencies and errors, which are subsequently difficult to remove. The authorized employee of the liable entity is responsible for the consistency, completeness and accuracy of the information submitted to the central public administration meta-information system (MetaIS) for the liable entity and its subordinate organizations. By using MetaIS services, you agree to these terms and conditions.",
+            "TitleText": "Thank you for using the products and services of the Central Public Administration Metainformation System („MetaIS\"), which consists of a web portal at metais.mirri.gov.sk, an architecture modeling tool and a plugin for synchronizing data between the tool itself and the portal. The web portal represents the user interface to the system and the method of entering and presenting data. It is the main channel of the user. BizzDesign Enterprise Studio (hereinafter referred to as „BES”) is a MetaIS component used to enter architectural data in graphical form. This data is synchronized with the web portal, where it can then be supplemented by the user. Synchronization is provided by the so-called synchronization plugin (hereinafter referred to as „plugin”). The plugin enables simple mass changes through the BES tool, and it is therefore up to the authorized employee of the obliged entity (hereinafter referred to as the „user”) to use the plugin exclusively in accordance with the manual and instructions, since incorrect use can cause inconsistencies and errors, which are subsequently difficult to remove. The authorized employee of the liable entity is responsible for the consistency, completeness and accuracy of the information submitted to the MetaIS for the liable entity and its subordinate organizations. By using MetaIS services, you agree to these terms and conditions.",
             "Usage": "Use of Services",
             "UsageText": "You must not abuse MetaIS services. We may suspend or stop providing you with our Services if you violate our terms of service or rules, or when we investigate suspected inappropriate use. We believe that transparent communication, as is common in open software projects, is a good way forward and that openness creates opportunities to: published data and published content can be used in new and unexpected ways. That's why we also make materials, some of which are intended for specific state administration bodies, available online to everyone. Data obtained through the use of MetaIS services is subject to the Creative Commons Zero license / disclaimer, unless otherwise stated, as it is open data.",
             "Range": "Scope and limitations",
-            "RangeText": "We provide our Services using reasonable business skill and care and believe that they will benefit you. However, there are things that we cannot promise you in connection with the MetaIS Services. Neither the Ministry of Finance of the Slovak Republic nor its suppliers make any promises regarding the MetaIS Services, except for those expressly stated in these terms and conditions or supplementary terms. We provide the Services „as is” without warranty. The Ministry of Finance of the Slovak Republic and its suppliers are in no way responsible for any loss or damage that is not reasonably foreseeable. These terms of use only grant you certain rights to use the software. The Ministry of Finance of the Slovak Republic reserves all other rights. You may use the Software only as permitted by these Terms. In doing so, you must comply with any technical restrictions on the software that only allow you to use it in certain ways. ",
+            "RangeText": "We provide our Services using reasonable business skill and care and believe that they will benefit you. However, there are things that we cannot promise you in connection with the MetaIS Services. Neither the Ministry of Ministry of Investments, Regional Development and Informatization of the Slovak Rebublic of the Slovak Republic nor its suppliers make any promises regarding the MetaIS Services, except for those expressly stated in these terms and conditions or supplementary terms. We provide the Services „as is” without warranty. The Ministry of Ministry of Investments, Regional Development and Informatization of the Slovak Rebublic of the Slovak Republic and its suppliers are in no way responsible for any loss or damage that is not reasonably foreseeable. These terms of use only grant you certain rights to use the software. The Ministry of Finance of the Slovak Republic reserves all other rights. You may use the Software only as permitted by these Terms. In doing so, you must comply with any technical restrictions on the software that only allow you to use it in certain ways.",
             "MustNot": {
                 "Title": "You may not:",
-                "Change": "The Ministry of Finance of the Slovak Republic reserves the right to change the conditions of use of MetaIS.",
+                "Change": "Ministry of Investments, Regional Development and Informatization of the Slovak Rebublic",
                 "First": "circumvent any technical limitations of the software,",
                 "Second": "reverse-analyze, decompile or disassemble the software into components, with the exception of such activity to the extent that it is expressly permitted by the relevant legal order of the Slovak Republic, despite the aforementioned restrictions,",
                 "Third": "provide the Software to others to copy, rent, lease, or loan the Software, transfer the Software or this Agreement to a third party, or use the Software for commercial software hosting services."
             },
             "Account": "Your Account",
-            "AccountText": "You will need an account to use some of the MetaIS Services. The account can be assigned to you by your administrator (who has the role of HKO - main contact person of the liable person). To ensure the security of your account, do not disclose your password to anyone. You bear full responsibility for the activity taking place in your account or the data entered and changed through it. Do not use the same password for the account in third-party applications. If you discover any unauthorized use of your password or account, you must report this fact to the MetaIS administrator at metais@mfsr.sk.",
+            "AccountText": "You will need an account to use some of the MetaIS Services. The account can be assigned to you by your administrator (who has the role of HKO - main contact person of the liable person). To ensure the security of your account, do not disclose your password to anyone. You bear full responsibility for the activity taking place in your account or the data entered and changed through it. Do not use the same password for the account in third-party applications. If you discover any unauthorized use of your password or account, you must report this fact to the MetaIS administrator at",
             "Protection": "Privacy",
             "ProtectionText": "The organization or individual providing information to MetaIS is responsible for the compliance of the submitted information with the law, especially with regard to the Personal Data Protection Act No. 428/2002 Coll. and Art. 13 and 14 GDPR/ § 19 and 20 of Act no. 18/2018 Coll. on the protection of personal data. By using the MetaIS Services, you express your consent to the provision of the following data to MetaIS and to its processing: ",
             "ProcessInformation": {
@@ -2335,11 +2440,11 @@
                 "PO": "obliged person (employer)"
             }
         },
-        "Confirm": "Potvrtiť"
+        "Confirm": "Confirm"
     },
     "loginProblems": {
         "heading": "Do you have problems logging into the system?",
-        "description": "Please contact administrator by email on"
+        "description": "Please contact administrator by email at:"
     },
     "forgottenPassword": {
         "heading": "Did you forget your password?",
@@ -2654,7 +2759,7 @@
         "title": "SLA with vendor",
         "heading": "List of SLA with contractors",
         "headingAdd": "Add SLA with contractor",
-        "headingEdit": "Edit SLA with contractor",
+        "headingEdit": "Edit SLA item {{itemName}} with contractor",
         "createButton": "Add new SLA with contractor"
     },
     "insertMonitoring": {
@@ -2670,6 +2775,74 @@
     },
     "upload": {
         "success": "Document has been added successfully",
-        "error": "Error while uploading document. Please try again."
+        "error": "Error while uploading document. Please try again.",
+        "itemError": "Error while uploading {{itemName}}",
+        "itemSuccess": "Upload of {{itemName}} was successfull",
+        "deleteItem": "Remove {{itemName}} from list"
+    },
+    "technical": {
+        "declaration": "Declaration"
+    },
+    "close": "Close",
+    "closeFeedback": "Close feedback message",
+    "valid": "Input value is valid",
+    "dnd": "Item can be dragged and dropped",
+    "delete": "Delete",
+    "progressStepeer": {
+        "expand": "Expand",
+        "collapse": "Collapse",
+        "state": {
+            "current": "Current step",
+            "finished": "Finished step",
+            "future": "Future step"
+        }
+    },
+    "pagination": {
+        "toFirst": "To first page",
+        "toPrev": "To previous page",
+        "dots": "Ellipsis indicationg more pages available",
+        "toNext": "To next page",
+        "toLast": "To last page"
+    },
+    "fileList": {
+        "delete": "Delete file {{fileName}} from list"
+    },
+    "select": {
+        "noOptions": "No options"
+    },
+    "aria": {
+        "selectedRowsCount": "You have {{count}} rows selected in table"
+    },
+    "wizard": {
+        "search": "Searching",
+        "relations": "Relationships",
+        "filter": "Filtering",
+        "bulkActions": "Bulk Actions",
+        "show": "Enable wizards",
+        "success": "Wizard settings successfuly saved",
+        "actions": {
+            "back": "Back",
+            "next": "Next",
+            "close": "Close"
+        },
+        "searchContent": {
+            "step1": "The main search box is used for the main search in the entire application, which offers suggested results according to relevance after entering the text. The longer the entered text string, the more accurate the results. The search takes place in all text fields.",
+            "step2": "Additional search above the table with a list of records searches only in the text fields located in the selected table (i.e. on all pages, in all records of the given table)."
+        },
+        "filterContent": {
+            "step1": "Above each tabular view with a list of records is additional filtering. The filter menu can be „Collapse filter“ and then collapsed again. The element filtering menu is relevant to the selected table.",
+            "step2": "By clicking on the main „Filter“ button, the previously selected filtering parameters are applied.",
+            "step3": "Selecting „Clear Filtering Criteria“ will unfilter the table and display all table entries. The „Clear filter criteria“ option removes all selected values in the filter but does not cancel the filtered values themselves."
+        },
+        "bulkActionsContent": {
+            "step1": "Each list (table of records) contains mass change options. The „Bulk Actions“ button is located above the table with the list of records.",
+            "step2": "After expanding it, the options for changes above the given group of selected records will be displayed.",
+            "step3": "Items are selected by ticking the check box at the beginning of each line."
+        },
+        "relationContent": {
+            "step1": "Relationships can be created using cards that represent links to related items.",
+            "step2": "Within the given tabs, it is possible to add an item to the currently viewed item by clicking the 'Add new relationship' button, which in terms of relationships represents the creation of a new relationship between the viewed item and an existing item of the selected type.",
+            "step3": "Within the given cards, it is also possible to create a new item of the selected type by clicking the 'Add new item and relationship' button, while in addition to creating the item, a new relationship is also created between the currently viewed item and the created item.."
+        }
     }
 }

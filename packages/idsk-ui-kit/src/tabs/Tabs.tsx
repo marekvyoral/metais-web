@@ -27,7 +27,15 @@ interface ITabItemDesktop {
 const TabItemDesktop: React.FC<ITabItemDesktop> = ({ handleSelect, tab, isSelected, className }) => {
     return (
         <li key={tab.id} className={classnames(className, 'idsk-tabs__list-item', { 'idsk-tabs__list-item--selected': isSelected })}>
-            <a className={classnames('idsk-tabs__tab')} href={`#${tab.id}`} title={tab.id} onClick={(event) => handleSelect(event, tab)}>
+            <a
+                className={classnames('idsk-tabs__tab')}
+                href={`#${tab.id}`}
+                title={tab.title}
+                onClick={(event) => handleSelect(event, tab)}
+                role="tab"
+                aria-selected={isSelected}
+                aria-controls={tab.id}
+            >
                 {tab.title}
             </a>
         </li>
@@ -42,7 +50,7 @@ interface ITabItemContent {
 
 const TabItemContent: React.FC<ITabItemContent> = ({ tab, handleMobileSelect, isSelected }) => {
     const windowWidth = useWindowWidthBreakpoints()
-
+    const sectionId = `${tab.id}-section`
     return (
         <li key={tab.id} className="idsk-tabs__list-item--mobile" role="presentation">
             <button
@@ -55,7 +63,12 @@ const TabItemContent: React.FC<ITabItemContent> = ({ tab, handleMobileSelect, is
                 {tab.title}
                 <span className="idsk-tabs__tab-arrow-mobile" />
             </button>
-            <section className={classnames('idsk-tabs__panel', { 'idsk-tabs__panel--hidden': !isSelected })} id={tab.id}>
+            <section
+                className={classnames('idsk-tabs__panel', { 'idsk-tabs__panel--hidden': !isSelected })}
+                id={sectionId}
+                role="tabpanel"
+                aria-labelledby={tab.id}
+            >
                 {windowWidth &&
                     (windowWidth.desktop || windowWidth.tablet ? (
                         <div className="idsk-tabs__panel-content">{tab.content}</div>
@@ -76,9 +89,10 @@ const TabItemContent: React.FC<ITabItemContent> = ({ tab, handleMobileSelect, is
 interface ITabs {
     tabList: Tab[]
     onSelect?: (selected: Tab) => void
+    id?: string
 }
 
-export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
+export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected, id }) => {
     const { t, i18n } = useTranslation()
     const { pathname } = useLocation()
     const location = useLocation()
@@ -165,7 +179,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     return (
         <div className="idsk-tabs" data-module="idsk-tabs">
             <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
-            <ul className={classnames('idsk-tabs__list')}>
+            <ul className={classnames('idsk-tabs__list')} role="tablist" id={id}>
                 {newTabList?.slice(0, MAX_SHOWN_TABS).map((tab) => (
                     <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={activeTab?.id === tab.id} tab={tab} />
                 ))}
@@ -197,7 +211,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
                     </li>
                 )}
             </ul>
-            <ul className="idsk-tabs__list--mobile" role="tablist">
+            <ul className="idsk-tabs__list--mobile" role="tablist" id={id}>
                 {tabList.map((tab) => (
                     <TabItemContent key={tab.id} handleMobileSelect={handleMobileSelect} tab={tab} isSelected={activeTab?.id === tab.id} />
                 ))}

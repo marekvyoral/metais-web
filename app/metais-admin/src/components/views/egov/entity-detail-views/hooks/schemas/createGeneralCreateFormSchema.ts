@@ -24,7 +24,7 @@ export const generateFormValidationSchema = (
             technicalName: yup
                 .string()
                 .required(t('egov.create.requiredField'))
-                .min(2)
+                .min(2, t('egov.create.minCharacters', { min: 2 }))
                 .matches(/^[a-z-A-Z_]+$/, t('egov.create.technicalNameRegex')),
             codePrefix: yup.string().when('codePrefix', {
                 is: () => !hiddenInputs?.CODE_PREFIX && !disabledInputsTypes?.CODE_PREFIX,

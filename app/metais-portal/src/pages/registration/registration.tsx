@@ -3,12 +3,14 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { RegistrationRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { CenterWrapper } from '@isdd/metais-common/components/center-wrapper/CenterWrapper'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { RegistrationForm } from '@/components/views/registration/RegistrationForm'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const Registration = () => {
     const { t } = useTranslation()
+    document.title = formatTitleString(t('registration.title'))
     return (
         <>
             <BreadCrumbs

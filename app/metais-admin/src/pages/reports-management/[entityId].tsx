@@ -3,6 +3,7 @@ import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useParams } from 'react-router-dom'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 
 import { ReportsDetailContainer } from '@/components/containers/Egov/Reports-management/ReportsDetailContainer'
 import { ReportsDetail } from '@/components/views/egov/reports/ReportsDetail'
@@ -28,18 +29,24 @@ const ReportsDetailPage: React.FC = () => {
                             ]}
                         />
                         <MainContentWrapper>
-                            <TextHeading size="L">{t('breadcrumbs.reportsEdit')}</TextHeading>
-
-                            <ReportsDetail
-                                data={props.data}
-                                categories={props.dataCategories}
-                                runReport={props.runReport}
-                                saveReport={props.saveReport}
-                                saveIsLoading={props.saveIsLoading}
-                                mutationIsLoading={props.mutationIsLoading}
-                                runMutationIsSuccess={props.runMutationIsSuccess}
-                                mutationError={props.mutationError}
-                            />
+                            <QueryFeedback loading={props.isLoading} error={props.isError}>
+                                <MutationFeedback
+                                    success={props.isMutationSuccess}
+                                    showSupportEmail
+                                    error={props.isMutationError ? t('feedback.mutationErrorMessage') : undefined}
+                                />
+                                <TextHeading size="L">{t('breadcrumbs.reportsEdit')}</TextHeading>
+                                <ReportsDetail
+                                    data={props.data}
+                                    categories={props.dataCategories}
+                                    runReport={props.runReport}
+                                    saveReport={props.saveReport}
+                                    saveIsLoading={props.saveIsLoading}
+                                    mutationIsLoading={props.mutationIsLoading}
+                                    runMutationIsSuccess={props.runMutationIsSuccess}
+                                    mutationError={props.mutationError}
+                                />
+                            </QueryFeedback>
                         </MainContentWrapper>
                     </>
                 )

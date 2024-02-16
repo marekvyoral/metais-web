@@ -9,6 +9,7 @@ import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences
 import { RelationshipTypePreview, useGetCiType, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { NeighboursCardList } from '@/components/entities/NeighboursCardList'
+import { getRelationsSorter } from '@/componentHelpers/ci/ciRelationsSortConfig'
 
 export interface IRelationsView {
     isLoading: boolean
@@ -41,7 +42,13 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
     includeDeleted = false,
 }) => {
     const { data: ciTypeData } = useGetCiType(technicalName)
-    const { isLoading: areTypesLoading, isError: areTypesError, keysToDisplay } = useEntityRelationsTypesCount(entityId, technicalName)
+    const {
+        isLoading: areTypesLoading,
+        isError: areTypesError,
+        keysToDisplay: keysToDisplayUnsorted,
+    } = useEntityRelationsTypesCount(entityId, technicalName, includeDeleted)
+
+    const keysToDisplay = useMemo(() => keysToDisplayUnsorted.sort(getRelationsSorter(technicalName)), [keysToDisplayUnsorted, technicalName])
 
     const { data: relationTypes } = useListRelationshipTypes({ filter: { role: undefined } })
 

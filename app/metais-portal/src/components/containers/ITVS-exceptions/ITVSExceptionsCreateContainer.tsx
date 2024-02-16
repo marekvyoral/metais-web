@@ -100,7 +100,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
 
     const lastIndex = data.generatedEntityId?.ciurl?.lastIndexOf('/')
     const urlString = data.generatedEntityId?.ciurl?.slice(0, lastIndex) + '/'
-
+    const toPath = `/ci/${entityName}/${configurationItemId}`
     const {
         data: readRelationShipsData,
         isLoading: isReadRelationshipsLoading,
@@ -115,7 +115,6 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     })
 
     const onCreateSuccess = () => {
-        const toPath = `/ci/${entityName}/${configurationItemId}`
         invalidateCilistFilteredCache.invalidate({ ciType: entityName })
         invalidateCiByUuidCache.invalidate(configurationItemId)
         invalidateRelationsForCiCache.invalidate(configurationItemId)
@@ -140,10 +139,26 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                 }
             },
             onError() {
-                setUploadError(true)
+                setIsActionSuccess({
+                    value: false,
+                    path: toPath,
+                    additionalInfo: { type: 'createRelationError' },
+                })
+                navigate(toPath)
             },
         },
     })
+
+    useEffect(() => {
+        if ([isRedirectError, isTooManyFetchesError, isProcessedError].some((item) => item)) {
+            setIsActionSuccess({
+                value: false,
+                path: toPath,
+                additionalInfo: { type: 'createRelationError' },
+            })
+            navigate(toPath)
+        }
+    }, [isRedirectError, isTooManyFetchesError, isProcessedError, setIsActionSuccess, toPath, navigate])
 
     const saveRelations = async () => {
         const formAttributesKeys = Object.keys(formData)
@@ -163,6 +178,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                 relationshipSet: relationshipSet
                     ? relationshipSet.map((rel) => ({
                           ...rel,
+                          type: rel.type,
                           startUuid: configurationItemId,
                           owner: updateCiItemId ? ciItemData?.metaAttributes?.owner : ownerId,
                           attributes: [
@@ -257,7 +273,11 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
             </FlexColumnReverseWrapper>
             {!(isRedirectError || isProcessedError || isRedirectLoading) && (
                 <div ref={mutationRef}>
-                    <MutationFeedback success={false} error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''} />
+                    <MutationFeedback
+                        success={false}
+                        showSupportEmail
+                        error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
+                    />
                 </div>
             )}
             {(isRedirectError || isProcessedError || isTooManyFetchesError) && <div ref={wrapperRef} />}

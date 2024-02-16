@@ -539,7 +539,12 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                             </GridRow>
 
                             {errorMessages.map((errorMessage, index) => (
-                                <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                                <MutationFeedback
+                                    success={false}
+                                    key={index}
+                                    showSupportEmail
+                                    error={t([errorMessage, 'feedback.mutationErrorMessage'])}
+                                />
                             ))}
 
                             <ButtonGroupRow className={styles.buttonGroupEdit}>

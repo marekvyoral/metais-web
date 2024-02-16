@@ -122,7 +122,12 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
                             </TextHeading>
                             {isError && <QueryFeedback error={isError} loading={false} />}
                             {errorMessages.map((errorMessage, index) => (
-                                <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                                <MutationFeedback
+                                    success={false}
+                                    key={index}
+                                    showSupportEmail
+                                    error={t([errorMessage, 'feedback.mutationErrorMessage'])}
+                                />
                             ))}
 
                             <SimpleSelect

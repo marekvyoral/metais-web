@@ -70,7 +70,7 @@ export type ListParameterValuesParams = {
 }
 
 export type ListMonitoringOverviewParams = {
-    serviceType?: string
+    serviceTypes?: string[]
     intervalStart?: string
     intervalEnd?: string
     liableEntity?: string
@@ -443,6 +443,35 @@ export interface ActiveMonitoringReportRequest {
     filtered?: string[]
     page?: number
     perPage?: number
+}
+
+export interface EnumItem {
+    id?: number
+    code?: string
+    value?: string
+    valid?: boolean
+    description?: string
+    orderList?: number
+    engValue?: string
+    engDescription?: string
+}
+
+export interface CurrentSystemState {
+    id?: number
+    createdAt?: string
+    text?: string
+    systemState?: EnumItem
+    systemStateColor?: EnumItem
+}
+
+export interface CurrentSystemStateIn {
+    text?: string
+    systemState?: string
+    systemStateColor?: string
+}
+
+export interface RequestIdUi {
+    requestId?: string
 }
 
 export interface MainAttributes {
@@ -2033,7 +2062,7 @@ export const useAddParameterValues = <TError = ApiError, TContext = unknown>(opt
 }
 
 export const useUpdateOlaContractHook = () => {
-    const updateOlaContract = useMonitoringSwaggerClient<void>()
+    const updateOlaContract = useMonitoringSwaggerClient<RequestIdUi>()
 
     return (apiOlaContractData: ApiOlaContractData) => {
         return updateOlaContract({
@@ -2110,6 +2139,135 @@ export const useSaveOlaContract = <TError = ApiError, TContext = unknown>(option
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useSaveOlaContractHook>>>, TError, { data: ApiOlaContractData }, TContext>
 }) => {
     const mutationOptions = useSaveOlaContractMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useGetCurrentSystemStateHook = () => {
+    const getCurrentSystemState = useMonitoringSwaggerClient<CurrentSystemState>()
+
+    return (signal?: AbortSignal) => {
+        return getCurrentSystemState({ url: `/current-system-state`, method: 'get', signal })
+    }
+}
+
+export const getGetCurrentSystemStateQueryKey = () => [`/current-system-state`] as const
+
+export const useGetCurrentSystemStateQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useGetCurrentSystemStateHook>>>,
+    TError = ApiError,
+>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCurrentSystemStateHook>>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCurrentSystemStateHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetCurrentSystemStateQueryKey()
+
+    const getCurrentSystemState = useGetCurrentSystemStateHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetCurrentSystemStateHook>>>> = ({ signal }) => getCurrentSystemState(signal)
+
+    return { queryKey, queryFn, ...queryOptions }
+}
+
+export type GetCurrentSystemStateQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetCurrentSystemStateHook>>>>
+export type GetCurrentSystemStateQueryError = ApiError
+
+export const useGetCurrentSystemState = <TData = Awaited<ReturnType<ReturnType<typeof useGetCurrentSystemStateHook>>>, TError = ApiError>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCurrentSystemStateHook>>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetCurrentSystemStateQueryOptions(options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useSetCurrentSystemStateHook = () => {
+    const setCurrentSystemState = useMonitoringSwaggerClient<CurrentSystemState>()
+
+    return (currentSystemStateIn: CurrentSystemStateIn) => {
+        return setCurrentSystemState({
+            url: `/current-system-state`,
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            data: currentSystemStateIn,
+        })
+    }
+}
+
+export const useSetCurrentSystemStateMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useSetCurrentSystemStateHook>>>,
+        TError,
+        { data: CurrentSystemStateIn },
+        TContext
+    >
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useSetCurrentSystemStateHook>>>, TError, { data: CurrentSystemStateIn }, TContext> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const setCurrentSystemState = useSetCurrentSystemStateHook()
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useSetCurrentSystemStateHook>>>, { data: CurrentSystemStateIn }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
+
+        return setCurrentSystemState(data)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type SetCurrentSystemStateMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useSetCurrentSystemStateHook>>>>
+export type SetCurrentSystemStateMutationBody = CurrentSystemStateIn
+export type SetCurrentSystemStateMutationError = ApiError
+
+export const useSetCurrentSystemState = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useSetCurrentSystemStateHook>>>,
+        TError,
+        { data: CurrentSystemStateIn },
+        TContext
+    >
+}) => {
+    const mutationOptions = useSetCurrentSystemStateMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useClearCurrentSystemStateHook = () => {
+    const clearCurrentSystemState = useMonitoringSwaggerClient<CurrentSystemState>()
+
+    return () => {
+        return clearCurrentSystemState({ url: `/current-system-state`, method: 'delete' })
+    }
+}
+
+export const useClearCurrentSystemStateMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCurrentSystemStateHook>>>, TError, TVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCurrentSystemStateHook>>>, TError, TVariables, TContext> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const clearCurrentSystemState = useClearCurrentSystemStateHook()
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useClearCurrentSystemStateHook>>>, TVariables> = () => {
+        return clearCurrentSystemState()
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type ClearCurrentSystemStateMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearCurrentSystemStateHook>>>>
+
+export type ClearCurrentSystemStateMutationError = ApiError
+
+export const useClearCurrentSystemState = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCurrentSystemStateHook>>>, TError, TVariables, TContext>
+}) => {
+    const mutationOptions = useClearCurrentSystemStateMutationOptions(options)
 
     return useMutation(mutationOptions)
 }

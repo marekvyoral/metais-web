@@ -124,7 +124,7 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
     return (
         <BaseModal isOpen={isOpen} close={onClose}>
             <div className={styles.headerWrapper}>
-                <img src={ExportIcon} />
+                <img src={ExportIcon} alt="" />
                 <TextHeading size="L">{t('codeListDetail.modal.title.import')}</TextHeading>
             </div>
 

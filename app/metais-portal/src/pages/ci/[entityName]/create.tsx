@@ -15,24 +15,28 @@ const CreateEntityPage: React.FC = () => {
         <>
             <CiCreateEntityContainer
                 entityName={entityName ?? ''}
-                View={(props) => (
-                    <>
-                        <BreadCrumbs
-                            withWidthContainer
-                            links={[
-                                { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                                { label: props.ciTypeName, href: `/ci/${entityName}` },
-                                {
-                                    label: t('breadcrumbs.ciCreateEntity', { entityName: props.data.attributesData.ciTypeData?.name }),
-                                    href: `/ci/create`,
-                                },
-                            ]}
-                        />
-                        <MainContentWrapper>
-                            <CreateCiEntityView {...props} />
-                        </MainContentWrapper>
-                    </>
-                )}
+                View={(props) => {
+                    document.title = `${t('titles.ciCreateEntity', { ci: props.ciTypeName })} | MetaIS`
+
+                    return (
+                        <>
+                            <BreadCrumbs
+                                withWidthContainer
+                                links={[
+                                    { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                                    { label: t('titles.ciList', { ci: props.ciTypeName }), href: `/ci/${entityName}` },
+                                    {
+                                        label: t('breadcrumbs.ciCreateEntity', { entityName: props.data.attributesData.ciTypeData?.name }),
+                                        href: `/ci/create`,
+                                    },
+                                ]}
+                            />
+                            <MainContentWrapper>
+                                <CreateCiEntityView {...props} />
+                            </MainContentWrapper>
+                        </>
+                    )
+                }}
             />
         </>
     )

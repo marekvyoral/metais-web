@@ -22,12 +22,14 @@ export const DraftsListTable: React.FC<IDraftsListTable> = ({ data, handleFilter
                 </Link>
             ),
             enableSorting: true,
+            size: 200,
         },
         {
             accessorFn: (row) => data?.workingGroups?.find((workingGroup) => workingGroup?.uuid === row?.workGroupId)?.shortName ?? '',
             header: t('DraftsList.table.workGroup'),
             id: 'workGroup',
             cell: (row) => <span>{row?.getValue?.() as string}</span>,
+            size: 200,
         },
         {
             accessorFn: (row) => row?.createdAt,
@@ -35,6 +37,7 @@ export const DraftsListTable: React.FC<IDraftsListTable> = ({ data, handleFilter
             id: 'createdAt',
             cell: (row) => <span>{t('dateTime', { date: row.getValue() })}</span>,
             enableSorting: true,
+            size: 200,
         },
         {
             accessorFn: (row) => row?.name,
@@ -42,6 +45,7 @@ export const DraftsListTable: React.FC<IDraftsListTable> = ({ data, handleFilter
             id: 'name',
             cell: (row) => <span>{row?.getValue?.() as string}</span>,
             enableSorting: true,
+            size: 200,
         },
         {
             accessorFn: (row) => row?.requestChannel,
@@ -49,6 +53,7 @@ export const DraftsListTable: React.FC<IDraftsListTable> = ({ data, handleFilter
             id: 'requestChannel',
             cell: (row) => <span>{t(`DraftsList.filter.draftType.${row?.getValue?.()}`)}</span>,
             enableSorting: true,
+            size: 200,
         },
         {
             accessorFn: (row) => row?.standardRequestState,
@@ -56,6 +61,7 @@ export const DraftsListTable: React.FC<IDraftsListTable> = ({ data, handleFilter
             id: 'standardState.description',
             cell: (row) => <span>{t(`DraftsList.filter.state.${row?.getValue?.()}`)}</span>,
             enableSorting: true,
+            size: 200,
         },
     ]
     return (

@@ -63,6 +63,7 @@ export const POView: React.FC<ICiListContainerView<POFilterData>> = memo(
                     attributeProfiles={attributeProfiles ?? []}
                     attributes={attributes ?? []}
                     columnListData={columnListData}
+                    selectedRowsCount={Object.keys(rowSelection).length}
                     exportButton={
                         <ExportButton
                             defaultFilterValues={defaultFilterValues}

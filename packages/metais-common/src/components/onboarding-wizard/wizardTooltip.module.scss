@@ -1,0 +1,18 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.tooltipWrapper {
+    background: white;
+    padding: govuk-spacing(3) govuk-spacing(3) 0 govuk-spacing(3);
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.tooltipHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.pointer {
+    cursor: pointer;
+}

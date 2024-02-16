@@ -116,6 +116,7 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
 }) => {
     const { t } = useTranslation()
     const quillRef = useRef<ReactQuill | null>(null)
+    const errorId = `${id}-error`
 
     const modules = useMemo(
         () => ({
@@ -147,7 +148,11 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
 
     return (
         <div className={classNames('govuk-form-group', styles.fieldset, { 'govuk-form-group--error': !!error })}>
-            {error && <span className="govuk-error-message">{error}</span>}
+            {error && (
+                <span id={errorId} className="govuk-error-message">
+                    {error}
+                </span>
+            )}
             <div className={styles.header}>
                 {label && <div className="govuk-label">{label + requiredLabel}</div>}
                 <div className={styles.infoDiv}>{info && <Tooltip descriptionElement={info} />}</div>
@@ -166,6 +171,7 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
                     }}
                     defaultValue={defaultValue}
                     readOnly={readOnly}
+                    aria-errormessage={errorId}
                 />
             </div>
         </div>

@@ -7,9 +7,12 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { useTranslation } from 'react-i18next'
+import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
-import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { canEditOlaContract } from '@/components/views/ola-contract-list/helper'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 export interface IAdditionalFilterField extends ListOlaContractListParams {
     liableEntities?: string[]
@@ -33,7 +36,7 @@ interface IOlaContractAddContainer {
 
 export const OlaContractDetailContainer: React.FC<IOlaContractAddContainer> = ({ View }) => {
     const { entityId } = useParams()
-
+    const { t } = useTranslation()
     const { data: olaContract, isLoading: isOlaContractLoading, isError: isOlaContractError, refetch } = useGetOlaContract(entityId ?? '')
     const {
         data: olaContractDocument,
@@ -63,21 +66,34 @@ export const OlaContractDetailContainer: React.FC<IOlaContractAddContainer> = ({
     const isOwnerOfContract = isOwnerByGid?.isOwner?.[0]?.owner
 
     return (
-        <MainContentWrapper>
-            <View
-                canChange={canEditOlaContract(user, ciType)}
-                isOwnerOfContract={isOwnerOfContract}
-                showHistory={showHistory}
-                setShowHistory={setShowHistory}
-                isLoading={
-                    isOlaContractLoading || isOwnerByGidLoading || isCiTypeLoading || (!isOlaContractDocumentError && isOlaContractDocumentLoading)
-                }
-                isError={isOlaContractError || isOwnerByGidError || isCiTypeError}
-                olaContract={olaContract}
-                document={olaContractDocument}
-                downloadVersionFile={downloadVersionFile}
-                refetch={refetch}
+        <>
+            <BreadCrumbs
+                withWidthContainer
+                links={[
+                    { label: t('breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                    { label: t('olaContracts.heading'), href: RouterRoutes.OLA_CONTRACT_LIST },
+                    { label: t('olaContracts.detail.title', { name: olaContract?.name }), href: '#' },
+                ]}
             />
-        </MainContentWrapper>
+            <MainContentWrapper>
+                <View
+                    canChange={canEditOlaContract(user, ciType)}
+                    isOwnerOfContract={isOwnerOfContract}
+                    showHistory={showHistory}
+                    setShowHistory={setShowHistory}
+                    isLoading={
+                        isOlaContractLoading ||
+                        isOwnerByGidLoading ||
+                        isCiTypeLoading ||
+                        (!isOlaContractDocumentError && isOlaContractDocumentLoading)
+                    }
+                    isError={isOlaContractError || isOwnerByGidError || isCiTypeError}
+                    olaContract={olaContract}
+                    document={olaContractDocument}
+                    downloadVersionFile={downloadVersionFile}
+                    refetch={refetch}
+                />
+            </MainContentWrapper>
+        </>
     )
 }

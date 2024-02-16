@@ -9,6 +9,7 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { HistoryFilter, defaultHistoryFilter } from '@/components/containers/ConfigurationItemHistoryListContainer'
@@ -75,7 +76,7 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
         {
             accessorFn: (row) => row.selected,
             header: '',
-            id: '0',
+            id: CHECKBOX_CELL,
             cell: ({ row }: { row: Row<TableCols> }) => (
                 <div className="govuk-checkboxes govuk-checkboxes--small">
                     <CheckBox
@@ -103,18 +104,21 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
                     </ul>
                 )
             },
+            size: 200,
         },
         {
             accessorFn: (row) => row?.actionTime,
             header: t('historyTab.table.actionTime'),
             id: '2',
             cell: (row) => t('dateTime', { date: row.getValue() }),
+            size: 200,
         },
         {
             accessorFn: (row) => row?.actionBy,
             header: t('historyTab.table.actionBy'),
             id: '3',
             cell: (row) => row.getValue() as string,
+            size: 200,
         },
         ...additionalColumnsNullSafe,
     ]

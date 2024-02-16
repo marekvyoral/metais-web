@@ -20,9 +20,16 @@ interface IAccordionContainerProps extends PropsWithChildren {
     indexOfSectionToExpand?: number
     isSmall?: boolean
     shouldNotUnMountContent?: boolean
+    sectionsHeadingSize?: 'S' | 'M' | 'L' | 'XL'
 }
 
-export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ sections, indexOfSectionToExpand, isSmall, shouldNotUnMountContent }) => {
+export const AccordionContainer: React.FC<IAccordionContainerProps> = ({
+    sections,
+    sectionsHeadingSize,
+    indexOfSectionToExpand,
+    isSmall,
+    shouldNotUnMountContent,
+}) => {
     const { t } = useTranslation()
     const id = useId()
 
@@ -63,6 +70,7 @@ export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ section
                     id={id}
                     isSmall={isSmall}
                     shouldNotUnMountContent={shouldNotUnMountContent}
+                    textHeadingSize={sectionsHeadingSize}
                 />
             ))}
         </div>

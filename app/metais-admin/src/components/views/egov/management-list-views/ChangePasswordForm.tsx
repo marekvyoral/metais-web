@@ -74,6 +74,7 @@ export const ChangePasswordForm: React.FC<Props> = ({ isLoading, isError }) => {
             indicatorProps={{ label: isLoadingPasswordChange ? t('managementList.passwordChangeInProgress') : t('loading.loadingSubPage') }}
             error={isError || errorPasswordChange}
             errorProps={{ errorMessage: errorPasswordChange ? t('managementList.passwordChangeError') : t('feedback.queryErrorMessage') }}
+            showSupportEmail={errorPasswordChange}
             withChildren
         >
             <TextHeading size="L">{t('managementList.passwordChange')} </TextHeading>

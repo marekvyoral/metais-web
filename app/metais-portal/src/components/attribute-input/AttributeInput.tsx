@@ -275,6 +275,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 correct={isCorrect}
                                 options={createOptions(constraints)}
                                 setValue={setValue}
+                                error={error?.message?.toString()}
                                 clearErrors={clearErrors}
                                 disabled={disabled}
                                 placeholder={t('createEntity.select')}

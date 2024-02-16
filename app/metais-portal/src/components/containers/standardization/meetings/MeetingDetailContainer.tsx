@@ -60,6 +60,7 @@ const MeetingDetailContainer: React.FC<MeetingDetailContainer> = ({ View, meetin
         data: meetingDetailData,
         isLoading,
         refetch,
+        isFetching,
     } = useGetMeetingRequestDetail(meetingId, { query: { queryKey: [GET_MEETING_REQUEST_DETAIL] } })
     const { data: groups } = useFind2111({})
 
@@ -72,7 +73,7 @@ const MeetingDetailContainer: React.FC<MeetingDetailContainer> = ({ View, meetin
     return (
         <MeetingsDetailPermissionsWrapper meetingDetailData={meetingDetailData}>
             <View
-                isLoading={isLoading}
+                isLoading={isLoading || isFetching}
                 filter={filter}
                 handleFilterChange={handleFilterChange}
                 user={user}

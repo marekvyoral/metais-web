@@ -1,10 +1,12 @@
 import classnames from 'classnames'
 import React, { useId } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { StepperArrayEnum } from './Stepper'
 import styles from './stepper.module.scss'
 
 import { AlertTriangleIcon, InfoIcon } from '@isdd/idsk-ui-kit/assets/images'
+import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 export interface IStepLabel {
     label: string
     variant: 'circle' | 'no-outline'
@@ -27,9 +29,11 @@ interface IStepperSection {
     setSectionArray: React.Dispatch<React.SetStateAction<StepperArrayEnum[]>>
     section: ISection
     index: number
+    textHeadingSize?: 'S' | 'M' | 'L' | 'XL'
 }
 
-export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArray, index, setSectionArray }) => {
+export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArray, index, setSectionArray, textHeadingSize }) => {
+    const { t } = useTranslation()
     const currentSection = sectionArray.at(index)
     const uniqueId = `expand-section${useId()}`
 
@@ -71,7 +75,7 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                             </span>
                         )}
                         <div className={styles.headerDiv}>
-                            <h2 className="idsk-stepper__section-heading">
+                            <TextHeading className={classnames('idsk-stepper__section-heading', styles.heading)} size={textHeadingSize ?? 'L'}>
                                 <button
                                     type="button"
                                     id="expand-button"
@@ -83,9 +87,11 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                                     {section.title}
                                     <span className="idsk-stepper__icon" aria-hidden={currentSection === StepperArrayEnum.CLOSED} />
                                 </button>
-                            </h2>
-                            {section.error && <img src={AlertTriangleIcon} />}
-                            {section.change && <img src={InfoIcon} />}
+                            </TextHeading>
+                            <div className={styles.icons}>
+                                {section.error && <img src={AlertTriangleIcon} alt={t('stepper.sectionError')} />}
+                                {section.change && <img src={InfoIcon} alt={t('stepper.sectionChange')} />}
+                            </div>
                         </div>
                     </div>
 

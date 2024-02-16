@@ -99,6 +99,7 @@ export const IntegrationLinkAccordion: React.FC<Props> = ({
             loading={isLoading || isCiConstraintLoading}
             error={isError || isCiConstraintError}
             errorProps={{ errorMessage: isCiConstraintError ? t('ciInformationAccordion.error') : undefined }}
+            showSupportEmail
             withChildren
         >
             <AccordionContainer

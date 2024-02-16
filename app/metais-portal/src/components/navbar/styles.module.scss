@@ -1,0 +1,16 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.closeButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    padding: govuk-spacing(3);
+    cursor: pointer;
+    background-color: transparent;
+    z-index: 1;
+}
+
+.modalContent {
+    position: relative;
+}

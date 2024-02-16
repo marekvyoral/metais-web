@@ -102,6 +102,7 @@ export const TableRow = <T,>({
                 )
                 return useHeader ? (
                     <th
+                        tabIndex={0}
                         scope="row"
                         className={classNames('idsk-table__cell', styles.fontWeightNormal, {
                             [styles.fontWeightBolder]: isRowBold && isRowBold(row),
@@ -116,6 +117,7 @@ export const TableRow = <T,>({
                     </th>
                 ) : (
                     <td
+                        tabIndex={0}
                         className={classNames('idsk-table__cell', {
                             [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
                             [styles.rowSelected]: isRowSelected && isRowSelected(row),

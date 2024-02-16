@@ -22,7 +22,13 @@
 .closeIconWrapper {
     display: flex;
     align-items: center;
-    &:hover{
+    .closeIcon:hover{
         cursor: pointer;
     }
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }

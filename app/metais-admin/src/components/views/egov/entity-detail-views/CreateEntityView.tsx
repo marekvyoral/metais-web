@@ -1,5 +1,5 @@
-import { Button, ErrorBlock, Input, MultiSelect, SimpleSelect, Tab, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common'
+import { Button, ErrorBlock, IOption, Input, MultiSelect, SimpleSelect, Tab, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
+import { EntityColorEnum, MutationFeedback, QueryFeedback } from '@isdd/metais-common'
 import { FieldValues, FormProvider } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -16,6 +16,7 @@ import { useCreateDialogs } from './hooks/useCreateDialogs'
 import { useCreateForm } from './hooks/useCreateForm'
 import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttributes'
 
+import { ColorRow } from '@/components/views/egov/ColorRow'
 import { ProfileTabs } from '@/components/ProfileTabs'
 import { ICreateEntityView } from '@/components/containers/Egov/Entity/CreateEntityContainer'
 import { AddConnectionModal } from '@/components/views/egov/relation-detail-views/connections/AddConnectionModal'
@@ -53,6 +54,46 @@ export const CreateEntityView = ({
         profileAttributesDialog,
     } = useCreateDialogs()
 
+    const colorOption: IOption<string>[] = [
+        {
+            label: <ColorRow color={EntityColorEnum.customEntity} label={t('egov.colorSelect.customEntity')} />,
+            value: EntityColorEnum.customEntity,
+        },
+        {
+            label: <ColorRow color={EntityColorEnum.systemEntity} label={t('egov.colorSelect.systemEntity')} />,
+            value: EntityColorEnum.systemEntity,
+        },
+        {
+            label: <ColorRow color={EntityColorEnum.businessLayer} label={t('egov.colorSelect.businessLayer')} />,
+            value: EntityColorEnum.businessLayer,
+        },
+        {
+            label: <ColorRow color={EntityColorEnum.appAndDataLayer} label={t('egov.colorSelect.appAndDataLayer')} />,
+            value: EntityColorEnum.appAndDataLayer,
+        },
+        {
+            label: <ColorRow color={EntityColorEnum.technologicalLayer} label={t('egov.colorSelect.technologicalLayer')} />,
+            value: EntityColorEnum.technologicalLayer,
+        },
+        {
+            label: <ColorRow color={EntityColorEnum.implementationAndMigration} label={t('egov.colorSelect.implementationAndMigration')} />,
+            value: EntityColorEnum.implementationAndMigration,
+        },
+        {
+            label: <ColorRow color={EntityColorEnum.implementationAndMigration2} label={t('egov.colorSelect.implementationAndMigration')} />,
+            value: EntityColorEnum.implementationAndMigration2,
+        },
+        {
+            label: <ColorRow color={EntityColorEnum.motivationalEntity} label={t('egov.colorSelect.motivationalEntity')} />,
+            value: EntityColorEnum.motivationalEntity,
+        },
+        {
+            label: <ColorRow color={EntityColorEnum.motivationalEntity2} label={t('egov.colorSelect.motivationalEntity')} />,
+            value: EntityColorEnum.motivationalEntity2,
+        },
+    ]
+
+    const entityType = type === EntityType.ENTITY
     const customTypeData = data?.existingEntityData?.type === AttributeProfileType.custom
     const disabledInputsTypes = useMemo(() => {
         if (type === EntityType.ENTITY) {
@@ -143,7 +184,7 @@ export const CreateEntityView = ({
                         <>
                             {!hiddenInputs?.NAME && (
                                 <Input
-                                    label={t('egov.name')}
+                                    label={t('egov.name') + ' ' + t('input.requiredField')}
                                     {...register('name')}
                                     error={formState?.errors.name?.message}
                                     disabled={disabledInputsTypes?.NAME}
@@ -151,7 +192,7 @@ export const CreateEntityView = ({
                             )}
                             {!hiddenInputs?.ENG_NAME && (
                                 <Input
-                                    label={t('egov.engName')}
+                                    label={t('egov.engName') + ' ' + t('input.requiredField')}
                                     {...register('engName')}
                                     error={formState?.errors?.engName?.message}
                                     disabled={disabledInputsTypes?.ENG_NAME}
@@ -159,7 +200,7 @@ export const CreateEntityView = ({
                             )}
                             {!hiddenInputs?.TECHNICAL_NAME && (
                                 <Input
-                                    label={t('egov.technicalName')}
+                                    label={t('egov.technicalName') + ' ' + t('input.requiredField')}
                                     {...register('technicalName')}
                                     error={formState?.errors?.technicalName?.message}
                                     disabled={disabledInputsTypes?.TECHNICAL_NAME}
@@ -167,7 +208,7 @@ export const CreateEntityView = ({
                             )}
                             {!hiddenInputs?.CODE_PREFIX && (
                                 <Input
-                                    label={t('egov.codePrefix')}
+                                    label={t('egov.codePrefix') + ' ' + t('input.requiredField')}
                                     {...register('codePrefix')}
                                     error={formState?.errors?.codePrefix?.message}
                                     disabled={disabledInputsTypes?.CODE_PREFIX}
@@ -175,7 +216,7 @@ export const CreateEntityView = ({
                             )}
                             {!hiddenInputs?.URI_PREFIX && (
                                 <Input
-                                    label={t('egov.uriPrefix')}
+                                    label={t('egov.uriPrefix') + ' ' + t('input.requiredField')}
                                     {...register('uriPrefix')}
                                     error={formState?.errors?.uriPrefix?.message}
                                     disabled={disabledInputsTypes?.URI_PREFIX}
@@ -216,7 +257,7 @@ export const CreateEntityView = ({
                             {!hiddenInputs?.ROLE_LIST && (
                                 <div>
                                     <MultiSelect
-                                        label={t('egov.roles')}
+                                        label={t('egov.roles') + ' ' + t('input.requiredField')}
                                         options={roleList}
                                         name="roleList"
                                         setValue={formMethods.setValue}
@@ -226,7 +267,15 @@ export const CreateEntityView = ({
                                     />
                                 </div>
                             )}
-
+                            {entityType && (
+                                <SimpleSelect
+                                    label={t('egov.color')}
+                                    name={'color'}
+                                    options={colorOption}
+                                    setValue={formMethods.setValue}
+                                    defaultValue={data?.existingEntityData?.color}
+                                />
+                            )}
                             {!hiddenInputs?.SOURCES && !hiddenInputs?.TARGETS && (
                                 <div>
                                     <h3 className="govuk-heading-m">{t('egov.detail.connections')}</h3>

@@ -13,6 +13,9 @@ import {
 import { MutationFeedback, QueryFeedback, QueryKeysByEntity } from '@isdd/metais-common/index'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useQueryClient } from '@tanstack/react-query'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { RefRegisterChangeStateModal } from '@/components/views/refregisters/RefRegisterChangeStateModal'
 import { RefRegisterButtonPopupContent } from '@/components/views/refregisters/RefRegisterButtonPopupContent'
@@ -35,10 +38,30 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
     const isLoggedIn = !!user?.uuid
     const [openChangeStateDialog, setOpenChangeStateDialog] = useState<boolean>(false)
     const [openGeneratePropDialog, setOpenGeneratePropDialog] = useState<boolean>(false)
-    const [targetState, setTargetState] = useState<ApiReferenceRegisterState>()
-    const { mutateAsync: changeState, isSuccess, isError: mutationIsError, isLoading: mutationIsLoading } = useProcessRequestAction()
-    const { mutateAsync: deleteReferenceRegister } = useDeleteReferenceRegister()
+    const { setIsActionSuccess } = useActionSuccess()
     const queryClient = useQueryClient()
+    const { getRequestStatus, isProcessedError, isError: isRedirectError, isLoading: isRedirectLoading, isTooManyFetchesError } = useGetStatus()
+    const [targetState, setTargetState] = useState<ApiReferenceRegisterState>()
+    const {
+        mutateAsync: changeState,
+        isSuccess,
+        isError: mutationIsError,
+        isLoading: mutationIsLoading,
+    } = useProcessRequestAction({
+        mutation: {
+            onSuccess: (data) => {
+                getRequestStatus(data.requestId ?? '', () => {
+                    setIsActionSuccess({
+                        value: true,
+                        path: `${RouterRoutes.REF_REGISTERS_DETAIL}/${entityId}`,
+                        additionalInfo: { type: 'changeState' },
+                    })
+                    queryClient.invalidateQueries([QueryKeysByEntity.REFERENCE_REGISTER])
+                })
+            },
+        },
+    })
+    const { mutateAsync: deleteReferenceRegister } = useDeleteReferenceRegister()
 
     const onClick = (incomingState: ApiReferenceRegisterState) => {
         setOpenChangeStateDialog(true)
@@ -55,6 +78,7 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
                     targetState,
                 },
             })
+
             queryClient.invalidateQueries([QueryKeysByEntity.REFERENCE_REGISTER])
         },
         [changeState, entityId, queryClient, targetState],
@@ -68,8 +92,8 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
 
     return (
         <>
-            <MutationFeedback success={isSuccess} error={mutationIsError} />
-            {mutationIsLoading && <LoadingIndicator />}
+            <MutationFeedback success={isSuccess} error={mutationIsError || isProcessedError || isRedirectError || isTooManyFetchesError} />
+            {(mutationIsLoading || isRedirectLoading) && <LoadingIndicator />}
             <div className={styles.headerDiv}>
                 <RefRegisterChangeStateModal
                     openChangeStateDialog={openChangeStateDialog}

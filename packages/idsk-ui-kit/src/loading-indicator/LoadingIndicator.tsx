@@ -44,9 +44,9 @@ export const LoadingIndicator: React.FC<ILoadingIndicatorProps> = ({
     )
 
     return (
-        <div className={classNamesList}>
+        <div className={classNamesList} aria-live="polite">
             <div className={styles.frameBorder}>
-                <img className={styles.spinner} src={CircleLoadingArrowIcon} />
+                <img className={styles.spinner} src={CircleLoadingArrowIcon} alt="" />
                 <p>{label ?? t('loading.loadingSubPage')}</p>
             </div>
         </div>

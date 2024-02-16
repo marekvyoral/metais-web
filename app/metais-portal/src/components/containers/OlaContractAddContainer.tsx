@@ -1,6 +1,6 @@
 import { Metadata, UpdateContentBody, useUpdateContent } from '@isdd/metais-common/api/generated/dms-swagger'
 import { Role, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { ApiOlaContractData, ListOlaContractListParams, useSaveOlaContract } from '@isdd/metais-common/api/generated/monitoring-swagger'
+import { ApiOlaContractData, ListOlaContractListParams, RequestIdUi, useSaveOlaContract } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { ApiError, CiCode, useGenerateCodeAndURL, useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { OLA_Kontrakt, SLA_SPRAVA } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -18,7 +18,7 @@ export interface IOlaContractSaveView {
     isLoading: boolean
     isError?: boolean
     saveContract: UseMutateAsyncFunction<
-        void,
+        RequestIdUi | void,
         ApiError,
         {
             data: ApiOlaContractData
@@ -39,6 +39,7 @@ export interface IOlaContractSaveView {
     olaContractDocument?: Metadata
     isOwnerOfContract?: boolean
     canChange?: boolean
+    isEdit?: boolean
 }
 
 interface IOlaContractAddContainer {

@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactSelect, { GroupBase, MenuPosition, OptionProps, OptionsOrGroups, createFilter } from 'react-select'
 
@@ -11,7 +11,7 @@ import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyle
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 export interface GroupedOption {
-    label: string
+    label: string | ReactElement
     options?: IOption<string>[]
 }
 
@@ -96,7 +96,7 @@ export const SelectWithGroupedOptions = ({
                         onChange(val as IOption<string>)
                     }}
                 />
-                {correct && <img src={GreenCheckMarkIcon} className={isClearable ? styles.isCorrectWithIcon : styles.isCorrect} />}
+                {correct && <img src={GreenCheckMarkIcon} className={isClearable ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />}
             </div>
         </div>
     )

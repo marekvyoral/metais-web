@@ -21,7 +21,8 @@ import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { numericProperties } from './createEntityHelpers'
-import { getSpecialRule } from './ciEntityFormSchemaSpecialRulesConfig'
+
+import { getSpecialRule } from '@/componentHelpers/ci/ciEntityFormSchemaSpecialRulesConfig'
 
 export enum ByteInterval {
     MIN = -128,
@@ -45,7 +46,7 @@ type SchemaType = {
         | MixedSchema
         | NullableDateSchema
         | NullableNumberSchema
-        | ArraySchema<(string | undefined)[] | undefined, AnyObject, '', ''>
+        | ArraySchema<(string | undefined)[] | undefined | null, AnyObject, '', ''>
         | ArraySchema<{ label?: string | undefined; value?: string | undefined }[] | undefined, AnyObject, '', ''>
         | ArraySchema<number[] | undefined, AnyObject, '', ''>
         | ArraySchema<(number | null | undefined)[] | undefined, AnyObject, '', ''>
@@ -75,8 +76,6 @@ export const generateFormSchema = (
         const isName = attribute?.name == t('validation.name') || attribute?.name == t('validation.surname')
 
         const isRequired = attribute?.mandatory?.type === 'critical' && !attribute.readOnly
-
-        const hasConstraints = attribute?.constraints && attribute.constraints.length > 0
 
         const isDate = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.DATE
         const isBoolean = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.BOOLEAN
@@ -110,8 +109,11 @@ export const generateFormSchema = (
                     }
                     break
                 }
-                case isArray && hasConstraints: {
+
+                case isArray: {
                     schema[attribute.technicalName] = array()
+                        .nullable()
+                        .transform((curr, orig) => (orig === '' ? null : curr))
                         .of(string())
                         .when('isRequired', (_, current) => {
                             if (isRequired) {
@@ -119,13 +121,10 @@ export const generateFormSchema = (
                             }
                             return current
                         })
-                    break
-                }
-                case isArray && !hasConstraints: {
-                    schema[attribute.technicalName] = array().of(string().required(t('validation.required')))
 
                     break
                 }
+
                 case isRegex: {
                     if (attribute.constraints) {
                         const regexConstraints = attribute.constraints[0] as AttributeConstraintRegexAllOf

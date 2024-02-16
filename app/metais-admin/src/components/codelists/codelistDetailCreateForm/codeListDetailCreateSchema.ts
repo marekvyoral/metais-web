@@ -14,11 +14,11 @@ export enum CodelistDetailEnum {
 const MAX_DESCRIPTION_CHAR_NUMBER = 255
 
 export const codeListDetailCreateSchema = (t: TFunction<'translation', undefined, 'translation'>, itemCodes: Array<string | undefined>) => {
-    const regexPattern = /^[A-Z_]+$/
+    const regexPattern = /^[^/]+$/
     return object().shape({
         [CodelistDetailEnum.ORDER]: number(),
         [CodelistDetailEnum.CODE]: string()
-            .matches(regexPattern, t('codelists.wrongRegex', { letters: 'A-Z', signs: '_' }))
+            .matches(regexPattern, t('codelists.forbiddenSymbols', { signs: '/' }))
             .notOneOf(itemCodes, t('codelists.codeExist'))
             .required(t('codelists.codeError')),
         [CodelistDetailEnum.VALUE]: string().required(t('codelists.valueError')),

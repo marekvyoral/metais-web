@@ -3,7 +3,7 @@ import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { Input, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { getReadCiList1QueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
+import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, NotificationBlackIcon } from '@isdd/metais-common/assets/images'
 import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import {
     BulkPopup,
@@ -29,11 +29,13 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
 
 import { ICiListContainerView } from '@/components/containers/CiListContainer'
 import { getRowSelectionUuids } from '@/componentHelpers/ci/ciTableHelpers'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { CIFilterData } from '@/pages/ci/[entityName]/entity'
+import { useCiListPageHeading } from '@/componentHelpers/ci'
 
 interface IListWrapper extends ICiListContainerView<CIFilterData> {
     isNewRelationModal?: boolean
@@ -72,7 +74,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     const {
         state: { user },
     } = useAuth()
-    const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction()
+    const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner, handleAddToFavorite } = useBulkAction()
     const queryKey = getReadCiList1QueryKey({})
     const navigate = useNavigate()
     const location = useLocation()
@@ -114,14 +116,9 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         scrollToMutationFeedback()
     }, [bulkActionResult, scrollToMutationFeedback])
 
-    const ciName = useMemo(
-        () => (i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName),
-        [ciTypeData?.engName, ciTypeData?.name, i18n.language],
-    )
-
-    useEffect(() => {
-        document.title = `${t('titles.ciList', { ci: ciName })} | MetaIS`
-    }, [ciName, t])
+    const { getTitle, getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
+    const ciName = getHeading()
+    document.title = getTitle()
 
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
@@ -135,6 +132,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                         <MutationFeedback
                             success={bulkActionResult?.isSuccess}
                             successMessage={bulkActionResult?.successMessage}
+                            showSupportEmail
                             error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
                             onMessageClose={() => setBulkActionResult(undefined)}
                         />
@@ -187,6 +185,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     attributes={attributes ?? []}
                     columnListData={columnListData}
                     ciTypeData={ciTypeData}
+                    selectedRowsCount={Object.keys(rowSelection).length}
                     createButton={
                         showCreateEntityButton && (
                             <CreateEntityButton
@@ -243,6 +242,21 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                                 }}
                                                 icon={ChangeIcon}
                                                 label={t('actionOverTable.changeOwner')}
+                                            />,
+                                            <ButtonLink
+                                                key={'favorite'}
+                                                className={styles.buttonLinkWithIcon}
+                                                onClick={() => {
+                                                    const ids = checkedItemList.map((item) => item.uuid ?? '')
+                                                    handleAddToFavorite(ids, FollowedItemItemType.CI, (actionResponse) =>
+                                                        handleCloseBulkModal(actionResponse, () => {
+                                                            return
+                                                        }),
+                                                    )
+                                                    closePopup()
+                                                }}
+                                                icon={NotificationBlackIcon}
+                                                label={t('userProfile.notifications.table.add')}
                                             />,
                                         ]}
                                     />

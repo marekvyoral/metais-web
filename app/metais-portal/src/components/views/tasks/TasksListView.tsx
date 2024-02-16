@@ -54,6 +54,7 @@ interface ITasksListView {
     isWrapped?: boolean
     hideTypeFilter?: boolean
 }
+
 export const TasksListView: React.FC<ITasksListView> = ({
     defaultFilterValues,
     filterParams,
@@ -82,6 +83,7 @@ export const TasksListView: React.FC<ITasksListView> = ({
                 return tasksData?.tasksCountCreated ?? 0 + (tasksData?.tasksCountInProgress ?? 0)
         }
     }
+
     return (
         <>
             {!isWrapped && (

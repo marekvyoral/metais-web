@@ -3,6 +3,7 @@ import { TextBody, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
 import { ImportDeleteIcon } from '@isdd/metais-common/assets/images'
 import { useDeleteContent } from '@isdd/metais-common/api/generated/dms-swagger'
 import { formatBytes } from '@isdd/metais-common/components/file-import/fileImportUtils'
+import { useTranslation } from 'react-i18next'
 
 import styles from './ExistingFilesHandler.module.scss'
 
@@ -29,6 +30,7 @@ export interface IExistingFilesHandlerRef {
 
 export const ExistingFilesHandler = forwardRef<IExistingFilesHandlerRef, IExistingFilesHandler>(
     ({ existingFiles, onFilesProcessingStart, onFilesProcessingSuccess, onErrorOccurred }, ref) => {
+        const { t } = useTranslation()
         const [fileList, setFileList] = useState<ExistingFileData[]>(existingFiles)
         const [filesToProcessList, setFilesToProcessList] = useState<string[]>([])
         const { mutateAsync: deleteFilesMutationAsync, isError: isDeleteFilesError, error: deleteFilesError } = useDeleteContent()
@@ -96,7 +98,7 @@ export const ExistingFilesHandler = forwardRef<IExistingFilesHandlerRef, IExisti
                             <TextBody size="S">{`${file.fileName} (${formatBytes(file.fileSize ?? 0)})`}</TextBody>
                         </div>
                         <TransparentButtonWrapper onClick={() => handleRemoveFileFromList(file.fileId)}>
-                            <img src={ImportDeleteIcon} />
+                            <img src={ImportDeleteIcon} alt={t('fileList.delete', { fileName: file.fileName })} />
                         </TransparentButtonWrapper>
                     </li>
                 ))}

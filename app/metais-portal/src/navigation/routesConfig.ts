@@ -120,7 +120,6 @@ import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/informatio
 import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
 import HowToGenericPage from '@/pages/howto/[howToEnumType]'
 import ServicesListPage from '@/pages/monitoring/services/services'
-import CookiesInfoPage from '@/pages/cookies/info'
 import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
 import RelationListPage from '@/pages/relations'
 import { SlaContractList } from '@/pages/ci/Kontrakt/list'
@@ -136,6 +135,9 @@ import CloneKSPage from '@/pages/ci/KS/[entityId]/clone'
 import PersonalDataInfoPage from '@/pages/cookies/personalDataProtection'
 import TermsOfUse from '@/pages/cookies/termsOfUse'
 import CookiesSettings from '@/pages/cookies/settings'
+import { ReportsDetailPage } from '@/pages/reports/[entityId]/report'
+import CookiesInfoPage from '@/pages/cookies/info'
+import DeclarationPage from '@/pages/technical/declaration'
 
 export interface RouteConfig {
     path?: string
@@ -374,9 +376,14 @@ export const routesConfig: RouteConfig[] = [
                 component: DraftsListEditPage,
             },
             {
+                path: RouterRoutes.REPORTS_DETAIL,
+                slug: RouterRoutes.REPORTS_DETAIL,
+                component: ReportsListPage,
+            },
+            {
                 path: RouterRoutes.REPORTS_LIST,
                 slug: RouterRoutes.REPORTS_LIST,
-                component: ReportsListPage,
+                component: ReportsDetailPage,
             },
             {
                 path: RouterRoutes.IMPORT_MONITORING_PARAMETERS,
@@ -537,6 +544,11 @@ export const routesConfig: RouteConfig[] = [
                 path: FooterRouteNames.COOKIES,
                 slug: FooterRouteNames.COOKIES,
                 component: CookiesInfoPage,
+            },
+            {
+                path: FooterRouteNames.ACCESSIBILITY_DECLARATION,
+                slug: FooterRouteNames.ACCESSIBILITY_DECLARATION,
+                component: DeclarationPage,
             },
             {
                 path: FooterRouteNames.PERSONAL_DATA_PROTECTION,

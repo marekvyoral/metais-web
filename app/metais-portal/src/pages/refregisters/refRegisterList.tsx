@@ -2,6 +2,7 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { REFERENCE_REGISTER } from '@isdd/metais-common/constants'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { RefRegisterListContainer } from '@/components/containers/refregisters/RefRegisterListContainer'
@@ -11,6 +12,8 @@ const ReferenceRegisters = () => {
     const { t } = useTranslation()
 
     const entityName = REFERENCE_REGISTER
+    document.title = formatTitleString(t('breadcrumbs.refRegisters'))
+
     return (
         <>
             <BreadCrumbs

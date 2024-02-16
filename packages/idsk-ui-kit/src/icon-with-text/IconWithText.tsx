@@ -10,7 +10,7 @@ interface IconWithTextProps extends PropsWithChildren {
 export const IconWithText: React.FC<IconWithTextProps> = ({ children, icon, className }) => {
     return (
         <div className={classNames(className, styles.container, 'govuk-body')}>
-            {<img src={icon} />}
+            {<img src={icon} alt="" />}
             {children}
         </div>
     )

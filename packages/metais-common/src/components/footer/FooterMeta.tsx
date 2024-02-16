@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import styles from './footer.module.scss'
 
-import { FooterRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { FooterRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 export type FooterMetaList = {
     label: string
@@ -32,9 +32,7 @@ export const FooterMeta: React.FC<Props> = ({ metaList }) => {
                     </div>
                 </div>
                 <div className="govuk-grid-column-one-third idsk-footer-extended-logo-box">
-                    <Link to={RouteNames.HOME} title={t('footer.home') ?? ''}>
-                        <img className="idsk-footer-extended-logo" src="/assets/images/footer-extended-logo.svg" alt={t('footer.MIRRI') ?? ''} />
-                    </Link>
+                    <img className="idsk-footer-extended-logo" src="/assets/images/footer-extended-logo.svg" alt={t('footer.MIRRI') ?? ''} />
                 </div>
                 <div className={styles.metaList}>
                     <ul className={classNames('govuk-footer__inline-list', styles.ul)}>

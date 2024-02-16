@@ -149,12 +149,14 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
                     </InfoIconWithText>
                 )
             },
+            size: 100,
         },
         {
             accessorFn: (row) => row?.lastEvaliation,
             header: t('evaluation.detailTable.lastEvaluation'),
             id: 'lastEvaluation',
             cell: (ctx) => ctx.row?.original?.lastEvaliation,
+            size: 200,
         },
         {
             accessorFn: (row) => row?.response,
@@ -167,6 +169,7 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
                     <TextArea rows={3} defaultValue={ctx.row?.original?.response} {...register(`${ctx.row?.index}.response`)} />
                 )
             },
+            size: 200,
         },
         {
             accessorFn: (row) => row?.isApproved,
@@ -234,6 +237,7 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
                     <>{row?.original?.evaluation}</>
                 )
             },
+            size: 200,
         },
     ]
     const mappedData = (apiData?: NoteItemUi): Array<IDetailISVSColumn> => {

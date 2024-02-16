@@ -1,17 +1,18 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, Input, LoadingIndicator, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { Languages } from '@isdd/metais-common/localization/languages'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { useTrainingInviteSchema } from './useTrainingInviteSchemas'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { ITrainingInviteForm, TrainingInviteContainerViewProps } from '@/components/containers/TrainingInviteContainer'
 import styles from '@/components/views/codeLists/codeList.module.scss'
+import { useCiListPageHeading } from '@/componentHelpers/ci'
 
 export enum RequestFormEnum {
     FIRST_NAME = 'firstName',
@@ -35,10 +36,7 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
     isLoadingMutation,
     handleInvite,
 }) => {
-    const {
-        t,
-        i18n: { language },
-    } = useTranslation()
+    const { t } = useTranslation()
     const { schema } = useTrainingInviteSchema()
     const navigate = useNavigate()
 
@@ -67,15 +65,15 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
         handleInvite(formData)
     }
 
-    const ciTypeName = language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
-
+    const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
+    document.title = `${t('breadcrumbs.registerForTraining')} ${META_IS_TITLE}`
     return (
         <>
             <BreadCrumbs
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: ciTypeName, href: `/ci/${entityName}` },
+                    { label: getHeading(), href: `/ci/${entityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
                         href: `/ci/${entityName}/${entityId}`,
@@ -145,7 +143,12 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
                         />
 
                         {errorMessages.map((errorMessage, index) => (
-                            <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                            <MutationFeedback
+                                success={false}
+                                key={index}
+                                showSupportEmail
+                                error={t([errorMessage, 'feedback.mutationErrorMessage'])}
+                            />
                         ))}
 
                         <ButtonGroupRow className={styles.buttonGroupEdit}>

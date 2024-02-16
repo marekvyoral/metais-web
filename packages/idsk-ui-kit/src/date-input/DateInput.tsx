@@ -56,6 +56,7 @@ export const DateInput: React.FC<Props> = ({
 }) => {
     const { t, i18n } = useTranslation()
     const hintId = `${id}-hint`
+    const errorId = `${id}-error`
 
     return (
         <Controller
@@ -77,9 +78,9 @@ export const DateInput: React.FC<Props> = ({
                             </span>
                         )}
                         {error && (
-                            <>
-                                <span className="govuk-error-message">{error}</span>
-                            </>
+                            <span id={errorId} className="govuk-error-message">
+                                {error}
+                            </span>
                         )}
                         <div className={classNames(styles.inputWrapper, inputClassName)} style={{ position: 'relative' }}>
                             <DatePicker
@@ -96,8 +97,16 @@ export const DateInput: React.FC<Props> = ({
                                 disabled={disabled}
                                 required={required}
                                 maxDate={new Date('9999-12-31')}
+                                aria-describedby={hint ? hintId : undefined}
+                                aria-errormessage={errorId}
                             />
-                            {correct && <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} />}
+                            {correct && (
+                                <img
+                                    src={GreenCheckMarkIcon}
+                                    className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect}
+                                    alt={t('correct')}
+                                />
+                            )}
                         </div>
                     </div>
                 )

@@ -89,7 +89,7 @@ export const ForgottenPasswordPage = () => {
                     )}
                     {isSuccess && (
                         <>
-                            <img className={styles.icon} src={GreenCheckOutlineIcon} />
+                            <img className={styles.icon} src={GreenCheckOutlineIcon} alt="" />
                             <TextHeading className={styles.title} size="XL">
                                 {t('forgottenPassword.success.title')}
                             </TextHeading>
