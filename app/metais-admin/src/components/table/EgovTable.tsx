@@ -167,6 +167,9 @@ export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort
     }
 
     const handlePerPageChange = (filter: IFilter | undefined) => {
+        if (pageNumber * pageSize > (data?.length ?? 0)) {
+            setPageNumber(1)
+        }
         const newPageSize = Number(filter?.pageSize)
         setPageSize(newPageSize)
     }

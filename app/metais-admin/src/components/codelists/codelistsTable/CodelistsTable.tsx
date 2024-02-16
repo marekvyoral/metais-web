@@ -138,6 +138,9 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
     }
 
     const handlePerPageChange = (filter: IFilter | undefined) => {
+        if (currentPage * pageSize > (filteredData?.results?.length ?? 0)) {
+            setCurrentPage(1)
+        }
         const newPageSize = Number(filter?.pageSize)
         setPageSize(newPageSize)
     }

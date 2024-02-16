@@ -61,6 +61,9 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
     }
 
     const handlePerPageChange = (newValue: string | undefined) => {
+        if (pageNumber * pageSize > (groups?.length ?? 0)) {
+            setPageNumber(1)
+        }
         const newPageSize = Number(newValue)
         setPageSize(newPageSize)
     }

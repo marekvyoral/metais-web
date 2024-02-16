@@ -599,6 +599,7 @@
             "list": "Monitoring records"
         },
         "reportsManagement": "Reports management",
+        "templatesManagement": "Templates management",
         "projects": {
             "management": "Projects Management",
             "financeManagement": "Financial limits of the approval process"
@@ -1035,7 +1036,8 @@
         "reports-management": "Reports management",
         "reportsCreate": "New report",
         "reportsEdit": "Edit report",
-        "ciEditEntity": "Edit of component"
+        "ciEditEntity": "Edit of component",
+        "templates-management": "Templates management"
     },
     "userProfile": {
         "heading": "Profile and rights",
@@ -1347,17 +1349,41 @@
         "warningMessage": "In {{countDown}} you will be logged out due to inactitvity.",
         "loading": "Proccessing logout"
     },
-    "close": "Close",
-    "valid": "Input value is valid",
-    "dnd": "Item can be dragged and dropped",
-    "delete": "Delete",
-    "progressStepeer": {
-        "expand": "Expand",
-        "collapse": "Collapse",
-        "state": {
-            "current": "Current step",
-            "finished": "Finished step",
-            "future": "Future step"
+    "templatesManagement": {
+        "heading": "Templates management",
+        "table": {
+            "key": "Key",
+            "value": "Value",
+            "actions": "Actions",
+            "cancel": "Cancel",
+            "save": "Save",
+            "edit": "Edit"
+        },
+        "close": "Close",
+        "valid": "Input value is valid",
+        "dnd": "Item can be dragged and dropped",
+        "delete": "Delete",
+        "progressStepeer": {
+            "expand": "Expand",
+            "collapse": "Collapse",
+            "state": {
+                "current": "Current step",
+                "finished": "Finished step",
+                "future": "Future step"
+            }
+        },
+        "pagination": {
+            "toFirst": "To first page",
+            "toPrev": "To previous page",
+            "dots": "Ellipsis indicationg more pages available",
+            "toNext": "To next page",
+            "toLast": "To last page"
+        },
+        "fileList": {
+            "delete": "Delete file {{fileName}} from list"
+        },
+        "aria": {
+            "selectedRowsCount": "You have {{count}} rows selected in table"
         }
     },
     "pagination": {
