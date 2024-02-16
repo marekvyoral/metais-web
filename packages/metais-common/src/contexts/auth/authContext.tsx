@@ -26,6 +26,7 @@ export interface User {
     preferred_username: string
     authenticationResource: string
     email: string
+    mobile: string
     phone: string
     roles: string[]
     groupData: Group[]
