@@ -201,11 +201,13 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         mutation: {
             onError() {
                 setUploadError(true)
+                setIsCreationLoading(false)
             },
             async onSuccess(successData) {
                 if (successData.requestId != null) {
                     await saveRelations()
                 } else {
+                    setIsCreationLoading(false)
                     setUploadError(true)
                 }
             },

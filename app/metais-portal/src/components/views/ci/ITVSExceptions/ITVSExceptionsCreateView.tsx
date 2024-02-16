@@ -10,7 +10,8 @@ import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import styles from './styles.module.scss'
 
@@ -61,6 +62,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     uploadError,
 }) => {
     const { t, i18n } = useTranslation()
+    const navigate = useNavigate()
 
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
@@ -114,7 +116,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         ),
     })
 
-    const { handleSubmit, setValue, reset } = methods
+    const { handleSubmit, setValue } = methods
 
     const referenceIdValue = generatedEntityId?.ciurl?.split('/').pop()
     const metaIsCodeValue = generatedEntityId?.cicode
@@ -241,20 +243,18 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                     ))}
                 <ButtonGroupRow>
                     <Button
-                        onClick={handleSubmit((formData) => {
-                            onSubmit(formData)
-                        })}
-                        label={t('button.saveChanges')}
-                    />
-                    <Button
-                        key={1}
                         label={t('button.cancel')}
                         type="reset"
                         variant="secondary"
                         onClick={() => {
-                            reset()
-                            setHasReset(true)
+                            navigate(`${NavigationSubRoutes.OSOBITNY_POSTUP}`)
                         }}
+                    />
+                    <Button
+                        onClick={handleSubmit((formData) => {
+                            onSubmit(formData)
+                        })}
+                        label={t('button.saveChanges')}
                     />
                 </ButtonGroupRow>
             </QueryFeedback>
