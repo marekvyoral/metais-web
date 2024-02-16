@@ -1,17 +1,12 @@
-import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { BreadCrumbs, HomeIcon, SimpleSelect } from '@isdd/idsk-ui-kit/index'
-import { mapCategoriesToOptions } from '@isdd/metais-common/componentHelpers'
-import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { CreateReportButton } from '@isdd/metais-common/index'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useTranslation } from 'react-i18next'
 
 import { ReportsListContainer } from '@/components/containers/Egov/Reports-management/ReportsListContainer'
-import { ReportsTable } from '@/components/views/egov/reports/ReportsTable'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { ReportsListView } from '@/components/views/egov/reports/ReportsListView'
 
 export interface ReportsFilterData extends IFilterParams {
     name?: string
@@ -34,37 +29,19 @@ const ReportsListPage: React.FC = () => {
             <MainContentWrapper>
                 <ReportsListContainer
                     defaultFilterValues={defaultFilterValues}
-                    View={(props) => {
-                        return (
-                            <>
-                                <Filter<ReportsFilterData>
-                                    defaultFilterValues={defaultFilterValues}
-                                    form={({ setValue, filter }) => (
-                                        <div>
-                                            <SimpleSelect
-                                                label={t('report.filter.category')}
-                                                name={'category'}
-                                                id="category"
-                                                options={mapCategoriesToOptions(props.categories?.categories)}
-                                                setValue={setValue}
-                                                defaultValue={filter?.category}
-                                            />
-                                        </div>
-                                    )}
-                                />
-                                <ActionsOverTable
-                                    pagination={props.pagination}
-                                    handleFilterChange={props.handleFilterChange}
-                                    pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                                    entityName={'reports'}
-                                    hiddenButtons={{ SELECT_COLUMNS: true }}
-                                    createButton={<CreateReportButton path={`${AdminRouteNames.REPORTS_MANAGEMENT}/create`} />}
-                                />
-
-                                <ReportsTable data={props?.data} pagination={props?.pagination} handleFilterChange={props?.handleFilterChange} />
-                            </>
-                        )
-                    }}
+                    View={(props) => (
+                        <ReportsListView
+                            data={props.data}
+                            categories={props.categories}
+                            pagination={props.pagination}
+                            saveMutationIsSuccess={props.saveMutationIsSuccess}
+                            changeMutationIsSuccess={props.changeMutationIsSuccess}
+                            defaultFilterValues={props.defaultFilterValues}
+                            handleFilterChange={props.handleFilterChange}
+                            handleRowAction={props.handleRowAction}
+                            changeMutationIsSuccessReset={props.changeMutationIsSuccessReset}
+                        />
+                    )}
                 />
             </MainContentWrapper>
         </>

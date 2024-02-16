@@ -419,7 +419,9 @@
         "successfulUnregistered": "User was successfully unregistered",
         "successfulInvalidated": "The item was successfully invalidated",
         "successfulUpdatedList": "Items have been changed successfully",
-        "successfulRelationCreated": "Relation was successfully created"
+        "successfulRelationCreated": "Relation was successfully created",
+        "runMutationSuccess": "Script successfully executed",
+        "runMutationError": "Script execution failed, check the validity of the code"
     },
     "relationCard": {
         "name": "Title",

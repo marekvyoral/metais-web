@@ -412,7 +412,9 @@
         "successfulUnregistered": "Používateľ bol úspešne odhlásený",
         "successfulInvalidated": "Položka bola úspešne zneplatnená",
         "successfulUpdatedList": "Položky boli úspešne zmenené.",
-        "successfulRelationCreated": "Vzťah bol úspešne vytvorený."
+        "successfulRelationCreated": "Vzťah bol úspešne vytvorený.",
+        "runMutationSuccess": "Skript bol úspešne vykonaný.",
+        "runMutationError": "Vykonávanie skriptu zlyhalo, skontrolujte, prosím, platnosť kódu."
     },
     "button": {
         "saveAndContinue": "Uložiť a pokračovať",

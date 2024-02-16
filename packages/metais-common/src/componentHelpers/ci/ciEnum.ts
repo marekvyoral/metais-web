@@ -1,5 +1,5 @@
 import { mapReportsCiItemToOptions } from '@isdd/metais-common/componentHelpers'
-import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
+import { ATTRIBUTE_NAME, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { CiListFilterContainerUi, ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 export const loadEnumsCiOptions = async (
@@ -16,11 +16,12 @@ export const loadEnumsCiOptions = async (
         filter: {
             type: [type ?? ''],
             metaAttributes,
-            fullTextSearch: searchQuery,
+            ...(!!searchQuery && { searchFields: [ATTRIBUTE_NAME.Gen_Profil_nazov] }),
+            ...(!!searchQuery && { fullTextSearch: searchQuery }),
         },
         page: page,
         perpage: BASE_PAGE_SIZE,
-        sortBy: 'Gen_Profil_nazov',
+        sortBy: ATTRIBUTE_NAME.Gen_Profil_nazov,
         sortType: 'ASC',
     }
 

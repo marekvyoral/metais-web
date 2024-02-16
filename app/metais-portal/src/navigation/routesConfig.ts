@@ -376,12 +376,12 @@ export const routesConfig: RouteConfig[] = [
             {
                 path: RouterRoutes.REPORTS_DETAIL,
                 slug: RouterRoutes.REPORTS_DETAIL,
-                component: ReportsListPage,
+                component: ReportsDetailPage,
             },
             {
                 path: RouterRoutes.REPORTS_LIST,
                 slug: RouterRoutes.REPORTS_LIST,
-                component: ReportsDetailPage,
+                component: ReportsListPage,
             },
             {
                 path: RouterRoutes.IMPORT_MONITORING_PARAMETERS,

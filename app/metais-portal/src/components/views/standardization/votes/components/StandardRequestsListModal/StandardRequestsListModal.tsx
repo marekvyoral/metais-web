@@ -5,10 +5,9 @@ import { Row } from '@tanstack/react-table'
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { ApiStandardRequestPreview, ApiStandardRequestPreviewList } from '@isdd/metais-common/api/generated/standards-swagger'
 import { ModalButtons } from '@isdd/metais-common/index'
+import { TableWithPagination } from '@isdd/metais-common/components/TableWithPagination/TableWithPagination'
 
 import { standardRequestsListColumns } from './StandardRequestsListColumns'
-
-import { TableWithPagination } from '@/components/views/standardization/votes/components/TableWithPagination/TableWithPagination'
 
 type StandardRequestsListModalType = {
     allStandardRequestData: ApiStandardRequestPreviewList | undefined
