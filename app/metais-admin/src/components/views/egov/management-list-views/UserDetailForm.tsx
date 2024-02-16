@@ -24,7 +24,6 @@ export enum InputNames {
     LOGIN = 'login',
     EMAIL = 'email',
     POSITION = 'position',
-    PHONE = 'phone',
     MOBILE = 'mobile',
 }
 
@@ -88,14 +87,6 @@ export const UserDetailForm: React.FC<Props> = ({ userData, handleBackNavigate, 
                     {...register(InputNames.POSITION)}
                     defaultValue={userData?.position}
                     type="text"
-                />
-                <Input
-                    error={errors[InputNames.PHONE]?.message?.toString()}
-                    correct={!errors[InputNames.PHONE] && isSubmitted}
-                    label={t('managementList.phone')}
-                    {...register(InputNames.PHONE)}
-                    defaultValue={userData?.phone}
-                    type="tel"
                 />
                 <Input
                     error={errors[InputNames.MOBILE]?.message?.toString()}

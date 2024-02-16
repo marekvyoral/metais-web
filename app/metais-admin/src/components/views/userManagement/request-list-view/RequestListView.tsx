@@ -66,16 +66,6 @@ export const RequestListView: React.FC<IRequestListView> = ({
             cell: (ctx) => <span>{ctx?.row?.original?.identityLogin}</span>,
         },
         {
-            header: t('requestList.telephone'),
-            accessorFn: (row) => row?.telephone,
-            enableSorting: true,
-            id: 'telephone',
-            meta: {
-                getCellContext: (ctx) => ctx?.row?.original?.telephone,
-            },
-            cell: (ctx) => <span>{ctx?.row?.original?.telephone}</span>,
-        },
-        {
             header: t('requestList.mobile'),
             accessorFn: (row) => row?.mobile,
             enableSorting: true,

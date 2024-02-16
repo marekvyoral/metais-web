@@ -32,7 +32,6 @@ export const getUserManagementFormSchema = (t: TFunction<'translation', undefine
             .required(t('managementList.required', { value: t('managementList.email') }))
             .matches(REGEX_EMAIL, t('managementList.emailFormat')),
         [InputNames.MOBILE]: string().matches(REGEX_TEL, t('managementList.phoneFormat')),
-        [InputNames.PHONE]: string().matches(REGEX_TEL, t('managementList.phoneFormat')),
         [InputNames.POSITION]: string(),
     })
 

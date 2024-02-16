@@ -26,7 +26,7 @@ export enum InputNames {
     FIRST_NAME = 'identityFirstName',
     LAST_NAME = 'identityLastName',
     EMAIL = 'email',
-    PHONE = 'telephone',
+    PHONE = 'mobile',
     PO = 'po',
     LOGIN = 'identityLogin',
     DATA_PROCESSING_CONSENT = 'dataProcessingConsent',

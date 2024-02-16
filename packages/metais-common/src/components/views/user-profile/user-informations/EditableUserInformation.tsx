@@ -57,7 +57,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
         defaultValues: {
             [UserInformationFormKeysEnum.NAME]: user?.displayName,
             [UserInformationFormKeysEnum.POSITION]: user?.position != NULL ? user?.position ?? '' : '',
-            [UserInformationFormKeysEnum.PHONE]: user?.phone,
+            [UserInformationFormKeysEnum.PHONE]: user?.mobile,
             [UserInformationFormKeysEnum.EMAIL]: user?.email,
         },
         resolver: yupResolver(userInformationsSchema),
