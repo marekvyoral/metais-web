@@ -199,7 +199,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                 />
                 <div className={styles.margin30}>
                     {allCIsInRelations
-                        ?.filter((ciRel) => ciRel.ci?.type === 'ISVS')
+                        ?.filter((ciRel) => ciRel.rels?.[0].type === 'osobitny_postup_vztah_ISVS')
                         .map((ciWithRel) => (
                             <div className={classNames(['govuk-accordion__section'])} key={ciWithRel.ci?.uuid}>
                                 <div className={classNames(['govuk-accordion__section-header', styles.existingRelWrapper])}>
@@ -226,7 +226,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                     existingRelations={existingRelations}
                 />
                 {allCIsInRelations
-                    ?.filter((ciRel) => ciRel.ci?.type === 'PO')
+                    ?.filter((ciRel) => ciRel.rels?.[0].type === 'osobitny_postup_vztah_PO')
                     .map((ciWithRel) => (
                         <div className={classNames(['govuk-accordion__section'])} key={ciWithRel.ci?.uuid}>
                             <div className={classNames(['govuk-accordion__section-header', styles.existingRelWrapper])}>
