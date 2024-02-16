@@ -5,3 +5,10 @@
     display: flex;
     gap: govuk-spacing(3);
 }
+
+.buttonGroupColumn {
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    gap: govuk-spacing(3);
+}

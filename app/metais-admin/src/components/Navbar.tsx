@@ -112,6 +112,12 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
             role: [AdminRouteRoles.ADMIN, AdminRouteRoles.METAIS],
         },
         {
+            title: t('navMenu.templatesManagement'),
+            path: AdminRouteNames.TEMPLATES_MANAGEMENT,
+            icon: InstructionsIcon,
+            role: [AdminRouteRoles.ADMIN, AdminRouteRoles.METAIS],
+        },
+        {
             title: t('navMenu.projects.management'),
             path: AdminRouteNames.PROJECTS_FINANCE_MANAGEMENT,
             icon: InstructionsIcon,

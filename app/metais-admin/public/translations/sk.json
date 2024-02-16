@@ -688,6 +688,7 @@
             "list": "Záznamy z monitoringu"
         },
         "reportsManagement": "Správa zostáv",
+        "templatesManagement": "Správa šablón",
         "projects": {
             "management": "Správa projektov",
             "financeManagement": "Finančné limity schvaľovacieho procesu"
@@ -1038,7 +1039,8 @@
         "reports-management": "Správa zostáv",
         "reportsCreate": "Nový report",
         "reportsEdit": "Upraviť report",
-        "ciEditEntity": "Editácia položky"
+        "ciEditEntity": "Editácia položky",
+        "templates-management": "Správa šablón"
     },
     "userProfile": {
         "heading": "Profil a oprávnenia",
@@ -1353,17 +1355,41 @@
         "warningMessage": "Z dôvodu nečinnosti budete o {{countDown}} sekúnd automaticky odhlásený z MetaIS.",
         "loading": "Spracúvame odhlásenie"
     },
-    "close": "Zatvoriť",
-    "valid": "Hodnota vstupu je platná",
-    "dnd": "Položku je možné ťahať a pustiť",
-    "delete": "Zmazať",
-    "progressStepper": {
-        "expand": "Rozbaliť",
-        "collapse": "Zbaliť",
-        "state": {
-            "current": "Aktuálny stav",
-            "finished": "Konečný stav",
-            "future": "Budúci stav"
+    "templatesManagement": {
+        "heading": "Správa šablón",
+        "table": {
+            "key": "Kľúč",
+            "value": "Hodnota",
+            "actions": "Akcie",
+            "cancel": "Zrušiť",
+            "save": "Uložiť",
+            "edit": "Upraviť"
+        },
+        "close": "Zatvoriť",
+        "valid": "Hodnota vstupu je platná",
+        "dnd": "Položku je možné ťahať a pustiť",
+        "delete": "Zmazať",
+        "progressStepper": {
+            "expand": "Rozbaliť",
+            "collapse": "Zbaliť",
+            "state": {
+                "current": "Aktuálny stav",
+                "finished": "Konečný stav",
+                "future": "Budúci stav"
+            }
+        },
+        "pagination": {
+            "toFirst": "Prejsť na prvú stránku",
+            "toPrev": "Prejsť na predchádzajúcu stránku",
+            "dots": "Trojbodka naznačujúca dostupnosť ďalších stránok",
+            "toNext": "Prejsť na ďalšiu stránku",
+            "toLast": "Prejsť na poslednú stránku"
+        },
+        "fileList": {
+            "delete": "Vymazať súbor {{fileName}} z listu"
+        },
+        "aria": {
+            "selectedRowsCount": "Máte {{count}} vybraných riadkov v tabuľke"
         }
     },
     "pagination": {
