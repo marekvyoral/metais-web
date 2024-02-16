@@ -1,5 +1,5 @@
 import { Filter, PaginatorWrapper, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, MutationFeedback } from '@isdd/metais-common'
+import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, MutationFeedback, QueryFeedback } from '@isdd/metais-common'
 import { Trainee } from '@isdd/metais-common/api/generated/trainings-swagger'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
@@ -64,7 +64,7 @@ export const TrainingView: React.FC<TrainingContainerView> = ({ isLoading, isErr
     const slicedTableData = filteredData.slice(startOfList, endOfList) || []
 
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
             <TextHeading size="XL">{t('trainings.invitedTitle')}</TextHeading>
             {isActionSuccess && isActionSuccess.additionalInfo?.type === 'relationCreated' && (
                 <div ref={wrapperRef}>
@@ -94,6 +94,6 @@ export const TrainingView: React.FC<TrainingContainerView> = ({ isLoading, isErr
                 dataLength={filteredData.length ?? 0}
                 handlePageChange={handleFilterChange}
             />
-        </>
+        </QueryFeedback>
     )
 }
