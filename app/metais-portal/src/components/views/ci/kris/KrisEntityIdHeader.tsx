@@ -481,148 +481,212 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                         popupContent={() => {
                             return (
                                 <div className={styles.buttonLinksDiv}>
-                                    {canShowGeneratePdf() && (
-                                        <Tooltip
-                                            key={'pdfGenerateFuture'}
-                                            descriptionElement={t('tooltip.NO_FUTURE_PDF_GOALS')}
-                                            position={'top center'}
-                                            tooltipContent={(open, close) => (
-                                                <div>
-                                                    <ButtonLink
-                                                        onMouseOver={open}
-                                                        onMouseOut={close}
-                                                        disabled={isPdfDisabled}
-                                                        onClick={() => {
-                                                            setGeneratePdf(true)
-                                                        }}
-                                                        label={t('ciType.pdfGenerateFuture')}
-                                                    />
-                                                </div>
-                                            )}
-                                        />
-                                    )}
-                                    {canInvalidate() && (
-                                        <Tooltip
-                                            key={'invalidateItem'}
-                                            descriptionElement={errorMessage}
-                                            position={'top center'}
-                                            on={'right-click'}
-                                            tooltipContent={(open) => (
-                                                <div>
-                                                    <ButtonLink
-                                                        disabled={isInvalidated}
-                                                        onClick={() => handleInvalidate(entityListData, () => setShowInvalidate(true), open)}
-                                                        label={t('ciType.invalidateItem')}
-                                                    />
-                                                </div>
-                                            )}
-                                        />
-                                    )}
-                                    {canReValidate() && (
-                                        <Tooltip
-                                            key={'reInvalidateCi'}
-                                            descriptionElement={errorMessage}
-                                            position={'top center'}
-                                            on={'right-click'}
-                                            tooltipContent={() => (
-                                                <div>
-                                                    <ButtonLink
-                                                        disabled={!isInvalidated}
-                                                        onClick={() => setRevalidate(true)}
-                                                        label={t('ciType.reInvalidateCi')}
-                                                    />
-                                                </div>
-                                            )}
-                                        />
-                                    )}
-                                    <Can I={Actions.APPROVE_KRIS} a={`ci.${entityId}`}>
-                                        {canApprove() && (
+                                    {canShowGeneratePdf() &&
+                                        (errorMessage ? (
                                             <Tooltip
-                                                key={'approve'}
-                                                descriptionElement={errorMessage}
+                                                key={'pdfGenerateFuture'}
+                                                descriptionElement={t('tooltip.NO_FUTURE_PDF_GOALS')}
                                                 position={'top center'}
-                                                tooltipContent={() => (
+                                                tooltipContent={(open, close) => (
                                                     <div>
                                                         <ButtonLink
-                                                            disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
-                                                            onClick={() => setShowApprove(true)}
-                                                            label={t('ciType.approve')}
+                                                            onMouseOver={open}
+                                                            onMouseOut={close}
+                                                            disabled={isPdfDisabled}
+                                                            onClick={() => {
+                                                                setGeneratePdf(true)
+                                                            }}
+                                                            label={t('ciType.pdfGenerateFuture')}
                                                         />
                                                     </div>
                                                 )}
                                             />
-                                        )}
+                                        ) : (
+                                            <ButtonLink
+                                                disabled={isPdfDisabled}
+                                                onClick={() => {
+                                                    setGeneratePdf(true)
+                                                }}
+                                                label={t('ciType.pdfGenerateFuture')}
+                                            />
+                                        ))}
+                                    {canInvalidate() &&
+                                        (errorMessage ? (
+                                            <Tooltip
+                                                key={'invalidateItem'}
+                                                descriptionElement={errorMessage}
+                                                position={'top center'}
+                                                on={'right-click'}
+                                                tooltipContent={(open) => (
+                                                    <div>
+                                                        <ButtonLink
+                                                            disabled={isInvalidated}
+                                                            onClick={() => handleInvalidate(entityListData, () => setShowInvalidate(true), open)}
+                                                            label={t('ciType.invalidateItem')}
+                                                        />
+                                                    </div>
+                                                )}
+                                            />
+                                        ) : (
+                                            <ButtonLink
+                                                disabled={isInvalidated}
+                                                onClick={() =>
+                                                    handleInvalidate(
+                                                        entityListData,
+                                                        () => setShowInvalidate(true),
+                                                        () => null,
+                                                    )
+                                                }
+                                                label={t('ciType.invalidateItem')}
+                                            />
+                                        ))}
+                                    {canReValidate() &&
+                                        (errorMessage ? (
+                                            <Tooltip
+                                                key={'reInvalidateCi'}
+                                                descriptionElement={errorMessage}
+                                                position={'top center'}
+                                                on={'right-click'}
+                                                tooltipContent={() => (
+                                                    <div>
+                                                        <ButtonLink
+                                                            disabled={!isInvalidated}
+                                                            onClick={() => setRevalidate(true)}
+                                                            label={t('ciType.reInvalidateCi')}
+                                                        />
+                                                    </div>
+                                                )}
+                                            />
+                                        ) : (
+                                            <ButtonLink
+                                                disabled={!isInvalidated}
+                                                onClick={() => setRevalidate(true)}
+                                                label={t('ciType.reInvalidateCi')}
+                                            />
+                                        ))}
+                                    <Can I={Actions.APPROVE_KRIS} a={`ci.${entityId}`}>
+                                        {canApprove() &&
+                                            (errorMessage ? (
+                                                <Tooltip
+                                                    key={'approve'}
+                                                    descriptionElement={errorMessage}
+                                                    position={'top center'}
+                                                    tooltipContent={() => (
+                                                        <div>
+                                                            <ButtonLink
+                                                                disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
+                                                                onClick={() => setShowApprove(true)}
+                                                                label={t('ciType.approve')}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                />
+                                            ) : (
+                                                <ButtonLink
+                                                    disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
+                                                    onClick={() => setShowApprove(true)}
+                                                    label={t('ciType.approve')}
+                                                />
+                                            ))}
                                     </Can>
 
-                                    {canReturnToWorkout() && (
-                                        <Tooltip
-                                            key={'return_to_workout'}
-                                            descriptionElement={errorMessage}
-                                            position={'top center'}
-                                            tooltipContent={() => (
-                                                <div>
-                                                    <ButtonLink
-                                                        disabled={!isEvaluation}
-                                                        onClick={() => setShowReturnToWorkout(true)}
-                                                        label={t('ciType.return_to_workout')}
-                                                    />
-                                                </div>
-                                            )}
-                                        />
-                                    )}
+                                    {canReturnToWorkout() &&
+                                        (errorMessage ? (
+                                            <Tooltip
+                                                key={'return_to_workout'}
+                                                descriptionElement={errorMessage}
+                                                position={'top center'}
+                                                tooltipContent={() => (
+                                                    <div>
+                                                        <ButtonLink
+                                                            disabled={!isEvaluation}
+                                                            onClick={() => setShowReturnToWorkout(true)}
+                                                            label={t('ciType.return_to_workout')}
+                                                        />
+                                                    </div>
+                                                )}
+                                            />
+                                        ) : (
+                                            <ButtonLink
+                                                disabled={!isEvaluation}
+                                                onClick={() => setShowReturnToWorkout(true)}
+                                                label={t('ciType.return_to_workout')}
+                                            />
+                                        ))}
                                     <Can I={Actions.KRIS_SEND_APPROVING} a={`ci.${entityId}`}>
-                                        {canSendToApprove() && (
-                                            <Tooltip
-                                                key={'sentToApprove'}
-                                                descriptionElement={errorMessage}
-                                                position={'top center'}
-                                                tooltipContent={() => (
-                                                    <div>
-                                                        <ButtonLink
-                                                            disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
-                                                            onClick={handleSendToApproving}
-                                                            label={t('ciType.sendToApprove')}
-                                                        />
-                                                    </div>
-                                                )}
-                                            />
-                                        )}
+                                        {canSendToApprove() &&
+                                            (errorMessage ? (
+                                                <Tooltip
+                                                    key={'sentToApprove'}
+                                                    descriptionElement={errorMessage}
+                                                    position={'top center'}
+                                                    tooltipContent={() => (
+                                                        <div>
+                                                            <ButtonLink
+                                                                disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
+                                                                onClick={handleSendToApproving}
+                                                                label={t('ciType.sendToApprove')}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                />
+                                            ) : (
+                                                <ButtonLink
+                                                    disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
+                                                    onClick={handleSendToApproving}
+                                                    label={t('ciType.sendToApprove')}
+                                                />
+                                            ))}
                                     </Can>
                                     <Can I={Actions.KRIS_SUBSCRIBE} a={`ci.${entityId}`}>
-                                        {canShowSignDoc() && (
-                                            <Tooltip
-                                                key={'signDocument'}
-                                                descriptionElement={errorMessage}
-                                                position={'top center'}
-                                                tooltipContent={() => (
-                                                    <div>
-                                                        <ButtonLink
-                                                            disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
-                                                            onClick={handleSignDoc}
-                                                            label={t('ciType.signDocument')}
-                                                        />
-                                                    </div>
-                                                )}
-                                            />
-                                        )}
+                                        {canShowSignDoc() &&
+                                            (errorMessage ? (
+                                                <Tooltip
+                                                    key={'signDocument'}
+                                                    descriptionElement={errorMessage}
+                                                    position={'top center'}
+                                                    tooltipContent={() => (
+                                                        <div>
+                                                            <ButtonLink
+                                                                disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
+                                                                onClick={handleSignDoc}
+                                                                label={t('ciType.signDocument')}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                />
+                                            ) : (
+                                                <ButtonLink
+                                                    disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
+                                                    onClick={handleSignDoc}
+                                                    label={t('ciType.signDocument')}
+                                                />
+                                            ))}
                                     </Can>
                                     <Can I={Actions.KRIS_SUBSCRIBE} a={`ci.${entityId}`}>
-                                        {canShowSignDocFuture() && (
-                                            <Tooltip
-                                                key={'signDocumentFuture'}
-                                                descriptionElement={errorMessage}
-                                                position={'top center'}
-                                                tooltipContent={() => (
-                                                    <div>
-                                                        <ButtonLink
-                                                            disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
-                                                            onClick={handleSignDocFuture}
-                                                            label={t('ciType.signDocumentFuture')}
-                                                        />
-                                                    </div>
-                                                )}
-                                            />
-                                        )}
+                                        {canShowSignDocFuture() &&
+                                            (errorMessage ? (
+                                                <Tooltip
+                                                    key={'signDocumentFuture'}
+                                                    descriptionElement={errorMessage}
+                                                    position={'top center'}
+                                                    tooltipContent={() => (
+                                                        <div>
+                                                            <ButtonLink
+                                                                disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
+                                                                onClick={handleSignDocFuture}
+                                                                label={t('ciType.signDocumentFuture')}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                />
+                                            ) : (
+                                                <ButtonLink
+                                                    disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
+                                                    onClick={handleSignDocFuture}
+                                                    label={t('ciType.signDocumentFuture')}
+                                                />
+                                            ))}
                                     </Can>
                                 </div>
                             )

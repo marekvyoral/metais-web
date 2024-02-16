@@ -11,16 +11,16 @@ export const CiListWizard: React.FC = () => {
     const searchSteps = useMemo(() => {
         {
             return [
-                {
-                    target: '.idsk-header-web__main-headline-logo', //use global search id after enabled
-                    content: (
-                        <>
-                            <TextBody>{t('wizard.searchContent.step1')}</TextBody>
-                        </>
-                    ),
-                    title: t('wizard.search'),
-                    disableBeacon: true,
-                },
+                // {
+                //     target: '.idsk-header-web__main-headline-logo', //use global search id after enabled
+                //     content: (
+                //         <>
+                //             <TextBody>{t('wizard.searchContent.step1')}</TextBody>
+                //         </>
+                //     ),
+                //     title: t('wizard.search'),
+                //     disableBeacon: true,
+                // },
                 {
                     target: '#fullTextSearch',
                     content: (
