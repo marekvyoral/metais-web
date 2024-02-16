@@ -39,7 +39,7 @@ export const DeletePersonalInfoModal: React.FC<Props> = ({ isOpen, onClose, muta
                 createdBy: user?.uuid,
                 email: user?.email,
                 position: user?.position,
-                telephone: user?.phone,
+                telephone: user?.mobile,
                 identityFirstName: user?.firstName,
                 identityLastName: user?.lastName,
                 identityLogin: user?.login,

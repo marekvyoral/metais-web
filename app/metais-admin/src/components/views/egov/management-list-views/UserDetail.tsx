@@ -29,7 +29,6 @@ export const UserDetail: React.FC<IUserDetail> = ({ userData, userId }) => {
         { label: t('managementList.displayName'), value: userData?.displayName },
         { label: t('managementList.email'), value: userData?.email },
         { label: t('managementList.position'), value: userData?.position },
-        { label: t('managementList.phone'), value: userData?.phone },
         { label: t('managementList.mobile'), value: userData?.mobile },
         { label: t('managementList.login'), value: userData?.login },
     ]

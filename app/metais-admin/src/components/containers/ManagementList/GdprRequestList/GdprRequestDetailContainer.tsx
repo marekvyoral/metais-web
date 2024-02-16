@@ -73,7 +73,6 @@ export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> =
                     lastName: request?.identityLastName && (!anonymize ? request?.identityLastName : anonymizovane),
                     login: request?.identityLogin && (!anonymize ? request?.identityLogin : anonymizovane + Date.now()),
                     email: request?.email && anonymizedEmail,
-                    phone: request?.telephone && (!anonymize ? request?.telephone : anonymizovane),
                     mobile: request?.mobile && (!anonymize ? request?.mobile : anonymizovane),
                     position: request?.position && (!anonymize ? request?.position : anonymizovane),
                 },

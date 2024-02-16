@@ -39,7 +39,7 @@ export const UserInformation: React.FC<Props> = ({ setIsEditable, setIsChangeSuc
                     value={user?.position != NULL ? user?.position ?? '' : ''}
                     hideIcon
                 />
-                <InformationGridRow label={t('userProfile.information.phoneNumber')} value={user?.phone ?? ''} hideIcon />
+                <InformationGridRow label={t('userProfile.information.phoneNumber')} value={user?.mobile ?? ''} hideIcon />
                 <InformationGridRow label={t('userProfile.information.email')} value={user?.email ?? ''} hideIcon href={`mailto:${user?.email}`} />
             </DefinitionList>
         </>

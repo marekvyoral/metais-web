@@ -73,7 +73,6 @@ export const RegistrationRequestDetailContainer: React.FC<IRegistrationRequestDe
                     lastName: request?.identityLastName,
                     login: request?.identityLogin,
                     email: request?.email,
-                    phone: request?.telephone,
                     mobile: request?.mobile,
                     position: request?.position,
                 },

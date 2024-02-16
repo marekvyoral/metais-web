@@ -67,7 +67,6 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
                     lastName: request?.identityLastName,
                     login: request?.identityLogin,
                     email: request?.email,
-                    phone: request?.telephone,
                     mobile: request?.mobile,
                     position: request?.position,
                 },

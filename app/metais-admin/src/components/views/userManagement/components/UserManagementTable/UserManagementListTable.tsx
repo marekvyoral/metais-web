@@ -143,7 +143,6 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
             id: 'actions',
         },
         { header: t('userManagement.login'), accessorFn: (row) => row.identity.login, enableSorting: true, id: 'login' },
-        { header: t('userManagement.phone'), accessorFn: (row) => row.identity.phone, enableSorting: true, id: 'phone' },
         { header: t('userManagement.mobile'), accessorFn: (row) => row.identity.mobile, enableSorting: true, id: 'mobile' },
         {
             header: t('userManagement.organization'),
