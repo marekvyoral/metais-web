@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Input } from '@isdd/idsk-ui-kit/index'
 import classNames from 'classnames'
-import { FieldErrors, UseFormRegister, UseFormUnregister } from 'react-hook-form'
+import { FieldErrors, UseFormRegister, UseFormUnregister, UseFormWatch } from 'react-hook-form'
 import { ApiLink } from '@isdd/metais-common/api/generated/standards-swagger'
 import { useEffect } from 'react'
 import { DynamicElements } from '@isdd/metais-common/components/DynamicElements/DynamicElements'
@@ -19,6 +19,8 @@ export interface ILinkImport {
     errors: FieldErrors<{ documentLinks: ApiLink[] }>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     unregister?: UseFormUnregister<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    watch: UseFormWatch<any>
 }
 
 type LinkImportLineType = {
@@ -84,7 +86,7 @@ const LinkImportLine: React.FC<LinkImportLineType> = ({ index, register, errors,
         </div>
     )
 }
-export const LinksImport: React.FC<ILinkImport> = ({ defaultValues, register, errors, unregister }) => {
+export const LinksImport: React.FC<ILinkImport> = ({ defaultValues, register, errors, unregister, watch }) => {
     const { t } = useTranslation()
     return (
         <DynamicElements<ApiLink>
@@ -92,6 +94,10 @@ export const LinksImport: React.FC<ILinkImport> = ({ defaultValues, register, er
             initialElementsData={defaultValues}
             addItemButtonLabelText={'+ ' + t('votes.voteEdit.addNextDocumentItem')}
             defaultRenderableComponentData={{}}
+            removeLabelSubject={(index) => {
+                const value = watch(`documentLinks.${index}.linkDescription`)
+                return t('votes.voteEdit.removeDocument', { document: value ?? '' })
+            }}
         />
     )
 }

@@ -1,6 +1,5 @@
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
-import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { EkoCode } from '@isdd/metais-common/api/generated/tco-swagger'
 import { ColumnDef, Table as ITable, Row } from '@tanstack/react-table'
 import classNames from 'classnames'
@@ -81,14 +80,12 @@ export const getTableColumns = (
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (ctx) => (
-                <TextBody key={`textBody_${ctx?.row?.id}`} size="S" className={styles.marginvBottom0}>
-                    <Link
-                        to={'./' + ctx?.row?.original?.ekoCode}
-                        className={classNames({ [styles.bold]: ctx?.row?.original?.ekoCode && !!rowSelection[ctx?.row?.original?.ekoCode] })}
-                    >
-                        {ctx?.getValue?.() as string}
-                    </Link>
-                </TextBody>
+                <Link
+                    to={'./' + ctx?.row?.original?.ekoCode}
+                    className={classNames({ [styles.bold]: ctx?.row?.original?.ekoCode && !!rowSelection[ctx?.row?.original?.ekoCode] })}
+                >
+                    {ctx?.getValue?.() as string}
+                </Link>
             ),
         },
         {

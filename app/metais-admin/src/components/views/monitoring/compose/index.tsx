@@ -12,7 +12,7 @@ import {
 } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { ApiActiveMonitoringCfg } from '@isdd/metais-common/api/generated/monitoring-swagger'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { SubmitWithFeedback } from '@isdd/metais-common/index'
 import classNames from 'classnames'
@@ -58,14 +58,20 @@ export const MonitoringComposeView: React.FC<IMonitoringComposeView> = ({
     const location = useLocation()
     const [seed, setSeed] = useState(1)
     const isNewRecord = !monitoringCfgData
+    const mappedData = mapApiMonitoringCfgToFormData(monitoringCfgData)
 
     const { register, unregister, setValue, handleSubmit, formState, watch } = useForm<IMonitoringComposeForm>({
         resolver: yupResolver(schema(t)),
-        defaultValues: mapApiMonitoringCfgToFormData(monitoringCfgData),
+        defaultValues: mappedData,
     })
 
     const periodicityWatch = watch('periodicity')
     const entityTypeWatch = watch('entityType')
+
+    const initialHeadersData = useMemo(() => {
+        return mappedData.httpRequestHeader?.map((item) => ({ httpRequestHeader: item }))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [monitoringCfgData])
 
     const handleConfigurationItemChange = (value: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | null) => {
         const ci = Array.isArray(value) ? value[0] : value
@@ -174,10 +180,9 @@ export const MonitoringComposeView: React.FC<IMonitoringComposeView> = ({
                                     <HttpRequestHeaders
                                         register={register}
                                         unregister={unregister}
+                                        watch={watch}
                                         errors={formState.errors}
-                                        initialData={watch('httpRequestHeader')?.map((headerData) => {
-                                            return { httpRequestHeader: headerData }
-                                        })}
+                                        initialData={initialHeadersData}
                                     />
                                     <Spacer vertical />
                                     <Input

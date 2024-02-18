@@ -57,7 +57,7 @@ const lineColor = (position: 'before' | 'after', state?: PROGRESS_STATE, firstIt
 export const Step: React.FC<IStep> = ({ keyNumber, name, date, description, state, firstItem, lastItem, isRed }) => {
     const { t } = useTranslation()
     return (
-        <div key={keyNumber} className={styles.step}>
+        <div key={keyNumber} className={styles.step} aria-current={state == PROGRESS_STATE.CURRENT ? 'step' : undefined}>
             <div className={styles.stepIndicator}>
                 <div className={classNames(styles.line, styles[lineColor('before', state, firstItem, lastItem)])} />
                 <img

@@ -235,6 +235,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         {
             header: t('codelists.code'),
             accessorFn: (row) => row?.code,
+            size: 150,
             enableSorting: false,
             id: 'code',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
@@ -252,6 +253,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         {
             header: t('codelists.value'),
             accessorFn: (row) => row?.value,
+            size: 150,
             enableSorting: false,
             id: 'value',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
@@ -268,6 +270,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         {
             header: t('codelists.engValue'),
             accessorFn: (row) => row?.engValue,
+            size: 150,
             enableSorting: false,
             id: 'engValue',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
@@ -284,6 +287,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         {
             header: t('codelists.description'),
             accessorFn: (row) => row?.description,
+            size: 150,
             enableSorting: false,
             id: 'description',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
@@ -301,6 +305,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         {
             header: t('codelists.engDescription'),
             accessorFn: (row) => row?.engDescription,
+            size: 150,
             enableSorting: false,
             id: 'engDescription',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
@@ -320,6 +325,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             accessorFn: (row) => row,
             enableSorting: false,
             id: 'valid',
+            size: 50,
             cell: (ctx) => {
                 const rowObject = ctx?.getValue?.() as EnumItem
                 return (

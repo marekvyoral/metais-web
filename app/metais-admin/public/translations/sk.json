@@ -1302,8 +1302,9 @@
                 "get": "GET",
                 "post": "POST"
             },
-            "generalInputPlaceholder": "zadajte",
-            "addNextHttpHeaderItem": "pridať Request header",
+            "generalInputPlaceholder": "Zadajte",
+            "addNextHttpHeaderItem": "Pridať Request header",
+            "remove": "Odstrániť header {{header}}",
             "name": "Názov",
             "value": "Hodnota",
             "editHttpRequestHeader": "Upraviť Request headers",
@@ -1416,5 +1417,25 @@
         "requiredText": "Poznámka (povinné)",
         "color": "Farba",
         "status": "Stav"
+    },
+    "dynamicElements": {
+        "removeItem": "Odstrániť {{subject}}",
+        "addRowErrorMessage": "Nie je možné pridať viac ako {{value}} vlastných filtrov.",
+        "addRowErrorClose": "Zatvoriť upozornenie"
+    },
+    "quill": {
+        "buttonLabels": {
+            "HEADER_1": "Nadpis prvej úrovne",
+            "HEADER_2": "Nadpis druhej úrovne",
+            "HEADER_3": "Nadpis tretej úrovne",
+            "HEADER_4": "Nadpis štvrtej úrovne",
+            "HEADER_5": "Nadpis piatej úrovne",
+            "BOLD": "Tučné",
+            "ITALIC": "Kurzíva",
+            "UNDERLINE": "Podčiarknutie",
+            "BULLET_LIST": "Odrážkový zoznam",
+            "ORDERED_LIST": "Číslovaný zoznam",
+            "LINK": "Odkaz"
+        }
     }
 }

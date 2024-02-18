@@ -58,12 +58,14 @@ export const DocumentsGroupView: React.FC<IView> = ({
         {
             header: t('documentsManagement.name'),
             accessorFn: (row) => row?.name,
+            size: 200,
             enableSorting: true,
             id: 'name',
         },
         {
             header: t('documentsManagement.description'),
             accessorFn: (row) => row?.description,
+            size: 200,
             enableSorting: true,
             id: 'description',
             meta: {
@@ -73,12 +75,14 @@ export const DocumentsGroupView: React.FC<IView> = ({
         {
             header: t('documentsManagement.nameEng'),
             accessorFn: (row) => row?.nameEng,
+            size: 200,
             enableSorting: true,
             id: 'nameEng',
         },
         {
             header: t('documentsManagement.descriptionEng'),
             accessorFn: (row) => row.descriptionEng,
+            size: 200,
             enableSorting: true,
             id: 'descriptionEng',
             meta: {

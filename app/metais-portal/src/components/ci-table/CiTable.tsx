@@ -1,4 +1,4 @@
-import { Table, TextBody } from '@isdd/idsk-ui-kit'
+import { Table } from '@isdd/idsk-ui-kit'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
@@ -9,11 +9,12 @@ import { IListData } from '@isdd/metais-common/types/list'
 import { CellContext, ColumnDef, ColumnOrderState, Table as ITable, Row, Updater } from '@tanstack/react-table'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
 
 import styles from './ciTable.module.scss'
 
+import { LangWrapper } from '@/components/lang-wrapper/LangWrapper'
 import {
     ColumnsOutputDefinition,
     IStoreColumnSelection,
@@ -138,7 +139,7 @@ export const CiTable: React.FC<ICiTable> = ({
                 id: technicalName ?? '',
                 size: 200,
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
-                    <TextBody lang={setEnglishLangForAttr(technicalName ?? '')} size="S" className={'marginBottom0'}>
+                    <LangWrapper lang={setEnglishLangForAttr(technicalName ?? '')}>
                         {getColumnsFromApiCellContent({
                             index,
                             ctx,
@@ -149,7 +150,7 @@ export const CiTable: React.FC<ICiTable> = ({
                             linkToNewTab,
                             baseHref,
                         })}
-                    </TextBody>
+                    </LangWrapper>
                 ),
                 meta: {
                     getCellContext: (ctx: CellContext<ColumnsOutputDefinition, unknown>) =>

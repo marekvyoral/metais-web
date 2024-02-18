@@ -1,4 +1,4 @@
-import { CheckBox, ISelectColumnType, ISelectSectionType, TextBody } from '@isdd/idsk-ui-kit/index'
+import { CheckBox, ISelectColumnType, ISelectSectionType } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { ColumnSort, IFilter, Pagination, SortType } from '@isdd/idsk-ui-kit/types'
 import { ATTRIBUTE_NAME, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
@@ -26,6 +26,7 @@ import { CellContext, ColumnDef, Table as ITable, Row } from '@tanstack/react-ta
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { LangWrapper } from '@/components/lang-wrapper/LangWrapper'
 import { getOwnerInformation } from '@/componentHelpers/ci/ciTableHelpers'
 import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination } from '@/componentHelpers/pagination'
 import { NeighboursApiType } from '@/components/views/relationships/RelationshipsAccordion'
@@ -224,9 +225,9 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
                 accessorKey: e.technicalName,
                 enableSorting: sortableCols.includes(e.technicalName),
                 cell: (ctx: CellContext<NeighbourPairUi, unknown>) => (
-                    <TextBody lang={setEnglishLangForAttr(e.technicalName ?? '')} size="S" className={'marginBottom0'}>
+                    <LangWrapper lang={setEnglishLangForAttr(e.technicalName ?? '')}>
                         {getColumnsFromApiCellContent(ctx, e.technicalName)}
-                    </TextBody>
+                    </LangWrapper>
                 ),
                 meta: {
                     getCellContext: (ctx: CellContext<NeighbourPairUi, unknown>) => getColumnsFromApiCellContent(ctx, e.technicalName),

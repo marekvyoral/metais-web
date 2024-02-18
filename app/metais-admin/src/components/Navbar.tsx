@@ -186,7 +186,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
 
                     <NavBarHeader setShowDropDown={setShowDropDown} showDropDown={showDropDown} />
                     <NavBarMain isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} isAdmin={isAdmin} />
-                    <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={adminRoutes} />
+                    <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={adminRoutes} isAdmin={isAdmin} />
                 </div>
             </header>
         </>

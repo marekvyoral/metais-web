@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     BreadCrumbs,
     Button,
@@ -26,6 +25,7 @@ import { ApiCodelistItem } from '@isdd/metais-common/api/generated/codelist-repo
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
+import headerStyles from '@isdd/metais-common/src/components/entity-header/ciEntityHeader.module.scss'
 
 import { BasicInfoTabView } from '@/components/views/codeLists/components/tabs/BasicInfoTabView'
 import { GestorTabView } from '@/components/views/codeLists/components/tabs/GestorTabView'
@@ -34,7 +34,6 @@ import { ImportCodeListModal } from '@/components/views/codeLists/components/mod
 import { ExportCodeListModal } from '@/components/views/codeLists/components/modals/ExportCodeListModal/ExportCodeListModal'
 import { ConfirmModal } from '@/components/views/requestLists/components/modalItem/ConfirmModal'
 import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
-import styles from '@/components/views/requestLists/requestView.module.scss'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { DetailRequestViewProps, ApiRequestAction } from '@/components/containers/DetailRequestContainer'
 
@@ -124,7 +123,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                     )}
                     <QueryFeedback loading={isLoading || !!isAbilityLoading} error={isError || isAbilityError} withChildren>
                         {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
-                        <div className={styles.headerDiv}>
+                        <div className={headerStyles.headerDiv}>
                             <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
                             <Can I={Actions.SEE_ACTIONS} a={Subjects.DETAIL}>
                                 <ButtonGroupRow>
@@ -141,7 +140,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                         popupPosition="right"
                                         popupContent={() => {
                                             return (
-                                                <div className={styles.buttonLinksDiv}>
+                                                <div className={headerStyles.buttonLinksDiv}>
                                                     <Can I={Actions.ACCEPT} a={Subjects.DETAIL}>
                                                         <ButtonLink
                                                             onClick={() => {
@@ -276,6 +275,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                     header: t('codeListList.requestCreate.codeId'),
                                     accessorFn: (row) => row?.itemCode,
                                     id: 'code',
+                                    size: 80,
                                     cell: ({ row, getValue }) => (
                                         <ExpandableRowCellWrapper row={row}>
                                             <span>{getValue() as string}</span>

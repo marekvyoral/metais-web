@@ -198,6 +198,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.code'),
             accessorFn: (row) => row?.code,
+            size: 150,
             enableSorting: true,
             id: 'code',
             meta: {
@@ -221,6 +222,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.name'),
             accessorFn: (row) => row?.name,
+            size: 150,
             enableSorting: true,
             id: 'name',
             meta: {
@@ -241,6 +243,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.description'),
             accessorFn: (row) => row?.description,
+            size: 150,
             enableSorting: true,
             id: 'description',
             meta: {
@@ -264,6 +267,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             accessorFn: (row) => row,
             enableSorting: false,
             id: 'valid',
+            size: 50,
             cell: (ctx) => {
                 const rowObject = ctx?.getValue?.() as EnumTypePreview
                 return (
@@ -283,6 +287,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.category'),
             accessorFn: (row) => row?.category,
+            size: 150,
             enableSorting: false,
             id: 'category',
             cell: (ctx) => (
@@ -305,6 +310,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             accessorFn: (row) => row,
             header: t('codelists.items'),
             id: 'items',
+            size: 50,
             cell: (ctx) => {
                 const rowObject = ctx.getValue() as CodelistsTableColumnsDefinition
                 return (
@@ -409,7 +415,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             />
             <Table
                 data={filteredData?.results}
-                columns={columns.map((item) => ({ ...item, size: 150 }))}
+                columns={columns}
                 isLoading={isLoading || updatingEnum}
                 error={isError}
                 manualPagination={false}

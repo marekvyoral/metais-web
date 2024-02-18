@@ -1,4 +1,4 @@
-import { FieldErrors, FieldValues, UseFormRegister, UseFormUnregister } from 'react-hook-form'
+import { FieldErrors, FieldValues, UseFormRegister, UseFormUnregister, UseFormWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Input } from '@isdd/idsk-ui-kit/index'
 import { ApiVoteChoice } from '@isdd/metais-common/api/generated/standards-swagger'
@@ -19,6 +19,7 @@ interface IAnswerDefinitions {
     initialValues?: ApiVoteChoice[]
     register: UseFormRegister<FieldValues>
     unregister?: UseFormUnregister<FieldValues>
+    watch: UseFormWatch<FieldValues>
     errors: FieldErrors<{ answerDefinitions: ApiVoteChoice[] }>
 }
 
@@ -39,8 +40,9 @@ const AnswerDefinitionLine: React.FC<AnswerDefinitionLineType> = ({ index, error
     )
 }
 
-export const AnswerDefinitions: React.FC<IAnswerDefinitions> = ({ register, unregister, errors, initialValues }) => {
+export const AnswerDefinitions: React.FC<IAnswerDefinitions> = ({ register, unregister, watch, errors, initialValues }) => {
     const { t } = useTranslation()
+
     return (
         <div className={styles.flex}>
             <DynamicElements<ApiVoteChoice>
@@ -48,6 +50,10 @@ export const AnswerDefinitions: React.FC<IAnswerDefinitions> = ({ register, unre
                 defaultRenderableComponentData={{}}
                 nonRemovableElementIndexes={[0, 1]}
                 addItemButtonLabelText={'+  ' + t('votes.voteEdit.answers.addNext')}
+                removeLabelSubject={(index) => {
+                    const value = watch(`answerDefinitions.${index}.value`)
+                    return t('votes.voteEdit.answers.removeAnswer', { answer: value ?? '' })
+                }}
                 initialElementsData={initialValues}
             />
         </div>

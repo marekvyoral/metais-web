@@ -58,6 +58,7 @@ export const UserAuthetificationItems: React.FC<Props> = ({ userData }) => {
         {
             id: 'checkbox',
             accessorFn: (row) => row.checkbox,
+            size: 50,
             cell: ({ row }) => (
                 <CheckBox
                     disabled

@@ -1,4 +1,4 @@
-import { PaginatorWrapper, Table, TextBody } from '@isdd/idsk-ui-kit/index'
+import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import { ApiOlaContractData, ApiSlaContractReadList } from '@isdd/metais-common/api/generated/monitoring-swagger'
@@ -35,11 +35,9 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             id: ColumnNames.name,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    <Link to={`./${ctx.row?.original?.uuid}`} onClick={(e) => e.stopPropagation()}>
-                        {ctx.row.original.name}
-                    </Link>
-                </TextBody>
+                <Link to={`./${ctx.row?.original?.uuid}`} onClick={(e) => e.stopPropagation()}>
+                    {ctx.row.original.name}
+                </Link>
             ),
             meta: {
                 getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) => ctx.row.original.name,
@@ -53,11 +51,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             },
             id: ColumnNames.contractCode,
             size: 200,
-            cell: (ctx: CellContext<ApiOlaContractData, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    {ctx.row.original.contractCode}
-                </TextBody>
-            ),
+            cell: (ctx: CellContext<ApiOlaContractData, unknown>) => ctx.row.original.contractCode,
             meta: {
                 getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) => ctx.row.original.contractCode,
             },
@@ -70,11 +64,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             },
             id: ColumnNames.validityStartDate,
             size: 200,
-            cell: (ctx: CellContext<ApiOlaContractData, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    {t('date', { date: ctx.row.original.validityStartDate })}
-                </TextBody>
-            ),
+            cell: (ctx: CellContext<ApiOlaContractData, unknown>) => t('date', { date: ctx.row.original.validityStartDate }),
             meta: {
                 getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) => t('date', { date: ctx.row.original.validityStartDate }),
             },
@@ -87,11 +77,8 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             },
             id: ColumnNames.validityEndDate,
             size: 200,
-            cell: (ctx: CellContext<ApiOlaContractData, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    {ctx.row.original.validityEndDate && t('date', { date: ctx.row.original.validityEndDate })}
-                </TextBody>
-            ),
+            cell: (ctx: CellContext<ApiOlaContractData, unknown>) =>
+                ctx.row.original.validityEndDate && t('date', { date: ctx.row.original.validityEndDate }),
             meta: {
                 getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) => t('date', { date: ctx.row.original.validityEndDate }),
             },
@@ -105,11 +92,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             id: ColumnNames.contractorIsvsName,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => {
-                return (
-                    <TextBody size="S" className={'marginBottom0'}>
-                        {ctx.row.original.contractorIsvsName}
-                    </TextBody>
-                )
+                return ctx.row.original.contractorIsvsName
             },
             meta: {
                 getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) => ctx.row.original.contractorIsvsName,
@@ -123,11 +106,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             },
             id: ColumnNames.administratorIsvs,
             size: 200,
-            cell: (ctx: CellContext<ApiOlaContractData, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    {ctx.row.original.administratorIsvs?.map((i) => i.name).join(', ')}
-                </TextBody>
-            ),
+            cell: (ctx: CellContext<ApiOlaContractData, unknown>) => ctx.row.original.administratorIsvs?.map((i) => i.name).join(', '),
             meta: {
                 getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) => ctx.row.original.administratorIsvs?.map((i) => i.name).join(', '),
             },
@@ -140,11 +119,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             },
             id: ColumnNames.vendorLock,
             size: 200,
-            cell: (ctx: CellContext<ApiOlaContractData, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    {ctx.row.original.vendorLock == true ? 'true' : 'false'}
-                </TextBody>
-            ),
+            cell: (ctx: CellContext<ApiOlaContractData, unknown>) => (ctx.row.original.vendorLock == true ? 'true' : 'false'),
             meta: {
                 getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) => (ctx.row.original.vendorLock == true ? 'true' : 'false'),
             },

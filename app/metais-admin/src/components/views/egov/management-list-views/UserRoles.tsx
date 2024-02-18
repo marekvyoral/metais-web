@@ -44,6 +44,7 @@ export const UserRoles: React.FC<IUserRoles> = ({ userOrganizations }) => {
         {
             id: RoleTableEnum.DESCRIPTION,
             accessorKey: RoleTableEnum.DESCRIPTION,
+            size: 200,
             header: t('managementList.tableHeaderDescription'),
         },
     ]

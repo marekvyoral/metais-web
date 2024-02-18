@@ -36,6 +36,11 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
             setActiveTab(navItems?.find((item) => item?.path === path)?.path)
         }
     }
+    const handleShouldCloseOnEscape = (event: React.KeyboardEvent) => {
+        if (event.key === 'Escape' && expanded) {
+            handleShouldCloseOnClick()
+        }
+    }
 
     const handleClickOutside = (event: PointerEvent) => {
         if (ref.current && !ref.current?.contains(event.target as Node)) {
@@ -43,10 +48,18 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
         }
     }
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Enter' && ref.current && !ref.current?.contains(event.target as Node)) {
+            setExpanded(false)
+        }
+    }
+
     useEffect(() => {
         document.addEventListener('pointerdown', handleClickOutside, true)
+        document.addEventListener('keydown', handleKeyDown, true)
         return () => {
             document.removeEventListener('pointerdown', handleClickOutside, true)
+            document.removeEventListener('keydown', handleKeyDown, true)
         }
     }, [])
 
@@ -54,6 +67,7 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
         <li
             ref={ref}
             onClick={handleShouldCloseOnClick}
+            onKeyDown={handleShouldCloseOnEscape}
             className={classnames({
                 'idsk-header-web__nav-list-item': true,
                 'idsk-header-web__nav-list-item--active': expanded,
@@ -76,6 +90,11 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
                             onClick={(event) => {
                                 event.preventDefault()
                                 setExpanded(!expanded)
+                            }}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Escape') {
+                                    setExpanded(false)
+                                }
                             }}
                         >
                             <div className={classnames(styles.iconGroupDesktop, 'idsk-header-web__link-arrow', styles.navListItemArrowOvverride)} />

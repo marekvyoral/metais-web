@@ -97,6 +97,9 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
         disabled: !operatorsToDisable.includes(option),
     }))
     const options = [attributesColumnSection, ...attributeProfilesColumnSections, metaAttributesColumnSections]
+    const defaultValue = options.map((opt) => opt.options?.find((item) => item.value === attribute.name))
+    const deleteLabelValue = defaultValue.find((option) => option !== undefined)
+
     return (
         <div className={style.customFilterWrapper}>
             <SelectWithGroupedOptions
@@ -104,7 +107,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 name={`attributeName`}
                 className={style.rowItem}
                 label={t('customAttributeFilter.attribute.label')}
-                defaultValue={options.map((opt) => opt.options?.find((item) => item.value === attribute.name))}
+                defaultValue={defaultValue}
                 options={options}
                 placeholder={t('customAttributeFilter.attribute.placeholder')}
                 onChange={(val) => {
@@ -139,7 +142,11 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 className={style.trashIcon}
                 label={
                     <>
-                        <span className="govuk-visually-hidden">{t('customAttributeFilter.remove')}</span>
+                        <span className="govuk-visually-hidden">
+                            {t('customAttributeFilter.remove', {
+                                name: deleteLabelValue?.label ? String(deleteLabelValue.label).toLowerCase() : undefined,
+                            })}
+                        </span>
                         <i aria-hidden="true" className="fas fa-trash" />
                     </>
                 }

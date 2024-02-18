@@ -30,6 +30,7 @@ export const ServicesView: React.FC<IServicesView> = ({ data, isError, isLoading
         {
             accessorFn: (row) => row?.name,
             header: t('monitoringServices.table.serviceName'),
+            size: 200,
             id: 'serviceName',
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
@@ -49,6 +50,7 @@ export const ServicesView: React.FC<IServicesView> = ({ data, isError, isLoading
         {
             accessorFn: (row) => row?.code,
             header: t('monitoringServices.table.code'),
+            size: 150,
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
@@ -59,6 +61,7 @@ export const ServicesView: React.FC<IServicesView> = ({ data, isError, isLoading
             accessorFn: (row) => data?.poResults?.find((po) => po.uuid === row?.poUuid)?.name,
             header: t('monitoringServices.table.serviceType'),
             id: 'serviceType',
+            size: 200,
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },

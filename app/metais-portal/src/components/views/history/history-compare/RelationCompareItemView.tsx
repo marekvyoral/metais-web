@@ -1,5 +1,4 @@
 import React from 'react'
-import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { ColumnDef } from '@tanstack/react-table'
 import { Table } from '@isdd/idsk-ui-kit/index'
 import { DefinitionListItem } from '@isdd/metais-common/components/definition-list/DefinitionListItem'
@@ -31,7 +30,7 @@ export const RelationCompareItemView: React.FC<IRelationCompareItemViewProps> = 
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (ctx) => <TextBody>{`${ctx?.row?.original?.type}: ${ctx?.row?.original?.name}`}</TextBody>,
+            cell: (ctx) => `${ctx?.row?.original?.type}: ${ctx?.row?.original?.name}`,
         },
     ]
     const columnsSec: Array<ColumnDef<IRelationItem>> = [
@@ -43,7 +42,7 @@ export const RelationCompareItemView: React.FC<IRelationCompareItemViewProps> = 
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (ctx) => <TextBody>{`${ctx?.row?.original?.type}: ${ctx?.row?.original?.name}`}</TextBody>,
+            cell: (ctx) => `${ctx?.row?.original?.type}: ${ctx?.row?.original?.name}`,
         },
     ]
 

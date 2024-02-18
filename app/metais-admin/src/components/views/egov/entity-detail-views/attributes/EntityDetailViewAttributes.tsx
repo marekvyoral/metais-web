@@ -62,6 +62,7 @@ export const EntityDetailViewAttributes = ({
         {
             header: t('egov.name'),
             accessorFn: (row) => row?.name,
+            size: 200,
             enableSorting: true,
             id: 'name',
             meta: {
@@ -77,6 +78,7 @@ export const EntityDetailViewAttributes = ({
         {
             header: t('egov.description'),
             accessorFn: (row) => row?.description,
+            size: 200,
             enableSorting: true,
             id: 'description',
             meta: {
@@ -93,6 +95,7 @@ export const EntityDetailViewAttributes = ({
         {
             header: t('egov.technicalName'),
             accessorFn: (row) => row?.technicalName,
+            size: 200,
             enableSorting: true,
             id: 'technicalName',
             meta: {
@@ -103,6 +106,7 @@ export const EntityDetailViewAttributes = ({
         {
             header: t('egov.type'),
             accessorFn: (row) => row?.type,
+            size: 80,
             enableSorting: true,
             id: 'type',
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
@@ -110,6 +114,7 @@ export const EntityDetailViewAttributes = ({
         {
             header: t('egov.state'),
             accessorFn: (row) => row?.valid,
+            size: 80,
             enableSorting: true,
             id: 'state',
             cell: (ctx) => <span>{t(`validity.${ctx.row?.original?.valid}`)}</span>,
@@ -117,6 +122,7 @@ export const EntityDetailViewAttributes = ({
         {
             header: t('actionsInTable.actions'),
             enableSorting: true,
+            size: 80,
             id: 'actions',
             cell: (ctx) => {
                 {

@@ -90,6 +90,7 @@ export const refIdentifierColumns = (
         header: t('refIdentifiers.table.name'),
         accessorFn: (row) => row.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
         enableSorting: true,
+        size: 150,
         meta: {
             getCellContext: (ctx) => ctx.getValue(),
         },
@@ -102,6 +103,7 @@ export const refIdentifierColumns = (
     {
         id: 'uri',
         header: t('refIdentifiers.table.uri'),
+        size: 250,
         accessorFn: (row) => {
             if (row.type === RefIdentifierTypeEnum.DatovyPrvok) return row.attributes?.[ATTRIBUTE_NAME.Gen_Profil_ref_id]
             if (row.type === RefIdentifierTypeEnum.Individuum) return row.attributes?.[ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri]

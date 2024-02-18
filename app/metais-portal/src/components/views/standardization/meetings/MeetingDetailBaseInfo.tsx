@@ -29,6 +29,8 @@ import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row
 import { Can, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useMeetingsDetailPermissions'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import headerStyles from '@isdd/metais-common/src/components/entity-header/ciEntityHeader.module.scss'
+import classNames from 'classnames'
 
 import { MeetingActorsTable } from './MeetingActorsTable'
 import { MeetingExternalActorsTable } from './MeetingExternalActorsTable'
@@ -249,43 +251,39 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
         <>
             <MutationFeedback success={isActionSuccess.value} error={false} />
             <div ref={wrapperRef} />
-            <GridRow className={styles.row}>
-                <GridCol>
-                    <TextHeading size="XL">{infoData?.name}</TextHeading>
-                </GridCol>
+            <div className={headerStyles.headerDiv}>
+                <TextHeading size="XL">{infoData?.name}</TextHeading>
 
                 <Can I={Actions.EDIT} a={Subject.MEETING}>
-                    <GridCol setWidth="one-quarter">
-                        <ButtonPopup
-                            buttonLabel={t('meetings.actions')}
-                            popupPosition="right"
-                            popupContent={(closePopup) => (
-                                <div className={styles.actions}>
-                                    <Button
-                                        className={styles.marginBottom0}
-                                        type="button"
-                                        label={t('meetings.editItem')}
-                                        onClick={() => {
-                                            navigate('edit')
-                                            closePopup()
-                                        }}
-                                    />
-                                    <Button
-                                        className={styles.marginBottom0}
-                                        type="button"
-                                        variant="warning"
-                                        label={t('meetings.cancelMeeting')}
-                                        onClick={() => {
-                                            openModal()
-                                            closePopup()
-                                        }}
-                                    />
-                                </div>
-                            )}
-                        />
-                    </GridCol>
+                    <ButtonPopup
+                        buttonLabel={t('meetings.actions')}
+                        popupPosition="right"
+                        popupContent={(closePopup) => (
+                            <div className={classNames(styles.actions, headerStyles.buttonLinksDiv)}>
+                                <Button
+                                    className={styles.marginBottom0}
+                                    type="button"
+                                    label={t('meetings.editItem')}
+                                    onClick={() => {
+                                        navigate('edit')
+                                        closePopup()
+                                    }}
+                                />
+                                <Button
+                                    className={styles.marginBottom0}
+                                    type="button"
+                                    variant="warning"
+                                    label={t('meetings.cancelMeeting')}
+                                    onClick={() => {
+                                        openModal()
+                                        closePopup()
+                                    }}
+                                />
+                            </div>
+                        )}
+                    />
                 </Can>
-            </GridRow>
+            </div>
             <InformationGridRow label={t('meetings.date')} value={formatDateTimeForDefaultValue(infoData?.beginDate || '', 'dd.MM.yyyy')} hideIcon />
             <InformationGridRow label={t('meetings.start')} value={formatDateTimeForDefaultValue(infoData?.beginDate || '', 'HH:mm')} hideIcon />
             <InformationGridRow label={t('meetings.end')} value={formatDateTimeForDefaultValue(infoData?.endDate || '', 'HH:mm')} hideIcon />

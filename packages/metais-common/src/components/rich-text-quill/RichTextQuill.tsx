@@ -2,7 +2,7 @@ import { Button } from '@isdd/idsk-ui-kit'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import classNames from 'classnames'
 import { DeltaStatic, Sources } from 'quill'
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import ReactQuill from 'react-quill'
@@ -13,18 +13,20 @@ import styles from './styles.module.scss'
 import { QuillBulletListIcon, QuillLinkIcon, QuillOrderedListIcon } from '@isdd/metais-common/assets/images'
 
 export enum RichQuillButtons {
-    HEADER_1,
-    HEADER_2,
-    HEADER_3,
-    HEADER_4,
-    HEADER_5,
-    BOLD,
-    UNDERLINE,
-    ITALIC,
-    BULLET_LIST,
-    ORDERED_LIST,
-    LINK,
+    HEADER_1 = 'HEADER_1',
+    HEADER_2 = 'HEADER_2',
+    HEADER_3 = 'HEADER_3',
+    HEADER_4 = 'HEADER_4',
+    HEADER_5 = 'HEADER_5',
+    BOLD = 'BOLD',
+    UNDERLINE = 'UNDERLINE',
+    ITALIC = 'ITALIC',
+    BULLET_LIST = 'BULLET_LIST',
+    ORDERED_LIST = 'ORDERED_LIST',
+    LINK = 'LINK',
 }
+
+const QUILL_CLASSNAME_PRESSED = 'ql-active'
 
 type TextButtonsProps = {
     key: RichQuillButtons
@@ -74,19 +76,48 @@ const regex = /^(<p><br><\/p>)+$/
 
 const formats = ['header', 'bold', 'italic', 'underline', 'list', 'bullet', 'link']
 
+const useMutationObservable = ({ target, callback }: { target: Node | null; callback: MutationCallback }) => {
+    const [observer, setObserver] = useState<MutationObserver | null>(null)
+
+    useEffect(() => {
+        setObserver(new MutationObserver(callback))
+    }, [callback, setObserver])
+
+    useEffect(() => {
+        if (!target || !observer) return
+        observer.observe(target, { attributes: true, childList: true, subtree: true })
+        return () => observer?.disconnect()
+    }, [observer, target])
+}
+
 const CustomToolbar: React.FC<ICustomToolBarProps> = ({ excludeOptions, id }) => {
+    const { t } = useTranslation()
+    const wrapperRef = useRef(null)
+
+    const onMutation = useCallback((mutationList: MutationRecord[]) => {
+        mutationList.forEach((mutation) => {
+            if (mutation.attributeName === 'class') {
+                const button = mutation.target as HTMLButtonElement
+                const hasPressedClassName = button.className.includes(QUILL_CLASSNAME_PRESSED)
+                button.setAttribute('aria-pressed', String(hasPressedClassName))
+            }
+        })
+    }, [])
+
+    useMutationObservable({ target: wrapperRef.current, callback: onMutation })
+
     const icons = ReactQuill.Quill.import('ui/icons')
     icons['bold'] = '<strong>B</strong>'
     icons['underline'] = '<u>U</u>'
     icons['italic'] = '<i>I</i>'
     icons['header']['1'] = 'H1'
     icons['header']['2'] = 'H2'
-    icons['link'] = '<img src=' + QuillLinkIcon + ' />'
-    icons['list']['ordered'] = '<img src=' + QuillOrderedListIcon + ' />'
-    icons['list']['bullet'] = '<img src=' + QuillBulletListIcon + ' />'
+    icons['link'] = '<img alt="" src=' + QuillLinkIcon + ' />'
+    icons['list']['ordered'] = '<img alt="" src=' + QuillOrderedListIcon + ' />'
+    icons['list']['bullet'] = '<img alt="" src=' + QuillBulletListIcon + ' />'
 
     return (
-        <div id={id} className={styles.customToolbar}>
+        <div id={id} className={styles.customToolbar} ref={wrapperRef}>
             {RichTextButtons.filter((item) => !excludeOptions?.includes(item.key)).map((item) => (
                 <Button
                     key={item.key}
@@ -94,6 +125,7 @@ const CustomToolbar: React.FC<ICustomToolBarProps> = ({ excludeOptions, id }) =>
                     className={classNames('idsk-button', item.className)}
                     variant="secondary"
                     value={item.value}
+                    aria-label={t(`quill.buttonLabels.${item.key}`)}
                 />
             ))}
         </div>

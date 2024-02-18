@@ -275,7 +275,7 @@
     },
     "customAttributeFilter": {
         "add": "+ Pridať filter",
-        "remove": "Vymazať",
+        "remove": "Vymazať kritérium {{name}}",
         "value": {
             "label": "Hodnota",
             "labelYes": "Áno",
@@ -2245,6 +2245,7 @@
                 "title": "Definícia odpovedí",
                 "particularAnswerTitle": "odpoveď",
                 "addNext": "Pridať ďalšiu odpoveď",
+                "removeAnswer": "odpoveď {{answer}}",
                 "veto": "Povoliť právo veta",
                 "yes": "Áno, súhlasím",
                 "no": "Nie, nesúhlasím",
@@ -2254,6 +2255,7 @@
             "callVote": "Vytvoriť hlasovanie",
             "updateVote": "Upraviť hlasovanie",
             "addNextDocumentItem": "Pridať ďalší odkaz na dokument",
+            "removeDocument": "dokument {{document}}",
             "standardRequestsTable": {
                 "srName": "Názov návrhu",
                 "createdAt": "Vytvorené",
@@ -2830,6 +2832,26 @@
             "step1": "Vzťahy je možné vytvárať pomocou kariet, ktoré reprezentujú väzby na súvisiace položky.",
             "step2": "V rámci daných kariet je možne pridať položku k práve prezeranej položky kliknutím na tlačidlo „Pridať nový vzťah“, čo z hľadiska vzťahov predstavuje vytvorenie nového vzťahu medzi prezeranou položkou a už existujúcou položkou vybraného typu. ",
             "step3": "V rámci daných kariet je možné vytvoriť aj novú položku vybraného typu kliknutím na tlačidlo „Pridať novú položku a vzťah“, pričom sa okrem vytvorenia položky, vytvorí aj nový vzťah medzi práve prezeranou položkou a vytvorenou položkou. "
+        }
+    },
+    "dynamicElements": {
+        "removeItem": "Odstrániť {{subject}}",
+        "addRowErrorMessage": "Nie je možné pridať viac ako {{value}} vlastných filtrov.",
+        "addRowErrorClose": "Zatvoriť upozornenie"
+    },
+    "quill": {
+        "buttonLabels": {
+            "HEADER_1": "Nadpis prvej úrovne",
+            "HEADER_2": "Nadpis druhej úrovne",
+            "HEADER_3": "Nadpis tretej úrovne",
+            "HEADER_4": "Nadpis štvrtej úrovne",
+            "HEADER_5": "Nadpis piatej úrovne",
+            "BOLD": "Tučné",
+            "ITALIC": "Kurzíva",
+            "UNDERLINE": "Podčiarknutie",
+            "BULLET_LIST": "Odrážkový zoznam",
+            "ORDERED_LIST": "Číslovaný zoznam",
+            "LINK": "Odkaz"
         }
     }
 }
