@@ -1,4 +1,4 @@
-import { PaginatorWrapper, Table, TextBody } from '@isdd/idsk-ui-kit/index'
+import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import React from 'react'
@@ -38,11 +38,9 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             id: ColumnNames.name,
             size: 200,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    <Link to={`./${ctx.row?.original?.uuid}`} onClick={(e) => e.stopPropagation()}>
-                        {ctx.row.original.name}
-                    </Link>
-                </TextBody>
+                <Link to={`./${ctx.row?.original?.uuid}`} onClick={(e) => e.stopPropagation()}>
+                    {ctx.row.original.name}
+                </Link>
             ),
             meta: {
                 getCellContext: (ctx: CellContext<ApiSlaContractRead, unknown>) => ctx.row.original.name,
@@ -55,12 +53,8 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
                 return <span>{t('slaContracts.columns.validityStartDate')}</span>
             },
             id: ColumnNames.validityStartDate,
-            size: 200,
-            cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    {t('date', { date: ctx.row.original.validityStartDate })}
-                </TextBody>
-            ),
+            size: 120,
+            cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => t('date', { date: ctx.row.original.validityStartDate }),
             meta: {
                 getCellContext: (ctx: CellContext<ApiSlaContractRead, unknown>) => t('date', { date: ctx.row.original.validityStartDate }),
             },
@@ -72,12 +66,8 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
                 return <span>{t('slaContracts.columns.validityEndDate')}</span>
             },
             id: ColumnNames.validityEndDate,
-            size: 200,
-            cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    {t('date', { date: ctx.row.original.validityEndDate })}
-                </TextBody>
-            ),
+            size: 120,
+            cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => t('date', { date: ctx.row.original.validityEndDate }),
             meta: {
                 getCellContext: (ctx: CellContext<ApiSlaContractRead, unknown>) => t('date', { date: ctx.row.original.validityEndDate }),
             },
@@ -92,11 +82,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             size: 200,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => {
                 const contractPhaseEnum = contractPhaseData?.enumItems?.find((item) => item.code === ctx.row.original.phase)
-                return (
-                    <TextBody size="S" className={'marginBottom0'}>
-                        {i18n.language === Languages.SLOVAK ? contractPhaseEnum?.description : contractPhaseEnum?.engDescription}
-                    </TextBody>
-                )
+                return i18n.language === Languages.SLOVAK ? contractPhaseEnum?.description : contractPhaseEnum?.engDescription
             },
             meta: {
                 getCellContext: (ctx: CellContext<ApiSlaContractRead, unknown>) => {
@@ -113,11 +99,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             },
             id: ColumnNames.consumerIsvs,
             size: 200,
-            cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    {ctx.row.original.consumerIsvs?.name}
-                </TextBody>
-            ),
+            cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => ctx.row.original.consumerIsvs?.name,
             meta: {
                 getCellContext: (ctx: CellContext<ApiSlaContractRead, unknown>) => ctx.row.original.consumerIsvs?.name,
             },
@@ -130,11 +112,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             },
             id: ColumnNames.providerIsvs,
             size: 200,
-            cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    {ctx.row.original.providerIsvs?.name}
-                </TextBody>
-            ),
+            cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => ctx.row.original.providerIsvs?.name,
             meta: {
                 getCellContext: (ctx: CellContext<ApiSlaContractRead, unknown>) => ctx.row.original.providerIsvs?.name,
             },

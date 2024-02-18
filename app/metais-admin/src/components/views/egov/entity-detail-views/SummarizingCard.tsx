@@ -26,6 +26,7 @@ export const SummarizingCard = ({ data, setSummarizingCardData }: SummCardProps)
         {
             header: t('egov.name'),
             accessorFn: (row) => row?.attribute?.name,
+            size: 200,
             enableSorting: true,
             id: 'name',
             meta: {
@@ -37,6 +38,7 @@ export const SummarizingCard = ({ data, setSummarizingCardData }: SummCardProps)
         {
             header: t('egov.description'),
             accessorFn: (row) => row?.attribute?.description,
+            size: 200,
             enableSorting: true,
             id: 'description',
             meta: {

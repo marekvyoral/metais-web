@@ -159,6 +159,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
             accessorFn: (row) => {
                 return row?.attributes?.find((i) => i.name === ATTRIBUTE_NAME.Gen_Profil_nazov)?.value
             },
+            size: 200,
             enableSorting: false,
             id: 'name',
             meta: {
@@ -168,6 +169,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
         },
         {
             header: t('table.ico'),
+            size: 80,
             accessorFn: (row) => {
                 return row?.attributes?.find((i) => i.name === ATTRIBUTE_NAME.EA_Profil_PO_ico)?.value
             },

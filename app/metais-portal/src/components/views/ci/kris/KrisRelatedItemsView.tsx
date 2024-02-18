@@ -1,4 +1,4 @@
-import { PaginatorWrapper, Table, Tabs, TextBody } from '@isdd/idsk-ui-kit/index'
+import { PaginatorWrapper, Table, Tabs } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,7 @@ import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swag
 import { Link } from 'react-router-dom'
 
 import { KrisData, KrisKeysToDisplayType, KrisRelatedPagination } from '@/components/containers/KrisRelatedContainer'
+import { LangWrapper } from '@/components/lang-wrapper/LangWrapper'
 
 type Props = {
     handleFilterChange: (pageNumber: number, pageSize: number, krisTabType: string) => void
@@ -43,9 +44,9 @@ export const KrisRelatedItemsView: React.FC<Props> = ({
             accessorFn: (row) => row.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
             header: t('KRIS.table.name'),
             cell: (ctx: CellContext<ConfigurationItemUi, unknown>) => (
-                <TextBody lang={setEnglishLangForAttr(ATTRIBUTE_NAME.Gen_Profil_nazov)} size="S" className={'marginBottom0'}>
+                <LangWrapper lang={setEnglishLangForAttr(ATTRIBUTE_NAME.Gen_Profil_nazov)}>
                     <Link to={`/ci/${currentTab}/${ctx.row.original.uuid}`}>{ctx.getValue() as string}</Link>
-                </TextBody>
+                </LangWrapper>
             ),
             meta: {
                 getCellContext: (ctx: CellContext<ConfigurationItemUi, unknown>) => {
@@ -59,9 +60,7 @@ export const KrisRelatedItemsView: React.FC<Props> = ({
             accessorFn: (row) => row.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais],
             header: t('KRIS.table.code'),
             cell: (ctx: CellContext<ConfigurationItemUi, unknown>) => (
-                <TextBody lang={setEnglishLangForAttr(ATTRIBUTE_NAME.Gen_Profil_nazov)} size="S" className={'marginBottom0'}>
-                    {ctx.getValue() as string}
-                </TextBody>
+                <LangWrapper lang={setEnglishLangForAttr(ATTRIBUTE_NAME.Gen_Profil_nazov)}>{ctx.getValue() as string}</LangWrapper>
             ),
             meta: {
                 getCellContext: (ctx: CellContext<ConfigurationItemUi, unknown>) => {
@@ -75,9 +74,7 @@ export const KrisRelatedItemsView: React.FC<Props> = ({
             accessorFn: (row) => row.metaAttributes?.[MetainformationColumns.STATE],
             header: t('KRIS.table.state'),
             cell: (ctx: CellContext<ConfigurationItemUi, unknown>) => (
-                <TextBody lang={setEnglishLangForAttr(ATTRIBUTE_NAME.Gen_Profil_nazov)} size="S" className={'marginBottom0'}>
-                    {t(`metaAttributes.state.${ctx.getValue()}`)}
-                </TextBody>
+                <LangWrapper lang={setEnglishLangForAttr(ATTRIBUTE_NAME.Gen_Profil_nazov)}>{t(`metaAttributes.state.${ctx.getValue()}`)}</LangWrapper>
             ),
             meta: {
                 getCellContext: (ctx: CellContext<ConfigurationItemUi, unknown>) => {

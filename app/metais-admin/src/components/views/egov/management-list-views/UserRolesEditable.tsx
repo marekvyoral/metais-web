@@ -40,6 +40,7 @@ export const UserRolesEditable: React.FC<IUserRoles> = ({ editedUserOrgAndRoles,
         {
             id: RoleTableSummaryEnum.DESCRIPTION,
             accessorKey: RoleTableSummaryEnum.DESCRIPTION,
+            size: 200,
             header: t('managementList.tableHeaderDescription'),
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
@@ -48,6 +49,7 @@ export const UserRolesEditable: React.FC<IUserRoles> = ({ editedUserOrgAndRoles,
         {
             id: RoleTableSummaryEnum.DELETE,
             accessorFn: (row) => row,
+            size: 50,
             header: '',
             cell: (row) => {
                 const rowObject = row.getValue() as RoleTableSummary

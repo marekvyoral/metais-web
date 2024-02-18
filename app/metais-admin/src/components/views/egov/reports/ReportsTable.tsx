@@ -25,12 +25,14 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handle
     const columns: Array<ColumnDef<TableCols>> = [
         {
             accessorFn: (row) => row?.lookupKey,
+            size: 150,
             header: t('report.table.identificator'),
             id: 'reports.table.identificator',
             cell: (row) => row.getValue() as string,
         },
         {
             header: t('report.table.name'),
+            size: 200,
             id: 'reports.table.name',
             cell: (ctx) => (
                 <Link to={'./' + ctx.row.original.lookupKey ?? ''} className="govuk-link">
@@ -40,18 +42,21 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handle
         },
         {
             accessorFn: (row) => row?.description,
+            size: 200,
             header: t('report.table.description'),
             id: 'reports.table.description',
             cell: (row) => row.getValue() as string,
         },
         {
             accessorFn: (row) => row?.category?.name,
+            size: 150,
             header: t('report.table.category'),
             id: 'reports.table.category',
             cell: (row) => row.getValue() as string,
         },
         {
             accessorFn: (row) => row?.publikovany,
+            size: 120,
             header: t('report.table.published'),
             id: 'reports.table.published',
             cell: (row) => (row.getValue() ? t('report.publishedTrue') : t('report.publishedFalse')),

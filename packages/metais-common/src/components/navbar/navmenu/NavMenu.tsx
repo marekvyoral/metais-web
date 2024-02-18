@@ -6,19 +6,24 @@ import { Link, useLocation } from 'react-router-dom'
 import { NavMenuList } from './NavMenuList'
 import { closeOnClickOutside, closeOnEscapeKey } from './navMenuUtils'
 
+import { NewItemButtonPopup } from '@isdd/metais-common/components/navbar/navbar-main/NewItemButtonPopup'
 import { useCurrentTab } from '@isdd/metais-common/hooks/useCurrentTab'
 import { NavLogin } from '@isdd/metais-common/components/navbar/navbar-main/NavLogin'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
-import { NavigationItem } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationItem, RegistrationRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { PORTAL_URL } from '@isdd/metais-common/constants'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 interface INavMenu {
     isMenuExpanded: boolean
     setIsMenuExpanded: React.Dispatch<SetStateAction<boolean>>
     navItems: NavigationItem[]
+    isLoginApp?: boolean
+    isAdmin?: boolean
 }
 
-export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded, navItems }) => {
+export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded, navItems, isAdmin, isLoginApp }) => {
     const { t } = useTranslation()
 
     const [activeTab, setActiveTab] = useState<string | undefined>()
@@ -55,16 +60,21 @@ export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded,
                     <div className="govuk-grid-column-full">
                         <div className="idsk-header-web__main--buttons">
                             {user ? (
-                                <button className={classNames('idsk-button idsk-button--secondary', styles.noWrap)}>{t('navbar.newItem')}</button>
+                                !isAdmin && <NewItemButtonPopup />
                             ) : (
                                 <div className={classNames(styles.registerLink, styles.fullWidth)}>
-                                    <Link className="govuk-link" to="#" onClick={(e) => e.preventDefault()} state={{ from: location }}>
+                                    <Link
+                                        onClick={() => setIsMenuExpanded(false)}
+                                        className="govuk-link"
+                                        to={isLoginApp ? PORTAL_URL + RegistrationRoutes.REGISTRATION : RegistrationRoutes.REGISTRATION}
+                                        state={{ from: location }}
+                                    >
                                         {t('navbar.registration')}
                                     </Link>
                                 </div>
                             )}
-
                             <NavLogin />
+                            <Spacer vertical />
                         </div>
                     </div>
                 </div>

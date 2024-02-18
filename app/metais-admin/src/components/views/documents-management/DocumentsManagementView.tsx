@@ -90,6 +90,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
         {
             header: t('documentsManagement.name'),
             accessorFn: (row) => row?.name,
+            size: 200,
             enableSorting: true,
             id: 'name',
             cell: (ctx) => ctx?.getValue?.() as string,
@@ -98,6 +99,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
         {
             header: t('egov.engName'),
             accessorFn: (row) => row?.nameEng,
+            size: 200,
             enableSorting: true,
             id: 'nameEng',
             cell: (ctx) => ctx?.getValue?.() as string,
@@ -106,6 +108,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
         {
             header: t('documentsManagement.description'),
             accessorFn: (row) => row?.description,
+            size: 200,
             enableSorting: true,
             id: 'description',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
@@ -113,6 +116,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
         {
             header: t('egov.engDescription'),
             accessorFn: (row) => row?.descriptionEng,
+            size: 200,
             enableSorting: true,
             id: 'descriptionEng',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },

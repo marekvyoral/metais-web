@@ -35,6 +35,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
         {
             id: 'codelistName',
             header: t('codeListList.table.name'),
+            size: 150,
             accessorFn: (row) => row.codelistNames,
             enableSorting: true,
             meta: {
@@ -66,6 +67,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
         {
             id: 'codelistState',
             header: t('codeListList.table.state'),
+            size: 150,
             accessorFn: (row) => row.codelistState,
             enableSorting: true,
             cell: (row) => {

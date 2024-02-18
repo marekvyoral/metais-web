@@ -55,6 +55,7 @@ const RoleListView: React.FC<RoleListViewParams> = ({
         },
         {
             id: 'description',
+            size: 200,
             header: t('adminRolesPage.description'),
             accessorFn: (row) => row.description,
             meta: {
@@ -97,7 +98,6 @@ const RoleListView: React.FC<RoleListViewParams> = ({
         {
             id: 'edit',
             header: () => <></>,
-            size: 200,
             cell: ({ cell }) => (
                 <ButtonPopup
                     key={cell.id}

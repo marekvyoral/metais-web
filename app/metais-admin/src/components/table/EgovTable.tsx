@@ -120,6 +120,7 @@ export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort
         {
             header: t('egov.name'),
             accessorFn: (row) => row?.name,
+            size: 150,
             enableSorting: true,
             id: 'name',
             meta: {
@@ -134,6 +135,7 @@ export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort
         {
             header: t('egov.technicalName'),
             accessorFn: (row) => row?.technicalName,
+            size: 200,
             enableSorting: true,
             id: 'technicalName',
             meta: {

@@ -87,7 +87,7 @@ export const RoleUsersView: React.FC<IRoleUsersViewParams> = ({ roleId, data, is
                 getCellContext: (ctx: CellContext<IRelatedIdentitiesTableData, unknown>) => ctx?.getValue?.(),
             },
         },
-    ].map((e) => ({ id: e.technicalName, header: e.name, accessorKey: e.technicalName, enableSorting: true, meta: e.meta }))
+    ].map((e) => ({ id: e.technicalName, header: e.name, accessorKey: e.technicalName, enableSorting: true, meta: e.meta, size: 300 }))
 
     return (
         <>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useBackButtonNavigate } from '@isdd/metais-common/src/hooks/useBackButtonNavigate'
 import classNames from 'classnames'
 import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce'
@@ -21,6 +21,7 @@ type BreadCrumbsProps = {
 const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({ icon, href, label, toLogin }) => {
     const { backButtonNavigate } = useBackButtonNavigate(href)
     const { login } = useContext<IAuthContext>(AuthContext)
+    const { pathname } = useLocation()
 
     //to work properly Link component must send state with location
     // location = useLocation()
@@ -37,7 +38,12 @@ const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({ icon, href, label, to
 
     return (
         <li className="govuk-breadcrumbs__list-item">
-            <Link className="govuk-breadcrumbs__link" to="#" onClick={(e) => handleNavigate(e)}>
+            <Link
+                className="govuk-breadcrumbs__link"
+                to={href}
+                onClick={(e) => handleNavigate(e)}
+                aria-current={href === pathname ? 'page' : undefined}
+            >
                 {icon && <img src={icon} alt="" className={styles.linkIcon} />}
                 {label}
             </Link>

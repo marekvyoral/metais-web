@@ -135,7 +135,7 @@ export const Table = <T,>({
         manualPagination: manualPagination,
         getRowCanExpand: getExpandedRow ? (row) => !!getExpandedRow(row) : undefined,
         defaultColumn: {
-            size: undefined,
+            size: 100,
         },
     })
 

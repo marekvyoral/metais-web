@@ -167,6 +167,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
         {
             id: 'codelistName',
             header: t('codeListList.table.name'),
+            size: 150,
             accessorFn: (row) => row.codelistNames,
             enableSorting: true,
             meta: {
@@ -190,6 +191,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
             id: 'mainGestor',
             header: t('codeListList.table.mainGestor'),
             accessorFn: (row) => row.mainCodelistManagers,
+            size: 150,
             meta: {
                 getCellContext: (ctx) => getMainGestor(ctx.getValue() as ApiCodelistManager[], data?.roleParticipants || []),
             },

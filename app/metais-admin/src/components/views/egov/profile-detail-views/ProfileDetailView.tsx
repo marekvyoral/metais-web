@@ -150,6 +150,7 @@ export const ProfileDetailView = <T,>({
         {
             header: t('egov.name'),
             accessorFn: (row) => row?.name,
+            size: 200,
             enableSorting: true,
             id: 'name',
             meta: {
@@ -169,6 +170,7 @@ export const ProfileDetailView = <T,>({
         {
             header: t('egov.engName'),
             accessorFn: (row) => row?.engName,
+            size: 200,
             enableSorting: true,
             id: 'engName',
             meta: {
@@ -189,6 +191,7 @@ export const ProfileDetailView = <T,>({
         {
             header: t('egov.description'),
             accessorFn: (row) => row?.description,
+            size: 200,
             enableSorting: true,
             id: 'description',
             meta: {
@@ -208,6 +211,7 @@ export const ProfileDetailView = <T,>({
         {
             header: t('egov.engDescription'),
             accessorFn: (row) => row?.engDescription,
+            size: 200,
             enableSorting: true,
             id: 'engDescription',
             meta: {
@@ -239,6 +243,7 @@ export const ProfileDetailView = <T,>({
         {
             header: t('egov.technicalName'),
             accessorFn: (row) => row?.technicalName,
+            size: 200,
             enableSorting: true,
             id: 'technicalName',
             meta: {
@@ -402,13 +407,7 @@ export const ProfileDetailView = <T,>({
                 </div>
                 <div>
                     <TextHeading size="M">{t('egov.detail.profileAttributes')}</TextHeading>
-                    <Table
-                        columns={columns.map((column) => ({ ...column, size: 100 }))}
-                        data={profileData?.attributes ?? []}
-                        manualSorting={false}
-                        sort={sort}
-                        onSortingChange={setSort}
-                    />
+                    <Table columns={columns} data={profileData?.attributes ?? []} manualSorting={false} sort={sort} onSortingChange={setSort} />
                     <div className={styles.underTableButton}>
                         <Button
                             label={t('egov.create.back')}

@@ -7,6 +7,7 @@ import { CHECKBOX_CELL, TOOLTIP_TEXT_BREAKER } from './constants'
 import styles from './table.module.scss'
 
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
+import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 
 interface ITableRowProps<T> {
     row: Row<T>
@@ -113,7 +114,9 @@ export const TableRow = <T,>({
                         key={cell.id}
                         id={cell.column.id}
                     >
-                        {cellContent}
+                        <TextBody size="S" className={'marginBottom0'}>
+                            {cellContent}
+                        </TextBody>
                     </th>
                 ) : (
                     <td
@@ -126,7 +129,9 @@ export const TableRow = <T,>({
                         key={cell.id}
                         headers={`${cell.column.id} ${verticalHeaderColId}`}
                     >
-                        {cellContent}
+                        <TextBody size="S" className={'marginBottom0'}>
+                            {cellContent}
+                        </TextBody>
                     </td>
                 )
             })}

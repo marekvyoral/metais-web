@@ -286,7 +286,13 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                 <TextHeading size="L">{t('votes.voteEdit.documents.title')}</TextHeading>
                 <TextHeading size="M">{t('votes.voteEdit.documents.subtitle')}</TextHeading>
 
-                <LinksImport defaultValues={existingVoteDataToEdit?.links} register={register} unregister={unregister} errors={formState.errors} />
+                <LinksImport
+                    defaultValues={existingVoteDataToEdit?.links}
+                    register={register}
+                    unregister={unregister}
+                    watch={watch}
+                    errors={formState.errors}
+                />
 
                 <FileUpload
                     ref={fileUploadRef}
@@ -350,6 +356,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                 <AnswerDefinitions
                     register={register}
                     unregister={unregister}
+                    watch={watch}
                     initialValues={existingVoteDataToEdit?.voteChoices ?? defaultAnswerDefinitionsValues(t)}
                     errors={formState.errors}
                 />

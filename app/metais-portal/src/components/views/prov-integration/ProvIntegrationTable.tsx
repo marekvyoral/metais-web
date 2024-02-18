@@ -1,4 +1,4 @@
-import { PaginatorWrapper, Table, TextBody } from '@isdd/idsk-ui-kit/index'
+import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import { ApiIntegrationLink } from '@isdd/metais-common/api/generated/provisioning-swagger'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
@@ -36,11 +36,9 @@ export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange
             id: ColumnNames.integrationName,
             size: 200,
             cell: (ctx: CellContext<ApiIntegrationLink, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    <Link to={`./${ctx.row?.original?.uuid}`} onClick={(e) => e.stopPropagation()}>
-                        {ctx.row.original.name}
-                    </Link>
-                </TextBody>
+                <Link to={`./${ctx.row?.original?.uuid}`} onClick={(e) => e.stopPropagation()}>
+                    {ctx.row.original.name}
+                </Link>
             ),
             meta: {
                 getCellContext: (ctx: CellContext<ApiIntegrationLink, unknown>) => ctx.row.original.name,
@@ -54,11 +52,7 @@ export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange
             },
             id: ColumnNames.providingProjects,
             size: 200,
-            cell: (ctx: CellContext<ApiIntegrationLink, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    {ctx.row.original.providingProject?.name}
-                </TextBody>
-            ),
+            cell: (ctx: CellContext<ApiIntegrationLink, unknown>) => ctx.row.original.providingProject?.name,
             meta: {
                 getCellContext: (ctx: CellContext<ApiIntegrationLink, unknown>) => ctx.row.original.providingProject?.name,
             },
@@ -71,11 +65,7 @@ export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange
             },
             id: ColumnNames.consumingProjects,
             size: 200,
-            cell: (ctx: CellContext<ApiIntegrationLink, unknown>) => (
-                <TextBody size="S" className={'marginBottom0'}>
-                    {ctx.row.original.consumingProject?.name}
-                </TextBody>
-            ),
+            cell: (ctx: CellContext<ApiIntegrationLink, unknown>) => ctx.row.original.consumingProject?.name,
             meta: {
                 getCellContext: (ctx: CellContext<ApiIntegrationLink, unknown>) => ctx.row.original.consumingProject?.name,
             },
@@ -90,11 +80,7 @@ export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange
             size: 200,
             cell: (ctx: CellContext<ApiIntegrationLink, unknown>) => {
                 const dizStateEnum = dizStateData?.enumItems?.find((item) => item.code === ctx.row.original.dizStatus)
-                return (
-                    <TextBody size="S" className={'marginBottom0'}>
-                        {i18n.language === Languages.SLOVAK ? dizStateEnum?.description : dizStateEnum?.engDescription}
-                    </TextBody>
-                )
+                return i18n.language === Languages.SLOVAK ? dizStateEnum?.description : dizStateEnum?.engDescription
             },
             meta: {
                 getCellContext: (ctx: CellContext<ApiIntegrationLink, unknown>) => {

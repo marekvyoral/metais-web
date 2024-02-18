@@ -168,6 +168,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
     columns.push({
         id: 'codelistNames',
         header: t('codeListDetail.table.name'),
+        size: 150,
         accessorFn: (row) => row.codelistItemNames,
         enableSorting: true,
         meta: {

@@ -14,6 +14,7 @@ interface DynamicElementsProps<T extends object> {
     initialElementsData?: T[]
     defaultRenderableComponentData: T
     addItemButtonLabelText: string
+    removeLabelSubject: (index: number) => string
     nonRemovableElementIndexes?: number[]
     renderableComponent: (index: number | undefined, data: RenderableComponentProps<T>) => React.ReactNode | undefined
     setValue?: UseFormSetValue<T>
@@ -27,6 +28,7 @@ export const DynamicElements: <T extends object>({
     initialElementsData = [],
     defaultRenderableComponentData,
     addItemButtonLabelText,
+    removeLabelSubject,
     nonRemovableElementIndexes,
     renderableComponent,
     onChange,
@@ -54,7 +56,7 @@ export const DynamicElements: <T extends object>({
             setDynamicElementsData([...dynamicElementsData, defaultRenderableComponentData])
             onChange?.([...dynamicElementsData, defaultRenderableComponentData])
         } else {
-            setAddRowError(t('customAttributeFilter.addRowErrorMessage', { value: MAX_DYNAMIC_ATTRIBUTES_LENGHT }))
+            setAddRowError(t('dynamicElements.addRowErrorMessage', { value: MAX_DYNAMIC_ATTRIBUTES_LENGHT }))
         }
     }
 
@@ -72,6 +74,7 @@ export const DynamicElements: <T extends object>({
                     defaultRowData={elementData}
                     renderableComponent={renderableComponent}
                     remove={removeRow}
+                    removeLabelSubject={removeLabelSubject(index)}
                     doNotRemove={doNotRemove(index)}
                     onChange={(newData) => {
                         const copyDynamicElementsData = [...dynamicElementsData]
@@ -81,12 +84,14 @@ export const DynamicElements: <T extends object>({
                     }}
                 />
             ))}
-            {addRowError && (
-                <div className={style.addRowErrorDiv}>
-                    <TextWarning>{addRowError}</TextWarning>
-                    <ButtonLink label={t('dynamicElements.addRowErrorClose')} onClick={() => setAddRowError('')} />
-                </div>
-            )}
+            <div className={style.addRowErrorDiv} aria-live="polite" role="alert">
+                {addRowError && (
+                    <>
+                        <TextWarning>{addRowError}</TextWarning>
+                        <ButtonLink label={t('dynamicElements.addRowErrorClose')} onClick={() => setAddRowError('')} />
+                    </>
+                )}
+            </div>
             <div className={style.spaceVertical}>
                 <ButtonLink label={addItemButtonLabelText} className={style.addButton} type="button" onClick={addRow} />
             </div>

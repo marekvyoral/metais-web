@@ -1298,8 +1298,9 @@
                 "get": "GET",
                 "post": "POST"
             },
-            "generalInputPlaceholder": "enter",
-            "addNextHttpHeaderItem": "add Request Header",
+            "generalInputPlaceholder": "Enter",
+            "addNextHttpHeaderItem": "Add Request Header",
+            "remove": "Remove header {{header}}",
             "name": "Name",
             "value": "Value",
             "editHttpRequestHeader": "Edit Request headers",
@@ -1410,5 +1411,25 @@
         "requiredText": "Text (required)",
         "color": "Color",
         "status": "Status"
+    },
+    "dynamicElements": {
+        "removeItem": "Remove {{subject}}",
+        "addRowErrorMessage": "You can not add more than {{value}} custom filters.",
+        "addRowErrorClose": "Close warning"
+    },
+    "quill": {
+        "buttonLabels": {
+            "HEADER_1": "First level heading",
+            "HEADER_2": "Second level heading",
+            "HEADER_3": "Third level heading",
+            "HEADER_4": "Fourth level heading",
+            "HEADER_5": "Fifth level heading",
+            "BOLD": "Bold",
+            "ITALIC": "Italic",
+            "UNDERLINE": "Underline",
+            "BULLET_LIST": "Bullet List",
+            "ORDERED_LIST": "Numbered List",
+            "LINK": "Link"
+        }
     }
 }

@@ -20,10 +20,10 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import headerStyles from '@isdd/metais-common/src/components/entity-header/ciEntityHeader.module.scss'
 
 import { CodeListDetailItemsWrapper } from './CodeListDetailItemsWrapper'
 import { getAllWorkingLanguages, selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
-import styles from './codeList.module.scss'
 import { ExportCodeListModal } from './components/modals/ExportCodeListModal/ExportCodeListModal'
 import { ImportCodeListModal } from './components/modals/ImportCodeListModal/ImportCodeListModal'
 import { NewLanguageVersionModal } from './components/modals/NewLanguageVersionModal/NewLanguageVersionModal'
@@ -170,7 +170,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                 {isMutationSuccess && <TextWarning>{t('codeListDetail.feedback.translationWarning')}</TextWarning>}
                 <QueryFeedback loading={isLoading || !!isAbilityLoading} error={false} withChildren>
                     {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
-                    <div className={styles.headerDiv}>
+                    <div className={headerStyles.headerDiv}>
                         <TextHeading size="XL">{title}</TextHeading>
                         <ButtonGroupRow>
                             <ButtonPopup
@@ -178,7 +178,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                                 popupPosition="left"
                                 popupContent={() => {
                                     return (
-                                        <div className={styles.buttonLinksDiv}>
+                                        <div className={headerStyles.buttonLinksDiv}>
                                             {getAllWorkingLanguages(data.codeListOriginal).map((language) => (
                                                 <ButtonLink
                                                     key={language}
@@ -203,7 +203,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                                 popupPosition="right"
                                 popupContent={() => {
                                     return (
-                                        <div className={styles.buttonLinksDiv}>
+                                        <div className={headerStyles.buttonLinksDiv}>
                                             <Can I={Actions.EXPORT} a={Subjects.DETAIL}>
                                                 <ButtonLink
                                                     key={'export'}

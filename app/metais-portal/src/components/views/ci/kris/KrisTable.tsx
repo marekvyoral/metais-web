@@ -1,4 +1,4 @@
-import { Table, TextBody } from '@isdd/idsk-ui-kit'
+import { Table } from '@isdd/idsk-ui-kit'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -17,6 +17,7 @@ import {
     reduceAttributesByTechnicalName,
     useGetColumnsFromApiCellContent,
 } from '@/componentHelpers/ci/ciTableHelpers'
+import { LangWrapper } from '@/components/lang-wrapper/LangWrapper'
 
 export interface IRowSelectionState {
     rowSelection: Record<string, ColumnsOutputDefinition>
@@ -73,9 +74,9 @@ export const KrisTable: React.FC<ICiTable> = ({
             id: technicalName ?? '',
             size: index === 0 ? 300 : 200,
             cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
-                <TextBody lang={setEnglishLangForAttr(technicalName ?? '')} size="S" className={'marginBottom0'}>
+                <LangWrapper lang={setEnglishLangForAttr(technicalName ?? '')}>
                     {getColumnsFromApiCellContent({ index, ctx, technicalName, schemaAttributes, data, rowSelectionState })}
-                </TextBody>
+                </LangWrapper>
             ),
             meta: {
                 getCellContext: (ctx: CellContext<ColumnsOutputDefinition, unknown>) =>

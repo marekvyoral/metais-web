@@ -59,6 +59,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
         {
             id: 'startCiName',
             header: t('relationshipList.startName'),
+            size: 200,
             accessorFn: (row) => row.startName,
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
@@ -87,6 +88,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
         {
             id: 'endCiName',
             header: t('relationshipList.endName'),
+            size: 200,
             accessorFn: (row) => row.endName,
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
@@ -106,6 +108,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
         {
             id: 'type',
             header: t('relationshipList.relType'),
+            size: 150,
             accessorFn: (row) => row.type,
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),

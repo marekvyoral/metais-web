@@ -276,7 +276,7 @@
     },
     "customAttributeFilter": {
         "add": "+ Add filter",
-        "remove": "Remove",
+        "remove": "Remove criteria {{name}}",
         "value": {
             "label": "Value",
             "labelYes": "Yes",
@@ -2236,6 +2236,7 @@
                 "title": "Answer definitions",
                 "particularAnswerTitle": "Answer",
                 "addNext": "Add next definition",
+                "removeAnswer": "answer {{answer}}",
                 "veto": "Allow veto right",
                 "yes": "Yes",
                 "no": "No",
@@ -2245,6 +2246,7 @@
             "callVote": "Create vote",
             "updateVote": "Edit vote",
             "addNextDocumentItem": "Add next document",
+            "removeDocument": "document {{document}}",
             "standardRequestsTable": {
                 "srName": "Draft name",
                 "createdAt": "created At",
@@ -2823,6 +2825,26 @@
             "step1": "Relationships can be created using cards that represent links to related items.",
             "step2": "Within the given tabs, it is possible to add an item to the currently viewed item by clicking the 'Add new relationship' button, which in terms of relationships represents the creation of a new relationship between the viewed item and an existing item of the selected type.",
             "step3": "Within the given cards, it is also possible to create a new item of the selected type by clicking the 'Add new item and relationship' button, while in addition to creating the item, a new relationship is also created between the currently viewed item and the created item.."
+        }
+    },
+    "dynamicElements": {
+        "removeItem": "Remove {{subject}}",
+        "addRowErrorMessage": "You can not add more than {{value}} custom filters.",
+        "addRowErrorClose": "Close warning"
+    },
+    "quill": {
+        "buttonLabels": {
+            "HEADER_1": "First level heading",
+            "HEADER_2": "Second level heading",
+            "HEADER_3": "Third level heading",
+            "HEADER_4": "Fourth level heading",
+            "HEADER_5": "Fifth level heading",
+            "BOLD": "Bold",
+            "ITALIC": "Italic",
+            "UNDERLINE": "Underline",
+            "BULLET_LIST": "Bullet List",
+            "ORDERED_LIST": "Numbered List",
+            "LINK": "Link"
         }
     }
 }

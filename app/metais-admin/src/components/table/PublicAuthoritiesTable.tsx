@@ -52,6 +52,7 @@ export const PublicAuthoritiesTable = ({
         {
             header: t('table.name'),
             accessorFn: (row) => row?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+            size: 200,
             enableSorting: true,
             id: ATTRIBUTE_NAME.Gen_Profil_nazov,
             meta: {
@@ -76,6 +77,7 @@ export const PublicAuthoritiesTable = ({
         {
             header: t('table.adress'),
             accessorFn: (row) => createFullAdressFromAttributes(row.attributes),
+            size: 150,
             enableSorting: true,
             id: 'adress',
             meta: {
