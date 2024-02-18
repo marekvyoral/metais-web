@@ -1,5 +1,5 @@
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
-import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
+import { KSIVS_SHORT_NAME, META_IS_TITLE } from '@isdd/metais-common/constants'
 import { User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { AbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
@@ -171,7 +171,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
         refetch()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter, id, membersUpdated])
-
+    document.title = `${t('titles.groupDetail')} ${group?.shortName ?? ''} ${META_IS_TITLE}`
     return (
         <View
             isIdentitiesError={isIdentitiesError}

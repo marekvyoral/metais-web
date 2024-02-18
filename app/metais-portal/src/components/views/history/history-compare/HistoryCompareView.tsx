@@ -7,6 +7,7 @@ import { DefinitionList } from '@isdd/metais-common/components/definition-list/D
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { HistoryCompareItemView } from './HistoryCompareItemView'
 import { RelationCompareItemView } from './RelationCompareItemView'
@@ -38,7 +39,7 @@ export const HistoryCompareView: React.FC<IHistoryItemsCompareContainerView> = (
     const heading = t('historyTab.comparingHistory', {
         itemName: dataFirst?.item?.attributes?.find((att: { name: string; value: string }) => att?.name == ATTRIBUTE_NAME.Gen_Profil_nazov)?.value,
     })
-    document.title = `${heading} | MetaIS`
+    document.title = `${heading} ${META_IS_TITLE}`
 
     const getEnumValue = (enumAttribute: AttributeConstraintEnumAllOf, value: string): string => {
         if (!enumAttribute) {

@@ -14,7 +14,7 @@ const NotificationsDetailPage = () => {
         <NotificationsDetailContainer
             id={id}
             View={(props) => {
-                document.title = `${t('titles.notificationDetail', { itemName: props.data?.messagePerex })} ${META_IS_TITLE}`
+                document.title = `${t('titles.notificationDetail', { itemName: props.data?.messagePerex ?? '' })} ${META_IS_TITLE}`
                 return <NotificationsDetailView id={props.id} data={props.data} isError={props.isError} isLoading={props.isLoading} />
             }}
         />

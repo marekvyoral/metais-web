@@ -1,6 +1,6 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
-import { ENTITY_PROJECT } from '@isdd/metais-common/constants'
+import { ENTITY_PROJECT, META_IS_TITLE } from '@isdd/metais-common/constants'
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
 import { Languages } from '@isdd/metais-common/localization/languages'
@@ -24,7 +24,10 @@ const EditProjectPage = () => {
             ? ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
             : ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]
 
-    document.title = `${t('titles.ciEdit', { ci: ciTypeData?.name, itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })} | MetaIS`
+    document.title = `${t('titles.ciEdit', {
+        ci: ciTypeData?.name,
+        itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+    })} ${META_IS_TITLE}`
 
     return (
         <>

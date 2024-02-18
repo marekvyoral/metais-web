@@ -1,7 +1,7 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
+import { CI_ITEM_QUERY_KEY, META_IS_TITLE } from '@isdd/metais-common/constants'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,7 +19,7 @@ export const IntegrationLinkDetailPage: React.FC = () => {
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
-    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
+
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
@@ -30,7 +30,10 @@ export const IntegrationLinkDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
-
+    document.title = `${t('titles.ciDetail', {
+        ci: ciTypeName,
+        itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+    })} ${META_IS_TITLE}`
     const userAbility = useUserAbility()
     const tabList = getIntegrationLinkTabList({ entityName: entityName ?? '', entityId: entityId ?? '', t, userAbility })
 

@@ -2,6 +2,7 @@ import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
 import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { RefCatalogInfoView } from './RefCatalogInfoView'
 import { RefDataItemInfoView } from './RefDataItemInfoView'
@@ -73,7 +74,9 @@ export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewP
                 return <></>
         }
     }
-
+    document.title = `${t('titles.refIdentifiers')} - ${
+        ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName')
+    } ${META_IS_TITLE}`
     return (
         <>
             <BreadCrumbs

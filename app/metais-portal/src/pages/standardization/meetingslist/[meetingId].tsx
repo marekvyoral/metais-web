@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import MeetingDetailContainer from '@/components/containers/standardization/meetings/MeetingDetailContainer'
 import MeetingDetailView from '@/components/views/standardization/meetings/MeetingDetailView'
@@ -13,7 +14,7 @@ const MeetingDetailPage: React.FC = () => {
         <MeetingDetailContainer
             meetingId={Number(meetingId) ?? ''}
             View={(props) => {
-                document.title = `${t('titles.meetingDetail', { itemName: props.meetingDetailData?.name })} | MetaIS`
+                document.title = `${t('titles.meetingDetail', { itemName: props.meetingDetailData?.name })} ${META_IS_TITLE}`
 
                 return (
                     <MeetingDetailView

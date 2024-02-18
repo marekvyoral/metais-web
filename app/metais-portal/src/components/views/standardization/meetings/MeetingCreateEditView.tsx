@@ -35,7 +35,8 @@ import { LinksImport } from '@/components/LinksImport/LinksImport'
 
 export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, isLoading, isError }) => {
     const { t } = useTranslation()
-    document.title = formatTitleString(`${t('meetings.editMeeting')} - ${infoData?.name}`)
+    const titleDetailName = infoData?.name ? `- ${infoData?.name}` : ''
+    document.title = formatTitleString(`${isEdit ? t('meetings.editMeeting') : t('meetings.addNewMeeting')} ${titleDetailName}`)
 
     const formRef = useRef<HTMLFormElement>(null)
     //files

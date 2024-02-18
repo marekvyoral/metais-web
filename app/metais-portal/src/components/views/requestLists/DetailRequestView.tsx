@@ -23,7 +23,7 @@ import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequ
 import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { ApiCodelistItem } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, META_IS_TITLE, RequestListState } from '@isdd/metais-common/constants'
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import headerStyles from '@isdd/metais-common/src/components/entity-header/ciEntityHeader.module.scss'
 
@@ -97,6 +97,8 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
             day: t('date', { date: data.detail.commentDate }),
         })
     }, [data.detail.commentDate, t])
+
+    document.title = `${t('titles.codeListRequestsDetail')} ${data?.detail.code ?? ''} ${META_IS_TITLE}`
 
     if (!data?.detail.code && isError) {
         return (

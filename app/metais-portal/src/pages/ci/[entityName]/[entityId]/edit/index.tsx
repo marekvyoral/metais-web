@@ -4,6 +4,7 @@ import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { useTranslation } from 'react-i18next'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -17,13 +18,16 @@ const EditEntityPage = () => {
     const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(entityId)
     const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(entityName)
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
-    document.title = `${t('titles.ciEdit', { ci: ciTypeName, itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })} | MetaIS`
+    document.title = `${t('titles.ciEdit', {
+        ci: ciTypeName,
+        itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+    })} ${META_IS_TITLE}`
 
     const currentName =
         i18n.language == Languages.SLOVAK
             ? ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
             : ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]
-    document.title = `${t('titles.ciEdit', { ci: ciTypeName })} | MetaIS`
+
     return (
         <>
             <>

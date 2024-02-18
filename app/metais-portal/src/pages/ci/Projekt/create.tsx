@@ -1,5 +1,5 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
-import { ENTITY_PROJECT } from '@isdd/metais-common/constants'
+import { ENTITY_PROJECT, META_IS_TITLE } from '@isdd/metais-common/constants'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -16,7 +16,7 @@ const CreateProjectPage: React.FC = () => {
             <CiCreateEntityContainer
                 entityName={entityName ?? ''}
                 View={(props) => {
-                    document.title = `${t('titles.ciCreateEntity', { ci: props.ciTypeName })} | MetaIS`
+                    document.title = `${t('titles.ciCreateEntity', { ci: props.ciTypeName })} ${META_IS_TITLE}`
 
                     return (
                         <>

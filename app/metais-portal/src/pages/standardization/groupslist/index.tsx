@@ -2,6 +2,7 @@ import { BreadCrumbs, HomeIcon, Tab, Tabs, TextHeading } from '@isdd/idsk-ui-kit
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { GroupsListContainer } from '@/components/containers/standardization/groups/GroupsListContainer'
 import { MembershipHistoryContainer } from '@/components/containers/standardization/groups/MembershipHistoryContainer'
@@ -10,7 +11,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const GroupsListPage: React.FC = () => {
     const { t } = useTranslation()
-    document.title = `${t('titles.groupsOfCommission')} | MetaIS`
+    document.title = `${t('titles.groupsOfCommission')} ${META_IS_TITLE}`
 
     const tabsList: Tab[] = [
         {
@@ -20,7 +21,6 @@ const GroupsListPage: React.FC = () => {
         },
         {
             id: 'history',
-
             title: t('groups.groupMembersHistory'),
             content: <MembershipHistoryContainer />,
         },

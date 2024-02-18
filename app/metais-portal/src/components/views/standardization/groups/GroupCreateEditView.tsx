@@ -9,6 +9,7 @@ import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/Ri
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { GroupFormEnum, createGroupSchema, editGroupSchema } from './groupSchema'
 
@@ -92,6 +93,8 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
             setSelectedIdentity(watchUser[0])
         }
     }, [watchUser])
+
+    document.title = `${t('titles.groupEdit')} ${infoData?.name ?? ''} ${META_IS_TITLE}`
 
     return (
         <>

@@ -3,6 +3,7 @@ import { BreadCrumbs, HomeIcon, TextHeading, TextWarning } from '@isdd/idsk-ui-k
 import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 import { DraftsListCreateForm } from '@/components/entities/draftslist/DraftsListCreateForm'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -10,7 +11,8 @@ import { DraftsListCreateContainer } from '@/components/containers/draftslist/Dr
 
 const DraftsListCreatePage: React.FC = () => {
     const { t } = useTranslation()
-    document.title = t('DraftsList.createForm.heading')
+
+    document.title = formatTitleString(t('DraftsList.createForm.heading'))
 
     return (
         <>

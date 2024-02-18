@@ -2,7 +2,7 @@ import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { BreadCrumbs, HomeIcon, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { mapCategoriesToOptions } from '@isdd/metais-common/componentHelpers'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, META_IS_TITLE } from '@isdd/metais-common/constants'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +21,7 @@ export interface ReportsFilterData extends IFilterParams {
 
 const ReportsListPage: React.FC = () => {
     const { t } = useTranslation()
-    document.title = `${t('titles.reports')} | MetaIS`
+    document.title = `${t('titles.reports')} ${META_IS_TITLE}`
     const defaultFilterValues: ReportsFilterData = { name: '', category: '' }
 
     return (

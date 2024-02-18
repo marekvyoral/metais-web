@@ -2,7 +2,7 @@ import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { CI_ITEM_QUERY_KEY, INVALIDATED } from '@isdd/metais-common/constants'
+import { CI_ITEM_QUERY_KEY, INVALIDATED, META_IS_TITLE } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
@@ -42,7 +42,11 @@ export const SlaContractDetailPage: React.FC = () => {
     const entityItemName = ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
-    document.title = `${t('titles.ciDetail', { ci: ciTypeName })} | MetaIS`
+
+    document.title = `${t('titles.ciDetail', {
+        ci: ciTypeName,
+        itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+    })} ${META_IS_TITLE}`
 
     const tabList: Tab[] = getSlaContractTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t })
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED

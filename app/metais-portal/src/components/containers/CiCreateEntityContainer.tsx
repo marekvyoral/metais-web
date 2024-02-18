@@ -4,6 +4,7 @@ import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import React, { SetStateAction } from 'react'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { useTranslation } from 'react-i18next'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { PublicAuthorityState, RoleState, usePublicAuthorityAndRoleHook } from '@/hooks/usePublicAuthorityAndRole.hook'
 import { CreateEntityData } from '@/components/create-entity/CreateEntity'
@@ -50,7 +51,7 @@ export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ Vi
     const isLoading = [isAttributesLoading, fetchStatus != 'idle', generatedIdLoading, publicAuthAndRoleLoading].some((item) => item)
     const isError = [isAttributesError, generatedIdError, publicAuthAndRoleError].some((item) => item)
 
-    document.title = `${t('titles.ciCreateEntity', { ci: ciTypeName })} | MetaIS`
+    document.title = `${t('titles.ciCreateEntity', { ci: ciTypeName })} ${META_IS_TITLE}`
 
     return (
         <View
