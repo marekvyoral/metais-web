@@ -10,6 +10,7 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/src/save-html-component/SafeHtmlComponent'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { AssignToGroupSelect } from './AssignToGroupSelect'
 import styles from './tasks.module.scss'
@@ -40,6 +41,7 @@ export const TaskDetailView: React.FC<ITaskDetailView> = ({
     setSelectedGroup,
 }) => {
     const { t } = useTranslation()
+    document.title = `${t('titles.taskDetail')} ${task?.name ?? ''} ${META_IS_TITLE}`
 
     return (
         <>

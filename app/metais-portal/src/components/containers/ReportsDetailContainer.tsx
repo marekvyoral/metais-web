@@ -13,6 +13,8 @@ import { useGetEnumBulk } from '@isdd/metais-common/hooks/useGetEnumBulk'
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
+import { useTranslation } from 'react-i18next'
 
 import { getDefaultValueForKey } from '@/componentHelpers'
 import { mapGenericTypeToPagination } from '@/componentHelpers/pagination'
@@ -35,6 +37,7 @@ interface IReportsDetailContainer {
 const TYP = 'typ'
 
 export const ReportsDetailContainer: React.FC<IReportsDetailContainer> = ({ View, defaultFilterValues }) => {
+    const { t } = useTranslation()
     const { entityId } = useParams()
     const { isLoading, isError, data: reportMetaData } = useGetReport1(entityId ?? '')
 
@@ -60,7 +63,7 @@ export const ReportsDetailContainer: React.FC<IReportsDetailContainer> = ({ View
     } = useExecute(reportMetaData?.id ?? 0, TYP, mapFilterToExecuteParams(filterParams, reportMetaData?.parameters, filterEnumData))
 
     const pagination = mapGenericTypeToPagination(filterParams, reportData)
-
+    document.title = `${t('titles.reportDetail')} ${reportMetaData?.name ?? ''} ${META_IS_TITLE}`
     return (
         <View
             data={reportMetaData}

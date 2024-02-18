@@ -5,9 +5,10 @@ import { TFunction } from 'i18next'
 import { FieldValues } from 'react-hook-form'
 import { ApiAttachment, ApiStandardRequestPreviewList, ApiVote } from '@isdd/metais-common/api/generated/standards-swagger'
 import { FileUploadData } from '@isdd/metais-common/components/FileUpload/FileUpload'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
-import { VoteStateEnum } from '../../voteProps'
-import { ExistingFileData } from '../components/ExistingFilesHandler/ExistingFilesHandler'
+import { ExistingFileData } from '@/components/views/standardization/votes/VoteComposeForm/components/ExistingFilesHandler/ExistingFilesHandler'
+import { VoteStateEnum } from '@/components/views/standardization/votes/voteProps'
 
 export const getStandardRequestOptions = (allStandardRequestDataArray: ApiStandardRequestPreviewList | undefined): IOption<number | undefined>[] => {
     return (
@@ -22,6 +23,13 @@ export const getPageTitle = (newVote: boolean, t: TFunction) => {
         return t('votes.voteEdit.newVoteTitle')
     }
     return `${t('votes.voteEdit.editVoteTitle')}`
+}
+
+export const getPageDocumentTitle = (newVote: boolean, t: TFunction, titleDetail: string) => {
+    if (newVote) {
+        return t('votes.voteEdit.newVoteTitle')
+    }
+    return `${t('votes.voteEdit.editVoteTitle')} ${titleDetail} ${META_IS_TITLE}`
 }
 
 export const mapUploadedFilesToApiAttachment = (uploadData: FileUploadData[]): ApiAttachment[] => {

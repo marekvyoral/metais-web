@@ -25,6 +25,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
 import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { useEditCodeListSchema } from './useEditCodeListSchemas'
 import { getDescription, getName, selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
@@ -126,7 +127,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
 
     const newGestorLabel = isNewGestor ? t('codeListList.edit.cancelAddNewGestor') : t('codeListList.edit.addNewGestor')
     const newCodeListNameLabel = isNewCodeListName ? t('codeListList.edit.cancelAddNewVersionName') : t('codeListList.edit.addNewVersionName')
-
+    document.title = `${t('codeList.breadcrumbs.detailEdit')} ${codeListName ?? t('codeList.breadcrumbs.detail')} ${META_IS_TITLE}`
     return (
         <>
             <BreadCrumbs

@@ -18,6 +18,7 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { IVoteEditView } from '@/components/views/standardization/votes/VoteComposeForm/VoteComposeFormView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { getPageDocumentTitle } from '@/components/views/standardization/votes/VoteComposeForm/functions/voteEditFunc'
 
 interface IVoteEditContainer {
     View: React.FC<IVoteEditView>
@@ -126,6 +127,8 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
 
         return links
     }
+
+    document.title = getPageDocumentTitle(!!isNewVote, t, voteData?.name ?? t('votes.breadcrumbs.VoteDetail'))
 
     useEffect(() => {
         if (isError) {

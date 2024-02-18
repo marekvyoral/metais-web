@@ -2,7 +2,7 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
-import { ENTITY_KS } from '@isdd/metais-common/constants'
+import { ENTITY_KS, META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiCloneContainer } from '@/components/containers/CiCloneContainer'
@@ -25,7 +25,7 @@ const CloneKSPage = () => {
                 document.title = `${t('titles.ciClone', {
                     ci: props.ciTypeData?.name,
                     itemName: props.ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
-                })} | MetaIS`
+                })} ${META_IS_TITLE}`
 
                 return (
                     <>

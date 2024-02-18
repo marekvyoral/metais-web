@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 import headerStyles from '@isdd/metais-common/src/components/entity-header/ciEntityHeader.module.scss'
 
 import { CodeListDetailItemsWrapper } from './CodeListDetailItemsWrapper'
@@ -156,6 +157,8 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
             </>
         )
     }
+
+    document.title = `${t('titles.codeListDetail')} ${String(title)} ${META_IS_TITLE}`
 
     return (
         <>

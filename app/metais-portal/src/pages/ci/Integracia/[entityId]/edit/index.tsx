@@ -1,5 +1,6 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -9,7 +10,7 @@ import { CreateAndEditIntegrationLinkView } from '@/components/views/prov-integr
 export const EditIntegrationLinkPage = () => {
     const { t } = useTranslation()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
-    document.title = `${t('titles.ciEdit', { ci: entityName })} | MetaIS`
+    document.title = `${t('titles.ciEdit', { ci: entityName })} ${META_IS_TITLE}`
 
     return (
         <CreateAndEditIntegrationLinkContainer

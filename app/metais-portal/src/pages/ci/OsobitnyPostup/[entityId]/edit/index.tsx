@@ -4,6 +4,7 @@ import { Languages } from '@isdd/metais-common/localization/languages'
 import { useAttributesHook } from '@isdd/metais-common/src/hooks/useAttributes.hook'
 import { useCiHook } from '@isdd/metais-common/src/hooks/useCi.hook'
 import { useTranslation } from 'react-i18next'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -35,7 +36,10 @@ const ITVSExceptionsEditPage: React.FC = () => {
         ciurl: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_ref_id],
     }
 
-    document.title = `${t('titles.ciEdit', { ci: ciTypeName, itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })} | MetaIS`
+    document.title = `${t('titles.ciEdit', {
+        ci: ciTypeName,
+        itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+    })} ${META_IS_TITLE}`
 
     return (
         <>

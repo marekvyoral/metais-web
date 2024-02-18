@@ -3,6 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -29,7 +30,7 @@ const CreateITVSExceptionsPage: React.FC = () => {
                 <CiCreateEntityContainer
                     entityName={entityName ?? ''}
                     View={(props) => {
-                        document.title = `${t('titles.ciCreateEntity', { ci: props.ciTypeName })} | MetaIS`
+                        document.title = `${t('titles.ciCreateEntity', { ci: props.ciTypeName })} ${META_IS_TITLE}`
 
                         return <ITVSExceptionsCreateContainer {...props} />
                     }}

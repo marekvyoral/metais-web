@@ -4,6 +4,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { findCommonStrings } from '@isdd/metais-common/utils/utils'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -25,7 +26,7 @@ const CreateCiItemAndRelation: React.FC = () => {
                 entityName={entityName}
                 tabName={tabName ?? ''}
                 View={(props) => {
-                    document.title = `${t('breadcrumbs.newCiAndRelation', { itemName: props.ciName })} | MetaIS`
+                    document.title = `${t('breadcrumbs.newCiAndRelation', { itemName: props.ciName })} ${META_IS_TITLE}`
 
                     return (
                         <>

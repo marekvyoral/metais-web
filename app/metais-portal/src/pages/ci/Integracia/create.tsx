@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
 import { CreateAndEditIntegrationLinkContainer } from '@/components/containers/CreateIntegrationLinkContainer'
 import { CreateAndEditIntegrationLinkView } from '@/components/views/prov-integration/CreateIntegrationLinkView'
@@ -10,7 +11,7 @@ import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 export const IntegrationLinkCreate = () => {
     const { t } = useTranslation()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
-    document.title = `${t('titles.ciCreateEntity', { ci: entityName })} | MetaIS`
+    document.title = `${t('titles.ciCreateEntity', { ci: entityName })} ${META_IS_TITLE}`
 
     return (
         <CreateAndEditIntegrationLinkContainer
