@@ -108,7 +108,8 @@
         "hide": "Skryť",
         "unhide": "Odkryť",
         "expandableExpandItem": "Otvoriť položky menu {{name}}",
-        "expandableCloseItem": "Zatvoriť položky menu {{name}}"
+        "expandableCloseItem": "Zatvoriť položky menu {{name}}",
+        "groupLabel": "Skupina podpoložiek {{title}}"
     },
     "filter": {
         "chooseState": "Vyberte stav",
@@ -181,7 +182,11 @@
         "ico": "IČO",
         "adress": "Adresa",
         "expandableExpandItem": "Otvoriť detail položky",
-        "expandableCloseItem": "Zatvoriť detail položky"
+        "expandableCloseItem": "Zatvoriť detail položky",
+        "sortButtonLabel": "Zoradiť podľa {{item}}, {{sortDirection}} ",
+        "asc": "vzostupne",
+        "desc": "zostupne",
+        "unsort": "Zrušit zoradenie podľa {{item}}"
     },
     "form": {
         "userFirstName": "Meno použivateľa",
@@ -968,7 +973,7 @@
             "description": "Popis",
             "category": "Kategória",
             "published": "Publikovaný",
-            "actions": "Úkony", 
+            "actions": "Úkony",
             "edit": "Upraviť",
             "publish": "Publikovať",
             "unpublish": "Nepublikovať",
@@ -1437,5 +1442,27 @@
             "ORDERED_LIST": "Číslovaný zoznam",
             "LINK": "Odkaz"
         }
-    }
+    },
+    "createEntity": {
+        "required": "povinné",
+        "errorTitle": "Nastala chyba.",
+        "errorMessage": "Ospravedlňujeme sa, ale pri úprave položky nastala technická chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, prosím, kontaktujte administrátora MetaIS e-mailom na adrese:",
+        "select": "Vyber...",
+        "publicAuthority": "Povinná osoba",
+        "role": "Rola",
+        "addNewRow": "Pridať nový riadok",
+        "units": "(Hodnota v {{units}})",
+        "redirectLoading": "Vytvorenie novej položky sa spracováva.",
+        "redirectLoadingEdit": "Prebieha aktualizácia údajov na entite.",
+        "redirectError": "Nepodarilo sa spracovať vytvorenie novej položky. Ďalšie informácie nájdete v upozorneniach.",
+        "redirectErrorEdit": "Nepodarila sa spracovať aktualizáciu novej položky. Ďalšie informácie nájdete v upozorneniach.",
+        "mutationError": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:",
+        "tooManyFetchesError": "Pri spracovaní došlo k chybe. Akcia trvala príliš dlho. Ďalšie informácie nájdete v upozorneniach.",
+        "orgAndRoleError": {
+            "title": "Chýbajúce práva pre organizáciu.",
+            "message": "Pre vytvorenie položky pod touto organizáciou nemáte dostatočné oprávnenia."
+        },
+        "ownerError": "Vo vytváraní nie je možné pokračovať, pretože nie ste vlastníkom tejto položky."
+    },
+    "close": "Zavrieť"
 }
