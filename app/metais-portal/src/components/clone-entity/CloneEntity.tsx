@@ -6,7 +6,6 @@ import { CiCode, CiType } from '@isdd/metais-common/api/generated/types-repo-swa
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
 import { isObjectEmpty } from '@isdd/metais-common/src/utils/utils'
 import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
@@ -67,8 +66,6 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
-
-    const deleteCacheMutation = useDeleteCacheForCi(entityName)
 
     const addOrGetGroupHook = useAddOrGetGroupHook()
 
@@ -147,9 +144,7 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
                 })
             }
 
-            deleteCacheMutation.mutateAsync(undefined, {
-                onSuccess: () => handleStoreConfigurationItem(),
-            })
+            handleStoreConfigurationItem()
         })
     }
 
