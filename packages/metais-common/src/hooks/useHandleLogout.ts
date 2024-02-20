@@ -1,8 +1,10 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useContext, useState } from 'react'
 import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce'
 
 export const useHandleLogout = () => {
     const { logOut } = useContext<IAuthContext>(AuthContext)
+    const queryClient = useQueryClient()
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -24,6 +26,7 @@ export const useHandleLogout = () => {
             })
             .finally(() => {
                 logOut()
+                queryClient.clear()
                 setIsLoading(false)
             })
     }
