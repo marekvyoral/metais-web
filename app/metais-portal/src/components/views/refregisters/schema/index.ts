@@ -3,6 +3,8 @@ import { TFunction } from 'i18next'
 import { ApiReferenceRegisterState } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { REGEX_EMAIL, REGEX_TEL } from '@isdd/metais-common/constants'
 
+import { effectiveToGreaterThanEffectiveFrom } from '@/components/views/codeLists/useEditCodeListSchemas'
+
 export interface IRefRegisterCreateFormData {
     refRegisters: {
         codeMetaIS?: string
@@ -52,6 +54,10 @@ export const createRefRegisterSchema = (
             codeMetaIS: string().required(t('validation.required')),
             refId: string().required(t('validation.required')),
             effectiveFrom: string().required(t('validation.required')),
+            effectiveTo: string().when('effectiveFrom', {
+                is: (value: string | undefined) => value && value.length > 0,
+                then: () => string().test('largerThan', t('codeListList.requestValidations.dateGreaterThan'), effectiveToGreaterThanEffectiveFrom),
+            }),
             manager: object().shape({
                 PO: string().required(t('validation.required')),
                 lastName: string().required(t('validation.required')),
