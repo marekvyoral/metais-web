@@ -28,6 +28,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { TrainingContainer } from '@/components/containers/TrainingContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { TrainingEntityIdHeader } from '@/components/views/ci/trainings/TrainingEntityIdHeader'
+import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -160,6 +161,8 @@ const EntityDetailPage: React.FC = () => {
                         </FlexColumnReverseWrapper>
 
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
+
+                        {selectedTab === ciInformationTab && <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />}
 
                         <Can I={Actions.READ_TRAININGS} a={entityName ?? ''} ability={ability}>
                             {selectedTab === ciInformationTab && <TrainingContainer entityId={entityId ?? ''} entityName={entityName ?? ''} />}
