@@ -5,15 +5,15 @@ import { IdentityState } from '@isdd/metais-common/api/generated/iam-swagger'
 import { CheckInACircleIcon, CrossInACircleIcon, ExportIcon } from '@isdd/metais-common/assets/images'
 import { BulkPopup, CreateEntityButton, IconLabel } from '@isdd/metais-common/components/actions-over-table'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
-import React, { useCallback, useState } from 'react'
+import { UseMutationResult } from '@tanstack/react-query'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { UseMutationResult } from '@tanstack/react-query'
 
 import {
     UserManagementActionsOverRowEnum,
@@ -47,6 +47,8 @@ export interface UserManagementListPageViewProps {
         },
         unknown
     >
+    rowSelection: Record<string, UserManagementListItem>
+    setRowSelection: React.Dispatch<React.SetStateAction<Record<string, UserManagementListItem>>>
 }
 
 export const UserManagementListPageView: React.FC<UserManagementListPageViewProps> = ({
@@ -62,6 +64,8 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     isMutationError,
     isMutationSuccess,
     updateIdentityStateBatchMutation,
+    rowSelection,
+    setRowSelection,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -70,7 +74,6 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
         isActionSuccess: { value: isSuccess },
     } = useActionSuccess()
 
-    const [rowSelection, setRowSelection] = useState<Record<string, UserManagementListItem>>({})
     const handleUpdateIdentitiesState = useCallback(
         (activate: boolean) =>
             handleBlockRowsAction(
@@ -131,6 +134,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                     pageSize: userManagementFilter.pageSize ?? BASE_PAGE_SIZE,
                     dataLength: data.dataLength,
                 }}
+                selectedRowsCount={Object.keys(rowSelection).length}
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 createButton={
@@ -150,7 +154,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 hiddenButtons={{ SELECT_COLUMNS: true }}
                 bulkPopup={
                     <BulkPopup
-                        checkedRowItems={0}
+                        checkedRowItems={Object.keys(rowSelection).length}
                         items={() => [
                             <ButtonLink
                                 key={'buttonBlock'}

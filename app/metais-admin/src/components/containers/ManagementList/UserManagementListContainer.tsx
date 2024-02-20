@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useFindPages, useFind1, useUpdateIdentityState, useExportIdentities } from '@isdd/metais-common/api/generated/iam-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common'
 import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -12,6 +12,7 @@ import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences
 
 import {
     UserManagementFilterData,
+    UserManagementListItem,
     defaultFilterValues,
     extractOrganizationsForList as extractOrganizationsUuidsFromList,
     mapDataToManagementList as mapResponsesToManagementListData,
@@ -24,6 +25,8 @@ interface UserManagementContainerProps {
 }
 
 const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ View }) => {
+    const [rowSelection, setRowSelection] = useState<Record<string, UserManagementListItem>>({})
+
     const {
         state: { user, token },
     } = useAuth()
@@ -177,6 +180,8 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
 
     return (
         <View
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
             data={data}
             filter={filter ?? defaultFilterValues}
             handleFilterChange={handleFilterChange}
