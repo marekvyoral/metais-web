@@ -19,10 +19,9 @@ type FormatRowValueByRowArgs = {
     rowValue: string
     t: TFunction<'translation', undefined, 'translation'>
     unitsData: EnumType | undefined
-    withoutTime?: boolean
 }
 
-const formatRowValueByRowType = ({ attribute, rowValue, t, unitsData, withoutTime }: FormatRowValueByRowArgs) => {
+const formatRowValueByRowType = ({ attribute, rowValue, t, unitsData }: FormatRowValueByRowArgs) => {
     if (attribute?.units && attribute?.type && rowValue) {
         const unitValue = findUnitValue(attribute, unitsData)
         return t(`units.${unitValue}`, { val: rowValue })
@@ -31,7 +30,14 @@ const formatRowValueByRowType = ({ attribute, rowValue, t, unitsData, withoutTim
         case 'BOOLEAN':
             return rowValue ? t('radioButton.yes') : t('radioButton.no')
         case 'DATE':
-            if (rowValue) return withoutTime ? t('date', { date: rowValue }) : t('dateTime', { date: rowValue })
+            if (rowValue) {
+                return t('date', { date: rowValue })
+            }
+            return rowValue
+        case 'DATETIME':
+            if (rowValue) {
+                return t('dateTime', { date: rowValue })
+            }
             return rowValue
         default:
             return rowValue
@@ -46,7 +52,6 @@ type PairEnumstoEnumValuesArgs = {
     unitsData: EnumType | undefined
     matchedAttributeNamesToCiItem: Record<string, ConfigurationItemUi> | undefined
     withDescription?: boolean
-    withoutTime?: boolean
 }
 
 export const pairEnumsToEnumValues = ({
@@ -57,7 +62,6 @@ export const pairEnumsToEnumValues = ({
     unitsData,
     matchedAttributeNamesToCiItem,
     withDescription,
-    withoutTime,
 }: PairEnumstoEnumValuesArgs) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let rowValue: any
@@ -66,7 +70,7 @@ export const pairEnumsToEnumValues = ({
     } else {
         rowValue = ciItemData?.attributes?.[attribute?.technicalName ?? attribute?.name ?? '']
     }
-    const formattedRowValue = formatRowValueByRowType({ attribute, rowValue, t, unitsData, withoutTime })
+    const formattedRowValue = formatRowValueByRowType({ attribute, rowValue, t, unitsData })
     if (!attribute?.constraints || !attribute?.constraints?.length) return formattedRowValue
     return (
         attribute?.constraints?.map((constraint) => {

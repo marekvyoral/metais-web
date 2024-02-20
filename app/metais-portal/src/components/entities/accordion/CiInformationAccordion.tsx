@@ -28,7 +28,6 @@ interface CiInformationData {
         bottom?: React.ReactNode
     }
     withoutDescription?: boolean
-    withoutTime?: boolean
 }
 
 export const CiInformationAccordion: React.FC<CiInformationData> = ({
@@ -37,7 +36,6 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
     isError,
     additionalBasicInformation,
     withoutDescription = false,
-    withoutTime = false,
 }) => {
     const { t, i18n } = useTranslation()
 
@@ -70,7 +68,6 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                                     unitsData,
                                     matchedAttributeNamesToCiItem: currentEntityCiTypeConstraintsData,
                                     withDescription: !withoutDescription,
-                                    withoutTime,
                                 })
                                 const isHTML = attribute.type === HTML_TYPE
                                 return (
@@ -115,7 +112,6 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                                         unitsData,
                                         matchedAttributeNamesToCiItem: currentEntityCiTypeConstraintsData,
                                         withDescription: !withoutDescription,
-                                        withoutTime,
                                     })
                                     const isHTML = attribute.type === HTML_TYPE || attribute.name == DESCRIPTION
 

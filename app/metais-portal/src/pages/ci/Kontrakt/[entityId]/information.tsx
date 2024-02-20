@@ -39,7 +39,6 @@ export const SlaContractInformation = () => {
                 isError={false}
                 isLoading={false}
                 withoutDescription
-                withoutTime
                 additionalBasicInformation={{
                     top: (
                         <>
