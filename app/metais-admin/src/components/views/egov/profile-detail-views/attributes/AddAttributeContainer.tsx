@@ -1,6 +1,5 @@
 import React from 'react'
 import { EnumType, EnumTypePreviewList, useGetEnum, useListEnums } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
 import { Attribute, useStoreNewAttribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -31,7 +30,6 @@ const AddAttributeContainer = ({ View, onClose, refetch, entityName }: IAddAttri
     const { setIsActionSuccess } = useActionSuccess()
 
     const { mutateAsync: storeAttribute, isLoading: isCreatingAttr } = useStoreNewAttribute()
-    const deleteCacheMutation = useDeleteCacheForCi()
 
     const storeNewAttribute = async (attributeTechnicalName?: string, newAttribute?: Attribute) => {
         const handleStoreAttribute = async () => {
@@ -52,9 +50,7 @@ const AddAttributeContainer = ({ View, onClose, refetch, entityName }: IAddAttri
             refetch()
         }
 
-        deleteCacheMutation.mutateAsync(undefined, {
-            onSuccess: () => handleStoreAttribute(),
-        })
+        handleStoreAttribute()
     }
 
     return (

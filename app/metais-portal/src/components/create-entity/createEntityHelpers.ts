@@ -24,7 +24,6 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
-import { useDeleteCacheForCi } from '@isdd/metais-common/hooks/be-cache/useDeleteCacheForCi'
 import { v4 as uuidV4 } from 'uuid'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
@@ -250,8 +249,6 @@ export const useCiCreateUpdateOnSubmit = (entityName: string) => {
     const [uploadError, setUploadError] = useState(false)
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
-    const deleteCacheMutation = useDeleteCacheForCi(entityName)
-
     const onSubmit = async ({ formData, storeCiItem, ownerId, generatedEntityId, updateCiItemId }: CiOnSubmitType) => {
         const isUpdate = !!updateCiItemId
         if (!isUpdate && entityName === ENTITY_TRAINING) {
@@ -288,9 +285,7 @@ export const useCiCreateUpdateOnSubmit = (entityName: string) => {
             })
         }
 
-        deleteCacheMutation.mutateAsync(undefined, {
-            onSuccess: () => handleStoreConfigurationItem(),
-        })
+        handleStoreConfigurationItem()
     }
 
     return { uploadError, setUploadError, configurationItemId, onSubmit }
