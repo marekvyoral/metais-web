@@ -1,12 +1,6 @@
+import { CATEGORY_ENUM } from '@isdd/metais-common/api/constants'
 import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
-enum CATEGORY_ENUM {
-    NOT_VISIBLE = 'NO',
-    READ_ONLY_BDA = 'ROCB',
-    READ_ONLY = 'RONCB',
-    READ_WRITE = 'RWNCB',
-    READ_WRITE_BDA = 'RWCB',
-}
 enum TYPES {
     SYSTEM = 'system',
 }
