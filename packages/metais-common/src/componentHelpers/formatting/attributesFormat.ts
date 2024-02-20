@@ -71,7 +71,12 @@ export const pairEnumsToEnumValues = ({
         rowValue = ciItemData?.attributes?.[attribute?.technicalName ?? attribute?.name ?? '']
     }
     const formattedRowValue = formatRowValueByRowType({ attribute, rowValue, t, unitsData })
-    if (!attribute?.constraints || !attribute?.constraints?.length) return formattedRowValue
+    if (!attribute?.constraints || !attribute?.constraints?.length) {
+        if (attribute?.isArray) {
+            return (formattedRowValue as unknown as string[])?.join(', ')
+        }
+        return formattedRowValue
+    }
     return (
         attribute?.constraints?.map((constraint) => {
             switch (constraint?.type) {
