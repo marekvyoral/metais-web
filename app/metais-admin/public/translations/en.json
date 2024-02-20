@@ -103,7 +103,8 @@
         "hide": "HIDE",
         "unhide": "SHOW",
         "expandableExpandItem": "Open menu item {{name}}",
-        "expandableCloseItem": "Close menu item {{name}}"
+        "expandableCloseItem": "Close menu item {{name}}",
+        "groupLabel": "Group of sub-items {{title}}"
     },
     "radioButton": {
         "yes": "Yes",
@@ -149,7 +150,11 @@
         "ico": "ICO",
         "adress": "Adress",
         "expandableExpandItem": "Open item detail",
-        "expandableCloseItem": "Close item detail"
+        "expandableCloseItem": "Close item detail",
+        "sortButtonLabel": "Sort by {{item}}, {{sortDirection}} ",
+        "asc": "ascending",
+        "desc": "descending",
+        "unsort": "Cancel sort by {{item}}"
     },
     "form": {
         "userFirstName": "First name of user",
@@ -1431,5 +1436,27 @@
             "ORDERED_LIST": "Numbered List",
             "LINK": "Link"
         }
-    }
+    },
+    "createEntity": {
+        "required": "required",
+        "errorTitle": "Error occured",
+        "errorMessage": "We apologize, but a technical error occurred while editing the item. Try submitting the form again. If the error occurs repeatedly, contact the administrator at:",
+        "select": "Select...",
+        "publicAuthority": "Public Authority",
+        "role": "Role",
+        "addNewRow": "Add new row",
+        "units": "(Value in {{units}})",
+        "redirectLoading": "Processing creation of new item",
+        "redirectLoadingEdit": "Updating data on item",
+        "redirectError": "Failed to process new item creation. Check notifications for more information.",
+        "redirectErrorEdit": "Failed to process updating of current item. Check notifications for more information.",
+        "mutationError": "Error while executing your action. Please try again or contact support.",
+        "tooManyFetchesError": "There was a mistake during processing. Action took too long. Check notifications for more information.",
+        "orgAndRoleError": {
+            "title": "Missing rights for organization",
+            "message": "You are missing rights for creating item under this organization"
+        },
+        "ownerError": "Can not proceed in creation because you are not an owner of this item."
+    },
+    "close": "Close"
 }
