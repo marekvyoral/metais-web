@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import { getGetAttributeProfileQueryKey } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import {
     CiListFilterContainerUi,
     getGetRoleParticipantBulkQueryKey,
@@ -10,28 +10,28 @@ import {
     getReadConfigurationItemQueryKey,
     getReadNeighboursConfigurationItemsCountQueryKey,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
+import {
+    getGetCodelistActionsHistoryQueryKey,
+    getGetCodelistHeaderQueryKey,
+    getGetCodelistHeadersQueryKey,
+    getGetCodelistHistoryQueryKey,
+    getGetCodelistItemsQueryKey,
+    getGetCodelistRequestDetailQueryKey,
+    getGetCodelistRequestItemsQueryKey,
+    getGetCodelistRequestsQueryKey,
+    getGetOriginalCodelistHeaderQueryKey,
+    getGetTemporalCodelistHeaderWithLockQueryKey,
+} from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { getGetMetaQueryKey } from '@isdd/metais-common/api/generated/dms-swagger'
 import {
     Find2111Params,
     getFind2111QueryKey,
     getFindByUuid3QueryKey,
     getFindRelatedIdentitiesAndCountQueryKey,
 } from '@isdd/metais-common/api/generated/iam-swagger'
-import {
-    getGetCodelistHeaderQueryKey,
-    getGetOriginalCodelistHeaderQueryKey,
-    getGetCodelistHeadersQueryKey,
-    getGetCodelistItemsQueryKey,
-    getGetCodelistHistoryQueryKey,
-    getGetCodelistActionsHistoryQueryKey,
-    getGetTemporalCodelistHeaderWithLockQueryKey,
-    getGetCodelistRequestsQueryKey,
-    getGetCodelistRequestItemsQueryKey,
-    getGetCodelistRequestDetailQueryKey,
-} from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
-import { getGetMetaQueryKey } from '@isdd/metais-common/api/generated/dms-swagger'
 import { getGetTraineesQueryKey, getGetTrainingsForUserQueryKey } from '@isdd/metais-common/api/generated/trainings-swagger'
+import { getGetAttributeProfileQueryKey } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 
 const isCiListFilterContainerUi = (obj: unknown): obj is CiListFilterContainerUi => {
     return !!obj && typeof obj === 'object'
@@ -177,6 +177,7 @@ export const useInvalidateAttributeProfileCache = (entityName: string) => {
 export const useInvalidateTrainingsCache = (entityId: string) => {
     const queryClient = useQueryClient()
     const invalidate = () => {
+        queryClient.invalidateQueries([CI_ITEM_QUERY_KEY, entityId])
         queryClient.invalidateQueries(getGetTrainingsForUserQueryKey())
         queryClient.invalidateQueries(getGetTraineesQueryKey(entityId))
     }

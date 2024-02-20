@@ -205,7 +205,8 @@
         "hide": "HIDE",
         "unhide": "SHOW",
         "expandableExpandItem": "Open menu item {{name}}",
-        "expandableCloseItem": "Close menu item {{name}}"
+        "expandableCloseItem": "Close menu item {{name}}",
+        "groupLabel": "Group of sub-items {{title}}"
     },
     "userManagement": {
         "error": {

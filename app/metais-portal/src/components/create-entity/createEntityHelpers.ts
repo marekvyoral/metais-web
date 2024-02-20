@@ -11,7 +11,7 @@ import { FieldErrors, FieldValues, UseFormSetValue } from 'react-hook-form'
 import { AnyObject, NumberSchema } from 'yup'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { isDate, isObjectEmpty } from '@isdd/metais-common/utils/utils'
-import { ENTITY_PROJECT, ROLES } from '@isdd/metais-common/constants'
+import { ENTITY_PROJECT, ENTITY_TRAINING, ROLES } from '@isdd/metais-common/constants'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { DateTime } from 'luxon'
 import { ConfigurationItemUiAttributes, ApiError, ConfigurationItemUi, RequestIdUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -254,6 +254,9 @@ export const useCiCreateUpdateOnSubmit = (entityName: string) => {
 
     const onSubmit = async ({ formData, storeCiItem, ownerId, generatedEntityId, updateCiItemId }: CiOnSubmitType) => {
         const isUpdate = !!updateCiItemId
+        if (!isUpdate && entityName === ENTITY_TRAINING) {
+            formData[ATTRIBUTE_NAME.Profil_Skolenie_pocet_volnych_miest] = formData[ATTRIBUTE_NAME.Profil_Skolenie_pocet_miest]
+        }
         const formAttributesKeys = Object.keys(formData)
         const urlString = getUrlStringFromCiCode(generatedEntityId ?? {})
         const formattedAttributesToSend = formAttributesKeys
