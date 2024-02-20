@@ -65,7 +65,7 @@ export const TrainingView: React.FC<TrainingContainerView> = ({ isLoading, isErr
 
     return (
         <QueryFeedback loading={isLoading} error={isError} withChildren>
-            <TextHeading size="XL">{t('trainings.invitedTitle')}</TextHeading>
+            <TextHeading size="L">{t('trainings.invitedTitle')}</TextHeading>
             {isActionSuccess && isActionSuccess.additionalInfo?.type === 'relationCreated' && (
                 <div ref={wrapperRef}>
                     <MutationFeedback
@@ -75,6 +75,7 @@ export const TrainingView: React.FC<TrainingContainerView> = ({ isLoading, isErr
                     />
                 </div>
             )}
+            <Filter form={() => <></>} defaultFilterValues={filter} onlySearch />
             <ActionsOverTable
                 pagination={{
                     pageNumber,
@@ -86,7 +87,6 @@ export const TrainingView: React.FC<TrainingContainerView> = ({ isLoading, isErr
                 entityName=""
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
             />
-            <Filter form={() => <></>} defaultFilterValues={filter} onlySearch />
             <Table columns={columns} data={slicedTableData} isLoading={isLoading} error={isError} />
             <PaginatorWrapper
                 pageSize={pageSize}
