@@ -44,6 +44,8 @@ type PublicAuthoritiesMassUpdateTableProps = {
     sort: ColumnSort[]
     isLoading: boolean
     error?: boolean
+    rowSelection: Record<string, ColumnsOutputDefinition>
+    setRowSelection: React.Dispatch<React.SetStateAction<Record<string, ColumnsOutputDefinition>>>
 }
 
 export const PublicAuthoritiesMassUpdateTable = ({
@@ -62,10 +64,10 @@ export const PublicAuthoritiesMassUpdateTable = ({
     isLoading,
     error,
     defaultFilterValues,
+    rowSelection,
+    setRowSelection,
 }: PublicAuthoritiesMassUpdateTableProps & IActions) => {
     const { t } = useTranslation()
-
-    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
 
     const [expanded, setExpanded] = useState<ExpandedState>({})
 

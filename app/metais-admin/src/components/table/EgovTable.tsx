@@ -11,7 +11,7 @@ import {
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { ActionsOverTable, BulkPopup, CreateEntityButton } from '@isdd/metais-common/index'
+import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, BulkPopup, CreateEntityButton } from '@isdd/metais-common/index'
 import { QueryObserverResult } from '@tanstack/react-query'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { SetStateAction, useCallback, useState } from 'react'
@@ -60,37 +60,56 @@ export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort
         [rowSelection, setRowSelection],
     )
 
+    const [pageNumber, setPageNumber] = useState<number>(BASE_PAGE_NUMBER)
+    const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
     const handleAllCheckboxChange = () => {
         if (!data) return
+
         const checkedAll = data
+            .slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
             .filter((row) => row.type == AttributeProfileType.custom)
             .every((row) => row.type == AttributeProfileType.custom && rowSelection.includes(row.technicalName || ''))
 
+        const customRows =
+            data
+                .slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
+                .filter((row) => row.type == AttributeProfileType.custom)
+                .map((row) => row.technicalName || '') || []
+
         if (checkedAll) {
-            setRowSelection([])
+            setRowSelection((prev) => prev.filter((p) => !customRows.includes(p)))
             return
         }
-        const customRows = data.filter((row) => row.type == AttributeProfileType.custom).map((row) => row.technicalName || '') || []
-        setRowSelection(customRows)
+
+        setRowSelection((prev) => [...prev, ...customRows])
     }
     const columns: Array<ColumnDef<CiTypePreview>> = [
         {
             header: () => {
                 const checkedAll = data
+                    ?.slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
                     ?.filter((row) => row.type == AttributeProfileType.custom)
                     .every((row) => row.type == AttributeProfileType.custom && rowSelection.includes(row.technicalName || ''))
 
                 return (
-                    <div className="govuk-checkboxes govuk-checkboxes--small">
-                        <CheckBox
-                            label=""
-                            name="checkbox"
-                            id="checkbox-all"
-                            value="checkbox-all"
-                            onChange={() => handleAllCheckboxChange()}
-                            checked={checkedAll}
-                        />
-                    </div>
+                    <>
+                        {data
+                            ?.slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
+                            .some((a) => a.type == AttributeProfileType.custom) ? (
+                            <div className="govuk-checkboxes govuk-checkboxes--small">
+                                <CheckBox
+                                    label=""
+                                    name="checkbox"
+                                    id="checkbox-all"
+                                    value="checkbox-all"
+                                    onChange={() => handleAllCheckboxChange()}
+                                    checked={checkedAll}
+                                />
+                            </div>
+                        ) : (
+                            ''
+                        )}
+                    </>
                 )
             },
             id: CHECKBOX_CELL,
@@ -160,8 +179,6 @@ export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort
     ]
     const columnsWithPermissions = isUserLogged ? columns : columns.slice(1)
 
-    const [pageSize, setPageSize] = useState<number>(10)
-    const [pageNumber, setPageNumber] = useState<number>(1)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const handlePageChange = (filter: IFilter) => {
@@ -238,7 +255,7 @@ export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort
                     hiddenButtons={{ SELECT_COLUMNS: true }}
                     bulkPopup={
                         <BulkPopup
-                            checkedRowItems={0}
+                            checkedRowItems={Object.keys(rowSelection).length}
                             items={(closePopup) => [
                                 <ButtonLink
                                     key={'buttonBlock'}

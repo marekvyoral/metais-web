@@ -58,7 +58,6 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
         message: undefined,
     })
     const [isLoading, setIsLoading] = useState<boolean>(false)
-
     const handleCheckboxChange = useCallback(
         (row: Row<TEkoCodeDecorated>) => {
             if (row?.original?.ekoCode) {
@@ -76,16 +75,22 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
 
     const handleAllCheckboxChange = useCallback(
         (rows: TEkoCodeDecorated[]) => {
-            const checked = rows.every(({ ekoCode }) => (ekoCode ? !!rowSelection[ekoCode] : false))
+            const pageNumber = defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER
+            const pageSize = defaultFilterParams.pageSize ?? BASE_PAGE_SIZE
+            const pagedRows = rows.slice(pageNumber * pageSize - pageSize, pageNumber * pageSize)
+            const checked = pagedRows.every(({ ekoCode }) => (ekoCode ? !!rowSelection[ekoCode] : false))
             const newRowSelection = { ...rowSelection }
             if (checked) {
-                rows.forEach(({ ekoCode }) => ekoCode && delete newRowSelection[ekoCode])
+                pagedRows.forEach(({ ekoCode }) => ekoCode && delete newRowSelection[ekoCode])
                 setRowSelection(newRowSelection)
             } else {
-                setRowSelection((prevRowSelection) => ({ ...prevRowSelection, ...reduceTableDataToObject(rows) }))
+                setRowSelection((prevRowSelection) => ({
+                    ...prevRowSelection,
+                    ...reduceTableDataToObject(pagedRows),
+                }))
             }
         },
-        [rowSelection, setRowSelection],
+        [defaultFilterParams.pageNumber, defaultFilterParams.pageSize, rowSelection, setRowSelection],
     )
 
     const isRowSelected = useCallback(

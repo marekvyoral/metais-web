@@ -29,6 +29,8 @@ export interface IListComponent {
     isLoading: boolean
     isError: boolean
     refetch?: () => Promise<QueryObserverResult<AttributeProfilePreview, unknown>>
+    rowSelection: Record<string, ColumnsOutputDefinition>
+    setRowSelection: React.Dispatch<React.SetStateAction<Record<string, ColumnsOutputDefinition>>>
 }
 
 export interface IListView {
