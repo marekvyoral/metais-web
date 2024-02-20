@@ -17,7 +17,7 @@ import { User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 enum UserInformationFormKeysEnum {
     NAME = 'name',
-    PHONE = 'phone',
+    MOBILE = 'mobile',
     POSITION = 'position',
     EMAIL = 'email',
 }
@@ -30,7 +30,7 @@ type Props = {
 type UserInformationForm = {
     name?: string
     email?: string
-    phone?: string
+    mobile?: string
     position?: string
 }
 
@@ -44,7 +44,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
     const userInformationsSchema: ObjectSchema<UserInformationForm> = object().shape({
         [UserInformationFormKeysEnum.NAME]: string().required(t('validation.required')),
         [UserInformationFormKeysEnum.EMAIL]: string().email(t('validation.invalidEmail')).required(t('validation.required')),
-        [UserInformationFormKeysEnum.PHONE]: string().matches(REGEX_TEL, t('validation.invalidPhone')).required(t('validation.required')),
+        [UserInformationFormKeysEnum.MOBILE]: string().matches(REGEX_TEL, t('validation.invalidPhone')).required(t('validation.required')),
         [UserInformationFormKeysEnum.POSITION]: string(),
     })
 
@@ -57,7 +57,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
         defaultValues: {
             [UserInformationFormKeysEnum.NAME]: user?.displayName,
             [UserInformationFormKeysEnum.POSITION]: user?.position != NULL ? user?.position ?? '' : '',
-            [UserInformationFormKeysEnum.PHONE]: user?.mobile,
+            [UserInformationFormKeysEnum.MOBILE]: user?.mobile,
             [UserInformationFormKeysEnum.EMAIL]: user?.email,
         },
         resolver: yupResolver(userInformationsSchema),
@@ -87,7 +87,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
 
     const onSubmit = (formData: UserInformationForm) => {
         setIsChangeSuccess(false)
-        changeUserInformation({ data: { email: formData.email, phone: formData.phone, disabledNotifications: false } })
+        changeUserInformation({ data: { email: formData.email, mobile: formData.mobile, disabledNotifications: false } })
     }
 
     return (
@@ -117,12 +117,12 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
                         hideIcon
                     />
                     <InformationGridRow
-                        label={t('userProfile.information.phoneNumber') + ':'}
-                        value={<Input error={errors.phone?.message} label="" type="number" {...register(UserInformationFormKeysEnum.PHONE)} />}
+                        label={t('userProfile.information.phoneNumber') + ' ' + t('input.requiredField') + ':'}
+                        value={<Input error={errors.mobile?.message} label="" type="tel" {...register(UserInformationFormKeysEnum.MOBILE)} />}
                         hideIcon
                     />
                     <InformationGridRow
-                        label={t('userProfile.information.email') + ':'}
+                        label={t('userProfile.information.email') + ' ' + t('input.requiredField') + ':'}
                         value={<Input error={errors.email?.message} label="" type="email" {...register(UserInformationFormKeysEnum.EMAIL)} />}
                         hideIcon
                     />

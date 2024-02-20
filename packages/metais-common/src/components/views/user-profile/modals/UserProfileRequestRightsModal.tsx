@@ -15,14 +15,14 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export enum RequestFormFields {
     PO = 'po',
-    PHONE = 'mobile',
+    MOBILE = 'mobile',
     EMAIL = 'email',
     DESCRIPTION = 'description',
 }
 
 export type UserRequestRightsForm = {
     [RequestFormFields.PO]: string
-    [RequestFormFields.PHONE]: string
+    [RequestFormFields.MOBILE]: string
     [RequestFormFields.EMAIL]: string
     [RequestFormFields.DESCRIPTION]: string
 }
@@ -44,7 +44,7 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
 
     const schema = object().shape({
         [RequestFormFields.PO]: string().required(t('userProfile.requests.poRequired')),
-        [RequestFormFields.PHONE]: string().required(t('userProfile.requests.phoneRequired')),
+        [RequestFormFields.MOBILE]: string().required(t('userProfile.requests.phoneRequired')),
         [RequestFormFields.EMAIL]: string().required(t('userProfile.requests.emailRequired')),
         [RequestFormFields.DESCRIPTION]: string().required(t('userProfile.requests.descriptionRequired')),
     })
@@ -62,7 +62,7 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
     useEffect(() => {
         if (user?.uuid) {
             setValue(RequestFormFields.EMAIL, user?.email ?? '')
-            setValue(RequestFormFields.PHONE, user?.phone ?? '')
+            setValue(RequestFormFields.MOBILE, user?.mobile ?? '')
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user?.uuid])
@@ -73,7 +73,7 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
             claimUi: {
                 createdBy: user?.uuid,
                 po: formData?.[RequestFormFields.PO],
-                mobile: formData?.[RequestFormFields.PHONE],
+                mobile: formData?.[RequestFormFields.MOBILE],
                 email: formData?.[RequestFormFields.EMAIL],
                 description: formData?.[RequestFormFields.DESCRIPTION],
             },
@@ -98,9 +98,9 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
                     <Input
                         label={t('userProfile.requests.phone') + requiredString}
                         placeholder={t('userProfile.requests.placeholder')}
-                        defaultValue={user?.phone}
-                        error={errors[RequestFormFields.PHONE]?.message}
-                        {...register(RequestFormFields.PHONE)}
+                        defaultValue={user?.mobile}
+                        error={errors[RequestFormFields.MOBILE]?.message}
+                        {...register(RequestFormFields.MOBILE)}
                         type="tel"
                     />
                     <Input
