@@ -6,7 +6,11 @@ export const formatDateForDefaultValue = (date: string, format = 'yyyy-MM-dd') =
 export const formatDateTimeForDefaultValue = (date: string, format = 'yyyy-MM-dd HH:mm') =>
     DateTime.fromJSDate(new Date(date)).isValid ? DateTime.fromJSDate(new Date(date)).toFormat(format) : ''
 
-export const formatDateToIso = (date: string | undefined) => {
+export const formatDateTimeToIs = (date: string, format = 'yyyy-MM-dd HH:mm') =>
+    DateTime.fromJSDate(new Date(date)).isValid ? DateTime.fromJSDate(new Date(date)).toFormat(format) : ''
+
+export const formatDateToIso = (date: Date | string | undefined) => {
     if (!date) return undefined
-    return DateTime.fromJSDate(new Date(date)).toISO() || undefined
+    if (typeof date === 'string') return DateTime.fromJSDate(new Date(date)).toISO() || undefined
+    return DateTime.fromJSDate(date).toISO() || undefined
 }

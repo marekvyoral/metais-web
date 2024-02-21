@@ -10,6 +10,7 @@ import { AttributeProfile, CiCode, CiType } from '@isdd/metais-common/api/genera
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { ConfigurationItemUiAttributes, HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ENTITY_PROJECT } from '@isdd/metais-common/constants'
 
 import { getFilteredAttributeProfilesBasedOnRole, getValidAndVisibleAttributes } from './createEntityHelpers'
 import { generateFormSchema } from './createCiEntityFormSchema'
@@ -19,6 +20,7 @@ import { AttributesConfigTechNames } from '@/components/attribute-input/attribut
 import { filterFormValuesBasedOnCurrentRole, formatForFormDefaultValues } from '@/componentHelpers/ci'
 
 type Props = {
+    entityName: string
     generatedEntityId: CiCode
     ciTypeData: CiType | undefined
     onSubmit: (formData: FieldValues) => void
@@ -33,6 +35,7 @@ type Props = {
 }
 
 export const CiEntityFormBody: React.FC<Props> = ({
+    entityName,
     formDefaultValues,
     onSubmit,
     stepperList,
@@ -97,8 +100,8 @@ export const CiEntityFormBody: React.FC<Props> = ({
     }, [formState.defaultValues, formDefaultValues, setValue, generatedEntityId?.ciurl, generatedEntityId?.cicode])
 
     useEffect(() => {
-        setValue(AttributesConfigTechNames.EA_Profil_Projekt_prijimatel, selectedOrg?.poName)
-    }, [selectedOrg, setValue])
+        if (entityName === ENTITY_PROJECT) setValue(AttributesConfigTechNames.EA_Profil_Projekt_prijimatel, selectedOrg?.poName)
+    }, [selectedOrg, setValue, entityName])
 
     return (
         <FormProvider {...methods}>

@@ -78,6 +78,7 @@ export const generateFormSchema = (
         const isRequired = attribute?.mandatory?.type === 'critical' && !attribute.readOnly
 
         const isDate = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.DATE
+        const isDateTime = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.DATETIME
         const isBoolean = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.BOOLEAN
         const isFile = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.IMAGE
         const isString = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.STRING
@@ -209,6 +210,18 @@ export const generateFormSchema = (
                 }
             }
         } else if (isDate) {
+            schema[attribute.technicalName] =
+                getSpecialRule({ technicalName: attribute.technicalName, entityName, t, required: isRequired }) ??
+                date()
+                    .nullable()
+                    .transform((curr, orig) => (orig === '' ? null : curr))
+                    .when('isRequired', (_, current) => {
+                        if (isRequired) {
+                            return current.required(t('validation.required'))
+                        }
+                        return current
+                    })
+        } else if (isDateTime) {
             schema[attribute.technicalName] =
                 getSpecialRule({ technicalName: attribute.technicalName, entityName, t, required: isRequired }) ??
                 date()

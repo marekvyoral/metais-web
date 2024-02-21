@@ -197,6 +197,7 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
             />
 
             <CreateCiEntityForm
+                entityName={entityName}
                 ciTypeData={ciTypeData}
                 generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                 constraintsData={[...constraintsData, ...(relationConstraintsData ?? [])]}
