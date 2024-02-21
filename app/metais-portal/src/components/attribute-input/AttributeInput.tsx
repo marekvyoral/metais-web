@@ -18,14 +18,14 @@ import {
     UseFormTrigger,
 } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ATTRIBUTE_NAME, formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import { HTML_TYPE, MAX_TITLE_LENGTH } from '@isdd/metais-common/constants'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 import { formatNumberWithSpaces, isFalsyStringValue } from '@isdd/metais-common/utils/utils'
 import { Languages } from '@isdd/metais-common/localization/languages'
-import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { DateInput, DateTypeEnum } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { ArrayAttributeInput } from './ArrayAttributeInput'
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
@@ -120,6 +120,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     const isLong = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.LONG
     const isFloat = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.FLOAT
     const isDate = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.DATE
+    const isDateTime = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.DATETIME
     const isBoolean = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.BOOLEAN
     const isFile = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.IMAGE
 
@@ -164,6 +165,10 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
         setValue(name, date ? formatDateForDefaultValue(date.toISOString()) : null)
     }
 
+    const handleDateTimeChange = (date: Date | null, name: string) => {
+        setValue(name, date ? formatDateTimeForDefaultValue(date.toISOString()) : null)
+    }
+
     const regexConstraints = attribute?.constraints?.[0] as AttributeConstraintRegexAllOf
     const isGenProfilNazov = attribute.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov
 
@@ -195,6 +200,25 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         handleDateChange={handleDateChange}
                         name={attribute.technicalName + nameSufix}
                         control={control}
+                        type={DateTypeEnum.DATE}
+                        correct={isCorrect}
+                        info={attribute.description}
+                        id={attribute.technicalName}
+                        clearErrors={clearErrors}
+                        disabled={attribute.readOnly || disabled}
+                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
+                        error={error?.message?.toString()}
+                        hint={hint}
+                    />
+                )
+            }
+            case isDateTime: {
+                return (
+                    <DateInput
+                        handleDateChange={handleDateTimeChange}
+                        name={attribute.technicalName + nameSufix}
+                        control={control}
+                        type={DateTypeEnum.DATETIME}
                         correct={isCorrect}
                         info={attribute.description}
                         id={attribute.technicalName}
