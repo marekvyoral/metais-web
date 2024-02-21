@@ -1,4 +1,4 @@
-@import '../../utils.scss';
+@import '@isdd/idsk-ui-kit/src/utils.scss';
 
 .notificationIcon {
     position: absolute;
@@ -10,6 +10,7 @@
     font-size: 12px;
     padding: 1px 4px 1px 4px;
     border: 2px solid govuk-colour('white');
+    font-family: $govuk-font-family;
 }
 
 .notificationIconList {
