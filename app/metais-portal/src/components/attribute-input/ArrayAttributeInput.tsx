@@ -97,6 +97,11 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
     return (
         <fieldset className={styles.fieldset}>
             <legend className="govuk-label">{name + requiredLabel}</legend>
+            {error?.message && (
+                <span id={`error_${attribute.technicalName}`} className="govuk-error-message">
+                    {error.message.toString()}
+                </span>
+            )}
             <div className={classNames('govuk-form-group', styles.formGroup)}>
                 <div className={styles.buttonDiv}>
                     <Button
