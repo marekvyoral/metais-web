@@ -72,6 +72,12 @@ export const DevTestScreen: React.FC = () => {
                     },
                 ]}
             />
+            <div style={{ width: '300px', height: '80px', background: 'rgb(255,255,255)', fontFamily: 'Source Sans Pro, Arial, sans-serif' }}>
+                <div>test test test </div>
+                <span>
+                    <small>aaaaaaa cccccc</small>
+                </span>
+            </div>
         </MainContentWrapper>
     )
 }
