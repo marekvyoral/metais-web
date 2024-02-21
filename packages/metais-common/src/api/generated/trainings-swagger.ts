@@ -8,6 +8,18 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useTrainingsSwaggerClient } from '../hooks/useTrainingsSwaggerClient'
+export type GetTrainingsForUserParams = {
+    trainingId?: string[]
+    page?: number
+    perPage?: number
+    sortBy?: string
+    sortType?: string
+}
+
+export type UnregisterTraineeParams = {
+    email?: string
+}
+
 export interface PaginationUi {
     page?: number
     perPage?: number
@@ -22,27 +34,6 @@ export interface MetaAttributesUi {
     createdAt?: string
     lastModifiedBy?: string
     lastModifiedAt?: string
-}
-
-export interface ConfigurationItemUi {
-    type?: string
-    uuid?: string
-    owner?: string
-    attributes?: AttributeUi[]
-    metaAttributes?: MetaAttributesUi
-}
-
-export interface ConfigurationItemSetUi {
-    pagination?: PaginationUi
-    configurationItemSet?: ConfigurationItemUi[]
-    incidentRelationshipSet?: RelationshipUi[]
-}
-
-export type AttributeUiValue = { [key: string]: any }
-
-export interface AttributeUi {
-    name?: string
-    value?: AttributeUiValue
 }
 
 export interface RelationshipUi {
@@ -61,6 +52,31 @@ export interface RelationshipUi {
     endKodMetaIS?: string
     attributes?: AttributeUi[]
     metaAttributes?: MetaAttributesUi
+}
+
+export interface ConfigurationItemSetUi {
+    pagination?: PaginationUi
+    configurationItemSet?: ConfigurationItemUi[]
+    incidentRelationshipSet?: RelationshipUi[]
+}
+
+export type AttributeUiValue = { [key: string]: any }
+
+export interface AttributeUi {
+    name?: string
+    value?: AttributeUiValue
+}
+
+export interface ConfigurationItemUi {
+    type?: string
+    uuid?: string
+    owner?: string
+    attributes?: AttributeUi[]
+    metaAttributes?: MetaAttributesUi
+}
+
+export interface RequestIdUi {
+    requestId?: string
 }
 
 export interface Trainee {
@@ -96,7 +112,7 @@ type AwaitedInput<T> = PromiseLike<T> | T
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
 
 export const useRegisterTraineeHook = () => {
-    const registerTrainee = useTrainingsSwaggerClient<Trainee>()
+    const registerTrainee = useTrainingsSwaggerClient<RequestIdUi>()
 
     return (trainingId: string, trainee: Trainee) => {
         return registerTrainee({ url: `/${trainingId}/trainee`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: trainee })
@@ -144,24 +160,37 @@ export const useRegisterTrainee = <TError = ApiError, TContext = unknown>(option
 }
 
 export const useUnregisterTraineeHook = () => {
-    const unregisterTrainee = useTrainingsSwaggerClient<Trainee>()
+    const unregisterTrainee = useTrainingsSwaggerClient<RequestIdUi>()
 
-    return (trainingId: string) => {
-        return unregisterTrainee({ url: `/${trainingId}/trainee`, method: 'delete' })
+    return (trainingId: string, params?: UnregisterTraineeParams) => {
+        return unregisterTrainee({ url: `/${trainingId}/trainee`, method: 'delete', params })
     }
 }
 
 export const useUnregisterTraineeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUnregisterTraineeHook>>>, TError, { trainingId: string }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUnregisterTraineeHook>>>, TError, { trainingId: string }, TContext> => {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useUnregisterTraineeHook>>>,
+        TError,
+        { trainingId: string; params?: UnregisterTraineeParams },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useUnregisterTraineeHook>>>,
+    TError,
+    { trainingId: string; params?: UnregisterTraineeParams },
+    TContext
+> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const unregisterTrainee = useUnregisterTraineeHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useUnregisterTraineeHook>>>, { trainingId: string }> = (props) => {
-        const { trainingId } = props ?? {}
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useUnregisterTraineeHook>>>,
+        { trainingId: string; params?: UnregisterTraineeParams }
+    > = (props) => {
+        const { trainingId, params } = props ?? {}
 
-        return unregisterTrainee(trainingId)
+        return unregisterTrainee(trainingId, params)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -172,7 +201,12 @@ export type UnregisterTraineeMutationResult = NonNullable<Awaited<ReturnType<Ret
 export type UnregisterTraineeMutationError = ApiError
 
 export const useUnregisterTrainee = <TError = ApiError, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUnregisterTraineeHook>>>, TError, { trainingId: string }, TContext>
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useUnregisterTraineeHook>>>,
+        TError,
+        { trainingId: string; params?: UnregisterTraineeParams },
+        TContext
+    >
 }) => {
     const mutationOptions = useUnregisterTraineeMutationOptions(options)
 
@@ -223,26 +257,25 @@ export const useGetTrainees = <TData = Awaited<ReturnType<ReturnType<typeof useG
 export const useGetTrainingsForUserHook = () => {
     const getTrainingsForUser = useTrainingsSwaggerClient<ConfigurationItemSetUi>()
 
-    return (signal?: AbortSignal) => {
-        return getTrainingsForUser({ url: `/userList`, method: 'get', signal })
+    return (params?: GetTrainingsForUserParams, signal?: AbortSignal) => {
+        return getTrainingsForUser({ url: `/userList`, method: 'get', params, signal })
     }
 }
 
-export const getGetTrainingsForUserQueryKey = () => [`/userList`] as const
+export const getGetTrainingsForUserQueryKey = (params?: GetTrainingsForUserParams) => [`/userList`, ...(params ? [params] : [])] as const
 
-export const useGetTrainingsForUserQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>,
-    TError = ApiError,
->(options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>, TError, TData>
-}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>, TError, TData> & { queryKey: QueryKey } => {
+export const useGetTrainingsForUserQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>, TError = ApiError>(
+    params?: GetTrainingsForUserParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetTrainingsForUserQueryKey()
+    const queryKey = queryOptions?.queryKey ?? getGetTrainingsForUserQueryKey(params)
 
     const getTrainingsForUser = useGetTrainingsForUserHook()
 
-    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>> = ({ signal }) => getTrainingsForUser(signal)
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>> = ({ signal }) =>
+        getTrainingsForUser(params, signal)
 
     return { queryKey, queryFn, ...queryOptions }
 }
@@ -250,10 +283,11 @@ export const useGetTrainingsForUserQueryOptions = <
 export type GetTrainingsForUserQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>>
 export type GetTrainingsForUserQueryError = ApiError
 
-export const useGetTrainingsForUser = <TData = Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>, TError = ApiError>(options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>, TError, TData>
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useGetTrainingsForUserQueryOptions(options)
+export const useGetTrainingsForUser = <TData = Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>, TError = ApiError>(
+    params?: GetTrainingsForUserParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTrainingsForUserHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetTrainingsForUserQueryOptions(params, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
