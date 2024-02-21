@@ -16,9 +16,15 @@ import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 registerLocale('sk', sk)
 registerLocale('en', en)
 
+export enum DateTypeEnum {
+    DATE = 'date',
+    DATETIME = 'datetime',
+}
+
 type Props = {
     handleDateChange: (date: Date | null, name: string) => void
     name: string
+    type?: DateTypeEnum
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: Control<FieldValue<Record<string, any>>>
     label?: string
@@ -39,6 +45,7 @@ type Props = {
 
 export const DateInput: React.FC<Props> = ({
     name,
+    type = DateTypeEnum.DATE,
     control,
     handleDateChange,
     label,
@@ -57,6 +64,17 @@ export const DateInput: React.FC<Props> = ({
     const { t, i18n } = useTranslation()
     const hintId = `${id}-hint`
     const errorId = `${id}-error`
+
+    const datePlaceholder = 'dd.mm.yyyy'
+    const dateTimePlaceholder = 'dd.mm.yyyy hh:mm'
+
+    const dateFormat = 'dd.MM.yyyy'
+    const dateTimeFormat = 'dd.MM.yyyy HH:mm'
+
+    const placeholder = type === DateTypeEnum.DATE ? datePlaceholder : dateTimePlaceholder
+    const format = type === DateTypeEnum.DATE ? dateFormat : dateTimeFormat
+
+    const showTimeSelect = type === DateTypeEnum.DATETIME
 
     return (
         <Controller
@@ -86,14 +104,16 @@ export const DateInput: React.FC<Props> = ({
                             <DatePicker
                                 wrapperClassName={styles.fullWidth}
                                 className={classNames('govuk-input', { 'govuk-input--error': !!error })}
-                                placeholderText="dd.mm.yyyy"
+                                placeholderText={placeholder}
                                 selected={field.value ? new Date(field.value) : null}
                                 onChange={(date) => {
                                     date && clearErrors?.(name)
                                     handleDateChange(date, field.name)
                                 }}
-                                dateFormat="dd.MM.yyyy"
+                                dateFormat={format}
+                                showTimeSelect={showTimeSelect}
                                 locale={i18n.language === Languages.SLOVAK ? Languages.SLOVAK : Languages.ENGLISH}
+                                timeCaption={t('input.time')}
                                 disabled={disabled}
                                 required={required}
                                 maxDate={new Date('9999-12-31')}

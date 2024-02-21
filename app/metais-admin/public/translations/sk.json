@@ -208,7 +208,8 @@
         "cimode": "Preklady"
     },
     "input": {
-        "requiredField": "(povinné)"
+        "requiredField": "(povinné)",
+        "time": "Čas"
     },
     "tab": {
         "contents": "Obsah"

@@ -330,6 +330,7 @@ export const AttributeAttributeTypeEnum = {
     CHARACTER: 'CHARACTER',
     STRING: 'STRING',
     DATE: 'DATE',
+    DATETIME: 'DATETIME',
     STRING_PAIR: 'STRING_PAIR',
     IMAGE: 'IMAGE',
     HTML: 'HTML',
