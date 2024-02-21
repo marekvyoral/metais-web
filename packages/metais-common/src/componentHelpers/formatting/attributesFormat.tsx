@@ -1,4 +1,5 @@
 import { TFunction } from 'i18next'
+import React from 'react'
 
 import { MetainformationColumns } from '../ci/getCiDefaultMetaAttributes'
 
@@ -72,8 +73,14 @@ export const pairEnumsToEnumValues = ({
     }
     const formattedRowValue = formatRowValueByRowType({ attribute, rowValue, t, unitsData })
     if (!attribute?.constraints || !attribute?.constraints?.length) {
-        if (attribute?.isArray) {
-            return (formattedRowValue as unknown as string[])?.join(', ')
+        if (attribute?.isArray && Array.isArray(formattedRowValue) && formattedRowValue.length > 1) {
+            return (
+                <ul style={{ margin: 0 }}>
+                    {formattedRowValue?.map((value, index) => (
+                        <li key={`${attribute.id}_${index}`}>{value}</li>
+                    ))}
+                </ul>
+            )
         }
         return formattedRowValue
     }
