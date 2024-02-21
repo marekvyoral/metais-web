@@ -12,10 +12,10 @@ import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import {
     getDefaultCiEntityTabList,
@@ -25,10 +25,10 @@ import {
     useGetEntityParamsFromUrl,
 } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 import { TrainingContainer } from '@/components/containers/TrainingContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { TrainingEntityIdHeader } from '@/components/views/ci/trainings/TrainingEntityIdHeader'
-import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -47,8 +47,6 @@ const EntityDetailPage: React.FC = () => {
     const { invalidate } = useInvalidateTrainingsCache(entityId ?? '')
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
-
-    const { data: trainingData, isFetching: isTrainingFetching, isError: isTrainingError } = useGetTrainingsForUser({ query: { enabled: !!user } })
 
     const {
         mutateAsync: unregisterFromTraining,
@@ -74,9 +72,13 @@ const EntityDetailPage: React.FC = () => {
         },
     })
 
-    const isRegisteredOnTraining = useMemo(() => {
-        return trainingData?.configurationItemSet?.some((training) => training.uuid === ciItemData?.uuid)
-    }, [trainingData, ciItemData])
+    const {
+        data: trainingData,
+        isFetching: isTrainingFetching,
+        isError: isTrainingError,
+    } = useGetTrainingsForUser({ trainingId: [ciItemData?.uuid ?? ''] }, { query: { enabled: !!user && !!ciItemData } })
+
+    const isRegisteredOnTraining = trainingData?.configurationItemSet && trainingData.configurationItemSet.length > 0
 
     const canRegisteredOnTraining = useMemo(() => {
         return ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Skolenie_pocet_volnych_miest] > 0
@@ -121,7 +123,7 @@ const EntityDetailPage: React.FC = () => {
                             <TrainingEntityIdHeader
                                 inviteButton={
                                     canRegisteredOnTraining &&
-                                    (isRegisteredOnTraining ? (
+                                    (user && isRegisteredOnTraining ? (
                                         <Button
                                             label={t('trainings.unregisterFromTraining')}
                                             variant="warning"
