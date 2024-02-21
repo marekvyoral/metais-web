@@ -1,9 +1,12 @@
-import { useQueryClient } from '@tanstack/react-query'
 import { useContext, useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce'
+
+import { CustomAuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useHandleLogout = () => {
     const { logOut } = useContext<IAuthContext>(AuthContext)
+    const { dispatch } = useAuth()
     const queryClient = useQueryClient()
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -26,6 +29,7 @@ export const useHandleLogout = () => {
             })
             .finally(() => {
                 logOut()
+                dispatch({ type: CustomAuthActions.LOGOUT_USER })
                 queryClient.clear()
                 setIsLoading(false)
             })
