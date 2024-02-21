@@ -1,24 +1,23 @@
-import { ButtonLink, CheckBox, LoadingIndicator, PaginatorWrapper, Table, TextWarning } from '@isdd/idsk-ui-kit/index'
+import { ButtonLink, CheckBox, PaginatorWrapper, Table, TextWarning } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 import {
+    ApiError,
     AttributeProfile,
     AttributeProfilePreview,
     AttributeProfileType,
     CiTypePreview,
-    useStoreUnValid,
-    useStoreValid1,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, BulkPopup, CreateEntityButton } from '@isdd/metais-common/index'
-import { QueryObserverResult } from '@tanstack/react-query'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, BulkPopup, CreateEntityButton, MutationFeedback } from '@isdd/metais-common/index'
+import { QueryObserverResult, UseMutateAsyncFunction } from '@tanstack/react-query'
 import { ColumnDef, Row } from '@tanstack/react-table'
+import classNames from 'classnames'
 import { SetStateAction, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import classNames from 'classnames'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import styles from './egovTable.module.scss'
 
@@ -29,7 +28,30 @@ type IListData = {
     isFetching?: boolean
     sort: ColumnSort[]
     setSort: React.Dispatch<SetStateAction<ColumnSort[]>>
+    mutateInvalidateFunc: {
+        mutateAsync: UseMutateAsyncFunction<
+            void,
+            ApiError,
+            {
+                technicalName: string
+            },
+            unknown
+        >
+        isSuccess: boolean
+    }
+    mutateValidateFunc: {
+        mutateAsync: UseMutateAsyncFunction<
+            void,
+            ApiError,
+            {
+                technicalName: string
+            },
+            unknown
+        >
+        isSuccess: boolean
+    }
 }
+
 interface IEgovTable {
     name?: string
     technicalName?: string
@@ -37,7 +59,7 @@ interface IEgovTable {
     valid?: boolean
 }
 
-export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort }: IListData) => {
+export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInvalidateFunc, mutateValidateFunc }: IListData) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -179,8 +201,6 @@ export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort
     ]
     const columnsWithPermissions = isUserLogged ? columns : columns.slice(1)
 
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-
     const handlePageChange = (filter: IFilter) => {
         setPageNumber(filter?.pageNumber ?? 0)
     }
@@ -196,8 +216,8 @@ export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort
     const [errorMessageUnvalid, setErrorMessageUnvalid] = useState(false)
     const [errorMessageValid, setErrorMessageValid] = useState(false)
 
-    const { mutateAsync: setAttrUnvalid } = useStoreUnValid()
-    const { mutateAsync: setAttrValid } = useStoreValid1()
+    const { mutateAsync: mutateInvalidate } = mutateInvalidateFunc
+    const { mutateAsync: mutateValidate } = mutateValidateFunc
 
     const invalidateItems = async () => {
         if (data?.some((colData) => rowSelection.includes(colData.technicalName || '') && !colData.valid)) {
@@ -207,14 +227,12 @@ export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort
         }
         setErrorMessageValid(false)
         setErrorMessageUnvalid(false)
-        setIsLoading(true)
         await Promise.all(
             rowSelection.map(async (tname) => {
-                await setAttrUnvalid({ technicalName: tname })
+                await mutateInvalidate({ technicalName: tname })
             }),
         )
         refetch?.()
-        setIsLoading(false)
     }
 
     const validateItems = async () => {
@@ -225,70 +243,72 @@ export const EgovTable = ({ data, entityName, refetch, isFetching, sort, setSort
         }
         setErrorMessageValid(false)
         setErrorMessageUnvalid(false)
-        setIsLoading(true)
         await Promise.all(
             rowSelection.map(async (tname) => {
-                await setAttrValid({ technicalName: tname })
+                await mutateValidate({ technicalName: tname })
             }),
         )
         refetch?.()
-        setIsLoading(false)
     }
     return (
         <div>
             {errorMessageUnvalid && <TextWarning>{t('tooltips.unvalidTextWarning')}</TextWarning>}
             {errorMessageValid && <TextWarning>{t('tooltips.validTextWarning')}</TextWarning>}
 
-            <div style={{ position: 'relative' }}>
-                {(isFetching || isLoading) && <LoadingIndicator />}
-                <ActionsOverTable
-                    pagination={{ pageSize, pageNumber, dataLength: data?.length || 0 }}
-                    handleFilterChange={handlePerPageChange}
-                    pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                    entityName={entityName ?? ''}
-                    createButton={
-                        <CreateEntityButton
-                            label={t(`egov.addNew.${entityName}`)}
-                            onClick={() => navigate(`/egov/${entityName}/create`, { state: { from: location } })}
-                        />
-                    }
-                    hiddenButtons={{ SELECT_COLUMNS: true }}
-                    bulkPopup={
-                        <BulkPopup
-                            checkedRowItems={Object.keys(rowSelection).length}
-                            items={(closePopup) => [
-                                <ButtonLink
-                                    key={'buttonBlock'}
-                                    icon={CrossInACircleIcon}
-                                    label={t('actionOverTable.invalidateItems')}
-                                    onClick={() => {
-                                        invalidateItems()
-                                        closePopup()
-                                    }}
-                                />,
-                                <ButtonLink
-                                    key={'buttonUnblock'}
-                                    icon={CheckInACircleIcon}
-                                    label={t('actionOverTable.validateItems')}
-                                    onClick={() => {
-                                        validateItems()
-                                        closePopup()
-                                    }}
-                                />,
-                            ]}
-                        />
-                    }
-                />
-                <Table<IEgovTable>
-                    data={data}
-                    columns={columnsWithPermissions}
-                    sort={sort}
-                    onSortingChange={setSort}
-                    manualSorting={false}
-                    manualPagination={false}
-                    pagination={{ pageIndex: pageNumber - 1, pageSize: pageSize }}
-                />
-            </div>
+            <ActionsOverTable
+                pagination={{ pageSize, pageNumber, dataLength: data?.length || 0 }}
+                handleFilterChange={handlePerPageChange}
+                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                entityName={entityName ?? ''}
+                createButton={
+                    <CreateEntityButton
+                        label={t(`egov.addNew.${entityName}`)}
+                        onClick={() => navigate(`/egov/${entityName}/create`, { state: { from: location } })}
+                    />
+                }
+                hiddenButtons={{ SELECT_COLUMNS: true }}
+                bulkPopup={
+                    <BulkPopup
+                        checkedRowItems={Object.keys(rowSelection).length}
+                        items={(closePopup) => [
+                            <ButtonLink
+                                key={'buttonBlock'}
+                                icon={CrossInACircleIcon}
+                                label={t('actionOverTable.invalidateItems')}
+                                onClick={() => {
+                                    invalidateItems()
+                                    closePopup()
+                                }}
+                            />,
+                            <ButtonLink
+                                key={'buttonUnblock'}
+                                icon={CheckInACircleIcon}
+                                label={t('actionOverTable.validateItems')}
+                                onClick={() => {
+                                    validateItems()
+                                    closePopup()
+                                }}
+                            />,
+                        ]}
+                    />
+                }
+            />
+            <MutationFeedback
+                success={mutateInvalidateFunc.isSuccess || mutateValidateFunc.isSuccess}
+                error={false}
+                successMessage={
+                    mutateInvalidateFunc.isSuccess ? t('mutationFeedback.successfulInvalidated') : t('mutationFeedback.successfulRevalidated')
+                }
+            />
+            <Table<IEgovTable>
+                data={data}
+                columns={columnsWithPermissions}
+                sort={sort}
+                onSortingChange={setSort}
+                manualSorting={false}
+                manualPagination={false}
+                pagination={{ pageIndex: pageNumber - 1, pageSize: pageSize }}
+            />
             <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={data?.length || 0} handlePageChange={handlePageChange} />
         </div>
     )
