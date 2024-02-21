@@ -39,7 +39,7 @@ export const GroupCreateContainer: React.FC = () => {
     })
     const [creatingRelation, setCreatingRelation] = useState(false)
     const [uniqueConstraintError, setUniqueConstraintError] = useState<{ [key: string]: string }>()
-    const invalidateCache = useInvalidateGroupsListCache({ sortBy: 'name', ascending: false })
+    const invalidateCache = useInvalidateGroupsListCache()
     const { mutateAsync: createGroup, isLoading: creatingGroupLoading } = useUpdateOrCreate2({
         mutation: {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
