@@ -1,8 +1,16 @@
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
+import { DateInput, DateTypeEnum } from '@isdd/idsk-ui-kit/date-input/DateInput'
 import { Input, MultiSelect, SimpleSelect } from '@isdd/idsk-ui-kit/index'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { EnumItem, EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeAttributeTypeEnum, AttributeConstraintRegexAllOf } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
+import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
+import { HTML_TYPE, MAX_TITLE_LENGTH } from '@isdd/metais-common/constants'
+import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
+import { ATTRIBUTE_NAME, formatDateForDefaultValue, formatDateToIso } from '@isdd/metais-common/index'
+import { Languages } from '@isdd/metais-common/localization/languages'
+import { formatNumberWithSpaces, isFalsyStringValue } from '@isdd/metais-common/utils/utils'
 import classnames from 'classnames'
 import React from 'react'
 import {
@@ -18,14 +26,6 @@ import {
     UseFormTrigger,
 } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ATTRIBUTE_NAME, formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
-import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
-import { HTML_TYPE, MAX_TITLE_LENGTH } from '@isdd/metais-common/constants'
-import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
-import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
-import { formatNumberWithSpaces, isFalsyStringValue } from '@isdd/metais-common/utils/utils'
-import { Languages } from '@isdd/metais-common/localization/languages'
-import { DateInput, DateTypeEnum } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { ArrayAttributeInput } from './ArrayAttributeInput'
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
@@ -166,7 +166,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     }
 
     const handleDateTimeChange = (date: Date | null, name: string) => {
-        setValue(name, date ? formatDateTimeForDefaultValue(date.toISOString()) : null)
+        setValue(name, date ? formatDateToIso(date) : null)
     }
 
     const regexConstraints = attribute?.constraints?.[0] as AttributeConstraintRegexAllOf
