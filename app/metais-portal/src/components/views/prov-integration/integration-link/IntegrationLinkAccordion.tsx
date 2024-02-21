@@ -125,7 +125,7 @@ export const IntegrationLinkAccordion: React.FC<Props> = ({
                                         <InformationGridRow
                                             key={attribute?.technicalName}
                                             label={(i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName) ?? ''}
-                                            value={isHTML ? <SafeHtmlComponent dirtyHtml={rowValue?.replace(/\n/g, '<br>')} /> : rowValue}
+                                            value={isHTML ? <SafeHtmlComponent dirtyHtml={(rowValue as string)?.replace(/\n/g, '<br>')} /> : rowValue}
                                             tooltip={attribute?.description}
                                             lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
                                         />
