@@ -176,7 +176,8 @@
         "cimode": "Translations"
     },
     "input": {
-        "requiredField": "(required)"
+        "requiredField": "(required)",
+        "time": "Time"
     },
     "tab": {
         "contents": "Contents"
