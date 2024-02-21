@@ -19,37 +19,7 @@ const UserManagementListPage = () => {
                 ]}
             />
             <MainContentWrapper>
-                <UserManagementListContainer
-                    View={({
-                        data,
-                        filter,
-                        handleFilterChange,
-                        handleBlockRowsAction,
-                        handleExport,
-                        isError,
-                        isErrorExport,
-                        isLoading,
-                        isLoadingExport,
-                        isMutationError,
-                        isMutationSuccess,
-                        updateIdentityStateBatchMutation,
-                    }) => (
-                        <UserManagementListPageView
-                            data={data}
-                            filter={filter}
-                            handleFilterChange={handleFilterChange}
-                            handleBlockRowsAction={handleBlockRowsAction}
-                            handleExport={handleExport}
-                            isError={isError}
-                            isErrorExport={isErrorExport}
-                            isLoading={isLoading}
-                            isLoadingExport={isLoadingExport}
-                            isMutationError={isMutationError}
-                            isMutationSuccess={isMutationSuccess}
-                            updateIdentityStateBatchMutation={updateIdentityStateBatchMutation}
-                        />
-                    )}
-                />
+                <UserManagementListContainer View={(props) => <UserManagementListPageView {...props} />} />
             </MainContentWrapper>
         </>
     )

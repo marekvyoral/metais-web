@@ -87,6 +87,8 @@ const MassUpdate = () => {
                     sort,
                     isError,
                     isLoading,
+                    rowSelection,
+                    setRowSelection,
                 }) => (
                     <MainContentWrapper>
                         <QueryFeedback withChildren loading={isLoading || isActionLoading} error={false}>
@@ -102,6 +104,8 @@ const MassUpdate = () => {
                             </FlexColumnReverseWrapper>
                             <PublicAuthoritiesMassUpdateFilter entityName={entityName} defaultFilterValues={defaultFilterValues} />
                             <PublicAuthoritiesMassUpdateTable
+                                rowSelection={rowSelection}
+                                setRowSelection={setRowSelection}
                                 data={tableData}
                                 ciData={ciData}
                                 defaultFilterValues={defaultFilterValues}

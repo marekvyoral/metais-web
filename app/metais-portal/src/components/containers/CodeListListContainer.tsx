@@ -3,6 +3,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/consta
 import { RoleParticipantUI, useGetRoleParticipantBulk } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ApiCodelistPreview, useGetCodelistHeaders } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 export enum CodeListFilterOnlyBase {
     TRUE = 'TRUE',
@@ -31,6 +32,8 @@ export interface CodeListListViewProps {
     isLoading: boolean
     isError: boolean
     isOnlyPublishedPage?: boolean
+    rowSelection: Record<string, ApiCodelistPreview>
+    setRowSelection: Dispatch<SetStateAction<Record<string, ApiCodelistPreview>>>
 }
 
 export interface CodeListListFilterData extends IFilterParams, IFilter {
@@ -108,9 +111,12 @@ export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnly
         roleParticipants: roleParticipantsData,
         dataLength: codelistHeadersData?.codelistsCount,
     }
+    const [rowSelection, setRowSelection] = useState<Record<string, ApiCodelistPreview>>({})
 
     return (
         <View
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
             data={data}
             filter={filter}
             handleFilterChange={handleFilterChange}
