@@ -19,6 +19,7 @@ import {
 import { REGEX_TEL, HTML_TYPE, REGEX_EMAIL } from '@isdd/metais-common/constants'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import { numericProperties } from './createEntityHelpers'
 
@@ -58,6 +59,7 @@ export const generateFormSchema = (
     lang: string,
     selectedRole?: GidRoleData | null,
     entityName?: string,
+    formDefaultValues?: ConfigurationItemUiAttributes,
 ) => {
     const schema: SchemaType = {}
     const attributes = selectedRole
@@ -115,13 +117,15 @@ export const generateFormSchema = (
                     schema[attribute.technicalName] = array()
                         .nullable()
                         .transform((curr, orig) => (orig === '' ? null : curr))
-                        .of(string())
-                        .when('isRequired', (_, current) => {
-                            if (isRequired) {
-                                return current.required(t('validation.required'))
-                            }
-                            return current
-                        })
+                        .of(
+                            string().when('isRequired', (_, current) => {
+                                if (isRequired) {
+                                    return current.required(t('validation.required'))
+                                }
+                                return current
+                            }),
+                        )
+                        .min(isRequired ? 1 : 0, t('validation.required'))
 
                     break
                 }
@@ -211,7 +215,13 @@ export const generateFormSchema = (
             }
         } else if (isDate) {
             schema[attribute.technicalName] =
-                getSpecialRule({ technicalName: attribute.technicalName, entityName, t, required: isRequired }) ??
+                getSpecialRule({
+                    technicalName: attribute.technicalName,
+                    entityName,
+                    t,
+                    required: isRequired,
+                    currentValue: formDefaultValues?.[attribute.technicalName],
+                }) ??
                 date()
                     .nullable()
                     .transform((curr, orig) => (orig === '' ? null : curr))
@@ -223,7 +233,13 @@ export const generateFormSchema = (
                     })
         } else if (isDateTime) {
             schema[attribute.technicalName] =
-                getSpecialRule({ technicalName: attribute.technicalName, entityName, t, required: isRequired }) ??
+                getSpecialRule({
+                    technicalName: attribute.technicalName,
+                    entityName,
+                    t,
+                    required: isRequired,
+                    currentValue: formDefaultValues?.[attribute.technicalName],
+                }) ??
                 date()
                     .nullable()
                     .transform((curr, orig) => (orig === '' ? null : curr))

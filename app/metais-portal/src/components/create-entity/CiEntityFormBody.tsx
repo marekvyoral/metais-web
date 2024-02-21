@@ -59,8 +59,9 @@ export const CiEntityFormBody: React.FC<Props> = ({
             i18n.language,
             null,
             ciTypeData?.technicalName,
+            formDefaultValues,
         )
-    }, [isUpdate, combinedProfiles, selectedRole?.roleName, t, i18n.language, ciTypeData?.technicalName])
+    }, [isUpdate, combinedProfiles, selectedRole?.roleName, t, i18n.language, ciTypeData?.technicalName, formDefaultValues])
 
     const methods = useForm({
         defaultValues: formDefaultValues,
