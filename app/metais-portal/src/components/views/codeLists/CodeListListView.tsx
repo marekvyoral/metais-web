@@ -7,7 +7,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isd
 import { ActionsOverTable, BulkPopup, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef, Table as ITable, Row } from '@tanstack/react-table'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { SelectFilterOrganization } from '@isdd/metais-common/components/select-organization/SelectFilterOrganization'
@@ -54,6 +54,8 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
     isOnlyPublishedPage = false,
     isError,
     isLoading,
+    rowSelection,
+    setRowSelection,
 }) => {
     const { t } = useTranslation()
     const {
@@ -68,7 +70,6 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
         successMessage,
     } = useAddFavorite()
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
-    const [rowSelection, setRowSelection] = useState<Record<string, ApiCodelistPreview>>({})
 
     const selectedUuids = useMemo(() => {
         return Object.values(rowSelection).map((i) => i.id)

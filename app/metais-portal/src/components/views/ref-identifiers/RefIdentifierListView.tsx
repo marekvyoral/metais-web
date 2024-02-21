@@ -4,7 +4,7 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { ActionsOverTable, BulkPopup, MutationFeedback, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Row } from '@tanstack/react-table'
 import actionsOverTableStyles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
@@ -28,6 +28,8 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
     isError,
     isLoading,
     handleFilterChange,
+    rowSelection,
+    setRowSelection,
 }) => {
     const { t, i18n } = useTranslation()
     const {
@@ -42,8 +44,6 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
         resetState,
         successMessage,
     } = useAddFavorite()
-
-    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
 
     const selectedUuids = useMemo(() => {
         return Object.values(rowSelection).map((i) => i.uuid)
@@ -76,6 +76,7 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
         } else {
             setRowSelection((prevRowSelection) => ({ ...prevRowSelection, ...reduceTableDataToObject(rows) }))
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.configurationItemSet, rowSelection])
 
     const isRowSelected = useCallback(
