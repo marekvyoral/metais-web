@@ -43,7 +43,7 @@ export const DraftListDetailMainSection: React.FC<Props> = ({ data }) => {
             <InformationGridRow
                 key={ATTRIBUTE_NAME.requestChannel}
                 label={getLabelGuiProfilStandardRequest(ATTRIBUTE_NAME.requestChannel, guiAttributes) ?? ''}
-                value={t(`DraftsList.filter.draftType.${requestData?.requestChannel}`)}
+                value={requestData?.requestChannel ? t(`DraftsList.filter.draftType.${requestData?.requestChannel}`) : ''}
                 tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.requestChannel, guiAttributes) ?? ''}
             />
             <InformationGridRow
