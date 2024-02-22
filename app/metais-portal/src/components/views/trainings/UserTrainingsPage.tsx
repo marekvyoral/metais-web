@@ -27,7 +27,7 @@ export const UserTrainingsPage = () => {
 
     const {
         data: tableData,
-        isLoading: isTrainingLoading,
+        isFetching: isTrainingFetching,
         isError: isTrainingError,
     } = useGetTrainingsForUser({ page: filter.pageNumber, perPage: filter.pageSize })
 
@@ -51,14 +51,14 @@ export const UserTrainingsPage = () => {
         fetchStatus,
     } = useGetRoleParticipantBulk({ gids: [...ownerGids] }, { query: { enabled: !!mappedTableData && ownerGids && [...ownerGids]?.length > 0 } })
     const isGestorsLoadingCombined = isGestorsLoading && fetchStatus != 'idle'
-    const pagination = usePagination(mappedTableData, {})
+    const pagination = usePagination(mappedTableData, filter)
 
-    const isLoading = [isGestorsLoadingCombined, isAttributesLoading, isTrainingLoading, isColumnsLoading].some((item) => item)
+    const isLoading = [isGestorsLoadingCombined, isAttributesLoading, isTrainingFetching, isColumnsLoading].some((item) => item)
     const isError = [isGestorsError, isAttributesError, isTrainingError, isColumnsError].some((item) => item)
+
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
             <TextHeading size="L">{t('userProfile.trainingsHeading')}</TextHeading>
-            <QueryFeedback loading={isLoading} error={isError} />
 
             <ActionsOverTable
                 pagination={pagination}
@@ -75,7 +75,7 @@ export const UserTrainingsPage = () => {
             />
             <CiTable
                 data={{ columnListData, tableData: mappedTableData, constraintsData, unitsData, entityStructure: ciTypeData, gestorsData }}
-                handleFilterChange={() => undefined}
+                handleFilterChange={handleFilterChange}
                 sort={[]}
                 enableSorting={false}
                 pagination={pagination}
@@ -84,6 +84,6 @@ export const UserTrainingsPage = () => {
                 isError={isError}
                 baseHref="/ci/Training"
             />
-        </>
+        </QueryFeedback>
     )
 }
