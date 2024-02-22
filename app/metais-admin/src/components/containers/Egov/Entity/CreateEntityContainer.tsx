@@ -58,6 +58,7 @@ const CreateEntityContainer: React.FC<ICreateEntity> = ({ View, entityId }: ICre
 
     // const { mutateAsync: setProfileAttributeAsVisible } = useStoreVisible()
     // const { mutateAsync: setProfileAttributeAsInvisible } = useStoreInvisible()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const setVisibilityOfAttributeProfile = (attributeTechnicalName?: string, oldAttributeInvisibility?: boolean) => {
         //     if (!oldAttributeInvisibility) {
         //         setProfileAttributeAsInvisible({
