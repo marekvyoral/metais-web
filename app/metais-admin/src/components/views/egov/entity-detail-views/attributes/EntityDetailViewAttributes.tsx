@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { IEntityDetailViewAttributes, isRowSelected } from '@isdd/metais-common'
 import { ColumnDef } from '@tanstack/react-table'
-import { Button, ButtonLink, ButtonPopup, Input, Table, TextHeading } from '@isdd/idsk-ui-kit'
+import { Button, ButtonLink, ButtonPopup, CheckBox, Input, Table, TextHeading } from '@isdd/idsk-ui-kit'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
@@ -19,6 +19,7 @@ export const EntityDetailViewAttributes = ({
     saveExistingAttribute,
     resetExistingAttribute,
     roles,
+    setVisibilityOfAttributeProfile,
 }: IEntityDetailViewAttributes) => {
     const { t } = useTranslation()
     const [sort, setSort] = useState<ColumnSort[]>([])
@@ -120,6 +121,18 @@ export const EntityDetailViewAttributes = ({
             cell: (ctx) => <span>{t(`validity.${ctx.row?.original?.valid}`)}</span>,
         },
         {
+            header: t('egov.invisible'),
+            accessorFn: (row) => row?.invisible,
+            size: 80,
+            enableSorting: true,
+            id: 'invisible',
+            cell: (row) => (
+                <div className="govuk-checkboxes govuk-checkboxes--small">
+                    <CheckBox label={row.getValue() as string} name="checkbox" disabled checked={!row?.getValue()} id="invisible" />
+                </div>
+            ),
+        },
+        {
             header: t('actionsInTable.actions'),
             enableSorting: true,
             size: 80,
@@ -140,6 +153,20 @@ export const EntityDetailViewAttributes = ({
                                                     closePopup()
                                                 }}
                                                 label={t('actionsInTable.edit')}
+                                            />
+                                            <ButtonLink
+                                                onClick={() => {
+                                                    setVisibilityOfAttributeProfile?.(
+                                                        ctx?.row?.original?.technicalName,
+                                                        ctx?.row?.original?.invisible,
+                                                    )
+                                                    closePopup()
+                                                }}
+                                                label={
+                                                    ctx?.row?.original?.invisible
+                                                        ? t('egov.detail.visibilityChange.setVisible')
+                                                        : t('egov.detail.visibilityChange.setInvisible')
+                                                }
                                             />
                                             {isRowOverriden(ctx?.row?.original?.technicalName ?? '') && (
                                                 <ButtonLink

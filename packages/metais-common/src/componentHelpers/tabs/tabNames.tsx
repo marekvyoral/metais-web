@@ -10,6 +10,7 @@ export interface IEntityDetailViewAttributes {
     removeProfileAttribute?: (technicalName: string) => void
     saveExistingAttribute?: (attributeTechnicalName?: string, attribute?: Attribute, profileTechName?: string) => void
     resetExistingAttribute?: (attributeTechnicalName?: string) => void
+    setVisibilityOfAttributeProfile?: (attributeTechnicalName?: string, oldAttributeVisibility?: boolean) => void
 }
 
 export const getTabsFromApi = (

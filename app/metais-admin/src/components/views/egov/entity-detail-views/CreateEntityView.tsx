@@ -42,6 +42,7 @@ export const CreateEntityView = ({
     resetExistingAttribute,
     saveExistingAttribute,
     attributesOverridesData,
+    setVisibilityOfAttributeProfile,
 }: ICreateEntityView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -154,6 +155,7 @@ export const CreateEntityView = ({
                     attributesOverridesData={attributesOverridesData}
                     saveExistingAttribute={saveExistingAttribute}
                     resetExistingAttribute={resetExistingAttribute}
+                    setVisibilityOfAttributeProfile={setVisibilityOfAttributeProfile}
                 />
             ),
         },

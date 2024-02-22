@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { AttributeProfile, Mandatory } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 
 export const generateSchemaForCreateAttribute = (t: TFunction<'translation', undefined, 'translation'>) => {
@@ -19,5 +19,6 @@ export const generateSchemaForCreateAttribute = (t: TFunction<'translation', und
         units: yup.string(),
         defaultValue: yup.mixed<boolean | string | number>(),
         constraints: yup.mixed(),
+        mandatory: yup.mixed<Mandatory>(),
     })
 }

@@ -30,6 +30,7 @@ const CreateEntity = () => {
                             isLoading={props.isLoading}
                             type={EntityType.ENTITY}
                             refetch={props.refetch}
+                            setVisibilityOfAttributeProfile={props.setVisibilityOfAttributeProfile}
                         />
                     )}
                 />

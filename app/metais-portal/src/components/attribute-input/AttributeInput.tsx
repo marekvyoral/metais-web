@@ -42,6 +42,7 @@ enum ConstraintTypes {
 
 enum MandatoryType {
     CRITICAL = 'critical',
+    NONE = 'none',
 }
 
 enum DisplayTextArea {

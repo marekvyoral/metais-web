@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Controller, FieldValues } from 'react-hook-form'
-import { Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
+import { CheckBox, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import { HTML_TYPE } from '@isdd/metais-common/constants'
@@ -14,6 +14,11 @@ import { IAddAttributeView } from './AddAttributeContainer'
 import { StringConstraints, useCreateAttributeSelectOptions } from './hooks/useCreateAttributeSelectOptions'
 import { useCreateAttributeForm } from './hooks/useCreateAttributeForm'
 import { getTypeForDefaultValue } from './hooks/helpers'
+
+export enum MandatoryType {
+    CRITICAL = 'critical',
+    NONE = 'none',
+}
 
 const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, storeNewAttribute, closeModal, isLoading }: IAddAttributeView) => {
     const { t } = useTranslation()
@@ -167,7 +172,7 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                         error={formState?.errors?.defaultValue?.message}
                     />
                 )}
-
+            <CheckBox id="mandatory" label={t('egov.mandatory')} {...register('mandatory')} />
             <ModalButtons
                 isLoading={isLoading}
                 submitButtonLabel={t('form.submit')}

@@ -49,6 +49,7 @@ const EditEntity = () => {
                                     type={EntityType.ENTITY}
                                     refetch={props.refetch}
                                     entityId={entityId}
+                                    setVisibilityOfAttributeProfile={createProps.setVisibilityOfAttributeProfile}
                                 />
                             )}
                             entityId={entityId}

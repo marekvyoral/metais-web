@@ -26,6 +26,7 @@ export interface ICreateEntityView {
     saveExistingAttribute?: (attributeTechnicalName?: string, attribute?: Attribute) => void
     resetExistingAttribute?: (attributeTechnicalName?: string) => void
     attributesOverridesData?: Attribute[] | undefined
+    setVisibilityOfAttributeProfile?: (attributeTechnicalName?: string, oldAttributeVisibility?: boolean) => void
 }
 
 interface ICreateEntity {
@@ -55,6 +56,26 @@ const CreateEntityContainer: React.FC<ICreateEntity> = ({ View, entityId }: ICre
         })
     }
 
+    // const { mutateAsync: setProfileAttributeAsVisible } = useStoreVisible()
+    // const { mutateAsync: setProfileAttributeAsInvisible } = useStoreInvisible()
+    const setVisibilityOfAttributeProfile = (attributeTechnicalName?: string, oldAttributeInvisibility?: boolean) => {
+        //     if (!oldAttributeInvisibility) {
+        //         setProfileAttributeAsInvisible({
+        //             technicalName: attributeTechnicalName ?? '',
+        //             attrProfileTechnicalName: profileData?.technicalName ?? '',
+        //         }).then(() => {
+        //             refetch()
+        //         })
+        //     } else {
+        //         setProfileAttributeAsVisible({
+        //             technicalName: attributeTechnicalName ?? '',
+        //             attrProfileTechnicalName: profileData?.technicalName ?? '',
+        //         }).then(() => {
+        //             refetch()
+        //         })
+        //     }
+    }
+
     return (
         <View
             data={{
@@ -66,6 +87,7 @@ const CreateEntityContainer: React.FC<ICreateEntity> = ({ View, entityId }: ICre
             isLoading={isLoading}
             isError={isError}
             entityId={entityId}
+            setVisibilityOfAttributeProfile={setVisibilityOfAttributeProfile}
         />
     )
 }

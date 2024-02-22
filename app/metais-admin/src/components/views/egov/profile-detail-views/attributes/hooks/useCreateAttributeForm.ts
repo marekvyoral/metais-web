@@ -8,6 +8,7 @@ import {
     AttributeConstraintIntervalAllOf,
     AttributeConstraintRegexAllOf,
     AttributeProfile,
+    Mandatory,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { generateSchemaForCreateAttribute } from './schemas/createAttributeSchema'
@@ -27,6 +28,7 @@ interface iUseCreateAttributeForm {
             units: string | undefined
             defaultValue: string | boolean | number | undefined
             constraints: AttributeConstraint[] | AttributeConstraintRegexAllOf[] | AttributeConstraintIntervalAllOf[] | AttributeConstraintEnumAllOf[]
+            mandatory: Mandatory | undefined
         },
         unknown,
         undefined

@@ -416,8 +416,9 @@ export const ProfileDetailView = <T,>({
                             }}
                             variant="secondary"
                         />
-
-                        <Button label={t('egov.create.addAttribute')} onClick={() => setOpenAddAttributeModal(true)} />
+                        {profileData?.type !== AttributeProfileType.system && (
+                            <Button label={t('egov.create.addAttribute')} onClick={() => setOpenAddAttributeModal(true)} />
+                        )}
                     </div>
                     <AddAttributeModal
                         refetch={refetch}
