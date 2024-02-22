@@ -1,11 +1,23 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, Input, LoadingIndicator, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import {
+    BreadCrumbs,
+    Button,
+    ButtonGroupRow,
+    CheckBox,
+    HomeIcon,
+    Input,
+    LoadingIndicator,
+    SimpleSelect,
+    TextHeading,
+    TextLink,
+} from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
+import { FooterRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { useTrainingInviteSchema } from './useTrainingInviteSchemas'
 
@@ -20,6 +32,7 @@ export enum RequestFormEnum {
     ORGANIZATION = 'organization',
     PHONE = 'phone',
     EMAIL = 'email',
+    CONSENT = 'consent',
 }
 
 export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
@@ -37,7 +50,7 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
     handleInvite,
 }) => {
     const { t } = useTranslation()
-    const { schema } = useTrainingInviteSchema()
+    const { schema } = useTrainingInviteSchema(user)
     const navigate = useNavigate()
 
     const { register, handleSubmit, formState, setValue, clearErrors, reset } = useForm<ITrainingInviteForm>({
@@ -48,6 +61,7 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
             organization: organizationOptions.at(0)?.value,
             phone: user?.mobile,
             email: user?.email,
+            consent: false,
         },
     })
 
@@ -141,6 +155,22 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
                             {...register(RequestFormEnum.PHONE)}
                             error={formState.errors[RequestFormEnum.PHONE]?.message}
                         />
+
+                        {!user && (
+                            <CheckBox
+                                {...register(RequestFormEnum.CONSENT)}
+                                id={RequestFormEnum.CONSENT}
+                                label={
+                                    <div>
+                                        <span>{t('registration.consentWith')}</span>
+                                        <TextLink newTab to={FooterRouteNames.PERSONAL_DATA_PROTECTION}>
+                                            {t('registration.dataProcessingConsent')}
+                                        </TextLink>
+                                    </div>
+                                }
+                                error={formState.errors[RequestFormEnum.CONSENT]?.message?.toString()}
+                            />
+                        )}
 
                         {errorMessages.map((errorMessage, index) => (
                             <MutationFeedback

@@ -22,6 +22,7 @@ export interface ITrainingInviteForm {
     organization: string
     email: string
     phone: string
+    consent?: boolean
 }
 
 export interface TrainingInviteContainerViewProps {
@@ -111,10 +112,22 @@ export const TrainingInviteContainer: React.FC = () => {
             setInviteError(false)
             setInviteLoading(true)
 
+            const consents = [
+                {
+                    type: 'PERSONAL_DATA_PROCESSING',
+                    accepted: data.consent,
+                },
+            ]
+
+            delete data.consent
+
             const response = await fetch(`${baseURL}/${entityId}/trainee`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'recaptcha-response': capthcaToken },
-                body: JSON.stringify({ ...data }),
+                body: JSON.stringify({
+                    ...data,
+                    consents,
+                }),
             })
             if (!response.ok) {
                 setInviteError(true)
