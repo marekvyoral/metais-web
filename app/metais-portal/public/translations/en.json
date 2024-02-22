@@ -450,6 +450,7 @@
         "invitedTitle": "Signed up for training",
         "registerForTraining": "Register for training",
         "unregisterFromTraining": "Unregister from training",
+        "sureUnregister": "Do you really want to unsubscribe from training?",
         "register": "Register",
         "table": {
             "firstName": "First name",
