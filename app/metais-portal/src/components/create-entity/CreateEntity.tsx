@@ -109,6 +109,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                 )}
 
                 <CreateCiEntityForm
+                    entityName={entityName}
                     ciTypeData={ciTypeData}
                     generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                     constraintsData={constraintsData}

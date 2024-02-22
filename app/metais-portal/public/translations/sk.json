@@ -2137,7 +2137,8 @@
         }
     },
     "input": {
-        "requiredField": "(povinné)"
+        "requiredField": "(povinné)",
+        "time": "Čas"
     },
     "votes": {
         "actions": {

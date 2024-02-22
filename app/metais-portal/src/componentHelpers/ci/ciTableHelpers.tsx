@@ -67,7 +67,7 @@ export const mapTableData = (
     uuidsToMatchedCiItemsMap?: Record<string, Record<string, ConfigurationItemUi>> | undefined,
 ) => {
     return (tableData?.map((confItem: ConfigurationItemUi) => {
-        const newAttributes: { [attributeName: string]: string } = {}
+        const newAttributes: { [attributeName: string]: string | JSX.Element } = {}
 
         Object.keys(confItem?.attributes ?? {})?.map((attributeName: string) => {
             const foundAttrWithTypes = reducedAttributes[attributeName]

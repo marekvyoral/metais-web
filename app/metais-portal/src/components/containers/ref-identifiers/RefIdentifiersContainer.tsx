@@ -7,9 +7,10 @@ import { STAV_REGISTRACIE } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IFilterParams, OPERATOR_OPTIONS, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { formatDateToIso } from '@isdd/metais-common/index'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { RefIdentifierListShowEnum } from '@/components/views/ref-identifiers/refIdentifierListProps'
+import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
 
 export interface RefIdentifierListFilterData extends IFilterParams, IFilter {
     type: RefIdentifierTypeEnum[]
@@ -29,6 +30,8 @@ export interface RefIdentifiersContainerViewProps {
     isLoggedIn: boolean
     isLoading: boolean
     isError: boolean
+    rowSelection: Record<string, ColumnsOutputDefinition>
+    setRowSelection: React.Dispatch<React.SetStateAction<Record<string, ColumnsOutputDefinition>>>
 }
 
 interface RefIdentifiersContainerProps {
@@ -60,6 +63,8 @@ export const RefIdentifiersContainer: React.FC<RefIdentifiersContainerProps> = (
     const isLoggedIn = !!user
 
     const { filter, handleFilterChange } = useFilterParams<RefIdentifierListFilterData>(defaultFilter)
+
+    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
 
     const { data: registrationState, isLoading: isDefaultStatesLoading } = useGetValidEnum(STAV_REGISTRACIE)
 
@@ -94,6 +99,8 @@ export const RefIdentifiersContainer: React.FC<RefIdentifiersContainerProps> = (
 
     return (
         <View
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
             data={tableData}
             registrationState={registrationState}
             defaultFilter={defaultFilter}

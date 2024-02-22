@@ -4,9 +4,11 @@ import { useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/c
 import { BASE_PAGE_NUMBER } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { IListComponent } from '@isdd/metais-common/types/list'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
+
+import { ColumnsOutputDefinition } from '@/pages/public-authorities/mass-update'
 
 export interface IActions {
     setInvalid?: (entityId: string | undefined, configurationItem: ConfigurationItemUiAttributes | undefined) => Promise<void>
@@ -26,6 +28,7 @@ export const PublicAuthoritiesMassUpdateContainer = <T extends FieldValues & IFi
 }: IPublicAuthoritiesMassUpdateContainer<T>) => {
     const { columnListData, isLoading: isColumnsLoading, isError: isColumnsError } = useGetColumnData(entityName)
     const { filter, handleFilterChange } = useFilterParams<T>(defaultFilterValues)
+    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
 
     const {
         attributeProfiles,
@@ -76,6 +79,8 @@ export const PublicAuthoritiesMassUpdateContainer = <T extends FieldValues & IFi
     const isError = [isReadChangesError, isReadCiListError, isAttributesError, isColumnsError].some((item) => item)
     return (
         <ListComponent
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
             data={{ columnListData, tableData, ciData, attributeProfiles, attributes, constraintsData, unitsData }}
             pagination={pagination}
             handleFilterChange={handleFilterChange}

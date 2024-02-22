@@ -176,7 +176,8 @@
         "cimode": "Translations"
     },
     "input": {
-        "requiredField": "(required)"
+        "requiredField": "(required)",
+        "time": "Time"
     },
     "tab": {
         "contents": "Contents"
@@ -470,6 +471,8 @@
         "attrSuccessfulUpdated": "Attribute was successfully changed",
         "attrSuccessfulCreated": "Attribute was successfully created",
         "invalidatePOSuccess": "Public authority successfully invalidated",
+        "successfulInvalidated": "The items was successfully invalidated",
+        "successfulRevalidated": "The items was successfully Revalidated",
         "invalidatePOError": "Public authority invalidation failed",
         "validatePOSuccess": "Public authority successfully validated",
         "validatePOError": "Public authority validation failed",
