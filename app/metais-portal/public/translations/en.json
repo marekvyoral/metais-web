@@ -450,6 +450,7 @@
         "invitedTitle": "Signed up for training",
         "registerForTraining": "Register for training",
         "unregisterFromTraining": "Unregister from training",
+        "sureUnregister": "Do you really want to unsubscribe from training?",
         "register": "Register",
         "table": {
             "firstName": "First name",
@@ -641,7 +642,7 @@
             "errorRelationsAsKsFaza": "The item has a life cycle phase of \"Live Operation",
             "errorNotApprovedKS": "End services need to be completed and published.",
             "errorNotAllowedApprove": "The user has no right to approve the project.",
-            "errorRelationsCreation":"Relations haven't been created successfully. Please create relations by default funcionality within \"Related item relationships section\".",
+            "errorRelationsCreation": "Relations haven't been created successfully. Please create relations by default funcionality within \"Related item relationships section\".",
             "docUploadSuccess": "The document has been uploaded",
             "docRefreshSuccess": "Document was refreshed",
             "docRefreshError": "Document was not refreshed",
@@ -828,6 +829,7 @@
     "validation": {
         "required": "This field is required",
         "invalidEmail": "Enter a valid email",
+        "invalidFullname": "Enter your full name",
         "invalidPhone": "Enter a valid phone number",
         "wrongRegex": "Value must match {{regexFormat}}",
         "minValue": "Value must be at least",

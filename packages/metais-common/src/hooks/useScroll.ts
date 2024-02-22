@@ -32,5 +32,6 @@ export const useScroll = (scrollOptions?: IScrollParams) => {
             setScrolled(true)
         }
     }
+
     return { wrapperRef, scrollToMutationFeedback }
 }

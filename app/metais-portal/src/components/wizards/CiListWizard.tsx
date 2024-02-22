@@ -78,7 +78,7 @@ export const CiListWizard: React.FC = () => {
         {
             return [
                 {
-                    target: '#checkbox_cell_0',
+                    target: '#bulkActions',
                     content: (
                         <>
                             <TextBody>{t('wizard.bulkActionsContent.step3')}</TextBody>
@@ -86,7 +86,8 @@ export const CiListWizard: React.FC = () => {
                     ),
                     title: t('wizard.bulkActions'),
                     disableBeacon: true,
-                    placement: 'right' as Placement,
+                    placement: 'bottom-start' as Placement,
+                    offset: 150,
                 },
                 {
                     target: '#bulkActions',

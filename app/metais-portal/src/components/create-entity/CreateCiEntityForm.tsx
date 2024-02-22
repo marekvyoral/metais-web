@@ -26,6 +26,7 @@ export interface HasResetState {
     setHasReset: Dispatch<SetStateAction<boolean>>
 }
 interface ICreateCiEntityForm {
+    entityName: string
     generatedEntityId: CiCode
     constraintsData: (EnumType | undefined)[]
     ciTypeData: CiType | undefined
@@ -42,6 +43,7 @@ interface ICreateCiEntityForm {
 }
 
 export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
+    entityName,
     ciTypeData,
     unitsData,
     constraintsData,
@@ -186,6 +188,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 </div>
             )}
             <CiEntityFormBody
+                entityName={entityName}
                 generatedEntityId={generatedEntityId}
                 ciTypeData={ciTypeData}
                 onSubmit={onSubmit}

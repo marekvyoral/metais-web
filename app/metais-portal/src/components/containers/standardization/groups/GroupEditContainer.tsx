@@ -56,7 +56,7 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
     const { data: infoData, isLoading, isError } = useFindByUuid3(id ?? '')
     const [uniqueConstraintError, setUniqueConstraintError] = useState<{ [key: string]: string }>()
     const invalidateGroupDetailCache = useInvalidateGroupsDetailCache(id ?? '')
-    const invalidateCache = useInvalidateGroupsListCache({ sortBy: 'name', ascending: false })
+    const invalidateCache = useInvalidateGroupsListCache()
     const goBack = () => {
         navigate(`${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${infoData?.uuid}`)
     }

@@ -198,6 +198,7 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
                 />
 
                 <CreateCiEntityForm
+                    entityName={entityName}
                     ciTypeData={ciTypeData}
                     generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                     constraintsData={constraintsData}

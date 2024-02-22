@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
-import { ColumnSort } from '@isdd/idsk-ui-kit/types'
+import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
 import { useGroupsWithMeetings } from '@isdd/metais-common/api/generated/standards-swagger'
 import { useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
@@ -63,8 +63,8 @@ export const GroupsListContainer: React.FC = () => {
     const [selectedIdentity, setSelectedIdentity] = useState<Identity | undefined>(undefined)
     const [selectedOrg, setSelectedOrg] = useState<ConfigurationItemUi | undefined>(undefined)
     const [groups, setGroups] = useState<GroupWithMeetings[]>()
-    const [sort, setSort] = useState<ColumnSort[]>([])
-    const [groupsRequest, setGroupsRequest] = useState<Find2111Params>({ sortBy: 'name', ascending: true })
+    const [sort, setSort] = useState<ColumnSort[]>([{ orderBy: 'name', sortDirection: SortType.ASC }])
+    const [groupsRequest, setGroupsRequest] = useState<Find2111Params>()
 
     const { data, isError, isLoading } = useFind2111(groupsRequest)
 
