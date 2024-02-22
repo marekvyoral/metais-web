@@ -1,25 +1,26 @@
-import React, { useCallback, useState } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
-import { Input } from '@isdd/idsk-ui-kit/src/input/Input'
-import { useTranslation } from 'react-i18next'
-import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
-import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { useNavigate } from 'react-router-dom'
-import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { API_STANDARD_REQUEST_ATTRIBUTES, DMS_DOWNLOAD_BASE, FileImportStepEnum, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Input } from '@isdd/idsk-ui-kit/src/input/Input'
 import { ApiLink, ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
-import { getInfoGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
-import { useUppy } from '@isdd/metais-common/hooks/useUppy'
-import { v4 as uuidV4 } from 'uuid'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { getInfoGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useUppy } from '@isdd/metais-common/hooks/useUppy'
+import { API_STANDARD_REQUEST_ATTRIBUTES, DMS_DOWNLOAD_BASE, FileImportStepEnum, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { v4 as uuidV4 } from 'uuid'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
-import styles from '@/components/entities/draftslist/draftsListCreateForm.module.scss'
 import { DraftListCreateFormDialog } from '@/components/entities/draftslist/DraftListCreateFormDialog'
-import { generateSchemaForCreateDraft } from '@/components/entities/draftslist/schema/createDraftSchema'
 import { DraftsListAttachmentsZone } from '@/components/entities/draftslist/DraftsListAttachmentsZone'
+import styles from '@/components/entities/draftslist/draftsListCreateForm.module.scss'
+import { generateSchemaForCreateDraft } from '@/components/entities/draftslist/schema/createDraftSchema'
 
 interface CreateForm {
     data: {
@@ -30,10 +31,16 @@ interface CreateForm {
     isError: boolean
     isLoading: boolean
 }
+const baseURL = import.meta.env.VITE_REST_CLIENT_STANDARDS_TARGET_URL
+
 export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: CreateForm) => {
     const { t } = useTranslation()
-    const [openCreateFormDialog, setOpenCreateFormDialog] = useState<boolean>(false)
+    const [openCreateFormDialog, setOpenCreateFormDialog] = useState<FieldValues>()
     const navigate = useNavigate()
+    const { setIsActionSuccess } = useActionSuccess()
+    const [customLoading, setCustomLoading] = useState(false)
+    const [customError, setCustomError] = useState(false)
+
     const {
         state: { user },
     } = useAuth()
@@ -139,39 +146,70 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
         },
     })
 
-    const handleSubmitForm = useCallback(
-        async (values: FieldValues) => {
-            if (currentFiles?.length > 0) await handleUpload()
-            const uploadedFiles =
-                currentFiles?.map((file) => ({
-                    attachmentId: file?.meta['x-content-uuid'],
-                    attachmentName: file?.name,
-                    attachmentSize: file?.size,
-                    attachmentType: file?.extension,
-                    attachmentDescription: '-',
-                })) ?? []
+    const sendData = async (values: FieldValues, name?: string, email?: string, capthcaToken?: string) => {
+        if (currentFiles?.length > 0) {
+            setCustomLoading(true)
+            await handleUpload()
+        }
+        const uploadedFiles =
+            currentFiles?.map((file) => ({
+                attachmentId: file?.meta['x-content-uuid'],
+                attachmentName: file?.name,
+                attachmentSize: file?.size,
+                attachmentType: file?.extension,
+                attachmentDescription: '-',
+            })) ?? []
+
+        if (capthcaToken) {
+            setCustomLoading(true)
+            const response = await fetch(`${baseURL}/standards/requests`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'recaptcha-response': capthcaToken },
+                body: JSON.stringify({
+                    ...values,
+                    name,
+                    email,
+                    attachments: uploadedFiles,
+                }),
+            })
+            if (response.ok) {
+                setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV, additionalInfo: { type: 'create' } })
+                navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV)
+            } else {
+                setCustomError(true)
+            }
+            setCustomLoading(false)
+        } else {
             onSubmit({
                 ...values,
+                name,
+                email,
                 attachments: uploadedFiles,
             })
-        },
-        [handleUpload, onSubmit, currentFiles],
-    )
+        }
+    }
+
+    const handleSubmitForm = async (values: FieldValues) => {
+        if (user) {
+            sendData(values)
+        } else {
+            setOpenCreateFormDialog(values)
+        }
+    }
 
     const errors = formState?.errors
 
     return (
-        <QueryFeedback loading={isLoading} withChildren>
+        <QueryFeedback loading={isLoading || customLoading} withChildren>
             <DraftListCreateFormDialog
                 openCreateFormDialog={openCreateFormDialog}
-                closeCreateFormDialog={() => setOpenCreateFormDialog(false)}
-                handleSubmit={handleSubmit(handleSubmitForm)}
-                register={register}
+                closeCreateFormDialog={() => setOpenCreateFormDialog(undefined)}
+                handleSubmit={sendData}
             />
 
             <FlexColumnReverseWrapper>
                 <TextHeading size="L">{t('DraftsList.createForm.heading')}</TextHeading>
-                {isError && <MutationFeedback error={t('feedback.mutationErrorMessage')} showSupportEmail success={false} />}
+                {(isError || customError) && <MutationFeedback error={t('feedback.mutationErrorMessage')} showSupportEmail success={false} />}
             </FlexColumnReverseWrapper>
 
             <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>
@@ -256,11 +294,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
                         variant="secondary"
                         onClick={() => navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV)}
                     />
-                    <Button
-                        label={t('DraftsList.createForm.submit')}
-                        type={user ? 'submit' : undefined}
-                        onClick={() => !user && setOpenCreateFormDialog(true)}
-                    />
+                    <Button label={t('DraftsList.createForm.submit')} type={'submit'} />
                 </div>
             </form>
         </QueryFeedback>

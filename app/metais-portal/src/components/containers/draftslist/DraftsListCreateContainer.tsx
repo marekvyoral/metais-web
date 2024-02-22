@@ -25,7 +25,7 @@ export const DraftsListCreateContainer: React.FC<DraftsListFormContainerProps> =
     const { mutateAsync, isError, isLoading } = useCreateStandardRequest({
         mutation: {
             onSuccess() {
-                setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV })
+                setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV, additionalInfo: { type: 'create' } })
                 navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV)
             },
         },
