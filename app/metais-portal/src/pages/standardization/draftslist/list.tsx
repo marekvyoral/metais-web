@@ -53,7 +53,15 @@ const DraftsListListPage: React.FC = () => {
                         <QueryFeedback loading={isLoading} error={isError}>
                             <FlexColumnReverseWrapper>
                                 <TextHeading size="XL">{t('draftsList.heading')}</TextHeading>
-                                <MutationFeedback success={isActionSuccess.value} error={false} />
+                                <MutationFeedback
+                                    success={isActionSuccess.value}
+                                    error={false}
+                                    successMessage={
+                                        isActionSuccess.additionalInfo?.type == 'create'
+                                            ? t('mutationFeedback.successfulCreated')
+                                            : t('mutationFeedback.successfulUpdated')
+                                    }
+                                />
                             </FlexColumnReverseWrapper>
                             <DraftsListFilter defaultFilterValues={defaultFilterValues} />
                             <ActionsOverTable
