@@ -57,9 +57,8 @@ export const MembershipHistoryContainer: React.FC = () => {
     const loadMembershipHistory = async (event: React.FormEvent<HTMLFormElement>) => {
         setIsLoading(true)
         event.preventDefault()
-        const date = new Date(selectedDate ?? '')
-
-        await historyHook({ groupShortName: selectedGroup?.shortName ?? '', createdAt: date.getTime() }).then((res) => {
+        const midNight = new Date(new Date(selectedDate ?? '').setHours(23, 59, 59, 999)).getTime()
+        await historyHook({ groupShortName: selectedGroup?.shortName ?? '', createdAt: midNight }).then((res) => {
             setMembershipHistory(res)
             setIsLoading(false)
         })
