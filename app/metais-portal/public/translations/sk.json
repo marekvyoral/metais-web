@@ -451,6 +451,7 @@
         "unregisterFromTraining": "Odhlásiť sa zo školenia",
         "sureUnregister": "Naozaj sa chcete odhlásiť zo školenia?",
         "register": "Prihlásiť sa",
+        "alreadyEnrolled": "Použivateľ s daným emailom je už na toto školenie prihlásený",
         "table": {
             "firstName": "Meno",
             "lastName": "Priezvisko",

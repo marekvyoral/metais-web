@@ -453,6 +453,7 @@
         "unregisterFromTraining": "Unregister from training",
         "sureUnregister": "Do you really want to unsubscribe from training?",
         "register": "Register",
+        "alreadyEnrolled": "The user with the given email is already registered for this training",
         "table": {
             "firstName": "First name",
             "lastName": "Last name",
