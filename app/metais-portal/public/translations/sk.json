@@ -448,6 +448,7 @@
         "invitedTitle": "Prihlásení na školenie",
         "registerForTraining": "Príhlásiť na školenie",
         "unregisterFromTraining": "Odhlásiť sa zo školenia",
+        "sureUnregister": "Naozaj sa chcete odhlásiť zo školenia?",
         "register": "Prihlásiť sa",
         "table": {
             "firstName": "Meno",

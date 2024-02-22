@@ -11,6 +11,7 @@ import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useState } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 import { getErrorTranslateKeys } from '@/componentHelpers'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
@@ -51,6 +52,8 @@ export const TrainingInviteContainer: React.FC = () => {
 
     const [isInviteLoading, setInviteLoading] = useState<boolean>(false)
     const [isInviteError, setInviteError] = useState<boolean>(false)
+
+    const { getRequestStatus, isLoading: isRequestLoading } = useGetStatus('PROCESSED')
 
     const navigate = useNavigate()
     const { invalidate } = useInvalidateTrainingsCache(entityId ?? '')
@@ -95,8 +98,8 @@ export const TrainingInviteContainer: React.FC = () => {
 
     const registerTrainee = useRegisterTrainee({
         mutation: {
-            onSuccess: () => {
-                handleRedirect()
+            onSuccess: async (res) => {
+                await getRequestStatus(res?.requestId ?? '', () => handleRedirect())
             },
         },
     })
@@ -132,7 +135,18 @@ export const TrainingInviteContainer: React.FC = () => {
             if (!response.ok) {
                 setInviteError(true)
             } else {
-                handleRedirect()
+                const responseBodyText = await response.text()
+                if (responseBodyText?.length > 0) {
+                    try {
+                        const responseBody = JSON.parse(responseBodyText)
+                        if (responseBody['requestId']) {
+                            await getRequestStatus(responseBody['requestId'], () => handleRedirect())
+                        }
+                    } catch (e) {
+                        // eslint-disable-next-line no-console
+                        console.error('Response not json', e)
+                    }
+                }
             }
             setInviteLoading(false)
         } else {
@@ -146,10 +160,9 @@ export const TrainingInviteContainer: React.FC = () => {
             label: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
         })) ?? []
 
-    const isLoading = [isCiItemDataLoading, isCiTypeDataLoading, isInviteLoading, isReadCiListFetching].some((item) => item)
+    const isLoading = [isCiItemDataLoading, isCiTypeDataLoading, isInviteLoading, isReadCiListFetching, isRequestLoading].some((item) => item)
     const isError = [isCiItemDataError, isCiTypeDataError, isInviteError, isReadCiListError].some((item) => item)
     const errorMessages = getErrorTranslateKeys([registerTrainee.error].map((item) => item as { message: string }))
-
     return (
         <TrainingInviteView
             user={user}

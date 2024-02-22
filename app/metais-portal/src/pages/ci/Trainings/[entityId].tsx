@@ -1,4 +1,4 @@
-import { BreadCrumbs, Button, ButtonLink, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, BreadCrumbs, Button, ButtonLink, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetTrainingsForUser, useUnregisterTrainee } from '@isdd/metais-common/api/generated/trainings-swagger'
@@ -11,11 +11,12 @@ import { useInvalidateTrainingsCache } from '@isdd/metais-common/hooks/invalidat
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { ATTRIBUTE_NAME, ModalButtons, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 import {
     getDefaultCiEntityTabList,
@@ -41,22 +42,29 @@ const EntityDetailPage: React.FC = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const [selectedTab, setSelectedTab] = useState<string>()
+    const [showUnregisterModal, setShowUnregisterModal] = useState(false)
 
     const userAbility = useUserAbility()
     const ability = useUserAbility(entityName)
     const { invalidate } = useInvalidateTrainingsCache(entityId ?? '')
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const { getRequestStatus, isLoading: isRequestLoading } = useGetStatus('PROCESSED')
 
     const {
-        mutateAsync: unregisterFromTraining,
-        isLoading: isUnrerigsterLoading,
-        isError: isUnrerigsterError,
-    } = useUnregisterTrainee({
+        data: trainingData,
+        isFetching: isTrainingFetching,
+        isError: isTrainingError,
+    } = useGetTrainingsForUser({}, { query: { enabled: !!user } })
+
+    const { mutateAsync: unregisterFromTraining, isError: isUnrerigsterError } = useUnregisterTrainee({
         mutation: {
-            onSuccess: () => {
-                invalidate()
-                setIsActionSuccess({ value: true, path: `/${RouterRoutes.CI_TRAINING}/${entityId}`, additionalInfo: { type: 'unregister' } })
+            onSuccess: async (resp) => {
+                await getRequestStatus(resp.requestId ?? '', () => {
+                    setIsActionSuccess({ value: true, path: `/${RouterRoutes.CI_TRAINING}/${entityId}`, additionalInfo: { type: 'unregister' } })
+                    setShowUnregisterModal(false)
+                    invalidate()
+                })
             },
         },
     })
@@ -72,13 +80,9 @@ const EntityDetailPage: React.FC = () => {
         },
     })
 
-    const {
-        data: trainingData,
-        isFetching: isTrainingFetching,
-        isError: isTrainingError,
-    } = useGetTrainingsForUser({ trainingId: [ciItemData?.uuid ?? ''] }, { query: { enabled: !!user && !!ciItemData } })
-
-    const isRegisteredOnTraining = trainingData?.configurationItemSet && trainingData.configurationItemSet.length > 0
+    const isRegisteredOnTraining = useMemo(() => {
+        return trainingData?.configurationItemSet?.some((training) => training.uuid === ciItemData?.uuid)
+    }, [trainingData, ciItemData])
 
     const canRegisteredOnTraining = useMemo(() => {
         return ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Skolenie_pocet_volnych_miest] > 0
@@ -99,11 +103,22 @@ const EntityDetailPage: React.FC = () => {
         }
     }, [isActionSuccess, scrollToMutationFeedback])
 
-    const isLoading = [isCiItemDataLoading, isCiTypeDataLoading, isTrainingFetching, isUnrerigsterLoading].some((item) => item)
+    const isLoading = [isCiItemDataLoading, isCiTypeDataLoading, isTrainingFetching].some((item) => item)
     const isError = [isCiItemDataError, isCiTypeDataError, isTrainingError, isUnrerigsterError].some((item) => item)
 
     return (
         <>
+            <BaseModal isOpen={showUnregisterModal} close={() => setShowUnregisterModal(false)}>
+                <QueryFeedback loading={isRequestLoading} withChildren>
+                    <TextHeading size="L">{t('trainings.sureUnregister')}</TextHeading>
+                    <ModalButtons
+                        submitButtonLabel={t('trainings.unregisterFromTraining')}
+                        onSubmit={() => unregisterFromTraining({ trainingId: ciItemData?.uuid ?? '' })}
+                        closeButtonLabel={t('confirmationModal.cancelButtonLabel')}
+                        onClose={() => setShowUnregisterModal(false)}
+                    />
+                </QueryFeedback>
+            </BaseModal>
             <BreadCrumbs
                 withWidthContainer
                 links={[
@@ -127,7 +142,7 @@ const EntityDetailPage: React.FC = () => {
                                         <Button
                                             label={t('trainings.unregisterFromTraining')}
                                             variant="warning"
-                                            onClick={() => unregisterFromTraining({ trainingId: ciItemData?.uuid ?? '' })}
+                                            onClick={() => setShowUnregisterModal(true)}
                                         />
                                     ) : (
                                         <Button
