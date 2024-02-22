@@ -1,12 +1,12 @@
 import { ConfigurationItemUiAttributes, useStoreConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { CiCode, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from './createEntityHelpers'
@@ -56,9 +56,9 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             onError() {
                 setUploadError(true)
             },
-            onSuccess(successData) {
+            async onSuccess(successData) {
                 if (successData.requestId != null) {
-                    getRequestStatus(successData.requestId, () => onStatusSuccess({ configurationItemId, isUpdate, entityName }))
+                    await getRequestStatus(successData.requestId, () => onStatusSuccess({ configurationItemId, isUpdate, entityName }))
                 } else {
                     setUploadError(true)
                 }
@@ -67,22 +67,17 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     })
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
     useEffect(() => {
-        if (!(isRedirectError || isProcessedError || isRedirectLoading)) {
+        if (!(isRedirectError || isProcessedError || isRedirectLoading) || isTooManyFetchesError) {
             scrollToMutationFeedback()
         }
-    }, [isProcessedError, isRedirectError, isRedirectLoading, scrollToMutationFeedback])
+    }, [isProcessedError, isRedirectError, isRedirectLoading, isTooManyFetchesError, scrollToMutationFeedback])
 
     return (
         <>
             {!(isRedirectError || isProcessedError || isRedirectLoading) && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={false}
-                        showSupportEmail
-                        error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
-                    />
-                </div>
+                <MutationFeedback success={false} showSupportEmail error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''} />
             )}
+
             <QueryFeedback
                 loading={isRedirectLoading}
                 error={isRedirectError || isProcessedError || isTooManyFetchesError}
@@ -98,6 +93,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                 }}
                 withChildren
             >
+                <div ref={wrapperRef} />
                 {!isUpdate && publicAuthorityState && roleState && (
                     <SelectPublicAuthorityAndRole
                         selectedRole={roleState.selectedRole ?? {}}
@@ -109,6 +105,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                 )}
 
                 <CreateCiEntityForm
+                    entityName={entityName}
                     ciTypeData={ciTypeData}
                     generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                     constraintsData={constraintsData}

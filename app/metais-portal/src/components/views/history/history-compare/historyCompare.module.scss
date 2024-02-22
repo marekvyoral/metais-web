@@ -18,11 +18,14 @@
 }
 
 .diffIns {
-    background: govuk-tint(govuk-colour('light-green'), 50) !important;
+   color: govuk-colour('green');;
+    background: govuk-tint(govuk-colour('green'), 90) !important;
+    text-decoration-style: double;
 }
 
 .diffDel {
-    background: govuk-tint(govuk-colour('red'), 50) !important;
+    color: govuk-colour('red');
+    background: govuk-tint(govuk-colour('red'), 90) !important;
 }
 
 .attributeGridRowBox {

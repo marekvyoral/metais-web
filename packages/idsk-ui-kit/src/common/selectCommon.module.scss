@@ -8,13 +8,17 @@
     padding: govuk-spacing(1) govuk-spacing(2);
 
     &>span {
-        color: govuk-colour('mid-grey');
+        color: govuk-colour('grey-1');
     }
 
     &:hover {
         background-color: govuk-colour('light-blue');
         color: govuk-colour('white');
+        &>span {
+            color: govuk-colour('white');
+        }
     }
+   
 }
 
 .reactMenu {

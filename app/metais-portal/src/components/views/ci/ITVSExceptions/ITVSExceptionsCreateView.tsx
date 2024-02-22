@@ -109,10 +109,18 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         }
         return acc
     }, {})
+    const defaultValues = formatForFormDefaultValues(updateCiItemId ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes)
     const methods = useForm({
-        defaultValues: formatForFormDefaultValues(updateCiItemId ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
+        defaultValues: defaultValues,
         resolver: yupResolver(
-            generateFormSchema([ciTypeData as AttributeProfile, ...attProfiles], t, i18n.language, roleState?.selectedRole, ENTITY_OSOBITNY_POSTUP),
+            generateFormSchema(
+                [ciTypeData as AttributeProfile, ...attProfiles],
+                t,
+                i18n.language,
+                roleState?.selectedRole,
+                ENTITY_OSOBITNY_POSTUP,
+                defaultValues,
+            ),
         ),
     })
 

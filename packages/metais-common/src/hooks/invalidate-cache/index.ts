@@ -23,12 +23,7 @@ import {
     getGetTemporalCodelistHeaderWithLockQueryKey,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { getGetMetaQueryKey } from '@isdd/metais-common/api/generated/dms-swagger'
-import {
-    Find2111Params,
-    getFind2111QueryKey,
-    getFindByUuid3QueryKey,
-    getFindRelatedIdentitiesAndCountQueryKey,
-} from '@isdd/metais-common/api/generated/iam-swagger'
+import { getFind2111QueryKey, getFindByUuid3QueryKey, getFindRelatedIdentitiesAndCountQueryKey } from '@isdd/metais-common/api/generated/iam-swagger'
 import { getGetTraineesQueryKey, getGetTrainingsForUserQueryKey } from '@isdd/metais-common/api/generated/trainings-swagger'
 import { getGetAttributeProfileQueryKey } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
@@ -184,8 +179,8 @@ export const useInvalidateTrainingsCache = (entityId: string) => {
     return { invalidate }
 }
 
-export const useInvalidateGroupsListCache = (params: Find2111Params) => {
-    const find2111QueryKey = getFind2111QueryKey(params)
+export const useInvalidateGroupsListCache = () => {
+    const find2111QueryKey = getFind2111QueryKey()
     const queryClient = useQueryClient()
     const invalidate = () => {
         queryClient.invalidateQueries(find2111QueryKey)

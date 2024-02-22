@@ -1,18 +1,21 @@
 import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { useStoreUnValid, useStoreValid1 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { EntityFilterData } from '@isdd/metais-common/componentHelpers/filter/feFilters'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
-import { QueryFeedback } from '@isdd/metais-common/index'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { ProfileListContainer } from '@/components/containers/Egov/Profile/ProfileListContainer'
 import { EntityFilter } from '@/components/filters/EntityFilter'
 import { EgovTable } from '@/components/table/EgovTable'
-import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const Profiles = () => {
     const defaultFilterValues: EntityFilterData = { name: '', technicalName: '', type: '', valid: '' }
     const { t } = useTranslation()
+    const invalidateEntity = useStoreValid1()
+    const validateEntity = useStoreUnValid()
     return (
         <>
             <BreadCrumbs
@@ -27,10 +30,14 @@ const Profiles = () => {
                     defaultFilterValues={defaultFilterValues}
                     View={(props) => {
                         return (
-                            <QueryFeedback loading={props.isLoading} error={false} withChildren>
+                            <QueryFeedback
+                                loading={props.isLoading || invalidateEntity.isLoading || validateEntity.isLoading || (props.isFetching ?? false)}
+                                error={false}
+                                withChildren
+                            >
                                 <FlexColumnReverseWrapper>
                                     <TextHeading size={'L'}>{t('egov.routing.profileList')}</TextHeading>
-                                    {props.isError && <QueryFeedback error loading={false} />}
+                                    {(props.isError || invalidateEntity.isError || validateEntity.isError) && <QueryFeedback error loading={false} />}
                                 </FlexColumnReverseWrapper>
                                 <EntityFilter defaultFilterValues={defaultFilterValues} />
                                 <EgovTable
@@ -40,6 +47,8 @@ const Profiles = () => {
                                     entityName={'profile'}
                                     setSort={props.setSort}
                                     sort={props.sort}
+                                    mutateInvalidateFunc={invalidateEntity}
+                                    mutateValidateFunc={validateEntity}
                                 />
                             </QueryFeedback>
                         )

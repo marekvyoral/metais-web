@@ -1,10 +1,11 @@
 import { AbilityBuilder, createMongoAbility } from '@casl/ability'
 
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { canCreateCiForType, canUserCreateCi } from '@isdd/metais-common/permissions/ci'
-import { ENTITY_INTEGRATION, STANDARDIZATION_DRAFTS_LIST } from '@isdd/metais-common/constants'
 import { getHasIntRole } from '@isdd/metais-common/componentHelpers/ci/integration'
+import { ENTITY_INTEGRATION, STANDARDIZATION_DRAFTS_LIST } from '@isdd/metais-common/constants'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { canCreateCiForType, canUserCreateCi } from '@isdd/metais-common/permissions/ci'
 
 export enum Actions {
     READ = 'read',
@@ -32,7 +33,7 @@ export const RR_ADMIN_MFSR = 'RR_ADMIN_MFSR'
 export const SKOLITEL = 'SKOLITEL'
 
 export const CANNOT_READ_ENTITY = ['ulohy', 'notifications', 'data-objects/requestlist', 'public-authorities-hierarchy', 'userprofile']
-export const CAN_CREATE_WITHOUT_LOGIN = [STANDARDIZATION_DRAFTS_LIST]
+export const CAN_CREATE_WITHOUT_LOGIN = [STANDARDIZATION_DRAFTS_LIST, RouterRoutes.STANDARDIZATION_DRAFTS_CREATE]
 
 const defineAbilityForUser = (roles: string[] = [], entityName: string, create?: boolean) => {
     const { can, cannot, build } = new AbilityBuilder(createMongoAbility)
@@ -57,7 +58,7 @@ const defineAbilityForUser = (roles: string[] = [], entityName: string, create?:
         can(Actions.READ_TRAININGS, entityName)
     }
 
-    if (entityName === STANDARDIZATION_DRAFTS_LIST) can(Actions.CREATE, 'ci')
+    if (entityName === STANDARDIZATION_DRAFTS_LIST) can(Actions.CREATE, STANDARDIZATION_DRAFTS_LIST)
     if (entityName == ENTITY_INTEGRATION) {
         const hasIntRole = getHasIntRole(roles)
         if (!hasIntRole) {
