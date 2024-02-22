@@ -26,7 +26,7 @@ export enum InputNames {
     FIRST_NAME = 'identityFirstName',
     LAST_NAME = 'identityLastName',
     EMAIL = 'email',
-    PHONE = 'mobile',
+    MOBILE = 'mobile',
     PO = 'po',
     LOGIN = 'identityLogin',
     DATA_PROCESSING_CONSENT = 'dataProcessingConsent',
@@ -40,7 +40,7 @@ const getRegistrationSchema = (t: TFunction) => {
         [InputNames.FIRST_NAME]: string().required(t('registration.required.firstName')),
         [InputNames.LAST_NAME]: string().required(t('registration.required.lastName')),
         [InputNames.EMAIL]: string().email(t('registration.format.email')).required(t('registration.required.email')),
-        [InputNames.PHONE]: string().matches(REGEX_TEL, t('registration.format.phone')).required(t('registration.required.phone')),
+        [InputNames.MOBILE]: string().matches(REGEX_TEL, t('registration.format.phone')).required(t('registration.required.phone')),
         [InputNames.PO]: mixed().required(t('registration.required.default')),
         [InputNames.LOGIN]: string()
             .test('no-spaces', t('registration.format.noSpaces'), (value) => !/\s/.test(value ?? ''))
@@ -196,10 +196,10 @@ export const RegistrationForm: React.FC<Props> = () => {
                         autoComplete="email"
                     />
                     <Input
-                        error={errors[InputNames.PHONE]?.message?.toString()}
-                        correct={!errors[InputNames.PHONE] && isSubmitted}
+                        error={errors[InputNames.MOBILE]?.message?.toString()}
+                        correct={!errors[InputNames.MOBILE] && isSubmitted}
                         label={t('registration.phone')}
-                        {...register(InputNames.PHONE)}
+                        {...register(InputNames.MOBILE)}
                         hint={t('registration.phoneHint')}
                         type="tel"
                         required
