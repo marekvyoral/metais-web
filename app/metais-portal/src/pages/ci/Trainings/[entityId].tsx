@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { SortBy } from '@isdd/idsk-ui-kit/types'
 
 import {
     getDefaultCiEntityTabList,
@@ -180,9 +181,13 @@ const EntityDetailPage: React.FC = () => {
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
 
                         {selectedTab === ciInformationTab && <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />}
-
                         <Can I={Actions.READ_TRAININGS} a={entityName ?? ''} ability={ability}>
-                            {selectedTab === ciInformationTab && <TrainingContainer entityId={entityId ?? ''} entityName={entityName ?? ''} />}
+                            {selectedTab === ciInformationTab && (
+                                <TrainingContainer
+                                    entityId={entityId ?? ''}
+                                    trainingName={ciItemData?.attributes?.[SortBy.GEN_PROFIL_NAZOV] ?? 'training'}
+                                />
+                            )}
                         </Can>
                     </QueryFeedback>
                 </CiPermissionsWrapper>

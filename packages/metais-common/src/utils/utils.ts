@@ -106,3 +106,13 @@ export const findCommonStrings = (array1: string[], array2: string[]) => {
     })
     return commonStrings
 }
+
+export const sanitizeFileName = (fileName: string): string => {
+    // Remove special characters and replace spaces with underscores
+    const sanitizedFileName = fileName.replace(/[^\w\s.-]/g, '').replace(/\s+/g, '_')
+
+    const maxLength = 100
+    const truncatedFileName = sanitizedFileName.substring(0, maxLength)
+
+    return truncatedFileName
+}

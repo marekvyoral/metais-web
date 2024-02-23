@@ -460,6 +460,7 @@
             "organization": "Organizácia",
             "registrationDate": "Dátum príhlásenia"
         },
+        "export-title":"Zvoľte typ súboru pre export",
         "from": "Začiatok školenia"
     },
     "listActions": {
