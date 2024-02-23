@@ -31,6 +31,7 @@ export const TrainingView: React.FC<TrainingContainerView> = ({ isLoading, isErr
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
+            size: 150,
             cell: (ctx) => ctx?.getValue?.() as string,
         },
         {
@@ -42,6 +43,7 @@ export const TrainingView: React.FC<TrainingContainerView> = ({ isLoading, isErr
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
+            size: 150,
             cell: (ctx) => ctx?.getValue?.() as string,
         },
         {
@@ -53,7 +55,8 @@ export const TrainingView: React.FC<TrainingContainerView> = ({ isLoading, isErr
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (ctx) => ctx?.getValue?.() as string,
+            size: 150,
+            cell: (ctx) => t('dateTime', { date: ctx?.getValue?.() as string }),
         },
     ]
 
