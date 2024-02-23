@@ -77,8 +77,21 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
     const [selectedRows, setSelectedRows] = useState<Array<number>>([])
     const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false)
     const indexModificator = pagination.pageNumber * pagination.pageSize - pagination.pageSize
-
+    const [isTableDataLoading, setIsTableDataLoading] = useState(false)
     const [dataRows, setDataRows] = useState(filteredData?.enumItems?.sort((a, b) => (a.orderList || 0) - (b.orderList || 0)) || [])
+
+    const {
+        register,
+        getValues,
+        setValue,
+        reset,
+        watch,
+        formState: { isValid },
+    } = useForm({
+        defaultValues: {
+            filteredData,
+        },
+    })
 
     const sortedData = useMemo(
         () => filteredData?.enumItems?.sort((a, b) => (a.orderList || 0) - (b.orderList || 0)) || [],
@@ -97,11 +110,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             pageNumber: myFilter.pageNumber ?? defaultPagination.pageNumber,
         })
     }
-    const { register, getValues, setValue, reset } = useForm({
-        defaultValues: {
-            filteredData,
-        },
-    })
+
     const handleDelete = (codeEnum: string) => {
         deleteEnumItem.mutateAsync({ code: codeEnum })
     }
@@ -191,8 +200,6 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         reset({ filteredData: filteredData })
         setDataRows(filteredData?.enumItems?.sort((a, b) => (a.orderList || 0) - (b.orderList || 0)) || [])
     }, [filteredData, reset])
-
-    const [isTableDataLoading, setIsTableDataLoading] = useState(false)
 
     const reorderRow = async (draggedRowIndex: number, targetRowIndex: number) => {
         dataRows?.splice(targetRowIndex, 0, dataRows?.splice(draggedRowIndex, 1)[0] as EnumItem)
@@ -365,7 +372,6 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                                             closePopup()
                                         }}
                                         label={t('codelists.save')}
-                                        disabled={errorsState?.length !== 0}
                                     />
                                     <ButtonLink
                                         type="button"
