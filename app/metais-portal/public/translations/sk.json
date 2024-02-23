@@ -1921,7 +1921,8 @@
                 "REQUESTED": "Nový",
                 "ASSIGNED": "Priradený",
                 "REJECTED": "Zamietnutý",
-                "ACCEPTED": "Akceptovaný"
+                "ACCEPTED": "Akceptovaný",
+                "FETCHING": "..."
             },
             "draftType": {
                 "label": "Typ návrhu",

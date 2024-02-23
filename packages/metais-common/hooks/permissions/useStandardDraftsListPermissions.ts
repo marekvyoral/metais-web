@@ -24,7 +24,12 @@ export const useStandardDraftsListPermissions = ({ data: { state, groupId, links
         state: { user },
     } = useAuth()
     const identityUuid = user?.uuid
-    const { data: membershipData, isLoading, isError } = useFindMembershipData(identityUuid ?? '')
+    const {
+        data: membershipData,
+        isLoading: isLoadingMembershipData,
+        isError,
+    } = useFindMembershipData(identityUuid ?? '', { query: { enabled: !!identityUuid } })
+    const isLoading = isLoadingMembershipData && !!identityUuid
 
     const hasRole = (myRoles: string[], rolesOfEntity: string[]) => {
         return myRoles?.some((role: string) => rolesOfEntity?.indexOf(role) > -1)

@@ -1914,7 +1914,8 @@
                 "REQUESTED": "New",
                 "ASSIGNED": "Assigned",
                 "REJECTED": "Rejected",
-                "ACCEPTED": "Accepted"
+                "ACCEPTED": "Accepted",
+                "FETCHING": "..."
             },
             "draftType": {
                 "label": "Draft type",
