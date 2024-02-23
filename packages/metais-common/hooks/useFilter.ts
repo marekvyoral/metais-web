@@ -157,6 +157,7 @@ interface ReturnUseFilterParams<T> {
     filter: T
     urlParams: URLSearchParams
     handleFilterChange: (changedFilter: IFilter) => void
+    reset: () => void
 }
 
 const getPropertyType = <T, K extends keyof T>(obj: T, key: K): string => {
@@ -183,6 +184,14 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
         })
 
         updateFilterInLocalStorageOnChange(changedFilter, location.pathname)
+    }
+
+    const reset = () => {
+        setUiFilterState({
+            sort: defaults.sort ?? [],
+            pageNumber: defaults.pageNumber ?? BASE_PAGE_NUMBER,
+            pageSize: defaults.pageSize ?? BASE_PAGE_SIZE,
+        })
     }
 
     const filter: T & IFilterParams & IFilter = useMemo(() => {
@@ -229,7 +238,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
         return memoFilter
     }, [uiFilterState, defaults, urlParams, location.search, currentPreferences.defaultPerPage])
 
-    return { filter, urlParams, handleFilterChange }
+    return { filter, urlParams, handleFilterChange, reset }
 }
 
 export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, schema?: ObjectSchema<T>): ReturnUseFilter<T> {
