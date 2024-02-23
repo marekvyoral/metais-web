@@ -79,6 +79,18 @@ export interface RequestIdUi {
     requestId?: string
 }
 
+export type ConsentType = (typeof ConsentType)[keyof typeof ConsentType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ConsentType = {
+    PERSONAL_DATA_PROCESSING: 'PERSONAL_DATA_PROCESSING',
+} as const
+
+export interface Consent {
+    type?: ConsentType
+    accepted?: boolean
+}
+
 export interface Trainee {
     id?: number
     createdAt?: string
@@ -91,6 +103,7 @@ export interface Trainee {
     organization?: string
     trainingId?: string
     userId?: string
+    consents?: Consent[]
 }
 
 export interface TraineeList {
@@ -246,6 +259,47 @@ export const useGetTrainees = <TData = Awaited<ReturnType<ReturnType<typeof useG
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTraineesHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useGetTraineesQueryOptions(trainingId, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useExportTraineesHook = () => {
+    const exportTrainees = useTrainingsSwaggerClient<TraineeList>()
+
+    return (trainingId: string, signal?: AbortSignal) => {
+        return exportTrainees({ url: `/${trainingId}/trainee/export`, method: 'get', signal })
+    }
+}
+
+export const getExportTraineesQueryKey = (trainingId: string) => [`/${trainingId}/trainee/export`] as const
+
+export const useExportTraineesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useExportTraineesHook>>>, TError = ApiError>(
+    trainingId: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useExportTraineesHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useExportTraineesHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getExportTraineesQueryKey(trainingId)
+
+    const exportTrainees = useExportTraineesHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useExportTraineesHook>>>> = ({ signal }) => exportTrainees(trainingId, signal)
+
+    return { queryKey, queryFn, enabled: !!trainingId, ...queryOptions }
+}
+
+export type ExportTraineesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useExportTraineesHook>>>>
+export type ExportTraineesQueryError = ApiError
+
+export const useExportTrainees = <TData = Awaited<ReturnType<ReturnType<typeof useExportTraineesHook>>>, TError = ApiError>(
+    trainingId: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useExportTraineesHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useExportTraineesQueryOptions(trainingId, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
