@@ -11,7 +11,7 @@ import { FieldErrors, FieldValues, UseFormSetValue } from 'react-hook-form'
 import { AnyObject, NumberSchema } from 'yup'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { isDate, isObjectEmpty } from '@isdd/metais-common/utils/utils'
-import { ENTITY_PROJECT, ENTITY_TRAINING, ROLES } from '@isdd/metais-common/constants'
+import { ENTITY_TRAINING, ROLES } from '@isdd/metais-common/constants'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { DateTime } from 'luxon'
 import { ConfigurationItemUiAttributes, ApiError, ConfigurationItemUi, RequestIdUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -140,17 +140,6 @@ export const getFilteredAttributeProfilesBasedOnRole = (profiles: AttributeProfi
 
 export const isEAGarpoRole = (roleName: string): boolean => {
     return roleName === ROLES.EA_GARPO
-}
-
-export const canCreateProject = (entityName: string, currentRoleName: string): boolean => {
-    const isProject = entityName === ENTITY_PROJECT
-    const isEAGarpo = isEAGarpoRole(currentRoleName)
-
-    if (!isProject) {
-        return true
-    }
-
-    return isProject && isEAGarpo
 }
 
 export const getHint = (att: Attribute, generatedEntityId: CiCode) => {
