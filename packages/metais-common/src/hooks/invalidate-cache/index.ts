@@ -6,9 +6,11 @@ import {
     getGetRoleParticipantBulkQueryKey,
     getReadCiHistoryVersionsQueryKey,
     getReadCiList1QueryKey,
+    getReadCiNeighboursQueryKey,
     getReadCiNeighboursWithAllRelsQueryKey,
     getReadConfigurationItemQueryKey,
     getReadNeighboursConfigurationItemsCountQueryKey,
+    getReadRelationshipsQueryKey,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     getGetCodelistActionsHistoryQueryKey,
@@ -175,6 +177,16 @@ export const useInvalidateTrainingsCache = (entityId: string) => {
         queryClient.invalidateQueries([CI_ITEM_QUERY_KEY, entityId])
         queryClient.invalidateQueries(getGetTrainingsForUserQueryKey())
         queryClient.invalidateQueries(getGetTraineesQueryKey(entityId))
+    }
+    return { invalidate }
+}
+
+export const useInvalidateRefIdentifiersCache = (entityId: string) => {
+    const queryClient = useQueryClient()
+    const invalidate = () => {
+        queryClient.invalidateQueries([CI_ITEM_QUERY_KEY, entityId])
+        queryClient.invalidateQueries(getReadRelationshipsQueryKey(entityId))
+        queryClient.invalidateQueries(getReadCiNeighboursQueryKey(entityId, {}))
     }
     return { invalidate }
 }
