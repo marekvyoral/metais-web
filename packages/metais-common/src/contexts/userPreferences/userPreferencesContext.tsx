@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useAuth } from '../auth/authContext'
 
-import { META_PREFERENCES_KEY } from '@isdd/metais-common/constants'
+import { META_PREFERENCES_KEY, UNAUTHORIZED } from '@isdd/metais-common/constants'
 
 export enum UserPreferencesFormNamesEnum {
     SHOW_INVALIDATED = 'showInvalidatedItems',
@@ -64,7 +64,8 @@ const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }
     const {
         state: { user },
     } = useAuth()
-    const storedPreferences = localStorage.getItem(META_PREFERENCES_KEY + user?.login)
+    const localStorageKey = META_PREFERENCES_KEY + (user?.login ?? UNAUTHORIZED)
+    const storedPreferences = localStorage.getItem(localStorageKey)
 
     const [currentPreferences, setCurrentPreferences] = useState<IUserPreferences & WizardSettings>(DEFAULT_PREFERENCES)
     useEffect(() => {
@@ -79,7 +80,7 @@ const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }
 
     const updateUserPreferences = (preferencesData: IUserPreferences & WizardSettings) => {
         try {
-            localStorage.setItem(META_PREFERENCES_KEY + user?.login, JSON.stringify(preferencesData))
+            localStorage.setItem(localStorageKey, JSON.stringify(preferencesData))
             setCurrentPreferences(preferencesData)
             return UpdatePreferencesReturnEnum.SUCCESS
         } catch {
