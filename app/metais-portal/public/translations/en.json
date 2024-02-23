@@ -462,6 +462,7 @@
             "organization": "Organization",
             "registrationDate": "Registration date"
         },
+        "export-title":"Select the file type to export",
         "from": "Training start date"
     },
     "listActions": {

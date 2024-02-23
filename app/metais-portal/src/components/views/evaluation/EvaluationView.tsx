@@ -1,6 +1,3 @@
-import { MutationFeedback, QueryFeedback, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
-import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import {
     AccordionContainer,
     Button,
@@ -12,19 +9,22 @@ import {
     GridRow,
     SimpleSelect,
 } from '@isdd/idsk-ui-kit/index'
-import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
+import { useExportCsv7Hook, useExportExcel7Hook, useExportXml7Hook } from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
 import { KrisToBeRights, KrisUi, NoteVersionUi } from '@isdd/metais-common/api/generated/kris-swagger'
-import { useExportCsv6Hook, useExportExcel6Hook, useExportXml6Hook } from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
+import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
+import { MutationFeedback, QueryFeedback, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
+import { EContainerType } from '@/components/containers/CiEvaluationContainer'
 import { ExportModal } from '@/components/views/ci/kris/Modals/ExportModal'
 import { BasicEvaluationAccordion } from '@/components/views/evaluation/components/BasicEvaluationAccordion'
-import { KSEvaluationAccordion } from '@/components/views/evaluation/components/KSEvaluationAccordion'
-import styles from '@/components/views/evaluation/evaluationView.module.scss'
 import { GoalsEvaluationAccordion } from '@/components/views/evaluation/components/GoalsEvaluationAccordion'
-import { SuggestionEvaluationAccordion } from '@/components/views/evaluation/components/SuggestionEvaluationAccordion'
 import { IsvsEvaluationAccordion } from '@/components/views/evaluation/components/IsvsEvaluationAccordion'
-import { EContainerType } from '@/components/containers/CiEvaluationContainer'
+import { KSEvaluationAccordion } from '@/components/views/evaluation/components/KSEvaluationAccordion'
+import { SuggestionEvaluationAccordion } from '@/components/views/evaluation/components/SuggestionEvaluationAccordion'
+import styles from '@/components/views/evaluation/evaluationView.module.scss'
 
 export interface IResultCall {
     isSuccess: boolean
@@ -72,9 +72,9 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
     const [isErrorApi, setIsErrorApi] = useState<boolean>(false)
     const isGlobalAllowed = krisData?.approved ?? false
 
-    const exportXml = useExportXml6Hook()
-    const exportXlsx = useExportExcel6Hook()
-    const exportCsv = useExportCsv6Hook()
+    const exportXml = useExportXml7Hook()
+    const exportXlsx = useExportExcel7Hook()
+    const exportCsv = useExportCsv7Hook()
 
     const downloadFile = (res: Blob, type: string, entity: string) => {
         downloadBlobAsFile(new Blob([res]), `${entity}-${new Date().toISOString()}.${type}`, false)

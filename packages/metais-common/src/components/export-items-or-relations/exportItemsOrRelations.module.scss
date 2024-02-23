@@ -4,7 +4,6 @@
     display: flex;
     gap: govuk-spacing(6);
     margin-top: govuk-spacing(7);
-    flex-wrap: wrap;
     justify-content: center;
 
     @include mq($until: tablet) {
