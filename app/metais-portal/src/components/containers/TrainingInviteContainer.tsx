@@ -1,7 +1,7 @@
 import { IOption } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { ConfigurationItemUi, useReadCiList1, useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useRegisterTrainee } from '@isdd/metais-common/api/generated/trainings-swagger'
+import { ConsentType, useRegisterTrainee } from '@isdd/metais-common/api/generated/trainings-swagger'
 import { CiType, useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
@@ -39,6 +39,7 @@ export interface TrainingInviteContainerViewProps {
     isError: boolean
     errorMessages: string[]
     handleInvite: (data: ITrainingInviteForm) => void
+    isUserAlreadyEnrolled: boolean
 }
 const baseURL = import.meta.env.VITE_REST_CLIENT_TRAININGS_TARGET_URL
 export const TrainingInviteContainer: React.FC = () => {
@@ -52,6 +53,7 @@ export const TrainingInviteContainer: React.FC = () => {
 
     const [isInviteLoading, setInviteLoading] = useState<boolean>(false)
     const [isInviteError, setInviteError] = useState<boolean>(false)
+    const [isUserAlreadyEnrolled, setIsUserAlreadyEnrolled] = useState<boolean>(false)
 
     const { getRequestStatus, isLoading: isRequestLoading } = useGetStatus('PROCESSED')
 
@@ -113,11 +115,12 @@ export const TrainingInviteContainer: React.FC = () => {
 
             const capthcaToken = await executeRecaptcha()
             setInviteError(false)
+            setIsUserAlreadyEnrolled(false)
             setInviteLoading(true)
 
             const consents = [
                 {
-                    type: 'PERSONAL_DATA_PROCESSING',
+                    type: ConsentType.PERSONAL_DATA_PROCESSING,
                     accepted: data.consent,
                 },
             ]
@@ -132,19 +135,26 @@ export const TrainingInviteContainer: React.FC = () => {
                     consents,
                 }),
             })
+            const responseBodyText = await response.text()
+            let responseBody: { [key: string]: string } = {}
+            if (responseBodyText?.length > 0) {
+                try {
+                    responseBody = JSON.parse(responseBodyText)
+                } catch (e) {
+                    // eslint-disable-next-line no-console
+                    console.error('Response not json', e)
+                }
+            }
+
             if (!response.ok) {
+                if (responseBody['type'] === 'training04') {
+                    setIsUserAlreadyEnrolled(true)
+                }
                 setInviteError(true)
             } else {
-                const responseBodyText = await response.text()
                 if (responseBodyText?.length > 0) {
-                    try {
-                        const responseBody = JSON.parse(responseBodyText)
-                        if (responseBody['requestId']) {
-                            await getRequestStatus(responseBody['requestId'], () => handleRedirect())
-                        }
-                    } catch (e) {
-                        // eslint-disable-next-line no-console
-                        console.error('Response not json', e)
+                    if (responseBody['requestId']) {
+                        await getRequestStatus(responseBody['requestId'], () => handleRedirect())
                     }
                 }
             }
@@ -177,6 +187,7 @@ export const TrainingInviteContainer: React.FC = () => {
             isError={isError}
             errorMessages={errorMessages}
             handleInvite={handleInvite}
+            isUserAlreadyEnrolled={isUserAlreadyEnrolled}
         />
     )
 }

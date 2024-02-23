@@ -12,7 +12,7 @@ import {
     TextLink,
 } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -48,10 +48,12 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
     isLoading,
     isLoadingMutation,
     handleInvite,
+    isUserAlreadyEnrolled,
 }) => {
     const { t } = useTranslation()
     const { schema } = useTrainingInviteSchema(user)
     const navigate = useNavigate()
+    const [seed, setSeed] = useState(1)
 
     const { register, handleSubmit, formState, setValue, clearErrors, reset } = useForm<ITrainingInviteForm>({
         resolver: yupResolver(schema),
@@ -79,6 +81,10 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
         handleInvite(formData)
     }
 
+    useEffect(() => {
+        setSeed(Math.random())
+    }, [organizationOptions])
+
     const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
     document.title = `${t('breadcrumbs.registerForTraining')} ${META_IS_TITLE}`
     return (
@@ -99,7 +105,12 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
                 ]}
             />
             <MainContentWrapper>
-                <QueryFeedback loading={isLoading} error={isError}>
+                <QueryFeedback
+                    loading={isLoading}
+                    error={isError}
+                    errorProps={{ errorMessage: isUserAlreadyEnrolled ? t('trainings.alreadyEnrolled') : '' }}
+                    withChildren
+                >
                     {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                     <TextHeading size="XL">{t('trainings.invitedTitle')}</TextHeading>
                     <form onSubmit={handleSubmit(onHandleSubmit)}>
@@ -120,6 +131,7 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
                         />
                         {isLoggedIn ? (
                             <SimpleSelect
+                                key={seed}
                                 required
                                 label={t('trainings.table.organization')}
                                 options={organizationOptions}
