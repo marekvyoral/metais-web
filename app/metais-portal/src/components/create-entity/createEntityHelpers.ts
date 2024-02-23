@@ -198,7 +198,7 @@ type CiStatusSuccess = {
     isUpdate: boolean
 }
 
-export const useCiCreateEditOnStatusSuccess = () => {
+export const useCiCreateEditOnStatusSuccess = (basePath?: string) => {
     const navigate = useNavigate()
     const location = useLocation()
     const { setIsActionSuccess } = useActionSuccess()
@@ -211,7 +211,7 @@ export const useCiCreateEditOnStatusSuccess = () => {
         invalidateCilistFilteredCache({ ciType: entityName })
         invalidateCiByUuidCache(configurationItemId)
 
-        const toPath = `/ci/${entityName}/${configurationItemId}`
+        const toPath = basePath ? `${basePath}/${configurationItemId}` : `/ci/${entityName}/${configurationItemId}`
         setIsActionSuccess({ value: true, path: toPath, additionalInfo: { type: isUpdate ? 'edit' : 'create' } })
         navigate(toPath, { state: { from: location } })
     }
@@ -234,7 +234,7 @@ type CiOnSubmitType = {
     updateCiItemId?: string
 }
 
-export const useCiCreateUpdateOnSubmit = (entityName: string) => {
+export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
     const [uploadError, setUploadError] = useState(false)
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
@@ -268,13 +268,11 @@ export const useCiCreateUpdateOnSubmit = (entityName: string) => {
         setUploadError(false)
         setConfigurationItemId(uuid)
 
-        const handleStoreConfigurationItem = () => {
-            storeCiItem({
-                data: isUpdate ? dataToUpdate : dataToCreate,
-            })
-        }
+        await storeCiItem({
+            data: isUpdate ? dataToUpdate : dataToCreate,
+        })
 
-        handleStoreConfigurationItem()
+        return uuid
     }
 
     return { uploadError, setUploadError, configurationItemId, onSubmit }

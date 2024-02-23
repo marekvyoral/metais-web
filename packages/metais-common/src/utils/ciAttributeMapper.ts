@@ -1,4 +1,4 @@
-import { ConfigurationItemSetUi as ConfigurationItemSetUi, ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemSetUi, ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ConfigurationItemSetUi as ConfigurationItemSetUiDefault } from '@isdd/metais-common/api/generated/iam-swagger'
 
 export const ciItemArrayToObject = (ciItem?: ConfigurationItemSetUiDefault): ConfigurationItemSetUi => {

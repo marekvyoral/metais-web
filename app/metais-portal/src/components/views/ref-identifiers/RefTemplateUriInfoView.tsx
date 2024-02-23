@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { RefIdentifierDetailInfoViewProps } from '@/components/containers/ref-identifiers/RefIdentifierDetailContainer'
 import { getNameByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
 
-export const RefTemplateUriInfoView: React.FC<RefIdentifierDetailInfoViewProps> = ({ ciItemData, attributes, registrationState, gestorName }) => {
+export const RefTemplateUriInfoView: React.FC<RefIdentifierDetailInfoViewProps> = ({ ciItemData, attributes, registrationState }) => {
     const {
         t,
         i18n: { language },
@@ -42,7 +42,6 @@ export const RefTemplateUriInfoView: React.FC<RefIdentifierDetailInfoViewProps> 
                 value={ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri]}
             />
 
-            <InformationGridRow hideIcon label={t('refIdentifiers.detail.gestor')} value={gestorName} />
             <InformationGridRow hideIcon label={t('refIdentifiers.detail.type')} value={t(`refIdentifiers.type.${ciItemData?.type}`)} />
             <InformationGridRow
                 hideIcon

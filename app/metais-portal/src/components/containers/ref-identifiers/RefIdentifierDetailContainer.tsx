@@ -1,5 +1,5 @@
-import { ATTRIBUTE_NAME, RefIdentifierTypeEnum } from '@isdd/metais-common/api'
-import { ConfigurationItemUi, useReadCiList1, useReadRelationships } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ATTRIBUTE_NAME, RELATION_TYPE, RefIdentifierTypeEnum } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useReadCiList1, useReadCiNeighbours, useReadRelationships } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { STAV_REGISTRACIE, TYP_DATOVEHO_PRVKU } from '@isdd/metais-common/constants'
@@ -7,7 +7,6 @@ import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
 import React from 'react'
 
-import { getGestorName } from '@/components/views/codeLists/CodeListDetailUtils'
 import { RefIdentifierDetailView } from '@/components/views/ref-identifiers/RefIdentifierDetailView'
 
 export interface RefIdentifierDetailContainerViewProps {
@@ -18,6 +17,7 @@ export interface RefIdentifierDetailContainerViewProps {
     dataItemTypeState?: EnumType
     gestorName: string | undefined
     ciList: ConfigurationItemUi[] | undefined
+    ciItemId: string
     isLoading: boolean
     isError: boolean
 }
@@ -28,7 +28,7 @@ export interface RefIdentifierDetailInfoViewProps {
     attributes: Attribute[] | undefined
     registrationState: EnumType | undefined
     dataItemTypeState?: EnumType
-    gestorName: string | undefined
+    gestorName?: string
 }
 
 interface RefIdentifierDetailContainerProps {
@@ -43,7 +43,7 @@ export const RefIdentifierDetailContainer: React.FC<RefIdentifierDetailContainer
         isError: isDataItemTypeStatesError,
     } = useGetValidEnum(TYP_DATOVEHO_PRVKU)
 
-    const { ciItemData, gestorData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(id)
+    const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(id)
     const { attributes, attributeProfiles, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(ciItemData?.type)
 
     const {
@@ -56,12 +56,34 @@ export const RefIdentifierDetailContainer: React.FC<RefIdentifierDetailContainer
         },
     })
 
-    const datasetUuids =
-        relationData?.endRelationshipSet?.filter((item) => item.type === 'URIDataset_patri_URIKatalog').map((item) => item.endUuid ?? '') ?? []
+    const {
+        isFetching: isPoListFetching,
+        isError: isPoListError,
+        data: poList,
+    } = useReadCiNeighbours(
+        id,
+        {
+            page: 1,
+            perpage: 10000,
+            neighboursFilter: {
+                relType: [RELATION_TYPE.PO_je_gestor_URIKatalog, RELATION_TYPE.PO_je_gestor_DatovyPrvok],
+                metaAttributes: {
+                    state: ['DRAFT'],
+                },
+            },
+        },
+        { query: { cacheTime: 0 } },
+    )
 
+    const gestorName = poList?.toNodes?.neighbourPairs?.at(0)?.configurationItem?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
+
+    const datasetUuids =
+        relationData?.endRelationshipSet
+            ?.filter((item) => item.type === RELATION_TYPE.URIDataset_patri_URIKatalog)
+            .map((item) => item.startUuid ?? '') ?? []
     const dataItemUuids =
         relationData?.startRelationshipSet
-            ?.filter((item) => item.type === 'DatovyPrvok_sa_sklada_DatovyPrvok' && item.metaAttributes?.state !== 'INVALIDATED')
+            ?.filter((item) => item.type === RELATION_TYPE.DatovyPrvok_sa_sklada_DatovyPrvok && item.metaAttributes?.state !== 'INVALIDATED')
             .map((item) => item.endUuid ?? '') ?? []
 
     const {
@@ -81,8 +103,6 @@ export const RefIdentifierDetailContainer: React.FC<RefIdentifierDetailContainer
         },
     )
 
-    const gestorName = getGestorName(gestorData, ciItemData?.metaAttributes?.owner)
-
     const attributesArrays = attributeProfiles?.map((item) => item.attributes || []) || []
 
     const attributeList = attributes?.concat(...attributesArrays)
@@ -92,17 +112,25 @@ export const RefIdentifierDetailContainer: React.FC<RefIdentifierDetailContainer
         isDataItemTypeStatesLoading,
         isCiItemLoading,
         isAttLoading,
+        isPoListFetching,
         isRelationFetching,
         isCiListFetching,
     ].some((item) => item)
 
-    const isError = [isRegistrationStateError, isDataItemTypeStatesError, isCiItemError, isAttError, isRelationError, isCiListError].some(
-        (item) => item,
-    )
+    const isError = [
+        isRegistrationStateError,
+        isDataItemTypeStatesError,
+        isCiItemError,
+        isAttError,
+        isPoListError,
+        isRelationError,
+        isCiListError,
+    ].some((item) => item)
 
     return (
         <>
             <RefIdentifierDetailView
+                ciItemId={id}
                 entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
                 ciItemData={ciItemData}
                 ciList={ciList?.configurationItemSet}

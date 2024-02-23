@@ -93,6 +93,25 @@ export const isOwnershipOnPoSide = (ownerGid: string, poUuid: string) => {
     return false
 }
 
+export const splitList = (firstList: string[], secondList: string[]) => {
+    const notInList1: string[] = []
+    const notInList2: string[] = []
+
+    firstList.forEach((item) => {
+        if (!secondList.includes(item)) {
+            notInList2.push(item)
+        }
+    })
+
+    secondList.forEach((item) => {
+        if (!firstList.includes(item)) {
+            notInList1.push(item)
+        }
+    })
+
+    return { notInList1, notInList2 }
+}
+
 export const formatTitleString = (value: string) => {
     return `${value} ${META_IS_TITLE}`
 }
