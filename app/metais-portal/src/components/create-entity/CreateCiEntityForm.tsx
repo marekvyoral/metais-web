@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 
 import { CreateEntitySection } from './CreateEntitySection'
-import { canCreateProject, getValidAndVisibleAttributes } from './createEntityHelpers'
+import { getValidAndVisibleAttributes } from './createEntityHelpers'
 import { CiEntityFormBody } from './CiEntityFormBody'
 
 import { RelationAttributeForm } from '@/components/relations-attribute-form/RelationAttributeForm'
@@ -63,10 +63,8 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
 
     const ability = useAbilityContext()
     const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
-    const hasRightsToCreateProject = canCreateProject(ciTypeData?.technicalName ?? '', selectedRole?.roleName ?? '')
     const isUpdate = !!updateCiItemId
-    const isSubmitDisabled =
-        (!selectedRole?.roleUuid && !updateCiItemId) || (withRelation ? !canCreateRelationType : false) || (!hasRightsToCreateProject && !isUpdate)
+    const isSubmitDisabled = (!selectedRole?.roleUuid && !updateCiItemId) || (withRelation ? !canCreateRelationType : false)
 
     const metaisEmail = 'metais@mirri.gov.sk'
     const location = useLocation()
