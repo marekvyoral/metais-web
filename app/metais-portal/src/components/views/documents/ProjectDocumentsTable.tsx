@@ -213,6 +213,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         name="checkbox"
                         id="checkbox-all"
                         onChange={(newValue) => checkAll(table, newValue)}
+                        title={t('table.selectAllItems')}
                     />
                 </div>
             ),
@@ -228,6 +229,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                             id={`checkbox_${row.id}`}
                             onChange={row.getToggleSelectedHandler()}
                             checked={row.getIsSelected()}
+                            title={t('table.selectItem', { itemName: row.original.name ?? row.original?.attributes?.Gen_Profil_nazov })}
                         />
                     </div>
                 ),

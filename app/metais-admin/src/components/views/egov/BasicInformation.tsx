@@ -4,6 +4,7 @@ import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid
 import { useTranslation } from 'react-i18next'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { FindAll11200 } from '@isdd/metais-common/api/generated/iam-swagger'
+import { EntityColorEnumTranslateKeys } from '@isdd/metais-common'
 
 import { ColorRow } from './ColorRow'
 
@@ -20,6 +21,8 @@ interface ProjectInformationData {
 
 export const BasicInformation = ({ data: { ciTypeData }, roles }: ProjectInformationData) => {
     const { t } = useTranslation()
+    const colorKey = Object.keys(EntityColorEnumTranslateKeys).indexOf(ciTypeData?.color ?? '')
+
     return (
         <DefinitionList>
             <InformationGridRow key={'name'} label={t('egov.name')} value={ciTypeData?.name} hideIcon />
@@ -34,7 +37,17 @@ export const BasicInformation = ({ data: { ciTypeData }, roles }: ProjectInforma
                 <InformationGridRow key={'engDescription'} label={t('egov.engDescription')} value={ciTypeData?.engDescription} hideIcon />
             )}
             {ciTypeData?.color && (
-                <InformationGridRow key={'color'} label={t('egov.color')} value={<ColorRow color={ciTypeData?.color} />} hideIcon />
+                <InformationGridRow
+                    key={'color'}
+                    label={t('egov.color')}
+                    value={
+                        <ColorRow
+                            color={ciTypeData?.color}
+                            label={t(`egov.colorSelect.${Object.values(EntityColorEnumTranslateKeys)[colorKey]}`, '')}
+                        />
+                    }
+                    hideIcon
+                />
             )}
             {Array.isArray(roles) ? (
                 ciTypeData?.roleList?.map((role, index) => (

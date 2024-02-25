@@ -72,6 +72,10 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
         }
     }, [entityId, location, navigate, selectedColumns, path])
 
+    const getCheckboxTitle = (row: Row<TableCols>) => {
+        return (row.original.actions as string[])?.map((i) => t(`history.ACTIONS.${i as string}`)).join(', ')
+    }
+
     const columns: Array<ColumnDef<TableCols>> = [
         {
             accessorFn: (row) => row.selected,
@@ -87,6 +91,7 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
                         checked={row?.original?.versionId ? !!selectedColumns.includes(row?.original?.versionId) : false}
                         onChange={(e) => handleCheckRow(e.target.checked, row?.original?.versionId || '')}
                         disabled={selectedColumns.length >= 2 && !selectedColumns.includes(row?.original?.versionId || '')}
+                        title={t('table.selectItem', { itemName: getCheckboxTitle(row) })}
                     />
                 </div>
             ),
@@ -95,15 +100,13 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
             accessorFn: (row) => row?.actions,
             header: t('historyTab.table.actions'),
             id: '1',
-            cell: (row) => {
-                return (
-                    <ul>
-                        {(row.getValue() as string[])?.map((i, index) => (
-                            <li key={index}>{t(`history.ACTIONS.${i as string}`)}</li>
-                        ))}
-                    </ul>
-                )
-            },
+            cell: (row) => (
+                <ul>
+                    {(row.getValue() as string[])?.map((i, index) => (
+                        <li key={index}>{t(`history.ACTIONS.${i as string}`)}</li>
+                    ))}
+                </ul>
+            ),
             size: 200,
         },
         {

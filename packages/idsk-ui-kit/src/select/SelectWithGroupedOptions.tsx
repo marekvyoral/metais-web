@@ -5,6 +5,7 @@ import ReactSelect, { GroupBase, MenuPosition, OptionProps, OptionsOrGroups, cre
 
 import styles from './select.module.scss'
 import { IOption } from './Select'
+import { useGetLocalMessages } from './useGetLocalMessages'
 
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
@@ -57,6 +58,7 @@ export const SelectWithGroupedOptions = ({
     required,
 }: ISelectProps) => {
     const { t } = useTranslation()
+    const localMessages = useGetLocalMessages()
 
     const filterConfig = {
         ignoreCase: true,
@@ -64,6 +66,7 @@ export const SelectWithGroupedOptions = ({
         stringify: (item: IOption<string>) => `${item.label}`,
         trim: true,
     }
+    const errorId = `${id}-error`
 
     return (
         <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
@@ -73,7 +76,11 @@ export const SelectWithGroupedOptions = ({
                 </label>
                 {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
             </div>
-            {!!error && <span className="govuk-error-message">{error}</span>}
+            {!!error && (
+                <span id={errorId} className="govuk-error-message">
+                    {error}
+                </span>
+            )}
             <div className={styles.inputWrapper}>
                 <ReactSelect<GroupedOption | undefined>
                     id={id}
@@ -95,6 +102,11 @@ export const SelectWithGroupedOptions = ({
                     onChange={(val) => {
                         onChange(val as IOption<string>)
                     }}
+                    aria-errormessage={errorId}
+                    noOptionsMessage={localMessages.noOptionsMessage}
+                    ariaLiveMessages={localMessages.ariaLiveMessages}
+                    screenReaderStatus={localMessages.screenReaderStatus}
+                    loadingMessage={localMessages.loadingMessage}
                 />
                 {correct && <img src={GreenCheckMarkIcon} className={isClearable ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />}
             </div>

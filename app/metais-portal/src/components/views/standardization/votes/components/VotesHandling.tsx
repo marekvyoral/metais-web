@@ -118,6 +118,7 @@ export const VotesHandler: React.FC<ICastVote> = ({
             )}
             <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
                 <RadioGroupWithLabel
+                    label={t('votes.voteDetail.votesHandlingRadioLabel')}
                     hint={
                         vetoed
                             ? t('votes.voteDetail.vetoed')
@@ -141,15 +142,10 @@ export const VotesHandler: React.FC<ICastVote> = ({
                             />
                         )
                     })}
-                    {canCast && (
-                        <TextArea
-                            rows={3}
-                            label={t('votes.voteDetail.description')}
-                            {...register('voteDescription')}
-                            disabled={alreadyVoted || voted}
-                        />
-                    )}
                 </RadioGroupWithLabel>
+                {canCast && (
+                    <TextArea rows={3} label={t('votes.voteDetail.description')} {...register('voteDescription')} disabled={alreadyVoted || voted} />
+                )}
 
                 {canCast && <Button type="submit" label={t('votes.voteDetail.submitVote')} disabled={alreadyVoted || voted} />}
             </form>

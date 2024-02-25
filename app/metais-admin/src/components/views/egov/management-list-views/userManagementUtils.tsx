@@ -31,6 +31,7 @@ export const SelectableColumnsSpec = (
                         name="checkbox"
                         id="checkbox_all"
                         value="true"
+                        title={t('table.selectAllItems')}
                         onChange={() => {
                             const checked = table.getRowModel().rows.every((row) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false))
                             const newRowSelection = { ...rowSelection }
@@ -51,6 +52,7 @@ export const SelectableColumnsSpec = (
             <div className="govuk-checkboxes govuk-checkboxes--small">
                 <CheckBox
                     label=""
+                    title={t('table.selectItem', { itemName: row.original.name })}
                     name="checkbox"
                     id={`checkbox_${row.id}`}
                     value="true"

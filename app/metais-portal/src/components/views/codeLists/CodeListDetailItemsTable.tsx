@@ -124,6 +124,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
                                 onChange={() => handleAllCheckboxChange(items.codelistsItems || [])}
                                 disabled={rowsWithoutDisabled.length === 0}
                                 checked={checked}
+                                title={t('table.selectAllItems')}
                             />
                         </div>
                     )
@@ -143,6 +144,9 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
                                     row.original.codelistItemState === CodeListItemState.PUBLISHED ||
                                     row.original.codelistItemState === CodeListItemState.READY_TO_PUBLISH
                                 }
+                                title={t('table.selectItem', {
+                                    itemName: selectBasedOnLanguageAndDate(row.original.codelistItemNames as ApiCodelistItemName[], workingLanguage),
+                                })}
                             />
                         </div>
                     </ExpandableRowCellWrapper>

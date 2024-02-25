@@ -1,6 +1,7 @@
 import { CheckBox } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { Notification } from '@isdd/metais-common/api/generated/notifications-swagger'
+import { useTranslation } from 'react-i18next'
 import { ColumnDef, Row, Table } from '@tanstack/react-table'
 import React from 'react'
 export const firstLetterToLowerCase = (str: string): string => {
@@ -53,40 +54,46 @@ export const SelectableColumnsSpec = (
     columns: ColumnDef<Notification>[],
     rowSelection: Record<string, Notification>,
     setRowSelection: React.Dispatch<React.SetStateAction<Record<string, Notification>>>,
-): ColumnDef<Notification>[] => [
-    {
-        header: ({ table }) => {
-            return (
+): ColumnDef<Notification>[] => {
+    const { t } = useTranslation()
+
+    return [
+        {
+            header: ({ table }) => {
+                return (
+                    <div className="govuk-checkboxes govuk-checkboxes--small">
+                        <CheckBox
+                            label=""
+                            name="checkbox"
+                            id="checkbox_all"
+                            value="true"
+                            onChange={() => {
+                                handleAllCheckboxChange(table, tableData, rowSelection, setRowSelection)
+                            }}
+                            checked={table.getRowModel().rows.every((row) => (row.original.id ? !!rowSelection[row.original.id] : false))}
+                            title={t('table.selectAllItems')}
+                        />
+                    </div>
+                )
+            },
+            size: 45,
+            id: CHECKBOX_CELL,
+            cell: ({ row }) => (
                 <div className="govuk-checkboxes govuk-checkboxes--small">
                     <CheckBox
                         label=""
                         name="checkbox"
-                        id="checkbox_all"
+                        id={`checkbox_${row.id}`}
                         value="true"
                         onChange={() => {
-                            handleAllCheckboxChange(table, tableData, rowSelection, setRowSelection)
+                            handleCheckboxChange(row, rowSelection, setRowSelection)
                         }}
-                        checked={table.getRowModel().rows.every((row) => (row.original.id ? !!rowSelection[row.original.id] : false))}
+                        checked={row.original.id ? !!rowSelection[row.original.id] : false}
+                        title={t('table.selectItem', { itemName: row.original.messagePerex })}
                     />
                 </div>
-            )
+            ),
         },
-        size: 45,
-        id: CHECKBOX_CELL,
-        cell: ({ row }) => (
-            <div className="govuk-checkboxes govuk-checkboxes--small">
-                <CheckBox
-                    label=""
-                    name="checkbox"
-                    id={`checkbox_${row.id}`}
-                    value="true"
-                    onChange={() => {
-                        handleCheckboxChange(row, rowSelection, setRowSelection)
-                    }}
-                    checked={row.original.id ? !!rowSelection[row.original.id] : false}
-                />
-            </div>
-        ),
-    },
-    ...columns,
-]
+        ...columns,
+    ]
+}

@@ -126,6 +126,7 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                                     value="checkbox-all"
                                     onChange={() => handleAllCheckboxChange()}
                                     checked={checkedAll}
+                                    title={t('table.selectAllItems')}
                                 />
                             </div>
                         ) : (
@@ -142,6 +143,7 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                             <div className="govuk-checkboxes govuk-checkboxes--small">
                                 <CheckBox
                                     label=""
+                                    title={t('table.selectItem', { itemName: row?.original?.name })}
                                     name="checkbox"
                                     id={`checkbox_${row.id}`}
                                     value="true"

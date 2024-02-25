@@ -270,6 +270,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 onChange={() => handleAllCheckboxChange(codeList || [])}
                                 disabled={tableRows.length === 0}
                                 checked={checked}
+                                title={t('table.selectAllItems')}
                             />
                         </div>
                     )
@@ -286,6 +287,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 value="true"
                                 onChange={() => handleCheckboxChange(row)}
                                 checked={row.original.id ? !!rowSelection[row.original.id] : false}
+                                title={t('table.selectItem', { itemName: row.original.codeName })}
                             />
                         </div>
                     )}
@@ -295,13 +297,13 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         {
             header: t('codeListList.requestCreate.codeId'),
             accessorFn: (row: IItemForm) => row?.codeItem,
-            id: 'name',
+            id: 'id',
             cell: (ctx: CellContext<IItemForm, unknown>) => <span>{ctx?.row?.original?.codeItem}</span>,
         },
         {
             header: t('codeListList.requestCreate.codeName'),
             accessorFn: (row: IItemForm) => row?.codeName,
-            id: 'ekoCodeState',
+            id: 'name',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx: CellContext<IItemForm, unknown>) => <span>{ctx?.row?.original?.codeName}</span>,
         },

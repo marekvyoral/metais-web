@@ -1416,6 +1416,43 @@
     "fileList": {
         "delete": "Vymazať súbor {{fileName}} z listu"
     },
+    "select": {
+        "noOptions": "Žiadne možnosti",
+        "loading": "Načítanie...",
+        "availableResult_one": "{{count}} výsledok",
+        "availableResult_other": "{{count}} výsledkov",
+        "onFocus": {
+            "totalCount": "{{index}} z {{length}}",
+            "disabled": "blokované",
+            "selected": "zvolené",
+            "focused": "zamerané",
+            "return": {
+                "value": "Hodnota {{label}} zameraná, {{index}}.",
+                "menu": "Možnosť {{label}} {{status}}, {{index}}."
+            }
+        },
+        "onFilter": "{{resultsMessage}} pre hľadaný výraz {{inputValue}}.",
+        "onChange": {
+            "deselected": "možnosť {{label}}, zrušený výber.",
+            "cleared": "Všetky vybraté možnosti boli vyčistené.",
+            "initial": "{{option}} {{labels}}, zvolené.",
+            "option_one": "Možnosť",
+            "option_many": "Možnosti",
+            "selected": {
+                "disabled": "možnosť {{label}} je blokovaná. Vyberte inú možnosť.",
+                "selected": "možnosť {{label}}, zvolené."
+            }
+        },
+        "guidance": {
+            "menu": "Pomocou tlačidiel Hore a Dole vyberte možnosti{{enterText}}, stlačením klávesu Escape opustite ponuku{{tabText}}.",
+            "enterText": ", stlačením klávesu Enter vyberte aktuálne zameranú možnosť",
+            "tabText": ", stlačením klávesu Tab vyberte možnosť a opustite ponuku",
+            "input": "{{label}} je aktívny{{searchText}}, stlačením Dole otvorte ponuku{{multiText}}.",
+            "searchText": ", zadajte pre spresnenie zoznamu",
+            "multiText": ", stlačením Vľavo zaostríte na vybrané hodnoty",
+            "value": "Pomocou vľavo a vpravo prepínajte medzi vybranými hodnotami, stlačením Backspace odstránite aktuálne zameranú hodnotu."
+        }
+    },
     "aria": {
         "selectedRowsCount": "Máte {{count}} vybraných riadkov v tabuľke"
     },
@@ -1467,5 +1504,8 @@
         },
         "ownerError": "Vo vytváraní nie je možné pokračovať, pretože nie ste vlastníkom tejto položky."
     },
-    "close": "Zavrieť"
+    "close": "Zavrieť",
+    "accessibility": {
+        "navigated": "Zmena stránky na {{pageTitle}}"
+    }
 }
