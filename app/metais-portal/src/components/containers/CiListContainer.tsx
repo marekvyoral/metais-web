@@ -17,7 +17,7 @@ import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryObserverResult } from '@tanstack/react-query'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FieldValues } from 'react-hook-form'
 
 import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
@@ -74,10 +74,14 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
         },
     }
 
-    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList<T, CiListFilterContainerUi>(
+    const { filterToNeighborsApi, filterParams, handleFilterChange, reset } = useFilterForCiList<T, CiListFilterContainerUi>(
         defaultFilterValues,
         defaultRequestApi,
     )
+    useEffect(() => {
+        reset()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [entityName])
 
     const {
         attributeProfiles,
