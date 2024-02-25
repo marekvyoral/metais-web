@@ -2211,6 +2211,7 @@
             "voteProcessing": "Processing",
             "voteDescription": "Description",
             "votesHandlingTitle": "Voting",
+            "votesHandlingRadioLabel": "Vote options",
             "voteActorsTitle": "Vote actors",
             "voteOverview": "Vote Owerview",
             "changeDate": "Change Date",
@@ -2820,7 +2821,41 @@
         "delete": "Delete file {{fileName}} from list"
     },
     "select": {
-        "noOptions": "No options"
+        "noOptions": "No options",
+        "loading": "Loading...",
+        "availableResult_one": "{{count}} result",
+        "availableResult_other": "{{count}} results",
+        "onFocus": {
+            "totalCount": "{{index}} of {{length}}",
+            "disabled": "disabled",
+            "selected": "selected",
+            "focused": "focused",
+            "return": {
+                "value": "Value {{label}} focused, {{index}}.",
+                "menu": "Option {{label}} {{status}}, {{index}}."
+            }
+        },
+        "onFilter": "{{resultsMessage}} for search term {{inputValue}}.",
+        "onChange": {
+            "deselected": "option {{label}}, deselected.",
+            "cleared": "All selected options have been cleared.",
+            "initial": "{{option}} {{labels}}, selected.",
+            "option_one": "Option",
+            "option_many": "Options",
+            "selected": {
+                "disabled": "option {{label}} is disabled. Select another option.",
+                "selected": "option {{label}}, selected."
+            }
+        },
+        "guidance": {
+            "menu": "Use Up and Down to choose options{{enterText}}, press Escape to exit the menu{{tabText}}.",
+            "enterText": ", press Enter to select the currently focused option",
+            "tabText": ", press Tab to select the option and exit the menu",
+            "input": "{{label}} is focused{{searchText}}, press Down to open the menu{{multiText}}.",
+            "searchText": ", type to refine list",
+            "multiText": ", press left to focus selected values",
+            "value": "Use left and right to toggle between focused values, press Backspace to remove the currently focused value."
+        }
     },
     "aria": {
         "selectedRowsCount": "You have {{count}} rows selected in table"
@@ -2876,5 +2911,8 @@
             "ORDERED_LIST": "Numbered List",
             "LINK": "Link"
         }
+    },
+    "accessibility": {
+        "navigated": "Page changed to {{pageTitle}}"
     }
 }

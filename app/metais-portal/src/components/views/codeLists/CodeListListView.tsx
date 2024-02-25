@@ -151,7 +151,9 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                 <div className="govuk-checkboxes govuk-checkboxes--small">
                     <CheckBox
                         label=""
-                        title={`checkbox_${row.id}`}
+                        title={t('table.selectItem', {
+                            itemName: selectBasedOnLanguageAndDate(row.original.codelistNames as ApiCodelistItemName[], 'sk'),
+                        })}
                         name="checkbox"
                         id={`checkbox_${row.id}`}
                         value="true"

@@ -52,6 +52,7 @@ export const getTableColumns = (
                             onChange={() => handleAllCheckboxChange(data ?? [])}
                             checked={checked}
                             containerClassName={styles.marginBottom15}
+                            title={t('table.selectAllItems')}
                         />
                     </div>
                 )
@@ -61,6 +62,7 @@ export const getTableColumns = (
                 <div className="govuk-checkboxes govuk-checkboxes--small" id={`checkbox_div_${row.id}`}>
                     <CheckBox
                         label=""
+                        title={t('table.selectItem', { itemName: row.original.name })}
                         name="checkbox"
                         id={`checkbox_${row.id}`}
                         value="true"

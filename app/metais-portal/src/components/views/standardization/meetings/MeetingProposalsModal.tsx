@@ -137,6 +137,7 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({ i
                             value="checkbox-all"
                             onChange={() => handleAllCheckboxChange()}
                             checked={checkedAll}
+                            title={t('table.selectAllItems')}
                         />
                     </div>
                 )
@@ -155,6 +156,7 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({ i
                                     handleCheckboxChange(row)
                                 }}
                                 checked={row.original.id ? !!rowSelection.includes(row.original.id.toString()) : false}
+                                title={t('table.selectItem', { itemName: row.original.srName })}
                             />
                         </div>
                     </>

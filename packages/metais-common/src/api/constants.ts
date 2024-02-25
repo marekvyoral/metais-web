@@ -288,3 +288,15 @@ export enum EntityColorEnum {
     motivationalEntity = '#ffccff',
     motivationalEntity2 = '#ccccff',
 }
+
+export const EntityColorEnumTranslateKeys = {
+    [EntityColorEnum.customEntity]: 'customEntity',
+    [EntityColorEnum.systemEntity]: 'systemEntity',
+    [EntityColorEnum.businessLayer]: 'businessLayer',
+    [EntityColorEnum.appAndDataLayer]: 'appAndDataLayer',
+    [EntityColorEnum.technologicalLayer]: 'technologicalLayer',
+    [EntityColorEnum.implementationAndMigration]: 'implementationAndMigration',
+    [EntityColorEnum.implementationAndMigration2]: 'implementationAndMigration',
+    [EntityColorEnum.motivationalEntity]: 'motivationalEntity',
+    [EntityColorEnum.motivationalEntity2]: 'motivationalEntity',
+}
