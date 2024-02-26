@@ -153,6 +153,7 @@ export const RefCatalogForm: React.FC<RefCatalogFormPropsType> = ({
 
             <DateInput
                 required
+                setValue={setValue}
                 handleDateChange={(date, name) => date && setValue(name as keyof RefCatalogFormType, DateTime.fromJSDate(date).toISO() ?? '')}
                 {...register(`attributes.${ATTRIBUTE_NAME.Profil_URIKatalog_platne_od}`)}
                 control={control}
@@ -169,6 +170,7 @@ export const RefCatalogForm: React.FC<RefCatalogFormPropsType> = ({
 
             <DateInput
                 handleDateChange={(date, name) => date && setValue(name as keyof RefCatalogFormType, DateTime.fromJSDate(date).toISO() ?? '')}
+                setValue={setValue}
                 {...register(`attributes.${ATTRIBUTE_NAME.Profil_URIKatalog_platne_do}`)}
                 control={control}
                 label={getNameByAttribute(

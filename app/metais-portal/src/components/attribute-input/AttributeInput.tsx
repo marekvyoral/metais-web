@@ -8,7 +8,7 @@ import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLa
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import { HTML_TYPE, MAX_TITLE_LENGTH } from '@isdd/metais-common/constants'
 import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
-import { ATTRIBUTE_NAME, formatDateForDefaultValue, formatDateToIso } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, formatDateToIso } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { formatNumberWithSpaces, isFalsyStringValue } from '@isdd/metais-common/utils/utils'
 import classnames from 'classnames'
@@ -161,10 +161,6 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
         return defaultValue
     }
 
-    const handleDateChange = (date: Date | null, name: string) => {
-        setValue(name, date ? formatDateForDefaultValue(date.toISOString()) : null)
-    }
-
     const handleDateTimeChange = (date: Date | null, name: string) => {
         setValue(name, date ? formatDateToIso(date) : null)
     }
@@ -197,7 +193,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
             case isDate: {
                 return (
                     <DateInput
-                        handleDateChange={handleDateChange}
+                        setValue={setValue}
                         name={attribute.technicalName + nameSufix}
                         control={control}
                         type={DateTypeEnum.DATE}
@@ -215,6 +211,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
             case isDateTime: {
                 return (
                     <DateInput
+                        setValue={setValue}
                         handleDateChange={handleDateTimeChange}
                         name={attribute.technicalName + nameSufix}
                         control={control}

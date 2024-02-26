@@ -244,6 +244,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                         name={'validityStartDate'}
                         label={t('olaContracts.filter.intervalStart')}
                         error={errors.validityStartDate?.message}
+                        setValue={setValue}
                     />
                     <DateInput
                         handleDateChange={(date) =>
@@ -252,6 +253,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                         name={'validityEndDate'}
                         control={control}
                         label={t('olaContracts.filter.intervalEnd')}
+                        setValue={setValue}
                     />
                     <Input {...register('crzLink')} label={t('olaContracts.filter.crzLink')} />
                     <CheckBox {...register('vendorLock')} label={t('olaContracts.filter.vendorLock')} id="vendorLock" />

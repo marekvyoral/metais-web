@@ -30,6 +30,7 @@ import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequ
 import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types/'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
 import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
@@ -119,12 +120,16 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     const [defaultSelectOrg, setDefaultSelectOrg] = useState<IOption>()
     const [expanded, setExpanded] = useState<ExpandedState>({})
     const [isCodeAvailable, setIsCodeAvailable] = useState<boolean>(false)
-    const { register, handleSubmit, formState, getValues, setValue, setError, trigger } = useForm<IRequestForm>({
+    const { register, handleSubmit, formState, getValues, setValue, setError, trigger, control } = useForm<IRequestForm>({
         resolver: yupResolver(schema),
         defaultValues: editData || {
             base: true,
         },
     })
+
+    const handleDateChange = (date: Date | null, name: string) => {
+        setValue(name as keyof ICodeItem, date ?? new Date())
+    }
 
     const onHandleSubmit = (formData: IRequestForm) => {
         const res = { ...formData, codeLists: [...codeList] }
@@ -426,22 +431,26 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             {(editData?.codeListState === RequestListState.ACCEPTED_SZZC ||
                                 editData?.codeListState === RequestListState.KS_ISVS_ACCEPTED) && (
                                 <>
-                                    <Input
+                                    <DateInput
                                         required
+                                        setValue={setValue}
                                         label={getDescription('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
                                         info={getName('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
                                         id={RequestFormEnum.STARTDATE}
                                         {...register(RequestFormEnum.STARTDATE)}
-                                        type="date"
                                         error={formState.errors[RequestFormEnum.STARTDATE]?.message}
+                                        control={control}
+                                        handleDateChange={handleDateChange}
                                     />
-                                    <Input
+                                    <DateInput
+                                        setValue={setValue}
                                         label={getDescription('Gui_Profil_ZC_datum_platnosti', language, attributeProfile)}
                                         info={getName('Gui_Profil_ZC_datum_platnosti', language, attributeProfile)}
                                         id={RequestFormEnum.VALIDDATE}
                                         {...register(RequestFormEnum.VALIDDATE)}
-                                        type="date"
                                         error={formState.errors[RequestFormEnum.VALIDDATE]?.message}
+                                        control={control}
+                                        handleDateChange={handleDateChange}
                                     />
                                 </>
                             )}

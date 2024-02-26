@@ -1,4 +1,5 @@
-import { Filter, GridCol, GridRow, Input, PaginatorWrapper, SimpleSelect, Table } from '@isdd/idsk-ui-kit/index'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { Filter, GridCol, GridRow, PaginatorWrapper, SimpleSelect, Table } from '@isdd/idsk-ui-kit/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types/filter'
 import { Group } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ApiMeetingRequestPreview } from '@isdd/metais-common/api/generated/standards-swagger'
@@ -146,7 +147,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
             <Filter<MeetingsFilterData>
                 onlyForm
                 defaultFilterValues={defaultFilterValues}
-                form={({ setValue, register }) => {
+                form={({ setValue, register, control }) => {
                     return (
                         <div>
                             <SimpleSelect
@@ -193,10 +194,20 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
                             />
                             <GridRow>
                                 <GridCol setWidth="one-half">
-                                    <Input label={t('meetings.filter.startDate')} type="date" {...register('startDate')} />
+                                    <DateInput
+                                        label={t('meetings.filter.startDate')}
+                                        {...register('startDate')}
+                                        control={control}
+                                        setValue={setValue}
+                                    />
                                 </GridCol>
                                 <GridCol setWidth="one-half">
-                                    <Input label={t('meetings.filter.endDate')} type="date" {...register('endDate')} />
+                                    <DateInput
+                                        label={t('meetings.filter.startDate')}
+                                        {...register('endDate')}
+                                        control={control}
+                                        setValue={setValue}
+                                    />
                                 </GridCol>
                             </GridRow>
                         </div>

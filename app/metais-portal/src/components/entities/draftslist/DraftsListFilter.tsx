@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { ApiStandardRequestPreviewRequestChannel, GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
 import { SelectUserIdentities } from '@isdd/metais-common/components/select-user-identities/SelectUserIdentities'
 import { SelectWorkingGroups } from '@isdd/metais-common/components/select-working-groups/SelectWorkingGroups'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { DraftsListFilterItems } from '@/types/filters'
 export interface Filter {
@@ -28,39 +29,53 @@ export const DraftsListFilter = ({ defaultFilterValues }: Filter) => {
         <Filter
             defaultFilterValues={defaultFilterValues}
             heading={<></>}
-            form={({ register, setValue, filter, watch }) => (
-                <div>
-                    <Input {...register(DraftsListFilterItems.DRAFT_NAME)} label={t('DraftsList.filter.draftName')} />
-                    <SelectUserIdentities
-                        filter={filter}
-                        setValue={setValue}
-                        name={DraftsListFilterItems.CREATED_BY}
-                        label={t('DraftsList.filter.createdBy')}
-                    />
-                    <SelectWorkingGroups
-                        filter={filter}
-                        setValue={setValue}
-                        label={t('DraftsList.filter.workGroupId')}
-                        name={DraftsListFilterItems.WORK_GROUP_ID}
-                    />
-                    <SimpleSelect
-                        label={t('DraftsList.filter.state.label')}
-                        name={DraftsListFilterItems.STATE}
-                        options={statesOptions}
-                        setValue={setValue}
-                        defaultValue={filter.state}
-                    />
-                    <SimpleSelect
-                        label={t('DraftsList.filter.draftType.label')}
-                        name={DraftsListFilterItems.REQUEST_CHANNEL}
-                        options={requestChannelOptions}
-                        setValue={setValue}
-                        defaultValue={filter.requestChannel}
-                    />
-                    <Input {...register(DraftsListFilterItems.FROM_DATE)} type="date" label={t('DraftsList.filter.fromDate')} max={watch('toDate')} />
-                    <Input {...register(DraftsListFilterItems.TO_DATE)} type="date" label={t('DraftsList.filter.toDate')} min={watch('fromDate')} />
-                </div>
-            )}
+            form={({ register, setValue, filter, watch, control }) => {
+                return (
+                    <div>
+                        <Input {...register(DraftsListFilterItems.DRAFT_NAME)} label={t('DraftsList.filter.draftName')} />
+                        <SelectUserIdentities
+                            filter={filter}
+                            setValue={setValue}
+                            name={DraftsListFilterItems.CREATED_BY}
+                            label={t('DraftsList.filter.createdBy')}
+                        />
+                        <SelectWorkingGroups
+                            filter={filter}
+                            setValue={setValue}
+                            label={t('DraftsList.filter.workGroupId')}
+                            name={DraftsListFilterItems.WORK_GROUP_ID}
+                        />
+                        <SimpleSelect
+                            label={t('DraftsList.filter.state.label')}
+                            name={DraftsListFilterItems.STATE}
+                            options={statesOptions}
+                            setValue={setValue}
+                            defaultValue={filter.state}
+                        />
+                        <SimpleSelect
+                            label={t('DraftsList.filter.draftType.label')}
+                            name={DraftsListFilterItems.REQUEST_CHANNEL}
+                            options={requestChannelOptions}
+                            setValue={setValue}
+                            defaultValue={filter.requestChannel}
+                        />
+                        <DateInput
+                            {...register(DraftsListFilterItems.FROM_DATE)}
+                            label={t('DraftsList.filter.fromDate')}
+                            maxDate={new Date(watch('toDate') ?? '')}
+                            control={control}
+                            setValue={setValue}
+                        />
+                        <DateInput
+                            {...register(DraftsListFilterItems.TO_DATE)}
+                            label={t('DraftsList.filter.toDate')}
+                            minDate={new Date(watch('fromDate') ?? '')}
+                            control={control}
+                            setValue={setValue}
+                        />
+                    </div>
+                )
+            }}
         />
     )
 }

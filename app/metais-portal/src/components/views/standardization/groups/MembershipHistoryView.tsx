@@ -1,20 +1,24 @@
 import React, { SetStateAction, useState } from 'react'
-import { Button, Input, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
+import { Button, GridCol, GridRow, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { Group, StdHistory } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ColumnDef } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { ActionsOverTable, QueryFeedback } from '@isdd/metais-common/index'
+import classNames from 'classnames'
+import DatePicker from 'react-datepicker'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { GroupSelect } from './components/GroupSelect'
+import styles from './styles.module.scss'
 
 interface IMembershipHistoryView {
     membershipHistory: StdHistory[] | undefined
     columns: ColumnDef<StdHistory>[]
     selectedGroup: Group | undefined
     setSelectedGroup: React.Dispatch<SetStateAction<Group | undefined>>
-    selectedDate: string | undefined
-    setSelectedDate: React.Dispatch<SetStateAction<string | undefined>>
+    selectedDate: Date | undefined
+    setSelectedDate: React.Dispatch<SetStateAction<Date | undefined>>
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
     isLoading: boolean
 }
@@ -29,7 +33,7 @@ export const MembershipHistoryView: React.FC<IMembershipHistoryView> = ({
     handleSubmit,
     isLoading,
 }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const [pageSize, setPageSize] = useState<number>(10)
     const [start, setStart] = useState<number>(0)
@@ -53,17 +57,29 @@ export const MembershipHistoryView: React.FC<IMembershipHistoryView> = ({
             <div className="idsk-table-filter idsk-table-filter__panel">
                 <form onSubmit={handleSubmit}>
                     <GroupSelect selectedGroup={selectedGroup} setSelectedGroup={setSelectedGroup} />
-                    <Input
-                        type="date"
-                        name="historyFilterDate"
-                        label={`${t('groups.selectDate')}:`}
-                        id="historyFilterDate"
-                        value={selectedDate}
-                        onChange={(val) => {
-                            setSelectedDate(val.currentTarget.value)
-                        }}
-                    />
-                    <Button label={t('groups.show')} className={'idsk-button'} type="submit" disabled={!selectedGroup || !selectedDate} />
+                    <GridRow>
+                        <GridCol setWidth="one-half">
+                            <label className="govuk-label" htmlFor="historyDatePicker">
+                                {t('groups.selectDate')}
+                            </label>
+                            <DatePicker
+                                id="historyDatePicker"
+                                className={classNames('govuk-input')}
+                                wrapperClassName={styles.fullWidth}
+                                popperClassName={styles.zIndex}
+                                placeholderText="dd.mm.yyyy"
+                                selected={selectedDate}
+                                onChange={(val) => {
+                                    setSelectedDate(val ?? undefined)
+                                }}
+                                dateFormat="dd.MM.yyyy"
+                                locale={i18n.language === Languages.SLOVAK ? Languages.SLOVAK : Languages.ENGLISH}
+                            />
+                        </GridCol>
+                    </GridRow>
+                    <div className={classNames(styles.displayFlex, styles.flexEnd)}>
+                        <Button label={t('groups.show')} className={'idsk-button'} type="submit" disabled={!selectedGroup || !selectedDate} />
+                    </div>
                 </form>
             </div>
             <ActionsOverTable

@@ -207,6 +207,7 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                 <DateInput
                     required
                     handleDateChange={(date, name) => date && setValue(name as keyof RefDataItemFormType, DateTime.fromJSDate(date).toISO() ?? '')}
+                    setValue={setValue}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti}`)}
                     control={control}
                     label={getNameByAttribute(
@@ -222,6 +223,7 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
 
                 <DateInput
                     handleDateChange={(date, name) => date && setValue(name as keyof RefDataItemFormType, DateTime.fromJSDate(date).toISO() ?? '')}
+                    setValue={setValue}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_koniec_ucinnosti}`)}
                     control={control}
                     label={getNameByAttribute(

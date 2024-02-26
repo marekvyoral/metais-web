@@ -1,8 +1,9 @@
-import { BaseModal, Button, ButtonGroupRow, GridCol, GridRow, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
+import { BaseModal, Button, GridCol, GridRow, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 import { useGenerateCodeAndURLHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IApproveFormData, useGetKirtColumnsHook } from '@isdd/metais-common/api/userConfigKvKrit'
 import { User } from '@isdd/metais-common/contexts/auth/authContext'
-import { ModalButtons, MutationFeedback, QueryFeedback, formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { ModalButtons, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -33,7 +34,9 @@ export const ApproveModal: React.FC<IApproveModalProps> = ({ user, uuid, open, o
         vyhotovil_meno: `${user?.firstName} ${user?.lastName}`,
     })
 
-    const { register, handleSubmit, reset } = useForm<IApproveFormData>()
+    const { register, handleSubmit, reset, control, setValue } = useForm<IApproveFormData>({
+        defaultValues: { overil_datum: date, vyhotovil_datum: date, schvalil_datum: date },
+    })
 
     useEffect(() => {
         if (open) {
@@ -118,11 +121,11 @@ export const ApproveModal: React.FC<IApproveModalProps> = ({ user, uuid, open, o
                             </GridRow>
                             <GridRow>
                                 <GridCol setWidth="one-third">
-                                    <Input
+                                    <DateInput
                                         {...register('overil_datum')}
-                                        type="date"
                                         label={t('modalKris.approveModal.verifiedDate')}
-                                        defaultValue={storedData?.overil_datum && formatDateForDefaultValue(storedData?.overil_datum)}
+                                        control={control}
+                                        setValue={setValue}
                                     />
                                 </GridCol>
                                 <GridCol setWidth="one-third">
@@ -142,11 +145,11 @@ export const ApproveModal: React.FC<IApproveModalProps> = ({ user, uuid, open, o
                             </GridRow>
                             <GridRow>
                                 <GridCol setWidth="one-third">
-                                    <Input
+                                    <DateInput
                                         {...register('schvalil_datum')}
-                                        type="date"
                                         label={t('modalKris.approveModal.approveDate')}
-                                        defaultValue={storedData?.schvalil_datum && formatDateForDefaultValue(storedData?.schvalil_datum)}
+                                        control={control}
+                                        setValue={setValue}
                                     />
                                 </GridCol>
                                 <GridCol setWidth="one-third">
@@ -166,11 +169,11 @@ export const ApproveModal: React.FC<IApproveModalProps> = ({ user, uuid, open, o
                             </GridRow>
                             <GridRow>
                                 <GridCol setWidth="one-third">
-                                    <Input
+                                    <DateInput
                                         {...register('vyhotovil_datum')}
-                                        type="date"
                                         label={t('modalKris.approveModal.evalDate')}
-                                        defaultValue={storedData?.vyhotovil_datum && formatDateForDefaultValue(storedData?.vyhotovil_datum)}
+                                        control={control}
+                                        setValue={setValue}
                                     />
                                 </GridCol>
                                 <GridCol setWidth="one-third">
@@ -190,18 +193,7 @@ export const ApproveModal: React.FC<IApproveModalProps> = ({ user, uuid, open, o
                             </GridRow>
                             <input type="hidden" {...register('Gen_Profil_kod_metais')} defaultValue={storedData?.Gen_Profil_kod_metais} />
                             <input type="hidden" {...register('Gen_Profil_ref_id')} defaultValue={storedData?.Gen_Profil_ref_id} />
-                            <ButtonGroupRow>
-                                <Button label={t('ciType.approve')} type="submit" />
-                                <Button variant="secondary" label={t('ciType.saveApprovingItem')} onClick={() => setIsSave(true)} type="submit" />
-                                <Button
-                                    variant="secondary"
-                                    label={t('evaluation.cancelBtn')}
-                                    onClick={() => {
-                                        reset()
-                                        onClose()
-                                    }}
-                                />
-                            </ButtonGroupRow>
+
                             <ModalButtons
                                 submitButtonLabel={t('ciType.approve')}
                                 additionalButtons={[

@@ -18,6 +18,7 @@ import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-con
 import { NotificationBlackIcon } from '@isdd/metais-common/assets/images'
 import actionsOverTableStyles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { selectBasedOnLanguageAndDate } from '@/components/views/codeLists/CodeListDetailUtils'
 import {
@@ -271,45 +272,52 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                     <Filter<CodeListListFilterData>
                         heading={t('codeList.filter.title')}
                         defaultFilterValues={defaultFilterValues}
-                        form={({ filter: formFilter, register, setValue }) => (
-                            <div>
-                                <SelectFilterOrganization<CodeListListFilterData>
-                                    label={t('codeListList.filter.mainGestor')}
-                                    name="mainGestorPoUuid"
-                                    filter={formFilter}
-                                    setValue={setValue}
-                                />
-                                <Input {...register('toDate')} type="date" label={t('codeListList.filter.toDate')} />
-                                <SimpleSelect
-                                    id="onlyBase"
-                                    name="onlyBase"
-                                    label={t('codeListList.filter.onlyBase.label')}
-                                    options={[
-                                        { value: CodeListFilterOnlyBase.TRUE, label: t('codeListList.filter.onlyBase.true') },
-                                        { value: CodeListFilterOnlyBase.FALSE, label: t('codeListList.filter.onlyBase.false') },
-                                    ]}
-                                    setValue={setValue}
-                                    defaultValue={formFilter.onlyBase || defaultFilterValues.onlyBase}
-                                />
-                                {!isOnlyPublishedPage && (
-                                    <>
-                                        <SimpleSelect
-                                            id="wfState"
-                                            name="wfState"
-                                            label={t('codeListList.filter.state')}
-                                            options={Object.values(CodeListState).map((state) => ({
-                                                value: state,
-                                                label: t(`codeListList.state.${state}`),
-                                            }))}
-                                            setValue={setValue}
-                                            defaultValue={formFilter.wfState || defaultFilterValues.wfState}
-                                        />
-                                        <Input {...register('code')} type="text" label={t('codeListList.filter.code')} />
-                                        <Input {...register('name')} type="text" label={t('codeListList.filter.name')} />
-                                    </>
-                                )}
-                            </div>
-                        )}
+                        form={({ filter: formFilter, register, setValue, control }) => {
+                            return (
+                                <div>
+                                    <SelectFilterOrganization<CodeListListFilterData>
+                                        label={t('codeListList.filter.mainGestor')}
+                                        name="mainGestorPoUuid"
+                                        filter={formFilter}
+                                        setValue={setValue}
+                                    />
+                                    <DateInput
+                                        label={t('codeListList.filter.toDate')}
+                                        {...register('toDate')}
+                                        control={control}
+                                        setValue={setValue}
+                                    />
+                                    <SimpleSelect
+                                        id="onlyBase"
+                                        name="onlyBase"
+                                        label={t('codeListList.filter.onlyBase.label')}
+                                        options={[
+                                            { value: CodeListFilterOnlyBase.TRUE, label: t('codeListList.filter.onlyBase.true') },
+                                            { value: CodeListFilterOnlyBase.FALSE, label: t('codeListList.filter.onlyBase.false') },
+                                        ]}
+                                        setValue={setValue}
+                                        defaultValue={formFilter.onlyBase || defaultFilterValues.onlyBase}
+                                    />
+                                    {!isOnlyPublishedPage && (
+                                        <>
+                                            <SimpleSelect
+                                                id="wfState"
+                                                name="wfState"
+                                                label={t('codeListList.filter.state')}
+                                                options={Object.values(CodeListState).map((state) => ({
+                                                    value: state,
+                                                    label: t(`codeListList.state.${state}`),
+                                                }))}
+                                                setValue={setValue}
+                                                defaultValue={formFilter.wfState || defaultFilterValues.wfState}
+                                            />
+                                            <Input {...register('code')} type="text" label={t('codeListList.filter.code')} />
+                                            <Input {...register('name')} type="text" label={t('codeListList.filter.name')} />
+                                        </>
+                                    )}
+                                </div>
+                            )
+                        }}
                     />
                     <ActionsOverTable
                         pagination={{
