@@ -26,7 +26,7 @@ export interface MonitoringInsertFilterData extends IFilterParams, FieldValues, 
     serviceType?: string
 }
 
-let count = 1
+// const count = 1
 
 export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoading, isError, isSuccess, paramTypeData, handleAddParams }) => {
     const { t } = useTranslation()
@@ -39,7 +39,7 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
     const {
         state: { user },
     } = useAuth()
-
+    console.log('valueParams', valueParams)
     const schema = object().shape(
         {
             valueParams: yup.array().of(
@@ -54,15 +54,16 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
         [['valueParams', 'valueParams']],
     )
 
-    const { handleSubmit, register, formState } = useForm({
+    const { handleSubmit, register, formState, resetField } = useForm({
         resolver: yupResolver(schema),
+        mode: 'onChange',
     })
-
+    console.log('formState', formState)
     const insertParams = () => {
         const params = paramTypeData?.results?.map((param) => {
-            count = count + 1
+            // count = count + 1
             return {
-                id: count,
+                id: Math.random(),
                 description: param.description,
                 name: param.name,
                 paramType: param.id,
@@ -94,6 +95,7 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
         if (valueParams.find((param) => param.id === id)) {
             const rem = valueParams.filter((param) => param.id !== id)
             setValueParams(rem)
+            // resetField(`valueParams.${id}.value`)
         }
     }
 
@@ -146,7 +148,7 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
         handleAddParams(mappedVal)
     }
     const errors = formState?.errors
-
+    console.log('errors', errors)
     return (
         <MainContentWrapper>
             <QueryFeedback loading={isLoading} error={isError} withChildren>
@@ -234,37 +236,37 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
                             </GridCol>
                         </GridRow>
                     )}
-                    {valueParams?.map((param, index) => {
+                    {valueParams?.map((param) => {
                         return (
-                            <GridRow key={`row-${index}`} className={styles.paramGroup}>
-                                <GridCol key={`name-${index}`} setWidth="one-third">
+                            <GridRow key={`row-${param.id}`} className={styles.paramGroup}>
+                                <GridCol key={`name-${param.id}`} setWidth="one-third">
                                     <TextBody>
                                         <InfoIconWithText
-                                            key={`${param.name}-${index}`}
-                                            {...register(`valueParams.${index}.name`)}
+                                            key={`${param.name}-${param.id}`}
+                                            {...register(`valueParams.${param.id}.name`)}
                                             tooltip={param.description}
                                         >
                                             {param.name}
                                         </InfoIconWithText>
                                     </TextBody>
                                 </GridCol>
-                                <GridCol key={`dateFrom-${index}`} setWidth="one-third">
+                                <GridCol key={`dateFrom-${param.id}`} setWidth="one-third">
                                     <Input
                                         type="date"
-                                        key={`${param.name}-dateFrom-${index}`}
-                                        {...register(`valueParams.${index}.dateFrom`)}
-                                        error={errors?.valueParams?.[index]?.dateFrom?.message?.toString()}
+                                        key={`${param.name}-dateFrom-${param.id}`}
+                                        {...register(`valueParams.${param.id}.dateFrom`)}
+                                        error={errors?.valueParams?.[param.id]?.dateFrom?.message?.toString()}
                                         defaultValue={formatDateForDefaultValue(param.dateFrom.toISOString())}
                                         className="marginBottom0"
                                     />
                                 </GridCol>
-                                <GridCol key={`value-${index}`} setWidth="one-third">
+                                <GridCol key={`value-${param.id}`} setWidth="one-third">
                                     <div className={styles.buttonGroupStart}>
                                         <Input
                                             type="number"
-                                            key={`${param.name}-value-${index}`}
-                                            {...register(`valueParams.${index}.value`)}
-                                            error={errors?.valueParams?.[index]?.value?.message?.toString()}
+                                            key={`${param.name}-value-${param.id}`}
+                                            {...register(`valueParams.${param.id}.value`)}
+                                            error={errors?.valueParams?.[param.id]?.value?.message?.toString()}
                                             className="marginBottom0"
                                         />
                                         <TextBody className="marginBottom0">{getUnitMark(param.unit)}</TextBody>
@@ -280,8 +282,8 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
                                         <input
                                             readOnly
                                             hidden
-                                            {...register(`valueParams.${index}.id`)}
-                                            key={`${param.name}-id-${index}`}
+                                            {...register(`valueParams.${param.id}.id`)}
+                                            key={`${param.name}-id-${param.id}`}
                                             value={param?.id}
                                         />
                                     </div>
