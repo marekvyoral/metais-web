@@ -106,6 +106,7 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
 
                 return isHarmonogramEdit ? (
                     <DateInput
+                        setValue={setValue}
                         className={styles.fullWidth}
                         name={formatHarmonogramFormKey(replacedItemCode, HarmonogramInputNames.PLANNED_DATE)}
                         control={control}
@@ -131,6 +132,7 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
 
                 return isHarmonogramEdit ? (
                     <DateInput
+                        setValue={setValue}
                         className={styles.fullWidth}
                         name={formatHarmonogramFormKey(replacedItemCode, HarmonogramInputNames.REALIZED_DATE)}
                         control={control}

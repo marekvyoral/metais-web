@@ -170,6 +170,7 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                 <DateInput
                     required
                     handleDateChange={(date, name) => date && setValue(name as keyof RefTemplateUriFormType, DateTime.fromJSDate(date).toISO() ?? '')}
+                    setValue={setValue}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_platne_od}`)}
                     control={control}
                     label={getNameByAttribute(
@@ -185,6 +186,7 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
 
                 <DateInput
                     handleDateChange={(date, name) => date && setValue(name as keyof RefTemplateUriFormType, DateTime.fromJSDate(date).toISO() ?? '')}
+                    setValue={setValue}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_platne_do}`)}
                     control={control}
                     label={getNameByAttribute(

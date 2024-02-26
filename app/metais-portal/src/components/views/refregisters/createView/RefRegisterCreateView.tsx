@@ -67,7 +67,7 @@ export const RefRegisterCreateView: React.FC<IRefRegisterCreateView> = ({
     const userGroupOptions = getUserGroupOptions(userGroupData)
     const defaultUserGroup = userGroupOptions?.length === 1 ? userGroupOptions[0] : undefined
 
-    const { register, handleSubmit, setValue, clearErrors, formState } = useForm({
+    const { register, handleSubmit, setValue, clearErrors, formState, control } = useForm({
         resolver: yupResolver(createRefRegisterSchema(t, showCreatorForm(defaultUserGroup, defaultData), showSourceRegisterForm(defaultData))),
         defaultValues: mapDefaultDataToFormDataRR(defaultData),
     })
@@ -100,6 +100,7 @@ export const RefRegisterCreateView: React.FC<IRefRegisterCreateView> = ({
                         register={register}
                         isContact={isContact}
                         creatorNotSet={creatorNotSet}
+                        control={control}
                     />
                     <RefRegisterCreateManagerContactSection
                         defaultData={defaultData}

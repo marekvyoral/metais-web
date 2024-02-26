@@ -1,10 +1,11 @@
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
-import { Table, PaginatorWrapper, Filter, MultiSelect, GridRow, GridCol, Input } from '@isdd/idsk-ui-kit/index'
+import { Table, PaginatorWrapper, Filter, MultiSelect, GridRow, GridCol } from '@isdd/idsk-ui-kit/index'
 import { ColumnDef } from '@tanstack/react-table'
 import { ApiCodelistHistory } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import {
     CodeListDetailHistoryFilterData,
@@ -54,44 +55,48 @@ export const HistoryTabView: React.FC<CodeListDetailHistoryViewProps> = ({ data,
                         toDate,
                     })
                 }}
-                form={({ filter: formFilter, setValue, register }) => (
-                    <div>
-                        <MultiSelect
-                            label={t('codeListDetail.history.filter.action')}
-                            options={data?.filter.actions?.map((item) => ({ label: item, value: item })) ?? []}
-                            name="action"
-                            setValue={setValue}
-                            defaultValue={formFilter.action || defaultFilterValues.action}
-                        />
-                        <MultiSelect
-                            label={t('codeListDetail.history.filter.lastModifiedBy')}
-                            options={data?.filter.modifiedBy?.map((item) => ({ label: item, value: item })) ?? []}
-                            name="lastModifiedBy"
-                            setValue={setValue}
-                            defaultValue={formFilter.lastModifiedBy || defaultFilterValues.lastModifiedBy}
-                        />
-                        <GridRow>
-                            <GridCol setWidth="one-half">
-                                <Input
-                                    {...register('fromDate')}
-                                    type="date"
-                                    name="fromDate"
-                                    label={t('codeListDetail.history.filter.lastChangeFrom')}
-                                    id="fromDate"
-                                />
-                            </GridCol>
-                            <GridCol setWidth="one-half">
-                                <Input
-                                    {...register('toDate')}
-                                    type="date"
-                                    name="toDate"
-                                    label={t('codeListDetail.history.filter.lastChangeTo')}
-                                    id="toDate"
-                                />
-                            </GridCol>
-                        </GridRow>
-                    </div>
-                )}
+                form={({ filter: formFilter, setValue, register, control }) => {
+                    return (
+                        <div>
+                            <MultiSelect
+                                label={t('codeListDetail.history.filter.action')}
+                                options={data?.filter.actions?.map((item) => ({ label: item, value: item })) ?? []}
+                                name="action"
+                                setValue={setValue}
+                                defaultValue={formFilter.action || defaultFilterValues.action}
+                            />
+                            <MultiSelect
+                                label={t('codeListDetail.history.filter.lastModifiedBy')}
+                                options={data?.filter.modifiedBy?.map((item) => ({ label: item, value: item })) ?? []}
+                                name="lastModifiedBy"
+                                setValue={setValue}
+                                defaultValue={formFilter.lastModifiedBy || defaultFilterValues.lastModifiedBy}
+                            />
+                            <GridRow>
+                                <GridCol setWidth="one-half">
+                                    <DateInput
+                                        {...register('fromDate')}
+                                        name="fromDate"
+                                        label={t('codeListDetail.history.filter.lastChangeFrom')}
+                                        id="fromDate"
+                                        control={control}
+                                        setValue={setValue}
+                                    />
+                                </GridCol>
+                                <GridCol setWidth="one-half">
+                                    <DateInput
+                                        {...register('toDate')}
+                                        name="toDate"
+                                        label={t('codeListDetail.history.filter.lastChangeTo')}
+                                        id="toDate"
+                                        control={control}
+                                        setValue={setValue}
+                                    />
+                                </GridCol>
+                            </GridRow>
+                        </div>
+                    )
+                }}
             />
             <ActionsOverTable
                 pagination={{

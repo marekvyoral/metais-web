@@ -1,4 +1,4 @@
-import { ButtonLink, Filter, Input, MultiSelect, PaginatorWrapper, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { ButtonLink, Filter, MultiSelect, PaginatorWrapper, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { NotificationBlackIcon } from '@isdd/metais-common/assets/images'
@@ -14,6 +14,7 @@ import { Row } from '@tanstack/react-table'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { refIdentifierColumns, refIdentifierStateOptions, refIdentifierTypeOptions, refIdentifierViewOptions } from './refIdentifierListProps'
 
@@ -120,38 +121,51 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
             <Filter<RefIdentifierListFilterData>
                 heading={t('codeList.filter.title')}
                 defaultFilterValues={defaultFilter}
-                form={({ filter: formFilter, register, setValue }) => (
-                    <div>
-                        <MultiSelect
-                            name="type"
-                            label={t('refIdentifiers.filter.type')}
-                            options={refIdentifierTypeOptions(t)}
-                            onChange={(values) => setValue('type', values as RefIdentifierTypeEnum[])}
-                            defaultValue={formFilter.type || defaultFilter.type}
-                        />
-                        <SimpleSelect
-                            label={t('refIdentifiers.filter.state')}
-                            options={refIdentifierStateOptions(registrationState, i18n.language)}
-                            setValue={setValue}
-                            defaultValue={formFilter?.state || defaultFilter.state}
-                            name="state"
-                        />
-
-                        <Input label={t('refIdentifiers.filter.createdAtFrom')} id={'createdAtFrom'} {...register('createdAtFrom')} type="date" />
-                        <Input label={t('refIdentifiers.filter.createdAtTo')} id={'createdAtTo'} {...register('createdAtTo')} type="date" />
-
-                        {isLoggedIn && (
-                            <SimpleSelect
-                                label={t('refIdentifiers.filter.view')}
-                                options={refIdentifierViewOptions(t)}
-                                setValue={setValue}
-                                isClearable={false}
-                                defaultValue={formFilter?.view}
-                                name="view"
+                form={({ filter: formFilter, register, setValue, control }) => {
+                    return (
+                        <div>
+                            <MultiSelect
+                                name="type"
+                                label={t('refIdentifiers.filter.type')}
+                                options={refIdentifierTypeOptions(t)}
+                                onChange={(values) => setValue('type', values as RefIdentifierTypeEnum[])}
+                                defaultValue={formFilter.type || defaultFilter.type}
                             />
-                        )}
-                    </div>
-                )}
+                            <SimpleSelect
+                                label={t('refIdentifiers.filter.state')}
+                                options={refIdentifierStateOptions(registrationState, i18n.language)}
+                                setValue={setValue}
+                                defaultValue={formFilter?.state || defaultFilter.state}
+                                name="state"
+                            />
+
+                            <DateInput
+                                label={t('refIdentifiers.filter.createdAtFrom')}
+                                id={'createdAtFrom'}
+                                {...register('createdAtFrom')}
+                                control={control}
+                                setValue={setValue}
+                            />
+                            <DateInput
+                                label={t('refIdentifiers.filter.createdAtTo')}
+                                id={'createdAtTo'}
+                                {...register('createdAtTo')}
+                                control={control}
+                                setValue={setValue}
+                            />
+                            {isLoggedIn && (
+                                <SimpleSelect
+                                    label={t('refIdentifiers.filter.view')}
+                                    options={refIdentifierViewOptions(t)}
+                                    setValue={setValue}
+                                    isClearable={false}
+                                    defaultValue={formFilter?.view}
+                                    name="view"
+                                />
+                            )}
+                        </div>
+                    )
+                }}
             />
             <ActionsOverTable
                 pagination={{
