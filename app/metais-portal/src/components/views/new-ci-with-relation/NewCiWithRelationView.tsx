@@ -2,7 +2,11 @@ import { SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
-import { useInvalidateCiHistoryListCache, useInvalidateCiNeighboursWithAllRelsCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import {
+    useInvalidateCiHistoryListCache,
+    useInvalidateCiNeighboursWithAllRelsCache,
+    useInvalidateRelationsCountCache,
+} from '@isdd/metais-common/hooks/invalidate-cache'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
@@ -99,11 +103,13 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
     } = useGetStatus()
     const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCache(entityId)
     const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
+    const invalidateRelationsCountCache = useInvalidateRelationsCountCache()
 
     const onStoreGraphSuccess = () => {
         navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
         invalidateRelationListCacheByUuid.invalidate()
         invalidateHistoryListCache(entityId)
+        invalidateRelationsCountCache.invalidate(entityId)
     }
 
     const storeGraph = useStoreGraph({
@@ -138,6 +144,10 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
         const ownerId = groupData?.gid
         const newEntityUuid = uuidV4()
 
+        const isRelatedEntityAsTarget =
+            relationData?.relatedListAsTargets &&
+            relationData?.relatedListAsTargets.find((relData) => relData.relationshipTypeTechnicalName === selectedRelationTypeTechnicalName)
+
         storeGraph.mutateAsync({
             data: {
                 storeSet: {
@@ -153,8 +163,8 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
                         {
                             type: selectedRelationTypeTechnicalName,
                             attributes: formattedRelationAttributes,
-                            startUuid: newEntityUuid,
-                            endUuid: entityId,
+                            startUuid: isRelatedEntityAsTarget ? entityId : newEntityUuid,
+                            endUuid: isRelatedEntityAsTarget ? newEntityUuid : entityId,
                             owner: ownerId,
                             uuid: uuidV4(),
                         },
