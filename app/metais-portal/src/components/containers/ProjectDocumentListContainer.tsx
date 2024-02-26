@@ -6,7 +6,7 @@ import { PROJECT_DOCUMENTS_SECTIONS_EXPANDABLE } from '@isdd/metais-common/const
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BASE_PAGE_NUMBER } from '@isdd/metais-common/api/constants'
 
 export interface IDocType extends ConfigurationItemUi {
@@ -60,8 +60,14 @@ export const defaultFilter = {
 export const ProjectDocumentsListContainer: React.FC<IProjectDocumentsListContainer> = ({ configurationItemId, View }) => {
     const { data: projectData, isLoading: isProjectLoading } = useReadConfigurationItem(configurationItemId ?? '')
     const { data: requiredDocuments, isLoading: isRequiredDocsLoading } = useRequiredDocs()
-    const sectionsByState = requiredDocuments?.find((rd) => rd.stavId == projectData?.attributes?.EA_Profil_Projekt_status)
+    const [sectionsByState, setSectionsByState] = useState(
+        requiredDocuments?.find((rd) => rd.stavId == projectData?.attributes?.EA_Profil_Projekt_status),
+    )
 
+    useEffect(() => {
+        setSectionsByState(requiredDocuments?.find((rd) => rd.stavId == projectData?.attributes?.EA_Profil_Projekt_status))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [projectData?.attributes?.EA_Profil_Projekt_status])
     const { currentPreferences } = useUserPreferences()
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
     const defaultRequestApi = {
