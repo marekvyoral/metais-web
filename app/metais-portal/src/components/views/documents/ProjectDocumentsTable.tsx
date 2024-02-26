@@ -276,7 +276,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             header: t('documentsTab.table.createdAt'),
             id: 'documentsTab.table.createdAt',
             size: 100,
-            cell: (row) => row.getValue() && formatDateTimeForDefaultValue(row.getValue() as string),
+            cell: (row) => row.getValue() && formatDateTimeForDefaultValue(row.getValue() as string, 'dd.MM.yyyy, HH:mm'),
         },
 
         {
@@ -290,7 +290,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             header: t('documentsTab.table.lastModifiedAt'),
             id: 'documentsTab.table.lastModifiedAt',
             size: 100,
-            cell: (row) => row.getValue() && formatDateTimeForDefaultValue(row.getValue() as string),
+            cell: (row) => row.getValue() && formatDateTimeForDefaultValue(row.getValue() as string, 'dd.MM.yyyy, HH:mm'),
         },
 
         {
