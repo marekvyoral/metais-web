@@ -3,5 +3,4 @@ export const isSelectedTypeNumber = (newSelectedType?: string) =>
 
 export const getTypeForDefaultValue = (newSelectedType?: string) => {
     if (isSelectedTypeNumber(newSelectedType)) return 'number'
-    else if (newSelectedType === 'DATE') return 'date'
 }

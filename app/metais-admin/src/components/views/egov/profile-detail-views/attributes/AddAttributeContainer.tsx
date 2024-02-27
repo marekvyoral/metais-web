@@ -14,6 +14,7 @@ export interface IAddAttributeView {
     storeNewAttribute: (attributeTechnicalName?: string, newAttribute?: Attribute) => Promise<void>
     closeModal: () => void
     isLoading: boolean
+    isCreateAttrError: boolean
 }
 
 export interface IAddAttributeContainer {
@@ -29,7 +30,7 @@ const AddAttributeContainer = ({ View, onClose, refetch, entityName }: IAddAttri
     const { data: allEnumsData } = useListEnums()
     const { setIsActionSuccess } = useActionSuccess()
 
-    const { mutateAsync: storeAttribute, isLoading: isCreatingAttr } = useStoreNewAttribute()
+    const { mutateAsync: storeAttribute, isLoading: isCreatingAttr, isError: isCreateAttrError } = useStoreNewAttribute()
 
     const storeNewAttribute = async (attributeTechnicalName?: string, newAttribute?: Attribute) => {
         const handleStoreAttribute = async () => {
@@ -62,6 +63,7 @@ const AddAttributeContainer = ({ View, onClose, refetch, entityName }: IAddAttri
             storeNewAttribute={storeNewAttribute}
             isLoading={isCreatingAttr}
             closeModal={onClose}
+            isCreateAttrError={isCreateAttrError}
         />
     )
 }

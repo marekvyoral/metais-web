@@ -299,6 +299,7 @@
         },
         "create": {
             "requiredField": "Toto pole je povinné.",
+            "withinInterval": "Hodnota musí byť v rámci intervalu",
             "requiredOneSourceOneDestination": "Musíte vyplniť aspoň jeden zdroj a cieľ",
             "codePrefixRegex": "Povolenými znakmi pre prefix sú \"a\", \"z\", a oddelovač \"_\".",
             "technicalNameRegex": "Technické meno môže byť len z písmen abecedy alebo podčiarkovníka.",

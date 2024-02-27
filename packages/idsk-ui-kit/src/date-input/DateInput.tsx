@@ -8,7 +8,7 @@ import { GreenCheckMarkIcon } from '@isdd/metais-common/src/assets/images'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 import 'react-datepicker/dist/react-datepicker.css'
-import { formatDateForDefaultValue } from '@isdd/metais-common'
+import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common'
 
 import styles from './dateInput.module.scss'
 
@@ -86,7 +86,14 @@ export const DateInput = forwardRef<ReactDatePickerProps, Props>(
         const showTimeSelect = type === DateTypeEnum.DATETIME
 
         const handleDefaultDateChange = (date: Date | null) => {
-            setValue(name, date ? formatDateForDefaultValue(date.toISOString()) : null)
+            setValue(
+                name,
+                date
+                    ? type == DateTypeEnum.DATE
+                        ? formatDateForDefaultValue(date.toISOString())
+                        : formatDateTimeForDefaultValue(date.toISOString())
+                    : null,
+            )
         }
 
         return (
