@@ -20,6 +20,7 @@
         "technicalOperator": "Technical operator",
         "contentAdmin": "Admin of content",
         "RSS": "RSS",
+        "aboutApplication": "About application",
         "appVersion": "App version",
         "home": "Home",
         "services": {
@@ -63,6 +64,11 @@
         "license": "Open Government Licence v3.0",
         "licenseIf": ", unless otherwise stated",
         "rights": "© Copyright"
+    },
+    "aboutApp": {
+        "heading": "About the application",
+        "portalVersion": "Portal version",
+        "version": "Version {{apiModul}}"
     },
     "navbar": {
         "factChecker": "Fact-checker",

@@ -24,6 +24,7 @@
         "technicalOperator": "Technical operator",
         "contentAdmin": "Admin of content",
         "RSS": "RSS",
+        "aboutApplication": "About application",
         "appVersion": "App version",
         "home": "Home",
         "services": {
@@ -67,6 +68,11 @@
         "license": "Open Government Licence v3.0",
         "licenseIf": ", unless otherwise stated",
         "rights": "© Copyright"
+    },
+    "aboutApp": {
+        "heading": "About the application",
+        "portalVersion": "Portal version",
+        "version": "Version {{apiModul}}"
     },
     "navbar": {
         "skip": "Skip to main content",
@@ -462,7 +468,7 @@
             "organization": "Organization",
             "registrationDate": "Registration date"
         },
-        "export-title":"Select the file type to export",
+        "export-title": "Select the file type to export",
         "from": "Training start date"
     },
     "listActions": {

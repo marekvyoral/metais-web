@@ -125,6 +125,10 @@ export const getPortalFooterMetaList = (t: TFunction, isAdmin?: boolean): Footer
             label: t('footer.RSS'),
             href: urlPrefix + FooterRouteNames.RSS,
         },
+        {
+            label: t('footer.aboutApplication'),
+            href: urlPrefix + FooterRouteNames.ABOUT_APPLICATION,
+        },
     ]
     return metaList
 }

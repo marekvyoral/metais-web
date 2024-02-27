@@ -138,6 +138,7 @@ import CookiesSettings from '@/pages/cookies/settings'
 import { ReportsDetailPage } from '@/pages/reports/[entityId]/report'
 import CookiesInfoPage from '@/pages/cookies/info'
 import DeclarationPage from '@/pages/technical/declaration'
+import AboutApplicationPage from '@/pages/about-application/aboutApp'
 
 export interface RouteConfig {
     path?: string
@@ -564,6 +565,11 @@ export const routesConfig: RouteConfig[] = [
                 path: FooterRouteNames.COOKIES_SETTINGS,
                 slug: FooterRouteNames.COOKIES_SETTINGS,
                 component: CookiesSettings,
+            },
+            {
+                path: FooterRouteNames.ABOUT_APPLICATION,
+                slug: FooterRouteNames.ABOUT_APPLICATION,
+                component: AboutApplicationPage,
             },
             {
                 path: RouterRoutes.REF_REGISTERS_DETAIL,

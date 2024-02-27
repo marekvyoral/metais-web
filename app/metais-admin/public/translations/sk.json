@@ -20,6 +20,7 @@
         "technicalOperator": "Technický prevádzkovateľ",
         "contentAdmin": "Správca obsahu",
         "RSS": "RSS",
+        "aboutApplication": "O aplikácii",
         "appVersion": "Verzia aplikácie",
         "home": "Home",
         "services": {
@@ -62,6 +63,11 @@
         "license": "Open Government Licence v3.0",
         "licenseIf": ", pokiaľ nie je uvedené inak",
         "rights": "© Autorské práva"
+    },
+    "aboutApp": {
+        "heading": "O aplikácii",
+        "portalVersion": "Verzia portálu",
+        "version": "Verzia {{apiModul}}"
     },
     "navbar": {
         "home": "Domov",

@@ -304,6 +304,7 @@ export enum FooterRouteNames {
     RSS = '/rss',
     IDSK_DIZAJN = 'https://idsk.gov.sk',
     EXCEPTIONS_LEGISLATION = '/ci/OsobitnyPostup',
+    ABOUT_APPLICATION = '/about-application',
 }
 
 export enum RegistrationRoutes {
