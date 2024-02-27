@@ -267,6 +267,7 @@
         },
         "create": {
             "requiredField": "This field is required",
+            "withinInterval": "The value must be within the interval",
             "requiredOneSourceOneDestination": "You must fill in at least one source and destination",
             "codePrefixRegex": "Accepted character are only 'a'..'z' and underscore '_'.",
             "technicalNameRegex": "Technical name could only consists of alphabet character or underscore",
