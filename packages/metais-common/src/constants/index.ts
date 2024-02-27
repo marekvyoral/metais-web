@@ -289,6 +289,32 @@ export const CAN_NOT_MANAGE_CI = [
     'OperaciaAS',
     'Ciel',
 ]
+
+export const API_MODULS = [
+    'userconfig',
+    'dms',
+    'typesrepository',
+    'bpm-engine',
+    'validation',
+    'notificationengine',
+    'report',
+    'claimmanager',
+    'clarity',
+    'controls',
+    'tco',
+    'enumsrepository',
+    'impexp',
+    'licenserepository',
+    'standards',
+    'codelistrepository',
+    'kris',
+    'pdf-creator',
+    'provisioning',
+    'notification-manager',
+    'monitoring',
+    'metaisiam-rest',
+    'trainings',
+]
 export const CAN_CREATE_MEETING_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP']
 export const CAN_EDIT_MEETING_USER_ROLES = ['STD_KOORDINATOR_AGENDY']
 export const LOWER_CASE_NUMBER_DOT_REGEX = /^[a-z0-9.]*$/
