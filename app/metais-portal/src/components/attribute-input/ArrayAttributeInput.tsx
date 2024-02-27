@@ -112,6 +112,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                                 {t('createEntity.addNewRow')}
                             </div>
                         }
+                        type="button"
                         onClick={() => setInputList((prev) => [...prev, ''])}
                     />
                     {info && <Tooltip id={attribute.technicalName ?? ''} descriptionElement={info} />}
@@ -122,8 +123,8 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                 <React.Fragment key={index}>
                     {isTextarea && (
                         <div className={styles.inputWithCloseIconDivTextarea}>
-                            <TransparentButtonWrapper onClick={() => handleDeleteInput(index)}>
-                                <img src={CloseIcon} alt={t('close')} />
+                            <TransparentButtonWrapper onClick={() => handleDeleteInput(index)} type="button">
+                                <img src={CloseIcon} alt={t('close')} className={styles.cancelRowIcon} />
                             </TransparentButtonWrapper>
                             <TextArea
                                 name={`${id}${index}`}
@@ -140,8 +141,8 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                     )}
                     {!isTextarea && (
                         <div className={styles.inputWithCloseIconDivInput}>
-                            <TransparentButtonWrapper onClick={() => handleDeleteInput(index)}>
-                                <img src={CloseIcon} alt={t('close')} />
+                            <TransparentButtonWrapper onClick={() => handleDeleteInput(index)} type="button">
+                                <img src={CloseIcon} alt={t('close')} className={styles.cancelRowIcon} />
                             </TransparentButtonWrapper>
                             <Input
                                 name={`${id}${index}`}
