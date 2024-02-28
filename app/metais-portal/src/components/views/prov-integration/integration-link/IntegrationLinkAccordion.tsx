@@ -159,10 +159,7 @@ export const IntegrationLinkAccordion: React.FC<Props> = ({
                                         label={dmsDizDocumentAttribute?.name}
                                         value={
                                             !isDmsFileError && (
-                                                <Link
-                                                    to={`${import.meta.env.VITE_REST_CLIENT_BASE_URL}/dms/file/${ciItemData?.uuid}`}
-                                                    target="_blank"
-                                                >
+                                                <Link to={`${import.meta.env.VITE_API_BASE_URL}/dms/file/${ciItemData?.uuid}`} target="_blank">
                                                     <>{`${dmsFileMetaData?.filename} (${bytesToMB(dmsFileMetaData?.contentLength ?? 0)} Mb)`}</>
                                                 </Link>
                                             )

@@ -15,7 +15,7 @@ const ApiModuleInformation: React.FC<ApiModuleInformationProps> = ({ moduleName 
 
     useEffect(() => {
         setLoading(true)
-        fetch(`https://ui-legacy-metais3.apps.dev.isdd.sk/${moduleName}/endpoints/info`)
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/${moduleName}/endpoints/info`)
             .then((response) => response.json())
             .then((json) => {
                 setApiModule(json)
