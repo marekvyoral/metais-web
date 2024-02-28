@@ -8,6 +8,7 @@ import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { v4 as uuidV4 } from 'uuid'
+import { useNavigate } from 'react-router-dom'
 
 import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from '@/components/create-entity/createEntityHelpers'
 import { RefIdentifierCreateView } from '@/components/views/ref-identifiers/RefIdentifierCreateView'
@@ -33,7 +34,10 @@ export interface RefIdentifierListFilterData extends IFilterParams, IFilter {
 }
 
 export const RefIdentifierCreateContainer: React.FC = () => {
+    const navigate = useNavigate()
+
     const [type, setType] = useState<RefIdentifierTypeEnum>(RefIdentifierTypeEnum.DatovyPrvok)
+    const [isUriExist, setIsUriExist] = useState<boolean>(false)
 
     const {
         ciTypeData,
@@ -46,6 +50,8 @@ export const RefIdentifierCreateContainer: React.FC = () => {
         groupDataFiltered,
         isLoading: isRefLoading,
         isError: isRefError,
+        checkUriIfExist,
+        isCheckUriLoading,
     } = useRefIdentifierHook(type)
 
     const onStatusSuccess = useCiCreateEditOnStatusSuccess(`${RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS}`)
@@ -100,6 +106,13 @@ export const RefIdentifierCreateContainer: React.FC = () => {
     }
 
     const handleTemplateUriSubmit = async (formData: RefTemplateUriFormType, isSend: boolean) => {
+        const isExisting = await checkUriIfExist(
+            ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri,
+            formData.attributes[ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri],
+        )
+        if (isExisting) {
+            return setIsUriExist(true)
+        }
         const { ownerRoleGid, uuid } = await createCiItem(formData, isSend)
         await createRelations({
             data: {
@@ -114,6 +127,13 @@ export const RefIdentifierCreateContainer: React.FC = () => {
     }
 
     const handleDatasetSubmit = async (formData: RefDatasetFormType, isSend: boolean) => {
+        const isExisting = await checkUriIfExist(
+            ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu,
+            formData.attributes[ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu],
+        )
+        if (isExisting) {
+            return setIsUriExist(true)
+        }
         const { ownerRoleGid, uuid } = await createCiItem(formData, isSend)
 
         await createRelations({
@@ -165,6 +185,12 @@ export const RefIdentifierCreateContainer: React.FC = () => {
     }
 
     const handleCatalogSubmit = async (formData: RefCatalogFormType, isSend: boolean) => {
+        setIsUriExist(true)
+        const isExisting = await checkUriIfExist(ATTRIBUTE_NAME.Profil_URIKatalog_uri, formData.attributes[ATTRIBUTE_NAME.Profil_URIKatalog_uri])
+        if (isExisting) {
+            return setIsUriExist(true)
+        }
+
         const { ownerRoleGid, uuid } = await createCiItem(formData, isSend)
 
         await createRelations({
@@ -191,6 +217,10 @@ export const RefIdentifierCreateContainer: React.FC = () => {
         })
     }
 
+    const handleCancelRequest = () => {
+        navigate(-1)
+    }
+
     return (
         <RefIdentifierCreateView
             ciTypeData={ciTypeData}
@@ -204,15 +234,18 @@ export const RefIdentifierCreateContainer: React.FC = () => {
             type={type}
             ciCode={generatedEntityId?.cicode}
             setType={setType}
+            handleCancelRequest={handleCancelRequest}
             handleDataItemSubmit={handleDataItemSubmit}
             handleTemplateUriSubmit={handleTemplateUriSubmit}
             handleCatalogSubmit={handleCatalogSubmit}
             handleDatasetSubmit={handleDatasetSubmit}
             wrapperRef={wrapperRef}
+            isUriExist={isUriExist}
+            clearUriExist={() => setIsUriExist(false)}
             isUpdate={false}
             isProcessedError={isProcessedError}
             isRedirectError={isRedirectError || isStoreRelationsError}
-            isRedirectLoading={isRedirectLoading || isStoreRelationsLoading}
+            isRedirectLoading={isRedirectLoading || isStoreRelationsLoading || isCheckUriLoading}
             isStoreError={storeConfigurationItem.error}
             isTooManyFetchesError={isTooManyFetchesError}
             isLoading={isLoading}

@@ -1593,7 +1593,8 @@
             "lastModifiedAt": "Last modified at",
             "modifiedBy": "Modified by",
             "uri": "URI",
-            "dataItemElements": "Child data elements"
+            "dataItemElements": "Child data elements",
+            "back": "Back"
         },
         "create": {
             "title": "New reference identifier",
@@ -1611,9 +1612,10 @@
             "dataElementType": "Data element consists of data elements",
             "datasetIncludesType": "Dataset contains items of data element type",
             "datasetDefines": "Dataset defines base counter",
-            "saveRequest": "Save",
+            "saveRequest": "Save request",
             "finishRequest": "Enter request",
-            "cancelRequest": "Cancel request"
+            "cancelRequest": "Cancel request",
+            "uriAlreadyExist": "URI already exists"
         }
     },
     "selectCiItem": {
