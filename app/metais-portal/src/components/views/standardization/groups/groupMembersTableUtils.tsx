@@ -91,6 +91,7 @@ export const buildColumns = (
                             value="true"
                             onChange={() => checkAllRows(table, rowSelection, setRowSelection, tableData)}
                             checked={table.getRowModel().rows.every((row) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false))}
+                            title={t('table.selectAllItems')}
                         />
                     </div>
                 )
@@ -105,6 +106,7 @@ export const buildColumns = (
                         value="true"
                         onChange={() => checkRow(row, rowSelection, setRowSelection)}
                         checked={row.original.uuid ? !!rowSelection[row.original.uuid] : false}
+                        title={t('table.selectItem', { itemName: row.original.lastName_firstName })}
                     />
                 </div>
             ),

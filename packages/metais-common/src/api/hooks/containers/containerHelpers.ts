@@ -215,7 +215,11 @@ export const useFilterForCiList = <T extends FieldValues & IFilterParams, V>(def
     } = useAuth()
 
     const isUserLogged = !!user
-    const { filter: filterParams, handleFilterChange } = useFilterParams<T & IFilter>({
+    const {
+        filter: filterParams,
+        handleFilterChange,
+        reset,
+    } = useFilterParams<T & IFilter>({
         sort: [
             isUserLogged
                 ? { orderBy: ATTRIBUTE_NAME.Gen_Profil_nazov, sortDirection: SortType.ASC }
@@ -230,6 +234,7 @@ export const useFilterForCiList = <T extends FieldValues & IFilterParams, V>(def
         filterParams,
         handleFilterChange,
         filterToNeighborsApi,
+        reset,
     }
 }
 

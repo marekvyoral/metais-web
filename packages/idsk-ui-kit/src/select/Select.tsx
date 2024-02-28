@@ -4,9 +4,10 @@ import ReactSelect, { GroupBase, MenuPosition, MultiValue, OptionProps, SingleVa
 import { useTranslation } from 'react-i18next'
 
 import styles from './select.module.scss'
+import { useGetLocalMessages } from './useGetLocalMessages'
 
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
-import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
+import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles, MultiValueRemove } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 export interface IOption<T> {
@@ -62,6 +63,8 @@ export const Select = <T,>({
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
     }
     const { t } = useTranslation()
+    const localMessages = useGetLocalMessages()
+
     const errorId = `${id}-error`
     return (
         <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
@@ -86,7 +89,7 @@ export const Select = <T,>({
                     placeholder={placeholder || ''}
                     className={classNames('govuk-select', styles.reactSelect)}
                     classNames={{ menuList: () => styles.reactSelectMenuList }}
-                    components={{ Option, Menu, Control }}
+                    components={{ Option, Menu, Control, MultiValueRemove }}
                     options={options}
                     styles={selectStyles<IOption<T>>()}
                     unstyled
@@ -97,8 +100,11 @@ export const Select = <T,>({
                     isClearable={isClearable}
                     isOptionDisabled={(opt) => !!opt.disabled}
                     onChange={onChange}
-                    noOptionsMessage={() => t('select.noOptions')}
                     aria-errormessage={errorId}
+                    noOptionsMessage={localMessages.noOptionsMessage}
+                    ariaLiveMessages={localMessages.ariaLiveMessages}
+                    screenReaderStatus={localMessages.screenReaderStatus}
+                    loadingMessage={localMessages.loadingMessage}
                 />
                 {correct && <img src={GreenCheckMarkIcon} className={isClearable ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />}
             </div>

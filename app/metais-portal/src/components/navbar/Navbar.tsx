@@ -54,6 +54,9 @@ export const Navbar: React.FC = () => {
     }
     return (
         <>
+            <a href="#main-content" className="govuk-skip-link idsk-skip-link--sticky">
+                {t('navbar.skip')}
+            </a>
             <header className="idsk-header-web " data-module="idsk-header-web">
                 <div className="idsk-header-web__scrolling-wrapper">
                     <div className="idsk-header-web__tricolor" />

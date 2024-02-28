@@ -12,6 +12,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
+
+import styles from './styles.module.scss'
 
 import { IView, defaultFilter } from '@/components/containers/ProjectFinanceManagement/ProjectFinanceManagementContainer'
 
@@ -257,62 +260,61 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
                         )
                     }}
                 />
-                <form>
-                    <ActionsOverTable
-                        entityName={''}
-                        simpleTableColumnsSelect={{ selectedColumns, saveSelectedColumns: setSelectedColumns, resetSelectedColumns }}
-                        pagination={{
-                            pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
-                            pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
-                            dataLength: program?.partFinances?.length ?? 0,
-                        }}
-                        handleFilterChange={handleFilterChange}
-                    >
-                        {!editing ? (
-                            <Button
-                                label={t('actionsInTable.edit')}
-                                onClick={() => {
-                                    setEditing(true)
-                                    if (program) {
-                                        reset({ program: program })
-                                    }
-                                }}
-                                variant="secondary"
-                                bottomMargin={false}
-                            />
-                        ) : (
-                            <>
-                                <Button
-                                    label={t('actionsInTable.cancel')}
-                                    onClick={() => {
-                                        reset()
-                                        setEditing(false)
-                                    }}
-                                    variant="secondary"
-                                    bottomMargin={false}
-                                />
-                                <Button
-                                    label={t('actionsInTable.save')}
-                                    onClick={handleSubmit(onSubmit)}
-                                    bottomMargin={false}
-                                    disabled={Object.keys(formState.errors).length !== 0}
-                                />
-                            </>
-                        )}
-                    </ActionsOverTable>
-                    <Table
-                        data={sortedData}
-                        columns={columns.filter((c) => selectedColumns.find((s) => s.selected && s.technicalName === c.id)) ?? []}
-                        sort={filter.sort}
-                        onSortingChange={(newSort) => handleFilterChange({ sort: newSort })}
-                    />
-                </form>
+                <ActionsOverTable
+                    entityName={''}
+                    simpleTableColumnsSelect={{ selectedColumns, saveSelectedColumns: setSelectedColumns, resetSelectedColumns }}
+                    pagination={{
+                        pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+                        pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
+                        dataLength: program?.partFinances?.length ?? 0,
+                    }}
+                    handleFilterChange={handleFilterChange}
+                />
+                <Table
+                    data={sortedData}
+                    columns={columns.filter((c) => selectedColumns.find((s) => s.selected && s.technicalName === c.id)) ?? []}
+                    sort={filter.sort}
+                    onSortingChange={(newSort) => handleFilterChange({ sort: newSort })}
+                />
+
                 <PaginatorWrapper
                     pageSize={filter.pageSize ?? BASE_PAGE_SIZE}
                     pageNumber={filter.pageNumber ?? BASE_PAGE_NUMBER}
                     dataLength={program?.partFinances?.length ?? 0}
                     handlePageChange={(page) => handleFilterChange({ pageNumber: page.pageNumber })}
                 />
+                <Spacer vertical />
+                {!editing ? (
+                    <Button
+                        label={t('actionsInTable.edit')}
+                        onClick={() => {
+                            setEditing(true)
+                            if (program) {
+                                reset({ program: program })
+                            }
+                        }}
+                        variant="secondary"
+                        bottomMargin={false}
+                    />
+                ) : (
+                    <div className={styles.buttonsGroup}>
+                        <Button
+                            label={t('actionsInTable.cancel')}
+                            onClick={() => {
+                                reset()
+                                setEditing(false)
+                            }}
+                            variant="secondary"
+                            bottomMargin={false}
+                        />
+                        <Button
+                            label={t('actionsInTable.save')}
+                            onClick={handleSubmit(onSubmit)}
+                            bottomMargin={false}
+                            disabled={Object.keys(formState.errors).length !== 0}
+                        />
+                    </div>
+                )}
             </QueryFeedback>
         </>
     )

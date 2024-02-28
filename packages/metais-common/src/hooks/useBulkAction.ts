@@ -1,14 +1,20 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useBulkActionHelpers } from './useBulkActionHelpers'
 import { useAddFavorite } from './useAddFavorite'
+import { useBulkActionHelpers } from './useBulkActionHelpers'
 
-import { ApiError, ConfigurationItemUi, useReadCiNeighboursHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import {
+    ApiError,
+    ConfigurationItemUi,
+    getReadConfigurationItemQueryKey,
+    useReadCiNeighboursHook,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Confirm200, ReturnProject200, useConfirm, useReturnProject } from '@isdd/metais-common/api/generated/kris-swagger'
-import { APPROVAL_PROCESS, ATTRIBUTE_NAME, PROJECT_STATE_ENUM } from '@isdd/metais-common/index'
-import { ENTITY_AS, ENTITY_KS } from '@isdd/metais-common/constants'
 import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
+import { ENTITY_AS, ENTITY_KS } from '@isdd/metais-common/constants'
+import { APPROVAL_PROCESS, ATTRIBUTE_NAME, PROJECT_STATE_ENUM } from '@isdd/metais-common/index'
 
 export interface IBulkActionResult {
     isSuccess: boolean
@@ -20,6 +26,7 @@ export interface IBulkActionResult {
 
 export const useBulkAction = (isRelation?: boolean) => {
     const { t } = useTranslation()
+    const queryClient = useQueryClient()
 
     const { bulkCheck, bulkRelationCheck, checkChangeOfOwner, ciInvalidFilter, hasOwnerRights } = useBulkActionHelpers()
     const { addFavoriteAsync } = useAddFavorite()
@@ -177,6 +184,7 @@ export const useBulkAction = (isRelation?: boolean) => {
                     } else {
                         handleResult({ isSuccess: true, isError: false, successMessage: t('ciType.messages.success') })
                     }
+                    queryClient.invalidateQueries(getReadConfigurationItemQueryKey(uuid))
                 },
                 onError: (error: ApiError) => {
                     const errorData = JSON.parse(error.message ?? '')
@@ -231,6 +239,7 @@ export const useBulkAction = (isRelation?: boolean) => {
                     if (data.newStatus === PROJECT_STATE_ENUM.c_stav_projektu_7)
                         handleResult({ isSuccess: true, isError: false, successMessage: t('ciType.messages.successProjectCanceled') })
                     else handleResult({ isSuccess: true, isError: false, successMessage: t('ciType.messages.successProjectReturn') })
+                    queryClient.invalidateQueries(getReadConfigurationItemQueryKey(entityId))
                 },
                 onError: () => {
                     handleResult({ isSuccess: false, isError: true, errorMessage: t('ciType.messages.error') })

@@ -112,6 +112,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                   name="checkbox"
                                   id="checkbox-all"
                                   onChange={table.getToggleAllRowsSelectedHandler()}
+                                  title={t('table.selectAllItems')}
                               />
                           </div>
                       ),
@@ -125,6 +126,9 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                   id={`checkbox_${row.id}`}
                                   onChange={row.getToggleSelectedHandler()}
                                   checked={row.getIsSelected()}
+                                  title={t('table.selectItem', {
+                                      itemName: row.original.configurationItem?.attributes?.Gen_Profil_nazov,
+                                  })}
                               />
                           </div>
                       ),

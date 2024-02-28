@@ -2,6 +2,7 @@ import { Input, MultiSelect, RadioButton, RadioButtonGroup } from '@isdd/idsk-ui
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
+import DatePicker from 'react-datepicker'
 
 import style from './customFilterAttribute.module.scss'
 
@@ -12,7 +13,6 @@ import { FilterAttribute, FilterAttributeValue } from '@isdd/metais-common/compo
 import { MetaInformationTypes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { formatDateForDefaultValue, hasCiType } from '@isdd/metais-common/componentHelpers'
 import { CustomAttributeType } from '@isdd/metais-common/componentHelpers/filter/findAttributeType'
-
 enum RadioInputValue {
     TRUE = 'true',
     FALSE = 'false',
@@ -96,15 +96,21 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
 
             case lastModified || createdAt || isDate: {
                 return (
-                    <Input
-                        className={style.rowItem}
-                        id={`attribute-value-${index}-date`}
-                        label={t('customAttributeFilter.value.label')}
-                        name="atributeValueDate"
-                        onChange={(e) => onChange({ ...value, value: e.target.value })}
-                        value={formatDateForDefaultValue(value.value?.toString() ?? '')}
-                        type="date"
-                    />
+                    <div className={classNames('govuk-form-group', style.rowItem)}>
+                        <label className="govuk-label" htmlFor={`attribute-value-${index}-date`}>
+                            {t('customAttributeFilter.value.label')}
+                        </label>
+                        <DatePicker
+                            wrapperClassName={style.fullWidth}
+                            id={`attribute-value-${index}-date`}
+                            className={classNames('govuk-input', style.rowItem)}
+                            placeholderText="dd.mm.yyyy"
+                            name="atributeValueDate"
+                            selected={value.value ? new Date(value.value as string) : null}
+                            onChange={(val) => onChange({ ...value, value: formatDateForDefaultValue(val?.toISOString() ?? '') })}
+                            dateFormat="dd.MM.yyyy"
+                        />
+                    </div>
                 )
             }
 

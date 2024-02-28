@@ -1,4 +1,4 @@
-import { Button, Filter, Input, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, Filter, GridCol, GridRow, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { ApiError, ApiVotePreviewList } from '@isdd/metais-common/api/generated/standards-swagger'
@@ -14,6 +14,7 @@ import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanst
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import styles from './voteList.module.scss'
 
@@ -96,8 +97,9 @@ export const VotesListView: React.FC<IVotesListView> = ({
             <Filter<IVotesListFilterData>
                 heading={t('votes.votesList.filter.title')}
                 defaultFilterValues={defaultFilterValues}
-                form={({ filter: listFilter, register, setValue, watch }) => {
+                form={({ filter: listFilter, register, setValue, watch, control }) => {
                     const voteState = watch('voteState')
+
                     return (
                         <div>
                             {isUserLogged && (
@@ -119,21 +121,24 @@ export const VotesListView: React.FC<IVotesListView> = ({
                                 name="voteState"
                             />
                             {!voteStateWithoutDate.includes(voteState as VoteStateOptionEnum) && (
-                                <div className={styles.inline}>
-                                    <Input
-                                        {...register('effectiveFrom')}
-                                        type="date"
-                                        label={t('votes.votesList.filter.fromDate')}
-                                        className={styles.stretch}
-                                    />
-                                    <div className={styles.space} />
-                                    <Input
-                                        {...register('effectiveTo')}
-                                        type="date"
-                                        label={t('votes.votesList.filter.toDate')}
-                                        className={styles.stretch}
-                                    />
-                                </div>
+                                <GridRow>
+                                    <GridCol setWidth="one-half">
+                                        <DateInput
+                                            {...register('effectiveFrom')}
+                                            label={t('votes.votesList.filter.fromDate')}
+                                            control={control}
+                                            setValue={setValue}
+                                        />
+                                    </GridCol>
+                                    <GridCol setWidth="one-half">
+                                        <DateInput
+                                            {...register('effectiveTo')}
+                                            label={t('votes.votesList.filter.toDate')}
+                                            control={control}
+                                            setValue={setValue}
+                                        />
+                                    </GridCol>
+                                </GridRow>
                             )}
                         </div>
                     )

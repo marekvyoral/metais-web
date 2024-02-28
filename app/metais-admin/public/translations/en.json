@@ -20,6 +20,7 @@
         "technicalOperator": "Technical operator",
         "contentAdmin": "Admin of content",
         "RSS": "RSS",
+        "aboutApplication": "About application",
         "appVersion": "App version",
         "home": "Home",
         "services": {
@@ -63,6 +64,11 @@
         "license": "Open Government Licence v3.0",
         "licenseIf": ", unless otherwise stated",
         "rights": "© Copyright"
+    },
+    "aboutApp": {
+        "heading": "About the application",
+        "portalVersion": "Portal version",
+        "version": "Version {{apiModul}}"
     },
     "navbar": {
         "factChecker": "Fact-checker",
@@ -267,6 +273,7 @@
         },
         "create": {
             "requiredField": "This field is required",
+            "withinInterval": "The value must be within the interval",
             "requiredOneSourceOneDestination": "You must fill in at least one source and destination",
             "codePrefixRegex": "Accepted character are only 'a'..'z' and underscore '_'.",
             "technicalNameRegex": "Technical name could only consists of alphabet character or underscore",
@@ -1410,6 +1417,43 @@
     "fileList": {
         "delete": "Delete file {{fileName}} from list"
     },
+    "select": {
+        "noOptions": "No options",
+        "loading": "Loading...",
+        "availableResult_one": "{{count}} result",
+        "availableResult_other": "{{count}} results",
+        "onFocus": {
+            "totalCount": "{{index}} of {{length}}",
+            "disabled": "disabled",
+            "selected": "selected",
+            "focused": "focused",
+            "return": {
+                "value": "Value {{label}} focused, {{index}}.",
+                "menu": "Option {{label}} {{status}}, {{index}}."
+            }
+        },
+        "onFilter": "{{resultsMessage}} for search term {{inputValue}}.",
+        "onChange": {
+            "deselected": "option {{label}}, deselected.",
+            "cleared": "All selected options have been cleared.",
+            "initial": "{{option}} {{labels}}, selected.",
+            "option_one": "Option",
+            "option_many": "Options",
+            "selected": {
+                "disabled": "option {{label}} is disabled. Select another option.",
+                "selected": "option {{label}}, selected."
+            }
+        },
+        "guidance": {
+            "menu": "Use Up and Down to choose options{{enterText}}, press Escape to exit the menu{{tabText}}.",
+            "enterText": ", press Enter to select the currently focused option",
+            "tabText": ", press Tab to select the option and exit the menu",
+            "input": "{{label}} is focused{{searchText}}, press Down to open the menu{{multiText}}.",
+            "searchText": ", type to refine list",
+            "multiText": ", press Left to focus selected values",
+            "value": "Use left and right to toggle between focused values, press Backspace to remove the currently focused value."
+        }
+    },
     "aria": {
         "selectedRowsCount": "You have {{count}} rows selected in table"
     },
@@ -1461,5 +1505,8 @@
         },
         "ownerError": "Can not proceed in creation because you are not an owner of this item."
     },
-    "close": "Close"
+    "close": "Close",
+    "accessibility": {
+        "navigated": "Page changed to {{pageTitle}}"
+    }
 }

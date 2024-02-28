@@ -24,6 +24,7 @@
         "technicalOperator": "Technický prevádzkovateľ",
         "contentAdmin": "Správca obsahu",
         "RSS": "RSS",
+        "aboutApplication": "O aplikácii",
         "appVersion": "Verzia aplikácie",
         "home": "Home",
         "services": {
@@ -67,6 +68,11 @@
         "licenseIf": ", pokiaľ nie je uvedené inak",
         "rights": "© Autorské práva"
     },
+    "aboutApp": {
+        "heading": "O aplikácii",
+        "portalVersion": "Verzia portálu",
+        "version": "Verzia {{apiModul}}"
+    },
     "navbar": {
         "skip": "Preskočiť na hlavný obsah",
         "official": "Oficiálna stránka",
@@ -109,6 +115,7 @@
         "dataObjects": "Dátové objekty",
         "monitoringNav": "Zostavy a monitoring",
         "guides": "Postupy a návody",
+        "wiki": "Wiki",
         "hide": "Skryť",
         "show": "Ukáž",
         "innerNav": "Vnútorná navigácia",
@@ -459,6 +466,7 @@
             "organization": "Organizácia",
             "registrationDate": "Dátum príhlásenia"
         },
+        "export-title": "Zvoľte typ súboru pre export",
         "from": "Začiatok školenia"
     },
     "listActions": {
@@ -1230,6 +1238,8 @@
         "refRegistersCreate": "Žiadosť na pridanie",
         "refRegistersEdit": "Zmena údajov o referenčnom registri",
         "refIdentifiers": "Zoznam referencovateľných identifikátorov",
+        "refIdentifiersCreate": "Nový referencovateľný identifikátor",
+        "refIdentifiersEdit": "Zmena referencovateľného identifikátora",
         "dataObjects": "Dátové objekty",
         "requestList": "Zoznam žiadostí o vytvorenie číselníka",
         "requestCreate": "Žiadosť o vytvorenie číselníka",
@@ -1590,6 +1600,26 @@
             "modifiedBy": "Modifikáciu vykonal",
             "uri": "URI",
             "dataItemElements": "Podriadené dátové prvky"
+        },
+        "create": {
+            "title": "Nový referencovateľný identifikátor",
+            "editTitle": "Zmena referencovateľného identifikátora",
+            "refTypeTitle": "Typ referencovateľného identifikátora",
+            "refInfoTitle": "Informácie o referencovateľnom identifikátori",
+            "chooseType": "Vyberte typ",
+            "uri": "URI",
+            "ownerUser": "Zadávateľ",
+            "catalogDataset": "Datasety katalógu",
+            "poGestor": "PO je gestorom katalógu",
+            "templateUriType": "Typ indivídua",
+            "templateUriExample": "Náhľad referencovateľného identifikátora aj s parametrami",
+            "dataElement": "Dátový prvok pozostáva z dátových prvkov",
+            "dataElementType": "Dátový prvok sa skladá z dátových prvkov",
+            "datasetIncludesType": "Dataset obsahuje položky typu dátový prvok",
+            "datasetDefines": "Dataset definuje základný číselník",
+            "saveRequest": "Uložiť",
+            "finishRequest": "Odoslať žiadosť",
+            "cancelRequest": "Zrušit žiadosť"
         }
     },
     "selectCiItem": {
@@ -1920,7 +1950,8 @@
                 "REQUESTED": "Nový",
                 "ASSIGNED": "Priradený",
                 "REJECTED": "Zamietnutý",
-                "ACCEPTED": "Akceptovaný"
+                "ACCEPTED": "Akceptovaný",
+                "FETCHING": "..."
             },
             "draftType": {
                 "label": "Typ návrhu",
@@ -2194,6 +2225,7 @@
             "voteProcessing": "Spracovávam hlasovanie",
             "voteDescription": "Predkladaný návrh",
             "votesHandlingTitle": "Hlasovanie",
+            "votesHandlingRadioLabel": "Možnosti hlasovania",
             "voteActorsTitle": "Účastníci hlasovania",
             "voteOverview": "Prehľad hlasovania",
             "changeDate": "Dátum Zmeny",
@@ -2801,7 +2833,41 @@
         "delete": "Vymazať súbor {{fileName}} z listu"
     },
     "select": {
-        "noOptions": "Žiadne možnosti"
+        "noOptions": "Žiadne možnosti",
+        "loading": "Načítanie...",
+        "availableResult_one": "{{count}} výsledok",
+        "availableResult_other": "{{count}} výsledkov",
+        "onFocus": {
+            "totalCount": "{{index}} z {{length}}",
+            "disabled": "blokované",
+            "selected": "zvolené",
+            "focused": "zamerané",
+            "return": {
+                "value": "Hodnota {{label}} zameraná, {{index}}.",
+                "menu": "Možnosť {{label}} {{status}}, {{index}}."
+            }
+        },
+        "onFilter": "{{resultsMessage}} pre hľadaný výraz {{inputValue}}.",
+        "onChange": {
+            "deselected": "možnosť {{label}}, zrušený výber.",
+            "cleared": "Všetky vybraté možnosti boli vyčistené.",
+            "initial": "{{option}} {{labels}}, zvolené.",
+            "option_one": "Možnosť",
+            "option_other": "Možnosti",
+            "selected": {
+                "disabled": "možnosť {{label}} je blokovaná. Vyberte inú možnosť.",
+                "selected": "možnosť {{label}}, zvolené."
+            }
+        },
+        "guidance": {
+            "menu": "Pomocou tlačidiel Hore a Dole vyberte možnosti{{enterText}}, stlačením klávesu Escape opustite ponuku{{tabText}}.",
+            "enterText": ", stlačením klávesu Enter vyberte aktuálne zameranú možnosť",
+            "tabText": ", stlačením klávesu Tab vyberte možnosť a opustite ponuku",
+            "input": "{{label}} je aktívny{{searchText}}, stlačením Dole otvorte ponuku{{multiText}}.",
+            "searchText": ", zadajte pre spresnenie zoznamu",
+            "multiText": ", stlačením Vľavo zaostríte na vybrané hodnoty",
+            "value": "Pomocou vľavo a vpravo prepínajte medzi vybranými hodnotami, stlačením Backspace odstránite aktuálne zameranú hodnotu."
+        }
     },
     "aria": {
         "selectedRowsCount": "Máte {{count}} vybraných riadkov v tabuľke"
@@ -2857,5 +2923,8 @@
             "ORDERED_LIST": "Číslovaný zoznam",
             "LINK": "Odkaz"
         }
+    },
+    "accessibility": {
+        "navigated": "Zmena stránky na {{pageTitle}}"
     }
 }

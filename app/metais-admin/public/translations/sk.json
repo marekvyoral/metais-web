@@ -20,6 +20,7 @@
         "technicalOperator": "Technický prevádzkovateľ",
         "contentAdmin": "Správca obsahu",
         "RSS": "RSS",
+        "aboutApplication": "O aplikácii",
         "appVersion": "Verzia aplikácie",
         "home": "Home",
         "services": {
@@ -62,6 +63,11 @@
         "license": "Open Government Licence v3.0",
         "licenseIf": ", pokiaľ nie je uvedené inak",
         "rights": "© Autorské práva"
+    },
+    "aboutApp": {
+        "heading": "O aplikácii",
+        "portalVersion": "Verzia portálu",
+        "version": "Verzia {{apiModul}}"
     },
     "navbar": {
         "home": "Domov",
@@ -299,6 +305,7 @@
         },
         "create": {
             "requiredField": "Toto pole je povinné.",
+            "withinInterval": "Hodnota musí byť v rámci intervalu",
             "requiredOneSourceOneDestination": "Musíte vyplniť aspoň jeden zdroj a cieľ",
             "codePrefixRegex": "Povolenými znakmi pre prefix sú \"a\", \"z\", a oddelovač \"_\".",
             "technicalNameRegex": "Technické meno môže byť len z písmen abecedy alebo podčiarkovníka.",
@@ -1416,6 +1423,43 @@
     "fileList": {
         "delete": "Vymazať súbor {{fileName}} z listu"
     },
+    "select": {
+        "noOptions": "Žiadne možnosti",
+        "loading": "Načítanie...",
+        "availableResult_one": "{{count}} výsledok",
+        "availableResult_other": "{{count}} výsledkov",
+        "onFocus": {
+            "totalCount": "{{index}} z {{length}}",
+            "disabled": "blokované",
+            "selected": "zvolené",
+            "focused": "zamerané",
+            "return": {
+                "value": "Hodnota {{label}} zameraná, {{index}}.",
+                "menu": "Možnosť {{label}} {{status}}, {{index}}."
+            }
+        },
+        "onFilter": "{{resultsMessage}} pre hľadaný výraz {{inputValue}}.",
+        "onChange": {
+            "deselected": "možnosť {{label}}, zrušený výber.",
+            "cleared": "Všetky vybraté možnosti boli vyčistené.",
+            "initial": "{{option}} {{labels}}, zvolené.",
+            "option_one": "Možnosť",
+            "option_many": "Možnosti",
+            "selected": {
+                "disabled": "možnosť {{label}} je blokovaná. Vyberte inú možnosť.",
+                "selected": "možnosť {{label}}, zvolené."
+            }
+        },
+        "guidance": {
+            "menu": "Pomocou tlačidiel Hore a Dole vyberte možnosti{{enterText}}, stlačením klávesu Escape opustite ponuku{{tabText}}.",
+            "enterText": ", stlačením klávesu Enter vyberte aktuálne zameranú možnosť",
+            "tabText": ", stlačením klávesu Tab vyberte možnosť a opustite ponuku",
+            "input": "{{label}} je aktívny{{searchText}}, stlačením Dole otvorte ponuku{{multiText}}.",
+            "searchText": ", zadajte pre spresnenie zoznamu",
+            "multiText": ", stlačením Vľavo zaostríte na vybrané hodnoty",
+            "value": "Pomocou vľavo a vpravo prepínajte medzi vybranými hodnotami, stlačením Backspace odstránite aktuálne zameranú hodnotu."
+        }
+    },
     "aria": {
         "selectedRowsCount": "Máte {{count}} vybraných riadkov v tabuľke"
     },
@@ -1467,5 +1511,8 @@
         },
         "ownerError": "Vo vytváraní nie je možné pokračovať, pretože nie ste vlastníkom tejto položky."
     },
-    "close": "Zavrieť"
+    "close": "Zavrieť",
+    "accessibility": {
+        "navigated": "Zmena stránky na {{pageTitle}}"
+    }
 }

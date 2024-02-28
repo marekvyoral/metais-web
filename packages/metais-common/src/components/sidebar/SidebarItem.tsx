@@ -11,6 +11,7 @@ export interface NavigationItem {
     path: string
     subItems?: NavigationItem[]
     icon?: string
+    target?: string
 }
 
 export interface SidebarItemProps {
@@ -70,6 +71,7 @@ export const SidebarItem = ({
                         )}
                         aria-expanded={isExpanded}
                         to={item.path}
+                        {...(item.target && { target: item.target })}
                     >
                         {item.title}
                     </Link>

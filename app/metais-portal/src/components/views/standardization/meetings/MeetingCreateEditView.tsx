@@ -11,6 +11,7 @@ import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagg
 import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { v4 as uuidV4 } from 'uuid'
 import { formatTitleString } from '@isdd/metais-common/utils/utils'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import styles from './createEditView.module.scss'
 import { MeetingFormEnum, createMeetingSchema, editMeetingSchema } from './meetingSchema'
@@ -118,6 +119,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                 })) || [],
         },
     })
+
     const meetingDescription = watch(MeetingFormEnum.DESCRIPTION)
 
     const { fields, append, remove } = useFieldArray({
@@ -248,12 +250,13 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                         />
                         <GridRow>
                             <GridCol setWidth="one-half">
-                                <Input
+                                <DateInput
                                     label={`${t('meetings.form.date')} (${t('meetings.mandatory')}):`}
-                                    type="date"
                                     id={MeetingFormEnum.DATE}
                                     error={errors[MeetingFormEnum.DATE]?.message}
                                     {...register(MeetingFormEnum.DATE, { value: formatDateForDefaultValue(infoData?.beginDate ?? '') })}
+                                    control={control}
+                                    setValue={setValue}
                                 />
                             </GridCol>
                             <GridCol setWidth="one-quarter">

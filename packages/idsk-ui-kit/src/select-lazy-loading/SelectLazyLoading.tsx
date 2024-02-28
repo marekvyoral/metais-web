@@ -10,6 +10,7 @@ import styles from './selectLazyLoading.module.scss'
 
 import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
+import { useGetLocalMessages } from '@isdd/idsk-ui-kit/select/useGetLocalMessages'
 
 export interface ILoadOptionsResponse<T> {
     options: T[]
@@ -76,6 +77,7 @@ export const SelectLazyLoading = <T,>({
 }: ISelectProps<T>): JSX.Element => {
     const { t } = useTranslation()
     const errorId = `${id}-error`
+    const localMessages = useGetLocalMessages()
     const Option = (props: OptionProps<T>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
     }
@@ -135,6 +137,10 @@ export const SelectLazyLoading = <T,>({
                 onChange={handleOnChange}
                 isDisabled={disabled}
                 aria-errormessage={errorId}
+                noOptionsMessage={localMessages.noOptionsMessage}
+                ariaLiveMessages={localMessages.ariaLiveMessages}
+                screenReaderStatus={localMessages.screenReaderStatus}
+                loadingMessage={localMessages.loadingMessage}
             />
         </div>
     )

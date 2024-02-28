@@ -93,6 +93,25 @@ export const isOwnershipOnPoSide = (ownerGid: string, poUuid: string) => {
     return false
 }
 
+export const splitList = (firstList: string[], secondList: string[]) => {
+    const notInList1: string[] = []
+    const notInList2: string[] = []
+
+    firstList.forEach((item) => {
+        if (!secondList.includes(item)) {
+            notInList2.push(item)
+        }
+    })
+
+    secondList.forEach((item) => {
+        if (!firstList.includes(item)) {
+            notInList1.push(item)
+        }
+    })
+
+    return { notInList1, notInList2 }
+}
+
 export const formatTitleString = (value: string) => {
     return `${value} ${META_IS_TITLE}`
 }
@@ -105,4 +124,14 @@ export const findCommonStrings = (array1: string[], array2: string[]) => {
         }
     })
     return commonStrings
+}
+
+export const sanitizeFileName = (fileName: string): string => {
+    // Remove special characters and replace spaces with underscores
+    const sanitizedFileName = fileName.replace(/[^\w\s.-]/g, '').replace(/\s+/g, '_')
+
+    const maxLength = 100
+    const truncatedFileName = sanitizedFileName.substring(0, maxLength)
+
+    return truncatedFileName
 }

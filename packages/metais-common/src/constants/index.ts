@@ -170,6 +170,7 @@ export const ADMIN_EGOV_ENTITY_LIST_QKEY = `/citypes/list`
 export const ADMIN_EGOV_RELATION_LIST_QKEY = `/relationshiptypes/list`
 export const ADMIN_EKO_LIST_QKEY = `/ekocodes`
 export const HTML_TYPE = 'HTML'
+export const DATETIME_TYPE = 'DATETIME'
 export const MUK = 'muk'
 
 export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
@@ -288,6 +289,32 @@ export const CAN_NOT_MANAGE_CI = [
     'OperaciaAS',
     'Ciel',
 ]
+
+export const API_MODULS = [
+    'userconfig',
+    'dms',
+    'typesrepository',
+    'bpm-engine',
+    'validation',
+    'notificationengine',
+    'report',
+    'claimmanager',
+    'clarity',
+    'controls',
+    'tco',
+    'enumsrepository',
+    'impexp',
+    'licenserepository',
+    'standards',
+    'codelistrepository',
+    'kris',
+    'pdf-creator',
+    'provisioning',
+    'notification-manager',
+    'monitoring',
+    'metaisiam-rest',
+    'trainings',
+]
 export const CAN_CREATE_MEETING_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP']
 export const CAN_EDIT_MEETING_USER_ROLES = ['STD_KOORDINATOR_AGENDY']
 export const LOWER_CASE_NUMBER_DOT_REGEX = /^[a-z0-9.]*$/
@@ -324,3 +351,4 @@ export const OLA_Kontrakt = 'OLA_Kontrakt'
 export const Profil_OLA_Kontrakt = 'Profil_OLA_Kontrakt'
 export const OLA_Kontrakt_dodavatela_ISVS = 'OLA_Kontrakt_dodavatela_ISVS'
 export const META_IS_TITLE = '| MetaIS'
+export const UNAUTHORIZED = 'unauthorized'

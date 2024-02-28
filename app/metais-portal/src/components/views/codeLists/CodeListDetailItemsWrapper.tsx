@@ -14,7 +14,6 @@ import {
     BaseModal,
     ButtonLink,
     Filter,
-    Input,
     LoadingIndicator,
     PaginatorWrapper,
     SimpleSelect,
@@ -28,6 +27,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 import { ApiCodelistItem } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { ItemFormModal } from './components/modals/ItemFormModal/ItemFormModal'
 import { CodeListDetailItemsTable, TableCols } from './CodeListDetailItemsTable'
@@ -74,9 +74,20 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
 
     const { schema } = useSetDatesSchema()
 
-    const { register, formState, handleSubmit } = useForm({
+    const {
+        register,
+        formState,
+        handleSubmit,
+        control,
+        setValue: setFormValue,
+        watch,
+    } = useForm({
         resolver: yupResolver(schema),
     })
+
+    const handleDateChange = (date: Date | null, name: string) => {
+        setFormValue(name as 'validFrom' | 'effectiveFrom', date ?? new Date())
+    }
 
     const onHandleMarkForPublish = () => {
         handleMarkForPublish(getSelectedItemCodes(rowSelection))
@@ -233,25 +244,28 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                     <form onSubmit={handleSubmit(onSetDatesSubmit)}>
                         <TextBody>{t('codeListDetail.modal.text.willBeChanged')}</TextBody>
                         {selectedItemsTable}
-                        <Input
-                            type="date"
+                        <DateInput
                             label={t('codeListDetail.modal.form.validFrom')}
                             id="validFrom"
                             {...register(`validFrom`)}
                             error={formState.errors.validFrom?.message}
+                            control={control}
+                            handleDateChange={handleDateChange}
+                            setValue={setFormValue}
                         />
-                        <Input
-                            type="date"
+                        <DateInput
                             label={t('codeListDetail.modal.form.effectiveFrom')}
                             id="effectiveFrom"
                             {...register(`effectiveFrom`)}
                             error={formState.errors.validFrom?.message}
+                            control={control}
+                            handleDateChange={handleDateChange}
+                            setValue={setFormValue}
                         />
-
                         <ModalButtons
                             submitButtonLabel={t('codeListDetail.modal.button.confirm')}
                             onClose={() => setIsSetDatesDialogOpened(false)}
-                            disabled={!formState.isValid}
+                            disabled={!watch('effectiveFrom') || !watch('validFrom')}
                         />
                     </form>
                 ) : (

@@ -1,11 +1,12 @@
 import React from 'react'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
-import { Filter, GridCol, GridRow, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Filter, GridCol, GridRow, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { ApiParameterTypesList } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { ServiceDetailViewGraphItem } from './ServiceDetailViewGraphItem'
 
@@ -37,15 +38,25 @@ export const ServiceImportView: React.FC<IServiceImportView> = ({ data, isError,
                 <Filter<MonitoringDetailFilterData>
                     onlyForm
                     defaultFilterValues={defaultFilterValues}
-                    form={({ register }) => {
+                    form={({ register, control, setValue }) => {
                         return (
                             <div>
                                 <GridRow>
                                     <GridCol setWidth="one-half">
-                                        <Input type="date" label={t('monitoringServices.table.from')} {...register('dateFrom')} />
+                                        <DateInput
+                                            label={t('monitoringServices.table.from')}
+                                            {...register('dateFrom')}
+                                            control={control}
+                                            setValue={setValue}
+                                        />
                                     </GridCol>
                                     <GridCol setWidth="one-half">
-                                        <Input type="date" label={t('monitoringServices.table.to')} {...register('dateTo')} />
+                                        <DateInput
+                                            label={t('monitoringServices.table.to')}
+                                            {...register('dateTo')}
+                                            control={control}
+                                            setValue={setValue}
+                                        />
                                     </GridCol>
                                 </GridRow>
                             </div>

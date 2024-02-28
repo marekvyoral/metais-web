@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, CheckBox, IOption, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, CheckBox, GridCol, GridRow, IOption, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { GroupWithIdentities } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ApiAttachment, ApiLink, ApiStandardRequestPreviewList, ApiVote, ApiVoteChoice } from '@isdd/metais-common/api/generated/standards-swagger'
 import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 import * as Yup from 'yup'
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { ExistingFileData, ExistingFilesHandler, IExistingFilesHandlerRef } from './components/ExistingFilesHandler/ExistingFilesHandler'
 import { SelectVoteActors } from './components/SelectVoteActors'
@@ -145,10 +146,14 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
         return returnFormData ?? {}
     }
 
-    const { register, unregister, setValue, handleSubmit, formState, watch } = useForm<IVoteEditForm>({
+    const { register, unregister, setValue, handleSubmit, formState, watch, control } = useForm<IVoteEditForm>({
         resolver: yupResolver(schema(t)),
         defaultValues: mapApiVoteToFormData(existingVoteDataToEdit),
     })
+
+    const handleDateChange = (date: Date | null, name: string) => {
+        setValue(name as 'effectiveFrom' | 'effectiveTo', date ? date : new Date())
+    }
 
     const requestIdWatch = watch('standardRequest')
     useEffect(() => {
@@ -332,25 +337,30 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                 <CheckBox label={t('votes.voteEdit.secretVote')} id="secretVote" {...register('secretVote')} />
                 <Spacer vertical />
 
-                <div className={classNames(styles.inline, styles.spaceBetween)}>
-                    <Input
-                        {...register('effectiveFrom')}
-                        type="date"
-                        label={t('votes.voteEdit.date.fromDate')}
-                        className={styles.stretchGrow}
-                        error={formState.errors['effectiveFrom']?.message}
-                        required
-                    />
-                    <div className={styles.space} />
-                    <Input
-                        {...register('effectiveTo')}
-                        type="date"
-                        label={t('votes.voteEdit.date.toDate')}
-                        className={styles.stretchGrow}
-                        error={formState.errors['effectiveTo']?.message}
-                        required
-                    />
-                </div>
+                <GridRow>
+                    <GridCol setWidth="one-half">
+                        <DateInput
+                            {...register('effectiveFrom')}
+                            label={t('votes.voteEdit.date.fromDate')}
+                            error={formState.errors['effectiveFrom']?.message}
+                            required
+                            control={control}
+                            handleDateChange={handleDateChange}
+                            setValue={setValue}
+                        />
+                    </GridCol>
+                    <GridCol setWidth="one-half">
+                        <DateInput
+                            {...register('effectiveTo')}
+                            label={t('votes.voteEdit.date.toDate')}
+                            error={formState.errors['effectiveTo']?.message}
+                            required
+                            control={control}
+                            handleDateChange={handleDateChange}
+                            setValue={setValue}
+                        />
+                    </GridCol>
+                </GridRow>
                 <Spacer vertical />
                 <TextHeading size="L">{t('votes.voteEdit.answers.title')}</TextHeading>
                 <AnswerDefinitions

@@ -14,6 +14,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { ObjectSchema } from 'yup'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { Identity } from '@isdd/metais-common/api/generated/iam-swagger'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { useCreateTasksSchema } from '@/components/views/tasks/useTasksSchema'
 import { TasksFilter, TasksListView } from '@/components/views/tasks/TasksListView'
@@ -78,6 +79,7 @@ export const KritTasksListView: React.FC<IKritTasksListView> = ({
         handleSubmit,
         setValue,
         reset,
+        control,
     } = useForm({
         resolver: yupResolver(schema),
     })
@@ -235,7 +237,14 @@ export const KritTasksListView: React.FC<IKritTasksListView> = ({
                     </GridRow>
                     <GridRow>
                         <GridCol setWidth="one-half">
-                            <Input required type="date" label={t('tasksKris.deadline')} {...register('deadline')} error={errors.deadline?.message} />
+                            <DateInput
+                                required
+                                label={t('tasksKris.deadline')}
+                                {...register('deadline')}
+                                error={errors.deadline?.message}
+                                control={control}
+                                setValue={setValue}
+                            />
                         </GridCol>
                         <GridCol setWidth="one-half">
                             <IdentitySelect

@@ -213,6 +213,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         name="checkbox"
                         id="checkbox-all"
                         onChange={(newValue) => checkAll(table, newValue)}
+                        title={t('table.selectAllItems')}
                     />
                 </div>
             ),
@@ -228,6 +229,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                             id={`checkbox_${row.id}`}
                             onChange={row.getToggleSelectedHandler()}
                             checked={row.getIsSelected()}
+                            title={t('table.selectItem', { itemName: row.original.name ?? row.original?.attributes?.Gen_Profil_nazov })}
                         />
                     </div>
                 ),
@@ -274,7 +276,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             header: t('documentsTab.table.createdAt'),
             id: 'documentsTab.table.createdAt',
             size: 100,
-            cell: (row) => row.getValue() && formatDateTimeForDefaultValue(row.getValue() as string),
+            cell: (row) => row.getValue() && formatDateTimeForDefaultValue(row.getValue() as string, 'dd.MM.yyyy, HH:mm'),
         },
 
         {
@@ -288,7 +290,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             header: t('documentsTab.table.lastModifiedAt'),
             id: 'documentsTab.table.lastModifiedAt',
             size: 100,
-            cell: (row) => row.getValue() && formatDateTimeForDefaultValue(row.getValue() as string),
+            cell: (row) => row.getValue() && formatDateTimeForDefaultValue(row.getValue() as string, 'dd.MM.yyyy, HH:mm'),
         },
 
         {

@@ -7,7 +7,7 @@ import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectP
 import { ENTITY_OSOBITNY_POSTUP, metaisEmail } from '@isdd/metais-common/constants'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import classNames from 'classnames'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
@@ -68,7 +68,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     const { constraintsData, ciTypeData, unitsData } = attributesData
     const { readRelationShipsData: existingRelations, relationTypeData: relationSchema } = relationData
 
-    const attProfiles = ciTypeData?.attributeProfiles?.map((profile) => profile) ?? []
+    const attProfiles = useMemo(() => ciTypeData?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeData?.attributeProfiles])
     const filtredAttributes = ciTypeData?.attributes?.filter((attr) => {
         return (
             attr.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov ||
@@ -102,13 +102,20 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
             ...(relationSchema?.attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? []),
         ])
     }, [relationSchema])
-    const attributes = [...(ciTypeData?.attributes ?? []), ...attProfiles.map((profile) => profile.attributes).flat()]
-    const defaultValuesFromSchema = attributes.reduce((acc, att) => {
-        if (att?.defaultValue) {
-            return { ...acc, [att?.technicalName?.toString() ?? '']: att?.defaultValue }
-        }
-        return acc
-    }, {})
+    const attributes = useMemo(
+        () => [...(ciTypeData?.attributes ?? []), ...attProfiles.map((profile) => profile.attributes).flat()],
+        [attProfiles, ciTypeData?.attributes],
+    )
+    const defaultValuesFromSchema = useMemo(
+        () =>
+            attributes.reduce((acc, att) => {
+                if (att?.defaultValue) {
+                    return { ...acc, [att?.technicalName?.toString() ?? '']: att?.defaultValue }
+                }
+                return acc
+            }, {}),
+        [attributes],
+    )
     const defaultValues = formatForFormDefaultValues(updateCiItemId ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes)
     const methods = useForm({
         defaultValues: defaultValues,
@@ -124,7 +131,11 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         ),
     })
 
-    const { handleSubmit, setValue } = methods
+    const { handleSubmit, setValue, reset } = methods
+
+    useEffect(() => {
+        reset(formatForFormDefaultValues(updateCiItemId ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes))
+    }, [attributes, defaultItemAttributeValues, defaultValuesFromSchema, reset, updateCiItemId])
 
     const referenceIdValue = generatedEntityId?.ciurl?.split('/').pop()
     const metaIsCodeValue = generatedEntityId?.cicode

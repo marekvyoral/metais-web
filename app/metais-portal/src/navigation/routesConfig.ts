@@ -129,6 +129,8 @@ import { OlaContractEdit } from '@/pages/ola-contract-list/edit'
 import { IntegrationLinkCreate } from '@/pages/ci/Integracia/create'
 import { EditIntegrationLinkPage } from '@/pages/ci/Integracia/[entityId]/edit'
 import RefIdentifierDetailPage from '@/pages/data-objects/ref-identifiers/[id]/detail'
+import RefIdentifierCreatePage from '@/pages/data-objects/ref-identifiers/create'
+import RefIdentifierEditPage from '@/pages/data-objects/ref-identifiers/[id]/edit'
 import CloneKSPage from '@/pages/ci/KS/[entityId]/clone'
 import PersonalDataInfoPage from '@/pages/cookies/personalDataProtection'
 import TermsOfUse from '@/pages/cookies/termsOfUse'
@@ -136,6 +138,7 @@ import CookiesSettings from '@/pages/cookies/settings'
 import { ReportsDetailPage } from '@/pages/reports/[entityId]/report'
 import CookiesInfoPage from '@/pages/cookies/info'
 import DeclarationPage from '@/pages/technical/declaration'
+import AboutApplicationPage from '@/pages/about-application/aboutApp'
 
 export interface RouteConfig {
     path?: string
@@ -524,6 +527,16 @@ export const routesConfig: RouteConfig[] = [
                 component: RefIdentifierDetailPage,
             },
             {
+                path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_CREATE,
+                slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_CREATE,
+                component: RefIdentifierCreatePage,
+            },
+            {
+                path: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_EDIT,
+                slug: RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS_EDIT,
+                component: RefIdentifierEditPage,
+            },
+            {
                 path: RouterRoutes.REF_REGISTERS_LIST,
                 slug: RouterRoutes.REF_REGISTERS_LIST,
                 component: ReferenceRegisters,
@@ -552,6 +565,11 @@ export const routesConfig: RouteConfig[] = [
                 path: FooterRouteNames.COOKIES_SETTINGS,
                 slug: FooterRouteNames.COOKIES_SETTINGS,
                 component: CookiesSettings,
+            },
+            {
+                path: FooterRouteNames.ABOUT_APPLICATION,
+                slug: FooterRouteNames.ABOUT_APPLICATION,
+                component: AboutApplicationPage,
             },
             {
                 path: RouterRoutes.REF_REGISTERS_DETAIL,

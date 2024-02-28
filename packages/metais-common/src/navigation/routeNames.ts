@@ -96,7 +96,9 @@ export enum RouterRoutes {
     DATA_OBJECT_REQUESTS_EDIT = 'data-objects/requestlist/:requestId/edit',
     DATA_OBJECT_REQUESTS_CREATE = '/data-objects/requestlist/create',
     DATA_OBJECT_REF_IDENTIFIERS = '/data-objects/ref-identifiers',
+    DATA_OBJECT_REF_IDENTIFIERS_CREATE = '/data-objects/ref-identifiers/create',
     DATA_OBJECT_REF_IDENTIFIERS_DETAIL = '/data-objects/ref-identifiers/:id',
+    DATA_OBJECT_REF_IDENTIFIERS_EDIT = '/data-objects/ref-identifiers/:id/edit',
     REF_REGISTERS_LIST = '/refregisters',
     REF_REGISTERS_DETAIL = '/refregisters/:entityId',
     REF_REGISTERS_EDIT = '/refregisters/:entityId/edit',
@@ -302,6 +304,7 @@ export enum FooterRouteNames {
     RSS = '/rss',
     IDSK_DIZAJN = 'https://idsk.gov.sk',
     EXCEPTIONS_LEGISLATION = '/ci/OsobitnyPostup',
+    ABOUT_APPLICATION = '/about-application',
 }
 
 export enum RegistrationRoutes {

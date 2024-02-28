@@ -1,4 +1,4 @@
-import { CreateEntityButton, MutationFeedback, QueryFeedback, formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, GridCol, GridRow, InfoIconWithText, Input, TextBody, TextHeading, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
@@ -15,6 +15,7 @@ import { ImportDeleteIcon } from '@isdd/metais-common/assets/images'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { number, object, string } from 'yup'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import styles from './service.module.scss'
 import { paramTypeEnum } from './utils'
@@ -54,8 +55,13 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
         [['valueParams', 'valueParams']],
     )
 
-    const { handleSubmit, register, formState } = useForm({
+    const { handleSubmit, register, formState, control, setValue } = useForm({
         resolver: yupResolver(schema),
+        defaultValues: {
+            valueParams: valueParams.map((param) => {
+                return { ...param, dateFrom: param.dateFrom.toISOString() }
+            }),
+        },
     })
 
     const insertParams = () => {
@@ -249,13 +255,12 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
                                     </TextBody>
                                 </GridCol>
                                 <GridCol key={`dateFrom-${index}`} setWidth="one-third">
-                                    <Input
-                                        type="date"
-                                        key={`${param.name}-dateFrom-${index}`}
+                                    <DateInput
                                         {...register(`valueParams.${index}.dateFrom`)}
                                         error={errors?.valueParams?.[index]?.dateFrom?.message?.toString()}
-                                        defaultValue={formatDateForDefaultValue(param.dateFrom.toISOString())}
                                         className="marginBottom0"
+                                        control={control}
+                                        setValue={setValue}
                                     />
                                 </GridCol>
                                 <GridCol key={`value-${index}`} setWidth="one-third">

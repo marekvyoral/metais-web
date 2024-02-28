@@ -3,9 +3,8 @@ import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { Input, SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { IFilter, MetaAttributesState, SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { ConfigurationItemUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { ListOlaContractListParams } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { ATTRIBUTE_NAME, formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -75,10 +74,6 @@ export const OlaContractListFilter: React.FC<Props> = ({ defaultFilterValues }) 
             onlyForm
             heading={<></>}
             form={({ register, setValue, control }) => {
-                const handleDateChange = (date: Date | null, name: string) => {
-                    setValue(name as keyof ListOlaContractListParams, date ? formatDateForDefaultValue(date.toISOString()) : undefined)
-                }
-
                 return (
                     <div>
                         <Input {...register('name')} label={t('olaContracts.filter.name')} />
@@ -87,19 +82,14 @@ export const OlaContractListFilter: React.FC<Props> = ({ defaultFilterValues }) 
                         <div className={styles.flexBox}>
                             <div className={styles.fullWidth}>
                                 <DateInput
-                                    handleDateChange={handleDateChange}
+                                    setValue={setValue}
                                     name={'validityStart'}
                                     control={control}
                                     label={t('olaContracts.filter.intervalStart')}
                                 />
                             </div>
                             <div className={styles.fullWidth}>
-                                <DateInput
-                                    handleDateChange={handleDateChange}
-                                    name={'validityEnd'}
-                                    control={control}
-                                    label={t('olaContracts.filter.intervalEnd')}
-                                />
+                                <DateInput setValue={setValue} name={'validityEnd'} control={control} label={t('olaContracts.filter.intervalEnd')} />
                             </div>
                         </div>
                         <ISVSSelect setValue={setValue} name="contractorIsvsUuid" errors={{}} filterUuid={filter.contractorIsvsUuid} />
