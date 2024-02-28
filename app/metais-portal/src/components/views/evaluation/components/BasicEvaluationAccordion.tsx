@@ -187,6 +187,7 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
                             value="checkbox-all"
                             onChange={() => handleAllCheckboxChange()}
                             checked={checkedAll}
+                            title={t('table.selectAllItems')}
                         />
                     </div>
                 )
@@ -201,6 +202,7 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
                             id={`${row?.index}.isApproved`}
                             onChange={() => handleCheckboxChange(row)}
                             checked={rowSelection.includes(row.original.id)}
+                            title={t('table.selectItem', { itemName: row.original.name })}
                         />
                     </div>
                 )

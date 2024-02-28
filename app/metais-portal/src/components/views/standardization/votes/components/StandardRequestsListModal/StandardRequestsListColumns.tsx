@@ -29,6 +29,7 @@ export const standardRequestsListColumns = (
                                     handleRowCheckBoxChanged(row)
                                 }}
                                 checked={row.original.id == selectedRowId}
+                                title={t('table.selectItem', { itemName: row.original.srName })}
                             />
                         </div>
                     </>

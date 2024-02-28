@@ -7,10 +7,19 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { TrainingExportButton } from '@isdd/metais-common/src/components/actions-over-table/actions-trainings/TrainingExportButton'
 
 import { TrainingContainerView } from '@/components/containers/TrainingContainer'
 
-export const TrainingView: React.FC<TrainingContainerView> = ({ isLoading, isError, filteredData, filter, handleFilterChange }) => {
+export const TrainingView: React.FC<TrainingContainerView> = ({
+    isLoading,
+    isError,
+    filteredData,
+    filter,
+    handleFilterChange,
+    data,
+    trainingName,
+}) => {
     const { t } = useTranslation()
 
     const { isActionSuccess } = useActionSuccess()
@@ -88,6 +97,7 @@ export const TrainingView: React.FC<TrainingContainerView> = ({ isLoading, isErr
                 handleFilterChange={handleFilterChange}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
                 entityName=""
+                exportButton={!!data?.[0]?.trainingId && <TrainingExportButton trainingUuid={data[0].trainingId} trainingName={trainingName} />}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
             />
             <Table columns={columns} data={slicedTableData} isLoading={isLoading} error={isError} />

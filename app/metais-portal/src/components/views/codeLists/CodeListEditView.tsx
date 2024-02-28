@@ -26,6 +26,7 @@ import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
 import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { useEditCodeListSchema } from './useEditCodeListSchemas'
 import { getDescription, getName, selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
@@ -91,7 +92,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
     const [nextGestorList, setNextGestorList] = useState<IOption[] | undefined>(undefined)
     const [notes, setNotes] = useState<IFieldTextRow[]>(DEFAULT_EMPTY_NOTE)
     const [sourceCodeList, setSourceCodeList] = useState<IFieldTextRow[]>(DEFAULT_EMPTY_NOTE)
-    const { register, handleSubmit, formState, watch, setValue, reset } = useForm<IEditCodeListForm>({
+    const { register, handleSubmit, formState, watch, setValue, reset, control } = useForm<IEditCodeListForm>({
         resolver: yupResolver(schema),
         reValidateMode: 'onSubmit',
         defaultValues: mappedData,
@@ -184,22 +185,24 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                     />
                                     <GridRow className={styles.dateGap}>
                                         <GridCol setWidth="one-half">
-                                            <Input
+                                            <DateInput
                                                 required
                                                 label={t('codeListList.edit.dateFrom')}
                                                 id={`${RequestFormEnum.CODE_LIST_NAMES}.effectiveFrom`}
                                                 {...register(`${RequestFormEnum.CODE_LIST_NAMES}.[${index}].effectiveFrom`)}
-                                                type="date"
                                                 error={formState.errors[RequestFormEnum.CODE_LIST_NAMES]?.[index]?.effectiveFrom?.message}
+                                                control={control}
+                                                setValue={setValue}
                                             />
                                         </GridCol>
                                         <GridCol setWidth="one-half">
-                                            <Input
+                                            <DateInput
                                                 label={t('codeListList.edit.dateTo')}
                                                 id={`${RequestFormEnum.CODE_LIST_NAMES}.effectiveTo`}
                                                 {...register(`${RequestFormEnum.CODE_LIST_NAMES}.[${index}].effectiveTo`)}
-                                                type="date"
                                                 error={formState.errors[RequestFormEnum.CODE_LIST_NAMES]?.[index]?.effectiveTo?.message}
+                                                control={control}
+                                                setValue={setValue}
                                             />
                                         </GridCol>
                                     </GridRow>
@@ -227,22 +230,24 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                     />
                                     <GridRow className={styles.dateGap}>
                                         <GridCol setWidth="one-half">
-                                            <Input
+                                            <DateInput
                                                 required
                                                 label={t('codeListList.edit.dateFrom')}
                                                 id={`${RequestFormEnum.NEW_CODE_LIST_NAME}.effectiveFrom`}
                                                 {...register(`${RequestFormEnum.NEW_CODE_LIST_NAME}.effectiveFrom`)}
-                                                type="date"
                                                 error={formState.errors[RequestFormEnum.NEW_CODE_LIST_NAME]?.effectiveFrom?.message}
+                                                control={control}
+                                                setValue={setValue}
                                             />
                                         </GridCol>
                                         <GridCol setWidth="one-half">
-                                            <Input
+                                            <DateInput
                                                 label={t('codeListList.edit.dateTo')}
                                                 id={`${RequestFormEnum.NEW_CODE_LIST_NAME}.effectiveTo`}
                                                 {...register(`${RequestFormEnum.NEW_CODE_LIST_NAME}.effectiveTo`)}
-                                                type="date"
                                                 error={formState.errors[RequestFormEnum.NEW_CODE_LIST_NAME]?.effectiveTo?.message}
+                                                control={control}
+                                                setValue={setValue}
                                             />
                                         </GridCol>
                                     </GridRow>
@@ -287,22 +292,24 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                         />
                                         <GridRow className={styles.dateGap}>
                                             <GridCol setWidth="one-half">
-                                                <Input
+                                                <DateInput
                                                     required
                                                     label={t('codeListList.edit.dateFrom')}
                                                     id={`${RequestFormEnum.MAIN_GESTOR}.${index}.effectiveFrom`}
                                                     {...register(`${RequestFormEnum.MAIN_GESTOR}.${index}.effectiveFrom`)}
-                                                    type="date"
                                                     error={formState.errors[RequestFormEnum.MAIN_GESTOR]?.[index]?.effectiveFrom?.message}
+                                                    control={control}
+                                                    setValue={setValue}
                                                 />
                                             </GridCol>
                                             <GridCol setWidth="one-half">
-                                                <Input
+                                                <DateInput
                                                     label={t('codeListList.edit.dateTo')}
                                                     id={`${RequestFormEnum.MAIN_GESTOR}.${index}.effectiveTo`}
                                                     {...register(`${RequestFormEnum.MAIN_GESTOR}.${index}.effectiveTo`)}
-                                                    type="date"
                                                     error={formState.errors[RequestFormEnum.MAIN_GESTOR]?.[index]?.effectiveTo?.message}
+                                                    control={control}
+                                                    setValue={setValue}
                                                 />
                                             </GridCol>
                                         </GridRow>
@@ -335,22 +342,24 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                     />
                                     <GridRow className={styles.dateGap}>
                                         <GridCol setWidth="one-half">
-                                            <Input
+                                            <DateInput
                                                 required
                                                 label={t('codeListList.edit.dateFrom')}
                                                 id={`${RequestFormEnum.NEW_MAIN_GESTOR}.effectiveFrom`}
                                                 {...register(`${RequestFormEnum.NEW_MAIN_GESTOR}.effectiveFrom`)}
-                                                type="date"
                                                 error={formState.errors[RequestFormEnum.NEW_MAIN_GESTOR]?.effectiveFrom?.message}
+                                                control={control}
+                                                setValue={setValue}
                                             />
                                         </GridCol>
                                         <GridCol setWidth="one-half">
-                                            <Input
+                                            <DateInput
                                                 label={t('codeListList.edit.dateTo')}
                                                 id={`${RequestFormEnum.NEW_MAIN_GESTOR}.effectiveTo`}
                                                 {...register(`${RequestFormEnum.NEW_MAIN_GESTOR}.effectiveTo`)}
-                                                type="date"
                                                 error={formState.errors[RequestFormEnum.NEW_MAIN_GESTOR]?.effectiveTo?.message}
+                                                control={control}
+                                                setValue={setValue}
                                             />
                                         </GridCol>
                                     </GridRow>
@@ -397,21 +406,23 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                         </TextHeading>
                                         <GridRow className={styles.dateGap} key={index}>
                                             <GridCol setWidth="one-half">
-                                                <Input
+                                                <DateInput
                                                     label={t('codeListList.edit.dateFrom')}
                                                     id={nameFrom}
                                                     {...register(nameFrom)}
-                                                    type="date"
                                                     error={formState.errors[RequestFormEnum.NEXT_GESTOR]?.[index]?.effectiveFrom?.message}
+                                                    control={control}
+                                                    setValue={setValue}
                                                 />
                                             </GridCol>
                                             <GridCol setWidth="one-half">
-                                                <Input
+                                                <DateInput
                                                     label={t('codeListList.edit.dateTo')}
                                                     id={nameTo}
                                                     {...register(nameTo)}
-                                                    type="date"
                                                     error={formState.errors[RequestFormEnum.NEXT_GESTOR]?.[index]?.effectiveTo?.message}
+                                                    control={control}
+                                                    setValue={setValue}
                                                 />
                                             </GridCol>
                                         </GridRow>
@@ -446,23 +457,25 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                             </ButtonGroupRow>
                             <GridRow>
                                 <GridCol setWidth="one-half">
-                                    <Input
+                                    <DateInput
                                         label={getDescription('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
                                         info={getName('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
                                         id={RequestFormEnum.EFFECTIVE_FROM}
                                         {...register(RequestFormEnum.EFFECTIVE_FROM)}
-                                        type="date"
                                         error={formState.errors[RequestFormEnum.EFFECTIVE_FROM]?.message}
+                                        control={control}
+                                        setValue={setValue}
                                     />
                                 </GridCol>
                                 <GridCol setWidth="one-half">
-                                    <Input
+                                    <DateInput
                                         label={getDescription('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
                                         info={getName('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
                                         id={RequestFormEnum.EFFECTIVE_TO}
                                         {...register(RequestFormEnum.EFFECTIVE_TO)}
-                                        type="date"
                                         error={formState.errors[RequestFormEnum.EFFECTIVE_TO]?.message}
+                                        control={control}
+                                        setValue={setValue}
                                     />
                                 </GridCol>
                             </GridRow>

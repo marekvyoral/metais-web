@@ -200,6 +200,8 @@ export const getPortalNavigationItems = (
             path: RouteNames.PREHLADY_A_POSTUPY,
             title: t('navMenu.guides'),
             icon: InstructionsIcon,
+            ...(isAuthorized &&
+                import.meta.env.VITE_WIKI_URL && { subItems: [{ title: t('navMenu.wiki'), path: import.meta.env.VITE_WIKI_URL, target: '_blank' }] }),
         },
     ]
 

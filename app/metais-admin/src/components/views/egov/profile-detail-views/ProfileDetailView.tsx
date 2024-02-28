@@ -1,6 +1,6 @@
 import { BreadCrumbs, Button, ButtonLink, ButtonPopup, CheckBox, HomeIcon, Input, Table, TextHeading } from '@isdd/idsk-ui-kit'
-import { MutationFeedback, QueryFeedback, isRowSelected } from '@isdd/metais-common'
-import { Attribute, AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { MutationFeedback, QueryFeedback, formatDateForDefaultValue, formatDateTimeForDefaultValue, isRowSelected } from '@isdd/metais-common'
+import { Attribute, AttributeAttributeTypeEnum, AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { useCallback, useEffect, useState } from 'react'
@@ -297,6 +297,10 @@ export const ProfileDetailView = <T,>({
                     )
                 } else if (ctx.row.original.type === HTML_TYPE) {
                     return <SafeHtmlComponent dirtyHtml={ctx?.getValue?.() as string} />
+                } else if (ctx.row.original.type === AttributeAttributeTypeEnum.DATE) {
+                    return formatDateForDefaultValue(ctx?.getValue?.() as string, 'dd.MM.yyyy')
+                } else if (ctx.row.original.type === AttributeAttributeTypeEnum.DATETIME) {
+                    return formatDateTimeForDefaultValue(ctx?.getValue?.() as string, 'dd.MM.yyyy, HH:mm')
                 } else {
                     return <span>{ctx?.getValue?.() as string}</span>
                 }
@@ -417,7 +421,9 @@ export const ProfileDetailView = <T,>({
                             variant="secondary"
                         />
 
-                        <Button label={t('egov.create.addAttribute')} onClick={() => setOpenAddAttributeModal(true)} />
+                        {profileData?.type !== AttributeProfileType.system && (
+                            <Button label={t('egov.create.addAttribute')} onClick={() => setOpenAddAttributeModal(true)} />
+                        )}
                     </div>
                     <AddAttributeModal
                         refetch={refetch}

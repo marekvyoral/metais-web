@@ -4,7 +4,7 @@ import { Languages } from '@isdd/metais-common/localization/languages'
 import { useTranslation } from 'react-i18next'
 
 import { RefIdentifierDetailInfoViewProps } from '@/components/containers/ref-identifiers/RefIdentifierDetailContainer'
-import { getDescriptionByAttribute, getNameByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
+import { getNameByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
 
 export const RefCatalogInfoView: React.FC<RefIdentifierDetailInfoViewProps> = ({ ciItemData, attributes, registrationState, gestorName, ciList }) => {
     const {
@@ -24,11 +24,8 @@ export const RefCatalogInfoView: React.FC<RefIdentifierDetailInfoViewProps> = ({
             {infoAttributeList.map((technicalName) => (
                 <InformationGridRow
                     key={technicalName}
+                    hideIcon
                     label={getNameByAttribute(
-                        language,
-                        attributes?.find((item) => item.technicalName === technicalName),
-                    )}
-                    tooltip={getDescriptionByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === technicalName),
                     )}

@@ -86,6 +86,7 @@ export enum ATTRIBUTE_NAME {
     Profil_DatovyPrvok_kod_datoveho_prvku = 'Profil_DatovyPrvok_kod_datoveho_prvku',
     Profil_DatovyPrvok_typ_datoveho_prvku = 'Profil_DatovyPrvok_typ_datoveho_prvku',
     Profil_Individuum_kod = 'Profil_Individuum_kod',
+    Profil_Individuum_versions = 'Profil_Individuum_versions',
     Gen_Profil_RefID_stav_registracie = 'Gen_Profil_RefID_stav_registracie',
     Profil_Kontrakt_faza = 'Profil_Kontrakt_faza',
     Profil_Kontrakt_identifikator = 'Profil_Kontrakt_identifikator',
@@ -259,6 +260,16 @@ export const SYSTEM_STATE = 'SYSTEM_STATE'
 export const SYSTEM_STATE_COLOR = 'SYSTEM_STATE_COLOR'
 export const SHOW_SYSTEM_STATE_BAR = 'show-system-state-bar'
 
+export enum RELATION_TYPE {
+    URIDataset_patri_URIKatalog = 'URIDataset_patri_URIKatalog',
+    DatovyPrvok_sa_sklada_DatovyPrvok = 'DatovyPrvok_sa_sklada_DatovyPrvok',
+    Individuum_je_typu_DatovyPrvok = 'Individuum_je_typu_DatovyPrvok',
+    URIDataset_definuje_uri_ZC = 'URIDataset_definuje_uri_ZC',
+    URIDataset_obsahuje_DatovyPrvok = 'URIDataset_obsahuje_DatovyPrvok',
+    PO_je_gestor_DatovyPrvok = 'PO_je_gestor_DatovyPrvok',
+    PO_je_gestor_URIKatalog = 'PO_je_gestor_URIKatalog',
+}
+
 export enum RefIdentifierTypeEnum {
     Individuum = 'Individuum',
     URIKatalog = 'URIKatalog',
@@ -276,4 +287,16 @@ export enum EntityColorEnum {
     implementationAndMigration2 = '#e0ffe0',
     motivationalEntity = '#ffccff',
     motivationalEntity2 = '#ccccff',
+}
+
+export const EntityColorEnumTranslateKeys = {
+    [EntityColorEnum.customEntity]: 'customEntity',
+    [EntityColorEnum.systemEntity]: 'systemEntity',
+    [EntityColorEnum.businessLayer]: 'businessLayer',
+    [EntityColorEnum.appAndDataLayer]: 'appAndDataLayer',
+    [EntityColorEnum.technologicalLayer]: 'technologicalLayer',
+    [EntityColorEnum.implementationAndMigration]: 'implementationAndMigration',
+    [EntityColorEnum.implementationAndMigration2]: 'implementationAndMigration',
+    [EntityColorEnum.motivationalEntity]: 'motivationalEntity',
+    [EntityColorEnum.motivationalEntity2]: 'motivationalEntity',
 }

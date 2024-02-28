@@ -4,7 +4,6 @@ import {
     GridCol,
     GridRow,
     HomeIcon,
-    Input,
     PaginatorWrapper,
     RadioButton,
     RadioButtonGroup,
@@ -22,6 +21,7 @@ import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
@@ -102,7 +102,7 @@ export const TasksListView: React.FC<ITasksListView> = ({
                 </FlexColumnReverseWrapper>
                 <Filter<TasksFilter>
                     defaultFilterValues={defaultFilterValues}
-                    form={({ register, setValue }) => {
+                    form={({ register, setValue, control }) => {
                         return (
                             <div>
                                 {!hideTypeFilter && (
@@ -121,16 +121,22 @@ export const TasksListView: React.FC<ITasksListView> = ({
                                 )}
                                 <GridRow>
                                     <GridCol setWidth="one-half">
-                                        <Input
-                                            {...register('createdFrom')}
-                                            type="date"
-                                            name="createdFrom"
+                                        <DateInput
                                             label={t('tasks.createdFrom')}
                                             id="createdFrom"
+                                            {...register('createdFrom')}
+                                            control={control}
+                                            setValue={setValue}
                                         />
                                     </GridCol>
                                     <GridCol setWidth="one-half">
-                                        <Input {...register('createdTo')} type="date" name="createdTo" label={t('tasks.createdTo')} id="createdTo" />
+                                        <DateInput
+                                            label={t('tasks.createdTo')}
+                                            id="createdFrom"
+                                            {...register('createdTo')}
+                                            control={control}
+                                            setValue={setValue}
+                                        />
                                     </GridCol>
                                 </GridRow>
                                 <label className="govuk-label">{t('tasks.state')}:</label>

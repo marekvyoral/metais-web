@@ -15,6 +15,7 @@ import {
     useUpdateCodelistItemLangExtended,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useMutation } from '@tanstack/react-query'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
 import { useItemSchema } from '@/components/views/codeLists/useCodeListSchemas'
@@ -135,7 +136,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
         setDefaultValues(newDefaultValues)
     }
 
-    const { register, handleSubmit, formState } = useForm<IItemForm>({
+    const { register, handleSubmit, formState, control, setValue } = useForm<IItemForm>({
         resolver: yupResolver(schema),
         values: defaultValues,
     })
@@ -280,30 +281,33 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
                             {...register(CodeListItemFormEnum.EXCLUDE)}
                             error={formState.errors?.[CodeListItemFormEnum.EXCLUDE]?.message}
                         />
-                        <Input
-                            type="date"
+                        <DateInput
                             label={getDescription('Gui_Profil_ZC_datum_platnosti_polozky', language, attributeProfile)}
                             info={getName('Gui_Profil_ZC_datum_platnosti_polozky', language, attributeProfile)}
                             id={CodeListItemFormEnum.VALID_FROM}
                             {...register(CodeListItemFormEnum.VALID_FROM)}
                             error={formState.errors?.[CodeListItemFormEnum.VALID_FROM]?.message}
+                            control={control}
+                            setValue={setValue}
                         />
-                        <Input
+                        <DateInput
                             required
-                            type="date"
                             label={getDescription('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
                             info={getName('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
                             id={CodeListItemFormEnum.EFFECTIVE_FROM}
                             {...register(CodeListItemFormEnum.EFFECTIVE_FROM)}
                             error={formState.errors?.[CodeListItemFormEnum.EFFECTIVE_FROM]?.message}
+                            control={control}
+                            setValue={setValue}
                         />
-                        <Input
-                            type="date"
+                        <DateInput
                             label={getDescription('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
                             info={getName('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
                             id={CodeListItemFormEnum.EFFECTIVE_TO}
                             {...register(CodeListItemFormEnum.EFFECTIVE_TO)}
                             error={formState.errors?.[CodeListItemFormEnum.EFFECTIVE_TO]?.message}
+                            control={control}
+                            setValue={setValue}
                         />
                         <Input
                             type="number"

@@ -41,7 +41,7 @@ export const DraftsListChangeStateModal = ({
                 <div className={styles.modalContainer}>
                     <div className={styles.content}>
                         <TextHeading size={'L'} className={styles.heading}>
-                            {t(`DraftsList.header.${targetState}`)}
+                            {targetState && t(`DraftsList.header.${targetState}`)}
                         </TextHeading>
 
                         <Input {...register('description')} label={t('DraftsList.header.changeState.description')} />

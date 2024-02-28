@@ -102,6 +102,7 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
                             onChange={() => handleAllCheckboxChange(data.list)}
                             checked={checked}
                             containerClassName={styles.marginBottom15}
+                            title={t('table.selectAllItems')}
                         />
                     </div>
                 )
@@ -119,6 +120,7 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
                             disabled={row.original.isLoggedInUser}
                             checked={row.original.identity.uuid ? !!rowSelection[row.original.identity.uuid] : false}
                             containerClassName={styles.marginBottom15}
+                            title={t('table.selectItem', { itemName: [row.original.identity.lastName, row.original.identity.firstName].join(' ') })}
                         />
                     </div>
                 )

@@ -3,7 +3,7 @@ import React, { PropsWithChildren, forwardRef } from 'react'
 import styles from './styles.module.scss'
 
 interface IButton extends PropsWithChildren {
-    onClick: () => void
+    onClick?: () => void
     type?: 'button' | 'submit' | 'reset'
 }
 

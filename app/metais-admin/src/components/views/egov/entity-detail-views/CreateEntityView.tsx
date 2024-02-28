@@ -1,5 +1,5 @@
 import { Button, ErrorBlock, IOption, Input, MultiSelect, SimpleSelect, Tab, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
-import { EntityColorEnum, MutationFeedback, QueryFeedback } from '@isdd/metais-common'
+import { EntityColorEnum, EntityColorEnumTranslateKeys, MutationFeedback, QueryFeedback } from '@isdd/metais-common'
 import { FieldValues, FormProvider } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -56,39 +56,84 @@ export const CreateEntityView = ({
 
     const colorOption: IOption<string>[] = [
         {
-            label: <ColorRow color={EntityColorEnum.customEntity} label={t('egov.colorSelect.customEntity')} />,
+            label: (
+                <ColorRow
+                    color={EntityColorEnum.customEntity}
+                    label={t(`egov.colorSelect.${EntityColorEnumTranslateKeys[EntityColorEnum.customEntity]}`)}
+                />
+            ),
             value: EntityColorEnum.customEntity,
         },
         {
-            label: <ColorRow color={EntityColorEnum.systemEntity} label={t('egov.colorSelect.systemEntity')} />,
+            label: (
+                <ColorRow
+                    color={EntityColorEnum.systemEntity}
+                    label={t(`egov.colorSelect.${EntityColorEnumTranslateKeys[EntityColorEnum.systemEntity]}`)}
+                />
+            ),
             value: EntityColorEnum.systemEntity,
         },
         {
-            label: <ColorRow color={EntityColorEnum.businessLayer} label={t('egov.colorSelect.businessLayer')} />,
+            label: (
+                <ColorRow
+                    color={EntityColorEnum.businessLayer}
+                    label={t(`egov.colorSelect.${EntityColorEnumTranslateKeys[EntityColorEnum.businessLayer]}`)}
+                />
+            ),
             value: EntityColorEnum.businessLayer,
         },
         {
-            label: <ColorRow color={EntityColorEnum.appAndDataLayer} label={t('egov.colorSelect.appAndDataLayer')} />,
+            label: (
+                <ColorRow
+                    color={EntityColorEnum.appAndDataLayer}
+                    label={t(`egov.colorSelect.${EntityColorEnumTranslateKeys[EntityColorEnum.appAndDataLayer]}`)}
+                />
+            ),
             value: EntityColorEnum.appAndDataLayer,
         },
         {
-            label: <ColorRow color={EntityColorEnum.technologicalLayer} label={t('egov.colorSelect.technologicalLayer')} />,
+            label: (
+                <ColorRow
+                    color={EntityColorEnum.technologicalLayer}
+                    label={t(`egov.colorSelect.${EntityColorEnumTranslateKeys[EntityColorEnum.technologicalLayer]}`)}
+                />
+            ),
             value: EntityColorEnum.technologicalLayer,
         },
         {
-            label: <ColorRow color={EntityColorEnum.implementationAndMigration} label={t('egov.colorSelect.implementationAndMigration')} />,
+            label: (
+                <ColorRow
+                    color={EntityColorEnum.implementationAndMigration}
+                    label={t(`egov.colorSelect.${EntityColorEnumTranslateKeys[EntityColorEnum.implementationAndMigration]}`)}
+                />
+            ),
             value: EntityColorEnum.implementationAndMigration,
         },
         {
-            label: <ColorRow color={EntityColorEnum.implementationAndMigration2} label={t('egov.colorSelect.implementationAndMigration')} />,
+            label: (
+                <ColorRow
+                    color={EntityColorEnum.implementationAndMigration2}
+                    label={t(`egov.colorSelect.${EntityColorEnumTranslateKeys[EntityColorEnum.implementationAndMigration2]}`)}
+                />
+            ),
             value: EntityColorEnum.implementationAndMigration2,
         },
         {
-            label: <ColorRow color={EntityColorEnum.motivationalEntity} label={t('egov.colorSelect.motivationalEntity')} />,
+            label: (
+                <ColorRow
+                    color={EntityColorEnum.motivationalEntity}
+                    label={t(`egov.colorSelect.${EntityColorEnumTranslateKeys[EntityColorEnum.motivationalEntity]}`)}
+                />
+            ),
             value: EntityColorEnum.motivationalEntity,
         },
         {
-            label: <ColorRow color={EntityColorEnum.motivationalEntity2} label={t('egov.colorSelect.motivationalEntity')} />,
+            label: (
+                <ColorRow
+                    color={EntityColorEnum.motivationalEntity2}
+                    label={t(`egov.colorSelect.${EntityColorEnumTranslateKeys[EntityColorEnum.motivationalEntity2]}`)}
+                />
+            ),
             value: EntityColorEnum.motivationalEntity2,
         },
     ]

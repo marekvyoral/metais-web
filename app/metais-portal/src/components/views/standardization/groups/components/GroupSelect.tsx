@@ -54,7 +54,7 @@ export const GroupSelect: React.FC<IGroupSelect> = ({ selectedGroup, setSelected
     return (
         <SelectLazyLoading<Group>
             name="account"
-            label={`${t('groups.groupName')}:`}
+            label={`${t('groups.groupName')}`}
             value={selectedGroup}
             onChange={(val) => setSelectedGroup(Array.isArray(val) ? val[0] : val)}
             getOptionValue={(item) => item.uuid || ''}

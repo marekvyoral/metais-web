@@ -24,6 +24,7 @@
         "technicalOperator": "Technical operator",
         "contentAdmin": "Admin of content",
         "RSS": "RSS",
+        "aboutApplication": "About application",
         "appVersion": "App version",
         "home": "Home",
         "services": {
@@ -68,6 +69,11 @@
         "licenseIf": ", unless otherwise stated",
         "rights": "© Copyright"
     },
+    "aboutApp": {
+        "heading": "About the application",
+        "portalVersion": "Portal version",
+        "version": "Version {{apiModul}}"
+    },
     "navbar": {
         "skip": "Skip to main content",
         "official": "Official Website",
@@ -111,6 +117,7 @@
         "standardization": "Standardization",
         "dataObjects": "Data objects",
         "guides": "Guides and procedures",
+        "wiki": "Wiki",
         "hide": "Hide",
         "show": "Show",
         "innerNav": "Inner navigation",
@@ -461,6 +468,7 @@
             "organization": "Organization",
             "registrationDate": "Registration date"
         },
+        "export-title": "Select the file type to export",
         "from": "Training start date"
     },
     "listActions": {
@@ -1222,11 +1230,13 @@
         "newRelation": "Add new relation of {{itemName}}",
         "newCiAndRelation": "Add new item and relation for {{itemName}}",
         "refRegisters": "Reference registers",
-        "refIdentifiers": "Reference identifiers",
         "standardization": "Standardization",
         "draftsList": "Drafts list",
         "refRegistersCreate": "Request to add",
         "refRegistersEdit": "Edit reference register",
+        "refIdentifiers": "Reference identifiers",
+        "refIdentifiersCreate": "New reference identifier",
+        "refIdentifiersEdit": "Edit reference identifier",
         "dataObjects": "Data objects",
         "codeLists": "Codelists",
         "requestList": "List of requests to add a codelist",
@@ -1584,6 +1594,26 @@
             "modifiedBy": "Modified by",
             "uri": "URI",
             "dataItemElements": "Child data elements"
+        },
+        "create": {
+            "title": "New reference identifier",
+            "editTitle": "Edit reference identifier",
+            "refTypeTitle": "Reference identifier type",
+            "refInfoTitle": "Reference identifier information",
+            "chooseType": "Select a type",
+            "uri": "URI",
+            "ownerUser": "Proposer",
+            "catalogDataset": "Catalog datasets",
+            "poGestor": "PA is authority of catalogue",
+            "templateUriType": "Individual is data element type",
+            "templateUriExample": "URI templates",
+            "dataElement": "Data element consists of data elements",
+            "dataElementType": "Data element consists of data elements",
+            "datasetIncludesType": "Dataset contains items of data element type",
+            "datasetDefines": "Dataset defines base counter",
+            "saveRequest": "Save",
+            "finishRequest": "Enter request",
+            "cancelRequest": "Cancel request"
         }
     },
     "selectCiItem": {
@@ -1913,7 +1943,8 @@
                 "REQUESTED": "New",
                 "ASSIGNED": "Assigned",
                 "REJECTED": "Rejected",
-                "ACCEPTED": "Accepted"
+                "ACCEPTED": "Accepted",
+                "FETCHING": "..."
             },
             "draftType": {
                 "label": "Draft type",
@@ -2186,6 +2217,7 @@
             "voteProcessing": "Processing",
             "voteDescription": "Description",
             "votesHandlingTitle": "Voting",
+            "votesHandlingRadioLabel": "Vote options",
             "voteActorsTitle": "Vote actors",
             "voteOverview": "Vote Owerview",
             "changeDate": "Change Date",
@@ -2795,7 +2827,41 @@
         "delete": "Delete file {{fileName}} from list"
     },
     "select": {
-        "noOptions": "No options"
+        "noOptions": "No options",
+        "loading": "Loading...",
+        "availableResult_one": "{{count}} result",
+        "availableResult_other": "{{count}} results",
+        "onFocus": {
+            "totalCount": "{{index}} of {{length}}",
+            "disabled": "disabled",
+            "selected": "selected",
+            "focused": "focused",
+            "return": {
+                "value": "Value {{label}} focused, {{index}}.",
+                "menu": "Option {{label}} {{status}}, {{index}}."
+            }
+        },
+        "onFilter": "{{resultsMessage}} for search term {{inputValue}}.",
+        "onChange": {
+            "deselected": "option {{label}}, deselected.",
+            "cleared": "All selected options have been cleared.",
+            "initial": "{{option}} {{labels}}, selected.",
+            "option_one": "Option",
+            "option_many": "Options",
+            "selected": {
+                "disabled": "option {{label}} is disabled. Select another option.",
+                "selected": "option {{label}}, selected."
+            }
+        },
+        "guidance": {
+            "menu": "Use Up and Down to choose options{{enterText}}, press Escape to exit the menu{{tabText}}.",
+            "enterText": ", press Enter to select the currently focused option",
+            "tabText": ", press Tab to select the option and exit the menu",
+            "input": "{{label}} is focused{{searchText}}, press Down to open the menu{{multiText}}.",
+            "searchText": ", type to refine list",
+            "multiText": ", press left to focus selected values",
+            "value": "Use left and right to toggle between focused values, press Backspace to remove the currently focused value."
+        }
     },
     "aria": {
         "selectedRowsCount": "You have {{count}} rows selected in table"
@@ -2851,5 +2917,8 @@
             "ORDERED_LIST": "Numbered List",
             "LINK": "Link"
         }
+    },
+    "accessibility": {
+        "navigated": "Page changed to {{pageTitle}}"
     }
 }

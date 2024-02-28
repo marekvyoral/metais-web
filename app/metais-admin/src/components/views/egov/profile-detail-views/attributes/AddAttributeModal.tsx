@@ -17,6 +17,7 @@ export const AddAttributeModal = ({ open, onClose, entityName, refetch }: IAddAt
             <AddAttributeContainer
                 View={(props) => (
                     <AddAttributeView
+                        isCreateAttrError={props.isCreateAttrError}
                         data={{ measureUnit: props?.data?.measureUnit, allEnumsData: props?.data?.allEnumsData, entityName }}
                         storeNewAttribute={props?.storeNewAttribute}
                         isLoading={props.isLoading}

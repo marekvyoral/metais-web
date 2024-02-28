@@ -13,16 +13,17 @@ export interface TrainingContainerView {
     handleFilterChange: (filter: IFilter) => void
     isLoading: boolean
     isError: boolean
+    trainingName: string
 }
 
 interface ITrainingContainer {
     entityId: string
-    entityName: string
+    trainingName: string
 }
 
 const defaultFilterValues = { fullTextSearch: '', pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE }
 
-export const TrainingContainer: React.FC<ITrainingContainer> = ({ entityId }) => {
+export const TrainingContainer: React.FC<ITrainingContainer> = ({ entityId, trainingName }) => {
     const { data, isLoading, isError } = useGetTrainees(entityId)
 
     const { filter, handleFilterChange } = useFilterParams<IFilterParams & IFilter>(defaultFilterValues)
@@ -46,6 +47,7 @@ export const TrainingContainer: React.FC<ITrainingContainer> = ({ entityId }) =>
             isError={isError}
             filter={filter}
             handleFilterChange={handleFilterChange}
+            trainingName={trainingName}
         />
     )
 }

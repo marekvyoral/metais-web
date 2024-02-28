@@ -1,11 +1,12 @@
 import React from 'react'
 import StickyBox from 'react-sticky-box'
 import classNames from 'classnames'
-import { AccordionContainer, Button, CheckBox, IAccordionSection, Input, RadioButton, SimpleSelect } from '@isdd/idsk-ui-kit/index'
+import { AccordionContainer, Button, CheckBox, IAccordionSection, RadioButton, SimpleSelect } from '@isdd/idsk-ui-kit/index'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import globalStyles from '@isdd/metais-common/src/components/GridView.module.scss'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import styles from './globalSearchFilter.module.scss'
 
@@ -31,7 +32,7 @@ enum GlobalSearchFilterFormNames {
 
 export const GlobalSearchFilter = () => {
     const { t } = useTranslation()
-    const { register, handleSubmit, setValue, clearErrors } = useForm()
+    const { register, handleSubmit, setValue, clearErrors, control } = useForm()
 
     const onSubmit = (formData: FieldValues) => {
         // eslint-disable-next-line no-console
@@ -76,8 +77,18 @@ export const GlobalSearchFilter = () => {
                             {...register(GlobalSearchFilterFormNames.CUSTOM_RANGE)}
                         />
                     </div>
-                    <Input type="date" name={GlobalSearchFilterFormNames.FROM_UPDATE} label={t('globalSearch.filter.fromUpdate')} />
-                    <Input type="date" name={GlobalSearchFilterFormNames.TO_UPDATE} label={t('globalSearch.filter.toUpdate')} />
+                    <DateInput
+                        label={t('globalSearch.filter.fromUpdate')}
+                        {...register(GlobalSearchFilterFormNames.FROM_UPDATE)}
+                        control={control}
+                        setValue={setValue}
+                    />
+                    <DateInput
+                        label={t('globalSearch.filter.toUpdate')}
+                        {...register(GlobalSearchFilterFormNames.TO_UPDATE)}
+                        control={control}
+                        setValue={setValue}
+                    />
                 </>
             ),
             summary: t('globalSearch.filter.selected', { count: 1 }),

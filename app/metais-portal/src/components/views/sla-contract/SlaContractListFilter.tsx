@@ -7,7 +7,6 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ListSlaContractsParams } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
-import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { SelectPoNeighbours } from '@isdd/metais-common/src/components/select-po-neighbours/SelectPoNeighbours'
 
 import styles from './slaContract.module.scss'
@@ -76,10 +75,6 @@ export const SlaContractListFilter: React.FC<Props> = ({ defaultFilterValues, co
             defaultFilterValues={defaultFilterValues}
             heading={<></>}
             form={({ register, setValue, filter, control, watch }) => {
-                const handleDateChange = (date: Date | null, name: string) => {
-                    setValue(name as keyof ListSlaContractsParams, date ? formatDateForDefaultValue(date.toISOString()) : undefined)
-                }
-
                 return (
                     <div>
                         <Input {...register('name')} label={t('slaContracts.filter.name')} />
@@ -94,7 +89,7 @@ export const SlaContractListFilter: React.FC<Props> = ({ defaultFilterValues, co
                                 />
 
                                 <DateInput
-                                    handleDateChange={handleDateChange}
+                                    setValue={setValue}
                                     name={'intervalStart'}
                                     control={control}
                                     label={t('slaContracts.filter.intervalStart')}
@@ -131,12 +126,7 @@ export const SlaContractListFilter: React.FC<Props> = ({ defaultFilterValues, co
                                     defaultValue={filter.statusFilter}
                                 />
 
-                                <DateInput
-                                    handleDateChange={handleDateChange}
-                                    name={'intervalEnd'}
-                                    control={control}
-                                    label={t('slaContracts.filter.intervalEnd')}
-                                />
+                                <DateInput setValue={setValue} name={'intervalEnd'} control={control} label={t('slaContracts.filter.intervalEnd')} />
 
                                 {MULTI_SELECT_INPUTS_CONSUMER.map((multiSelect) => (
                                     <SelectPOForFilter

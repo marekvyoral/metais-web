@@ -53,6 +53,7 @@ export const getColumns = (
                             value="true"
                             onChange={() => handleAllCheckboxChange(table)}
                             checked={table.getRowModel().rows.every((row) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false))}
+                            title={t('table.selectAllItems')}
                         />
                     </div>
                 )
@@ -79,6 +80,7 @@ export const getColumns = (
                             }
                         }}
                         checked={row.original.uuid ? !!rowSelection[row.original.uuid] : false}
+                        title={t('table.selectItem', { itemName: row.original.name })}
                     />
                 </div>
             ),

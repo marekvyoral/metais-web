@@ -1,7 +1,7 @@
 import { ActionsOverTable, QueryFeedback, formatDateForDefaultValue } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Filter, GridCol, GridRow, Input, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Filter, GridCol, GridRow, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, ENTITY_AS, ENTITY_ISVS, ENTITY_KS, PO } from '@isdd/metais-common/constants'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
@@ -10,6 +10,7 @@ import { ApiMonitoringOverviewList, ApiMonitoringOverviewService } from '@isdd/m
 import { Link } from 'react-router-dom'
 import { SelectPOForFilter } from '@isdd/metais-common/components/select-po/SelectPOForFilter'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { MonitoringFilterData } from '@/components/containers/MonitoringServiceListContainer'
@@ -97,7 +98,7 @@ export const ServicesView: React.FC<IServicesView> = ({ data, isError, isLoading
                 <Filter<MonitoringFilterData>
                     onlyForm
                     defaultFilterValues={defaultFilterValues}
-                    form={({ setValue, clearErrors, filter, register }) => {
+                    form={({ setValue, clearErrors, filter, register, control }) => {
                         return (
                             <div>
                                 <GridRow>
@@ -140,8 +141,18 @@ export const ServicesView: React.FC<IServicesView> = ({ data, isError, isLoading
                                         />
                                     </GridCol>
                                 </GridRow>
-                                <Input type="date" label={t('monitoringServices.table.from')} {...register('intervalStart')} />
-                                <Input type="date" label={t('monitoringServices.table.to')} {...register('intervalEnd')} />
+                                <DateInput
+                                    label={t('monitoringServices.table.from')}
+                                    {...register('intervalStart')}
+                                    control={control}
+                                    setValue={setValue}
+                                />
+                                <DateInput
+                                    label={t('monitoringServices.table.to')}
+                                    {...register('intervalEnd')}
+                                    control={control}
+                                    setValue={setValue}
+                                />
                             </div>
                         )
                     }}

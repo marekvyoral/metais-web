@@ -48,7 +48,7 @@ export const MembershipHistoryContainer: React.FC = () => {
     ]
 
     const [selectedGroup, setSelectedGroup] = useState<Group | undefined>(undefined)
-    const [selectedDate, setSelectedDate] = useState<string | undefined>(undefined)
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
     const [membershipHistory, setMembershipHistory] = useState<StdHistory[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
