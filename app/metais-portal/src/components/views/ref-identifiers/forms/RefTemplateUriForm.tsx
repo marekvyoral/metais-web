@@ -5,22 +5,24 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { DateTime } from 'luxon'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 
+import { getDescriptionByAttribute, getNameByAttribute, getRequiredByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
 import { REF_PORTAL_SUBMIT_ID } from '@/components/views/ref-identifiers/RefIdentifierCreateView'
 import {
     RefTemplateUriFormType,
     RefTemplateUriFormTypeEnum,
     refIdentifierCreateTemplateUriSchema,
 } from '@/components/views/ref-identifiers/forms/refCreateSchema'
-import { getDescriptionByAttribute, getNameByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
 
 type RefTemplateUriFormPropsType = {
     onSubmit: (data: RefTemplateUriFormType, isSend: boolean) => void
+    onCancel: () => void
+    clearUriExist: () => void
+    isUriExist: boolean
     isDisabled?: boolean
     isUpdate: boolean
     ciItemData?: ConfigurationItemUi
@@ -33,6 +35,9 @@ type RefTemplateUriFormPropsType = {
 
 export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
     onSubmit,
+    onCancel,
+    clearUriExist,
+    isUriExist,
     isUpdate,
     isDisabled,
     ciItemData,
@@ -46,8 +51,6 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
         t,
         i18n: { language },
     } = useTranslation()
-
-    const navigate = useNavigate()
 
     const attributeList = [
         ATTRIBUTE_NAME.Gen_Profil_nazov,
@@ -74,8 +77,14 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
         resolver: yupResolver(refIdentifierCreateTemplateUriSchema(t, language, attributesDefaultValues, attributes)),
     })
 
-    const { register, formState, setValue, watch, handleSubmit, clearErrors, control } = methods
+    const { register, formState, setValue, watch, setError, handleSubmit, clearErrors, control } = methods
     const { errors } = formState
+
+    useEffect(() => {
+        if (isUriExist) {
+            setError(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri}`, { message: t('refIdentifiers.create.uriAlreadyExist') })
+        }
+    }, [isUriExist, setError, t])
 
     const buttonRefId = document.getElementById(REF_PORTAL_SUBMIT_ID)
 
@@ -98,8 +107,8 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                     />
                 )}
                 <Input
-                    required
                     disabled={isDisabled}
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri))}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri),
@@ -109,10 +118,11 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri),
                     )}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri}`)}
+                    onBlur={clearUriExist}
                     error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri]?.message}
                 />
                 <Input
-                    required
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_kod))}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_kod),
@@ -125,8 +135,8 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                     error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_Individuum_kod]?.message}
                 />
                 <Input
-                    required
                     disabled={isDisabled}
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov))}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
@@ -140,8 +150,8 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                 />
 
                 <Input
-                    required
                     disabled={isDisabled}
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov))}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
@@ -157,6 +167,7 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                 <Input name={'uriExample'} label={t('refIdentifiers.create.templateUriExample')} value={uriExample} disabled />
 
                 <SimpleSelect
+                    required
                     label={t('refIdentifiers.create.templateUriType')}
                     options={templateUriOptions ?? []}
                     setValue={setValue}
@@ -168,7 +179,7 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                 />
 
                 <DateInput
-                    required
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_od))}
                     handleDateChange={(date, name) => date && setValue(name as keyof RefTemplateUriFormType, DateTime.fromJSDate(date).toISO() ?? '')}
                     setValue={setValue}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_platne_od}`)}
@@ -185,6 +196,7 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                 />
 
                 <DateInput
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_do))}
                     handleDateChange={(date, name) => date && setValue(name as keyof RefTemplateUriFormType, DateTime.fromJSDate(date).toISO() ?? '')}
                     setValue={setValue}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_Individuum_platne_do}`)}
@@ -202,6 +214,7 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
 
                 <TextArea
                     rows={3}
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis))}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis),
@@ -219,7 +232,7 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
                         <ButtonGroupRow>
                             <Button onClick={handleSubmit((data) => onSubmit(data, true))} label={t('refIdentifiers.create.finishRequest')} />
                             <Button onClick={handleSubmit((data) => onSubmit(data, false))} label={t('refIdentifiers.create.saveRequest')} />
-                            <Button variant="secondary" label={t('refRegisters.detail.items.cancel')} onClick={() => navigate(-1)} />
+                            <Button variant="secondary" onClick={onCancel} label={t('refIdentifiers.create.cancelRequest')} />
                         </ButtonGroupRow>,
                         buttonRefId,
                     )}

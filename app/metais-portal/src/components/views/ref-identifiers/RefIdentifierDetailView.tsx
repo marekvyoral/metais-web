@@ -21,6 +21,7 @@ import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrap
 
 export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewProps> = ({
     ciItemId,
+    canEdit,
     entityItemName,
     ciItemData,
     attributes,
@@ -35,6 +36,23 @@ export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewP
     const navigate = useNavigate()
 
     const { isActionSuccess } = useActionSuccess()
+
+    const getActionSuccessMessage = (type: string | undefined) => {
+        switch (type) {
+            case 'create': {
+                return t('mutationFeedback.successfulCreated')
+            }
+            case 'edit': {
+                return t('mutationFeedback.successfulUpdated')
+            }
+            case 'invalidate': {
+                return t('mutationFeedback.successfulInvalidated')
+            }
+            default: {
+                return t('mutationFeedback.success')
+            }
+        }
+    }
 
     const renderInfoView = () => {
         switch (ciItemData?.type) {
@@ -98,11 +116,7 @@ export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewP
                             <MutationFeedback
                                 error={false}
                                 success={isActionSuccess.value}
-                                successMessage={
-                                    isActionSuccess.additionalInfo?.type === 'create'
-                                        ? t('mutationFeedback.successfulCreated')
-                                        : t('mutationFeedback.successfulUpdated')
-                                }
+                                successMessage={getActionSuccessMessage(isActionSuccess.additionalInfo?.type)}
                             />
                         </ElementToScrollTo>
                         <QueryFeedback loading={isLoading} error={false} withChildren>
@@ -110,10 +124,12 @@ export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewP
                                 <TextHeading size="XL">{entityItemName}</TextHeading>
                                 <ButtonGroupRow>
                                     <Can I={Actions.EDIT} a={`ci.${ciItemId}`}>
-                                        <Button
-                                            label={t('codeListDetail.button.edit')}
-                                            onClick={() => navigate(`${NavigationSubRoutes.REF_IDENTIFIERS}/${ciItemId}/edit`)}
-                                        />
+                                        {canEdit && (
+                                            <Button
+                                                label={t('codeListDetail.button.edit')}
+                                                onClick={() => navigate(`${NavigationSubRoutes.REF_IDENTIFIERS}/${ciItemId}/edit`)}
+                                            />
+                                        )}
                                     </Can>
                                 </ButtonGroupRow>
                             </div>

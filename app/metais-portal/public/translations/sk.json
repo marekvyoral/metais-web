@@ -1599,7 +1599,8 @@
             "lastModifiedAt": "Posledná modifikácia",
             "modifiedBy": "Modifikáciu vykonal",
             "uri": "URI",
-            "dataItemElements": "Podriadené dátové prvky"
+            "dataItemElements": "Podriadené dátové prvky",
+            "back": "Späť"
         },
         "create": {
             "title": "Nový referencovateľný identifikátor",
@@ -1617,9 +1618,10 @@
             "dataElementType": "Dátový prvok sa skladá z dátových prvkov",
             "datasetIncludesType": "Dataset obsahuje položky typu dátový prvok",
             "datasetDefines": "Dataset definuje základný číselník",
-            "saveRequest": "Uložiť",
+            "saveRequest": "Uložiť žiadosť",
             "finishRequest": "Odoslať žiadosť",
-            "cancelRequest": "Zrušit žiadosť"
+            "cancelRequest": "Zrušit žiadosť",
+            "uriAlreadyExist": "Zadaná URI už existuje"
         }
     },
     "selectCiItem": {

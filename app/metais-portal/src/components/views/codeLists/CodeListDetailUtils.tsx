@@ -109,6 +109,10 @@ export const getDescriptionByAttribute = (language: string, attribute?: Attribut
     return attribute?.[language === 'en' ? 'engDescription' : 'description'] ?? ''
 }
 
+export const getRequiredByAttribute = (attribute?: Attribute) => {
+    return attribute?.mandatory?.type === 'critical' && !attribute.readOnly
+}
+
 export const getName = (technicalName: string, language: string, profile?: AttributeProfile) => {
     return findProfileAttribute(technicalName, profile)?.[language === 'en' ? 'engDescription' : 'description'] ?? ''
 }

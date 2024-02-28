@@ -6,7 +6,7 @@ import { TFunction } from 'i18next'
 import { DateTime } from 'luxon'
 import { array, date, object, string } from 'yup'
 
-import { getNameByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
+import { getNameByAttribute, getRequiredByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
 
 const midNight = new Date(new Date().setHours(0, 0, 0, 0))
 
@@ -38,11 +38,11 @@ export type RefCatalogFormType = {
     [RefCatalogFormTypeEnum.DATASET]: string[]
     [RefCatalogFormTypeEnum.PO]: string
     attributes: {
-        [ATTRIBUTE_NAME.Gen_Profil_nazov]: string
-        [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string
+        [ATTRIBUTE_NAME.Gen_Profil_nazov]?: string
+        [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]?: string
         [ATTRIBUTE_NAME.Gen_Profil_popis]?: string
-        [ATTRIBUTE_NAME.Profil_URIKatalog_uri]: string
-        [ATTRIBUTE_NAME.Profil_URIKatalog_platne_od]: Date
+        [ATTRIBUTE_NAME.Profil_URIKatalog_uri]?: string
+        [ATTRIBUTE_NAME.Profil_URIKatalog_platne_od]?: Date
         [ATTRIBUTE_NAME.Profil_URIKatalog_platne_do]?: Date | null
     }
 }
@@ -51,12 +51,12 @@ export type RefTemplateUriFormType = {
     [RefTemplateUriFormTypeEnum.OWNER]: string
     [RefTemplateUriFormTypeEnum.TEMPLATE_URI]: string
     attributes: {
-        [ATTRIBUTE_NAME.Gen_Profil_nazov]: string
-        [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string
+        [ATTRIBUTE_NAME.Gen_Profil_nazov]?: string
+        [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]?: string
         [ATTRIBUTE_NAME.Gen_Profil_popis]?: string
-        [ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri]: string
-        [ATTRIBUTE_NAME.Profil_Individuum_kod]: string
-        [ATTRIBUTE_NAME.Profil_Individuum_platne_od]: Date
+        [ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri]?: string
+        [ATTRIBUTE_NAME.Profil_Individuum_kod]?: string
+        [ATTRIBUTE_NAME.Profil_Individuum_platne_od]?: Date
         [ATTRIBUTE_NAME.Profil_Individuum_platne_do]?: Date | null
     }
 }
@@ -66,13 +66,13 @@ export type RefDataItemFormType = {
     [RefDataItemFormTypeEnum.PO]: string
     [RefDataItemFormTypeEnum.DATA_ITEM]: string[]
     attributes: {
-        [ATTRIBUTE_NAME.Gen_Profil_nazov]: string
-        [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string
+        [ATTRIBUTE_NAME.Gen_Profil_nazov]?: string
+        [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]?: string
         [ATTRIBUTE_NAME.Gen_Profil_popis]?: string
-        [ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku]: string
-        [ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku]: string
-        [ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod]: string
-        [ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti]: Date
+        [ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku]?: string
+        [ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku]?: string
+        [ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod]?: string
+        [ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti]?: Date
         [ATTRIBUTE_NAME.Profil_DatovyPrvok_koniec_ucinnosti]?: Date | null
     }
 }
@@ -82,11 +82,11 @@ export type RefDatasetFormType = {
     [RefDatasetFormTypeEnum.DATA_ITEM]: string
     [RefDatasetFormTypeEnum.DATA_CODE]: string
     attributes: {
-        [ATTRIBUTE_NAME.Gen_Profil_nazov]: string
-        [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string
+        [ATTRIBUTE_NAME.Gen_Profil_nazov]?: string
+        [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]?: string
         [ATTRIBUTE_NAME.Gen_Profil_popis]?: string
-        [ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu]: string
-        [ATTRIBUTE_NAME.Profil_URIDataset_historicky_kod]: string
+        [ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu]?: string
+        [ATTRIBUTE_NAME.Profil_URIDataset_historicky_kod]?: string
     }
 }
 
@@ -111,14 +111,39 @@ export const refIdentifierCreateCatalogSchema = (
             .of(string().min(1).required(t('validation.required')))
             .required(t('validation.required')),
         attributes: object().shape({
-            [ATTRIBUTE_NAME.Gen_Profil_nazov]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Gen_Profil_popis]: string(),
-            [ATTRIBUTE_NAME.Profil_URIKatalog_uri]: string().required(t('validation.required')),
+            [ATTRIBUTE_NAME.Gen_Profil_nazov]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Gen_Profil_popis]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Profil_URIKatalog_uri]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIKatalog_uri))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
             [ATTRIBUTE_NAME.Profil_URIKatalog_platne_od]: date()
                 .typeError(t('validation.required'))
-                .required(t('validation.required'))
                 .transform((curr, orig) => (orig === '' ? null : curr))
+                .when('isRequired', (_, current) => {
+                    if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIKatalog_platne_od))) {
+                        return current.required(t('validation.required'))
+                    }
+                    return current
+                })
                 .min(
                     getCurrentDateValueToCompare(formDefaultValues, ATTRIBUTE_NAME.Profil_URIKatalog_platne_od),
                     `${t('validation.dateMustBeEqualOrGreaterThen')} ${formatDateForDefaultValue(
@@ -129,6 +154,12 @@ export const refIdentifierCreateCatalogSchema = (
             [ATTRIBUTE_NAME.Profil_URIKatalog_platne_do]: date()
                 .nullable()
                 .transform((curr, orig) => (orig === '' ? null : curr))
+                .when('isRequired', (_, current) => {
+                    if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIKatalog_platne_do))) {
+                        return current.required(t('validation.required'))
+                    }
+                    return current
+                })
                 .when(ATTRIBUTE_NAME.Profil_URIKatalog_platne_od, (from, yupSchema) => {
                     return DateTime.fromJSDate(new Date(`${from}`)).isValid
                         ? yupSchema.min(
@@ -154,14 +185,44 @@ export const refIdentifierCreateTemplateUriSchema = (
         [RefTemplateUriFormTypeEnum.OWNER]: string().required(t('validation.required')),
         [RefTemplateUriFormTypeEnum.TEMPLATE_URI]: string().required(t('validation.required')),
         attributes: object().shape({
-            [ATTRIBUTE_NAME.Gen_Profil_nazov]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Gen_Profil_popis]: string(),
-            [ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Profil_Individuum_kod]: string().required(t('validation.required')),
+            [ATTRIBUTE_NAME.Gen_Profil_nazov]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Gen_Profil_popis]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Profil_Individuum_kod]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_kod))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
             [ATTRIBUTE_NAME.Profil_Individuum_platne_od]: date()
                 .typeError(t('validation.required'))
-                .required(t('validation.required'))
+                .when('isRequired', (_, current) => {
+                    if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_od))) {
+                        return current.required(t('validation.required'))
+                    }
+                    return current
+                })
                 .transform((curr, orig) => (orig === '' ? null : curr))
                 .min(
                     getCurrentDateValueToCompare(formDefaultValues, ATTRIBUTE_NAME.Profil_Individuum_platne_od),
@@ -173,6 +234,12 @@ export const refIdentifierCreateTemplateUriSchema = (
             [ATTRIBUTE_NAME.Profil_Individuum_platne_do]: date()
                 .nullable()
                 .transform((curr, orig) => (orig === '' ? null : curr))
+                .when('isRequired', (_, current) => {
+                    if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Individuum_platne_do))) {
+                        return current.required(t('validation.required'))
+                    }
+                    return current
+                })
                 .when(ATTRIBUTE_NAME.Profil_Individuum_platne_od, (from, yupSchema) => {
                     return DateTime.fromJSDate(new Date(`${from}`)).isValid
                         ? yupSchema.min(
@@ -201,16 +268,55 @@ export const refIdentifierCreateDataItemSchema = (
             .of(string().min(1).required(t('validation.required')))
             .required(t('validation.required')),
         attributes: object().shape({
-            [ATTRIBUTE_NAME.Gen_Profil_nazov]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Gen_Profil_popis]: string(),
-            [ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod]: string().required(t('validation.required')),
+            [ATTRIBUTE_NAME.Gen_Profil_nazov]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Gen_Profil_popis]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
             [ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti]: date()
                 .typeError(t('validation.required'))
-                .required(t('validation.required'))
                 .transform((curr, orig) => (orig === '' ? null : curr))
+                .when('isRequired', (_, current) => {
+                    if (
+                        getRequiredByAttribute(
+                            attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti),
+                        )
+                    ) {
+                        return current.required(t('validation.required'))
+                    }
+                    return current
+                })
                 .min(
                     getCurrentDateValueToCompare(formDefaultValues, ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti),
                     `${t('validation.dateMustBeEqualOrGreaterThen')} ${formatDateForDefaultValue(
@@ -221,6 +327,14 @@ export const refIdentifierCreateDataItemSchema = (
             [ATTRIBUTE_NAME.Profil_DatovyPrvok_koniec_ucinnosti]: date()
                 .nullable()
                 .transform((curr, orig) => (orig === '' ? null : curr))
+                .when('isRequired', (_, current) => {
+                    if (
+                        getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_koniec_ucinnosti))
+                    ) {
+                        return current.required(t('validation.required'))
+                    }
+                    return current
+                })
                 .when(ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti, (from, yupSchema) => {
                     return DateTime.fromJSDate(new Date(`${from}`)).isValid
                         ? yupSchema.min(
@@ -236,17 +350,42 @@ export const refIdentifierCreateDataItemSchema = (
     })
 }
 
-export const refIdentifierCreateDatasetSchema = (t: TFunction<'translation', undefined, 'translation'>) => {
+export const refIdentifierCreateDatasetSchema = (t: TFunction<'translation', undefined, 'translation'>, attributes: Attribute[] | undefined) => {
     return object().shape({
         [RefDatasetFormTypeEnum.OWNER]: string().required(t('validation.required')),
         [RefDatasetFormTypeEnum.DATA_ITEM]: string().required(t('validation.required')),
         [RefDatasetFormTypeEnum.DATA_CODE]: string().required(t('validation.required')),
         attributes: object().shape({
-            [ATTRIBUTE_NAME.Gen_Profil_nazov]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Gen_Profil_popis]: string(),
-            [ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu]: string().required(t('validation.required')),
-            [ATTRIBUTE_NAME.Profil_URIDataset_historicky_kod]: string().required(t('validation.required')),
+            [ATTRIBUTE_NAME.Gen_Profil_nazov]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Gen_Profil_popis]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
+            [ATTRIBUTE_NAME.Profil_URIDataset_historicky_kod]: string().when('isRequired', (_, current) => {
+                if (getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIDataset_historicky_kod))) {
+                    return current.required(t('validation.required'))
+                }
+                return current
+            }),
         }),
     })
 }

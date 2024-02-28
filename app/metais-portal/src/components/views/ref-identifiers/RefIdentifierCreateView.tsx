@@ -1,4 +1,4 @@
-import { BreadCrumbs, HomeIcon, IOption, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, HomeIcon, IOption, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Stepper } from '@isdd/idsk-ui-kit/stepper/Stepper'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -8,6 +8,7 @@ import { Group } from '@isdd/metais-common/contexts/auth/authContext'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
 import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 import { RefCatalogForm } from './forms/RefCatalogForm'
 import { RefDataItemForm } from './forms/RefDataItemForm'
@@ -42,10 +43,13 @@ export interface RefIdentifierCreateViewPropsType {
     defaultDatasetItem?: string
     updateCiItemId?: string
     wrapperRef: React.RefObject<HTMLTableSectionElement>
+    handleCancelRequest: () => void
     handleCatalogSubmit: (formData: RefCatalogFormType, isSend: boolean) => void
     handleTemplateUriSubmit: (formData: RefTemplateUriFormType, isSend: boolean) => void
     handleDataItemSubmit: (formData: RefDataItemFormType, isSend: boolean) => void
     handleDatasetSubmit: (formData: RefDatasetFormType, isSend: boolean) => void
+    clearUriExist: () => void
+    isUriExist: boolean
     isUpdate: boolean
     isDisabled?: boolean
     isLoading: boolean
@@ -74,11 +78,14 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
     type,
     ciCode,
     setType,
+    handleCancelRequest,
     handleCatalogSubmit,
     handleTemplateUriSubmit,
     handleDataItemSubmit,
     handleDatasetSubmit,
     wrapperRef,
+    isUriExist,
+    clearUriExist,
     isDisabled,
     isUpdate,
     isError,
@@ -90,7 +97,7 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
     isTooManyFetchesError,
 }) => {
     const { t } = useTranslation()
-
+    const navigate = useNavigate()
     const sections: ISection[] =
         [
             {
@@ -123,9 +130,12 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
                     <>
                         {type === RefIdentifierTypeEnum.URIKatalog && (
                             <RefCatalogForm
+                                isUriExist={isUriExist}
                                 isUpdate={isUpdate}
                                 isDisabled={isDisabled}
+                                clearUriExist={clearUriExist}
                                 onSubmit={handleCatalogSubmit}
+                                onCancel={handleCancelRequest}
                                 ciItemData={ciItemData}
                                 attributes={attributes}
                                 ownerOptions={ownerOptions}
@@ -136,9 +146,12 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
                         )}
                         {type === RefIdentifierTypeEnum.Individuum && (
                             <RefTemplateUriForm
+                                isUriExist={isUriExist}
+                                clearUriExist={clearUriExist}
                                 isUpdate={isUpdate}
                                 isDisabled={isDisabled}
                                 onSubmit={handleTemplateUriSubmit}
+                                onCancel={handleCancelRequest}
                                 ciItemData={ciItemData}
                                 ciCode={ciCode}
                                 templateUriOptions={templateUriOptions}
@@ -153,6 +166,7 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
                                 isUpdate={isUpdate}
                                 isDisabled={isDisabled}
                                 onSubmit={handleDataItemSubmit}
+                                onCancel={handleCancelRequest}
                                 ciItemData={ciItemData}
                                 templateUriOptions={templateUriOptions}
                                 dataItemTypeOptions={dataItemTypeOptions}
@@ -167,9 +181,12 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
 
                         {type === RefIdentifierTypeEnum.URIDataset && (
                             <RefDatasetForm
+                                isUriExist={isUriExist}
+                                clearUriExist={clearUriExist}
                                 isUpdate={isUpdate}
                                 isDisabled={isDisabled}
                                 onSubmit={handleDatasetSubmit}
+                                onCancel={handleCancelRequest}
                                 ciItemData={ciItemData}
                                 templateUriOptions={templateUriOptions}
                                 attributes={attributes}
@@ -233,6 +250,7 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
                         <Stepper subtitleTitle="" stepperList={sections} />
 
                         <div id={REF_PORTAL_SUBMIT_ID} />
+                        <Button variant="secondary" label={t('refIdentifiers.detail.back')} onClick={() => navigate(-1)} />
                     </QueryFeedback>
                 </QueryFeedback>
             </MainContentWrapper>

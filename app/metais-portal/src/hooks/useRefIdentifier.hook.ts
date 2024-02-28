@@ -1,5 +1,5 @@
 import { IOption } from '@isdd/idsk-ui-kit/index'
-import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useGenerateCodeAndURL } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TYP_DATOVEHO_PRVKU } from '@isdd/metais-common/constants'
@@ -8,6 +8,7 @@ import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { OPERATOR_OPTIONS } from '@isdd/metais-common/hooks/useFilter'
 import { ATTRIBUTE_NAME, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export const useRefIdentifierHook = (type?: string) => {
@@ -17,6 +18,10 @@ export const useRefIdentifierHook = (type?: string) => {
     const {
         i18n: { language },
     } = useTranslation()
+
+    const [isCheckUriLoading, setCheckUriLoading] = useState<boolean>(false)
+
+    const getCiList = useReadCiList1Hook()
 
     const { ciTypeData, attributeProfiles, attributes, isError: isAttributesError, isLoading: isAttributesLoading } = useAttributesHook(type)
 
@@ -110,6 +115,39 @@ export const useRefIdentifierHook = (type?: string) => {
         { query: {} },
     )
 
+    const checkUriIfExist = async (attribute: string, uri?: string) => {
+        setCheckUriLoading(true)
+        try {
+            const result = await getCiList({
+                filter: {
+                    type: [type ?? ''],
+                    metaAttributes: {
+                        state: ['DRAFT'],
+                    },
+                    attributes: [
+                        {
+                            name: ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie,
+                            filterValue: [
+                                { value: 'c_stav_registracie.1', equality: OPERATOR_OPTIONS.EQUAL },
+                                { value: 'c_stav_registracie.2', equality: OPERATOR_OPTIONS.EQUAL },
+                                { value: 'c_stav_registracie.4', equality: OPERATOR_OPTIONS.EQUAL },
+                            ],
+                        },
+                        {
+                            name: attribute,
+                            filterValue: [{ value: uri, equality: OPERATOR_OPTIONS.EQUAL }],
+                        },
+                    ],
+                },
+            })
+            setCheckUriLoading(false)
+            return result.configurationItemSet?.length ? result.configurationItemSet?.length > 0 : false
+        } catch {
+            setCheckUriLoading(false)
+            return false
+        }
+    }
+
     const templateUriOptions =
         templateUriData?.configurationItemSet?.map((item) => ({
             value: item.uuid ?? '',
@@ -156,6 +194,8 @@ export const useRefIdentifierHook = (type?: string) => {
     ].some((item) => item)
 
     return {
+        isCheckUriLoading,
+        checkUriIfExist,
         groupDataFiltered,
         ciTypeData,
         generatedEntityId,
