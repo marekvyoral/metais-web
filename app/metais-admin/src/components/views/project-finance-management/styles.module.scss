@@ -1,0 +1,7 @@
+@import '../../../utils.scss';
+
+.buttonsGroup {
+    display: flex;
+    align-items: center;
+    gap: govuk-spacing(2);
+}
