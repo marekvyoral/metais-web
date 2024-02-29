@@ -1,5 +1,14 @@
 import React, { useCallback, useState } from 'react'
-import { useFindPages, useFind1, useUpdateIdentityState, useExportIdentities } from '@isdd/metais-common/api/generated/iam-swagger'
+import {
+    useFindPages,
+    useFind1,
+    useUpdateIdentityState,
+    useExportIdentities,
+    useUpdateGidBulkHook,
+    UpdateRoleBulkRequestOperation,
+    FindAll11200,
+    UpdateRoleBulkResponse,
+} from '@isdd/metais-common/api/generated/iam-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common'
 import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SortType } from '@isdd/idsk-ui-kit/types'
@@ -9,6 +18,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useRevokeUserBatch } from '@isdd/metais-common/hooks/useRevokeUser'
 import { useGetOrganizationsForIdentitiesList } from '@isdd/metais-common/hooks/useGetOrganizationsForIdentitiesList'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { useTranslation } from 'react-i18next'
 
 import {
     UserManagementFilterData,
@@ -19,14 +29,18 @@ import {
 } from './UserManagementListUtils'
 
 import { UserManagementListPageViewProps } from '@/components/views/userManagement/userManagementListWrapper'
+import { IChangeRoleItem } from '@/components/views/userManagement/modal/ChangeRoleModal'
 
 interface UserManagementContainerProps {
     View: React.FC<UserManagementListPageViewProps>
 }
 
 const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ View }) => {
+    const { t } = useTranslation()
     const [rowSelection, setRowSelection] = useState<Record<string, UserManagementListItem>>({})
-
+    const [apiLoading, setApiLoading] = useState(false)
+    const [apiError, setApiError] = useState(false)
+    const [successRolesUpdate, setSuccessRolesUpdate] = useState<string>()
     const {
         state: { user, token },
     } = useAuth()
@@ -40,6 +54,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
         ],
         ...defaultFilterValues,
     })
+    const updateGidBulk = useUpdateGidBulkHook()
 
     const { mutate: revokeUserBatchMutation, isLoading: IsLoadingRevokeUserBatch, isError: IsErrorRevokeUserBatch } = useRevokeUserBatch()
     const {
@@ -165,10 +180,16 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
         isLoadingUpdateIdentityStateMutationBatch,
         IsLoadingRevokeUserBatch,
         isFetching,
+        apiLoading,
     ].some((item) => item)
-    const isQueryError = [isErrorTotalCount, isErrorManagementList, isErrorOrganizationsForList, isErrorCiList, IsErrorRevokeUserBatch].some(
-        (item) => item,
-    )
+    const isQueryError = [
+        isErrorTotalCount,
+        isErrorManagementList,
+        isErrorOrganizationsForList,
+        isErrorCiList,
+        IsErrorRevokeUserBatch,
+        apiError,
+    ].some((item) => item)
 
     const isMutationSuccess = isSuccessUpdateIdentityStateMutation || isSuccessUpdateIdentityStateMutationsBatch
     const isMutationError = isErrorUpdateIdentityStateMutation || isErrorUpdateIdentityStateMutationBatch
@@ -176,6 +197,62 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
     const data = {
         list: mapResponsesToManagementListData(identitiesList, organizationsForListData, ciListData, user?.uuid),
         dataLength: dataLength || 0,
+    }
+
+    const findRoleErrors = (res: UpdateRoleBulkResponse, dataModal: IChangeRoleItem, allRolesData: FindAll11200): string[] => {
+        const err: string[] = []
+        if (res?.updatedEntities) {
+            if ((Object.keys(res?.updatedEntities)?.length ?? 0) < (dataModal?.roles?.length ?? 0)) {
+                dataModal.roles?.forEach((role) => {
+                    if (!Object.keys(res?.updatedEntities ?? [])?.find((gid) => gid === `${role}-${dataModal.uuidPo}`)) {
+                        if (Array.isArray(allRolesData)) {
+                            const name = allRolesData.find((r) => r.uuid === role)?.name
+                            err.push(name ?? role)
+                        } else {
+                            err.push(role)
+                        }
+                    }
+                })
+            }
+            return err
+        } else {
+            return err
+        }
+    }
+
+    const handleUpdateRolesBulk = (
+        dataModal: IChangeRoleItem,
+        action: UpdateRoleBulkRequestOperation,
+        identities: UserManagementListItem[],
+        allRolesData: FindAll11200,
+    ) => {
+        setApiLoading(true)
+        setApiError(false)
+        setSuccessRolesUpdate(undefined)
+        updateGidBulk({
+            gidList: dataModal.roles?.map((role) => `${role}-${dataModal.uuidPo}`),
+            identityUuidList: identities?.map((ident) => ident.identity.uuid ?? '') ?? [],
+            operation: action,
+        })
+            .then((res) => {
+                const err = findRoleErrors(res, dataModal, allRolesData)
+
+                if (err.length > 0) {
+                    const message = `${t('userManagement.successMessageUpdateRolesSome')} ${(dataModal.roles?.length ?? 0) - err.length}/${
+                        dataModal.roles?.length ?? 0
+                    }:\n
+                    ${err?.map((role) => t('userManagement.successMessageUpdateRolesFailRole') + role).join('\n')}`
+                    setSuccessRolesUpdate(message)
+                } else {
+                    setSuccessRolesUpdate(t('userManagement.successMessageUpdateRolesAll'))
+                }
+            })
+            .catch(() => {
+                setApiError(true)
+            })
+            .finally(() => {
+                setApiLoading(false)
+            })
     }
 
     return (
@@ -193,7 +270,9 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
             isErrorExport={isErrorExport}
             isMutationError={isMutationError}
             isMutationSuccess={isMutationSuccess}
+            successRolesUpdate={successRolesUpdate}
             updateIdentityStateBatchMutation={updateIdentityStateBatchMutation}
+            handleUpdateRolesBulk={handleUpdateRolesBulk}
         />
     )
 }
