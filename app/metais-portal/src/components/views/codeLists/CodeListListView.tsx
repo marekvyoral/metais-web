@@ -22,6 +22,7 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
 import { SelectPOForFilter } from '@isdd/metais-common/components/select-po/SelectPOForFilter'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { selectBasedOnLanguageAndDate } from '@/components/views/codeLists/CodeListDetailUtils'
 import { CodeListListFilterData, CodeListListViewProps, CodeListState, defaultFilterValues } from '@/components/containers/CodeListListContainer'
@@ -68,7 +69,10 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
         successMessage,
     } = useAddFavorite()
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
-
+    const {
+        state: { user },
+    } = useAuth()
+    const isUserLogged = !!user
     const selectedUuids = useMemo(() => {
         return Object.values(rowSelection).map((i) => i.id)
     }, [rowSelection])
@@ -322,7 +326,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
             })),
         },
     ]
-
+    const columnsWithPermissions = isUserLogged ? columns : columns.slice(1)
     return (
         <>
             <BreadCrumbs
@@ -414,13 +418,14 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                     />
                     <Table<ApiCodelistPreview>
                         data={data?.list}
-                        columns={columns}
+                        // columns={columns}
                         sort={filter.sort ?? []}
                         isRowSelected={isRowSelected}
                         onSortingChange={(columnSort) => {
                             handleFilterChange({ sort: columnSort })
                             clearSelectedRows()
                         }}
+                        columns={columnsWithPermissions}
                     />
                     <PaginatorWrapper
                         pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}

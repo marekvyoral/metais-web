@@ -21,7 +21,6 @@ import {
     ProjectUploadFileModal,
     QueryFeedback,
     UpdateFileModal,
-    formatDateTimeForDefaultValue,
 } from '@isdd/metais-common/index'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import classNames from 'classnames'
@@ -276,7 +275,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             header: t('documentsTab.table.createdAt'),
             id: 'documentsTab.table.createdAt',
             size: 100,
-            cell: (row) => row.getValue() && formatDateTimeForDefaultValue(row.getValue() as string, 'dd.MM.yyyy, HH:mm'),
+            cell: (ctx) => t('dateTime', { date: ctx.getValue() as string }),
         },
 
         {
@@ -290,7 +289,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             header: t('documentsTab.table.lastModifiedAt'),
             id: 'documentsTab.table.lastModifiedAt',
             size: 100,
-            cell: (row) => row.getValue() && formatDateTimeForDefaultValue(row.getValue() as string, 'dd.MM.yyyy, HH:mm'),
+            cell: (ctx) => t('dateTime', { date: ctx.getValue() as string }),
         },
 
         {
