@@ -1,8 +1,8 @@
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { Button, Filter, PaginatorWrapper, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { IdentityState } from '@isdd/metais-common/api/generated/iam-swagger'
-import { CheckInACircleIcon, CrossInACircleIcon, ExportIcon } from '@isdd/metais-common/assets/images'
+import { FindAll11200, IdentityState, UpdateRoleBulkRequestOperation } from '@isdd/metais-common/api/generated/iam-swagger'
+import { CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ChangeIcon } from '@isdd/metais-common/assets/images'
 import { BulkPopup, CreateEntityButton, IconLabel } from '@isdd/metais-common/components/actions-over-table'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
@@ -11,10 +11,13 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { UseMutationResult } from '@tanstack/react-query'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import styles from './userManagementListWrapper.module.scss'
+
+import { ChangeRoleModal, IChangeRoleItem } from '@/components/views/userManagement/modal/ChangeRoleModal'
 import {
     UserManagementActionsOverRowEnum,
     UserManagementFilterData,
@@ -32,12 +35,19 @@ export interface UserManagementListPageViewProps {
     handleFilterChange: (filter: IFilter) => void
     handleBlockRowsAction: (identity: { uuid: string; login: string }[], activate: boolean) => void
     handleExport: () => void
+    handleUpdateRolesBulk: (
+        result: IChangeRoleItem,
+        action: UpdateRoleBulkRequestOperation,
+        identities: UserManagementListItem[],
+        allRolesData: FindAll11200,
+    ) => void
     isLoading: boolean
     isError: boolean
     isLoadingExport: boolean
     isErrorExport: boolean
     isMutationError: boolean
     isMutationSuccess: boolean
+    successRolesUpdate: string | undefined
     updateIdentityStateBatchMutation: UseMutationResult<
         void[],
         unknown,
@@ -63,9 +73,11 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     isLoadingExport,
     isMutationError,
     isMutationSuccess,
+    successRolesUpdate,
     updateIdentityStateBatchMutation,
     rowSelection,
     setRowSelection,
+    handleUpdateRolesBulk,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -73,6 +85,8 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     const {
         isActionSuccess: { value: isSuccess },
     } = useActionSuccess()
+
+    const [isChangeRolesModalOpen, setChangeRolesModalOpen] = useState<boolean>(false)
 
     const handleUpdateIdentitiesState = useCallback(
         (activate: boolean) =>
@@ -83,6 +97,13 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
         [handleBlockRowsAction, rowSelection],
     )
 
+    const handleModalResult = useCallback(
+        (result: IChangeRoleItem, action: UpdateRoleBulkRequestOperation, allRolesData: FindAll11200) => {
+            setChangeRolesModalOpen(false)
+            handleUpdateRolesBulk(result, action, Object.values(rowSelection), allRolesData)
+        },
+        [handleUpdateRolesBulk, rowSelection],
+    )
     return (
         <QueryFeedback
             loading={isLoading || isLoadingExport}
@@ -98,6 +119,9 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                     <MutationFeedback success={isMutationSuccess} error={isMutationError && t('userManagement.error.mutation')} />
                 )}
                 {isSuccess && <MutationFeedback success error={false} />}
+                {successRolesUpdate && (
+                    <MutationFeedback success error={false} successMessage={successRolesUpdate} successMessageClassName={styles.successMessage} />
+                )}
             </FlexColumnReverseWrapper>
             <Filter<UserManagementFilterData>
                 defaultFilterValues={defaultFilterValues}
@@ -155,18 +179,34 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 bulkPopup={
                     <BulkPopup
                         checkedRowItems={Object.keys(rowSelection).length}
-                        items={() => [
+                        items={(closePopup) => [
                             <ButtonLink
                                 key={'buttonBlock'}
                                 icon={CrossInACircleIcon}
                                 label={t('userManagement.block')}
-                                onClick={() => handleUpdateIdentitiesState(false)}
+                                onClick={() => {
+                                    closePopup()
+                                    handleUpdateIdentitiesState(false)
+                                }}
                             />,
                             <ButtonLink
                                 key={'buttonUnblock'}
                                 icon={CheckInACircleIcon}
                                 label={t('userManagement.unblock')}
-                                onClick={() => handleUpdateIdentitiesState(true)}
+                                onClick={() => {
+                                    closePopup()
+                                    handleUpdateIdentitiesState(true)
+                                }}
+                            />,
+                            <ButtonLink
+                                key={'buttonChangeRoles'}
+                                icon={ChangeIcon}
+                                label={t('userManagement.changeRoles')}
+                                disabled={Object.values(rowSelection).length === 0}
+                                onClick={() => {
+                                    closePopup()
+                                    setChangeRolesModalOpen(true)
+                                }}
                             />,
                         ]}
                     />
@@ -186,6 +226,16 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 pageNumber={userManagementFilter.pageNumber ?? BASE_PAGE_NUMBER}
                 pageSize={userManagementFilter.pageSize ?? BASE_PAGE_SIZE}
                 handlePageChange={handleFilterChange}
+            />
+            <ChangeRoleModal
+                isOpen={isChangeRolesModalOpen}
+                close={() => setChangeRolesModalOpen(false)}
+                addRoles={(result, allRolesData) => {
+                    handleModalResult(result, UpdateRoleBulkRequestOperation.ADD, allRolesData)
+                }}
+                removeRoles={(result, allRolesData) => {
+                    handleModalResult(result, UpdateRoleBulkRequestOperation.DELETE, allRolesData)
+                }}
             />
         </QueryFeedback>
     )
