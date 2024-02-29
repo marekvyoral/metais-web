@@ -68,7 +68,8 @@
     "aboutApp": {
         "heading": "About the application",
         "portalVersion": "Portal version",
-        "version": "Version {{apiModul}}"
+        "version": "Version {{apiModul}}",
+        "undefinedVersion": "Module version unavailable"
     },
     "navbar": {
         "factChecker": "Fact-checker",

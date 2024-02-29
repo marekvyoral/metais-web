@@ -71,7 +71,8 @@
     "aboutApp": {
         "heading": "O aplikácii",
         "portalVersion": "Verzia portálu",
-        "version": "Verzia {{apiModul}}"
+        "version": "Verzia {{apiModul}}",
+        "undefinedVersion": "Verzia modulu nedostupná"
     },
     "navbar": {
         "skip": "Preskočiť na hlavný obsah",
