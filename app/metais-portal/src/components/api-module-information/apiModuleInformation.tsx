@@ -9,7 +9,7 @@ interface ApiModuleInformationProps {
 
 const ApiModuleInformation: React.FC<ApiModuleInformationProps> = ({ moduleName }) => {
     const { t } = useTranslation()
-    const [apiModule, setApiModule] = useState<{ chart: { version: string } }>()
+    const [apiModule, setApiModule] = useState<{ chart: { version: string }; app: { version: string } }>()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
@@ -29,7 +29,12 @@ const ApiModuleInformation: React.FC<ApiModuleInformationProps> = ({ moduleName 
 
     return (
         <QueryFeedback loading={loading} error={error} withChildren>
-            <InformationGridRow key={moduleName} label={t('aboutApp.version', { apiModul: moduleName })} value={apiModule?.chart?.version} hideIcon />
+            <InformationGridRow
+                key={moduleName}
+                label={t('aboutApp.version', { apiModul: moduleName })}
+                value={`${apiModule?.chart?.version} / ${apiModule?.app?.version}`}
+                hideIcon
+            />
         </QueryFeedback>
     )
 }
