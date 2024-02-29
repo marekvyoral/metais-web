@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { MultiValue } from 'react-select'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
-import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { DynamicFilterAttributes, ExtendedAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { AddItemsButtonGroup } from '@isdd/metais-common/components/add-items-button-group/AddItemsButtonGroup'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table'
 import { Languages } from '@isdd/metais-common/localization/languages'
@@ -134,7 +134,7 @@ export const CiListPageForModal: React.FC<Props> = ({ ciType, selectedItems, onS
                                     attributeFilters: filter.attributeFilters ?? {},
                                     metaAttributeFilters: filter.metaAttributeFilters ?? {},
                                 }}
-                                attributes={attributes}
+                                attributes={attributes as ExtendedAttribute[]}
                                 attributeProfiles={attributeProfiles}
                                 constraintsData={constraintsData}
                             />

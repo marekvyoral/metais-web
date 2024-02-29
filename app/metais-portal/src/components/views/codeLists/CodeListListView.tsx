@@ -3,31 +3,28 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { TextLink } from '@isdd/idsk-ui-kit/typography/TextLink'
 import { RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ApiCodelistItemName, ApiCodelistManager, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, PO } from '@isdd/metais-common/constants'
 import { ActionsOverTable, BulkPopup, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef, Table as ITable, Row } from '@tanstack/react-table'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { SelectFilterOrganization } from '@isdd/metais-common/components/select-organization/SelectFilterOrganization'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { DynamicFilterAttributes, ExtendedAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { useAddFavorite } from '@isdd/metais-common/hooks/useAddFavorite'
 import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { NotificationBlackIcon } from '@isdd/metais-common/assets/images'
 import actionsOverTableStyles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
+import { SelectPOForFilter } from '@isdd/metais-common/components/select-po/SelectPOForFilter'
 
 import { selectBasedOnLanguageAndDate } from '@/components/views/codeLists/CodeListDetailUtils'
-import {
-    CodeListFilterOnlyBase,
-    CodeListListFilterData,
-    CodeListListViewProps,
-    CodeListState,
-    defaultFilterValues,
-} from '@/components/containers/CodeListListContainer'
+import { CodeListListFilterData, CodeListListViewProps, CodeListState, defaultFilterValues } from '@/components/containers/CodeListListContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const getMainGestor = (codeListManager: ApiCodelistManager[], roleParticipants: RoleParticipantUI[]) => {
@@ -234,6 +231,98 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
         })
     }
 
+    const filterAttributes = (): ExtendedAttribute[] | undefined => {
+        const logged: ExtendedAttribute[] = !isOnlyPublishedPage
+            ? [
+                  {
+                      name: t('codeListList.filter.state'),
+                      attributeTypeEnum: AttributeAttributeTypeEnum.STRING,
+                      technicalName: 'wfState',
+                      invisible: false,
+                      valid: true,
+                      customComponent: (value, onChange) => {
+                          return (
+                              <SimpleSelect
+                                  name={'atributeValue'}
+                                  label={t('customAttributeFilter.value.label')}
+                                  options={Object.values(CodeListState).map((state) => ({
+                                      value: state,
+                                      label: t(`codeListList.state.${state}`),
+                                  }))}
+                                  defaultValue={value?.value}
+                                  onChange={(val) => {
+                                      onChange({ ...value, value: val })
+                                  }}
+                              />
+                          )
+                      },
+                      customOperators: [OPERATOR_OPTIONS_URL.EQUAL],
+                  },
+              ]
+            : []
+
+        return [
+            {
+                name: t('codeListList.filter.code'),
+                attributeTypeEnum: AttributeAttributeTypeEnum.STRING,
+                technicalName: 'code',
+                invisible: false,
+                valid: true,
+                customOperators: [OPERATOR_OPTIONS_URL.EQUAL],
+            },
+            {
+                name: t('codeListList.filter.onlyBase.label'),
+                attributeTypeEnum: 'BOOLEAN',
+                technicalName: 'onlyBase',
+                invisible: false,
+                valid: true,
+            },
+            {
+                name: t('codeListList.filter.toDate'),
+                attributeTypeEnum: AttributeAttributeTypeEnum.DATE,
+                technicalName: 'toDate',
+                invisible: false,
+                valid: true,
+                customOperators: [OPERATOR_OPTIONS_URL.EQUAL_OR_LOWER],
+            },
+            {
+                name: t('codeListList.filter.mainGestor'),
+                attributeTypeEnum: AttributeAttributeTypeEnum.STRING,
+                technicalName: 'mainGestorPoUuid',
+                invisible: false,
+                valid: true,
+                customComponent: (value, onChange) => {
+                    return (
+                        <SelectPOForFilter
+                            ciType={PO}
+                            label={t('customAttributeFilter.value.label')}
+                            name="atributeValue"
+                            valuesAsUuids={Array.isArray(value) ? [value?.[0]?.value] ?? [] : value?.value ? [value?.value] : []}
+                            onChange={(val) => {
+                                if (val && val.length) {
+                                    onChange({ ...value, value: val?.[0]?.uuid })
+                                }
+                            }}
+                            isMulti={false}
+                        />
+                    )
+                },
+                customOperators: [OPERATOR_OPTIONS_URL.EQUAL],
+            },
+            ...logged,
+        ]
+    }
+
+    const constraintsData: (EnumType | undefined)[] = [
+        {
+            code: 'state',
+            enumItems: Object.values(CodeListState).map((state) => ({
+                value: state,
+                description: t(`codeListList.state.${state}`),
+            })),
+        },
+    ]
+
     return (
         <>
             <BreadCrumbs
@@ -272,53 +361,27 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                     <Filter<CodeListListFilterData>
                         heading={t('codeList.filter.title')}
                         defaultFilterValues={defaultFilterValues}
-                        form={({ filter: formFilter, register, setValue, control }) => {
+                        form={({ filter: formFilter, register, setValue }) => {
                             return (
                                 <div>
-                                    <SelectFilterOrganization<CodeListListFilterData>
-                                        label={t('codeListList.filter.mainGestor')}
-                                        name="mainGestorPoUuid"
-                                        filter={formFilter}
+                                    <Input {...register('name')} type="text" label={t('codeListList.filter.name')} />
+                                    <DynamicFilterAttributes
                                         setValue={setValue}
+                                        defaults={defaultFilterValues}
+                                        attributes={filterAttributes()}
+                                        attributeProfiles={[]}
+                                        constraintsData={constraintsData}
+                                        filterData={{
+                                            attributeFilters: formFilter.attributeFilters ?? {},
+                                            metaAttributeFilters: {},
+                                        }}
+                                        ignoreInputNames={['lastModifiedAt', 'createdAt', 'owner', 'state']}
                                     />
-                                    <DateInput
-                                        label={t('codeListList.filter.toDate')}
-                                        {...register('toDate')}
-                                        control={control}
-                                        setValue={setValue}
-                                    />
-                                    <SimpleSelect
-                                        id="onlyBase"
-                                        name="onlyBase"
-                                        label={t('codeListList.filter.onlyBase.label')}
-                                        options={[
-                                            { value: CodeListFilterOnlyBase.TRUE, label: t('codeListList.filter.onlyBase.true') },
-                                            { value: CodeListFilterOnlyBase.FALSE, label: t('codeListList.filter.onlyBase.false') },
-                                        ]}
-                                        setValue={setValue}
-                                        defaultValue={formFilter.onlyBase || defaultFilterValues.onlyBase}
-                                    />
-                                    {!isOnlyPublishedPage && (
-                                        <>
-                                            <SimpleSelect
-                                                id="wfState"
-                                                name="wfState"
-                                                label={t('codeListList.filter.state')}
-                                                options={Object.values(CodeListState).map((state) => ({
-                                                    value: state,
-                                                    label: t(`codeListList.state.${state}`),
-                                                }))}
-                                                setValue={setValue}
-                                                defaultValue={formFilter.wfState || defaultFilterValues.wfState}
-                                            />
-                                            <Input {...register('code')} type="text" label={t('codeListList.filter.code')} />
-                                            <Input {...register('name')} type="text" label={t('codeListList.filter.name')} />
-                                        </>
-                                    )}
                                 </div>
                             )
                         }}
                     />
+
                     <ActionsOverTable
                         pagination={{
                             pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
