@@ -73,24 +73,22 @@ export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnly
         ...defaultFilterValues,
     })
 
-    const {
-        isFetching: isLoadingCodelistHeaders,
-        isError: isErrorCodelistHeaders,
-        data: codelistHeadersData,
-    } = useGetCodelistHeaders({
-        toDate: filter.toDate ?? '',
-        mainGestorPoUuid: filter.mainGestorPoUuid ?? '',
+    const apiFilter = {
         language: 'sk',
         pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
         perPage: filter.pageSize ?? BASE_PAGE_SIZE,
         sortBy: filter.sort?.[0]?.orderBy ?? 'code',
         ascending: filter.sort?.[0]?.sortDirection === SortType.ASC,
-        ...(filter.onlyBase && { isBase: filter.onlyBase === CodeListFilterOnlyBase.TRUE }),
+        ...(filter?.attributeFilters?.code && { code: filter?.attributeFilters?.code?.[0]?.value ?? '' }),
+        ...(filter?.attributeFilters?.onlyBase && { isBase: filter?.attributeFilters?.onlyBase?.[0]?.value === 'true' ?? '' }),
+        ...(filter?.attributeFilters?.toDate && { toDate: filter?.attributeFilters?.toDate?.[0]?.value ?? '' }),
+        ...(filter?.attributeFilters?.mainGestorPoUuid && { mainGestorPoUuid: filter?.attributeFilters?.mainGestorPoUuid?.[0]?.value ?? '' }),
+        ...(filter?.attributeFilters?.wfState && { wfState: filter?.attributeFilters?.wfState?.[0]?.value ?? filter.wfState }),
         ...(filter.name && { nameFilter: filter.name }),
-        ...(filter.code && { code: filter.code }),
-        ...(filter.wfState && { wfState: filter.wfState }),
         ...(isOnlyPublishedPage && { wfState: CodeListState.PUBLISHED }),
-    })
+    }
+
+    const { isFetching: isLoadingCodelistHeaders, isError: isErrorCodelistHeaders, data: codelistHeadersData } = useGetCodelistHeaders(apiFilter)
 
     const gids = (codelistHeadersData?.codelists ?? [])
         .filter((item) => item?.mainCodelistManagers?.length)

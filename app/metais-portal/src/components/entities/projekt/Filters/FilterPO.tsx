@@ -3,7 +3,7 @@ import { Input, MultiSelect, RadioButton, RadioGroupWithLabel } from '@isdd/idsk
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { DynamicFilterAttributes, ExtendedAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { SelectPersonCategory } from '@isdd/metais-common/components/select-person-category/SelectPersonCategory'
 import { SelectPersonType } from '@isdd/metais-common/components/select-person-type/SelectPersonType'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
@@ -71,7 +71,7 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
                     <SelectPersonType filter={filter} setValue={setValue} />
                     <DynamicFilterAttributes
                         defaults={defaultFilterValues}
-                        attributes={attributes}
+                        attributes={attributes as ExtendedAttribute[]}
                         attributeProfiles={attributeProfiles}
                         constraintsData={constraintsData}
                         setValue={setValue}

@@ -3,6 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import DatePicker from 'react-datepicker'
+import styleDateInput from '@isdd/idsk-ui-kit/date-input/dateInput.module.scss'
 
 import style from './customFilterAttribute.module.scss'
 
@@ -22,11 +23,15 @@ interface Props {
     attributeType: CustomAttributeType
     index: number
     value: FilterAttribute
+    customComponent?: (
+        value: FilterAttribute,
+        onChange: (data: FilterAttribute, prevData?: FilterAttribute, isNewName?: boolean) => void,
+    ) => React.ReactNode
     constraints: EnumType | undefined
     onChange: (data: FilterAttribute, prevData?: FilterAttribute, isNewName?: boolean) => void
 }
 
-export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, index, value, onChange, constraints }) => {
+export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, index, value, onChange, constraints, customComponent }) => {
     const { t } = useTranslation()
 
     const isOwner = attributeType.type === MetaInformationTypes.OWNER
@@ -43,8 +48,6 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
     const isByte = attributeType.type === AttributeAttributeTypeEnum.BYTE
     const isDate = attributeType.type === AttributeAttributeTypeEnum.DATE
     const isCharacter = attributeType.type === AttributeAttributeTypeEnum.CHARACTER
-    // const isStringPair = attributeType.type === AttributeAttributeTypeEnum.STRING_PAIR
-    // const isFile = attributeType.type === AttributeAttributeTypeEnum.IMAGE
 
     const hasEnumItems = !!constraints?.code && constraints.enumItems && constraints.enumItems.length > 0
     const hasNumericValue = isByte || isFloat || isInteger || isDouble || isLong || isShort
@@ -60,6 +63,14 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
     }
 
     const renderContent = () => {
+        if (customComponent) {
+            return (
+                <div className={classNames(style.rowItem, style.lazySelect)}>
+                    <>{customComponent(value, onChange)}</>
+                </div>
+            )
+        }
+
         switch (true) {
             case isCMDBType: {
                 return (
@@ -105,6 +116,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
                             id={`attribute-value-${index}-date`}
                             className={classNames('govuk-input', style.rowItem)}
                             placeholderText="dd.mm.yyyy"
+                            popperClassName={styleDateInput.dateInputPopperClass}
                             name="atributeValueDate"
                             selected={value.value ? new Date(value.value as string) : null}
                             onChange={(val) => onChange({ ...value, value: formatDateForDefaultValue(val?.toISOString() ?? '') })}
