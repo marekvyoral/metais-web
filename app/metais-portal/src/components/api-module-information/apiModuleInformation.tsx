@@ -12,7 +12,7 @@ const ApiModuleInformation: React.FC<ApiModuleInformationProps> = ({ moduleName 
     const [apiModule, setApiModule] = useState<{ chart: { version: string }; app: { version: string } }>()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
-
+    const versions = apiModule?.chart?.version && apiModule?.app?.version
     useEffect(() => {
         setLoading(true)
         fetch(`${import.meta.env.VITE_API_BASE_URL}/${moduleName}/endpoints/info`)
@@ -32,7 +32,7 @@ const ApiModuleInformation: React.FC<ApiModuleInformationProps> = ({ moduleName 
             <InformationGridRow
                 key={moduleName}
                 label={t('aboutApp.version', { apiModul: moduleName })}
-                value={`${apiModule?.chart?.version} / ${apiModule?.app?.version}`}
+                value={versions ? `${apiModule?.chart?.version} / ${apiModule?.app?.version}` : t('aboutApp.undefinedVersion')}
                 hideIcon
             />
         </QueryFeedback>
