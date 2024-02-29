@@ -1080,6 +1080,7 @@
         "userPreferencesSuccess": "Personal preferences were successfully saved",
         "changedUserInformation": "Personal information were successfully changed",
         "changedUserInformationError": "Error occurred while changing personal information. Please try again.",
+        "uniqueEmail": "Email must be unique. The user with this email already exists.",
         "defaultLang": "Default language",
         "myPoSelect": "Select organization",
         "isMyPoEnabled": "Show only items of my organization",

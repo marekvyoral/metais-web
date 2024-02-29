@@ -1807,6 +1807,7 @@
         "userPreferencesSuccess": "Personal preferences were successfully saved",
         "changedUserInformation": "Personal information were successfully changed",
         "changedUserInformationError": "Error occurred while changing personal information. Please try again.",
+        "uniqueEmail": "Email must be unique. The user with this email already exists.",
         "defaultPerPage": "Default number of rows in tables",
         "defaultLang": "Default language",
         "myPoSelect": "Select organization",
