@@ -59,7 +59,10 @@ export const SelectImplicitHierarchy: React.FC<SelectFilterOrganizationHierarchy
     const [defaultValue, setDefaultValue] = useState<SelectFilterOrganizationHierarchyOptionType | undefined>(undefined)
 
     const loadOptions = useCallback(
-        async (additional: { page: number } | undefined): Promise<ILoadOptionsResponse<SelectFilterOrganizationHierarchyOptionType>> => {
+        async (
+            searchQuery: string,
+            additional: { page: number } | undefined,
+        ): Promise<ILoadOptionsResponse<SelectFilterOrganizationHierarchyOptionType>> => {
             const page = !additional?.page ? 1 : (additional?.page || 0) + 1
             const userDataGroups = user?.groupData || []
             const params: HierarchyPOFilterUi = {
@@ -67,7 +70,7 @@ export const SelectImplicitHierarchy: React.FC<SelectFilterOrganizationHierarchy
                 perpage: DEFAULT_LAZY_LOAD_PER_PAGE,
                 sortBy: SortBy.HIERARCHY_FROM_ROOT,
                 sortType: SortType.ASC,
-                fullTextSearch: '',
+                fullTextSearch: searchQuery ?? '',
                 rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
             }
             const response = await mutateAsync({ data: params })
@@ -91,7 +94,7 @@ export const SelectImplicitHierarchy: React.FC<SelectFilterOrganizationHierarchy
                 placeholder={t('userProfile.requests.placeholderPO')}
                 getOptionLabel={(item) => item.poName}
                 getOptionValue={(item) => item.poUUID}
-                loadOptions={(_searchQuery, _prevOptions, additional) => loadOptions(additional)}
+                loadOptions={(searchQuery, _prevOptions, additional) => loadOptions(searchQuery, additional)}
                 label={t('userProfile.requests.po') + requiredString}
                 name={RequestFormFields.PO}
                 option={(ctx) => formatOption(ctx)}
