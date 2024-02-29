@@ -7,13 +7,12 @@ import { Link } from 'react-router-dom'
 
 import styles from './styles.module.scss'
 
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { MetaVersion, useGetContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import { formatBytes } from '@isdd/metais-common/components/file-import/fileImportUtils'
-import { MetaVersion, useGetContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
-import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ModalButtons } from '@isdd/metais-common/components/modal-buttons/ModalButtons'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 interface IFileHistoryViewProps {
     item: ConfigurationItemUi
@@ -75,20 +74,20 @@ export const FileHistoryView: React.FC<IFileHistoryViewProps> = ({ data, item, h
             accessorKey: 'validFrom',
             cell: (cellItem) => {
                 const i = cellItem.row.index
-                return <p>{formatDateTimeForDefaultValue(data[i].lastModified ?? '')}</p>
+                return <p>{t('dateTime', { date: data[i].lastModified ?? '' })}</p>
             },
         },
         {
             header: t('fileHistory.validTo'),
             id: 'validTo',
             accessorKey: 'validTo',
-            cell: (cellItem) => {
-                if (cellItem.row.index + 1 === data.length) {
-                    return <p>{t('fileHistory.actualVersion')}</p>
-                } else {
-                    return <p>{formatDateTimeForDefaultValue(data[cellItem.row.index + 1].lastModified ?? '')}</p>
-                }
-            },
+            cell: (cellItem) => (
+                <p>
+                    {cellItem.row.index + 1 === data.length
+                        ? t('fileHistory.actualVersion')
+                        : t('dateTime', { date: data[cellItem.row.index + 1].lastModified ?? '' })}
+                </p>
+            ),
         },
         ...(isUserLogged
             ? [
