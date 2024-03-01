@@ -27,9 +27,17 @@ interface MutationFeedbackProps {
     error: React.ReactNode
     showSupportEmail?: boolean
     onMessageClose?: () => void
+    successMessageClassName?: string
 }
 
-export const MutationFeedback: React.FC<MutationFeedbackProps> = ({ success, error, showSupportEmail, successMessage, onMessageClose }) => {
+export const MutationFeedback: React.FC<MutationFeedbackProps> = ({
+    success,
+    error,
+    showSupportEmail,
+    successMessage,
+    onMessageClose,
+    successMessageClassName,
+}) => {
     const { t } = useTranslation()
     const labelId = `${uuidV4()}-label`
     const { clearAction } = useActionSuccess()
@@ -48,7 +56,7 @@ export const MutationFeedback: React.FC<MutationFeedbackProps> = ({ success, err
         <div className={styles.inline}>
             {success && (
                 <IconWithText icon={RoundCheckGreenIcon}>
-                    <div aria-live="assertive" className={styles.successText}>
+                    <div aria-live="assertive" className={classNames(styles.successText, successMessageClassName)}>
                         {successMessage || t('mutationFeedback.successfulUpdated')}
                     </div>
                 </IconWithText>

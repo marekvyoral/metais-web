@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, Input } from '@isdd/idsk-ui-kit/index'
 import { useForm } from 'react-hook-form'
@@ -39,6 +39,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
     const {
         state: { user, token },
     } = useAuth()
+    const [errorMessage, setErrorMessage] = useState('')
     const queryClient = useQueryClient()
 
     const userInformationsSchema: ObjectSchema<UserInformationForm> = object().shape({
@@ -78,6 +79,11 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
                     return { data: { ...oldData.data, ...context.data }, statusCode: oldData.statusCode }
                 })
             },
+            onError(error) {
+                if (JSON.parse(error.message as string).message == 'email not unique') {
+                    setErrorMessage(t('userProfile.uniqueEmail'))
+                } else setErrorMessage(t('userProfile.changedUserInformationError'))
+            },
         },
     })
     const handleCancel = () => {
@@ -92,7 +98,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
 
     return (
         <>
-            <MutationFeedback success={false} error={isError ? t('userProfile.changedUserInformationError') : ''} />
+            <MutationFeedback success={false} error={isError ? errorMessage : ''} />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.justifyEndDiv}>
                     <SubmitWithFeedback submitButtonLabel={t('userProfile.save')} loading={isLoading || isSubmitting || isValidating} />

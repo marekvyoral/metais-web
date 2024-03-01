@@ -8,10 +8,10 @@ import { DynamicFilterAttributeInput } from './DynamicFilterAttributeInput'
 
 import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CustomAttributeType } from '@isdd/metais-common/componentHelpers/filter/findAttributeType'
 import { findAvailableOperators } from '@isdd/metais-common/componentHelpers/filter/findAvailableOperators'
-import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { ExtendedAttribute, FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
 import { Languages } from '@isdd/metais-common/localization/languages'
 
@@ -22,7 +22,7 @@ interface Props {
     remove: () => void
     selectedAttributes: FilterAttribute[]
     attributeProfiles: AttributeProfile[] | undefined
-    attributes: Attribute[] | undefined
+    attributes: ExtendedAttribute[] | undefined
     attributeType: CustomAttributeType
     attributeConstraints: EnumType | undefined
     currentAttribute: FilterAttribute
@@ -131,6 +131,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 value={attribute}
                 index={index}
                 onChange={onChange}
+                customComponent={attributeType.customComponent}
             />
 
             <ButtonLink

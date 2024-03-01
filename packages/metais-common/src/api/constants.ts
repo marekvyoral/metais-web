@@ -58,6 +58,7 @@ export enum ATTRIBUTE_NAME {
     standardRequestState = 'standardRequestState',
     requestChannel = 'requestChannel',
     createdAt = 'createdAt',
+    lastModifiedAt = 'lastModifiedAt',
     name = 'name',
     email = 'email',
     srDescription1 = 'srDescription1',

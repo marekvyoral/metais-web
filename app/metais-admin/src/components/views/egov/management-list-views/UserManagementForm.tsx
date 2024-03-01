@@ -47,6 +47,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const userIdPath = `/${managedUserUuid}`
     const NO_CHANGES_DETECTED = 'NoChangesDetected'
     const UNIQUE_LOGIN = 'UniqueLogin'
+    const UNIQUE_EMAIL = 'UniqueEmail'
 
     const methods = useForm({
         resolver: yupResolver(getUserManagementFormSchema(t)),
@@ -114,6 +115,9 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                     if (errorData.type === 'UniqueConstraintException' && errorData.property === 'login') {
                         setErrorType(UNIQUE_LOGIN)
                     }
+                    if (errorData.type === 'UniqueConstraintException' && errorData.property === 'email') {
+                        setErrorType(UNIQUE_EMAIL)
+                    }
                 }
             },
         },
@@ -163,6 +167,8 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                                         ? t('managementList.noChangesDetected')
                                         : errorType === UNIQUE_LOGIN
                                         ? t('userManagement.error.uniqueLogin')
+                                        : errorType === UNIQUE_EMAIL
+                                        ? t('userProfile.uniqueEmail')
                                         : t('managementList.mutationError'))
                                 }
                                 success={updateOrCreate.isSuccess}

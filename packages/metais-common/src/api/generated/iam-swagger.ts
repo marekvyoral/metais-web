@@ -157,8 +157,8 @@ export type FindAll1Params = {
 
 export type FindByNameWithParamsParams = {
     name: string
-    group?: string
-    system?: string
+    group: string
+    system: string
     orderBy?: string
     direction?: string
 }
@@ -440,14 +440,6 @@ export interface RelatedIdentity {
     displayName?: string
 }
 
-export type ResponseMapStringOwnershipPayload = { [key: string]: Ownership }
-
-export interface ResponseMapStringOwnership {
-    payload?: ResponseMapStringOwnershipPayload
-    failMessage?: string
-    failure?: boolean
-}
-
 export type ItemTypeItemClass = (typeof ItemTypeItemClass)[keyof typeof ItemTypeItemClass]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -471,6 +463,14 @@ export interface GetAttributeOwnershipRequest {
 export interface Ownership {
     owner?: boolean
     ownerDelegate?: boolean
+}
+
+export type ResponseMapStringOwnershipPayload = { [key: string]: Ownership }
+
+export interface ResponseMapStringOwnership {
+    payload?: ResponseMapStringOwnershipPayload
+    failMessage?: string
+    failure?: boolean
 }
 
 export interface ResponseOwnership {
@@ -546,10 +546,9 @@ export interface StringList {
     strings?: string[]
 }
 
-export interface IdentityWithResult {
+export interface FindByLoginOut {
     input?: string
     identity?: Identity
-    result?: string
 }
 
 export interface OperationResultGenericIdentity {
@@ -615,9 +614,30 @@ export interface Identity {
     displayName?: string
 }
 
-export interface FindByLoginOut {
+export interface IdentityWithResult {
     input?: string
     identity?: Identity
+    result?: string
+}
+
+export type UpdateRoleBulkResponseUpdatedEntities = { [key: string]: string[] }
+
+export interface UpdateRoleBulkResponse {
+    updatedEntities?: UpdateRoleBulkResponseUpdatedEntities
+}
+
+export type UpdateRoleBulkRequestOperation = (typeof UpdateRoleBulkRequestOperation)[keyof typeof UpdateRoleBulkRequestOperation]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateRoleBulkRequestOperation = {
+    ADD: 'ADD',
+    DELETE: 'DELETE',
+} as const
+
+export interface UpdateRoleBulkRequest {
+    gidList?: string[]
+    identityUuidList?: string[]
+    operation?: UpdateRoleBulkRequestOperation
 }
 
 export interface IdentityUuidWithState {
@@ -716,14 +736,6 @@ export interface IdentityUuidWithGid {
     gids?: string[]
 }
 
-export interface GidRoleData {
-    gid?: string
-    roleWeight?: number
-    roleUuid?: string
-    roleName?: string
-    roleDescription?: string
-}
-
 export interface GidRoleDataHolder {
     gid?: string
     gidRoles?: GidRoleData[]
@@ -732,6 +744,14 @@ export interface GidRoleDataHolder {
 export interface LoginOrganizationIn {
     login?: string
     gids?: string[]
+}
+
+export interface GidRoleData {
+    gid?: string
+    roleWeight?: number
+    roleUuid?: string
+    roleName?: string
+    roleDescription?: string
 }
 
 export interface OrganizationHierarchyInWithoutPagination {
@@ -3127,6 +3147,47 @@ export const useUpdateIdentityState = <TError = ApiError, TContext = unknown>(op
     >
 }) => {
     const mutationOptions = useUpdateIdentityStateMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useUpdateGidBulkHook = () => {
+    const updateGidBulk = useIAmSwaggerClient<UpdateRoleBulkResponse>()
+
+    return (updateRoleBulkRequest: UpdateRoleBulkRequest) => {
+        return updateGidBulk({
+            url: `/identities/updateGidBulk`,
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            data: updateRoleBulkRequest,
+        })
+    }
+}
+
+export const useUpdateGidBulkMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateGidBulkHook>>>, TError, { data: UpdateRoleBulkRequest }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateGidBulkHook>>>, TError, { data: UpdateRoleBulkRequest }, TContext> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const updateGidBulk = useUpdateGidBulkHook()
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useUpdateGidBulkHook>>>, { data: UpdateRoleBulkRequest }> = (props) => {
+        const { data } = props ?? {}
+
+        return updateGidBulk(data)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateGidBulkMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateGidBulkHook>>>>
+export type UpdateGidBulkMutationBody = UpdateRoleBulkRequest
+export type UpdateGidBulkMutationError = ApiError
+
+export const useUpdateGidBulk = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateGidBulkHook>>>, TError, { data: UpdateRoleBulkRequest }, TContext>
+}) => {
+    const mutationOptions = useUpdateGidBulkMutationOptions(options)
 
     return useMutation(mutationOptions)
 }

@@ -22,6 +22,7 @@ interface ISelectProps<T> {
     error?: string
     info?: string
     correct?: boolean
+    required?: boolean
     disabled?: boolean
     onBlur?: React.FocusEventHandler<HTMLInputElement>
     isClearable?: boolean
@@ -44,6 +45,7 @@ export const MultiSelect = <T,>({
     clearErrors,
     info,
     correct,
+    required,
     disabled,
     onBlur,
     isClearable,
@@ -66,6 +68,7 @@ export const MultiSelect = <T,>({
     }
     return (
         <Select
+            required={required}
             id={id}
             name={name}
             label={label}

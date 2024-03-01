@@ -46,6 +46,7 @@ type PublicAuthoritiesMassUpdateTableProps = {
     error?: boolean
     rowSelection: Record<string, ColumnsOutputDefinition>
     setRowSelection: React.Dispatch<React.SetStateAction<Record<string, ColumnsOutputDefinition>>>
+    refetch: () => void
 }
 
 export const PublicAuthoritiesMassUpdateTable = ({
@@ -66,6 +67,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
     defaultFilterValues,
     rowSelection,
     setRowSelection,
+    refetch,
 }: PublicAuthoritiesMassUpdateTableProps & IActions) => {
     const { t } = useTranslation()
 
@@ -200,7 +202,17 @@ export const PublicAuthoritiesMassUpdateTable = ({
             id: 'organizationsActions',
             cell: (ctx) =>
                 ctx?.row.original.metaAttributes?.state === 'NEW' && (
-                    <ActionsUpdateOverRow ctx={ctx} onApprove={(uuid) => onApprove([uuid])} onReject={(uuid) => onReject([uuid])} />
+                    <ActionsUpdateOverRow
+                        ctx={ctx}
+                        onApprove={async (uuid) => {
+                            await onApprove([uuid])
+                            refetch()
+                        }}
+                        onReject={async (uuid) => {
+                            await onReject([uuid])
+                            refetch()
+                        }}
+                    />
                 ),
         },
     ]
@@ -231,6 +243,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
                                     onApprove(selectedUuids)
                                     setRowSelection({})
                                     closePopup()
+                                    refetch()
                                 }}
                             />,
                             <ButtonLink
@@ -240,6 +253,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
                                     onReject(selectedUuids)
                                     setRowSelection({})
                                     closePopup()
+                                    refetch()
                                 }}
                             />,
                         ]}

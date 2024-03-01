@@ -68,7 +68,8 @@
     "aboutApp": {
         "heading": "About the application",
         "portalVersion": "Portal version",
-        "version": "Version {{apiModul}}"
+        "version": "Version {{apiModul}}",
+        "undefinedVersion": "Module version unavailable"
     },
     "navbar": {
         "factChecker": "Fact-checker",
@@ -344,7 +345,15 @@
             "ACTIVATED": "Activated"
         },
         "block": "Block",
+        "changeRoles": "Change roles",
+        "organizationUnit": "Organization unit",
+        "individualsRoles": "Individuals roles",
+        "addRoles": "Add roles",
+        "removeRoles": "Remove roles",
         "unblock": "Unblock",
+        "successMessageUpdateRolesAll": "Roles was successfully updated",
+        "successMessageUpdateRolesSome": "Some roles was't successfully updated",
+        "successMessageUpdateRolesFailRole": "doesn't to successfully updated role ",
         "edit": "Edit",
         "changePassword": "Change password",
         "addNewUser": "Add new user",
@@ -1080,6 +1089,7 @@
         "userPreferencesSuccess": "Personal preferences were successfully saved",
         "changedUserInformation": "Personal information were successfully changed",
         "changedUserInformationError": "Error occurred while changing personal information. Please try again.",
+        "uniqueEmail": "Email must be unique. The user with this email already exists.",
         "defaultLang": "Default language",
         "myPoSelect": "Select organization",
         "isMyPoEnabled": "Show only items of my organization",

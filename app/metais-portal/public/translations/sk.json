@@ -71,7 +71,8 @@
     "aboutApp": {
         "heading": "O aplikácii",
         "portalVersion": "Verzia portálu",
-        "version": "Verzia {{apiModul}}"
+        "version": "Verzia {{apiModul}}",
+        "undefinedVersion": "Verzia modulu nedostupná"
     },
     "navbar": {
         "skip": "Preskočiť na hlavný obsah",
@@ -1599,7 +1600,8 @@
             "lastModifiedAt": "Posledná modifikácia",
             "modifiedBy": "Modifikáciu vykonal",
             "uri": "URI",
-            "dataItemElements": "Podriadené dátové prvky"
+            "dataItemElements": "Podriadené dátové prvky",
+            "back": "Späť"
         },
         "create": {
             "title": "Nový referencovateľný identifikátor",
@@ -1617,9 +1619,10 @@
             "dataElementType": "Dátový prvok sa skladá z dátových prvkov",
             "datasetIncludesType": "Dataset obsahuje položky typu dátový prvok",
             "datasetDefines": "Dataset definuje základný číselník",
-            "saveRequest": "Uložiť",
+            "saveRequest": "Uložiť žiadosť",
             "finishRequest": "Odoslať žiadosť",
-            "cancelRequest": "Zrušit žiadosť"
+            "cancelRequest": "Zrušit žiadosť",
+            "uriAlreadyExist": "Zadaná URI už existuje"
         }
     },
     "selectCiItem": {
@@ -1811,6 +1814,7 @@
         "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené.",
         "changedUserInformation": "Osobné informácie boli úspešne zmenené.",
         "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím, skúste vykonať zmeny znova.",
+        "uniqueEmail": "E-mail musí byť unikátny. Používateľ s týmto e-mailom už existuje.",
         "defaultPerPage": "Prednastavený počet riadkov v tabuľke",
         "defaultLang": "Prednastavený jazyk",
         "myPoSelect": "Vyberte orgán riadenia",

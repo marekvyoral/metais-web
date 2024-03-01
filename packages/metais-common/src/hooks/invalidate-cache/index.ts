@@ -183,7 +183,9 @@ export const useInvalidateTrainingsCache = (entityId: string) => {
 
 export const useInvalidateRefIdentifiersCache = (entityId: string) => {
     const queryClient = useQueryClient()
+    const listQueryKey = getReadCiList1QueryKey({})
     const invalidate = () => {
+        queryClient.invalidateQueries(listQueryKey)
         queryClient.invalidateQueries([CI_ITEM_QUERY_KEY, entityId])
         queryClient.invalidateQueries(getReadRelationshipsQueryKey(entityId))
         queryClient.invalidateQueries(getReadCiNeighboursQueryKey(entityId, {}))

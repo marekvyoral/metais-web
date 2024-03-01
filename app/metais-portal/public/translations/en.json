@@ -72,7 +72,8 @@
     "aboutApp": {
         "heading": "About the application",
         "portalVersion": "Portal version",
-        "version": "Version {{apiModul}}"
+        "version": "Version {{apiModul}}",
+        "undefinedVersion": "Module version unavailable"
     },
     "navbar": {
         "skip": "Skip to main content",
@@ -1593,7 +1594,8 @@
             "lastModifiedAt": "Last modified at",
             "modifiedBy": "Modified by",
             "uri": "URI",
-            "dataItemElements": "Child data elements"
+            "dataItemElements": "Child data elements",
+            "back": "Back"
         },
         "create": {
             "title": "New reference identifier",
@@ -1611,9 +1613,10 @@
             "dataElementType": "Data element consists of data elements",
             "datasetIncludesType": "Dataset contains items of data element type",
             "datasetDefines": "Dataset defines base counter",
-            "saveRequest": "Save",
+            "saveRequest": "Save request",
             "finishRequest": "Enter request",
-            "cancelRequest": "Cancel request"
+            "cancelRequest": "Cancel request",
+            "uriAlreadyExist": "URI already exists"
         }
     },
     "selectCiItem": {
@@ -1805,6 +1808,7 @@
         "userPreferencesSuccess": "Personal preferences were successfully saved",
         "changedUserInformation": "Personal information were successfully changed",
         "changedUserInformationError": "Error occurred while changing personal information. Please try again.",
+        "uniqueEmail": "Email must be unique. The user with this email already exists.",
         "defaultPerPage": "Default number of rows in tables",
         "defaultLang": "Default language",
         "myPoSelect": "Select organization",

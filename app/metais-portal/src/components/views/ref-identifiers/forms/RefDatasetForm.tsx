@@ -5,14 +5,13 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { OptionProps } from 'react-select'
 
-import { getDescriptionByAttribute, getNameByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
+import { getDescriptionByAttribute, getNameByAttribute, getRequiredByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
 import { REF_PORTAL_SUBMIT_ID } from '@/components/views/ref-identifiers/RefIdentifierCreateView'
 import {
     RefDatasetFormType,
@@ -23,7 +22,10 @@ import {
 type RefDatasetFormPropsType = {
     isUpdate: boolean
     isDisabled?: boolean
+    isUriExist: boolean
     onSubmit: (data: RefDatasetFormType, isSend: boolean) => void
+    onCancel: () => void
+    clearUriExist: () => void
     ciItemData?: ConfigurationItemUi
     attributes: Attribute[] | undefined
     ownerOptions: IOption<string>[]
@@ -34,6 +36,9 @@ type RefDatasetFormPropsType = {
 
 export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
     onSubmit,
+    onCancel,
+    isUriExist,
+    clearUriExist,
     isUpdate,
     ciItemData,
     attributes,
@@ -47,8 +52,6 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
         t,
         i18n: { language },
     } = useTranslation()
-
-    const navigate = useNavigate()
 
     const attributeList = [
         ATTRIBUTE_NAME.Gen_Profil_nazov,
@@ -70,11 +73,17 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
             attributes: Object.fromEntries(attributesDefaultValues),
         },
         mode: 'onChange',
-        resolver: yupResolver(refIdentifierCreateDatasetSchema(t)),
+        resolver: yupResolver(refIdentifierCreateDatasetSchema(t, attributes)),
     })
 
-    const { register, formState, setValue, handleSubmit, clearErrors } = methods
+    const { register, formState, setValue, setError, handleSubmit, clearErrors } = methods
     const { errors } = formState
+
+    useEffect(() => {
+        if (isUriExist) {
+            setError(`attributes.${ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu}`, { message: t('refIdentifiers.create.uriAlreadyExist') })
+        }
+    }, [isUriExist, setError, t])
 
     const buttonRefId = document.getElementById(REF_PORTAL_SUBMIT_ID)
 
@@ -105,8 +114,10 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
                     />
                 )}
                 <Input
-                    required
                     disabled={isDisabled}
+                    required={getRequiredByAttribute(
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu),
+                    )}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu),
@@ -116,11 +127,12 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu),
                     )}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu}`)}
+                    onBlur={clearUriExist}
                     error={errors?.attributes?.[ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu]?.message}
                 />
                 <Input
-                    required
                     disabled={isDisabled}
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov))}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov),
@@ -134,8 +146,8 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
                 />
 
                 <Input
-                    required
                     disabled={isDisabled}
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov))}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
@@ -149,6 +161,7 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
                 />
 
                 <SimpleSelect
+                    required
                     label={t('refIdentifiers.create.datasetIncludesType')}
                     options={templateUriOptions || {}}
                     setValue={setValue}
@@ -177,7 +190,9 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
 
                 <Input
                     disabled={isDisabled}
-                    required
+                    required={getRequiredByAttribute(
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIDataset_historicky_kod),
+                    )}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_URIDataset_historicky_kod),
@@ -192,6 +207,7 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
 
                 <TextArea
                     rows={3}
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis))}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis),
@@ -208,7 +224,7 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
                         <ButtonGroupRow>
                             <Button onClick={handleSubmit((data) => onSubmit(data, true))} label={t('refIdentifiers.create.finishRequest')} />
                             <Button onClick={handleSubmit((data) => onSubmit(data, false))} label={t('refIdentifiers.create.saveRequest')} />
-                            <Button variant="secondary" label={t('refRegisters.detail.items.cancel')} onClick={() => navigate(-1)} />
+                            <Button variant="secondary" onClick={onCancel} label={t('refIdentifiers.create.cancelRequest')} />
                         </ButtonGroupRow>,
                         buttonRefId,
                     )}

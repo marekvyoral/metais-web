@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom'
 import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
 import { useGroupsWithMeetings } from '@isdd/metais-common/api/generated/standards-swagger'
-import { useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import { GroupsListView } from '@/components/views/standardization/groups/GroupsListView'
 
@@ -18,7 +17,6 @@ export interface GroupWithMeetings extends Group {
 
 export const GroupsListContainer: React.FC = () => {
     const { t } = useTranslation()
-    const { isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
 
     const groupsColumns: ColumnDef<GroupWithMeetings>[] = [
         {
@@ -98,8 +96,8 @@ export const GroupsListContainer: React.FC = () => {
             selectedOrg={selectedOrg}
             setSelectedOrg={setSelectedOrg}
             handleSubmit={loadGroups}
-            isLoading={isLoading || isMeetingsLoading || !!isAbilityLoading}
-            isError={isError || isMeetingsError || !!isAbilityError}
+            isLoading={isLoading || isMeetingsLoading}
+            isError={isError || isMeetingsError}
             sort={sort}
             setSort={setSort}
         />

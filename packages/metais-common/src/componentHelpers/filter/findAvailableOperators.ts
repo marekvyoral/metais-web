@@ -23,6 +23,10 @@ export const findAvailableOperators = (
     )
     const all = operators.filter((item) => !currentAvailableOperators?.includes(item))
 
+    if (attType.customOperators?.length) {
+        return attType.customOperators
+    }
+
     if (attType.isArray && !hasEnumItems) {
         return onlyFulltextOrEqual
     }

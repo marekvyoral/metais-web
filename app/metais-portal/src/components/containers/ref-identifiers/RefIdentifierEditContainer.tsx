@@ -2,23 +2,25 @@ import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { ATTRIBUTE_NAME, RELATION_TYPE, RefIdentifierTypeEnum } from '@isdd/metais-common/api'
 import {
     NeighbourPairUi,
+    useInvalidateConfigurationItem,
     useInvalidateRelationship,
     useReadCiNeighbours,
     useStoreConfigurationItem,
     useStoreRelationship,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { INVALIDATED } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useInvalidateRefIdentifiersCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { splitList } from '@isdd/metais-common/utils/utils'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
-import { useInvalidateRefIdentifiersCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from '@/components/create-entity/createEntityHelpers'
 import { RefIdentifierCreateView } from '@/components/views/ref-identifiers/RefIdentifierCreateView'
@@ -47,9 +49,14 @@ const defaultInvalidateReasonMessage = 'Created new'
 export const RefIdentifierEditContainer: React.FC = () => {
     const { id: updateCiItemId } = useParams()
 
-    const { invalidate } = useInvalidateRefIdentifiersCache(updateCiItemId ?? '')
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { setIsActionSuccess } = useActionSuccess()
+    const { invalidate: invalidateCache } = useInvalidateRefIdentifiersCache(updateCiItemId ?? '')
 
     const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(updateCiItemId)
+
+    const [isUriExist, setIsUriExist] = useState<boolean>(false)
 
     const type = ciItemData?.type as RefIdentifierTypeEnum
 
@@ -62,6 +69,8 @@ export const RefIdentifierEditContainer: React.FC = () => {
         groupDataFiltered,
         templateUriOptions,
         dataItemTypeOptions,
+        checkUriIfExist,
+        isCheckUriLoading,
         isLoading: isRefLoading,
         isError: isRefError,
     } = useRefIdentifierHook(type)
@@ -121,8 +130,17 @@ export const RefIdentifierEditContainer: React.FC = () => {
     const defaultDataItemTemplateUriUuids = defaultDataItemTemplateUriList?.map((item) => item.configurationItem?.uuid ?? '') || []
 
     const onStatusSuccess = useCiCreateEditOnStatusSuccess(`${RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS}`)
+
     const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
     const { onSubmit, setUploadError, configurationItemId } = useCiCreateUpdateOnSubmit(type)
+
+    const onInvalidateStatusSuccess = () => {
+        invalidateCache()
+        const toPath = `${RouterRoutes.DATA_OBJECT_REF_IDENTIFIERS}/${updateCiItemId}`
+        setIsActionSuccess({ value: true, path: toPath, additionalInfo: { type: 'invalidate' } })
+        navigate(toPath, { state: { from: location } })
+    }
+
     const storeConfigurationItem = useStoreConfigurationItem({
         mutation: {
             onError() {
@@ -152,6 +170,25 @@ export const RefIdentifierEditContainer: React.FC = () => {
 
     const isLoading = [isCiItemLoading, isRefLoading, isRelationFetching].some((item) => item)
     const isError = [isCiItemError, isRefError, isRelationError].some((item) => item)
+
+    const {
+        mutateAsync: setInvalid,
+        isLoading: isInvalidating,
+        isError: isInvalidateError,
+    } = useInvalidateConfigurationItem({
+        mutation: {
+            onSuccess: (data) => {
+                if (data.requestId != null) {
+                    getRequestStatus(data.requestId, () => onInvalidateStatusSuccess())
+                } else {
+                    setUploadError(true)
+                }
+            },
+            onError: () => {
+                setUploadError(true)
+            },
+        },
+    })
 
     const updateCiItem = async (formData: FieldValues) => {
         const owner = groupDataFiltered.find((item) => item.orgId === formData[RefCatalogFormTypeEnum.OWNER])
@@ -260,9 +297,22 @@ export const RefIdentifierEditContainer: React.FC = () => {
             formData[RefDataItemFormTypeEnum.DATA_ITEM],
             ownerRoleGid,
         )
-        invalidate()
+        invalidateCache()
     }
     const handleDatasetSubmit = async (formData: RefDatasetFormType) => {
+        if (
+            ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu] !==
+            formData.attributes[ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu]
+        ) {
+            const isExisting = await checkUriIfExist(
+                ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri,
+                formData.attributes[ATTRIBUTE_NAME.Profil_URIDataset_uri_datasetu],
+            )
+            if (isExisting) {
+                return setIsUriExist(true)
+            }
+        }
+
         const { ownerRoleGid, uuid } = await updateCiItem(formData)
 
         if (defaultDatasetZC?.configurationItem?.uuid !== formData[RefDatasetFormTypeEnum.DATA_CODE]) {
@@ -283,9 +333,20 @@ export const RefIdentifierEditContainer: React.FC = () => {
                 ownerRoleGid,
             )
         }
-        invalidate()
+        invalidateCache()
     }
     const handleTemplateUriSubmit = async (formData: RefTemplateUriFormType) => {
+        if (
+            ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri] !== formData.attributes[ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri]
+        ) {
+            const isExisting = await checkUriIfExist(
+                ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri,
+                formData.attributes[ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri],
+            )
+            if (isExisting) {
+                return setIsUriExist(true)
+            }
+        }
         const { ownerRoleGid, uuid } = await updateCiItem(formData)
 
         if (defaultTemplateUri?.configurationItem?.uuid !== formData[RefTemplateUriFormTypeEnum.TEMPLATE_URI]) {
@@ -297,10 +358,16 @@ export const RefIdentifierEditContainer: React.FC = () => {
                 ownerRoleGid,
             )
         }
-        invalidate()
+        invalidateCache()
     }
 
     const handleCatalogSubmit = async (formData: RefCatalogFormType) => {
+        if (ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_URIKatalog_uri] !== formData.attributes[ATTRIBUTE_NAME.Profil_URIKatalog_uri]) {
+            const isExisting = await checkUriIfExist(ATTRIBUTE_NAME.Profil_URIKatalog_uri, formData.attributes[ATTRIBUTE_NAME.Profil_URIKatalog_uri])
+            if (isExisting) {
+                return setIsUriExist(true)
+            }
+        }
         const { ownerRoleGid, uuid } = await updateCiItem(formData)
         if (defaultCatalogPO?.configurationItem?.uuid !== formData[RefCatalogFormTypeEnum.PO]) {
             createNewRelation(RELATION_TYPE.PO_je_gestor_URIKatalog, defaultCatalogPO, formData[RefCatalogFormTypeEnum.PO], uuid, ownerRoleGid)
@@ -313,7 +380,22 @@ export const RefIdentifierEditContainer: React.FC = () => {
             ownerRoleGid,
             true,
         )
-        invalidate()
+        invalidateCache()
+    }
+
+    const handleCancelRequest = () => {
+        if (ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie] == 'c_stav_registracie.1') {
+            setInvalid({
+                data: {
+                    attributes: Object.keys(ciItemData.attributes).map((key) => ({ value: ciItemData.attributes?.[key], name: key })),
+                    invalidateReason: { comment: '' },
+                    type: ciItemData.type,
+                    uuid: ciItemData.uuid,
+                },
+            })
+        } else {
+            navigate(-1)
+        }
     }
 
     const isDisabled = ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie] === 'c_stav_registracie.2'
@@ -338,6 +420,9 @@ export const RefIdentifierEditContainer: React.FC = () => {
             defaultDatasetItem={defaultDatasetItem?.configurationItem?.uuid}
             type={type}
             isDisabled={isDisabled}
+            isUriExist={isUriExist}
+            clearUriExist={() => setIsUriExist(false)}
+            handleCancelRequest={handleCancelRequest}
             handleCatalogSubmit={handleCatalogSubmit}
             handleTemplateUriSubmit={handleTemplateUriSubmit}
             handleDataItemSubmit={handleDataItemSubmit}
@@ -345,8 +430,8 @@ export const RefIdentifierEditContainer: React.FC = () => {
             wrapperRef={wrapperRef}
             isUpdate
             isProcessedError={isProcessedError}
-            isRedirectError={isRedirectError || isStoreRelationsError}
-            isRedirectLoading={isRedirectLoading || isStoreRelationsLoading}
+            isRedirectError={isRedirectError || isStoreRelationsError || isInvalidateError}
+            isRedirectLoading={isRedirectLoading || isStoreRelationsLoading || isInvalidating || isCheckUriLoading}
             isStoreError={storeConfigurationItem.error}
             isTooManyFetchesError={isTooManyFetchesError}
             isLoading={isLoading}
