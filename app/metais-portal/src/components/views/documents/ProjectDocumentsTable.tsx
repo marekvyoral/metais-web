@@ -192,15 +192,32 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
         <ButtonLink key={'buttonUpload'} label={t('actionOverTable.options.uploadDocument')} onClick={async () => uploadXWikiDoc(row)} />,
     ]
 
-    const resolveAction = (row: CellContext<IDocType, unknown>): JSX.Element[] => {
-        if (row.cell.row.original.uuid == undefined && !row.cell.row.original.confluence) {
-            return getAddAction(row)
-        } else if (row.cell.row.original.confluence) {
-            return getConfluenceActions(row)
-        }
-        return getDefaultBulkActions(row)
-    }
+    const getTemplateActions = (row: CellContext<IDocType, unknown>, closePopup: () => void) => [
+        <ButtonLink
+            key={'buttonDownloadTemplate'}
+            label={t('actionOverTable.options.downloadTemplate')}
+            onClick={async () => {
+                const response = await getMeta(row.cell.row.original.templateUuid ?? '')
+                if (response) {
+                    downloadFile(`${DMS_DOWNLOAD_FILE}${row.cell.row.original.templateUuid}`, response.filename ?? 'template')
+                    closePopup()
+                }
+            }}
+        />,
+    ]
 
+    const resolveAction = (row: CellContext<IDocType, unknown>, closePopup: () => void): JSX.Element[] => {
+        let actions: JSX.Element[] = getDefaultBulkActions(row)
+        if (row.cell.row.original.uuid == undefined && !row.cell.row.original.confluence) {
+            actions = getAddAction(row)
+        } else if (row.cell.row.original.confluence) {
+            actions = getConfluenceActions(row)
+        }
+        if (row.cell.row.original.templateUuid) {
+            actions = [...actions, ...getTemplateActions(row, closePopup)]
+        }
+        return actions
+    }
     const columns: Array<ColumnDef<IDocType>> = [
         {
             accessorKey: 'selected',
@@ -256,7 +273,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         }}
                     />
                 ) : (
-                    (row.getValue() as string)
+                    (row.getValue() as string) + ' ' + (row.cell.row.original.required && t('input.requiredField'))
                 )
             },
         },
@@ -304,7 +321,9 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             header: '',
             id: 'bulkActions',
             size: 100,
-            cell: (row) => <BulkPopup label={t('actionOverTable.options.title')} items={() => resolveAction(row)} />,
+            cell: (row) => (
+                <BulkPopup popupPosition="right" label={t('actionOverTable.options.title')} items={(closePopup) => resolveAction(row, closePopup)} />
+            ),
         },
     ]
 
