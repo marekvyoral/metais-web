@@ -66,8 +66,8 @@ export const ProjectDocumentsListContainer: React.FC<IProjectDocumentsListContai
 
     useEffect(() => {
         setSectionsByState(requiredDocuments?.find((rd) => rd.stavId == projectData?.attributes?.EA_Profil_Projekt_status))
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [projectData?.attributes?.EA_Profil_Projekt_status])
+    }, [projectData?.attributes?.EA_Profil_Projekt_status, requiredDocuments])
+
     const { currentPreferences } = useUserPreferences()
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
     const defaultRequestApi = {
