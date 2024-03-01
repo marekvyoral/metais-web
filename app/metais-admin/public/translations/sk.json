@@ -1231,7 +1231,12 @@
         "moreOptions": "Viac možností",
         "documentGroup": "Skupina dokumentov",
         "type": "Typ",
-        "deleteTooltip": "Odstránenie je povolené len pre prázdne skupiny (najskôr odstráňte existujúce dokumenty)"
+        "deleteTooltip": "Odstránenie je povolené len pre prázdne skupiny (najskôr odstráňte existujúce dokumenty)",
+        "uploadTemplate": "Nahrať šablónu",
+        "deleteTemplate": "Odstrániť šablónu",
+        "deleteTemplateText": "Naozaj chcete odstrániť nasledujúcu šablónu?",
+        "templateSuccessfullyAdded": "Šablóna bola úspešne pridaná",
+        "templateSuccessfullyDeleted": "Šablóna bola úspešne vymazaná"
     },
     "homePage": {
         "placeholder": "Domov - pre zobrazenie navigácie je potrebné sa prihlásiť.",
@@ -1524,5 +1529,20 @@
     "close": "Zavrieť",
     "accessibility": {
         "navigated": "Zmena stránky na {{pageTitle}}"
+    },
+    "fileImport": {
+        "uploadFailed": "Import bol neúspešný.",
+        "retry": "Skúsiť znova",
+        "header": "Import položiek alebo vzťahov",
+        "onlyExisting": "Upraviť len existujúce položky",
+        "existingAndNew": "Upraviť existujúce a pridať nové",
+        "dropHere": "Potiahnite a pustite súbory sem",
+        "or": "Alebo",
+        "chooseFile": "Vybrať súbor",
+        "browse": "Nie je vybratý žiadny súbor (max. veľkosť súboru 20MB).",
+        "import": "Importovať",
+        "cancel": "Zrušiť",
+        "validate": "Zvalidovať",
+        "done": "Súbory sú naimportované."
     }
 }

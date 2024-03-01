@@ -912,6 +912,7 @@
         "options": {
             "title": "Možnosti",
             "download": "Stiahnuť",
+            "downloadTemplate": "Stiahnuť šablónu",
             "update": "Aktualizovať",
             "invalidate": "Zneplatniť",
             "delete": "Zmazať",

@@ -907,6 +907,7 @@
         "options": {
             "title": "Options",
             "download": "Download",
+            "downloadTemplate": "Download template",
             "update": "Update",
             "invalidate": "Invalidate",
             "delete": "Delete",
