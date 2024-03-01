@@ -1,22 +1,17 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
-import { Languages } from '@isdd/metais-common/localization/languages'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { ITVSExceptionsCreateContainer } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
 import { useCiCreateEntityHook } from '@/hooks/useCiCreateEntity.hook'
+import { CreateTrainingEntityView } from '@/components/views/ci/create/CreateTrainingEntityView'
 
-const CreateITVSExceptionsPage: React.FC = () => {
-    const { t, i18n } = useTranslation()
+const CreateTrainingEntityPage: React.FC = () => {
+    const { t } = useTranslation()
     const { entityName } = useGetEntityParamsFromUrl()
-    const { data: ciTypeData } = useGetCiType(entityName ?? '')
-    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
     const ciCreateData = useCiCreateEntityHook({ entityName: entityName ?? '' })
-
     document.title = `${t('titles.ciCreateEntity', { ci: ciCreateData.ciTypeName })} ${META_IS_TITLE}`
 
     return (
@@ -25,15 +20,18 @@ const CreateITVSExceptionsPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: ciTypeName ?? '', href: `/ci/${entityName}` },
-                    { label: `${t('breadcrumbs.ciCreate', { entityName: t('ITVSExceptions.vynimky_ITVS') })}`, href: `/ci/create` },
+                    { label: t('titles.ciList', { ci: ciCreateData.ciTypeName }), href: `/ci/${entityName}` },
+                    {
+                        label: t('breadcrumbs.ciCreateEntity', { entityName: ciCreateData.data.attributesData.ciTypeData?.name }),
+                        href: `/ci/create`,
+                    },
                 ]}
             />
             <MainContentWrapper>
-                <ITVSExceptionsCreateContainer {...ciCreateData} />
+                <CreateTrainingEntityView {...ciCreateData} />
             </MainContentWrapper>
         </>
     )
 }
 
-export default CreateITVSExceptionsPage
+export default CreateTrainingEntityPage

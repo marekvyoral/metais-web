@@ -118,6 +118,7 @@ export enum RouterRoutes {
     CI_TRAINING_DETAIL = 'ci/Training/:entityId',
     CI_TRAINING_INVITE = 'ci/Training/:entityId/invite',
     CI_TRAINING_CREATE = 'ci/Training/create',
+    CI_TRAINING_EDIT = 'ci/Training/:entityId/edit',
     CI_PRINCIPLE_DETAIL = 'ci/Princip/:entityId',
     CI_PRINCIPLE_CREATE = 'ci/Princip/create',
     CI_GOAL_DETAIL = 'ci/Ciel/:entityId',
