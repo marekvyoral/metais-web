@@ -67,7 +67,8 @@
     "aboutApp": {
         "heading": "O aplikácii",
         "portalVersion": "Verzia portálu",
-        "version": "Verzia {{apiModul}}"
+        "version": "Verzia {{apiModul}}",
+        "undefinedVersion": "Verzia modulu nedostupná"
     },
     "navbar": {
         "home": "Domov",
@@ -371,7 +372,15 @@
             "ACTIVATED": "Aktivovaný"
         },
         "block": "Blokovať",
+        "changeRoles": "Zmeniť role",
+        "organizationUnit": "Povinná osoba",
+        "individualsRoles": "Jednotlivé role",
+        "addRoles": "Pridať role",
+        "removeRoles": "Odstrániť role",
         "unblock": "Odblokovať",
+        "successMessageUpdateRolesAll": "Role boli úspešne aktualizované",
+        "successMessageUpdateRolesSome": "Niektoré role neboli úspešne aktualizované",
+        "successMessageUpdateRolesFailRole": "nepodarilo sa aktualizovať rolu ",
         "edit": "Upraviť",
         "changePassword": "Zmeniť heslo",
         "addNewUser": "Pridať nového použivateľa",
@@ -1083,6 +1092,7 @@
         "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené.",
         "changedUserInformation": "Osobné informácie boli úspešne zmenené.",
         "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím, skúste vykonať zmeny znova.",
+        "uniqueEmail": "E-mail musí byť unikátny. Používateľ s týmto e-mailom už existuje.",
         "defaultPerPage": "Prednastavený počet riadkov v tabuľke",
         "defaultLang": "Prednastavený jazyk",
         "myPoSelect": "Vyberte PO",

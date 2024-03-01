@@ -1,14 +1,12 @@
-import { Group, Person, StdHistory, useGetStdHistoryHook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Person, StdHistory, useGetStdHistoryHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import { MembershipHistoryView } from '@/components/views/standardization/groups/MembershipHistoryView'
 
 export const MembershipHistoryContainer: React.FC = () => {
     const { t } = useTranslation()
-    const { isLoading: isAbilityLoading } = useAbilityContextWithFeedback()
 
     const historyColumns: ColumnDef<StdHistory>[] = [
         {
@@ -47,7 +45,7 @@ export const MembershipHistoryContainer: React.FC = () => {
         },
     ]
 
-    const [selectedGroup, setSelectedGroup] = useState<Group | undefined>(undefined)
+    const [selectedGroup, setSelectedGroup] = useState('')
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
     const [membershipHistory, setMembershipHistory] = useState<StdHistory[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -58,7 +56,7 @@ export const MembershipHistoryContainer: React.FC = () => {
         setIsLoading(true)
         event.preventDefault()
         const midNight = new Date(new Date(selectedDate ?? '').setHours(23, 59, 59, 999)).getTime()
-        await historyHook({ groupShortName: selectedGroup?.shortName ?? '', createdAt: midNight }).then((res) => {
+        await historyHook({ groupShortName: selectedGroup ?? '', createdAt: midNight }).then((res) => {
             setMembershipHistory(res)
             setIsLoading(false)
         })
@@ -73,7 +71,7 @@ export const MembershipHistoryContainer: React.FC = () => {
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             handleSubmit={loadMembershipHistory}
-            isLoading={isLoading || !!isAbilityLoading}
+            isLoading={isLoading}
         />
     )
 }

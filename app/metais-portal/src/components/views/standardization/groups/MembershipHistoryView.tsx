@@ -1,6 +1,6 @@
 import React, { SetStateAction, useState } from 'react'
 import { Button, GridCol, GridRow, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
-import { Group, StdHistory } from '@isdd/metais-common/api/generated/iam-swagger'
+import { StdHistory } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ColumnDef } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
@@ -15,8 +15,8 @@ import styles from './styles.module.scss'
 interface IMembershipHistoryView {
     membershipHistory: StdHistory[] | undefined
     columns: ColumnDef<StdHistory>[]
-    selectedGroup: Group | undefined
-    setSelectedGroup: React.Dispatch<SetStateAction<Group | undefined>>
+    selectedGroup: string
+    setSelectedGroup: React.Dispatch<SetStateAction<string>>
     selectedDate: Date | undefined
     setSelectedDate: React.Dispatch<SetStateAction<Date | undefined>>
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
@@ -56,15 +56,15 @@ export const MembershipHistoryView: React.FC<IMembershipHistoryView> = ({
         <>
             <div className="idsk-table-filter idsk-table-filter__panel">
                 <form onSubmit={handleSubmit}>
-                    <GroupSelect selectedGroup={selectedGroup} setSelectedGroup={setSelectedGroup} />
+                    <GroupSelect setSelectedGroup={setSelectedGroup} />
                     <GridRow>
-                        <GridCol setWidth="one-half">
+                        <GridCol>
                             <label className="govuk-label" htmlFor="historyDatePicker">
                                 {t('groups.selectDate')}
                             </label>
                             <DatePicker
                                 id="historyDatePicker"
-                                className={classNames('govuk-input')}
+                                className={classNames('govuk-input', styles.rowItem)}
                                 wrapperClassName={styles.fullWidth}
                                 popperClassName={styles.zIndex}
                                 placeholderText="dd.mm.yyyy"
@@ -77,7 +77,7 @@ export const MembershipHistoryView: React.FC<IMembershipHistoryView> = ({
                             />
                         </GridCol>
                     </GridRow>
-                    <div className={classNames(styles.displayFlex, styles.flexEnd)}>
+                    <div className={classNames(styles.displayFlex, styles.flexEnd, styles.marginTop)}>
                         <Button label={t('groups.show')} className={'idsk-button'} type="submit" disabled={!selectedGroup || !selectedDate} />
                     </div>
                 </form>

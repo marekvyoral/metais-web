@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, MouseEvent } from 'react'
+import React, { FC, useEffect, useState, MouseEvent, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { UseFormSetValue } from 'react-hook-form'
@@ -34,6 +34,14 @@ export interface FilterAttribute {
     name?: string
 }
 
+export interface ExtendedAttribute extends Attribute {
+    customComponent?: (
+        value: FilterAttribute,
+        onChange: (data: FilterAttribute, prevData?: FilterAttribute, isNewName?: boolean) => void,
+    ) => ReactNode
+    customOperators?: string[]
+}
+
 type FilterData = {
     attributeFilters: IAttributeFilters
     metaAttributeFilters: FilterMetaAttributesUi
@@ -43,7 +51,7 @@ interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     defaults: { [key: string]: any }
     setValue: UseFormSetValue<IFilterParams>
-    attributes: Attribute[] | undefined
+    attributes: ExtendedAttribute[] | undefined
     attributeProfiles: AttributeProfile[] | undefined
     constraintsData: (EnumType | undefined)[] | undefined
     ignoreInputNames?: string[]
@@ -72,8 +80,9 @@ export const DynamicFilterAttributes: FC<Props> = ({
     const combinedAttributes = [
         ...(attributes ?? []),
         ...(attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? []),
-        ...(getCiDefaultMetaAttributes({ t }).attributes as Attribute[]),
+        ...(getCiDefaultMetaAttributes({ t }).attributes as ExtendedAttribute[]),
     ]
+
     const filteredAvailable = attributeProfiles?.map((profile) => {
         const defaultKeys = Object.keys(defaults)
         const newProfile = { ...profile }
@@ -84,7 +93,6 @@ export const DynamicFilterAttributes: FC<Props> = ({
     useEffect(() => {
         // this should happened only on mount is one time thing which restore params from url
         const filterAttributes: FilterAttribute[] = []
-
         if (metaAttributeFiltersData) {
             const formattedMetaAttributes = filterAttributesBasedOnIgnoreList(
                 formatMetaAttributesToFilterAttributeType(metaAttributeFiltersData),
@@ -176,6 +184,7 @@ export const DynamicFilterAttributes: FC<Props> = ({
             setAddRowError(t('customAttributeFilter.addRowErrorMessage', { value: MAX_DYNAMIC_ATTRIBUTES_LENGHT }))
         }
     }
+
     return (
         <div>
             {dynamicAttributes.map((attribute, index) => (

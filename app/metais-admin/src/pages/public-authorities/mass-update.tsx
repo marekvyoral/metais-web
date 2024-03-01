@@ -89,6 +89,7 @@ const MassUpdate = () => {
                     isLoading,
                     rowSelection,
                     setRowSelection,
+                    refetch,
                 }) => (
                     <MainContentWrapper>
                         <QueryFeedback withChildren loading={isLoading || isActionLoading} error={false}>
@@ -120,6 +121,7 @@ const MassUpdate = () => {
                                 sort={sort}
                                 isLoading={isLoading}
                                 error={isError}
+                                refetch={refetch}
                             />
                         </QueryFeedback>
                     </MainContentWrapper>

@@ -10,18 +10,18 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 
+import { getDescriptionByAttribute, getNameByAttribute, getRequiredByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
 import { REF_PORTAL_SUBMIT_ID } from '@/components/views/ref-identifiers/RefIdentifierCreateView'
 import {
     RefDataItemFormType,
     RefDataItemFormTypeEnum,
     refIdentifierCreateDataItemSchema,
 } from '@/components/views/ref-identifiers/forms/refCreateSchema'
-import { getDescriptionByAttribute, getNameByAttribute } from '@/components/views/codeLists/CodeListDetailUtils'
 
 type RefDataItemFormPropsType = {
     onSubmit: (data: RefDataItemFormType, isSend: boolean) => void
+    onCancel: () => void
     isUpdate: boolean
     ciItemData?: ConfigurationItemUi
     attributes: Attribute[] | undefined
@@ -37,6 +37,7 @@ type RefDataItemFormPropsType = {
 
 export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
     onSubmit,
+    onCancel,
     isUpdate,
     ciItemData,
     attributes,
@@ -51,8 +52,6 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
         t,
         i18n: { language },
     } = useTranslation()
-
-    const navigate = useNavigate()
 
     const attributeList = [
         ATTRIBUTE_NAME.Gen_Profil_nazov,
@@ -101,7 +100,7 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                     />
                 )}
                 <Input
-                    required
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov))}
                     disabled={isDisabled}
                     label={getNameByAttribute(
                         language,
@@ -116,8 +115,8 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                 />
 
                 <Input
-                    required
                     disabled={isDisabled}
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov))}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov),
@@ -131,8 +130,10 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                 />
 
                 <Input
-                    required
                     disabled={isDisabled}
+                    required={getRequiredByAttribute(
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku),
+                    )}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_kod_datoveho_prvku),
@@ -147,6 +148,9 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
 
                 <SimpleSelect
                     disabled={isDisabled}
+                    required={getRequiredByAttribute(
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku),
+                    )}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_typ_datoveho_prvku),
@@ -165,8 +169,10 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                 />
 
                 <Input
-                    required
                     disabled={isDisabled}
+                    required={getRequiredByAttribute(
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod),
+                    )}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_historicky_kod),
@@ -194,6 +200,7 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                 />
 
                 <MultiSelect
+                    required
                     label={t('refIdentifiers.create.dataElementType')}
                     name={RefDataItemFormTypeEnum.DATA_ITEM}
                     options={templateUriOptions || {}}
@@ -205,7 +212,9 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                 />
 
                 <DateInput
-                    required
+                    required={getRequiredByAttribute(
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti),
+                    )}
                     handleDateChange={(date, name) => date && setValue(name as keyof RefDataItemFormType, DateTime.fromJSDate(date).toISO() ?? '')}
                     setValue={setValue}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_zaciatok_ucinnosti}`)}
@@ -222,6 +231,9 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                 />
 
                 <DateInput
+                    required={getRequiredByAttribute(
+                        attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_DatovyPrvok_koniec_ucinnosti),
+                    )}
                     handleDateChange={(date, name) => date && setValue(name as keyof RefDataItemFormType, DateTime.fromJSDate(date).toISO() ?? '')}
                     setValue={setValue}
                     {...register(`attributes.${ATTRIBUTE_NAME.Profil_DatovyPrvok_koniec_ucinnosti}`)}
@@ -239,6 +251,7 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
 
                 <TextArea
                     rows={3}
+                    required={getRequiredByAttribute(attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis))}
                     label={getNameByAttribute(
                         language,
                         attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_popis),
@@ -256,7 +269,7 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
                         <ButtonGroupRow>
                             <Button onClick={handleSubmit((data) => onSubmit(data, true))} label={t('refIdentifiers.create.finishRequest')} />
                             <Button onClick={handleSubmit((data) => onSubmit(data, false))} label={t('refIdentifiers.create.saveRequest')} />
-                            <Button variant="secondary" label={t('refRegisters.detail.items.cancel')} onClick={() => navigate(-1)} />
+                            <Button variant="secondary" onClick={onCancel} label={t('refIdentifiers.create.cancelRequest')} />
                         </ButtonGroupRow>,
                         buttonRefId,
                     )}

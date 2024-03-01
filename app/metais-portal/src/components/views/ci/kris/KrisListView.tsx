@@ -4,7 +4,7 @@ import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/
 import { formatAttributeOperatorString } from '@isdd/metais-common/componentHelpers/filter/formatAttirbuteOperatorString'
 import { CreateEntityButton } from '@isdd/metais-common/components/actions-over-table'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { DynamicFilterAttributes, ExtendedAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { SelectPOForFilter } from '@isdd/metais-common/components/select-po/SelectPOForFilter'
 import { DEFAULT_PAGESIZE_OPTIONS, KRIScolumnsTechNames, PO } from '@isdd/metais-common/constants'
@@ -102,7 +102,7 @@ export const KrisListView: React.FC<ICiListContainerView<KRISFilterType>> = ({
                                     attributeFilters: filter.attributeFilters ?? {},
                                     metaAttributeFilters: filter.metaAttributeFilters ?? {},
                                 }}
-                                attributes={attributesForFilter}
+                                attributes={attributesForFilter as ExtendedAttribute[]}
                                 attributeProfiles={[]}
                                 constraintsData={constraintsData}
                                 ignoreInputNames={[MetainformationColumns.OWNER, MetainformationColumns.CREATED_AT, MetainformationColumns.STATE]}

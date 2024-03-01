@@ -211,20 +211,11 @@ export const useGetColumnData = (entityName: string, renameColumns?: boolean) =>
 
 export const useFilterForCiList = <T extends FieldValues & IFilterParams, V>(defaultFilterValues: T, defaultRequestApi?: V) => {
     const {
-        state: { user },
-    } = useAuth()
-
-    const isUserLogged = !!user
-    const {
         filter: filterParams,
         handleFilterChange,
         reset,
     } = useFilterParams<T & IFilter>({
-        sort: [
-            isUserLogged
-                ? { orderBy: ATTRIBUTE_NAME.Gen_Profil_nazov, sortDirection: SortType.ASC }
-                : { orderBy: ATTRIBUTE_NAME.createdAt, sortDirection: SortType.DESC },
-        ],
+        sort: [{ orderBy: ATTRIBUTE_NAME.lastModifiedAt, sortDirection: SortType.DESC }],
         ...defaultFilterValues,
     })
 

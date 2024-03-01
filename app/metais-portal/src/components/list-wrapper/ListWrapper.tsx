@@ -16,7 +16,7 @@ import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-ta
 import { ExportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ExportButton'
 import { ImportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ImportButton'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
-import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { DynamicFilterAttributes, ExtendedAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_PROJECT, ENTITY_TRAINING, ROLES } from '@isdd/metais-common/constants'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
@@ -164,7 +164,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                     metaAttributeFilters: filter.metaAttributeFilters ?? {},
                                 }}
                                 ciName={ciName}
-                                attributes={attributes}
+                                attributes={attributes as ExtendedAttribute[]}
                                 attributeProfiles={attributeProfiles}
                                 constraintsData={constraintsData}
                             />

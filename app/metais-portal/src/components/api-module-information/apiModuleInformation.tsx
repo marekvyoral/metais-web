@@ -9,13 +9,13 @@ interface ApiModuleInformationProps {
 
 const ApiModuleInformation: React.FC<ApiModuleInformationProps> = ({ moduleName }) => {
     const { t } = useTranslation()
-    const [apiModule, setApiModule] = useState<{ chart: { version: string } }>()
+    const [apiModule, setApiModule] = useState<{ chart: { version: string }; app: { version: string } }>()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
-
+    const versions = apiModule?.chart?.version && apiModule?.app?.version
     useEffect(() => {
         setLoading(true)
-        fetch(`https://ui-legacy-metais3.apps.dev.isdd.sk/${moduleName}/endpoints/info`)
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/${moduleName}/endpoints/info`)
             .then((response) => response.json())
             .then((json) => {
                 setApiModule(json)
@@ -29,7 +29,12 @@ const ApiModuleInformation: React.FC<ApiModuleInformationProps> = ({ moduleName 
 
     return (
         <QueryFeedback loading={loading} error={error} withChildren>
-            <InformationGridRow key={moduleName} label={t('aboutApp.version', { apiModul: moduleName })} value={apiModule?.chart?.version} hideIcon />
+            <InformationGridRow
+                key={moduleName}
+                label={t('aboutApp.version', { apiModul: moduleName })}
+                value={versions ? `${apiModule?.chart?.version} / ${apiModule?.app?.version}` : t('aboutApp.undefinedVersion')}
+                hideIcon
+            />
         </QueryFeedback>
     )
 }

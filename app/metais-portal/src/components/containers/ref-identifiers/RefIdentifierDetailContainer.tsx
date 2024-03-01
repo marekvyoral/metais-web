@@ -5,7 +5,8 @@ import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { STAV_REGISTRACIE, TYP_DATOVEHO_PRVKU } from '@isdd/metais-common/constants'
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
-import React from 'react'
+import React, { useMemo } from 'react'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { RefIdentifierDetailView } from '@/components/views/ref-identifiers/RefIdentifierDetailView'
 
@@ -18,6 +19,7 @@ export interface RefIdentifierDetailContainerViewProps {
     gestorName: string | undefined
     ciList: ConfigurationItemUi[] | undefined
     ciItemId: string
+    canEdit?: boolean
     isLoading: boolean
     isError: boolean
 }
@@ -36,6 +38,10 @@ interface RefIdentifierDetailContainerProps {
 }
 
 export const RefIdentifierDetailContainer: React.FC<RefIdentifierDetailContainerProps> = ({ id }) => {
+    const {
+        state: { user },
+    } = useAuth()
+
     const { data: registrationState, isLoading: isRegistrationStateLoading, isError: isRegistrationStateError } = useGetValidEnum(STAV_REGISTRACIE)
     const {
         data: dataItemTypeState,
@@ -107,6 +113,20 @@ export const RefIdentifierDetailContainer: React.FC<RefIdentifierDetailContainer
 
     const attributeList = attributes?.concat(...attributesArrays)
 
+    const canEdit = useMemo(() => {
+        if (ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie] !== 'c_stav_registracie.4') {
+            return user?.groupData.some((group) =>
+                group.roles.some(
+                    (role) =>
+                        (role.roleName === 'REFID_URI_DEF' &&
+                            ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_RefID_stav_registracie] !== 'c_stav_registracie.1') ||
+                        role.gid === ciItemData?.metaAttributes?.owner,
+                ),
+            )
+        }
+        return false
+    }, [ciItemData?.attributes, ciItemData?.metaAttributes?.owner, user?.groupData])
+
     const isLoading = [
         isRegistrationStateLoading,
         isDataItemTypeStatesLoading,
@@ -138,6 +158,7 @@ export const RefIdentifierDetailContainer: React.FC<RefIdentifierDetailContainer
                 registrationState={registrationState}
                 gestorName={gestorName}
                 attributes={attributeList}
+                canEdit={canEdit}
                 isLoading={isLoading}
                 isError={isError}
             />

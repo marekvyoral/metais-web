@@ -59,3 +59,11 @@
 .zIndex {
     z-index: 9999;
 }
+
+.rowItem {
+    flex: 1;
+}
+
+.marginTop {
+    margin-top: govuk-spacing(4);
+}
