@@ -97,6 +97,7 @@ export enum ATTRIBUTE_NAME {
     Profil_Kontrakt_podpora_instrukcie_kontaktovania = 'Profil_Kontrakt_podpora_instrukcie_kontaktovania',
     Profil_Kontrakt_podpora_max_odozva_mimo_prevadzky = 'Profil_Kontrakt_podpora_max_odozva_mimo_prevadzky',
     Profil_Kontrakt_podpora_max_odozva_pocas_prevadzky = 'Profil_Kontrakt_podpora_max_odozva_pocas_prevadzky',
+    Profil_Skolenie = 'Profil_Skolenie',
     Profil_Skolenie_pocet_volnych_miest = 'Profil_Skolenie_pocet_volnych_miest',
     Profil_Skolenie_pocet_miest = 'Profil_Skolenie_pocet_miest',
 }

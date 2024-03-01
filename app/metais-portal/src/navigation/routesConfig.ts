@@ -138,6 +138,8 @@ import CookiesSettings from '@/pages/cookies/settings'
 import { ReportsDetailPage } from '@/pages/reports/[entityId]/report'
 import CookiesInfoPage from '@/pages/cookies/info'
 import DeclarationPage from '@/pages/technical/declaration'
+import CreateTrainingEntityPage from '@/pages/ci/Trainings/create'
+import EditTrainingEntityPage from '@/pages/ci/Trainings/[entityId]/edit'
 import AboutApplicationPage from '@/pages/about-application/aboutApp'
 
 export interface RouteConfig {
@@ -666,7 +668,12 @@ export const routesConfig: RouteConfig[] = [
             {
                 path: RouterRoutes.CI_TRAINING_CREATE,
                 slug: RouterRoutes.CI_TRAINING_CREATE,
-                component: CreateEntityPage,
+                component: CreateTrainingEntityPage,
+            },
+            {
+                path: RouterRoutes.CI_TRAINING_EDIT,
+                slug: RouterRoutes.CI_TRAINING_EDIT,
+                component: EditTrainingEntityPage,
             },
             {
                 path: RouterRoutes.CI_TRAINING_INVITE,
