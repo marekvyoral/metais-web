@@ -106,6 +106,7 @@ export enum ATTRIBUTE_NAME {
 }
 
 export enum ATTRIBUTE_PROFILE_NAME {
+    Gen_Profil_EA = 'Gen_Profil_EA',
     Profil_KRIS = 'Profil_KRIS',
     Financny_Profil_Projekt = 'Financny_Profil_Projekt',
     Integracia_Profil_Integracia = 'Integracia_Profil_Integracia',

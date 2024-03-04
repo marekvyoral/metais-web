@@ -278,8 +278,8 @@ export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
     return { uploadError, setUploadError, configurationItemId, onSubmit }
 }
 
-export const getValidAndVisibleAttributes = (ciTypeData: CiType | undefined): (Attribute | undefined)[] => {
-    return [...(ciTypeData?.attributes ?? []), ...(ciTypeData?.attributeProfiles?.flatMap((profile) => profile.attributes) ?? [])].filter(
+export const getValidAndVisibleAttributes = (ciTypeData: CiType | undefined): Attribute[] => {
+    return [...(ciTypeData?.attributes ?? []), ...(ciTypeData?.attributeProfiles?.flatMap((profile) => profile.attributes ?? []) ?? [])].filter(
         (att) => att && !att.invisible && att.valid,
     )
 }
