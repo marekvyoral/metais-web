@@ -189,7 +189,7 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
                 <div className="idsk-graph__meta">
                     <div className={classnames(styles.buttonRow, 'idsk-graph__meta-download-share')}>
                         <ButtonPopup
-                            buttonLabel={'Export'}
+                            buttonLabel={t('graph.button.export')}
                             popupContent={(closePopup) => (
                                 <div>
                                     <div>
@@ -208,7 +208,7 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
                         />
 
                         <ButtonPopup
-                            buttonLabel={'Type'}
+                            buttonLabel={t('graph.button.type')}
                             popupContent={(closePopup) => (
                                 <div className={styles.typeFilter}>
                                     {Object.keys(filterTypes).map((key) => {

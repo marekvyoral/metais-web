@@ -3,7 +3,11 @@
         "zoomIn": "Zoom in",
         "zoomOut": "Zoom out",
         "exportPNG": "As PNG",
-        "exportPDF": "As PDF"
+        "exportPDF": "As PDF",
+        "button": {
+            "export": "Export graph",
+            "type": "Entity type"
+        }
     },
     "footer": {
         "metaisServices": "MetaIS Services",
@@ -230,6 +234,7 @@
         "searchPlaceholder": "Search in table",
         "chooseState": "Select status",
         "chooseValue": "Select value",
+        "cleared": "Filter has been cleared",
         "WeboveSidlo": {
             "name": "Name of web residency"
         },
@@ -285,7 +290,7 @@
     },
     "customAttributeFilter": {
         "add": "+ Add filter",
-        "remove": "Remove criteria {{name}}",
+        "remove": "Remove filter criteria {{name}}",
         "value": {
             "label": "Value",
             "labelYes": "Yes",
@@ -1402,7 +1407,7 @@
             "edit": "Edit",
             "more": "More actions",
             "save": "Save",
-            "language": "Language",
+            "language": "Codelist language",
             "exportCodelist": "Codelist export",
             "importCodelist": "Codelist import",
             "publishCodelist": "Publish",

@@ -442,6 +442,7 @@
         "collapse": "Collapse filter",
         "namePlaceholder": "Enter a name",
         "searchPlaceholder": "Search in table",
+        "cleared": "Filter has been cleared",
         "ks": {
             "name": "Name of end service"
         },

@@ -8,7 +8,7 @@ import { PopupPosition } from 'reactjs-popup/dist/types'
 
 import styles from './selectLazyLoading.module.scss'
 
-import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
+import { Control, Menu, MultiValueRemove, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { useGetLocalMessages } from '@isdd/idsk-ui-kit/select/useGetLocalMessages'
 
@@ -125,7 +125,7 @@ export const SelectLazyLoading = <T,>({
                 getOptionLabel={getOptionLabel}
                 classNames={{ menuList: () => styles.reactSelectMenuList }}
                 placeholder={placeholder || ''}
-                components={{ Option, Menu, Control }}
+                components={{ Option, Menu, Control, MultiValueRemove }}
                 isMulti={isMulti}
                 menuPosition={menuPosition}
                 defaultValue={defaultValue}

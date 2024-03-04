@@ -3,7 +3,11 @@
         "zoomIn": "Priblížiť",
         "zoomOut": "Oddialiť",
         "exportPNG": "Ako PNG",
-        "exportPDF": "Ako PDF"
+        "exportPDF": "Ako PDF",
+        "button": {
+            "export": "Export grafu",
+            "type": "Typ entity"
+        }
     },
     "footer": {
         "metaisServices": "Služby MetaIS",
@@ -228,6 +232,7 @@
         "searchPlaceholder": "Vyhľadajte v tabuľke",
         "chooseState": "Vyberte stav",
         "chooseValue": "Vyberte hodnotu",
+        "cleared": "Kritéria filtrovania boli vyčistené",
         "WeboveSidlo": {
             "name": "Názov webového sídla"
         },
@@ -283,7 +288,7 @@
     },
     "customAttributeFilter": {
         "add": "+ Pridať filter",
-        "remove": "Vymazať kritérium {{name}}",
+        "remove": "Vymazať kritérium filtrovania {{name}}",
         "value": {
             "label": "Hodnota",
             "labelYes": "Áno",
@@ -1408,7 +1413,7 @@
             "edit": "Zmeniť",
             "more": "Viac možností",
             "save": "Uložiť",
-            "language": "Jazyk",
+            "language": "Jazyk číselníka",
             "exportCodelist": "Export číselníka",
             "importCodelist": "Import číselníka",
             "sendToIsvs": "Presunúť do Komisie pre štandardizáciu ITVS",
