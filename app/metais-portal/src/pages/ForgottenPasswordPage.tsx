@@ -11,6 +11,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 const baseUrl = import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL
 const fetchEmailData = async (email: string) => {
@@ -31,6 +32,9 @@ const fetchEmailData = async (email: string) => {
 export const ForgottenPasswordPage = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+
+    document.title = formatTitleString(t('breadcrumbs.forgottenPassword'))
+
     const [isError, setIsError] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
