@@ -320,7 +320,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             accessorKey: 'bulkActions',
             header: '',
             id: 'bulkActions',
-            size: 100,
+            size: 120,
             cell: (row) => (
                 <BulkPopup popupPosition="right" label={t('actionOverTable.options.title')} items={(closePopup) => resolveAction(row, closePopup)} />
             ),
@@ -391,54 +391,52 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         descriptionElement={errorMessage}
                         position={'center center'}
                         tooltipContent={() => (
-                            <div>
-                                <BulkPopup
-                                    items={(closePopup) => [
-                                        <ButtonLink
-                                            key={'downloadItems'}
-                                            label={t('actionOverTable.options.download')}
-                                            disabled={!isUserLogged}
-                                            onClick={async () => {
-                                                const filtered = await filterAsync(selectedItems, async (item) => {
-                                                    const meta = await isMeta(item.uuid ?? '', token)
-                                                    return meta
-                                                })
+                            <BulkPopup
+                                items={(closePopup) => [
+                                    <ButtonLink
+                                        key={'downloadItems'}
+                                        label={t('actionOverTable.options.download')}
+                                        disabled={!isUserLogged}
+                                        onClick={async () => {
+                                            const filtered = await filterAsync(selectedItems, async (item) => {
+                                                const meta = await isMeta(item.uuid ?? '', token)
+                                                return meta
+                                            })
 
-                                                if (filtered.length != selectedItems.length) {
-                                                    setBulkActionResult({ isError: true, isSuccess: false, successMessage: '' })
-                                                } else {
-                                                    setBulkActionResult(undefined)
-                                                }
-                                                downloadFiles(
-                                                    filtered.map((item) => ({
-                                                        link: `${DMS_DOWNLOAD_FILE}${item?.uuid}`,
-                                                        fileName: item.name ?? String(item?.attributes?.Gen_Profil_nazov),
-                                                    })),
-                                                )
-                                                closePopup()
-                                            }}
-                                        />,
-                                        <ButtonLink
-                                            key={'buttonInvalidateItems'}
-                                            label={t('actionOverTable.invalidateItems')}
-                                            disabled={!isUserLogged}
-                                            onClick={() => {
-                                                setInvalidateItems(selectedItems)
-                                                closePopup()
-                                            }}
-                                        />,
-                                        <ButtonLink
-                                            key={'buttonDeleteItems'}
-                                            label={t('actionOverTable.deleteItems')}
-                                            disabled={!isUserAdmin}
-                                            onClick={() => {
-                                                setDeleteItems(selectedItems)
-                                                closePopup()
-                                            }}
-                                        />,
-                                    ]}
-                                />
-                            </div>
+                                            if (filtered.length != selectedItems.length) {
+                                                setBulkActionResult({ isError: true, isSuccess: false, successMessage: '' })
+                                            } else {
+                                                setBulkActionResult(undefined)
+                                            }
+                                            downloadFiles(
+                                                filtered.map((item) => ({
+                                                    link: `${DMS_DOWNLOAD_FILE}${item?.uuid}`,
+                                                    fileName: item.name ?? String(item?.attributes?.Gen_Profil_nazov),
+                                                })),
+                                            )
+                                            closePopup()
+                                        }}
+                                    />,
+                                    <ButtonLink
+                                        key={'buttonInvalidateItems'}
+                                        label={t('actionOverTable.invalidateItems')}
+                                        disabled={!isUserLogged}
+                                        onClick={() => {
+                                            setInvalidateItems(selectedItems)
+                                            closePopup()
+                                        }}
+                                    />,
+                                    <ButtonLink
+                                        key={'buttonDeleteItems'}
+                                        label={t('actionOverTable.deleteItems')}
+                                        disabled={!isUserAdmin}
+                                        onClick={() => {
+                                            setDeleteItems(selectedItems)
+                                            closePopup()
+                                        }}
+                                    />,
+                                ]}
+                            />
                         )}
                     />
                 }

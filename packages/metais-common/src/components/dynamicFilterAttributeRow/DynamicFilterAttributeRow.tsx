@@ -28,6 +28,7 @@ interface Props {
     currentAttribute: FilterAttribute
     ignoreInputNames?: string[]
     ciName?: string
+    focus?: boolean
 }
 
 export const DynamicFilterAttributeRow: FC<Props> = ({
@@ -43,6 +44,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     ignoreInputNames,
     attributeProfiles,
     ciName,
+    focus = false,
 }) => {
     const { t, i18n } = useTranslation()
 
@@ -103,6 +105,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     return (
         <div className={style.customFilterWrapper}>
             <SelectWithGroupedOptions
+                focus={focus}
                 id={`attribute-name-${index}`}
                 name={`attributeName`}
                 className={style.rowItem}

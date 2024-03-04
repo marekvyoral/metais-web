@@ -90,7 +90,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                         maxLength={maxLength}
                     />
                     {correct && (
-                        <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('correct')} />
+                        <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />
                     )}
                 </div>
             </div>

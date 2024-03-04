@@ -121,6 +121,7 @@
     "filter": {
         "chooseState": "Vyberte stav",
         "chooseValue": "Vyberte hodnotu",
+        "cleared": "Kritéria filtrovania boli vyčistené",
         "publicAuthorities": {
             "name": "Meno",
             "ICO": "IČO",

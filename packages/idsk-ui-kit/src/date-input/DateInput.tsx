@@ -146,7 +146,7 @@ export const DateInput = forwardRef<ReactDatePickerProps, Props>(
                                     <img
                                         src={GreenCheckMarkIcon}
                                         className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect}
-                                        alt={t('correct')}
+                                        alt={t('valid')}
                                     />
                                 )}
                             </div>

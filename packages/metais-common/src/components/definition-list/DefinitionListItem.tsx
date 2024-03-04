@@ -24,7 +24,7 @@ export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, 
                         <dt tabIndex={0} className={classNames('govuk-label', styles.dt)}>
                             {label}
                         </dt>
-                        <InfoIconWithText tooltip={tooltip} hideIcon={hideIcon} label={label} />
+                        {tooltip && <InfoIconWithText tooltip={tooltip} hideIcon={hideIcon} label={label} />}
                     </TextBody>
                 </GridCol>
             )}
