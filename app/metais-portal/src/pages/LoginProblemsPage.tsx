@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { metaisEmail, PORTAL_URL } from '@isdd/metais-common/constants'
 import { CenterWrapper } from '@isdd/metais-common/components/center-wrapper/CenterWrapper'
 import { LoginRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { formatTitleString } from '@isdd/metais-common/utils/utils'
 
 export const LoginProblemsPage = () => {
     const { t } = useTranslation()
+    document.title = formatTitleString(t('breadcrumbs.loginProblems'))
 
     return (
         <>
