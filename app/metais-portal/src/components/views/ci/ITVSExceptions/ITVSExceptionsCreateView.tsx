@@ -6,16 +6,17 @@ import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/t
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { ENTITY_OSOBITNY_POSTUP, metaisEmail } from '@isdd/metais-common/constants'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import classNames from 'classnames'
 import React, { useEffect, useMemo, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import styles from './styles.module.scss'
 
 import { formatForFormDefaultValues } from '@/componentHelpers/ci'
+import { CI_TYPE_DATA_ITVS_EXCEPTIONS_BLACK_LIST, getModifiedCiTypeData } from '@/componentHelpers/ci/ciTypeBlackList'
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
 import { RelationshipWithCiType } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
 import { RelationForITVSExceptionSelect } from '@/components/containers/ITVS-exceptions/RelationForITVSExceptionSelect'
@@ -68,14 +69,11 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     const { constraintsData, ciTypeData, unitsData } = attributesData
     const { readRelationShipsData: existingRelations, relationTypeData: relationSchema } = relationData
 
-    const attProfiles = useMemo(() => ciTypeData?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeData?.attributeProfiles])
-    const filtredAttributes = ciTypeData?.attributes?.filter((attr) => {
-        return (
-            attr.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov ||
-            attr.technicalName === ATTRIBUTE_NAME.Gen_Profil_kod_metais ||
-            attr.technicalName === ATTRIBUTE_NAME.Gen_Profil_ref_id
-        )
-    })
+    const ciTypeModified = useMemo(() => {
+        return getModifiedCiTypeData(ciTypeData, CI_TYPE_DATA_ITVS_EXCEPTIONS_BLACK_LIST)
+    }, [ciTypeData])
+
+    const attProfiles = useMemo(() => ciTypeModified?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeModified?.attributeProfiles])
 
     const genProfilTechName = Gen_Profil
     const attProfileTechNames = attProfiles.map((profile) => profile.technicalName)
@@ -103,8 +101,8 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         ])
     }, [relationSchema])
     const attributes = useMemo(
-        () => [...(ciTypeData?.attributes ?? []), ...attProfiles.map((profile) => profile.attributes).flat()],
-        [attProfiles, ciTypeData?.attributes],
+        () => [...(ciTypeModified?.attributes ?? []), ...attProfiles.map((profile) => profile.attributes).flat()],
+        [attProfiles, ciTypeModified?.attributes],
     )
     const defaultValuesFromSchema = useMemo(
         () =>
@@ -121,7 +119,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         defaultValues: defaultValues,
         resolver: yupResolver(
             generateFormSchema(
-                [ciTypeData as AttributeProfile, ...attProfiles],
+                [ciTypeModified as AttributeProfile, ...attProfiles],
                 t,
                 i18n.language,
                 roleState?.selectedRole,
@@ -152,7 +150,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                     onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
                     onChangeRole={roleState.setSelectedRole}
                     selectedOrg={publicAuthorityState.selectedPublicAuthority}
-                    ciRoles={ciTypeData?.roleList ?? []}
+                    ciRoles={ciTypeModified?.roleList ?? []}
                 />
             )}
 
@@ -161,7 +159,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                     <form noValidate>
                         <CreateEntitySection
                             sectionId={genProfilTechName}
-                            attributes={filtredAttributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
+                            attributes={ciTypeModified.attributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
                             setSectionError={setSectionError}
                             constraintsData={constraintsData}
                             generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
@@ -169,7 +167,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             defaultItemAttributeValues={defaultItemAttributeValues}
                             hasResetState={{ hasReset, setHasReset }}
                             updateCiItemId={updateCiItemId}
-                            sectionRoles={ciTypeData?.roleList ?? []}
+                            sectionRoles={ciTypeModified?.roleList ?? []}
                             selectedRole={roleState?.selectedRole ?? null}
                         />
 
@@ -185,7 +183,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                     defaultItemAttributeValues={defaultItemAttributeValues}
                                     hasResetState={{ hasReset, setHasReset }}
                                     updateCiItemId={updateCiItemId}
-                                    sectionRoles={ciTypeData?.roleList ?? []}
+                                    sectionRoles={ciTypeModified?.roleList ?? []}
                                     selectedRole={roleState?.selectedRole ?? null}
                                 />
                             </div>

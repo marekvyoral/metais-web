@@ -141,6 +141,8 @@ import DeclarationPage from '@/pages/technical/declaration'
 import CreateTrainingEntityPage from '@/pages/ci/Trainings/create'
 import EditTrainingEntityPage from '@/pages/ci/Trainings/[entityId]/edit'
 import AboutApplicationPage from '@/pages/about-application/aboutApp'
+import TrainingInformation from '@/pages/ci/Trainings/[entityId]/information'
+import ITVSExceptionsInformation from '@/pages/ci/OsobitnyPostup/[entityId]/information'
 
 export interface RouteConfig {
     path?: string
@@ -663,7 +665,13 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.CI_TRAINING_DETAIL,
                 slug: RouterRoutes.CI_TRAINING_DETAIL,
                 component: TrainingEntityDetailPage,
-                subRoutes: [generalCiDetailInformationOutlet],
+                subRoutes: [
+                    {
+                        slug: RouterRoutes.CI_DETAIL,
+                        component: TrainingInformation,
+                        index: true,
+                    },
+                ],
             },
             {
                 path: RouterRoutes.CI_TRAINING_CREATE,
@@ -796,6 +804,18 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.ITVS_EXCEPTIONS_CREATE,
                 slug: RouterRoutes.ITVS_EXCEPTIONS_CREATE,
                 component: CreateITVSExceptionsPage,
+            },
+            {
+                path: RouterRoutes.ITVS_EXCEPTIONS_DETAIL,
+                slug: RouterRoutes.ITVS_EXCEPTIONS_DETAIL,
+                component: TrainingEntityDetailPage,
+                subRoutes: [
+                    {
+                        slug: RouterRoutes.CI_DETAIL,
+                        component: ITVSExceptionsInformation,
+                        index: true,
+                    },
+                ],
             },
             {
                 path: RouterRoutes.ITVS_EXCEPTIONS_EDIT,

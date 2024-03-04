@@ -133,6 +133,7 @@ export enum RouterRoutes {
     CI_AS_DETAIL = 'ci/AS/:entityId',
     CI_AS_CREATE = 'ci/AS/create',
     ITVS_EXCEPTIONS_CREATE = 'ci/OsobitnyPostup/create',
+    ITVS_EXCEPTIONS_DETAIL = 'ci/OsobitnyPostup/:entityId',
     ITVS_EXCEPTIONS_EDIT = 'ci/OsobitnyPostup/:entityId/edit',
     INTEGRATION_LIST = '/ci/Integracia',
     INTEGRATION_CREATE = '/ci/Integracia/create',

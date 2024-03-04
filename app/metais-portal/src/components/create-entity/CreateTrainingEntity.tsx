@@ -4,16 +4,17 @@ import { ConfigurationItemUiAttributes, useStoreConfigurationItem } from '@isdd/
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { AttributeProfile, CiCode, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
+import { metaisEmail } from '@isdd/metais-common/constants'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { ATTRIBUTE_NAME, Gen_Profil, MutationFeedback, QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { Gen_Profil, MutationFeedback, QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useMemo, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { metaisEmail } from '@isdd/metais-common/constants'
 
 import { filterFormValuesBasedOnCurrentRole, formatForFormDefaultValues } from '@/componentHelpers/ci'
+import { CI_TYPE_DATA_TRAINING_BLACK_LIST, getModifiedCiTypeData } from '@/componentHelpers/ci/ciTypeBlackList'
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
 import { CreateEntitySection } from '@/components/create-entity/CreateEntitySection'
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
@@ -45,8 +46,6 @@ interface ICreateTrainingEntity {
     updateCiItemId?: string
     defaultItemAttributeValues?: ConfigurationItemUiAttributes
 }
-
-const ATTRIBUTE_WHITE_LIST = [ATTRIBUTE_NAME.Gen_Profil_nazov, ATTRIBUTE_NAME.Gen_Profil_popis]
 
 export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
     data,
@@ -95,7 +94,11 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
 
     const isSubmitDisabled = !roleState?.selectedRole?.roleUuid && !updateCiItemId
 
-    const attProfiles = useMemo(() => ciTypeData?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeData?.attributeProfiles])
+    const modifiedCiTypeData = useMemo(() => {
+        return getModifiedCiTypeData(ciTypeData, CI_TYPE_DATA_TRAINING_BLACK_LIST)
+    }, [ciTypeData])
+
+    const attProfiles = useMemo(() => modifiedCiTypeData?.attributeProfiles?.map((profile) => profile) ?? [], [modifiedCiTypeData?.attributeProfiles])
     const attProfileTechNames = attProfiles.map((profile) => profile.technicalName)
     const mappedProfileTechNames: Record<string, boolean> = attProfileTechNames.reduce<Record<string, boolean>>((accumulator, attributeName) => {
         if (attributeName != null) {
@@ -104,7 +107,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
         return accumulator
     }, {})
 
-    const attributes = useMemo(() => getValidAndVisibleAttributes(ciTypeData), [ciTypeData])
+    const attributes = useMemo(() => getValidAndVisibleAttributes(modifiedCiTypeData), [modifiedCiTypeData])
 
     const sectionErrorDefaultConfig: { [x: string]: boolean } = {
         [Gen_Profil]: false,
@@ -126,13 +129,10 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
         [isUpdate, attributes, defaultItemAttributeValues, defaultValuesFromSchema],
     )
 
-    const trainingProfileAttributes = attProfiles.find((item) => item.technicalName === ATTRIBUTE_NAME.Profil_Skolenie)?.attributes ?? []
-    const filteredCiAttributes =
-        ciTypeData?.attributes?.filter((item) => ATTRIBUTE_WHITE_LIST.includes((item.technicalName as unknown as ATTRIBUTE_NAME) ?? '')) ?? []
-
-    const trainingAttributeList = [...filteredCiAttributes, ...trainingProfileAttributes]
-
-    const combinedProfiles = useMemo(() => [ciTypeData as AttributeProfile, ...(ciTypeData?.attributeProfiles ?? [])], [ciTypeData])
+    const combinedProfiles = useMemo(
+        () => [modifiedCiTypeData as AttributeProfile, ...(modifiedCiTypeData?.attributeProfiles ?? [])],
+        [modifiedCiTypeData],
+    )
 
     const formSchema = useMemo(() => {
         return generateFormSchema(
@@ -156,7 +156,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
         if (!isUpdate) {
             const currentValues = getValues()
             const currentRole = roleState?.selectedRole
-            const validAttributes = getValidAndVisibleAttributes(ciTypeData)
+            const validAttributes = getValidAndVisibleAttributes(modifiedCiTypeData)
 
             const filteredFormValuesWithoutPermission = filterFormValuesBasedOnCurrentRole(
                 combinedProfiles,
@@ -219,7 +219,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
                         onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
                         onChangeRole={roleState.setSelectedRole}
                         selectedOrg={publicAuthorityState.selectedPublicAuthority}
-                        ciRoles={ciTypeData?.roleList ?? []}
+                        ciRoles={modifiedCiTypeData?.roleList ?? []}
                     />
                 )}
 
@@ -244,7 +244,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
                         <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
                             <CreateEntitySection
                                 sectionId={Gen_Profil}
-                                attributes={trainingAttributeList}
+                                attributes={attributes}
                                 setSectionError={setSectionError}
                                 constraintsData={constraintsData}
                                 unitsData={unitsData}
@@ -252,7 +252,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
                                 defaultItemAttributeValues={defaultItemAttributeValues}
                                 hasResetState={{ hasReset, setHasReset }}
                                 updateCiItemId={updateCiItemId}
-                                sectionRoles={ciTypeData?.roleList ?? []}
+                                sectionRoles={modifiedCiTypeData?.roleList ?? []}
                                 selectedRole={roleState?.selectedRole}
                             />
                             <SubmitWithFeedback
