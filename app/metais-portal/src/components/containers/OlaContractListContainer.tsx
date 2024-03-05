@@ -7,12 +7,13 @@ import {
     ListSlaContractsParams,
     useListOlaContractList,
 } from '@isdd/metais-common/api/generated/monitoring-swagger'
-import { SLA_SPRAVA } from '@isdd/metais-common/constants'
+import { SLA_SPRAVA, STAV_OLA_KONTRAKT } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { UserPreferencesFormNamesEnum, useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { removeNullPropertiesFromRecord } from '@isdd/metais-common/utils/utils'
 import React, { useEffect, useState } from 'react'
+import { EnumItem, useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { getGId } from '@/components/views/ola-contract-list/helper'
@@ -28,6 +29,7 @@ export interface IOlaContractListView {
     isError: boolean
     sort: ColumnSort[]
     ownerGid?: string
+    statesEnum?: EnumItem[]
 }
 
 interface IOlaContractListContainer {
@@ -59,6 +61,11 @@ export const OlaContractListContainer: React.FC<IOlaContractListContainer> = ({ 
     } = useAuth()
     const { data: slaContractsData, isError, isLoading, isFetching } = useListOlaContractList(removeNullPropertiesFromRecord(filterForApi))
     const { data: roleData } = useFindAll11({ name: SLA_SPRAVA })
+    const {
+        data: statesEnum,
+        isLoading: isStatesLoading,
+        isError: isStatesError,
+    } = useGetEnum(STAV_OLA_KONTRAKT, { query: { select: (data) => data.enumItems } })
     useEffect(() => {
         if (roleData) {
             setOwnerGid(getGId(user?.groupData ?? [], (roleData as Role).uuid ?? ''))
@@ -69,11 +76,12 @@ export const OlaContractListContainer: React.FC<IOlaContractListContainer> = ({ 
             <View
                 ownerGid={ownerGid}
                 data={slaContractsData}
-                isError={isError}
-                isLoading={isLoading || isFetching}
+                isError={isError || isStatesError}
+                isLoading={isLoading || isFetching || isStatesLoading}
                 defaultFilterValues={defaultFilterValues}
                 handleFilterChange={handleFilterChange}
                 sort={filter?.sort ?? []}
+                statesEnum={statesEnum}
             />
         </MainContentWrapper>
     )

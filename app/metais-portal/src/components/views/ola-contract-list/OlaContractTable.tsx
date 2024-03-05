@@ -1,7 +1,9 @@
 import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
+import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ApiOlaContractData, ApiSlaContractReadList } from '@isdd/metais-common/api/generated/monitoring-swagger'
+import { Languages } from '@isdd/metais-common/localization/languages'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -11,6 +13,7 @@ type Props = {
     data?: ApiSlaContractReadList
     handleFilterChange: (changedFilter: IFilter) => void
     sort: ColumnSort[]
+    statesEnum?: EnumItem[]
 }
 
 enum ColumnNames {
@@ -21,10 +24,11 @@ enum ColumnNames {
     contractorIsvsName = 'contractorIsvsName',
     vendorLock = 'vendorLock',
     administratorIsvs = 'administratorIsvs',
+    profilState = 'profilState',
 }
 
-export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, sort }) => {
-    const { t } = useTranslation()
+export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, sort, statesEnum }) => {
+    const { t, i18n } = useTranslation()
 
     const columns: Array<ColumnDef<ApiOlaContractData>> = [
         {
@@ -81,6 +85,23 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
                 ctx.row.original.validityEndDate && t('date', { date: ctx.row.original.validityEndDate }),
             meta: {
                 getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) => t('date', { date: ctx.row.original.validityEndDate }),
+            },
+            enableSorting: true,
+        },
+        {
+            accessorKey: ColumnNames.profilState,
+            header: () => {
+                return <span>{t('olaContracts.columns.state')}</span>
+            },
+            id: ColumnNames.profilState,
+            size: 200,
+            cell: (ctx: CellContext<ApiOlaContractData, unknown>) =>
+                ctx.row.original.profilState &&
+                (i18n.language == Languages.SLOVAK
+                    ? statesEnum?.find((e) => e.code == ctx.row.original.profilState)?.value
+                    : statesEnum?.find((e) => e.code == ctx.row.original.profilState)?.engValue),
+            meta: {
+                getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) => ctx.row.original.profilState,
             },
             enableSorting: true,
         },

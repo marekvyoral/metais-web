@@ -2,7 +2,7 @@ import { Metadata, UpdateContentBody, useUpdateContent } from '@isdd/metais-comm
 import { Role, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ApiOlaContractData, ListOlaContractListParams, RequestIdUi, useSaveOlaContract } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { ApiError, CiCode, useGenerateCodeAndURL, useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { OLA_Kontrakt, SLA_SPRAVA } from '@isdd/metais-common/constants'
+import { OLA_Kontrakt, SLA_SPRAVA, STAV_OLA_KONTRAKT_INITIAL } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
@@ -40,6 +40,7 @@ export interface IOlaContractSaveView {
     isOwnerOfContract?: boolean
     canChange?: boolean
     isEdit?: boolean
+    contractState: string
 }
 
 interface IOlaContractAddContainer {
@@ -67,6 +68,7 @@ export const OlaContractAddContainer: React.FC<IOlaContractAddContainer> = ({ Vi
     return (
         <MainContentWrapper>
             <View
+                contractState={STAV_OLA_KONTRAKT_INITIAL}
                 canChange={canEditOlaContract(user, ciType)}
                 isOwnerOfContract
                 ownerGid={ownerGid}
