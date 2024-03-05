@@ -66,6 +66,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
     canChange,
     isOwnerOfContract,
     isEdit,
+    contractState,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -135,6 +136,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                 ...formDataRef.current,
                 uuid: uuid,
                 owner: ownerGid,
+                profilState: contractState,
             },
         })
             .then(async (res) => {

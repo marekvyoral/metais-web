@@ -2762,7 +2762,8 @@
             "title": "Detail SLA s dodávateľom: {{name}}",
             "edit": "Zmeniť",
             "notEntered": "Nezadané",
-            "history": "História dokumentu"
+            "history": "História dokumentu",
+            "stateChanged": "Stav bol úspešne zmenený"
         },
         "columns": {
             "name": "Názov kontraktu",
@@ -2771,7 +2772,8 @@
             "consumerIsvs": "Správca ISVS",
             "validityStartDate": "Platnosť od",
             "validityEndDate": "Platnosť do",
-            "vendorLock": "Vendor Lock"
+            "vendorLock": "Vendor Lock",
+            "state": "Stav"
         },
         "filter": {
             "name": "Názov kontraktu",
@@ -2789,13 +2791,20 @@
             "crzLink": "Linka do CRZ",
             "vendorLock": "Vendor Lock",
             "contractorIsvsUuid": "ISVS",
-            "document": "Dokument SLA s dodávateľom"
+            "document": "Dokument SLA s dodávateľom",
+            "state": "Stav"
         },
         "title": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
         "heading": "Zoznam SLA s prevádzkovateľom",
         "headingAdd": "Pridat SLA s dodávateľom",
         "headingEdit": "Editovať {{itemName}} SLA s dodávateľom",
-        "createButton": "Pridať novú SLA s dodávateľom"
+        "createButton": "Pridať novú SLA s dodávateľom",
+        "stateActions": {
+            "approve": "Schváliť",
+            "return": "Vrátiť na dopracovanie",
+            "plan": "Odoslať ako plánovaný",
+            "contract": "Zazmluvniť"
+        }
     },
     "insertMonitoring": {
         "columns": {

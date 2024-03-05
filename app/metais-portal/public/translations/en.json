@@ -2756,7 +2756,8 @@
             "title": "Detail of SLA with contractor: {{name}}",
             "edit": "Edit",
             "notEntered": "Not entered",
-            "history": "Document history"
+            "history": "Document history",
+            "stateChanged": "State was successfully changed"
         },
         "columns": {
             "name": "Agreement name",
@@ -2765,7 +2766,8 @@
             "consumerIsvs": "ISPA administrator",
             "validityStartDate": "Valid from",
             "validityEndDate": "Valid to",
-            "vendorLock": "Vendor Lock"
+            "vendorLock": "Vendor Lock",
+            "state": "State"
         },
         "filter": {
             "name": "Agreement name",
@@ -2783,13 +2785,20 @@
             "crzLink": "Link to CRZ",
             "vendorLock": "Vendor Lock",
             "contractorIsvsUuid": "Vendor ISPA",
-            "document": "SLA document with supplier"
+            "document": "SLA document with supplier",
+            "state": "State"
         },
         "title": "SLA with vendor",
         "heading": "List of SLA with contractors",
         "headingAdd": "Add SLA with contractor",
         "headingEdit": "Edit SLA item {{itemName}} with contractor",
-        "createButton": "Add new SLA with contractor"
+        "createButton": "Add new SLA with contractor",
+        "stateActions": {
+            "approve": "Approve",
+            "return": "Return for editing",
+            "plan": "Send as scheduled",
+            "contract": "Contract"
+        }
     },
     "insertMonitoring": {
         "columns": {
