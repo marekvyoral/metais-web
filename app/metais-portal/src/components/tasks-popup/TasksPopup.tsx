@@ -4,7 +4,7 @@ import { PopupActions } from 'reactjs-popup/dist/types'
 import { useTranslation } from 'react-i18next'
 import { Popup } from 'reactjs-popup'
 import { Link, useLocation } from 'react-router-dom'
-import { FactCheckIcon } from '@isdd/metais-common/assets/images'
+import { FactCheckIcon, FactCheckBlackIcon } from '@isdd/metais-common/assets/images'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { Task } from '@isdd/metais-common/api/generated/tasks-swagger'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -31,7 +31,8 @@ export const TasksPopup: React.FC = () => {
             label={
                 <IconWithNotification
                     title={t('tasks.tasks')}
-                    src={FactCheckIcon}
+                    iconActive={FactCheckBlackIcon}
+                    iconInactive={FactCheckIcon}
                     count={(tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0)}
                     path=""
                     showAsLink={false}
