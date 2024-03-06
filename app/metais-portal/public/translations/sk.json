@@ -2187,7 +2187,9 @@
     "votes": {
         "actions": {
             "sent": "Ďakujeme, Váš hlas bol odoslaný.",
-            "failedToSend": "Váš hlas sa nepodarilo odoslať. Pokúste sa hlasovanie zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora štandardizácie e-mailom na adrese: standard@mirri.gov.sk"
+            "failedToSend": "Váš hlas sa nepodarilo odoslať. Pokúste sa hlasovanie zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora štandardizácie e-mailom na adrese: standard@mirri.gov.sk",
+            "userToken": "Váš hlas už bol zaznamenaný.",
+            "castDesc": "Dakujeme Váš hlas bol úspešne zaznamenaný. Ak máte záujem tak možete ešte poslať poznámka k hlasovaniu"
         },
         "breadcrumbs": {
             "home": "Domov",
@@ -2257,7 +2259,8 @@
                 "name": "Meno a priezvisko",
                 "organization": "Organizácia",
                 "role": "Rola"
-            }
+            },
+            "save": "Uložiť"
         },
         "voteEdit": {
             "newVoteTitle": "Pridať nové hlasovanie",
