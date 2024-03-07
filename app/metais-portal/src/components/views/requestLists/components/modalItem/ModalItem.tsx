@@ -76,7 +76,7 @@ export const ModalItem: React.FC<ModalItemProps> = ({ isOpen, canEdit, close, on
     return (
         <BaseModal isOpen={isOpen} close={close}>
             <TextHeading size="L">{'Pridanie novej položky do číselníka'}</TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Input
                     required
                     disabled={!canEdit}

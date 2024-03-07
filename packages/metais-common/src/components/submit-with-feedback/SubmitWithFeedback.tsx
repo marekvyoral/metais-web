@@ -24,6 +24,7 @@ export const SubmitWithFeedback: React.FC<ISubmitWithFeedbackProps> = ({
     variant,
 }) => {
     const { t } = useTranslation()
+
     return (
         <ButtonGroupRow className={className}>
             {additionalButtons}

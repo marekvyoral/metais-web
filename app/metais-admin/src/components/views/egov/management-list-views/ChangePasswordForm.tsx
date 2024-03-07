@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { ErrorBlock, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useChangePassword } from '@isdd/metais-common/api/generated/iam-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { TFunction } from 'i18next'
@@ -78,7 +78,9 @@ export const ChangePasswordForm: React.FC<Props> = ({ isLoading, isError }) => {
             withChildren
         >
             <TextHeading size="L">{t('managementList.passwordChange')} </TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Input
                     {...register('password')}
                     label={t('managementList.newPassword')}

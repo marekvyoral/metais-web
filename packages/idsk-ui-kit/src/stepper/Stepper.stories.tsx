@@ -7,6 +7,7 @@ import { ISection } from './StepperSection'
 const sectionList: ISection[] = [
     {
         title: 'Výber pediatra',
+        id: '1',
         stepLabel: {
             label: '1',
             variant: 'circle',
@@ -15,10 +16,12 @@ const sectionList: ISection[] = [
     },
     {
         title: 'Výber pediatra',
+        id: '2',
         isTitle: true,
     },
     {
         title: 'Výber pediatra',
+        id: '3',
         stepLabel: {
             label: '2',
             variant: 'circle',
@@ -27,10 +30,12 @@ const sectionList: ISection[] = [
     },
     {
         title: 'Výber pediatra',
+        id: '4',
         isTitle: true,
     },
     {
         title: 'Výber pediatra',
+        id: '5',
         stepLabel: {
             label: '3',
             variant: 'circle',
@@ -39,6 +44,7 @@ const sectionList: ISection[] = [
     },
     {
         title: 'Výber pediatra',
+        id: '6',
         stepLabel: {
             label: 'a',
             variant: 'no-outline',
@@ -47,6 +53,7 @@ const sectionList: ISection[] = [
     },
     {
         title: 'Výber pediatra',
+        id: '7',
         stepLabel: {
             label: '4',
             variant: 'circle',

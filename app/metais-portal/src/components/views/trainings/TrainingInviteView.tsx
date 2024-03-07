@@ -113,7 +113,7 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
                 >
                     {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                     <TextHeading size="XL">{t('trainings.invitedTitle')}</TextHeading>
-                    <form onSubmit={handleSubmit(onHandleSubmit)}>
+                    <form onSubmit={handleSubmit(onHandleSubmit)} noValidate>
                         <Input
                             required
                             label={t('trainings.table.firstName')}

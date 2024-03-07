@@ -50,7 +50,7 @@ export const DraftListCreateFormDialog = ({ openCreateFormDialog, closeCreateFor
 
     return (
         <BaseModal isOpen={!!openCreateFormDialog} close={closeCreateFormDialog}>
-            <form onSubmit={handleDialogSubmit(onSubmit)}>
+            <form onSubmit={handleDialogSubmit(onSubmit)} noValidate>
                 <div className={styles.modalContainer}>
                     <div>
                         <TextHeading size={'L'} className={styles.heading}>

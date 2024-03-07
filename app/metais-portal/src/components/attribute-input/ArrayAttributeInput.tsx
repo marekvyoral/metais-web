@@ -94,8 +94,15 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
         return ''
     }
 
+    const getRowItemLabel = (count: number) => {
+        return name + ' (' + (count + 1) + ') ' + requiredLabel
+    }
+
     return (
         <fieldset className={styles.fieldset}>
+            <span className="govuk-visually-hidden" role="alert">
+                {t('arrayInput.changeRowsNumber', { name, count: inputList.length })}
+            </span>
             <legend className="govuk-label">{name + requiredLabel}</legend>
             {error?.message && (
                 <span id={`error_${attribute.technicalName}`} className="govuk-error-message">
@@ -124,14 +131,18 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                     {isTextarea && (
                         <div className={styles.inputWithCloseIconDivTextarea}>
                             <TransparentButtonWrapper onClick={() => handleDeleteInput(index)} type="button">
-                                <img src={CloseIcon} alt={t('close')} className={styles.cancelRowIcon} />
+                                <img
+                                    src={CloseIcon}
+                                    alt={t('arrayInput.deleteRow', { itemName: getRowItemLabel(index) })}
+                                    className={styles.cancelRowIcon}
+                                />
                             </TransparentButtonWrapper>
                             <TextArea
                                 name={`${id}${index}`}
                                 rows={3}
                                 correct={isCorrect}
                                 id={`${id}${index}`}
-                                label={name + ' (' + (index + 1) + ') ' + requiredLabel}
+                                label={getRowItemLabel(index)}
                                 error={getArrayInputError(index)}
                                 onChange={(e) => handleInputChange(e, index)}
                                 defaultValue={value}
@@ -142,12 +153,16 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                     {!isTextarea && (
                         <div className={styles.inputWithCloseIconDivInput}>
                             <TransparentButtonWrapper onClick={() => handleDeleteInput(index)} type="button">
-                                <img src={CloseIcon} alt={t('close')} className={styles.cancelRowIcon} />
+                                <img
+                                    src={CloseIcon}
+                                    alt={t('arrayInput.deleteRow', { itemName: getRowItemLabel(index) })}
+                                    className={styles.cancelRowIcon}
+                                />
                             </TransparentButtonWrapper>
                             <Input
                                 name={`${id}${index}`}
                                 correct={isCorrect}
-                                label={name + '(' + (index + 1) + ')' + requiredLabel}
+                                label={getRowItemLabel(index)}
                                 error={getArrayInputError(index)}
                                 id={`${id}${index}`}
                                 type={isInteger ? 'number' : 'text'}

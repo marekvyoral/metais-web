@@ -109,17 +109,14 @@ export const DateInput = forwardRef<ReactDatePickerProps, Props>(
                                 </label>
                                 {info && <Tooltip altText={`Tooltip ${label}`} descriptionElement={<div className="tooltipWidth500">{info}</div>} />}
                             </div>
+                            <span id={hintId} className={classNames({ 'govuk-visually-hidden': !hint, 'govuk-hint': !!hint })}>
+                                {hint}
+                            </span>
 
-                            {hint && (
-                                <span className="govuk-hint" id={hintId}>
-                                    {hint}
-                                </span>
-                            )}
-                            {error && (
-                                <span id={errorId} className="govuk-error-message">
-                                    {error}
-                                </span>
-                            )}
+                            <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
+                                {error && <span className="govuk-visually-hidden">{t('error')}</span>}
+                                {error}
+                            </span>
                             <div className={classNames(styles.inputWrapper, inputClassName)} style={{ position: 'relative' }}>
                                 <DatePicker
                                     wrapperClassName={styles.fullWidth}
@@ -139,7 +136,8 @@ export const DateInput = forwardRef<ReactDatePickerProps, Props>(
                                     required={required}
                                     minDate={minDate}
                                     maxDate={maxDate ? maxDate : new Date('9999-12-31')}
-                                    aria-describedby={hint ? hintId : undefined}
+                                    aria-invalid={!!error}
+                                    aria-describedby={`${hintId} ${errorId}`}
                                     aria-errormessage={errorId}
                                 />
                                 {correct && (

@@ -198,7 +198,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
                     />
                 )}
                 {!loadErrorMessage && (
-                    <form onSubmit={handleSubmit(handleApiSubmitItem)}>
+                    <form onSubmit={handleSubmit(handleApiSubmitItem)} noValidate>
                         {isEdit && <input hidden {...register(CodeListItemFormEnum.ID)} id={CodeListItemFormEnum.ID} />}
                         <Input
                             required

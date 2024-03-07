@@ -105,6 +105,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 title: t('ciInformationAccordion.basicInformation'),
                 error: sectionError[Gen_Profil] === true,
                 stepLabel: { label: '1', variant: 'circle' },
+                id: Gen_Profil,
                 content: (
                     <CreateEntitySection
                         sectionId={Gen_Profil}
@@ -126,6 +127,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
                 last: relationSchema ? false : attProfiles.length === index + 1 ? true : false,
                 error: sectionError[profile.technicalName ?? ''] === true,
+                id: profile.technicalName ?? '',
                 content: (
                     <CreateEntitySection
                         sectionId={profile.technicalName ?? ''}
@@ -150,6 +152,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
             title: t('newRelation.relation'),
             last: true,
             stepLabel: { label: (attProfiles.length + 2).toString(), variant: 'circle' } as IStepLabel,
+            id: 'newRelation',
             content: (
                 <RelationAttributeForm
                     relationSchema={relationSchema}

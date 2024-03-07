@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, ErrorBlock, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Input } from '@isdd/idsk-ui-kit/src/input/Input'
 import { ApiLink, ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -211,6 +211,8 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
                 <TextHeading size="L">{t('DraftsList.createForm.heading')}</TextHeading>
                 {(isError || customError) && <MutationFeedback error={t('feedback.mutationErrorMessage')} showSupportEmail success={false} />}
             </FlexColumnReverseWrapper>
+
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
 
             <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>
                 <Input

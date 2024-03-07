@@ -72,7 +72,7 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
         <>
             {isUserLogged && (
                 <div className="idsk-table-filter idsk-table-filter__panel">
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} noValidate>
                         <IdentitySelect
                             placeholder={t('groups.select')}
                             name="memberSelect"

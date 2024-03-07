@@ -362,7 +362,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
             <BaseModal isOpen={!!documentToAddTemplate} close={() => setDocumentToAddTemplate(undefined)}>
                 <QueryFeedback loading={isDocumentUpdating || isUploading} error={isDocumentUpdatingError} withChildren>
                     <TextHeading size="L">{t('documentsManagement.uploadTemplate')}</TextHeading>
-                    <form onSubmit={handleSubmit(onTemplateUpload)}>
+                    <form onSubmit={handleSubmit(onTemplateUpload)} noValidate>
                         <FileUpload
                             ref={fileUploadRef}
                             allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif', '.csv']}

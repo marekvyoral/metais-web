@@ -75,7 +75,7 @@ export const RefRegisterItemView = ({ row, referenceRegisterItemAttributes }: IR
                 error={isErrorDelete || isErrorUpdate}
                 successMessage={t('mutationFeedback.successfulUpdated')}
             />
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <RefRegisterItemViewItemInput
                     isChangeMode={isChangeMode}
                     register={register}

@@ -1,4 +1,4 @@
-import { BreadCrumbs, Button, ButtonGroupRow, ButtonLink, GridCol, GridRow, HomeIcon, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, ButtonGroupRow, ButtonLink, ErrorBlock, GridCol, GridRow, HomeIcon, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
@@ -85,7 +85,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
         setValue,
         watch,
         unregister,
-        formState: { errors },
+        formState: { errors, isSubmitted, isValid },
     } = useForm({
         resolver: yupResolver(isEdit ? editMeetingSchema(t) : createMeetingSchema(t)),
         defaultValues: {
@@ -240,7 +240,9 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
             <MainContentWrapper>
                 <TextHeading size="XL">{isEdit ? `${t('meetings.editMeeting')} - ${infoData?.name}` : t('meetings.addNewMeeting')}</TextHeading>
                 <QueryFeedback loading={isLoading} error={isError} withChildren>
-                    <form onSubmit={handleSubmit(callSubmit)} ref={formRef}>
+                    {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                    <form onSubmit={handleSubmit(callSubmit)} ref={formRef} noValidate>
                         <TextHeading size="L">{t('meetings.form.heading.dateTime')}</TextHeading>
                         <Input
                             label={`${t('meetings.form.name')} (${t('meetings.mandatory')}):`}

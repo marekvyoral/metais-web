@@ -38,7 +38,7 @@ const CookiesSettings = () => {
             <MainContentWrapper>
                 <MutationFeedback success={saved} error={false} onMessageClose={() => setIsSaved(false)} />
                 <TextHeading size="XL">{t('cookies.settings.heading')}</TextHeading>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <CheckBox label={t('cookies.settings.necessarily')} id="necessarily" name="necessarily" value="true" checked disabled />
                     <TextBody size="L">{t('cookies.settings.necessarilyDescription')}</TextBody>
                     <CheckBox {...register('analytically')} label={t('cookies.settings.analytically')} id="analytically" name="analytically" />

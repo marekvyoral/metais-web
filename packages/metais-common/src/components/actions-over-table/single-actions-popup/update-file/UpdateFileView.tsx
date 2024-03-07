@@ -20,7 +20,7 @@ interface IUpdateFileViewProps {
 export const UpdateFileView: React.FC<IUpdateFileViewProps> = ({ items, register, onSubmit, onClose, formState }) => {
     const { t } = useTranslation()
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} noValidate>
             <div>
                 <TextHeading size="L">{t('bulkActions.updateFile.title')}</TextHeading>
             </div>

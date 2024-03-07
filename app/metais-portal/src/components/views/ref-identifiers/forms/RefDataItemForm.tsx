@@ -86,7 +86,7 @@ export const RefDataItemForm: React.FC<RefDataItemFormPropsType> = ({
 
     return (
         <>
-            <form>
+            <form noValidate>
                 {!isUpdate && (
                     <SimpleSelect
                         label={t('refIdentifiers.create.ownerUser')}

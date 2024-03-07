@@ -22,6 +22,7 @@ interface DynamicRowProps<T extends object> {
     remove?: (index: number) => void
     removeLabelSubject: string
     register?: UseFormRegister<FieldValues>
+    id: string
 }
 
 export const DynamicRow: <T extends object>({
@@ -42,12 +43,15 @@ export const DynamicRow: <T extends object>({
     remove,
     removeLabelSubject,
     register,
+    id,
 }) => {
     const { t } = useTranslation()
 
     return (
         <div className={classNames(style.inline, style.spaceVertical)}>
-            <div className={style.stretch}>{renderableComponent(index, { data: defaultRowData, onChange, register })}</div>
+            <div className={style.stretch} tabIndex={-1} id={id}>
+                {renderableComponent(index, { data: defaultRowData, onChange, register })}
+            </div>
             {!doNotRemove && lastElement && (
                 <ButtonLink
                     onClick={(e) => {

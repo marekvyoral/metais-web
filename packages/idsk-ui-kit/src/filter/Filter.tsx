@@ -52,7 +52,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
 
     if (!heading) {
         heading = (
-            <form onSubmit={handleOnSubmit ? handleSubmit(handleOnSubmit) : onSubmit}>
+            <form onSubmit={handleOnSubmit ? handleSubmit(handleOnSubmit) : onSubmit} noValidate>
                 <SearchInput
                     id={'fullTextSearch'}
                     placeholder={t('filter.searchPlaceholder') ?? ''}
@@ -131,6 +131,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                             className={classNames(styles.animate, isOpen && styles.grow, showScrollbar && styles.form)}
                             action="#"
                             onSubmit={handleOnSubmit ? handleSubmit(handleOnSubmit) : onSubmit}
+                            noValidate
                         >
                             <div
                                 className={classNames({

@@ -111,11 +111,11 @@ export const SelectLazyLoading = <T,>({
                 </label>
                 {info && <Tooltip descriptionElement={info} position={tooltipPosition} altText={`Tooltip ${label}`} />}
             </div>
-            {!!error && (
-                <span id={errorId} className="govuk-error-message">
-                    {error}
-                </span>
-            )}
+            <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
+                {error && <span className="govuk-visually-hidden">{t('error')}</span>}
+                {error}
+            </span>
+
             <AsyncPaginate<T, GroupBase<T>, { page: number } | undefined, boolean>
                 id={id}
                 name={name}
@@ -136,11 +136,14 @@ export const SelectLazyLoading = <T,>({
                 unstyled
                 onChange={handleOnChange}
                 isDisabled={disabled}
+                aria-invalid={!!error}
+                aria-describedby={errorId}
                 aria-errormessage={errorId}
                 noOptionsMessage={localMessages.noOptionsMessage}
                 ariaLiveMessages={localMessages.ariaLiveMessages}
                 screenReaderStatus={localMessages.screenReaderStatus}
                 loadingMessage={localMessages.loadingMessage}
+                required={required}
             />
         </div>
     )

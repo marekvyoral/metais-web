@@ -102,6 +102,7 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
         [
             {
                 title: t('refIdentifiers.create.refTypeTitle'),
+                id: 'refIdentifiers.create.refTypeTitle',
                 error: false,
                 isOpen: true,
                 stepLabel: { label: '1', variant: 'circle' },
@@ -123,6 +124,7 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
             },
             {
                 title: t('refIdentifiers.create.refInfoTitle'),
+                id: 'refIdentifiers.create.refInfoTitle',
                 error: false,
                 isOpen: true,
                 stepLabel: { label: '2', variant: 'circle' },

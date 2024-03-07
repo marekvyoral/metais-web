@@ -20,7 +20,7 @@ export const DeleteFileBulkView: React.FC<IDeleteFileBulkViewProps> = ({ items, 
     const { t } = useTranslation()
 
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} noValidate>
             <div>
                 <TextHeading size="L">{t('bulkActions.deleteFile.title')}</TextHeading>
             </div>

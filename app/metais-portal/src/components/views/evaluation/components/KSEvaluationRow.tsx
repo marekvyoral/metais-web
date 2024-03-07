@@ -265,7 +265,7 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
                 />
             )}
             <div className={styles.expandableRowContent}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Table columns={columnsDetail} data={mappedData(evalData)} />
                 </form>
             </div>

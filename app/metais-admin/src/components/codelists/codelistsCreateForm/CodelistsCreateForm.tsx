@@ -35,7 +35,7 @@ export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, clos
     }, [errorType, setError, t])
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className={styles.center}>
                 <TextHeading size="L">{t('codelists.createNewCodelist')}</TextHeading>
             </div>
