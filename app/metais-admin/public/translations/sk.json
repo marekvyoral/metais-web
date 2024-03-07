@@ -157,7 +157,7 @@
             "placeholder": "ks_"
         },
         "reset": "Vyčistiť kritéria filtrovania",
-        "submit": "Vyfiltrovať"
+        "submit": "Filtrovať"
     },
     "table": {
         "selectAllItems": "Vyber všetky položky",

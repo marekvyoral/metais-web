@@ -284,7 +284,7 @@
             "name": "Názov osobitného postupu"
         },
         "reset": "Vyčistiť kritériá filtrovania",
-        "submit": "Vyfiltrovať"
+        "submit": "Filtrovať"
     },
     "customAttributeFilter": {
         "add": "+ Pridať filter",
