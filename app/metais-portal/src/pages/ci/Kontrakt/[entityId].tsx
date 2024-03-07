@@ -11,8 +11,8 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { getSlaContractTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -40,7 +40,7 @@ export const SlaContractDetailPage: React.FC = () => {
 
     const userAbility = useUserAbility()
     const entityItemName = ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName ?? '')
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
 
     document.title = `${t('titles.ciDetail', {

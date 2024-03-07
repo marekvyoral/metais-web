@@ -187,7 +187,8 @@
         "time": "Time"
     },
     "tab": {
-        "contents": "Contents"
+        "contents": "Contents",
+        "moreTabs": "More tabs"
     },
     "tabContent": {
         "buttonAddNewRelation": "Add a new relation",

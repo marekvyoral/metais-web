@@ -220,7 +220,8 @@
         "time": "Čas"
     },
     "tab": {
-        "contents": "Obsah"
+        "contents": "Obsah",
+        "moreTabs": "Viac"
     },
     "tabContent": {
         "buttonAddNewRelation": "Pridať nový vzťah",

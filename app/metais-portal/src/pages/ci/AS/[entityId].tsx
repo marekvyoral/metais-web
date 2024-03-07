@@ -1,7 +1,6 @@
 import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { CI_ITEM_QUERY_KEY, ENTITY_AS, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
@@ -10,6 +9,7 @@ import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-co
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { getDefaultCiEntityTabList, useCiDetailPageTitle, useCiListPageHeading, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -27,7 +27,7 @@ const AsEntityDetailPage: React.FC = () => {
 
     const userAbility = useUserAbility()
 
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_AS)
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(ENTITY_AS)
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,

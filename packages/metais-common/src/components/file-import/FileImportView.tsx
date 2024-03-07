@@ -13,9 +13,9 @@ import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-
 import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ModalButtons, QueryFeedback } from '@isdd/metais-common/index'
 import { UploadingFilesStatus } from '@isdd/metais-common/hooks/useUppy'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 interface IFileImportView {
     uppy: Uppy
@@ -57,7 +57,7 @@ export const FileImportView: React.FC<IFileImportView> = ({
     const { t } = useTranslation()
     const isSubmitDisabled = currentFiles.length === 0 || (radioButtonMetaData === FileImportEditOptions.EXISTING_AND_NEW && !selectedRole.roleUuid)
 
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ciType)
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(ciType)
 
     return (
         <>

@@ -1,11 +1,12 @@
 import { Metadata, UpdateContentBody, useUpdateContent } from '@isdd/metais-common/api/generated/dms-swagger'
 import { Role, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ApiOlaContractData, ListOlaContractListParams, RequestIdUi, useSaveOlaContract } from '@isdd/metais-common/api/generated/monitoring-swagger'
-import { ApiError, CiCode, useGenerateCodeAndURL, useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { ApiError, CiCode, useGenerateCodeAndURL } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { OLA_Kontrakt, SLA_SPRAVA, STAV_OLA_KONTRAKT_INITIAL } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { canEditOlaContract, getGId } from '@/components/views/ola-contract-list/helper'
@@ -53,7 +54,7 @@ export const OlaContractAddContainer: React.FC<IOlaContractAddContainer> = ({ Vi
     const { mutateAsync: saveDoc, isError: isSaveDocError, isLoading: isSaveDocLoading } = useUpdateContent()
     const { data: roleData } = useFindAll11({ name: SLA_SPRAVA })
     const [ownerGid, setOwnerGid] = useState<string>()
-    const { data: ciType, isLoading: isCiTypeLoading, isError: isCiTypeError } = useGetCiType(OLA_Kontrakt)
+    const { data: ciType, isLoading: isCiTypeLoading, isError: isCiTypeError } = useGetCiTypeWrapper(OLA_Kontrakt)
 
     const {
         state: { user },

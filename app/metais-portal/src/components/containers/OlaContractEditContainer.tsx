@@ -4,11 +4,11 @@ import { ListOlaContractListParams, useGetOlaContract, useUpdateOlaContract } fr
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { OLA_Kontrakt, SLA_SPRAVA, STAV_OLA_KONTRAKT_INITIAL } from '@isdd/metais-common/constants'
 import { useTranslation } from 'react-i18next'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { IOlaContractSaveView } from './OlaContractAddContainer'
 
@@ -34,7 +34,7 @@ export const OlaContractEditContainer: React.FC<IOlaContractEditContainer> = ({ 
     const { data: roleData } = useFindAll11({ name: SLA_SPRAVA })
     const [ownerGid, setOwnerGid] = useState<string>()
     const { data: olaContractDocument, isLoading: isOlaContractDocumentLoading, isError: isOlaContractdocumentError } = useGetMeta(entityId ?? '')
-    const { data: ciType, isLoading: isCiTypeLoading, isError: isCiTypeError } = useGetCiType(OLA_Kontrakt)
+    const { data: ciType, isLoading: isCiTypeLoading, isError: isCiTypeError } = useGetCiTypeWrapper(OLA_Kontrakt)
 
     const {
         state: { user, token },

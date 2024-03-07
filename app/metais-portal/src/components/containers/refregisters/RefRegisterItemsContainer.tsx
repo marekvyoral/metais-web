@@ -3,8 +3,8 @@ import { useGetFOPReferenceRegisterItems } from '@isdd/metais-common/api/generat
 import { transformColumnsMap, useFilterForCiList, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/index'
 import { useMemo } from 'react'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { IRefRegisterItemsView } from '@/types/views'
 
@@ -23,7 +23,7 @@ export const RefRegisterItemsContainer = ({ entityId, View }: IRefRegisterItemsC
         isLoading: refRegisterItemsLoading,
         isError: refRegisterItemsError,
     } = useGetFOPReferenceRegisterItems(entityId, mapFilterToRefRegisters(filterParams, user))
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType('ReferenceRegisterItem')
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper('ReferenceRegisterItem')
 
     const pagination = usePagination({ pagination: { totaltems: refRegisterItems?.apiReferenceRegisterItemsCount ?? 0 } }, filterParams)
 

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { RelFilterUi, RelListFilterContainerUi, RelationshipUi, useReadRelationshipList } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useGetCiTypeHook, useListCiTypes, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useListCiTypes, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { IOption } from '@isdd/idsk-ui-kit/index'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { useGetCiTypeHookWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { IRelationListView } from '@/components/views/relation-list/RelationListView'
 
@@ -60,8 +61,8 @@ export const RelationListContainer: React.FC<RelationListContainerProps> = ({ Vi
 
     const { data: relTypes } = useListRelationshipTypes({ filter: {} })
     const { data: ciTypes } = useListCiTypes({ filter: {} })
-    const ciTypeHook = useGetCiTypeHook()
-    //const relTypeHook = useGetRelationshipTypeHook()
+    const ciTypeHook = useGetCiTypeHookWrapper()
+    //const relTypeHook = useGetRelationshipTypeHookWrapper()
 
     // const onRelTypeChange = async (type: string | undefined) => {
     //     if (type) {

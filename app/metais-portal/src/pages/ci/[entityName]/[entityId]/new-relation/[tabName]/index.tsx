@@ -3,8 +3,8 @@ import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/en
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -18,7 +18,7 @@ const NewCiRelationPage: React.FC = () => {
     let { entityName } = useGetEntityParamsFromUrl()
     entityName = shouldEntityNameBePO(entityName ?? '')
     const { t } = useTranslation()
-    const { data: ciTypeData } = useGetCiType(entityName)
+    const { data: ciTypeData } = useGetCiTypeWrapper(entityName)
 
     return (
         <NewCiRelationContainer

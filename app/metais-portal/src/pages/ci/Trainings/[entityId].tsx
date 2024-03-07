@@ -2,7 +2,6 @@ import { BaseModal, BreadCrumbs, Button, ButtonLink, HomeIcon, TextHeading } fro
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetTrainingsForUser, useUnregisterTrainee } from '@isdd/metais-common/api/generated/trainings-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { CI_ITEM_QUERY_KEY, ENTITY_TRAINING, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
@@ -18,6 +17,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { SortBy } from '@isdd/idsk-ui-kit/types'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import {
     getDefaultCiEntityTabList,
@@ -49,7 +49,7 @@ const EntityDetailPage: React.FC = () => {
     const ability = useUserAbility(entityName)
     const { invalidate } = useInvalidateTrainingsCache(entityId ?? '')
 
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName ?? '')
     const { getRequestStatus, isLoading: isRequestLoading } = useGetStatus('PROCESSED')
 
     const {

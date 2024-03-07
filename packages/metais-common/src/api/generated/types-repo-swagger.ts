@@ -2259,6 +2259,9 @@ export const useFindDerivedByDerivedTechnicalName = <
     return query
 }
 
+/**
+ * @deprecated useGetRelationshipType instead
+ */
 export const useGetRelationshipTypeHook = () => {
     const getRelationshipType = useTypesRepoSwaggerClient<RelationshipType>()
 
@@ -2288,6 +2291,9 @@ export const useGetRelationshipTypeQueryOptions = <TData = Awaited<ReturnType<Re
 export type GetRelationshipTypeQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>>
 export type GetRelationshipTypeQueryError = ApiError
 
+/**
+ * @deprecated useGetRelationshipType instead
+ */
 export const useGetRelationshipType = <TData = Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>, TError, TData> },
@@ -2517,6 +2523,9 @@ export const useGenerateCodeAndURL1 = <TData = Awaited<ReturnType<ReturnType<typ
     return query
 }
 
+/**
+ * @deprecated useGetCiTypeWrapper instead
+ */
 export const useGetCiTypeHook = () => {
     const getCiType = useTypesRepoSwaggerClient<CiType>()
 
@@ -2545,6 +2554,9 @@ export const useGetCiTypeQueryOptions = <TData = Awaited<ReturnType<ReturnType<t
 export type GetCiTypeQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>>
 export type GetCiTypeQueryError = ApiError
 
+/**
+ * @deprecated useGetCiTypeWrapper instead
+ */
 export const useGetCiType = <TData = Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>, TError, TData> },
@@ -2587,6 +2599,9 @@ export const useListRelatedCiTypesQueryOptions = <TData = Awaited<ReturnType<Ret
 export type ListRelatedCiTypesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>>
 export type ListRelatedCiTypesQueryError = ApiError
 
+/**
+ * @deprecated useListRelatedCiTypesWrapper instead
+ */
 export const useListRelatedCiTypes = <TData = Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>, TError, TData> },
