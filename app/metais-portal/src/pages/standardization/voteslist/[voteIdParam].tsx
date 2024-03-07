@@ -20,6 +20,7 @@ const VoteDetailPage: React.FC = () => {
                             castedVoteId={props.castedVoteId}
                             castVote={props.castVote}
                             vetoVote={props.vetoVote}
+                            voteNote={props.voteNote}
                             cancelVote={props.cancelVote}
                             votesProcessing={props.votesProcessing}
                             isUserLoggedIn={props.isUserLoggedIn}

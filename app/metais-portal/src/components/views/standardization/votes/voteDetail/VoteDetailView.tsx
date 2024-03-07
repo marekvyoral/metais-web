@@ -9,6 +9,7 @@ import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useVotes
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { TableWithPagination } from '@isdd/metais-common/components/TableWithPagination/TableWithPagination'
 import { MutationFeedback } from '@isdd/metais-common/index'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
 import { voteActorResultsColumns } from './voteActorResultsColumns'
@@ -31,6 +32,7 @@ export interface IVoteDetailView {
     votesProcessing: boolean
     castVote: ({ choiceId, token, description }: { choiceId: number; token?: string; description?: string }) => Promise<void>
     vetoVote: ({ token, description }: { token?: string; description?: string }) => Promise<void>
+    voteNote: ({ token, description }: { token?: string; description: string }) => Promise<void>
     cancelVote: (description: string) => Promise<void>
 }
 
@@ -44,6 +46,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     castVote,
     vetoVote,
     cancelVote,
+    voteNote,
     votesProcessing,
 }) => {
     const { t } = useTranslation()
@@ -125,10 +128,11 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     const handleVetoVote = async (description: string | undefined) => {
         await vetoVote({ description })
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleSendDescription = (description: string | undefined) => {
-        // function save desc
+
+    const handleSendDescription = async (description: string) => {
+        if (token) await voteNote({ token, description })
     }
+
     const changeDescription = (name: string, changeAction: string): string => {
         switch (changeAction) {
             case 'ADD':
@@ -169,7 +173,12 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     const hideVoteModifyingButtons = useMemo(() => {
         return voteState == VoteStateOptionEnum.CANCELED
     }, [voteState])
-
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        if (castVoteError) {
+            scrollToMutationFeedback()
+        }
+    }, [castVoteError, scrollToMutationFeedback])
     return (
         <>
             <div className={styles.inlineSpaceBetween}>
@@ -195,6 +204,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
             <TextBody>{voteData?.description ?? ''}</TextBody>
             <Spacer vertical />
             <TextHeading size="L">{t('votes.voteDetail.votesHandlingTitle')}</TextHeading>
+            <div ref={wrapperRef} />
             {(castVoteSuccess || castVoteError) && (
                 <MutationFeedback
                     success={castVoteSuccess}

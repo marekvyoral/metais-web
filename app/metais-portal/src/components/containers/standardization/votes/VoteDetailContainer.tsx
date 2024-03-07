@@ -12,6 +12,7 @@ import {
     useGetVoteResult,
     useVetoVote,
     useVetoVote1,
+    useVoteNote,
 } from '@isdd/metais-common/api/generated/standards-swagger'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -58,6 +59,7 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
     const { isLoading: castUserVoteLoading, mutateAsync: castUserVoteAsyncMutation } = useCastVote1()
     const { isLoading: vetoVoteLoading, mutateAsync: vetoVoteAsyncMutation } = useVetoVote()
     const { isLoading: vetoUserVoteLoading, mutateAsync: vetoUserVoteAsyncMutation } = useVetoVote1()
+    const { isLoading: voteNoteLoading, mutateAsync: voteNoteAsyncMutation } = useVoteNote()
 
     const castVote = async ({ choiceId, token, description }: { choiceId: number; token?: string; description?: string }) => {
         if (!voteData?.id) {
@@ -78,6 +80,19 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
             data: { description },
         })
         return
+    }
+    const voteNote = async ({ token, description }: { token?: string; description: string }) => {
+        if (!voteData?.id) {
+            return
+        }
+        if (token) {
+            await voteNoteAsyncMutation({
+                voteId: voteData?.id,
+                token,
+                data: { note: description },
+            })
+            return
+        }
     }
 
     const vetoVote = async ({ token, description }: { token?: string; description?: string }) => {
@@ -139,8 +154,9 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
                         castedVoteId={castedVoteId}
                         castVote={castVote}
                         vetoVote={vetoVote}
+                        voteNote={voteNote}
                         cancelVote={cancelVote}
-                        votesProcessing={castVoteLoading || vetoVoteLoading || castUserVoteLoading || vetoUserVoteLoading}
+                        votesProcessing={castVoteLoading || vetoVoteLoading || castUserVoteLoading || vetoUserVoteLoading || voteNoteLoading}
                         isUserLoggedIn={isUserLogged}
                     />
                 </QueryFeedback>

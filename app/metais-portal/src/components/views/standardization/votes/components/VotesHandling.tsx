@@ -16,7 +16,7 @@ interface ICastVote {
     castedVoteId: number | null
     vetoed: boolean
     canSendNote: boolean
-    handleSendDescription: (description: string | undefined) => void
+    handleSendDescription: (description: string) => void
     cancelState: boolean
 }
 
@@ -91,7 +91,7 @@ export const VotesHandler: React.FC<ICastVote> = ({
         const choiceDescription: string | undefined = formData['voteDescription']
         if (canSendNote) {
             try {
-                await handleSendDescription(choiceDescription)
+                if (choiceDescription) await handleSendDescription(choiceDescription)
                 return
             } catch {
                 setVotesProcessingError(true)
@@ -158,7 +158,7 @@ export const VotesHandler: React.FC<ICastVote> = ({
                         )
                     })}
                 </RadioGroupWithLabel>
-                {(canCast || canSendNote) && (
+                {(canCast || canSendNote || !vetoed) && (
                     <TextArea
                         rows={3}
                         label={t('votes.voteDetail.description')}
