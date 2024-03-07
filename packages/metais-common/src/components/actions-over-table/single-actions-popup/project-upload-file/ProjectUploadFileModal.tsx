@@ -5,15 +5,15 @@ import { v4 as uuidV4 } from 'uuid'
 
 import { ProjectUploadFileView } from './ProjectUploadFileView'
 
-import { FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { ConfigurationItemUi, useGetDocumentHook, useReadCiNeighboursHook, useStoreGraphHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
-import { useIsOwnerByGidHook } from '@isdd/metais-common/src/api/generated/iam-swagger'
-import { useGenerateCodeAndURLHook } from '@isdd/metais-common/src/api/generated/types-repo-swagger'
+import { FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { API_CALL_RETRY_COUNT } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
-import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { useIsOwnerByGidHook } from '@isdd/metais-common/src/api/generated/iam-swagger'
+import { useGenerateCodeAndURLHook } from '@isdd/metais-common/src/api/generated/types-repo-swagger'
 
 export interface IDocType extends ConfigurationItemUi {
     confluence?: boolean
@@ -73,7 +73,6 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
 
     const [note, setNote] = useState('')
     const [duplicateNames, setDuplicateNames] = useState<string[] | undefined>()
-
     const getDocumentExists = async (docId: string) => {
         let done = false
         for (let index = 0; index < API_CALL_RETRY_COUNT; index++) {
@@ -145,10 +144,14 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
         })
         await Promise.all(statusRequests)
 
-        setIsLoading(false)
-        reset()
         onSubmit({ isSuccess: true, isError: false, additionalInfo: { action: 'addedDocuments' } })
         if ([isError, isProcessedError, isTooManyFetchesError].some((error) => error)) onSubmit({ isSuccess: true, isError: false })
+        setIsLoading(false)
+        reset()
+    }
+
+    const onFileUploadFailed = () => {
+        setIsLoading(false)
     }
 
     const handleUploadFile = async (formData: FieldValues) => {
@@ -199,6 +202,7 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
     return (
         <BaseModal isOpen={open} close={onClose}>
             <ProjectUploadFileView
+                onFileUploadFailed={onFileUploadFailed}
                 register={register}
                 onClose={onClose}
                 onSubmit={handleSubmit(handleUploadFile)}
