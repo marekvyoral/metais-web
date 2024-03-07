@@ -17,7 +17,7 @@ import {
 } from '@isdd/idsk-ui-kit/index'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ApiMeetingRequest, useParticipateMeetingRequest, useSummarizeMeetingRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -67,6 +67,13 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
     const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
     const [modalOpen, setModalOpen] = useState(false)
     const [participateLoading, setParticipateLoading] = useState(false)
+    const searchParams = new URLSearchParams(window.location.search)
+    const token = searchParams.get('token')
+    const participation = searchParams.get('participation')
+
+    console.log('token', token)
+    console.log('participation', participation)
+
     const openModal = () => {
         setModalOpen(true)
     }
@@ -292,7 +299,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
             {ability.can(Actions.SEE_PARTICIPATION_TO, Subject.MEETING) ? (
                 <>
                     <QueryFeedback loading={participateLoading} withChildren>
-                        {editParticipate ? (
+                        {editParticipate && !token ? (
                             <>
                                 <TextHeading size="L">{t('meetings.vote')}</TextHeading>
                                 <RadioButton
@@ -322,8 +329,15 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                         ) : (
                             <>
                                 <TextHeading size="L">{t('meetings.vote')}</TextHeading>
-                                <TextBody>{t(`meetings.voteValue.${userIsParticipate}`)}</TextBody>
-                                {isMeetingFuture && <Button label={t('meetings.changeVote')} onClick={() => setEditParticipate(true)} />}
+                                {token && participation ? (
+                                    <TextBody>{t(`meetings.voteValue.${participation}`)}</TextBody>
+                                ) : (
+                                    <TextBody>{t(`meetings.voteValue.${userIsParticipate}`)}</TextBody>
+                                )}
+
+                                {isMeetingFuture && !token && !participation && (
+                                    <Button label={t('meetings.changeVote')} onClick={() => setEditParticipate(true)} />
+                                )}
                             </>
                         )}
                     </QueryFeedback>

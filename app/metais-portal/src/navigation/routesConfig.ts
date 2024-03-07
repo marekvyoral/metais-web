@@ -331,6 +331,11 @@ export const routesConfig: RouteConfig[] = [
                 component: MeetingDetailPage,
             },
             {
+                path: RouterRoutes.STANDARDIZATION_MEETINGS_DETAIL_PARTICIPATE,
+                slug: RouterRoutes.STANDARDIZATION_MEETINGS_DETAIL_PARTICIPATE,
+                component: MeetingDetailPage,
+            },
+            {
                 path: RouterRoutes.STANDARDIZATION_MEETINGS_CREATE,
                 slug: RouterRoutes.STANDARDIZATION_MEETINGS_CREATE,
                 component: CreateMeetingPage,

@@ -58,6 +58,7 @@ export enum RouterRoutes {
     STANDARDIZATION_VOTE_CREATE = '/standardization/voteslist/create',
     STANDARDIZATION_MEETINGS_LIST = '/standardization/meetingslist',
     STANDARDIZATION_MEETINGS_DETAIL = '/standardization/meetingslist/:meetingId',
+    STANDARDIZATION_MEETINGS_DETAIL_PARTICIPATE = '/standardization/meetingslist/:meetingId/participate',
     STANDARDIZATION_MEETINGS_EDIT = '/standardization/meetingslist/:meetingId/edit',
     STANDARDIZATION_MEETINGS_CREATE = '/standardization/meetingslist/create',
     STANDARDIZATION_GROUPS_LIST = '/standardization/groupslist',

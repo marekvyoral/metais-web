@@ -38,6 +38,8 @@ export const useMeetingsDetailPermissions = (meetingDetailData: ApiMeetingReques
     const {
         state: { user },
     } = useAuth()
+    const searchParams = new URLSearchParams(window.location.search)
+    const token = searchParams.get('token')
 
     const abilityContext = useAbilityContext()
 
@@ -58,7 +60,7 @@ export const useMeetingsDetailPermissions = (meetingDetailData: ApiMeetingReques
         const meetingIsStarting = startDateMeeting.getTime() - dateNow.getTime() > 0
 
         if ((createdByUser || canEditMeetingUserRole) && meetingIsStarting && !canceledState) can(Actions.EDIT, Subject.MEETING)
-        if (userIsGuest && !canceledState && !meetingIsFinished && !(nowState && !userIsParticipate))
+        if ((userIsGuest || token) && !canceledState && !meetingIsFinished && !(nowState && !userIsParticipate))
             can(Actions.SEE_PARTICIPATION_TO, Subject.MEETING)
         if (createdByUser || canEditMeetingUserRole) can(Actions.SET_SUMMARIZE_LINK, Subject.MEETING)
         if (summarizeState && (createdByUser || canEditMeetingUserRole)) can(Actions.CHANGE_SUMMARIZE_LINK, Subject.MEETING)
@@ -73,6 +75,7 @@ export const useMeetingsDetailPermissions = (meetingDetailData: ApiMeetingReques
         meetingDetailData?.endDate,
         meetingDetailData?.meetingActors,
         meetingDetailData?.state,
+        token,
         user,
     ])
 
