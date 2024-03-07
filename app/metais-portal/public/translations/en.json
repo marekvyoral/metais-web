@@ -2179,7 +2179,9 @@
     "votes": {
         "actions": {
             "sent": "Your vote was sent.",
-            "failedToSend": "Failed to send your vote."
+            "failedToSend": "Failed to send your vote. Try to repeat the vote. If the error occurs repeatedly, please contact the Standardization Administrator by email at: standard@mirri.gov.sk",
+            "userToken": "Your vote has already been cast.",
+            "castDesc": "Thank you Your vote has been successfully recorded. If you are interested you can still send a note to vote"
         },
         "breadcrumbs": {
             "home": "Home",
@@ -2249,7 +2251,8 @@
                 "name": "Name",
                 "organization": "Organization",
                 "role": "Role"
-            }
+            },
+            "save": "Save"
         },
         "voteEdit": {
             "newVoteTitle": "Add new vote",

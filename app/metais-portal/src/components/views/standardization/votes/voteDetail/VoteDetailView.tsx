@@ -1,13 +1,14 @@
 import { AccordionContainer, Button, Tab, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ApiStandardRequest, ApiVote, ApiVoteResult } from '@isdd/metais-common/api/generated/standards-swagger'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useVotesListPermissions'
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { TableWithPagination } from '@isdd/metais-common/components/TableWithPagination/TableWithPagination'
+import { MutationFeedback } from '@isdd/metais-common/index'
 
 import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
 import { voteActorResultsColumns } from './voteActorResultsColumns'
@@ -28,8 +29,8 @@ export interface IVoteDetailView {
     castedVoteId: number | undefined
     isUserLoggedIn: boolean
     votesProcessing: boolean
-    castVote: (choiceId: number, description: string) => Promise<void>
-    vetoVote: (description: string) => Promise<void>
+    castVote: ({ choiceId, token, description }: { choiceId: number; token?: string; description?: string }) => Promise<void>
+    vetoVote: ({ token, description }: { token?: string; description?: string }) => Promise<void>
     cancelVote: (description: string) => Promise<void>
 }
 
@@ -57,6 +58,12 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     const actorResultsColumns = voteActorResultsColumns(t)
     const actorColumns = voteActorsColumns(t)
     const actorPendingChangesColumns = voteActorPendingChangesColumns(t)
+    const searchParams = new URLSearchParams(window.location.search)
+    const token = searchParams.get('token')
+    const choice = searchParams.get('choice')
+    const [castVoteError, setCastVoteError] = useState(false)
+    const [castVoteSuccess, setCastVoteSuccess] = useState(false)
+    const [castVoteMessage, setCastVoteMessage] = useState('')
 
     const tabList: Tab[] = useMemo((): Tab[] => {
         const choiceResultsList = voteResultData?.choiceResults ?? []
@@ -79,14 +86,49 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
         })
     }, [actorResultsColumns, selectedTab, voteResultData?.actorResults, voteResultData?.choiceResults])
 
-    const handleCastVote = async (choiceId: number | undefined, description: string | undefined) => {
-        await castVote(choiceId ?? 0, description ?? '')
+    useEffect(() => {
+        const castVoteProcess = async () => {
+            try {
+                if (!token) {
+                    return
+                }
+                if (choice) {
+                    await castVote({ choiceId: +choice, token })
+                    setCastVoteSuccess(true)
+                    setCastVoteMessage(t('votes.actions.castDesc'))
+                } else {
+                    await vetoVote({ token })
+                    setCastVoteSuccess(true)
+                    setCastVoteMessage(t('votes.actions.castDesc'))
+                }
+            } catch (error) {
+                if (error instanceof Error && typeof error.message === 'string') {
+                    const errorData = JSON.parse(error.message)
+                    if (errorData.message === 'Token has been used for vote') {
+                        setCastVoteError(true)
+                        setCastVoteMessage(t('votes.actions.userToken'))
+                    } else {
+                        setCastVoteError(true)
+                        setCastVoteMessage(t('votes.actions.failedToSend'))
+                    }
+                }
+            }
+        }
+        castVoteProcess()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token, choice])
+
+    const handleCastVote = async (choiceId: number, description: string) => {
+        await castVote({ choiceId, description })
     }
 
     const handleVetoVote = async (description: string | undefined) => {
-        await vetoVote(description ?? '')
+        await vetoVote({ description })
     }
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const handleSendDescription = (description: string | undefined) => {
+        // function save desc
+    }
     const changeDescription = (name: string, changeAction: string): string => {
         switch (changeAction) {
             case 'ADD':
@@ -118,7 +160,10 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     }, [voteState])
 
     const canModifyVote = useMemo(() => {
-        return voteState == VoteStateOptionEnum.PLANNED || (voteState !== VoteStateOptionEnum.SUMMARIZED && voteState !== VoteStateOptionEnum.VETOED)
+        return (
+            voteState == VoteStateOptionEnum.PLANNED ||
+            (voteState !== VoteStateOptionEnum.SUMMARIZED && voteState !== VoteStateOptionEnum.VETOED && voteState !== VoteStateOptionEnum.UPCOMING)
+        )
     }, [voteState])
 
     const hideVoteModifyingButtons = useMemo(() => {
@@ -144,29 +189,37 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
                     </div>
                 )}
             </div>
-
             <VoteDetailItems voteData={voteData} srData={srData} />
-
             <Spacer vertical />
-
             <TextHeading size="L">{t('votes.voteDetail.voteDescription')}</TextHeading>
             <TextBody>{voteData?.description ?? ''}</TextBody>
             <Spacer vertical />
-
             <TextHeading size="L">{t('votes.voteDetail.votesHandlingTitle')}</TextHeading>
-
+            {(castVoteSuccess || castVoteError) && (
+                <MutationFeedback
+                    success={castVoteSuccess}
+                    error={castVoteError ? castVoteMessage : t('votes.actions.failedToSend')}
+                    successMessage={t('votes.actions.sent')}
+                    onMessageClose={() => {
+                        setCastVoteError(false)
+                        setCastVoteMessage('')
+                    }}
+                />
+            )}
             <VotesHandler
                 voteData={voteData}
                 handleCastVote={handleCastVote}
                 handleVetoVote={handleVetoVote}
-                canCast={(isUserLoggedIn && canCastVote) ?? false}
-                canVeto={(isUserLoggedIn && canCastVote && voteData?.veto) ?? false}
+                canCast={((isUserLoggedIn && canCastVote) || !!token) ?? false}
+                canVeto={((isUserLoggedIn && canCastVote && voteData?.veto) || !!token) ?? false}
                 voteProcessing={votesProcessing}
-                castedVoteId={castedVoteId}
+                castedVoteId={castedVoteId || (choice ? +choice : null)}
                 vetoed={voteState == VoteStateOptionEnum.VETOED}
+                canSendNote={!!token && !castVoteError}
+                handleSendDescription={handleSendDescription}
+                cancelState={hideVoteModifyingButtons}
             />
             <Spacer vertical />
-
             <AccordionContainer
                 sections={[
                     {
@@ -177,19 +230,15 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
                 ]}
             />
             <Spacer vertical />
-
             <TextHeading size="L">{t('votes.voteDetail.voteOverview')}</TextHeading>
             <VoteOverViewItems voteData={voteData} voteResultData={voteResultData} />
-
             <Spacer vertical />
-
             <Tabs
                 tabList={tabList}
                 onSelect={(selected) => {
                     setSelectedTab(selected.id)
                 }}
             />
-
             <Spacer vertical />
             {pendingChangesData.length !== 0 && (
                 <AccordionContainer

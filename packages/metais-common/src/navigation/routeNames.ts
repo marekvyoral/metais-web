@@ -54,6 +54,8 @@ export enum RouterRoutes {
     TASKS = '/ulohy',
     STANDARDIZATION_VOTE_LIST = '/standardization/voteslist',
     STANDARDIZATION_VOTE_DETAIL = '/standardization/voteslist/:voteId',
+    STANDARDIZATION_VOTE_DETAIL_EXTERNAL = '/standardization/voteslist/:voteId/vote',
+    STANDARDIZATION_VOTE_DETAIL_EXTERNAL_VETO = '/standardization/voteslist/:voteId/veto',
     STANDARDIZATION_VOTE_EDIT = '/standardization/voteslist/:voteId/edit',
     STANDARDIZATION_VOTE_CREATE = '/standardization/voteslist/create',
     STANDARDIZATION_MEETINGS_LIST = '/standardization/meetingslist',

@@ -311,6 +311,16 @@ export const routesConfig: RouteConfig[] = [
                 component: VoteDetailPage,
             },
             {
+                path: RouterRoutes.STANDARDIZATION_VOTE_DETAIL_EXTERNAL,
+                slug: RouterRoutes.STANDARDIZATION_VOTE_DETAIL_EXTERNAL,
+                component: VoteDetailPage,
+            },
+            {
+                path: RouterRoutes.STANDARDIZATION_VOTE_DETAIL_EXTERNAL_VETO,
+                slug: RouterRoutes.STANDARDIZATION_VOTE_DETAIL_EXTERNAL_VETO,
+                component: VoteDetailPage,
+            },
+            {
                 path: RouterRoutes.STANDARDIZATION_VOTE_CREATE,
                 slug: RouterRoutes.STANDARDIZATION_VOTE_CREATE,
                 component: VoteCreatePage,
