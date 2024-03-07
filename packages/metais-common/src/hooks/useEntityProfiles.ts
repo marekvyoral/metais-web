@@ -1,10 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import { useGetCiTypeWrapper } from './useCiType.hook'
+
 import {
     AttributeProfile,
     getGetCiTypeQueryKey,
     useGetAttributeOverrides,
-    useGetCiType,
     useGetSummarizingCard,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
@@ -16,9 +17,14 @@ export const createTabNamesAndValuesMap = (profileAttributes: AttributeProfile[]
     return keysToDisplay
 }
 
-export const useEntityProfiles = (technicalName: string) => {
+export const useEntityProfiles = (technicalName: string, onlyValidProfiles = true) => {
     const queryClient = useQueryClient()
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError, isFetching } = useGetCiType(technicalName)
+    const {
+        data: ciTypeData,
+        isLoading: isCiTypeDataLoading,
+        isError: isCiTypeDataError,
+        isFetching,
+    } = useGetCiTypeWrapper(technicalName, {}, onlyValidProfiles)
 
     const {
         data: summarizingCardData,

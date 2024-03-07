@@ -1,17 +1,17 @@
 import { useTranslation } from 'react-i18next'
 
 import { useDetailData } from './useDetailData'
+import { useGetCiTypeWrapper } from './useCiType.hook'
 
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { transformColumnsMap, transformNameColumnsMap } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 
-export const useAttributesHook = (entityName?: string) => {
+export const useAttributesHook = (entityName?: string, onlyValidProfiles = true) => {
     const { i18n } = useTranslation()
     const {
         data: ciTypeData,
         isLoading: isCiTypeDataLoading,
         isError: isCiTypeDataError,
-    } = useGetCiType(entityName ?? '', { query: { queryKey: [i18n.language, entityName], enabled: !!entityName } })
+    } = useGetCiTypeWrapper(entityName ?? '', { query: { queryKey: [i18n.language, entityName], enabled: !!entityName } }, onlyValidProfiles)
 
     const { isLoading, isError, constraintsData, unitsData } = useDetailData({
         entityStructure: ciTypeData,

@@ -37,7 +37,7 @@ export const PublicAuthoritiesMassUpdateContainer = <T extends FieldValues & IFi
         unitsData,
         isError: isAttributesError,
         isLoading: isAttributesLoading,
-    } = useAttributesHook(entityName)
+    } = useAttributesHook(entityName, false)
 
     const defaultRequestApi = {
         page: 1,

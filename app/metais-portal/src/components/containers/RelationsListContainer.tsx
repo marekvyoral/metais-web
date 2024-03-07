@@ -6,7 +6,8 @@ import React, { SetStateAction, useEffect, useMemo, useState } from 'react'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { mapFilterToNeighboursWithAllRelsApi } from '@isdd/metais-common/componentHelpers'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
-import { RelationshipTypePreview, useGetCiType, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { RelationshipTypePreview, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { NeighboursCardList } from '@/components/entities/NeighboursCardList'
 import { getRelationsSorter } from '@/componentHelpers/ci/ciRelationsSortConfig'
@@ -41,7 +42,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
     hidePageSizeSelect = false,
     includeDeleted = false,
 }) => {
-    const { data: ciTypeData } = useGetCiType(technicalName)
+    const { data: ciTypeData } = useGetCiTypeWrapper(technicalName)
     const {
         isLoading: areTypesLoading,
         isError: areTypesError,

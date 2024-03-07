@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from 'react'
 
-import { RelatedCiTypePreview, RelatedCiTypePreviewList, useListRelatedCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useListRelatedCiTypesWrapper } from './useListRelatedCiTypes.hook'
+
+import { RelatedCiTypePreview, RelatedCiTypePreviewList } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { isRelatedCiTypeCmdbView, removeDuplicates } from '@isdd/metais-common/hooks/common'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { NeighboursFilterContainerUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -12,7 +14,7 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
     } = useAuth()
     const { currentPreferences } = useUserPreferences()
     const isUserLogged = !!user
-    const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName ?? '')
+    const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypesWrapper(technicalName ?? '')
     const relatedCiTypesFilteredForView = useMemo((): RelatedCiTypePreviewList => {
         const filteredSources = relatedData?.cisAsSources?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged, false))
         const filteredTargets = relatedData?.cisAsTargets?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged, false))
