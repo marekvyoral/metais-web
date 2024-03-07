@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, ButtonGroupRow, TextArea } from '@isdd/idsk-ui-kit/index'
+import { Button, ButtonGroupRow, ErrorBlock, TextArea } from '@isdd/idsk-ui-kit/index'
 import { ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -86,7 +86,9 @@ export const RefRegisterCreateView: React.FC<IRefRegisterCreateView> = ({
     const creatorNotSet = userGroupId || !showCreatorForm(defaultUserGroup, defaultData) ? false : true
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <>
                     <RefRegisterCreateMetaSection
                         defaultData={defaultData}

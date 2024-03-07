@@ -1,4 +1,4 @@
-import { Button, CheckBox, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, CheckBox, ErrorBlock, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -38,7 +38,7 @@ export const EditDocumentView: React.FC<IView> = ({ infoData, saveDocument, isLo
     const {
         register,
         handleSubmit,
-        formState: { errors, isValid },
+        formState: { errors, isValid, isSubmitted },
         clearErrors,
     } = useForm({ resolver: yupResolver(docSchema(t)), defaultValues: { docId: documentData?.type } })
     const onSubmit = (fieldValues: FieldValues) => {
@@ -78,7 +78,8 @@ export const EditDocumentView: React.FC<IView> = ({ infoData, saveDocument, isLo
         <QueryFeedback loading={isLoading} error={isError}>
             <div ref={wrapperRef} />
             <TextHeading size="L">{t('documentsManagement.editDocument')}</TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Input
                     disabled
                     defaultValue={documentData?.type}

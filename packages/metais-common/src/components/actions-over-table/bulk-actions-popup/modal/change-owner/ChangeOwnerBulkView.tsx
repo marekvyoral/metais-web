@@ -39,7 +39,7 @@ export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
     })
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <TextHeading size="L">{title}</TextHeading>
 
             <SelectPublicAuthorityAndRole

@@ -41,7 +41,7 @@ export const ReturnToWorkoutModal: React.FC<IReturnToWorkoutModalProps> = ({ ope
         <BaseModal isOpen={open} close={onClose}>
             <QueryFeedback loading={isLoading} withChildren>
                 {storedData?.Gen_Profil_ref_id && (
-                    <form onSubmit={handleSubmit(onSend)}>
+                    <form onSubmit={handleSubmit(onSend)} noValidate>
                         <TextHeading size="L">{t('ciType.return_to_workout')}</TextHeading>
                         <TextArea {...register('note')} label={t('modalKris.returnToWorkout.note')} rows={3} />
                         <input type="hidden" {...register('Gen_Profil_kod_metais')} defaultValue={storedData?.Gen_Profil_kod_metais} />

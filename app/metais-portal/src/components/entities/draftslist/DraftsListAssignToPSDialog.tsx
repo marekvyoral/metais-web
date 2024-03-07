@@ -20,7 +20,7 @@ export const DraftsListAssignToPSDialog = ({ openAddToPSDialog, setOpenAddToPSDi
 
     return (
         <BaseModal isOpen={openAddToPSDialog} close={setOpenAddToPSDialog}>
-            <form onSubmit={handleSubmit(assignToPs)}>
+            <form onSubmit={handleSubmit(assignToPs)} noValidate>
                 <div className={styles.modalContainer}>
                     <div className={styles.content}>
                         <TextHeading size={'L'} className={styles.heading}>

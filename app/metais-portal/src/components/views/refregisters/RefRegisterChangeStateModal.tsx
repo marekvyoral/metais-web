@@ -120,7 +120,7 @@ export const RefRegisterChangeStateModal = ({
 
     return (
         <BaseModal isOpen={openChangeStateDialog} close={() => setOpenChangeStateDialog(false)}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <>
                     {targetState === ApiReferenceRegisterState.MPK_IN_PROGRESS && (
                         <>

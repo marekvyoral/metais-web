@@ -54,7 +54,7 @@ export const DeletePersonalInfoModal: React.FC<Props> = ({ isOpen, onClose, muta
 
     return (
         <BaseModal widthInPx={640} isOpen={isOpen} close={onClose}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className={styles.div}>
                     <TextHeading size="L">{t('userProfile.deletePersonalInfo.heading')}</TextHeading>
                     <TextBody>{t('userProfile.deletePersonalInfo.description')}</TextBody>

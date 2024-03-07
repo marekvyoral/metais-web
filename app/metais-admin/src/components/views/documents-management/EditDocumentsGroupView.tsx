@@ -1,4 +1,4 @@
-import { Button, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, ErrorBlock, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
@@ -22,7 +22,7 @@ export const EditDocumentsGroupView: React.FC<IView> = ({ infoData, projectStatu
     const {
         register,
         handleSubmit,
-        formState: { errors, isValid },
+        formState: { errors, isValid, isSubmitted },
         clearErrors,
         setValue,
     } = useForm()
@@ -62,7 +62,9 @@ export const EditDocumentsGroupView: React.FC<IView> = ({ infoData, projectStatu
         <QueryFeedback loading={isLoading} error={updateError}>
             <div ref={wrapperRef} />
             <TextHeading size="L">{t('documentsManagement.groupEdit')}</TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <SimpleSelect
                     defaultValue={projectStatus.enumItems?.find((e) => e.code == infoData.state)?.code}
                     label={t('documentsManagement.status') + ' ' + t('input.requiredField')}

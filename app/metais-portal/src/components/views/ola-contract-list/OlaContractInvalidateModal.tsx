@@ -44,7 +44,7 @@ export const OlaContractInvalidateModal: React.FC<IOlaContractInvalidateModal> =
                 error={isInvalidationError || isProcessedError || isCiCodeError}
                 withChildren
             >
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <TextHeading size="L">{t('olaContracts.invalidateModal.heading', { name })}</TextHeading>
                     <TextWarning>{t('olaContracts.invalidateModal.warning')}</TextWarning>
                     <TextArea rows={3} {...register('note')} label={t('olaContracts.invalidateModal.note')} />

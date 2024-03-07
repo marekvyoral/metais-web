@@ -5,6 +5,7 @@ import {
     ButtonGroupRow,
     ButtonLink,
     CheckBox,
+    ErrorBlock,
     GridCol,
     GridRow,
     HomeIcon,
@@ -163,7 +164,10 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                         </TextWarning>
                         <TextWarning>{t(`codeListDetail.warning.codelistLocked`)}</TextWarning>
                         <Spacer vertical />
-                        <form onSubmit={handleSubmit(onHandleSubmit)}>
+
+                        {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                        <form onSubmit={handleSubmit(onHandleSubmit)} noValidate>
                             <div className={styles.bottomGap}>
                                 <CheckBox
                                     label={getDescription('Gui_Profil_ZC_zakladny_ciselnik', language, attributeProfile)}

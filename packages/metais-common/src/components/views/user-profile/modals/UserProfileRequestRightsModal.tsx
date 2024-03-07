@@ -85,7 +85,7 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
 
     return (
         <BaseModal widthInPx={640} isOpen={isOpen} close={onClose}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className={styles.div}>
                     <TextHeading size="L">{t('userProfile.requests.rightsSettings')}</TextHeading>
 

@@ -129,7 +129,7 @@ export const VotesHandler: React.FC<ICastVote> = ({
                     onMessageClose={() => setVotesProcessingError(false)}
                 />
             )}
-            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
+            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')} noValidate>
                 <RadioGroupWithLabel
                     label={t('votes.voteDetail.votesHandlingRadioLabel')}
                     hint={

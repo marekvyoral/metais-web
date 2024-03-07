@@ -67,7 +67,7 @@ export const UserPasswordChangePage = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={classNames({ [styles.positionRelative]: isLoading })}>
+        <form onSubmit={handleSubmit(onSubmit)} className={classNames({ [styles.positionRelative]: isLoading })} noValidate>
             {isLoading && <LoadingIndicator />}
             <MutationFeedback
                 success={isSuccess}

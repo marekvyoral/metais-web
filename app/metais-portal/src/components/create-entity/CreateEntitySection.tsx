@@ -9,7 +9,7 @@ import { Attribute, CiCode } from '@isdd/metais-common/api/generated/types-repo-
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 
 import { HasResetState } from './CreateCiEntityForm'
-import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits, getHint } from './createEntityHelpers'
+import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits, getHint, getSectionErrorList } from './createEntityHelpers'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 
@@ -45,15 +45,7 @@ export const CreateEntitySection: React.FC<ISection> = ({
     const { register, formState, trigger, setValue, clearErrors, control } = useFormContext()
     const { errors, isSubmitted } = formState
 
-    const errorNames = Object.keys(errors).filter((item) => item.includes(sectionId))
-    const thisSectionAttWithErrors = attributes.filter((att) => att.technicalName && errorNames.includes(att.technicalName))
-
-    const thisSectionErrorList = [
-        ...thisSectionAttWithErrors.map((att) => ({
-            errorTitle: att.name ?? '',
-            errorMessage: errors[errorNames.find((name) => name === att.technicalName) ?? '']?.message?.toString(),
-        })),
-    ]
+    const thisSectionErrorList = getSectionErrorList(attributes, formState?.errors, sectionId)
 
     const isSectionError = Object.keys(errors)
         .map((item) => item.includes(sectionId))

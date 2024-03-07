@@ -240,6 +240,8 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
                         </div>
                     )}
 
+                    {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
                     <FormProvider {...methods}>
                         <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
                             <CreateEntitySection

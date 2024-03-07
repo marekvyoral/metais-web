@@ -226,7 +226,7 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
                         )}
                     </GridCol>
                 </GridRow>
-                <form onSubmit={handleSubmit(onSubmit)} className={styles.topSpace}>
+                <form onSubmit={handleSubmit(onSubmit)} className={styles.topSpace} noValidate>
                     {valueParams.length > 0 && (
                         <GridRow key={`row0-column`}>
                             <GridCol key={`name-column`} setWidth="one-third">

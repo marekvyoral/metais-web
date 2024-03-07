@@ -99,14 +99,23 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
     return (
         <>
             <MutationFeedback success={false} error={isError ? errorMessage : ''} />
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className={styles.justifyEndDiv}>
                     <SubmitWithFeedback submitButtonLabel={t('userProfile.save')} loading={isLoading || isSubmitting || isValidating} />
                 </div>
                 <DefinitionList className={styles.dl}>
                     <InformationGridRow
                         label={t('userProfile.information.name') + ':'}
-                        value={<Input error={errors.name?.message} label="" type="text" disabled {...register(UserInformationFormKeysEnum.NAME)} />}
+                        value={
+                            <Input
+                                error={errors.name?.message}
+                                label=""
+                                type="text"
+                                disabled
+                                {...register(UserInformationFormKeysEnum.NAME)}
+                                autoComplete="name"
+                            />
+                        }
                         hideIcon
                     />
                     <InformationGridRow
@@ -124,12 +133,28 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
                     />
                     <InformationGridRow
                         label={t('userProfile.information.phoneNumber') + ':'}
-                        value={<Input error={errors.mobile?.message} label="" type="tel" {...register(UserInformationFormKeysEnum.MOBILE)} />}
+                        value={
+                            <Input
+                                error={errors.mobile?.message}
+                                label=""
+                                type="tel"
+                                {...register(UserInformationFormKeysEnum.MOBILE)}
+                                autoComplete="tel"
+                            />
+                        }
                         hideIcon
                     />
                     <InformationGridRow
                         label={t('userProfile.information.email') + ':'}
-                        value={<Input error={errors.email?.message} label="" type="email" {...register(UserInformationFormKeysEnum.EMAIL)} />}
+                        value={
+                            <Input
+                                error={errors.email?.message}
+                                label=""
+                                type="email"
+                                {...register(UserInformationFormKeysEnum.EMAIL)}
+                                autoComplete="email"
+                            />
+                        }
                         hideIcon
                     />
                 </DefinitionList>

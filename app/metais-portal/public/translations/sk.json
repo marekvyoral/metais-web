@@ -347,7 +347,8 @@
         "sections": "sekcie",
         "and": "a",
         "sectionError": "V tejto sekcii nastala chyba",
-        "sectionChange": "V tejto sekcii došlo k zmene"
+        "sectionChange": "V tejto sekcii došlo k zmene",
+        "sectionTitle": "Názov sekcie:"
     },
     "tab": {
         "contents": "Obsah",
@@ -2948,5 +2949,13 @@
     },
     "accessibility": {
         "navigated": "Zmena stránky na {{pageTitle}}"
+    },
+    "error": "Chyba: ",
+    "sectionErrors": " Zoznam chýb v sekcii:",
+    "formErrors": "Formulár obsahuje validačné chyby.",
+    "listOfFormErrors": "Zoznam chýb formulára:",
+    "arrayInput": {
+        "deleteRow": "Odstrániť {{itemName}}",
+        "changeRowsNumber": "Zmenil sa počet riadkov položky: {{name}}. Počet riadkov je {{count}}"
     }
 }

@@ -349,7 +349,8 @@
         "sections": "sections",
         "and": "and",
         "sectionError": "This section has error",
-        "sectionChange": "This section has changed"
+        "sectionChange": "This section has changed",
+        "sectionTitle": "Section title:"
     },
     "tab": {
         "contents": "Contents",
@@ -2942,5 +2943,13 @@
     },
     "accessibility": {
         "navigated": "Page changed to {{pageTitle}}"
+    },
+    "error": "Error: ",
+    "sectionErrors": " List of section errors:",
+    "formErrors": "Form has validation errors.",
+    "listOfFormErrors": "List of form errors:",
+    "arrayInput": {
+        "deleteRow": "Remove {{itemName}}",
+        "changeRowsNumber": "Number of rows for item {{name}} changed. Number of rows is {{count}}"
     }
 }

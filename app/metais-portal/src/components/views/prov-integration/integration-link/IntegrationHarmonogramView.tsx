@@ -166,7 +166,7 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
     return (
         <QueryFeedback loading={isLoading || isUpdateLoading} error={isError} withChildren>
             <MutationFeedback success={isUpdateSuccess} showSupportEmail error={isUpdateError ? t('feedback.mutationErrorMessage') : ''} />
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Table columns={columns} data={hasHarmonogramData ? harmonogramData?.results : defaultData} />
                 {isHarmonogramEdit && (
                     <SubmitWithFeedback

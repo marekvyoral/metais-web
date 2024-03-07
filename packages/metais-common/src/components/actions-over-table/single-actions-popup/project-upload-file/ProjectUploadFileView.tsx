@@ -56,7 +56,7 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
                 <TextHeading size="L">{t('bulkActions.addFile.title')}</TextHeading>
             </div>
 
-            <form onSubmit={onSubmit} className={classNames({ [styles.positionRelative]: isLoading })}>
+            <form onSubmit={onSubmit} className={classNames({ [styles.positionRelative]: isLoading })} noValidate>
                 <TextArea {...register('note')} label={t('bulkActions.updateFile.reason')} rows={3} />
                 <FileUpload
                     ref={fileUploadRef}

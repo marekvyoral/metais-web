@@ -83,7 +83,7 @@ export const GeneratePdfModal: React.FC<IGeneratePdfModalProps> = ({ open, orgId
     return (
         <BaseModal isOpen={open} close={onClose}>
             <QueryFeedback loading={isLoading} withChildren>
-                <form onSubmit={handleSubmit(generate)}>
+                <form onSubmit={handleSubmit(generate)} noValidate>
                     <TextHeading size="L">{t('ciType.pdfGenerateFuture')}</TextHeading>
                     {showWarning && <TextWarning>{t('modalKris.generatePdf.tooBigToGenerate')}</TextWarning>}
                     <SelectLazyLoading<ConfigurationItemUi>

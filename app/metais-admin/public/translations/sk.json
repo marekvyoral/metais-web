@@ -1545,5 +1545,13 @@
         "cancel": "Zrušiť",
         "validate": "Zvalidovať",
         "done": "Súbory sú naimportované."
+    },
+    "error": "Chyba: ",
+    "sectionErrors": " Zoznam chýb v sekcii:",
+    "formErrors": "Formulár obsahuje validačné chyby.",
+    "listOfFormErrors": "Zoznam chýb formulára:",
+    "arrayInput": {
+        "deleteRow": "Odstrániť {{itemName}}",
+        "changeRowsNumber": "Zmenil sa počet riadkov položky: {{name}}. Počet riadkov je {{count}}"
     }
 }

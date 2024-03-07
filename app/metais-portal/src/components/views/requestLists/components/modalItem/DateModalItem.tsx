@@ -37,7 +37,7 @@ export const DateModalItem: React.FC<DateModalItemProps> = ({ isOpen, close, onS
         <BaseModal isOpen={isOpen} close={close}>
             <TextHeading size="M">{t(`codeListDetail.modal.title.setDates`)}</TextHeading>
             {Object.keys(rowSelection).length > 0 ? (
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <TextBody>{t('codeListDetail.modal.text.willBeChanged')}</TextBody>
                     <Table
                         data={Object.values(rowSelection)}
