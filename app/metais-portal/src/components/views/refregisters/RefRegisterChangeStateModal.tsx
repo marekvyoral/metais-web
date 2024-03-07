@@ -67,15 +67,10 @@ export const RefRegisterChangeStateModal = ({
     })
 
     const requestData = {
-        version: 1,
-        srName: 'Žiadosť o zaradenie ISVS: ' + entityItemName + ' do zoznamu referenčných registrov',
-        srDescription1:
+        name: 'Žiadosť o zaradenie ISVS: ' + entityItemName + ' do zoznamu referenčných registrov',
+        description:
             'Vecný popis návrhu nového štandardu: Základné údaje referenčného registra aopis referenčných údajov je uvedený v priloženom súbore.',
-        srDescription2: '-',
-        srDescription3: '-',
-        srDescription4: '-',
-        srDescription5: '-',
-        srDescription6: '-',
+
         attachments: [],
         requestChannel: ApiStandardRequestRequestChannel.RR,
         requestChannelAttributes: [
@@ -102,7 +97,6 @@ export const RefRegisterChangeStateModal = ({
                             {
                                 attachmentId: entityId,
                                 attachmentName: metadata.filename,
-                                attachmentSize: metadata.contentLength,
                             },
                         ],
                     },

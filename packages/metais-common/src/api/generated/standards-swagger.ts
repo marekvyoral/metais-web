@@ -38,8 +38,6 @@ export type ParticipateMeetingRequestParams = {
     participation: string
 }
 
-export type CreateVote1200 = { [key: string]: any }
-
 export type GetMeetingRequestsParams = {
     pageNumber: number
     perPage: number
@@ -68,8 +66,6 @@ export type CreateStandardRequestUploadBody = {
 export type CreateStandardRequestUploadParams = {
     request: string
 }
-
-export type CreateStandardRequest200 = { [key: string]: any }
 
 export type GetFOPStandardRequestsRequestChannel = (typeof GetFOPStandardRequestsRequestChannel)[keyof typeof GetFOPStandardRequestsRequestChannel]
 
@@ -107,7 +103,7 @@ export type CastVote1200 = { [key: string]: any }
 
 export type VetoVote1200 = { [key: string]: any }
 
-export type CreateVote200 = { [key: string]: any }
+export type VoteNote200 = { [key: string]: any }
 
 export type GetVotesParams = {
     pageNumber: number
@@ -126,8 +122,6 @@ export type SummarizeMeetingRequest200 = { [key: string]: any }
 
 export type UpdateSummarizeData200 = { [key: string]: any }
 
-export type UpdateMeetingRequest200 = { [key: string]: any }
-
 export type AddUserToActiveVotes200 = { [key: string]: any }
 
 export type AddUserToActiveVotesBody = { [key: string]: string }
@@ -139,8 +133,6 @@ export type ActionStandardRequestParams = {
 }
 
 export type AssignStandardRequest200 = { [key: string]: any }
-
-export type UpdateStandardRequest200 = { [key: string]: any }
 
 export type UpdateActorsVote200 = { [key: string]: any }
 
@@ -179,16 +171,14 @@ export const ApiStandardRequestPreviewRequestChannel = {
 } as const
 
 export interface ApiStandardRequestPreview {
-    version?: number
-    name?: string
     email?: string
-    srName?: string
+    fullName?: string
+    name?: string
     workGroupId?: string
     createdAt?: string
     createdBy?: string
     standardRequestState?: string
     requestChannel?: ApiStandardRequestPreviewRequestChannel
-    actionDesription?: string
     id?: number
 }
 
@@ -307,6 +297,10 @@ export interface UpdateVoteRequest {
     newRoleUuid?: string
     newRoleName?: string
     newRoleDesc?: string
+}
+
+export interface ApiVoteNote {
+    note?: string
 }
 
 export interface ApiMeetingResult {
@@ -438,83 +432,27 @@ export interface ApiAttachment {
     id?: number
     attachmentId?: string
     attachmentName?: string
-    attachmentSize?: number
-    attachmentType?: string
     attachmentDescription?: string
 }
 
 export interface ApiStandardRequest {
-    version?: number
-    name?: string
     email?: string
-    srName?: string
+    fullName?: string
+    name?: string
     workGroupId?: string
     createdAt?: string
     createdBy?: string
     standardRequestState?: string
     requestChannel?: ApiStandardRequestRequestChannel
-    actionDesription?: string
-    srDescription1?: string
-    srDescription2?: string
-    srDescription3?: string
-    srDescription4?: string
-    srDescription5?: string
-    srDescription6?: string
+    description?: string
+    placementProposal?: string
+    legislativeTextProposal?: string
+    financialImpact?: string
+    securityImpact?: string
+    privacyImpact?: string
     attachments?: ApiAttachment[]
     links?: ApiLink[]
     requestChannelAttributes?: ApiAttribute[]
-    proposalDescription1?: string
-    proposalDescription2?: string
-    proposalDescription3?: string
-    applicabilityDescription1?: string
-    applicabilityDescription2?: string
-    applicabilityDescription3?: string
-    applicabilityDescription4?: string
-    relevanceDescription1?: string
-    adaptabilityDescription1?: string
-    adaptabilityDescription2?: string
-    impactDescription1?: string
-    impactDescription2?: string
-    impactDescription3?: string
-    impactDescription4?: string
-    impactDescription5?: string
-    impactDescription6?: string
-    impactDescription7?: string
-    impactDescription8?: string
-    impactDescription9?: string
-    impactDescription10?: string
-    impactDescription11?: string
-    impactDescription12?: string
-    scalabilityDescription1?: string
-    expandabilityDescription1?: string
-    expandabilityDescription2?: string
-    stabilityDescription1?: string
-    stabilityDescription2?: string
-    stabilityDescription3?: string
-    maintenanceDescription1?: string
-    outputsDescription1?: string
-    outputsDescription2?: string
-    outputsDescription3?: string
-    outputsDescription4?: string
-    outputsDescription5?: string
-    processDescription1?: string
-    processDescription2?: string
-    processDescription3?: string
-    processDescription4?: string
-    processDescription5?: string
-    processDescription6?: string
-    extensionDescription1?: string
-    extensionDescription2?: string
-    extensionDescription3?: string
-    extensionDescription4?: string
-    extensionDescription5?: string
-    extensionDescription6?: string
-    extensionDescription7?: string
-    maturityDescription1?: string
-    maturityDescription2?: string
-    maturityDescription3?: string
-    reusabilityDescription1?: string
-    reusabilityDescription2?: string
     id?: number
 }
 
@@ -597,7 +535,7 @@ export const useGetVoteDetail = <TData = Awaited<ReturnType<ReturnType<typeof us
 }
 
 export const useUpdateVoteHook = () => {
-    const updateVote = useStandardsSwaggerClient<void>()
+    const updateVote = useStandardsSwaggerClient<ApiVote>()
 
     return (voteId: number, apiVote: ApiVote) => {
         return updateVote({ url: `/standards/votes/${voteId}`, method: 'put', headers: { 'Content-Type': 'application/json' }, data: apiVote })
@@ -731,7 +669,7 @@ export const useGetStandardRequestDetail = <TData = Awaited<ReturnType<ReturnTyp
 }
 
 export const useUpdateStandardRequestHook = () => {
-    const updateStandardRequest = useStandardsSwaggerClient<UpdateStandardRequest200>()
+    const updateStandardRequest = useStandardsSwaggerClient<ApiStandardRequest>()
 
     return (standardRequestId: number, apiStandardRequest: ApiStandardRequest) => {
         return updateStandardRequest({
@@ -1008,7 +946,7 @@ export const useGetMeetingRequestDetail = <TData = Awaited<ReturnType<ReturnType
 }
 
 export const useUpdateMeetingRequestHook = () => {
-    const updateMeetingRequest = useStandardsSwaggerClient<UpdateMeetingRequest200>()
+    const updateMeetingRequest = useStandardsSwaggerClient<ApiMeetingRequest>()
 
     return (meetingRequestId: number, apiMeetingRequest: ApiMeetingRequest) => {
         return updateMeetingRequest({
@@ -1226,7 +1164,7 @@ export const useGetVotes = <TData = Awaited<ReturnType<ReturnType<typeof useGetV
 }
 
 export const useCreateVoteHook = () => {
-    const createVote = useStandardsSwaggerClient<CreateVote200>()
+    const createVote = useStandardsSwaggerClient<ApiVote>()
 
     return (apiVote: ApiVote) => {
         return createVote({ url: `/standards/votes`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: apiVote })
@@ -1293,6 +1231,65 @@ export const useVetoVote = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useVetoVoteHook>>>, TError, { voteId: number; token: string }, TContext>
 }) => {
     const mutationOptions = useVetoVoteMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useVoteNoteHook = () => {
+    const voteNote = useStandardsSwaggerClient<VoteNote200>()
+
+    return (voteId: number, token: string, apiVoteNote: ApiVoteNote) => {
+        return voteNote({
+            url: `/standards/votes/${voteId}/userToken/${token}/note`,
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            data: apiVoteNote,
+        })
+    }
+}
+
+export const useVoteNoteMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useVoteNoteHook>>>,
+        TError,
+        { voteId: number; token: string; data: ApiVoteNote },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useVoteNoteHook>>>,
+    TError,
+    { voteId: number; token: string; data: ApiVoteNote },
+    TContext
+> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const voteNote = useVoteNoteHook()
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useVoteNoteHook>>>,
+        { voteId: number; token: string; data: ApiVoteNote }
+    > = (props) => {
+        const { voteId, token, data } = props ?? {}
+
+        return voteNote(voteId, token, data)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type VoteNoteMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useVoteNoteHook>>>>
+export type VoteNoteMutationBody = ApiVoteNote
+export type VoteNoteMutationError = ApiError
+
+export const useVoteNote = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useVoteNoteHook>>>,
+        TError,
+        { voteId: number; token: string; data: ApiVoteNote },
+        TContext
+    >
+}) => {
+    const mutationOptions = useVoteNoteMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
@@ -1726,7 +1723,7 @@ export const useGetFOPStandardRequests = <TData = Awaited<ReturnType<ReturnType<
 }
 
 export const useCreateStandardRequestHook = () => {
-    const createStandardRequest = useStandardsSwaggerClient<CreateStandardRequest200>()
+    const createStandardRequest = useStandardsSwaggerClient<ApiStandardRequest>()
 
     return (apiStandardRequest: ApiStandardRequest) => {
         return createStandardRequest({
@@ -1987,38 +1984,38 @@ export const useGetMeetingRequests = <TData = Awaited<ReturnType<ReturnType<type
     return query
 }
 
-export const useCreateVote1Hook = () => {
-    const createVote1 = useStandardsSwaggerClient<CreateVote1200>()
+export const useCreateMeetingHook = () => {
+    const createMeeting = useStandardsSwaggerClient<ApiMeetingRequest>()
 
     return (apiMeetingRequest: ApiMeetingRequest) => {
-        return createVote1({ url: `/meetings`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: apiMeetingRequest })
+        return createMeeting({ url: `/meetings`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: apiMeetingRequest })
     }
 }
 
-export const useCreateVote1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>, TError, { data: ApiMeetingRequest }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>, TError, { data: ApiMeetingRequest }, TContext> => {
+export const useCreateMeetingMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateMeetingHook>>>, TError, { data: ApiMeetingRequest }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateMeetingHook>>>, TError, { data: ApiMeetingRequest }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
-    const createVote1 = useCreateVote1Hook()
+    const createMeeting = useCreateMeetingHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>, { data: ApiMeetingRequest }> = (props) => {
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useCreateMeetingHook>>>, { data: ApiMeetingRequest }> = (props) => {
         const { data } = props ?? {}
 
-        return createVote1(data)
+        return createMeeting(data)
     }
 
     return { mutationFn, ...mutationOptions }
 }
 
-export type CreateVote1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>>
-export type CreateVote1MutationBody = ApiMeetingRequest
-export type CreateVote1MutationError = ApiError
+export type CreateMeetingMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCreateMeetingHook>>>>
+export type CreateMeetingMutationBody = ApiMeetingRequest
+export type CreateMeetingMutationError = ApiError
 
-export const useCreateVote1 = <TError = ApiError, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>, TError, { data: ApiMeetingRequest }, TContext>
+export const useCreateMeeting = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateMeetingHook>>>, TError, { data: ApiMeetingRequest }, TContext>
 }) => {
-    const mutationOptions = useCreateVote1MutationOptions(options)
+    const mutationOptions = useCreateMeetingMutationOptions(options)
 
     return useMutation(mutationOptions)
 }

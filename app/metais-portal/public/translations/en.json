@@ -1939,8 +1939,8 @@
         "title": "Draft list",
         "table": {
             "version": "Version",
-            "name": "Tenderer",
-            "srName": "Draft name",
+            "fullName": "Tenderer",
+            "name": "Draft name",
             "standardRequestState": "Status",
             "requestChannel": "Draft type",
             "createdAt": "Created at",
@@ -2092,9 +2092,9 @@
                 "REQUESTED": "Requested"
             },
             "requestChannel": "Type of proposal",
-            "name": "Submitted by",
+            "fullName": "Submitted by",
             "createdAt": "Date of submission",
-            "srName": "Name of proposal",
+            "name": "Name of proposal",
             "requestChannelValue": {
                 "RI": "Reference identifier",
                 "ZC_Request": "Request for add new codelist",
@@ -2299,9 +2299,9 @@
             "addNextDocumentItem": "Add next document",
             "removeDocument": "document {{document}}",
             "standardRequestsTable": {
-                "srName": "Draft name",
+                "name": "Draft name",
                 "createdAt": "created At",
-                "name": "Mame",
+                "fullName": "Mame",
                 "version": "Verion",
                 "standardRequestState": "State"
             }

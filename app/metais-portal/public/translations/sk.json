@@ -1946,8 +1946,8 @@
         "title": "Zoznam návrhov",
         "table": {
             "version": "Verzia",
-            "name": "Predkladateľ",
-            "srName": "Názov návrhu",
+            "fullName": "Predkladateľ",
+            "name": "Názov návrhu",
             "standardRequestState": "Stav návrhu",
             "requestChannel": "Typ návrhu",
             "createdAt": "Dátum zadania návrhu",
@@ -2100,9 +2100,9 @@
                 "REQUESTED": "Nový"
             },
             "requestChannel": "Typ návrhu",
-            "name": "Predkladateľ",
+            "fullName": "Predkladateľ",
             "createdAt": "Dátum zadania návrhu",
-            "srName": "Názov návrhu",
+            "name": "Názov návrhu",
             "requestChannelValue": {
                 "RI": "Referencovateľný identifikátor",
                 "ZC_Request": "Žiadosť o vytvorenie nového ZČ",
@@ -2307,9 +2307,9 @@
             "addNextDocumentItem": "Pridať ďalší odkaz na dokument",
             "removeDocument": "dokument {{document}}",
             "standardRequestsTable": {
-                "srName": "Názov návrhu",
+                "name": "Názov návrhu",
                 "createdAt": "Vytvorené",
-                "name": "Meno",
+                "fullName": "Meno",
                 "version": "Verzia",
                 "standardRequestState": "Stav"
             }

@@ -34,7 +34,7 @@ interface IMeetingProposalsModalProps {
 }
 
 export interface FilterMeetingData extends IFilterParams {
-    srName: string
+    name: string
 }
 const defaultPagination: Pagination = {
     pageNumber: BASE_PAGE_NUMBER,
@@ -73,7 +73,7 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({ i
         pageNumber: BASE_PAGE_NUMBER,
         pageSize: BASE_PAGE_SIZE,
         fullTextSearch: '',
-        srName: '',
+        name: '',
     }
     const { filter, handleFilterChange } = useFilterParams<FilterMeetingData>(defaultFilterValues)
     const { data, isLoading, isError } = useGetAllStandardRequests()
@@ -81,7 +81,7 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({ i
 
     const filteredData = useMemo(() => {
         return (
-            data?.standardRequests?.filter((request) => latiniseString(request.srName ?? '').includes(latiniseString(filter.fullTextSearch ?? ''))) ||
+            data?.standardRequests?.filter((request) => latiniseString(request.name ?? '').includes(latiniseString(filter.fullTextSearch ?? ''))) ||
             []
         )
     }, [data?.standardRequests, filter.fullTextSearch])
@@ -156,7 +156,7 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({ i
                                     handleCheckboxChange(row)
                                 }}
                                 checked={row.original.id ? !!rowSelection.includes(row.original.id.toString()) : false}
-                                title={t('table.selectItem', { itemName: row.original.srName })}
+                                title={t('table.selectItem', { itemName: row.original.name })}
                             />
                         </div>
                     </>
@@ -164,10 +164,10 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({ i
             },
         },
         {
-            header: t('meetings.proposals.srName'),
-            accessorFn: (row) => row?.srName,
+            header: t('meetings.proposals.name'),
+            accessorFn: (row) => row?.name,
             enableSorting: true,
-            id: 'srName',
+            id: 'name',
             meta: {
                 getCellContext: (ctx: CellContext<ApiStandardRequestPreview, unknown>) => ctx?.getValue?.(),
             },
