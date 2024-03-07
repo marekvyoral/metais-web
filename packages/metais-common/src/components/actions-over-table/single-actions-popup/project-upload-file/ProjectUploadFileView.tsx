@@ -21,6 +21,7 @@ interface IProjectUploadFileViewProps {
     isLoading: boolean
     fileUploadRef: React.RefObject<IFileUploadRef>
     onFileUploadSuccess: (data: FileUploadData[]) => void
+    onFileUploadFailed: () => void
     duplicateDocNames?: string[]
 }
 
@@ -34,6 +35,7 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
     fileMetaAttributes,
     onFileUploadSuccess,
     duplicateDocNames,
+    onFileUploadFailed,
 }) => {
     const { t } = useTranslation()
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>()
@@ -65,6 +67,7 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
                     fileMetaAttributes={fileMetaAttributes}
                     isUsingUuidInFilePath
                     onUploadSuccess={onFileUploadSuccess}
+                    onFileUploadFailed={onFileUploadFailed}
                     setCurrentFiles={setCurrentFiles}
                 />
                 {duplicateDocNamesError && (

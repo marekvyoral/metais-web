@@ -121,10 +121,17 @@ export const useUppy = ({
             }
             setUploadFilesStatus((current) => [
                 ...current.filter((c) => c.fileId !== file?.id),
-                { fileId: file?.id ?? '', fileName: file?.name, uploadError: errorString, isUploaded: isUploadedSuccessfully, response },
+                {
+                    fileId: file?.id ?? '',
+                    fileName: file?.name,
+                    uploadError: errorString && t('fileImport.uploadFailed'),
+                    isUploaded: isUploadedSuccessfully,
+                    response,
+                },
             ])
             return
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [containsFileId],
     )
 
@@ -242,7 +249,6 @@ export const useUppy = ({
             }
             result.successful.forEach((item) => updateUploadFilesStatus(item, true, undefined, item.response))
             result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error, item.response))
-
             return result
         } catch (error) {
             addGeneralErrorMessage(t('fileImport.uploadFailed'))

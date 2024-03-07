@@ -1167,7 +1167,8 @@
             "title": "Pridať dokument",
             "upload": "Nahrať súbor",
             "tooLargeError": "Dokument je príliš veľký",
-            "success": "Dokument bol úspešne pridaný"
+            "success": "Dokument bol úspešne pridaný",
+            "partitionalyFailed": "Niektoré dokumenty sa nepodarilo pridať"
         },
         "updateFile": {
             "title": "Aktualizácia dokumentu",

@@ -1162,7 +1162,8 @@
             "title": "Add document",
             "upload": "Upload file",
             "tooLargeError": "Document too large",
-            "success": "Document has been added successfully"
+            "success": "Document has been added successfully",
+            "partitionalyFailed": "Some documents could not be added"
         },
         "updateFile": {
             "title": "Update document",

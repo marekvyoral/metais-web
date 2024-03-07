@@ -28,6 +28,7 @@ interface IFileUpload {
     maxFileSizeInBytes?: number
     fileMetaAttributes: Record<string, unknown>
     onUploadSuccess?: (value: FileUploadData[]) => void
+    onFileUploadFailed?: () => void
     onUploadingStart?: () => void
     onErrorOccurred?: (errorMessages: string[]) => void
     setCurrentFiles?: React.Dispatch<React.SetStateAction<UppyFile[] | undefined>>
@@ -54,6 +55,7 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             onErrorOccurred,
             setCurrentFiles,
             customUuid,
+            onFileUploadFailed,
         },
         ref,
     ) => {
@@ -75,6 +77,9 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             allowedFileTypes,
             multiple,
             endpointUrl: fileUploadURL,
+            fileUploadError: (err) => {
+                return err.responseText
+            },
             setFileImportStep: () => {
                 return
             },
@@ -137,7 +142,11 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
         useEffect(() => {
             if (isLoading) {
                 const uploadedFilesData = getUploadedFilesData(currentFiles, uploadFilesStatus)
-                uploadSuccess(uploadedFilesData)
+                if (uploadedFilesData.every((f) => f.uploadComplete)) {
+                    uploadSuccess(uploadedFilesData)
+                } else {
+                    onFileUploadFailed && onFileUploadFailed()
+                }
                 setIsLoading(false)
             }
             // eslint-disable-next-line react-hooks/exhaustive-deps

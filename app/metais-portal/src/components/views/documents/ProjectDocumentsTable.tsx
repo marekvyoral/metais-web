@@ -360,6 +360,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                     />
                 </div>
             )}
+
             <ActionsOverTable
                 pagination={{
                     pageNumber: page ?? BASE_PAGE_NUMBER,
@@ -441,7 +442,6 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                     />
                 }
             />
-
             <Table rowSelection={rowSelection} onRowSelectionChange={setRowSelection} columns={filteredColumns} data={docs} />
             {selectPageSize && (
                 <PaginatorWrapper
