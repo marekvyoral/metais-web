@@ -12,7 +12,7 @@ export const standardRequestsListColumns = (
     const columns: Array<ColumnDef<ApiStandardRequestPreview>> = [
         {
             header: '',
-            accessorFn: (row) => row?.srName,
+            accessorFn: (row) => row?.name,
             enableSorting: true,
             id: CHECKBOX_CELL,
             size: 50,
@@ -29,7 +29,7 @@ export const standardRequestsListColumns = (
                                     handleRowCheckBoxChanged(row)
                                 }}
                                 checked={row.original.id == selectedRowId}
-                                title={t('table.selectItem', { itemName: row.original.srName })}
+                                title={t('table.selectItem', { itemName: row.original.name })}
                             />
                         </div>
                     </>
@@ -37,10 +37,10 @@ export const standardRequestsListColumns = (
             },
         },
         {
-            header: t('votes.voteEdit.standardRequestsTable.srName'),
-            accessorFn: (row) => row?.srName,
+            header: t('votes.voteEdit.standardRequestsTable.name'),
+            accessorFn: (row) => row?.name,
             enableSorting: true,
-            id: 'srName',
+            id: 'name',
             size: 300,
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) => <span> {ctx?.getValue?.() as string} </span>,

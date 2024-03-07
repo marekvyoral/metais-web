@@ -317,8 +317,6 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                             return {
                                 fileId: attachment.attachmentId,
                                 fileName: attachment.attachmentName,
-                                fileSize: attachment.attachmentSize,
-                                fileType: attachment.attachmentType,
                             }
                         }) ?? []
                     }

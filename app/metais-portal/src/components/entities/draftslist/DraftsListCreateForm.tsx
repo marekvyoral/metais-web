@@ -47,63 +47,6 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
     const { register, handleSubmit, setValue, watch, getValues, formState } = useForm({
         defaultValues: {
             ...data?.defaultData,
-            version: 2,
-            // eslint-disable-next-line no-warning-comments
-            actionDesription: '-', // TODO: Vymazat ak sa fixne BE
-            email: user ? '-' : undefined,
-            name: user ? '-' : undefined,
-            srDescription2: '-',
-            srDescription3: '-',
-            srDescription4: '-',
-            srDescription5: '-',
-            srDescription6: '-',
-            proposalDescription1: '-',
-            applicabilityDescription1: '-',
-            applicabilityDescription2: '-',
-            applicabilityDescription3: '-',
-            applicabilityDescription4: '-',
-            relevanceDescription1: '-',
-            adaptabilityDescription1: '-',
-            adaptabilityDescription2: '-',
-            impactDescription2: '-',
-            impactDescription3: '-',
-            impactDescription4: '-',
-            impactDescription6: '-',
-            impactDescription8: '-',
-            impactDescription9: '-',
-            impactDescription10: '-',
-            impactDescription11: '-',
-            impactDescription12: '-',
-            scalabilityDescription1: '-',
-            expandabilityDescription1: '-',
-            expandabilityDescription2: '-',
-            stabilityDescription1: '-',
-            stabilityDescription2: '-',
-            stabilityDescription3: '-',
-            maintenanceDescription1: '-',
-            outputsDescription1: '-',
-            outputsDescription2: '-',
-            outputsDescription3: '-',
-            outputsDescription4: '-',
-            outputsDescription5: '-',
-            processDescription1: '-',
-            processDescription2: '-',
-            processDescription3: '-',
-            processDescription4: '-',
-            processDescription5: '-',
-            processDescription6: '-',
-            extensionDescription1: '-',
-            extensionDescription2: '-',
-            extensionDescription3: '-',
-            extensionDescription4: '-',
-            extensionDescription5: '-',
-            extensionDescription6: '-',
-            extensionDescription7: '-',
-            maturityDescription1: '-',
-            maturityDescription2: '-',
-            maturityDescription3: '-',
-            reusabilityDescription1: '-',
-            reusabilityDescription2: '-',
         },
         resolver: yupResolver(generateSchemaForCreateDraft(t)),
     })
@@ -146,7 +89,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
         },
     })
 
-    const sendData = async (values: FieldValues, name?: string, email?: string, capthcaToken?: string) => {
+    const sendData = async (values: FieldValues, fullName?: string, email?: string, capthcaToken?: string) => {
         if (currentFiles?.length > 0) {
             setCustomLoading(true)
             await handleUpload()
@@ -167,7 +110,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
                 headers: { 'Content-Type': 'application/json', 'recaptcha-response': capthcaToken },
                 body: JSON.stringify({
                     ...values,
-                    name,
+                    fullName,
                     email,
                     attachments: uploadedFiles,
                 }),
@@ -182,7 +125,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
         } else {
             onSubmit({
                 ...values,
-                name,
+                fullName,
                 email,
                 attachments: uploadedFiles,
             })
@@ -216,70 +159,70 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
 
             <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>
                 <Input
-                    {...register(API_STANDARD_REQUEST_ATTRIBUTES.srName)}
-                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srName, data?.guiAttributes)}
-                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srName, data?.guiAttributes)}
-                    error={formState?.errors?.srName?.message}
+                    {...register(API_STANDARD_REQUEST_ATTRIBUTES.name)}
+                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.name, data?.guiAttributes)}
+                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.name, data?.guiAttributes)}
+                    error={formState?.errors?.name?.message}
                     required
                 />
                 <RichTextQuill
-                    id={API_STANDARD_REQUEST_ATTRIBUTES.srDescription1}
+                    id={API_STANDARD_REQUEST_ATTRIBUTES.description}
                     setValue={setValue}
-                    name={API_STANDARD_REQUEST_ATTRIBUTES.srDescription1}
-                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srDescription1, data?.guiAttributes)}
-                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srDescription1, data?.guiAttributes)}
-                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.srDescription1)}
-                    error={formState?.errors?.srDescription1?.message}
+                    name={API_STANDARD_REQUEST_ATTRIBUTES.description}
+                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.description, data?.guiAttributes)}
+                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.description, data?.guiAttributes)}
+                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.description)}
+                    error={formState?.errors?.description?.message}
                     isRequired
                 />
                 <RichTextQuill
-                    id={API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2}
+                    id={API_STANDARD_REQUEST_ATTRIBUTES.placementProposal}
                     setValue={setValue}
-                    name={API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2}
-                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2, data?.guiAttributes)}
-                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2, data?.guiAttributes)}
-                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2)}
-                    error={formState?.errors?.proposalDescription2?.message}
+                    name={API_STANDARD_REQUEST_ATTRIBUTES.placementProposal}
+                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.placementProposal, data?.guiAttributes)}
+                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.placementProposal, data?.guiAttributes)}
+                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.placementProposal)}
+                    error={formState?.errors?.placementProposal?.message}
                     isRequired
                 />
                 <RichTextQuill
-                    id={API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription3}
+                    id={API_STANDARD_REQUEST_ATTRIBUTES.legislativeTextProposal}
                     setValue={setValue}
-                    name={API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription3}
-                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription3, data?.guiAttributes)}
-                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription3, data?.guiAttributes)}
-                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription3)}
-                    error={formState?.errors?.proposalDescription3?.message}
+                    name={API_STANDARD_REQUEST_ATTRIBUTES.legislativeTextProposal}
+                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.legislativeTextProposal, data?.guiAttributes)}
+                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.legislativeTextProposal, data?.guiAttributes)}
+                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.legislativeTextProposal)}
+                    error={formState?.errors?.legislativeTextProposal?.message}
                     isRequired
                 />
                 <RichTextQuill
-                    id={API_STANDARD_REQUEST_ATTRIBUTES.impactDescription1}
+                    id={API_STANDARD_REQUEST_ATTRIBUTES.financialImpact}
                     setValue={setValue}
-                    name={API_STANDARD_REQUEST_ATTRIBUTES.impactDescription1}
-                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription1, data?.guiAttributes)}
-                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription1, data?.guiAttributes)}
-                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription1)}
-                    error={formState?.errors?.impactDescription1?.message}
+                    name={API_STANDARD_REQUEST_ATTRIBUTES.financialImpact}
+                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.financialImpact, data?.guiAttributes)}
+                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.financialImpact, data?.guiAttributes)}
+                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.financialImpact)}
+                    error={formState?.errors?.financialImpact?.message}
                     isRequired
                 />
                 <RichTextQuill
-                    id={API_STANDARD_REQUEST_ATTRIBUTES.impactDescription5}
+                    id={API_STANDARD_REQUEST_ATTRIBUTES.securityImpact}
                     setValue={setValue}
-                    name={API_STANDARD_REQUEST_ATTRIBUTES.impactDescription5}
-                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription5, data?.guiAttributes)}
-                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription5, data?.guiAttributes)}
-                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription5)}
-                    error={formState?.errors?.impactDescription5?.message}
+                    name={API_STANDARD_REQUEST_ATTRIBUTES.securityImpact}
+                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.securityImpact, data?.guiAttributes)}
+                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.securityImpact, data?.guiAttributes)}
+                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.securityImpact)}
+                    error={formState?.errors?.securityImpact?.message}
                     isRequired
                 />
                 <RichTextQuill
-                    id={API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7}
+                    id={API_STANDARD_REQUEST_ATTRIBUTES.privacyImpact}
                     setValue={setValue}
-                    name={API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7}
-                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7, data?.guiAttributes)}
-                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7, data?.guiAttributes)}
-                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7)}
-                    error={formState?.errors?.impactDescription7?.message}
+                    name={API_STANDARD_REQUEST_ATTRIBUTES.privacyImpact}
+                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.privacyImpact, data?.guiAttributes)}
+                    info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.privacyImpact, data?.guiAttributes)}
+                    value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.privacyImpact)}
+                    error={formState?.errors?.privacyImpact?.message}
                     isRequired
                 />
                 <DraftsListAttachmentsZone

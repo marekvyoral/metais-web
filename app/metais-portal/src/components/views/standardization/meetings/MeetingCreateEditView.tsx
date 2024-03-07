@@ -359,8 +359,6 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                                     return {
                                         fileId: attachment.attachmentId,
                                         fileName: attachment.attachmentName,
-                                        fileSize: attachment.attachmentSize,
-                                        fileType: attachment.attachmentType,
                                     }
                                 }) ?? []
                             }

@@ -13,16 +13,16 @@ import { TFunction } from 'i18next'
 interface iDraftListCreateFormDialog {
     openCreateFormDialog?: FieldValues
     closeCreateFormDialog: () => void
-    handleSubmit: (values: FieldValues, name?: string, email?: string, capthcaToken?: string) => Promise<void>
+    handleSubmit: (values: FieldValues, fullName?: string, email?: string, capthcaToken?: string) => Promise<void>
 }
 
 const formSchema = (t: TFunction<'translation', undefined, 'translation'>) =>
     yup
         .object({
-            name: yup
+            fullName: yup
                 .string()
                 .trim()
-                .test('name', t('validation.invalidFullname'), (val) => val?.includes(' ')),
+                .test('fullName', t('validation.invalidFullname'), (val) => val?.includes(' ')),
             email: yup.string().matches(REGEX_EMAIL, t('validation.invalidEmail')).required(t('validation.required')),
         })
         .defined()
@@ -33,7 +33,7 @@ export const DraftListCreateFormDialog = ({ openCreateFormDialog, closeCreateFor
         register,
         handleSubmit: handleDialogSubmit,
         formState: { errors },
-    } = useForm({ defaultValues: { name: '', email: '' }, resolver: yupResolver(formSchema(t)) })
+    } = useForm({ defaultValues: { fullName: '', email: '' }, resolver: yupResolver(formSchema(t)) })
     const { executeRecaptcha } = useGoogleReCaptcha()
 
     const onSubmit = async (values: FieldValues) => {
@@ -43,7 +43,7 @@ export const DraftListCreateFormDialog = ({ openCreateFormDialog, closeCreateFor
 
         const capthcaToken = await executeRecaptcha()
         if (capthcaToken) {
-            handleSubmit(openCreateFormDialog ?? {}, values['name'], values['email'], capthcaToken)
+            handleSubmit(openCreateFormDialog ?? {}, values['fullName'], values['email'], capthcaToken)
             closeCreateFormDialog()
         }
     }
@@ -57,7 +57,7 @@ export const DraftListCreateFormDialog = ({ openCreateFormDialog, closeCreateFor
                             {t(`DraftsList.createForm.userHeading`)}
                         </TextHeading>
 
-                        <Input {...register('name')} label={t('DraftsList.createForm.name')} error={errors['name']?.message} required />
+                        <Input {...register('fullName')} label={t('DraftsList.createForm.name')} error={errors['fullName']?.message} required />
                         <Input {...register('email')} label={t('DraftsList.createForm.email')} error={errors['email']?.message} required />
                     </div>
                 </div>
