@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
 
+import { useListRelatedCiTypesWrapper } from './useListRelatedCiTypes.hook'
+
 import { useReadCiDerivedRelTypesCount, useReadNeighboursConfigurationItemsCount } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { isDerivedCiTypeCmdbView, isRelatedCiTypeCmdbView, removeDuplicates } from '@isdd/metais-common/hooks/common'
-import { RelatedCiTypePreview, useListRelatedCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
@@ -40,7 +42,7 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string, 
         data: countData,
     } = useReadNeighboursConfigurationItemsCount(id, { includeInvalidated: includeInvalidated, includeDeleted: includeDeleted && includeInvalidated })
     const { isLoading: isLoadingDerived, isError: isErrorDerived, data: countDerivedData } = useReadCiDerivedRelTypesCount(id, { includeInvalidated })
-    const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName)
+    const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypesWrapper(technicalName)
 
     const allCounts = useMemo((): IRelationCount | undefined => {
         const formatedDerivedCounts: IRelationCount = {}

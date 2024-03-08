@@ -35,7 +35,7 @@ export const NavSearchBar = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={classnames('idsk-header-web__main-action-search', styles.fullWidth)}>
+        <form onSubmit={handleSubmit(onSubmit)} className={classnames('idsk-header-web__main-action-search', styles.fullWidth)} noValidate>
             <input
                 className="govuk-input govuk-!-display-inline-block"
                 id="idsk-header-web__main-action-search-input"

@@ -188,6 +188,7 @@ export const GlobalSearchFilter = () => {
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className={classNames('govuk-!-font-size-19', globalStyles.sectionsContainer, styles.noPaddingTop)}
+                noValidate
             >
                 <AccordionContainer isSmall shouldNotUnMountContent sections={sections} />
                 <Button type="submit" className={styles.button} variant="secondary" label={t('globalSearch.filter.submitButton')} />

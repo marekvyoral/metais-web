@@ -79,6 +79,7 @@ export const ApproveModal: React.FC<IApproveModalProps> = ({ user, uuid, open, o
                             onSubmit={handleSubmit((formData) => {
                                 isSave ? onSave(formData, close) : onApproveKris(formData, close)
                             })}
+                            noValidate
                         >
                             <TextHeading size="L">{t('ciType.approve')}</TextHeading>
                             {isError && (

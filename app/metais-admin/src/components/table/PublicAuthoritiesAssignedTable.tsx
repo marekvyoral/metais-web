@@ -142,7 +142,7 @@ export const PublicAuthoritiesAssignedTable = ({
     ]
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} noValidate>
                 <Table
                     data={data ?? []}
                     columns={columns}

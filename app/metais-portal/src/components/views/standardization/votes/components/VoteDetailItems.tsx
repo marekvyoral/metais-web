@@ -40,7 +40,7 @@ export const VoteDetailItems: React.FC<IDetailItemsData> = ({ voteData, srData }
                     hideIcon
                 />
             )}
-            {hasStandardRequest && <InformationGridRow label={t('votes.voteDetail.standardRequestTitle')} value={srData?.srName} hideIcon />}
+            {hasStandardRequest && <InformationGridRow label={t('votes.voteDetail.standardRequestTitle')} value={srData?.name} hideIcon />}
             {voteData?.secret != undefined && (
                 <InformationGridRow
                     label={t('votes.voteDetail.voteType')}

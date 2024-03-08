@@ -8,7 +8,7 @@ import { PopupPosition } from 'reactjs-popup/dist/types'
 
 import styles from './selectLazyLoading.module.scss'
 
-import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
+import { Control, Menu, MultiValueRemove, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { useGetLocalMessages } from '@isdd/idsk-ui-kit/select/useGetLocalMessages'
 
@@ -111,11 +111,11 @@ export const SelectLazyLoading = <T,>({
                 </label>
                 {info && <Tooltip descriptionElement={info} position={tooltipPosition} altText={`Tooltip ${label}`} />}
             </div>
-            {!!error && (
-                <span id={errorId} className="govuk-error-message">
-                    {error}
-                </span>
-            )}
+            <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
+                {error && <span className="govuk-visually-hidden">{t('error')}</span>}
+                {error}
+            </span>
+
             <AsyncPaginate<T, GroupBase<T>, { page: number } | undefined, boolean>
                 id={id}
                 name={name}
@@ -125,7 +125,7 @@ export const SelectLazyLoading = <T,>({
                 getOptionLabel={getOptionLabel}
                 classNames={{ menuList: () => styles.reactSelectMenuList }}
                 placeholder={placeholder || ''}
-                components={{ Option, Menu, Control }}
+                components={{ Option, Menu, Control, MultiValueRemove }}
                 isMulti={isMulti}
                 menuPosition={menuPosition}
                 defaultValue={defaultValue}
@@ -136,11 +136,14 @@ export const SelectLazyLoading = <T,>({
                 unstyled
                 onChange={handleOnChange}
                 isDisabled={disabled}
+                aria-invalid={!!error}
+                aria-describedby={errorId}
                 aria-errormessage={errorId}
                 noOptionsMessage={localMessages.noOptionsMessage}
                 ariaLiveMessages={localMessages.ariaLiveMessages}
                 screenReaderStatus={localMessages.screenReaderStatus}
                 loadingMessage={localMessages.loadingMessage}
+                required={required}
             />
         </div>
     )

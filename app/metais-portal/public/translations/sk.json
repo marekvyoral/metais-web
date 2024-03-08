@@ -3,7 +3,11 @@
         "zoomIn": "Priblížiť",
         "zoomOut": "Oddialiť",
         "exportPNG": "Ako PNG",
-        "exportPDF": "Ako PDF"
+        "exportPDF": "Ako PDF",
+        "button": {
+            "export": "Export grafu",
+            "type": "Typ entity"
+        }
     },
     "footer": {
         "metaisServices": "Služby MetaIS",
@@ -13,7 +17,7 @@
         "MIRRI": "Ministerstvo investícií, regionálneho rozvoja a informatizácie Slovenskej republiky",
         "operatorMIRRI": "Prevádzkovateľom služby je Ministerstvo investícií, regionálneho rozvoja a informatizácie SR.",
         "idsk": "Jednotným dizajn manuálom elektronických služieb.",
-        "createdInAccordance": "Vytvorené v súlade s",
+        "createdInAccordance": "Vytvorené v súlade s ",
         "exceptionsLegislation": "Osobitné postupy",
         "accessibilityDeclaration": "Vyhlásenie o prístupnosti",
         "webResidencyMap": "Mapa webového sídla",
@@ -228,6 +232,7 @@
         "searchPlaceholder": "Vyhľadajte v tabuľke",
         "chooseState": "Vyberte stav",
         "chooseValue": "Vyberte hodnotu",
+        "cleared": "Kritéria filtrovania boli vyčistené",
         "WeboveSidlo": {
             "name": "Názov webového sídla"
         },
@@ -279,11 +284,11 @@
             "name": "Názov osobitného postupu"
         },
         "reset": "Vyčistiť kritériá filtrovania",
-        "submit": "Vyfiltrovať"
+        "submit": "Filtrovať"
     },
     "customAttributeFilter": {
         "add": "+ Pridať filter",
-        "remove": "Vymazať kritérium {{name}}",
+        "remove": "Vymazať kritérium filtrovania {{name}}",
         "value": {
             "label": "Hodnota",
             "labelYes": "Áno",
@@ -342,7 +347,8 @@
         "sections": "sekcie",
         "and": "a",
         "sectionError": "V tejto sekcii nastala chyba",
-        "sectionChange": "V tejto sekcii došlo k zmene"
+        "sectionChange": "V tejto sekcii došlo k zmene",
+        "sectionTitle": "Názov sekcie:"
     },
     "tab": {
         "contents": "Obsah",
@@ -912,6 +918,7 @@
         "options": {
             "title": "Možnosti",
             "download": "Stiahnuť",
+            "downloadTemplate": "Stiahnuť šablónu",
             "update": "Aktualizovať",
             "invalidate": "Zneplatniť",
             "delete": "Zmazať",
@@ -1161,7 +1168,8 @@
             "title": "Pridať dokument",
             "upload": "Nahrať súbor",
             "tooLargeError": "Dokument je príliš veľký",
-            "success": "Dokument bol úspešne pridaný"
+            "success": "Dokument bol úspešne pridaný",
+            "partitionalyFailed": "Niektoré dokumenty sa nepodarilo pridať"
         },
         "updateFile": {
             "title": "Aktualizácia dokumentu",
@@ -1407,7 +1415,7 @@
             "edit": "Zmeniť",
             "more": "Viac možností",
             "save": "Uložiť",
-            "language": "Jazyk",
+            "language": "Jazyk číselníka",
             "exportCodelist": "Export číselníka",
             "importCodelist": "Import číselníka",
             "sendToIsvs": "Presunúť do Komisie pre štandardizáciu ITVS",
@@ -1939,8 +1947,8 @@
         "title": "Zoznam návrhov",
         "table": {
             "version": "Verzia",
-            "name": "Predkladateľ",
-            "srName": "Názov návrhu",
+            "fullName": "Predkladateľ",
+            "name": "Názov návrhu",
             "standardRequestState": "Stav návrhu",
             "requestChannel": "Typ návrhu",
             "createdAt": "Dátum zadania návrhu",
@@ -2093,9 +2101,9 @@
                 "REQUESTED": "Nový"
             },
             "requestChannel": "Typ návrhu",
-            "name": "Predkladateľ",
+            "fullName": "Predkladateľ",
             "createdAt": "Dátum zadania návrhu",
-            "srName": "Názov návrhu",
+            "name": "Názov návrhu",
             "requestChannelValue": {
                 "RI": "Referencovateľný identifikátor",
                 "ZC_Request": "Žiadosť o vytvorenie nového ZČ",
@@ -2181,7 +2189,9 @@
     "votes": {
         "actions": {
             "sent": "Ďakujeme, Váš hlas bol odoslaný.",
-            "failedToSend": "Váš hlas sa nepodarilo odoslať. Pokúste sa hlasovanie zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora štandardizácie e-mailom na adrese: standard@mirri.gov.sk"
+            "failedToSend": "Váš hlas sa nepodarilo odoslať. Pokúste sa hlasovanie zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora štandardizácie e-mailom na adrese: standard@mirri.gov.sk",
+            "userToken": "Váš hlas už bol zaznamenaný.",
+            "castDesc": "Dakujeme Váš hlas bol úspešne zaznamenaný. Ak máte záujem tak možete ešte poslať poznámka k hlasovaniu"
         },
         "breadcrumbs": {
             "home": "Domov",
@@ -2251,7 +2261,8 @@
                 "name": "Meno a priezvisko",
                 "organization": "Organizácia",
                 "role": "Rola"
-            }
+            },
+            "save": "Uložiť"
         },
         "voteEdit": {
             "newVoteTitle": "Pridať nové hlasovanie",
@@ -2297,9 +2308,9 @@
             "addNextDocumentItem": "Pridať ďalší odkaz na dokument",
             "removeDocument": "dokument {{document}}",
             "standardRequestsTable": {
-                "srName": "Názov návrhu",
+                "name": "Názov návrhu",
                 "createdAt": "Vytvorené",
-                "name": "Meno",
+                "fullName": "Meno",
                 "version": "Verzia",
                 "standardRequestState": "Stav"
             }
@@ -2756,7 +2767,8 @@
             "title": "Detail SLA s dodávateľom: {{name}}",
             "edit": "Zmeniť",
             "notEntered": "Nezadané",
-            "history": "História dokumentu"
+            "history": "História dokumentu",
+            "stateChanged": "Stav bol úspešne zmenený"
         },
         "columns": {
             "name": "Názov kontraktu",
@@ -2765,7 +2777,8 @@
             "consumerIsvs": "Správca ISVS",
             "validityStartDate": "Platnosť od",
             "validityEndDate": "Platnosť do",
-            "vendorLock": "Vendor Lock"
+            "vendorLock": "Vendor Lock",
+            "state": "Stav"
         },
         "filter": {
             "name": "Názov kontraktu",
@@ -2783,13 +2796,20 @@
             "crzLink": "Linka do CRZ",
             "vendorLock": "Vendor Lock",
             "contractorIsvsUuid": "ISVS",
-            "document": "Dokument SLA s dodávateľom"
+            "document": "Dokument SLA s dodávateľom",
+            "state": "Stav"
         },
         "title": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
         "heading": "Zoznam SLA s prevádzkovateľom",
         "headingAdd": "Pridat SLA s dodávateľom",
         "headingEdit": "Editovať {{itemName}} SLA s dodávateľom",
-        "createButton": "Pridať novú SLA s dodávateľom"
+        "createButton": "Pridať novú SLA s dodávateľom",
+        "stateActions": {
+            "approve": "Schváliť",
+            "return": "Vrátiť na dopracovanie",
+            "plan": "Odoslať ako plánovaný",
+            "contract": "Zazmluvniť"
+        }
     },
     "insertMonitoring": {
         "columns": {
@@ -2930,5 +2950,13 @@
     },
     "accessibility": {
         "navigated": "Zmena stránky na {{pageTitle}}"
+    },
+    "error": "Chyba: ",
+    "sectionErrors": " Zoznam chýb v sekcii:",
+    "formErrors": "Formulár obsahuje validačné chyby.",
+    "listOfFormErrors": "Zoznam chýb formulára:",
+    "arrayInput": {
+        "deleteRow": "Odstrániť {{itemName}}",
+        "changeRowsNumber": "Zmenil sa počet riadkov položky: {{name}}. Počet riadkov je {{count}}"
     }
 }

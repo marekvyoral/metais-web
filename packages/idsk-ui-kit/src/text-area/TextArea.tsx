@@ -35,18 +35,14 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
                     </label>
                     {info && <Tooltip altText={`Tooltip ${label}`} descriptionElement={<div className="tooltipWidth500">{info}</div>} />}
                 </div>
+                <span id={hintId} className={classNames({ 'govuk-visually-hidden': !hint, 'govuk-hint': !!hint })}>
+                    {hint}
+                </span>
 
-                {hint && (
-                    <span className="govuk-hint" id={hintId}>
-                        {hint}
-                    </span>
-                )}
-
-                {error && (
-                    <span id={errorId} className="govuk-error-message">
-                        {error}
-                    </span>
-                )}
+                <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
+                    {error && <span className="govuk-visually-hidden">{t('error')}</span>}
+                    {error}
+                </span>
                 <div className={styles.inputWrapper}>
                     <textarea
                         className={classNames('govuk-textarea', { ' govuk-textarea--error': !!error })}
@@ -56,8 +52,10 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
                         ref={ref}
                         {...rest}
                         disabled={disabled}
-                        aria-describedby={hint ? hintId : undefined}
+                        aria-invalid={!!error}
+                        aria-describedby={`${hintId} ${errorId}`}
                         aria-errormessage={errorId}
+                        required={required}
                     />
                     {correct && (
                         <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />

@@ -8,7 +8,7 @@ import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbi
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { POEntityDetailHeader } from './POEntityDetailHeader'
 
@@ -25,7 +25,7 @@ const POEntityDetailPage: React.FC = () => {
     const entityName = PO
 
     const userAbility = useUserAbility()
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName ?? '')
     const [selectedTab, setSelectedTab] = useState<string>()
 
     const {

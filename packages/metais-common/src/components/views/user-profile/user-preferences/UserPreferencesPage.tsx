@@ -115,7 +115,7 @@ export const UserPreferencesPage: React.FC = () => {
 
     return (
         <QueryFeedback loading={isLoading && !!currentPreferences.myPO} error={isError} withChildren>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} noValidate>
                 <MutationFeedback success={isActionSuccess.value} error={hasError} successMessage={t('userProfile.userPreferencesSuccess')} />
                 <GridRow>
                     <GridCol className={styles.withMargin} setWidth="one-third">

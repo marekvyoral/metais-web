@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Input } from '@isdd/idsk-ui-kit'
+import { Button, ErrorBlock, Input } from '@isdd/idsk-ui-kit'
 import { EkoCode, EkoCodeEkoCodeState } from '@isdd/metais-common/api/generated/tco-swagger'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 import { useCallback, useState } from 'react'
@@ -67,7 +67,10 @@ export const EkoCreateView = ({ data, mutate, editData, isError, isLoading }: IE
                 )}
                 {isError && <QueryFeedback error loading={false} />}
             </FlexColumnReverseWrapper>
-            <form onSubmit={handleSubmit(onSubmit)}>
+
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <>
                     <div>
                         {editData && (

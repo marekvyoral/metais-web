@@ -174,7 +174,7 @@ export const SlaDetailView: React.FC<IView> = ({
                 }
             />
             <BaseModal isOpen={!!updateItem} close={() => setUpdateItem(undefined)}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className={styles.modalContainer}>
                         <DefinitionList className={styles.width80}>
                             <InformationGridRow

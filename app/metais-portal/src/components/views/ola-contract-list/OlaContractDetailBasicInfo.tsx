@@ -1,4 +1,5 @@
 import { GetContentParams, Metadata } from '@isdd/metais-common/api/generated/dms-swagger'
+import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ApiOlaContractData } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
@@ -14,9 +15,16 @@ interface IOlaContractDetailBasicInfo {
     document?: Metadata
     downloadVersionFile: (uuid: string, params?: GetContentParams, signal?: AbortSignal) => Promise<Blob>
     setShowHistory: React.Dispatch<React.SetStateAction<boolean>>
+    statesEnum?: EnumItem[]
 }
 
-export const OlaContractDetailBasicInfo: React.FC<IOlaContractDetailBasicInfo> = ({ olaContract, document, downloadVersionFile, setShowHistory }) => {
+export const OlaContractDetailBasicInfo: React.FC<IOlaContractDetailBasicInfo> = ({
+    olaContract,
+    document,
+    downloadVersionFile,
+    setShowHistory,
+    statesEnum,
+}) => {
     const { t, i18n } = useTranslation()
     const downloadFile = async (uuid: string) => {
         const blobData = await downloadVersionFile(uuid ?? '')
@@ -75,6 +83,14 @@ export const OlaContractDetailBasicInfo: React.FC<IOlaContractDetailBasicInfo> =
                     label={t('olaContracts.filter.intervalEnd')}
                     value={
                         olaContract?.validityEndDate ? formatDateForDefaultValue(olaContract?.validityEndDate) : t('olaContracts.detail.notEntered')
+                    }
+                />
+                <InformationGridRow
+                    label={t('olaContracts.filter.state')}
+                    value={
+                        (i18n.language == Languages.SLOVAK
+                            ? statesEnum?.find((e) => e.code == olaContract?.profilState)?.value
+                            : statesEnum?.find((e) => e.code == olaContract?.profilState)?.engValue) ?? t('olaContracts.detail.notEntered')
                     }
                 />
                 <InformationGridRow

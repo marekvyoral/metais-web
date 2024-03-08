@@ -90,6 +90,7 @@ interface ReturnUseFilter<TFieldValues extends FieldValues> {
     register: UseFormRegister<TFieldValues>
     watch: UseFormWatch<TFieldValues>
     clearErrors: UseFormClearErrors<TFieldValues>
+    hasBeenCleared: boolean
 }
 
 const parseSortQuery = (urlParams: URLSearchParams, sortFromState: ColumnSort[] | undefined): undefined | ColumnSort[] => {
@@ -302,6 +303,10 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
         return false
     }
 
+    const handleHasBeenCleared = () => {
+        return state.clearedFilter[location.pathname] ?? false
+    }
+
     useEffect(() => {
         if (state.clearedFilter[location.pathname]) {
             reset(filter as DeepPartial<T>)
@@ -352,5 +357,6 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
         },
         handleSubmit,
         onSubmit,
+        hasBeenCleared: handleHasBeenCleared(),
     }
 }

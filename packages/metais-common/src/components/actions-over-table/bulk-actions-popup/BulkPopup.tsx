@@ -10,9 +10,10 @@ export interface IBulkPopupProps {
     label?: string
     disabled?: boolean
     items?: (closePopup: () => void) => Array<React.ReactElement>
+    popupPosition?: 'left' | 'right'
 }
 
-export const BulkPopup: React.FC<IBulkPopupProps> = ({ checkedRowItems, label, disabled, items = () => [] }) => {
+export const BulkPopup: React.FC<IBulkPopupProps> = ({ checkedRowItems, label, disabled, items = () => [], popupPosition }) => {
     const { t } = useTranslation()
     return (
         <div className={classnames(styles.mobileOrder3, styles.buttonPopup)} id="bulkActions">
@@ -20,6 +21,7 @@ export const BulkPopup: React.FC<IBulkPopupProps> = ({ checkedRowItems, label, d
                 disabled={disabled}
                 buttonLabel={`${label ? label : t('actionOverTable.actions')} ${checkedRowItems ? '(' + checkedRowItems + ')' : ''}`}
                 buttonClassName="marginBottom0"
+                popupPosition={popupPosition}
                 popupContent={(closePopup) => (
                     <div className={styles.popupActions} id="bulkActionsList">
                         {items(closePopup)?.map((item) =>

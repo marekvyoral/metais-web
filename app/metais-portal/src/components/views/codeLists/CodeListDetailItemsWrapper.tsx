@@ -241,7 +241,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                 {isLoadingItemAction && <LoadingIndicator label={t('feedback.saving')} />}
                 <TextHeading size="M">{t(`codeListDetail.modal.title.setDates`)}</TextHeading>
                 {Object.keys(rowSelection).length > 0 ? (
-                    <form onSubmit={handleSubmit(onSetDatesSubmit)}>
+                    <form onSubmit={handleSubmit(onSetDatesSubmit)} noValidate>
                         <TextBody>{t('codeListDetail.modal.text.willBeChanged')}</TextBody>
                         {selectedItemsTable}
                         <DateInput

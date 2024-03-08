@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, ErrorBlock, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
@@ -41,7 +41,7 @@ export const CreateDocumentsGroupView: React.FC<IView> = ({ projectStatus, saveD
     const {
         register,
         handleSubmit,
-        formState: { errors, isValid },
+        formState: { errors, isValid, isSubmitted },
         clearErrors,
         setValue,
     } = useForm({ resolver: yupResolver(docSchema(t)), mode: 'onChange' })
@@ -80,7 +80,9 @@ export const CreateDocumentsGroupView: React.FC<IView> = ({ projectStatus, saveD
         <QueryFeedback loading={isLoading || isCreateLoading} error={updateError}>
             <div ref={wrapperRef} />
             <TextHeading size="L">{t('documentsManagement.groupCreate')}</TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <SimpleSelect
                     label={t('documentsManagement.status') + ' ' + t('input.requiredField')}
                     name={DOCUMENT_FIELDS.STATE}

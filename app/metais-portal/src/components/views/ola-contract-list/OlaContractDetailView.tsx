@@ -11,6 +11,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { OLA_CONTRACT_STATES, OLA_CONTRACT_STATE_ACTIONS } from '@isdd/metais-common/constants'
 
 import { OlaContractDetailBasicInfo } from './OlaContractDetailBasicInfo'
 import { OlaContractInvalidateModal } from './OlaContractInvalidateModal'
@@ -31,6 +32,9 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
     setShowHistory,
     isOwnerOfContract,
     canChange,
+    moveState,
+    canMoveState,
+    statesEnum,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -52,6 +56,80 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
         }
     }, [isActionSuccess, scrollToMutationFeedback])
 
+    const getDefaultActions = (closePopup: () => void) => [
+        <ButtonLink
+            disabled={isInvalid}
+            key={'buttonBlock'}
+            icon={CrossInACircleIcon}
+            label={t('ciType.invalidateItem')}
+            onClick={() => {
+                setInvalidateShow(true)
+                closePopup()
+            }}
+        />,
+        <ButtonLink
+            disabled={!isInvalid}
+            key={'buttonUnblock'}
+            icon={CheckInACircleIcon}
+            label={t('ciType.revalidateItem')}
+            onClick={() => {
+                setRevalidateShow(true)
+                closePopup()
+            }}
+        />,
+    ]
+
+    const getStateActions = (closePopup: () => void) => {
+        if (!canMoveState || isInvalid) return []
+        const currentState = olaContract?.profilState ?? OLA_CONTRACT_STATES.PLANNED
+        switch (currentState) {
+            case OLA_CONTRACT_STATES.PLANNED:
+                return [
+                    <ButtonLink
+                        key={'APPROVE'}
+                        label={t('olaContracts.stateActions.approve')}
+                        onClick={() => {
+                            moveState({ olaContractUuid: olaContract?.uuid ?? '', transition: OLA_CONTRACT_STATE_ACTIONS.APPROVE })
+                            closePopup()
+                        }}
+                    />,
+                    <ButtonLink
+                        key={'RETURN'}
+                        label={t('olaContracts.stateActions.return')}
+                        onClick={() => {
+                            moveState({ olaContractUuid: olaContract?.uuid ?? '', transition: OLA_CONTRACT_STATE_ACTIONS.RETURN })
+                            closePopup()
+                        }}
+                    />,
+                ]
+            case OLA_CONTRACT_STATES.RETURNED:
+                return [
+                    <ButtonLink
+                        key={'PLAN'}
+                        label={t('olaContracts.stateActions.plan')}
+                        onClick={() => {
+                            moveState({ olaContractUuid: olaContract?.uuid ?? '', transition: OLA_CONTRACT_STATE_ACTIONS.PLAN })
+                            closePopup()
+                        }}
+                    />,
+                ]
+            case OLA_CONTRACT_STATES.APPROVED:
+                return [
+                    <ButtonLink
+                        key={'CONTRACT'}
+                        label={t('olaContracts.stateActions.contract')}
+                        onClick={() => {
+                            moveState({ olaContractUuid: olaContract?.uuid ?? '', transition: OLA_CONTRACT_STATE_ACTIONS.CONTRACT })
+                            closePopup()
+                        }}
+                    />,
+                ]
+
+            default:
+                return []
+        }
+    }
+
     return (
         <>
             {document && (
@@ -69,6 +147,11 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
                     error={undefined}
                     successMessage={t('mutationFeedback.successfulUpdated')}
                 />
+                <MutationFeedback
+                    success={isActionSuccess.value && isActionSuccess?.additionalInfo?.type == 'stateChanged'}
+                    error={undefined}
+                    successMessage={t('olaContracts.detail.stateChanged')}
+                />
                 <div className={styles.flexRowHeader}>
                     <TextHeading size="L" className={classNames({ [styles.invalidated]: isInvalid })}>
                         {t('olaContracts.detail.title', { name })}
@@ -81,34 +164,15 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
                                 onClick={() => navigate('./edit', { relative: 'path' })}
                             />
                             <BulkPopup
+                                popupPosition="right"
                                 checkedRowItems={0}
-                                items={(closePopup) => [
-                                    <ButtonLink
-                                        disabled={isInvalid}
-                                        key={'buttonBlock'}
-                                        icon={CrossInACircleIcon}
-                                        label={t('ciType.invalidateItem')}
-                                        onClick={() => {
-                                            setInvalidateShow(true)
-                                            closePopup()
-                                        }}
-                                    />,
-                                    <ButtonLink
-                                        disabled={!isInvalid}
-                                        key={'buttonUnblock'}
-                                        icon={CheckInACircleIcon}
-                                        label={t('ciType.revalidateItem')}
-                                        onClick={() => {
-                                            setRevalidateShow(true)
-                                            closePopup()
-                                        }}
-                                    />,
-                                ]}
+                                items={(closePopup) => [...getDefaultActions(closePopup), ...getStateActions(closePopup)]}
                             />
                         </div>
                     )}
                 </div>
                 <OlaContractDetailBasicInfo
+                    statesEnum={statesEnum}
                     downloadVersionFile={downloadVersionFile}
                     document={document}
                     olaContract={olaContract}

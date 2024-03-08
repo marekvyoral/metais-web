@@ -128,6 +128,7 @@ export const HistoryCompareView: React.FC<IHistoryItemsCompareContainerView> = (
                 isOpen: setOpenProfile(),
                 hide: showOnlyChanges && !isSimple && !haveDiff(ciTypeData?.attributes || []),
                 stepLabel: { label: '1', variant: 'circle' },
+                id: 'attribute.technicalName',
                 content: (
                     <DefinitionList>
                         <HistoryCompareItemView
@@ -164,6 +165,7 @@ export const HistoryCompareView: React.FC<IHistoryItemsCompareContainerView> = (
             ...attProfiles.map((profile, index) => {
                 return {
                     title: profile.description ?? '',
+                    id: profile.technicalName ?? '',
                     change: !isSimple && haveDiff(profile.attributes || []),
                     isOpen: setOpenProfile(),
                     hide: showOnlyChanges && !isSimple && !haveDiff(profile.attributes || []),
@@ -190,6 +192,7 @@ export const HistoryCompareView: React.FC<IHistoryItemsCompareContainerView> = (
             }),
             {
                 title: t('ciInformationAccordion.relations'),
+                id: 'ciInformationAccordion.relations',
                 change: !isSimple && haveDiff(ciTypeData?.attributes || []),
                 isOpen: setOpenProfile(),
                 hide: showOnlyChanges && !isSimple && !haveDiff(ciTypeData?.attributes || []),

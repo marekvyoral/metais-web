@@ -7,18 +7,23 @@ import styles from './stepper.module.scss'
 
 import { AlertTriangleIcon, InfoIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
+import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
+import { AriaSectionErrorList } from '@isdd/idsk-ui-kit/aria-section-error-list/AriaSectionErrorList'
+
 export interface IStepLabel {
     label: string
     variant: 'circle' | 'no-outline'
 }
 
 export interface ISection {
+    id: string
     title: string
     last?: boolean
     isTitle?: boolean
     stepLabel?: IStepLabel
     content?: React.ReactNode
     error?: boolean
+    errorMessages?: ErrorBlock[]
     change?: boolean
     isOpen?: boolean
     hide?: boolean
@@ -36,6 +41,7 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
     const { t } = useTranslation()
     const currentSection = sectionArray.at(index)
     const uniqueId = `expand-section${useId()}`
+    const errorId = `error-${useId()}`
 
     const handleOpen = () => {
         const updatedArray = [...sectionArray]
@@ -83,12 +89,14 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                                     className="idsk-stepper__section-button"
                                     aria-expanded={currentSection === StepperArrayEnum.EXPANDED}
                                     onClick={handleOpen}
+                                    aria-describedby={errorId}
                                 >
                                     {section.title}
                                     <span className="idsk-stepper__icon" aria-hidden={currentSection === StepperArrayEnum.CLOSED} />
                                 </button>
                             </TextHeading>
                             <div className={styles.icons}>
+                                <span id={errorId}>{section.error && <AriaSectionErrorList section={section} />}</span>
                                 {section.error && <img src={AlertTriangleIcon} alt={t('stepper.sectionError')} />}
                                 {section.change && <img src={InfoIcon} alt={t('stepper.sectionChange')} />}
                             </div>

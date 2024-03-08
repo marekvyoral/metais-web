@@ -27,19 +27,19 @@ export const getPortalFooterSection = (t: TFunction, isAdmin?: boolean): FooterS
                 },
                 {
                     label: t('navMenu.lists.overviews'),
-                    href: urlPrefix + NavigationSubRoutes.OVERVIEWS, ///
+                    href: urlPrefix + NavigationSubRoutes.OVERVIEWS,
                 },
                 {
                     label: t('navMenu.lists.relationsInspection'),
-                    href: urlPrefix + NavigationSubRoutes.RELATIONS_INSPECTION, ///
+                    href: urlPrefix + NavigationSubRoutes.RELATIONS_INSPECTION,
                 },
                 {
                     label: t('navMenu.lists.architectonicRepository'),
-                    href: urlPrefix + NavigationSubRoutes.ARCHITECTONIC_REPOSITORY, ///
+                    href: urlPrefix + NavigationSubRoutes.ARCHITECTONIC_REPOSITORY,
                 },
                 {
                     label: t('navMenu.lists.educationalCourses'),
-                    href: urlPrefix + NavigationSubRoutes.EDUCATIONAL_COURSES, ///
+                    href: urlPrefix + NavigationSubRoutes.EDUCATIONAL_COURSES,
                 },
                 {
                     label: t('navMenu.lists.assembliesAndReports'),
@@ -47,15 +47,11 @@ export const getPortalFooterSection = (t: TFunction, isAdmin?: boolean): FooterS
                 },
                 {
                     label: t('navMenu.lists.totalCostOfOwnership'),
-                    href: urlPrefix + NavigationSubRoutes.TOTAL_COST_OF_OWNERSHIP, ///
+                    href: urlPrefix + NavigationSubRoutes.TOTAL_COST_OF_OWNERSHIP,
                 },
                 {
                     label: t('navMenu.lists.serviceLevelAgreementsWithOperator'),
-                    href: urlPrefix + NavigationSubRoutes.SERVICE_LEVEL_AGREEMENTS_WITH_OPERATOR, ///
-                },
-                {
-                    label: t('navMenu.lists.integrationAgreementsOnServiceLevel'),
-                    href: urlPrefix + NavigationSubRoutes.INTEGRATION_AGREEMENTS_ON_SERVICE_LEVEL, ///
+                    href: urlPrefix + NavigationSubRoutes.SERVICE_LEVEL_AGREEMENTS_WITH_OPERATOR,
                 },
                 {
                     label: t('navMenu.lists.codelists'),
@@ -68,7 +64,7 @@ export const getPortalFooterSection = (t: TFunction, isAdmin?: boolean): FooterS
             ],
         },
         {
-            header: t('footer.usefulLinks'), ///
+            header: t('footer.usefulLinks'),
             itemList: [
                 {
                     label: t('footer.mediaWiki'),
@@ -90,7 +86,6 @@ export const getPortalFooterSection = (t: TFunction, isAdmin?: boolean): FooterS
 }
 
 export const getPortalFooterMetaList = (t: TFunction, isAdmin?: boolean): FooterMetaList[] => {
-    ///
     const urlPrefix = isAdmin ? PORTAL_URL : ''
     const metaList: FooterMetaList[] = [
         {

@@ -9,12 +9,15 @@ import { useTranslation } from 'react-i18next'
 interface ICastVote {
     voteProcessing: boolean
     voteData: ApiVote | undefined
-    handleCastVote: (choiceId: number | undefined, description: string | undefined) => Promise<void>
+    handleCastVote: (choiceId: number, description: string) => void
     handleVetoVote: (description: string | undefined) => Promise<void>
     canCast: boolean
     canVeto: boolean
-    castedVoteId: number | undefined
+    castedVoteId: number | null
     vetoed: boolean
+    canSendNote: boolean
+    handleSendDescription: (description: string | undefined) => void
+    cancelState: boolean
 }
 
 interface IChoise {
@@ -36,6 +39,9 @@ export const VotesHandler: React.FC<ICastVote> = ({
     castedVoteId,
     voteProcessing,
     vetoed,
+    canSendNote,
+    handleSendDescription,
+    cancelState,
 }) => {
     const { t } = useTranslation()
     const [votesProcessingError, setVotesProcessingError] = useState<boolean>(false)
@@ -83,6 +89,14 @@ export const VotesHandler: React.FC<ICastVote> = ({
         }
         const choiceId: number | undefined | null = formData['voteChoice']
         const choiceDescription: string | undefined = formData['voteDescription']
+        if (canSendNote) {
+            try {
+                await handleSendDescription(choiceDescription)
+                return
+            } catch {
+                setVotesProcessingError(true)
+            }
+        }
         if (choiceId == undefined) {
             return
         }
@@ -91,9 +105,8 @@ export const VotesHandler: React.FC<ICastVote> = ({
         try {
             if (isVeto) {
                 await handleVetoVote(choiceDescription)
-            } else {
-                await handleCastVote(choiceId, choiceDescription)
-            }
+            } else handleCastVote(choiceId, choiceDescription ?? '')
+
             setVoted(true)
         } catch {
             setVotesProcessingError(true)
@@ -116,11 +129,13 @@ export const VotesHandler: React.FC<ICastVote> = ({
                     onMessageClose={() => setVotesProcessingError(false)}
                 />
             )}
-            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
+            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')} noValidate>
                 <RadioGroupWithLabel
                     label={t('votes.voteDetail.votesHandlingRadioLabel')}
                     hint={
-                        vetoed
+                        cancelState
+                            ? t('votes.voteDetail.voteChoiceLabel.cannotCast')
+                            : vetoed
                             ? t('votes.voteDetail.vetoed')
                             : canCast
                             ? alreadyVoted
@@ -137,17 +152,28 @@ export const VotesHandler: React.FC<ICastVote> = ({
                                 value={choice.id}
                                 label={choice.value ?? ''}
                                 {...register('voteChoice')}
-                                disabled={choice.disabled || voted || vetoed}
+                                disabled={choice.disabled || voted || vetoed || cancelState}
                                 defaultChecked={choice.id == castedVoteId}
                             />
                         )
                     })}
                 </RadioGroupWithLabel>
-                {canCast && (
-                    <TextArea rows={3} label={t('votes.voteDetail.description')} {...register('voteDescription')} disabled={alreadyVoted || voted} />
+                {(canCast || canSendNote) && (
+                    <TextArea
+                        rows={3}
+                        label={t('votes.voteDetail.description')}
+                        {...register('voteDescription')}
+                        disabled={!canSendNote && (alreadyVoted || voted)}
+                    />
                 )}
 
-                {canCast && <Button type="submit" label={t('votes.voteDetail.submitVote')} disabled={alreadyVoted || voted} />}
+                {(canCast || canSendNote) && (
+                    <Button
+                        type="submit"
+                        label={canSendNote ? t('votes.voteDetail.save') : t('votes.voteDetail.submitVote')}
+                        disabled={!canSendNote && (alreadyVoted || voted)}
+                    />
+                )}
             </form>
         </QueryFeedback>
     )

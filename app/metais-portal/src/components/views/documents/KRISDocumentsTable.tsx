@@ -410,53 +410,51 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                         descriptionElement={errorMessage}
                         position={'center center'}
                         tooltipContent={(open) => (
-                            <div>
-                                <BulkPopup
-                                    items={(closePopup) => [
-                                        <ButtonLink
-                                            key={'buttonValidateItems'}
-                                            label={t('actionOverTable.validateItems')}
-                                            disabled={!isUserLogged}
-                                            onClick={() => {
-                                                handleReInvalidate(
-                                                    Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
-                                                    () => setShowReInvalidate(true),
-                                                    open,
-                                                )
-                                                closePopup()
-                                            }}
-                                        />,
-                                        <ButtonLink
-                                            key={'buttonInvalidateItems'}
-                                            label={t('actionOverTable.invalidateItems')}
-                                            disabled={!isUserLogged}
-                                            onClick={() => {
-                                                handleInvalidate(
-                                                    Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
-                                                    () => setShowInvalidate(true),
-                                                    open,
-                                                    isDocumentsUpdatable(Object.values(selectedItems).flatMap((i) => i)),
-                                                )
-                                                closePopup()
-                                            }}
-                                        />,
-                                        <ButtonLink
-                                            key={'buttonDeleteItems'}
-                                            label={t('actionOverTable.deleteItems')}
-                                            disabled={!isUserAdmin}
-                                            onClick={() => {
-                                                handleDeleteFile(
-                                                    Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
-                                                    () => setShowDeleteFile(true),
-                                                    open,
-                                                    isDocumentsUpdatable(Object.values(selectedItems).flatMap((i) => i)),
-                                                )
-                                                closePopup()
-                                            }}
-                                        />,
-                                    ]}
-                                />
-                            </div>
+                            <BulkPopup
+                                items={(closePopup) => [
+                                    <ButtonLink
+                                        key={'buttonValidateItems'}
+                                        label={t('actionOverTable.validateItems')}
+                                        disabled={!isUserLogged}
+                                        onClick={() => {
+                                            handleReInvalidate(
+                                                Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
+                                                () => setShowReInvalidate(true),
+                                                open,
+                                            )
+                                            closePopup()
+                                        }}
+                                    />,
+                                    <ButtonLink
+                                        key={'buttonInvalidateItems'}
+                                        label={t('actionOverTable.invalidateItems')}
+                                        disabled={!isUserLogged}
+                                        onClick={() => {
+                                            handleInvalidate(
+                                                Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
+                                                () => setShowInvalidate(true),
+                                                open,
+                                                isDocumentsUpdatable(Object.values(selectedItems).flatMap((i) => i)),
+                                            )
+                                            closePopup()
+                                        }}
+                                    />,
+                                    <ButtonLink
+                                        key={'buttonDeleteItems'}
+                                        label={t('actionOverTable.deleteItems')}
+                                        disabled={!isUserAdmin}
+                                        onClick={() => {
+                                            handleDeleteFile(
+                                                Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
+                                                () => setShowDeleteFile(true),
+                                                open,
+                                                isDocumentsUpdatable(Object.values(selectedItems).flatMap((i) => i)),
+                                            )
+                                            closePopup()
+                                        }}
+                                    />,
+                                ]}
+                            />
                         )}
                     />
                 }

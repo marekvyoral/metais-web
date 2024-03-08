@@ -178,7 +178,6 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                         <ButtonGroupRow>
                             <ButtonPopup
                                 buttonLabel={t('codeListDetail.button.language')}
-                                popupPosition="left"
                                 popupContent={() => {
                                     return (
                                         <div className={headerStyles.buttonLinksDiv}>

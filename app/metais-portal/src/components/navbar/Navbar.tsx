@@ -1,5 +1,5 @@
 import { useFind2111 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { NavigationCloseIcon, NotificationIcon } from '@isdd/metais-common/assets/images'
+import { NavigationCloseIcon, NotificationIcon, NotificationBlackIcon } from '@isdd/metais-common/assets/images'
 import { NavBarHeader } from '@isdd/metais-common/components/navbar/navbar-header/NavBarHeader'
 import { IconWithNotification } from '@isdd/metais-common/components/navbar/navbar-main/IconWithNotification'
 import { NavBarMain } from '@isdd/metais-common/components/navbar/navbar-main/NavBarMain'
@@ -33,7 +33,8 @@ export const Navbar: React.FC = () => {
     const Notifications = () => (
         <IconWithNotification
             title={t('navbar.notifications')}
-            src={NotificationIcon}
+            iconActive={NotificationBlackIcon}
+            iconInactive={NotificationIcon}
             count={notificationsData?.pagination?.totalUnreadedItems ?? 0}
             path={NavigationSubRoutes.NOTIFICATIONS}
             showAsLink

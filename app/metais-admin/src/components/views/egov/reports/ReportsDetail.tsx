@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { AccordionContainer, Button, Input, LoadingIndicator, SimpleSelect, TextArea, TextBody } from '@isdd/idsk-ui-kit/index'
+import { AccordionContainer, Button, ErrorBlock, Input, LoadingIndicator, SimpleSelect, TextArea, TextBody } from '@isdd/idsk-ui-kit/index'
 import {
     CategoryHeaderList,
     Parameter,
@@ -116,7 +116,9 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
             <div className={styles.submitArea}>
                 <Input label={t('report.detail.name')} {...register('report.name')} error={formState.errors?.report?.name?.message} required />
                 <Input

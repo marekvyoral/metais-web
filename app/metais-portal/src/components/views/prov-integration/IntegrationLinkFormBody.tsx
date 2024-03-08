@@ -82,7 +82,7 @@ export const IntegrationLinkFormBody: React.FC<Props> = ({
     useResetDefaultValuesForCiEntity({ defaultValues, setValue, formDefaultValues, generatedEntityId, isUpdate })
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
             {ciTypeData?.attributes?.map?.((attribute) => {
                 return (
                     <React.Fragment key={attribute.technicalName}>

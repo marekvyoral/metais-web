@@ -37,7 +37,7 @@ export const DraftsListChangeStateModal = ({
 
     return (
         <BaseModal isOpen={openChangeStateDialog} close={() => setOpenChangeStateDialog(false)}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className={styles.modalContainer}>
                     <div className={styles.content}>
                         <TextHeading size={'L'} className={styles.heading}>

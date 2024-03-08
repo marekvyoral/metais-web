@@ -51,7 +51,7 @@ export const EntityDetailContainer: React.FC<IEntityDetailContainer> = ({ entity
         attributesOverridesData,
         keysToDisplay,
         refetch,
-    } = useEntityProfiles(entityName)
+    } = useEntityProfiles(entityName, false)
     const { data: roles, isLoading: isRolesLoading, isError: isRolesError } = useFindAll11()
     const { mutateAsync: setEntityAsInvalid } = useStoreUnvalid()
     const { mutateAsync: setEntityAsValid } = useStoreValid()

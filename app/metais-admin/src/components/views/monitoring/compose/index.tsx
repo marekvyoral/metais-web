@@ -2,6 +2,7 @@ import {
     AccordionContainer,
     Button,
     CheckBox,
+    ErrorBlock,
     ILoadOptionsResponse,
     Input,
     RadioButton,
@@ -116,7 +117,9 @@ export const MonitoringComposeView: React.FC<IMonitoringComposeView> = ({
     return (
         <>
             <TextHeading size="XL">{getPageTitle(isNewRecord, t)}</TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')} noValidate>
                 <SelectLazyLoading<ConfigurationItemUi>
                     key={seed}
                     getOptionLabel={(item) => `(${item?.type ?? ''}) ${getCiName(item)}` ?? ''}

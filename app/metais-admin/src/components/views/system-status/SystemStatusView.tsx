@@ -48,17 +48,8 @@ export const SystemStatusView: React.FC<IView> = ({
                 <div style={{ marginLeft: 'auto' }} />
                 <Tooltip
                     on={'focus'}
-                    tooltipContent={(open, close) => (
-                        <Button
-                            onMouseOver={open}
-                            onMouseOut={close}
-                            key={0}
-                            variant="secondary"
-                            label={t('systemState.delete')}
-                            onClick={async () => onDelete()}
-                        />
-                    )}
                     descriptionElement={t('systemState.deleteInfo')}
+                    tooltipContent={() => <Button variant="secondary" label={t('systemState.delete')} onClick={async () => onDelete()} />}
                     position={'bottom center'}
                     arrow={false}
                 />

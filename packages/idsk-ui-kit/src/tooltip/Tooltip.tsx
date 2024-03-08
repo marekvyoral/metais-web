@@ -37,7 +37,9 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, tooltipContent
 
     return (
         <Popup
+            mouseLeaveDelay={200}
             ref={popupRef}
+            disabled={!descriptionElement}
             arrow={props.position != 'center center'}
             closeOnEscape
             keepTooltipInside
@@ -46,10 +48,12 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, tooltipContent
             {...props}
             trigger={() =>
                 tooltipContent ? (
-                    tooltipContent(
-                        () => popupRef.current?.open(),
-                        () => popupRef.current?.close(),
-                    )
+                    <div>
+                        {tooltipContent(
+                            () => popupRef.current?.open(),
+                            () => popupRef.current?.close(),
+                        )}
+                    </div>
                 ) : (
                     <div onMouseOver={popupRef.current?.open} onMouseOut={popupRef.current?.close}>
                         <button

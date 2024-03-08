@@ -1,4 +1,4 @@
-import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, IOption, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, ButtonGroupRow, ErrorBlock, HomeIcon, IOption, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useFindRelatedOrganizationsHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -36,7 +36,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
         watch,
         clearErrors,
         reset,
-        formState: { errors },
+        formState: { errors, isValid, isSubmitted },
     } = useForm({
         resolver: yupResolver(isEdit ? editGroupSchema(t) : createGroupSchema(t)),
         defaultValues: {
@@ -148,7 +148,9 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
                     indicatorProps={{ label: isEdit ? t('groups.editingGroup') : t('groups.creatingGroup') }}
                     withChildren
                 >
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                    <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Input
                             label={`${t('groups.groupName')} (${t('groups.mandatory')}):`}
                             id={GroupFormEnum.NAME}

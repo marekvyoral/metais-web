@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
-import { Button, CheckBox, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, CheckBox, ErrorBlock, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import {
     getReadCiNeighboursWithAllRelsQueryKey,
     getReadNeighboursConfigurationItemsCountQueryKey,
@@ -66,6 +66,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
     canChange,
     isOwnerOfContract,
     isEdit,
+    contractState,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -75,7 +76,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
         setValue,
         handleSubmit,
         clearErrors,
-        formState: { errors },
+        formState: { errors, isValid, isSubmitted },
     } = useForm({
         resolver: yupResolver(getSchema(t)),
         defaultValues:
@@ -135,6 +136,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                 ...formDataRef.current,
                 uuid: uuid,
                 owner: ownerGid,
+                profilState: contractState,
             },
         })
             .then(async (res) => {
@@ -226,7 +228,10 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
             <TextHeading size="XL">
                 {isEdit ? t('olaContracts.headingEdit', { itemName: olaContract?.name }) : t('olaContracts.headingAdd')}
             </TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)}>
+
+            {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <QueryFeedback loading={isLoading || isRequestProcessing} error={isError} withChildren>
                     <Input {...register('name')} label={t('olaContracts.filter.name')} required error={errors.name?.message} />
                     <Input {...register('nameEnglish')} label={t('olaContracts.filter.nameEnglish')} />

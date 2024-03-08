@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 
 import { ISection, StepperSection } from './StepperSection'
@@ -28,6 +28,20 @@ export const Stepper: React.FC<IStepper> = ({ description, stepperList, subtitle
     }
 
     const [sectionArray, setSectionArray] = useState(defaultArray)
+    const hasErrors = stepperList.some((item) => item.error)
+
+    useEffect(() => {
+        if (hasErrors) {
+            const updatedArray = [...sectionArray]
+            stepperList.forEach((section, index) => {
+                if (section.error) {
+                    updatedArray[index] = StepperArrayEnum.EXPANDED
+                }
+            })
+            setSectionArray(updatedArray)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [hasErrors])
 
     return (
         <>

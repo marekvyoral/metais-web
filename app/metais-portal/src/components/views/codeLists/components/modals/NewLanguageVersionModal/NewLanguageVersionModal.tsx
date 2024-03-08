@@ -114,7 +114,7 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
     return (
         <BaseModal isOpen={isOpen} close={handleOnClose}>
             <QueryFeedback loading={isLoading} error={false} withChildren>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className={styles.modalContainer}>
                         <div className={styles.content}>
                             <TextHeading size="L" className={styles.heading}>

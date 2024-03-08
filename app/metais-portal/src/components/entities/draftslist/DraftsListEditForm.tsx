@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { ApiLink, ApiStandardRequest, useUpdateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
-import { Button, LoadingIndicator } from '@isdd/idsk-ui-kit/index'
+import { Button, ErrorBlock, LoadingIndicator } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
@@ -105,7 +105,9 @@ export const DraftsListEditForm = ({ defaultData }: IDraftsListEditForm) => {
             {isLoading && <LoadingIndicator fullscreen />}
             <MutationFeedback error={isError} success={isSuccess} />
 
-            <form onSubmit={handleSubmit(handleSubmitForm)}>
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>
                 <DraftsListAttachmentsZone
                     links={links as ApiLink[]}
                     register={register}

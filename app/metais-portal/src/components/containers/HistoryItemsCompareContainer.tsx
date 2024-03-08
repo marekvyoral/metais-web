@@ -6,12 +6,13 @@ import {
     useReadCiHistoryVersionsIncidentRels,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { CiType, useGetCiType, useListCiTypes1Hook } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CiType, useListCiTypes1Hook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { IRelationItem } from '@/components/containers/HistorySingleItemCompareContainer'
 
@@ -38,7 +39,7 @@ export const HistoryItemsCompareContainer: React.FC<IHistoryItemsCompareContaine
         state: { user },
     } = useAuth()
     const listCiTypes = useListCiTypes1Hook()
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName ?? '')
     const { data: dataFirst, isError: isErrorFirst, isLoading: isLoadingFirst } = useReadCiHistoryVersion(entityId ?? '', { versionId: firstId })
     const { data: dataSecond, isError: isErrorSec, isLoading: isLoadingSec } = useReadCiHistoryVersion(entityId ?? '', { versionId: secondId })
     const [defaultPaging, setDefaultPaging] = useState({ pageNumber: 1, pageSize: 10 })

@@ -64,7 +64,7 @@ const AddAttributeView = ({
 
     return (
         <QueryFeedback error={isCreateAttrError} loading={false}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Input label={t('egov.name')} id="name" {...register('name')} error={formState?.errors?.name?.message} required />
                 <Input label={t('egov.engName')} id="engName" {...register('engName')} error={formState?.errors?.engName?.message} required />
 

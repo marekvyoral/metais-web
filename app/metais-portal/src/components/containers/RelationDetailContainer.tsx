@@ -1,3 +1,4 @@
+import React from 'react'
 import {
     ApiError,
     ConfigurationItemUi,
@@ -8,10 +9,10 @@ import {
     useReadRelationship,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { RelationshipType, useGetRelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
-import React from 'react'
+import { useGetRelationshipTypeWrapper } from '@isdd/metais-common/hooks/useRelationshipType.hook'
 
 export type RelationDetailProps = {
     data: {
@@ -60,7 +61,7 @@ export const RelationDetailContainer: React.FC<Props> = ({ relationshipId, View 
         isLoading: isRelationTypeDataLoading,
         isError: isRelationTypeDataError,
         fetchStatus: relationTypeFetchStatus,
-    } = useGetRelationshipType(relationshipData?.type ?? '', {
+    } = useGetRelationshipTypeWrapper(relationshipData?.type ?? '', {
         query: { enabled: !!relationshipData?.uuid },
     })
 

@@ -11,14 +11,10 @@ import {
     useReadCiNeighbours,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import {
-    CiType,
-    RelationshipTypePreviewList,
-    useGetCiType,
-    useListRelatedCiTypes,
-    useListRelationshipTypes,
-} from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CiType, RelationshipTypePreviewList, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 import { GENERIC_NAMES, useGetRelationColumnData } from '@isdd/metais-common/api/hooks/containers/relationContainerHelpers'
+import { useListRelatedCiTypesWrapper } from '@isdd/metais-common/hooks/useListRelatedCiTypes.hook'
 import { RelationSelectedRowType } from '@isdd/metais-common/api/userConfigKvRepo'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
 import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
@@ -102,9 +98,9 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         defaultTargetRelationshipTabFilter,
     } = useEntityRelationshipTabFilters(entityName ?? '')
 
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName)
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName)
     const { data: relationData, isLoading: isRelationListLoading, isError: isRelationListError } = useListRelationshipTypes({ filter: {} })
-    const { isLoading: isLoadingRelated, isError: isErrorRelated, data: relatedTypes } = useListRelatedCiTypes(entityName)
+    const { isLoading: isLoadingRelated, isError: isErrorRelated, data: relatedTypes } = useListRelatedCiTypesWrapper(entityName)
     const types = useMemo(() => (relatedTypes?.cisAsSources || []).concat(relatedTypes?.cisAsTargets || []), [relatedTypes])
 
     const selectedRequestApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter

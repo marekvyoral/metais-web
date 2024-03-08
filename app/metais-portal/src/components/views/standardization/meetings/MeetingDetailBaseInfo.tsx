@@ -119,7 +119,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
     const SummarizeLink: React.FC = () => (
         <>
             {ability.can(Actions.SET_SUMMARIZE_LINK, Subject.MEETING) && summarizeLinkChange && (
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <GridRow>
                         <GridCol setWidth="two-thirds">
                             <Input {...register('linkUrl')} />

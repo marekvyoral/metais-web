@@ -13,13 +13,14 @@ import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'r
 import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
+import { metaisEmail } from '@isdd/metais-common/constants'
 
+import { CiEntityFormBody } from './CiEntityFormBody'
 import { CreateEntitySection } from './CreateEntitySection'
 import { getValidAndVisibleAttributes } from './createEntityHelpers'
-import { CiEntityFormBody } from './CiEntityFormBody'
 
-import { RelationAttributeForm } from '@/components/relations-attribute-form/RelationAttributeForm'
 import { formatForFormDefaultValues } from '@/componentHelpers/ci'
+import { RelationAttributeForm } from '@/components/relations-attribute-form/RelationAttributeForm'
 
 export interface HasResetState {
     hasReset: boolean
@@ -66,7 +67,6 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     const isUpdate = !!updateCiItemId
     const isSubmitDisabled = (!selectedRole?.roleUuid && !updateCiItemId) || (withRelation ? !canCreateRelationType : false)
 
-    const metaisEmail = 'metais@mirri.gov.sk'
     const location = useLocation()
     const attProfiles = useMemo(() => ciTypeData?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeData?.attributeProfiles])
     const attProfileTechNames = attProfiles.map((profile) => profile.technicalName)
@@ -105,6 +105,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 title: t('ciInformationAccordion.basicInformation'),
                 error: sectionError[Gen_Profil] === true,
                 stepLabel: { label: '1', variant: 'circle' },
+                id: Gen_Profil,
                 content: (
                     <CreateEntitySection
                         sectionId={Gen_Profil}
@@ -126,6 +127,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
                 last: relationSchema ? false : attProfiles.length === index + 1 ? true : false,
                 error: sectionError[profile.technicalName ?? ''] === true,
+                id: profile.technicalName ?? '',
                 content: (
                     <CreateEntitySection
                         sectionId={profile.technicalName ?? ''}
@@ -150,6 +152,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
             title: t('newRelation.relation'),
             last: true,
             stepLabel: { label: (attProfiles.length + 2).toString(), variant: 'circle' } as IStepLabel,
+            id: 'newRelation',
             content: (
                 <RelationAttributeForm
                     relationSchema={relationSchema}

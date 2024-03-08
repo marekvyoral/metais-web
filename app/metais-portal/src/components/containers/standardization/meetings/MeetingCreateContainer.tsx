@@ -2,7 +2,7 @@ import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FieldValues } from 'react-hook-form'
-import { ApiAttachment, useCreateVote1 } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ApiAttachment, useCreateMeeting } from '@isdd/metais-common/api/generated/standards-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { MeetingCreateEditView } from '@/components/views/standardization/meetings/MeetingCreateEditView'
@@ -19,7 +19,7 @@ export const MeetingCreateContainer: React.FC = () => {
         mutate: createMeeting,
         isLoading,
         isError,
-    } = useCreateVote1({
+    } = useCreateMeeting({
         mutation: {
             onSuccess() {
                 setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_ZASADNUTI })

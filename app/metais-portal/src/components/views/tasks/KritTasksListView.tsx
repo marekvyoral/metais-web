@@ -226,7 +226,7 @@ export const KritTasksListView: React.FC<IKritTasksListView> = ({
                 onMessageClose={resetSuccessSave}
             />
             {showForm ? (
-                <form onSubmit={handleSubmit(onSave)}>
+                <form onSubmit={handleSubmit(onSave)} noValidate>
                     <GridRow>
                         <GridCol setWidth="one-half">
                             <Input required label={t('tasksKris.name')} {...register('name')} error={errors.name?.message} />

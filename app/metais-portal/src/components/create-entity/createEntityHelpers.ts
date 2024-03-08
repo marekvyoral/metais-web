@@ -25,6 +25,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
 import { v4 as uuidV4 } from 'uuid'
+import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
 
@@ -278,8 +279,22 @@ export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
     return { uploadError, setUploadError, configurationItemId, onSubmit }
 }
 
-export const getValidAndVisibleAttributes = (ciTypeData: CiType | undefined): (Attribute | undefined)[] => {
-    return [...(ciTypeData?.attributes ?? []), ...(ciTypeData?.attributeProfiles?.flatMap((profile) => profile.attributes) ?? [])].filter(
+export const getValidAndVisibleAttributes = (ciTypeData: CiType | undefined): Attribute[] => {
+    return [...(ciTypeData?.attributes ?? []), ...(ciTypeData?.attributeProfiles?.flatMap((profile) => profile.attributes ?? []) ?? [])].filter(
         (att) => att && !att.invisible && att.valid,
     )
+}
+
+export const getSectionErrorList = (attributes: Attribute[], errors: FieldErrors<FieldValues>, sectionId: string): ErrorBlock[] => {
+    const errorNames = Object.keys(errors).filter((item) => item.includes(sectionId))
+
+    const sectionAttWithErrors = attributes.filter((att) => att.technicalName && errorNames.includes(att.technicalName))
+
+    const sectionErrorList = [
+        ...sectionAttWithErrors.map((att) => ({
+            errorTitle: att.name ?? '',
+            errorMessage: errors[errorNames.find((name) => name === att.technicalName) ?? '']?.message?.toString(),
+        })),
+    ]
+    return sectionErrorList
 }

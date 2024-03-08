@@ -349,6 +349,22 @@ export const GET_MEETING_REQUEST_DETAIL = 'getMeetingRequestDetail'
 export const SLA_SPRAVA = 'SLA_SPRAVA'
 export const OLA_Kontrakt = 'OLA_Kontrakt'
 export const Profil_OLA_Kontrakt = 'Profil_OLA_Kontrakt'
+export const STAV_OLA_KONTRAKT = 'STAV_OLA_KONTRAKT'
+export const STAV_OLA_KONTRAKT_INITIAL = 'c_stav_ola_kontrakt.1'
 export const OLA_Kontrakt_dodavatela_ISVS = 'OLA_Kontrakt_dodavatela_ISVS'
 export const META_IS_TITLE = '| MetaIS'
 export const UNAUTHORIZED = 'unauthorized'
+
+export const OLA_CONTRACT_STATES = {
+    PLANNED: 'c_stav_ola_kontrakt.1',
+    APPROVED: 'c_stav_ola_kontrakt.2',
+    RETURNED: 'c_stav_ola_kontrakt.3',
+    CONTRACTED: 'c_stav_ola_kontrakt.4',
+}
+
+export const OLA_CONTRACT_STATE_ACTIONS = {
+    APPROVE: 'APPROVE',
+    RETURN: 'RETURN',
+    PLAN: 'PLAN',
+    CONTRACT: 'CONTRACT',
+}

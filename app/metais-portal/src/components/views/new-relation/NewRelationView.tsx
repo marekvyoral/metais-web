@@ -316,7 +316,7 @@ export const NewRelationView: React.FC<Props> = ({
             />
 
             {selectedItems && Array.isArray(selectedItems) && selectedItems.length > 0 && <AccordionContainer sections={sections} />}
-            <form onSubmit={handleFormSubmit(handleSubmit)}>
+            <form onSubmit={handleFormSubmit(handleSubmit)} noValidate>
                 {hasMutationError && (
                     <ErrorBlock
                         errorTitle={t('newRelation.errorTitle')}

@@ -5,11 +5,13 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import {
     useCancelVote,
     useCastVote,
+    useCastVote1,
     useGetStandardRequestDetail,
     useGetVoteActorResult,
     useGetVoteDetail,
     useGetVoteResult,
     useVetoVote,
+    useVetoVote1,
 } from '@isdd/metais-common/api/generated/standards-swagger'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -53,27 +55,42 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
         isError: voteActorResultError,
     } = useGetVoteActorResult(Number(voteId), userId, { query: { enabled: canDoCast } })
     const { isLoading: castVoteLoading, mutateAsync: castVoteAsyncMutation } = useCastVote()
+    const { isLoading: castUserVoteLoading, mutateAsync: castUserVoteAsyncMutation } = useCastVote1()
     const { isLoading: vetoVoteLoading, mutateAsync: vetoVoteAsyncMutation } = useVetoVote()
+    const { isLoading: vetoUserVoteLoading, mutateAsync: vetoUserVoteAsyncMutation } = useVetoVote1()
 
-    const castVote = async (choiceId: number, description: string) => {
+    const castVote = async ({ choiceId, token, description }: { choiceId: number; token?: string; description?: string }) => {
         if (!voteData?.id) {
             return
         }
-
-        await castVoteAsyncMutation({
+        if (token && choiceId) {
+            await castVoteAsyncMutation({
+                voteId: voteData?.id,
+                token,
+                choiceId,
+            })
+            return
+        }
+        await castUserVoteAsyncMutation({
             voteId: voteData?.id,
             castedUserId: userId,
             choiceId,
             data: { description },
         })
+        return
     }
 
-    const vetoVote = async (description: string) => {
+    const vetoVote = async ({ token, description }: { token?: string; description?: string }) => {
         if (!voteData?.id) {
             return
         }
-
-        await vetoVoteAsyncMutation({
+        if (token) {
+            await vetoVoteAsyncMutation({
+                voteId: voteData?.id,
+                token,
+            })
+        }
+        await vetoUserVoteAsyncMutation({
             voteId: voteData?.id,
             castedUserId: userId,
             data: { description },
@@ -123,7 +140,7 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
                         castVote={castVote}
                         vetoVote={vetoVote}
                         cancelVote={cancelVote}
-                        votesProcessing={castVoteLoading || vetoVoteLoading}
+                        votesProcessing={castVoteLoading || vetoVoteLoading || castUserVoteLoading || vetoUserVoteLoading}
                         isUserLoggedIn={isUserLogged}
                     />
                 </QueryFeedback>
