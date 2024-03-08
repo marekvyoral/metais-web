@@ -121,7 +121,7 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
                     fileSize: currentFile?.size ?? 0,
                     fileSizeString: currentFile?.size.toString() ?? '',
                     fileType: currentFile?.type,
-                    uploadComplete: currentFile?.progress?.uploadComplete,
+                    uploadComplete: ufs.isUploaded,
                     hasError: !!ufs.uploadError,
                 }
             })
