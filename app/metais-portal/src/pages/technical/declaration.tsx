@@ -26,7 +26,7 @@ const DeclarationPage = () => {
     const { t } = useTranslation()
     const { i18n } = useTranslation()
 
-    const DEFAULT_URL = `${baseWikiUrl}/page/render/webove_sidlo?isvsCode=${DECLARATION_ID}`
+    const DEFAULT_URL = `${baseWikiUrl}/page/render/webove_sidlo?weboveSidloCode=${DECLARATION_ID}`
 
     const {
         data: htmlString,
