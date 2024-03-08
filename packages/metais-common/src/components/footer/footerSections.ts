@@ -3,7 +3,7 @@ import { TFunction } from 'i18next'
 import { FooterSection } from './FooterSection'
 import { FooterMetaList } from './FooterMeta'
 
-import { FooterRouteNames, NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { FooterRouteNames, NavigationSubRoutes, RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { PORTAL_URL } from '@isdd/metais-common/constants'
 
 export const getPortalFooterSection = (t: TFunction, isAdmin?: boolean): FooterSection[] => {
@@ -26,20 +26,8 @@ export const getPortalFooterSection = (t: TFunction, isAdmin?: boolean): FooterS
                     href: urlPrefix + RouteNames.HOW_TO_DATA_OBJECTS,
                 },
                 {
-                    label: t('navMenu.lists.overviews'),
-                    href: urlPrefix + NavigationSubRoutes.OVERVIEWS,
-                },
-                {
-                    label: t('navMenu.lists.relationsInspection'),
-                    href: urlPrefix + NavigationSubRoutes.RELATIONS_INSPECTION,
-                },
-                {
-                    label: t('navMenu.lists.architectonicRepository'),
-                    href: urlPrefix + NavigationSubRoutes.ARCHITECTONIC_REPOSITORY,
-                },
-                {
                     label: t('navMenu.lists.educationalCourses'),
-                    href: urlPrefix + NavigationSubRoutes.EDUCATIONAL_COURSES,
+                    href: urlPrefix + NavigationSubRoutes.TRAINING,
                 },
                 {
                     label: t('navMenu.lists.assembliesAndReports'),
@@ -51,7 +39,7 @@ export const getPortalFooterSection = (t: TFunction, isAdmin?: boolean): FooterS
                 },
                 {
                     label: t('navMenu.lists.serviceLevelAgreementsWithOperator'),
-                    href: urlPrefix + NavigationSubRoutes.SERVICE_LEVEL_AGREEMENTS_WITH_OPERATOR,
+                    href: urlPrefix + RouterRoutes.OLA_CONTRACT_LIST,
                 },
                 {
                     label: t('navMenu.lists.codelists'),
