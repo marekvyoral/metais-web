@@ -225,7 +225,10 @@ export const CreateEntityView = ({
                             />
                         )}
                     </FlexColumnReverseWrapper>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+
+                    {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                    <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <>
                             {!hiddenInputs?.NAME && (
                                 <Input

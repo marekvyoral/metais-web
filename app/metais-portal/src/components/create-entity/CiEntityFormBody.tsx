@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button } from '@isdd/idsk-ui-kit/index'
+import { Button, ErrorBlock } from '@isdd/idsk-ui-kit/index'
 import { Stepper } from '@isdd/idsk-ui-kit/stepper/Stepper'
 import { SubmitWithFeedback } from '@isdd/metais-common/index'
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
@@ -11,8 +11,9 @@ import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { ConfigurationItemUiAttributes, HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ENTITY_PROJECT } from '@isdd/metais-common/constants'
+import { StepperSectionErrorBlock } from '@isdd/idsk-ui-kit/src/stepper/StepperSectionErrorBlock'
 
-import { getFilteredAttributeProfilesBasedOnRole, getValidAndVisibleAttributes } from './createEntityHelpers'
+import { getFilteredAttributeProfilesBasedOnRole, getSectionErrorList, getValidAndVisibleAttributes } from './createEntityHelpers'
 import { generateFormSchema } from './createCiEntityFormSchema'
 import styles from './createEntity.module.scss'
 
@@ -104,10 +105,31 @@ export const CiEntityFormBody: React.FC<Props> = ({
         if (entityName === ENTITY_PROJECT) setValue(AttributesConfigTechNames.EA_Profil_Projekt_prijimatel, selectedOrg?.poName)
     }, [selectedOrg, setValue, entityName])
 
+    const modifiedStepperList: ISection[] = stepperList.map((section) => ({
+        ...section,
+        errorMessages: getSectionErrorList(
+            [...(ciTypeData?.attributes ?? []), ...(ciTypeData?.attributeProfiles?.flatMap((prof) => prof.attributes ?? {}) ?? [])],
+            formState?.errors,
+            section.id,
+        ),
+    }))
+
     return (
         <FormProvider {...methods}>
+            {formState.isSubmitted && !formState.isValid && (
+                <ErrorBlock
+                    hidden
+                    errorTitle={t('formErrors') + t('listOfFormErrors')}
+                    errorMessage={modifiedStepperList
+                        .filter((section) => section.error)
+                        .map((section, index) => (
+                            <StepperSectionErrorBlock key={`${section.id}-${index}`} section={section} />
+                        ))}
+                />
+            )}
+
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                <Stepper subtitleTitle="" stepperList={stepperList} />
+                <Stepper subtitleTitle="" stepperList={modifiedStepperList} />
                 <SubmitWithFeedback
                     className={styles.buttonGroup}
                     additionalButtons={[

@@ -3,7 +3,11 @@
         "zoomIn": "Zoom in",
         "zoomOut": "Zoom out",
         "exportPNG": "As PNG",
-        "exportPDF": "As PDF"
+        "exportPDF": "As PDF",
+        "button": {
+            "export": "Export graph",
+            "type": "Entity type"
+        }
     },
     "footer": {
         "metaisServices": "MetaIS Services",
@@ -230,6 +234,7 @@
         "searchPlaceholder": "Search in table",
         "chooseState": "Select status",
         "chooseValue": "Select value",
+        "cleared": "Filter has been cleared",
         "WeboveSidlo": {
             "name": "Name of web residency"
         },
@@ -285,7 +290,7 @@
     },
     "customAttributeFilter": {
         "add": "+ Add filter",
-        "remove": "Remove criteria {{name}}",
+        "remove": "Remove filter criteria {{name}}",
         "value": {
             "label": "Value",
             "labelYes": "Yes",
@@ -344,7 +349,8 @@
         "sections": "sections",
         "and": "and",
         "sectionError": "This section has error",
-        "sectionChange": "This section has changed"
+        "sectionChange": "This section has changed",
+        "sectionTitle": "Section title:"
     },
     "tab": {
         "contents": "Contents",
@@ -907,6 +913,7 @@
         "options": {
             "title": "Options",
             "download": "Download",
+            "downloadTemplate": "Download template",
             "update": "Update",
             "invalidate": "Invalidate",
             "delete": "Delete",
@@ -1156,7 +1163,8 @@
             "title": "Add document",
             "upload": "Upload file",
             "tooLargeError": "Document too large",
-            "success": "Document has been added successfully"
+            "success": "Document has been added successfully",
+            "partitionalyFailed": "Some documents could not be added"
         },
         "updateFile": {
             "title": "Update document",
@@ -1401,7 +1409,7 @@
             "edit": "Edit",
             "more": "More actions",
             "save": "Save",
-            "language": "Language",
+            "language": "Codelist language",
             "exportCodelist": "Codelist export",
             "importCodelist": "Codelist import",
             "publishCodelist": "Publish",
@@ -1932,8 +1940,8 @@
         "title": "Draft list",
         "table": {
             "version": "Version",
-            "name": "Tenderer",
-            "srName": "Draft name",
+            "fullName": "Tenderer",
+            "name": "Draft name",
             "standardRequestState": "Status",
             "requestChannel": "Draft type",
             "createdAt": "Created at",
@@ -2085,9 +2093,9 @@
                 "REQUESTED": "Requested"
             },
             "requestChannel": "Type of proposal",
-            "name": "Submitted by",
+            "fullName": "Submitted by",
             "createdAt": "Date of submission",
-            "srName": "Name of proposal",
+            "name": "Name of proposal",
             "requestChannelValue": {
                 "RI": "Reference identifier",
                 "ZC_Request": "Request for add new codelist",
@@ -2173,7 +2181,9 @@
     "votes": {
         "actions": {
             "sent": "Your vote was sent.",
-            "failedToSend": "Failed to send your vote."
+            "failedToSend": "Failed to send your vote. Try to repeat the vote. If the error occurs repeatedly, please contact the Standardization Administrator by email at: standard@mirri.gov.sk",
+            "userToken": "Your vote has already been cast.",
+            "castDesc": "Thank you Your vote has been successfully recorded. If you are interested you can still send a note to vote"
         },
         "breadcrumbs": {
             "home": "Home",
@@ -2243,7 +2253,8 @@
                 "name": "Name",
                 "organization": "Organization",
                 "role": "Role"
-            }
+            },
+            "save": "Save"
         },
         "voteEdit": {
             "newVoteTitle": "Add new vote",
@@ -2289,9 +2300,9 @@
             "addNextDocumentItem": "Add next document",
             "removeDocument": "document {{document}}",
             "standardRequestsTable": {
-                "srName": "Draft name",
+                "name": "Draft name",
                 "createdAt": "created At",
-                "name": "Mame",
+                "fullName": "Mame",
                 "version": "Verion",
                 "standardRequestState": "State"
             }
@@ -2750,7 +2761,8 @@
             "title": "Detail of SLA with contractor: {{name}}",
             "edit": "Edit",
             "notEntered": "Not entered",
-            "history": "Document history"
+            "history": "Document history",
+            "stateChanged": "State was successfully changed"
         },
         "columns": {
             "name": "Agreement name",
@@ -2759,7 +2771,8 @@
             "consumerIsvs": "ISPA administrator",
             "validityStartDate": "Valid from",
             "validityEndDate": "Valid to",
-            "vendorLock": "Vendor Lock"
+            "vendorLock": "Vendor Lock",
+            "state": "State"
         },
         "filter": {
             "name": "Agreement name",
@@ -2777,13 +2790,20 @@
             "crzLink": "Link to CRZ",
             "vendorLock": "Vendor Lock",
             "contractorIsvsUuid": "Vendor ISPA",
-            "document": "SLA document with supplier"
+            "document": "SLA document with supplier",
+            "state": "State"
         },
         "title": "SLA with vendor",
         "heading": "List of SLA with contractors",
         "headingAdd": "Add SLA with contractor",
         "headingEdit": "Edit SLA item {{itemName}} with contractor",
-        "createButton": "Add new SLA with contractor"
+        "createButton": "Add new SLA with contractor",
+        "stateActions": {
+            "approve": "Approve",
+            "return": "Return for editing",
+            "plan": "Send as scheduled",
+            "contract": "Contract"
+        }
     },
     "insertMonitoring": {
         "columns": {
@@ -2924,5 +2944,13 @@
     },
     "accessibility": {
         "navigated": "Page changed to {{pageTitle}}"
+    },
+    "error": "Error: ",
+    "sectionErrors": " List of section errors:",
+    "formErrors": "Form has validation errors.",
+    "listOfFormErrors": "List of form errors:",
+    "arrayInput": {
+        "deleteRow": "Remove {{itemName}}",
+        "changeRowsNumber": "Number of rows for item {{name}} changed. Number of rows is {{count}}"
     }
 }

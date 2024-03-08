@@ -24,7 +24,7 @@ export const InvalidateBulkView: React.FC<IInvalidateBulkView> = ({ items, multi
     const title = multiple ? t('bulkActions.invalidate.titleList') : t('bulkActions.invalidate.title')
     const deleteFileTitle = multiple ? t('bulkActions.deleteFile.titleList') : t('bulkActions.deleteFile.title')
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} noValidate>
             <TextHeading size="L">{deleteFile ? deleteFileTitle : title}</TextHeading>
 
             <IconWithText className={styles.warningText} icon={ErrorTriangleIcon}>

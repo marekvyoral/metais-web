@@ -14,7 +14,7 @@ export interface ISelectedOrg {
     setSelectedOrg: React.Dispatch<SetStateAction<HierarchyRightsUi | null>>
 }
 
-export interface ICiCreateEntityContainerView {
+export interface ICiCreateEntityViewProps {
     entityName: string
     ownerId: string
     roleState: RoleState
@@ -24,12 +24,11 @@ export interface ICiCreateEntityContainerView {
     isError: boolean
     ciTypeName: string
 }
-interface ICiCreateEntityContainer {
-    View: React.FC<ICiCreateEntityContainerView>
+interface ICiCreateEntityProps {
     entityName: string
 }
 
-export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ View, entityName }) => {
+export const useCiCreateEntityHook = ({ entityName }: ICiCreateEntityProps): ICiCreateEntityViewProps => {
     const { t, i18n } = useTranslation()
     const {
         data: generatedEntityId,
@@ -53,16 +52,14 @@ export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ Vi
 
     document.title = `${t('titles.ciCreateEntity', { ci: ciTypeName })} ${META_IS_TITLE}`
 
-    return (
-        <View
-            entityName={entityName}
-            data={{ attributesData: { ciTypeData, constraintsData, unitsData }, generatedEntityId, ownerId: groupData?.gid ?? '' }}
-            ownerId={groupData?.gid ?? ''}
-            roleState={roleState}
-            publicAuthorityState={publicAuthorityState}
-            isLoading={isLoading}
-            isError={isError}
-            ciTypeName={ciTypeName ?? ''}
-        />
-    )
+    return {
+        entityName,
+        data: { attributesData: { ciTypeData, constraintsData, unitsData }, generatedEntityId, ownerId: groupData?.gid ?? '' },
+        ownerId: groupData?.gid ?? '',
+        roleState,
+        publicAuthorityState,
+        isLoading,
+        isError,
+        ciTypeName: ciTypeName ?? '',
+    }
 }

@@ -138,7 +138,11 @@ import CookiesSettings from '@/pages/cookies/settings'
 import { ReportsDetailPage } from '@/pages/reports/[entityId]/report'
 import CookiesInfoPage from '@/pages/cookies/info'
 import DeclarationPage from '@/pages/technical/declaration'
+import CreateTrainingEntityPage from '@/pages/ci/Trainings/create'
+import EditTrainingEntityPage from '@/pages/ci/Trainings/[entityId]/edit'
 import AboutApplicationPage from '@/pages/about-application/aboutApp'
+import TrainingInformation from '@/pages/ci/Trainings/[entityId]/information'
+import ITVSExceptionsInformation from '@/pages/ci/OsobitnyPostup/[entityId]/information'
 
 export interface RouteConfig {
     path?: string
@@ -304,6 +308,16 @@ export const routesConfig: RouteConfig[] = [
             {
                 path: RouterRoutes.STANDARDIZATION_VOTE_DETAIL,
                 slug: RouterRoutes.STANDARDIZATION_VOTE_DETAIL,
+                component: VoteDetailPage,
+            },
+            {
+                path: RouterRoutes.STANDARDIZATION_VOTE_DETAIL_EXTERNAL,
+                slug: RouterRoutes.STANDARDIZATION_VOTE_DETAIL_EXTERNAL,
+                component: VoteDetailPage,
+            },
+            {
+                path: RouterRoutes.STANDARDIZATION_VOTE_DETAIL_EXTERNAL_VETO,
+                slug: RouterRoutes.STANDARDIZATION_VOTE_DETAIL_EXTERNAL_VETO,
                 component: VoteDetailPage,
             },
             {
@@ -661,12 +675,23 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.CI_TRAINING_DETAIL,
                 slug: RouterRoutes.CI_TRAINING_DETAIL,
                 component: TrainingEntityDetailPage,
-                subRoutes: [generalCiDetailInformationOutlet],
+                subRoutes: [
+                    {
+                        slug: RouterRoutes.CI_DETAIL,
+                        component: TrainingInformation,
+                        index: true,
+                    },
+                ],
             },
             {
                 path: RouterRoutes.CI_TRAINING_CREATE,
                 slug: RouterRoutes.CI_TRAINING_CREATE,
-                component: CreateEntityPage,
+                component: CreateTrainingEntityPage,
+            },
+            {
+                path: RouterRoutes.CI_TRAINING_EDIT,
+                slug: RouterRoutes.CI_TRAINING_EDIT,
+                component: EditTrainingEntityPage,
             },
             {
                 path: RouterRoutes.CI_TRAINING_INVITE,
@@ -789,6 +814,18 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.ITVS_EXCEPTIONS_CREATE,
                 slug: RouterRoutes.ITVS_EXCEPTIONS_CREATE,
                 component: CreateITVSExceptionsPage,
+            },
+            {
+                path: RouterRoutes.ITVS_EXCEPTIONS_DETAIL,
+                slug: RouterRoutes.ITVS_EXCEPTIONS_DETAIL,
+                component: TrainingEntityDetailPage,
+                subRoutes: [
+                    {
+                        slug: RouterRoutes.CI_DETAIL,
+                        component: ITVSExceptionsInformation,
+                        index: true,
+                    },
+                ],
             },
             {
                 path: RouterRoutes.ITVS_EXCEPTIONS_EDIT,

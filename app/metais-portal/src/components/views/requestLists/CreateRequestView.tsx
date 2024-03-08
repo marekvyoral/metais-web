@@ -4,6 +4,7 @@ import {
     ButtonGroupRow,
     ButtonLink,
     CheckBox,
+    ErrorBlock,
     ExpandableRowCellWrapper,
     GridCol,
     GridRow,
@@ -364,7 +365,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                     <QueryFeedback loading={isLoading || !!isAbilityLoading} error={isError || isAbilityError} withChildren>
                         {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                         <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
-                        <form onSubmit={handleSubmit(onHandleSubmit)}>
+
+                        {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                        <form onSubmit={handleSubmit(onHandleSubmit)} noValidate>
                             <div className={styles.bottomGap}>
                                 <CheckBox
                                     disabled={!canEdit}

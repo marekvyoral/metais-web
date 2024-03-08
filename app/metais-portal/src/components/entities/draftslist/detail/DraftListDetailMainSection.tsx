@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
 import { ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
-import { ATTRIBUTE_NAME, API_STANDARD_REQUEST_ATTRIBUTES } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
 import { getInfoGuiProfilStandardRequest, getLabelGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { Group } from '@isdd/metais-common/api/generated/iam-swagger'
@@ -10,7 +10,6 @@ import sanitizeHtml from 'sanitize-html'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { DraftListRelatedDocuments } from '@/components/entities/draftslist/detail/DraftListRelatedDocuments'
-import { srDescriptionAttributes } from '@/componentHelpers'
 import { StandardDraftsStateMachine } from '@/pages/standardization/draftslist/[entityId]/form'
 
 interface Props {
@@ -28,9 +27,7 @@ export const DraftListDetailMainSection: React.FC<Props> = ({ data }) => {
 
     const currentState = stateMachine?.getCurrentState()
 
-    const isVersion1 = requestData?.version === 1
     const showWorkGroup = currentState === 'ASSIGNED'
-    const showActionDesription = currentState === 'REJECTED'
 
     return (
         <div>
@@ -62,71 +59,20 @@ export const DraftListDetailMainSection: React.FC<Props> = ({ data }) => {
                 tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.email, guiAttributes) ?? ''}
             />
             <InformationGridRow
-                key={ATTRIBUTE_NAME.name}
-                label={getLabelGuiProfilStandardRequest(ATTRIBUTE_NAME.name, guiAttributes) ?? ''}
-                value={requestData?.name}
-                tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.name, guiAttributes) ?? ''}
+                key={ATTRIBUTE_NAME.fullName}
+                label={getLabelGuiProfilStandardRequest(ATTRIBUTE_NAME.fullName, guiAttributes) ?? ''}
+                value={requestData?.fullName}
+                tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.fullName, guiAttributes) ?? ''}
             />
-            {isVersion1 && (
-                <>
-                    <InformationGridRow
-                        key={ATTRIBUTE_NAME.Sr_Name}
-                        label={getLabelGuiProfilStandardRequest(ATTRIBUTE_NAME.Sr_Name, guiAttributes) ?? ''}
-                        value={requestData?.srName}
-                        tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.Sr_Name, guiAttributes) ?? ''}
-                    />
 
-                    <InformationGridRow
-                        key={ATTRIBUTE_NAME.srDescription1}
-                        label={getLabelGuiProfilStandardRequest(ATTRIBUTE_NAME.srDescription1, guiAttributes) ?? ''}
-                        value={
-                            <span
-                                key={ATTRIBUTE_NAME.srDescription1}
-                                dangerouslySetInnerHTML={{ __html: sanitizeHtml(requestData?.srDescription1 ?? '') }}
-                            />
-                        }
-                        tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.srDescription1, guiAttributes) ?? ''}
-                    />
-                </>
-            )}
+            <InformationGridRow
+                key={ATTRIBUTE_NAME.description}
+                label={getLabelGuiProfilStandardRequest(ATTRIBUTE_NAME.description, guiAttributes) ?? ''}
+                value={<span key={ATTRIBUTE_NAME.description} dangerouslySetInnerHTML={{ __html: sanitizeHtml(requestData?.description ?? '') }} />}
+                tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.description, guiAttributes) ?? ''}
+            />
+
             <DraftListRelatedDocuments data={data} />
-
-            {isVersion1 && (
-                <>
-                    {srDescriptionAttributes.map((attribute) => {
-                        if (requestData?.[attribute] && requestData?.[attribute] != '-')
-                            if (attribute === API_STANDARD_REQUEST_ATTRIBUTES.srDescription2)
-                                return (
-                                    <InformationGridRow
-                                        key={attribute}
-                                        value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(requestData?.[attribute] ?? '') }} />}
-                                        label={
-                                            getLabelGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2, guiAttributes) ??
-                                            ''
-                                        }
-                                        hideIcon
-                                    />
-                                )
-                            else
-                                return (
-                                    <InformationGridRow
-                                        key={attribute}
-                                        value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(requestData?.[attribute] ?? '') }} />}
-                                        label={getLabelGuiProfilStandardRequest(attribute, guiAttributes) ?? ''}
-                                        hideIcon
-                                    />
-                                )
-                    })}
-                </>
-            )}
-            {showActionDesription && (
-                <InformationGridRow
-                    key={API_STANDARD_REQUEST_ATTRIBUTES.actionDesription}
-                    label={getLabelGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.actionDesription, guiAttributes) ?? ''}
-                    value={requestData?.actionDesription ?? t('DraftsList.detail.missingRejectReason')}
-                    tooltip={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.actionDesription, guiAttributes) ?? ''}
-                />
-            )}
         </div>
     )
 }

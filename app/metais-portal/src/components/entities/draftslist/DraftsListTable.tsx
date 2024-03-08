@@ -14,11 +14,11 @@ export const DraftsListTable: React.FC<IDraftsListTable> = ({ data, handleFilter
     const columns: Array<ColumnDef<ApiStandardRequestPreview>> = [
         {
             accessorFn: (row) => row,
-            header: t('DraftsList.table.srName'),
-            id: 'srName',
+            header: t('DraftsList.table.name'),
+            id: 'name',
             cell: (row) => (
                 <Link to={'./' + row.row.original?.id ?? ''} state={{ from: location }} className="govuk-link">
-                    {row.row.original?.srName as string}
+                    {row.row.original?.name as string}
                 </Link>
             ),
             enableSorting: true,

@@ -4,7 +4,7 @@ import { ButtonLink } from '../button-link/ButtonLink'
 
 import styles from './error-block-list.module.scss'
 
-interface ErrorBlock {
+export interface ErrorBlock {
     errorTitle?: string
     errorMessage?: string
 }
@@ -20,7 +20,7 @@ export const ErrorBlockList: React.FC<ErrorBlockListProps> = ({ errorList, butto
     return (
         <>
             {errorList.length > 0 && (
-                <div className="govuk-error-summary" aria-labelledby={errorSummaryTitleId} role="alert" data-module="govuk-error-summary">
+                <div className="govuk-error-summary" aria-labelledby={errorSummaryTitleId} data-module="govuk-error-summary">
                     {errorList.map((error: ErrorBlock, index) => (
                         <React.Fragment key={index}>
                             {error.errorTitle && (

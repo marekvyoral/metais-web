@@ -10,7 +10,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
-import { CreateEntity } from '@/components/create-entity/CreateEntity'
+import { CreateProjectEntity } from '@/components/views/ci/project/CreateProjectEntity'
 import { filterProjectSchemaForEditBasedOnProjectStatus } from '@/componentHelpers/ci/projectHelpers'
 
 interface Props {
@@ -54,7 +54,7 @@ export const EditProjectView: React.FC<Props> = ({
                 {isError && <QueryFeedback loading={false} error={isError} />}
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
-            <CreateEntity
+            <CreateProjectEntity
                 updateCiItemId={ciItemData?.uuid}
                 data={{ attributesData: { ciTypeData: filteredProjectSchema, constraintsData, unitsData }, generatedEntityId: entityIdToUpdate }}
                 entityName={entityName}

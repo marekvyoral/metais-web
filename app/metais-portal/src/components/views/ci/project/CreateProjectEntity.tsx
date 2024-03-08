@@ -1,8 +1,8 @@
 import { ConfigurationItemUiAttributes, useStoreConfigurationItem, useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
-import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useEffect } from 'react'
+import { ATTRIBUTE_NAME, MutationFeedback, PROJECT_STATE_ENUM, QueryFeedback } from '@isdd/metais-common/index'
+import React, { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
@@ -37,6 +37,13 @@ interface ICreateEntity {
     defaultItemAttributeValues?: ConfigurationItemUiAttributes
 }
 
+const DISABLED_EDIT_ATTRIBUTE_LIST: string[] = [
+    ATTRIBUTE_NAME.EA_Profil_Projekt_program,
+    ATTRIBUTE_NAME.EA_Profil_Projekt_typ_investicie,
+    ATTRIBUTE_NAME.Financny_Profil_Projekt_rocne_naklady,
+    ATTRIBUTE_NAME.Financny_Profil_Projekt_suma_vydavkov,
+]
+
 export const CreateProjectEntity: React.FC<ICreateEntity> = ({
     data,
     entityName,
@@ -51,6 +58,25 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
 
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
+
+    const modifiedCiTypeData = useMemo(() => {
+        if (isUpdate) {
+            const type = defaultItemAttributeValues?.[ATTRIBUTE_NAME.EA_Profil_Projekt_status]
+            if (type !== PROJECT_STATE_ENUM.c_stav_projektu_1) {
+                const profiles = ciTypeData?.attributeProfiles?.map((profile) => {
+                    const attributes = profile.attributes?.map((attribute) => {
+                        if (DISABLED_EDIT_ATTRIBUTE_LIST.includes(attribute.technicalName ?? '')) {
+                            return { ...attribute, readOnly: true }
+                        }
+                        return attribute
+                    })
+                    return { ...profile, attributes }
+                })
+                return { ...ciTypeData, attributeProfiles: profiles }
+            }
+        }
+        return ciTypeData
+    }, [ciTypeData, defaultItemAttributeValues, isUpdate])
 
     const onStatusSuccess = useCiCreateEditOnStatusSuccess()
     const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
@@ -175,7 +201,7 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
 
                 <CreateCiEntityForm
                     entityName={entityName}
-                    ciTypeData={ciTypeData}
+                    ciTypeData={modifiedCiTypeData}
                     generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                     constraintsData={constraintsData}
                     unitsData={unitsData}

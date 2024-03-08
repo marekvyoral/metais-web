@@ -19,7 +19,7 @@ export const SelectMeetingProposals = ({ meetingProposals, id, label, setSelecte
         () =>
             proposalsList?.standardRequests?.map((proposal) => ({
                 value: `${proposal.id}`,
-                label: `${proposal.srName}`,
+                label: `${proposal.name}`,
             })) || [],
         [proposalsList],
     )

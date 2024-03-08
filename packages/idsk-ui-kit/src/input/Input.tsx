@@ -65,16 +65,15 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                     )}
                 </div>
 
-                {hint && (
-                    <span className="govuk-hint" id={hintId}>
-                        {hint}
-                    </span>
-                )}
-                {error && (
-                    <span id={errorId} className="govuk-error-message">
-                        {error}
-                    </span>
-                )}
+                <span id={hintId} className={classNames({ 'govuk-visually-hidden': !hint, 'govuk-hint': !!hint })}>
+                    {hint}
+                </span>
+
+                <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
+                    {error && <span className="govuk-visually-hidden">{t('error')}</span>}
+                    {error}
+                </span>
+
                 <div className={classNames(styles.inputWrapper, inputClassName)} style={{ position: 'relative' }}>
                     <input
                         className={classNames({ 'govuk-input--error': !!error, 'govuk-input': !isUpload, 'govuk-file-upload': isUpload })}
@@ -84,13 +83,15 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                         ref={ref}
                         {...rest}
                         {...dateProps}
-                        aria-describedby={hint ? hintId : undefined}
+                        aria-invalid={!!error}
+                        aria-describedby={`${hintId} ${errorId}`}
                         aria-errormessage={errorId}
                         disabled={disabled}
                         maxLength={maxLength}
+                        required={required}
                     />
                     {correct && (
-                        <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('correct')} />
+                        <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />
                     )}
                 </div>
             </div>

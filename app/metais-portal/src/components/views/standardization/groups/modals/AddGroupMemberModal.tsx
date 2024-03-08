@@ -117,7 +117,7 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
                     />
                 )}
                 <QueryFeedback loading={addingGroupMember || isProfsLoading} withChildren>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <AddMemberSelect
                             label={t('groups.member')}
                             name={AddMemberEnum.MEMBER}

@@ -17,7 +17,7 @@ const DraftsListEditPage = () => {
         <DraftsListFormContainer
             entityId={entityId}
             View={({ data, isLoading }) => {
-                document.title = formatTitleString(data?.requestData?.srName ?? '')
+                document.title = formatTitleString(data?.requestData?.name ?? '')
                 return (
                     <>
                         <BreadCrumbs
@@ -27,7 +27,7 @@ const DraftsListEditPage = () => {
                                 { label: t('breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
                                 { label: t('breadcrumbs.draftsList'), href: NavigationSubRoutes.ZOZNAM_NAVRHOV },
                                 {
-                                    label: data?.requestData?.srName ?? t('breadcrumbs.noName'),
+                                    label: data?.requestData?.name ?? t('breadcrumbs.noName'),
                                     href: `${NavigationSubRoutes.ZOZNAM_NAVRHOV}/${entityId}`,
                                 },
                             ]}

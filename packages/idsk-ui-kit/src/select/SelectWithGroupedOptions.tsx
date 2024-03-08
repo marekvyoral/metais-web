@@ -1,7 +1,7 @@
 import classNames from 'classnames'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import ReactSelect, { GroupBase, MenuPosition, OptionProps, OptionsOrGroups, createFilter } from 'react-select'
+import ReactSelect, { GroupBase, MenuPosition, OptionProps, OptionsOrGroups, SelectInstance, createFilter } from 'react-select'
 
 import styles from './select.module.scss'
 import { IOption } from './Select'
@@ -36,6 +36,7 @@ interface ISelectProps {
     isClearable?: boolean
     menuPosition?: MenuPosition
     required?: boolean
+    focus?: boolean
 }
 
 export const SelectWithGroupedOptions = ({
@@ -56,6 +57,7 @@ export const SelectWithGroupedOptions = ({
     isClearable = true,
     menuPosition = 'fixed',
     required,
+    focus = false,
 }: ISelectProps) => {
     const { t } = useTranslation()
     const localMessages = useGetLocalMessages()
@@ -67,6 +69,14 @@ export const SelectWithGroupedOptions = ({
         trim: true,
     }
     const errorId = `${id}-error`
+    const callbackRef = useCallback(
+        (inputElement: SelectInstance<GroupedOption | undefined> | null) => {
+            if (focus && inputElement) {
+                inputElement.focus()
+            }
+        },
+        [focus],
+    )
 
     return (
         <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
@@ -84,6 +94,7 @@ export const SelectWithGroupedOptions = ({
             <div className={styles.inputWrapper}>
                 <ReactSelect<GroupedOption | undefined>
                     id={id}
+                    ref={callbackRef}
                     name={name}
                     value={value}
                     defaultValue={defaultValue}

@@ -1,9 +1,10 @@
 import { IFilterParams, useFilter } from '@isdd/metais-common/hooks/useFilter'
 import classNames from 'classnames'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Control, FieldValues, SubmitHandler, UseFormClearErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ObjectSchema } from 'yup'
+import { MutationFeedback } from '@isdd/metais-common'
 
 import styles from './filter.module.scss'
 
@@ -42,25 +43,16 @@ export const Filter = <T extends FieldValues & IFilterParams>({
     onlyForm,
     customReset,
 }: FilterProps<T>) => {
-    const {
-        watch,
-        register,
-        control,
-        setValue,
-        onSubmit,
-        filter,
-        shouldBeFilterOpen,
-        resetFilters: reset,
-        clearErrors,
-        handleSubmit,
-    } = useFilter<T & IFilterParams>(defaultFilterValues, schema)
+    const { watch, register, control, setValue, onSubmit, filter, shouldBeFilterOpen, resetFilters, clearErrors, handleSubmit, hasBeenCleared } =
+        useFilter<T & IFilterParams>(defaultFilterValues, schema)
     const { t } = useTranslation()
     const [isOpen, setOpen] = useState(shouldBeFilterOpen || !!onlyForm)
     const [showScrollbar, setShowscrollbar] = useState(isOpen)
+    const [showCleared, setShowCleared] = useState(false)
 
     if (!heading) {
         heading = (
-            <form onSubmit={handleOnSubmit ? handleSubmit(handleOnSubmit) : onSubmit}>
+            <form onSubmit={handleOnSubmit ? handleSubmit(handleOnSubmit) : onSubmit} noValidate>
                 <SearchInput
                     id={'fullTextSearch'}
                     placeholder={t('filter.searchPlaceholder') ?? ''}
@@ -75,7 +67,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
         )
     }
 
-    const handleOpenCloseForm = () => {
+    const handleOpenCloseForm = useCallback(() => {
         setOpen(!isOpen)
         if (isOpen) {
             setShowscrollbar(!isOpen)
@@ -84,11 +76,33 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                 setShowscrollbar(!isOpen)
             }, 500)
         }
-    }
+    }, [isOpen])
+
+    const handleReset = useCallback(() => {
+        if (customReset) {
+            customReset()
+        } else {
+            resetFilters()
+        }
+    }, [customReset, resetFilters])
+
+    useEffect(() => {
+        if (hasBeenCleared) {
+            setShowCleared(true)
+        }
+    }, [hasBeenCleared])
 
     return (
         <div id="tableFilter" data-module="idsk-table-filter" className={classNames('idsk-table-filter', styles.filter)}>
             <div className={classNames('idsk-table-filter__panel idsk-table-filter__inputs', { 'idsk-table-filter--expanded': isOpen })}>
+                <MutationFeedback
+                    error={false}
+                    success={showCleared}
+                    successMessage={t('filter.cleared')}
+                    onMessageClose={() => {
+                        setShowCleared(false)
+                    }}
+                />
                 {!onlyForm && (
                     <div className={styles.headingWrapper}>
                         <div className={classNames(styles.heading, 'idsk-table-filter__title govuk-heading-m', !!onlySearch && styles.width100)}>
@@ -117,6 +131,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                             className={classNames(styles.animate, isOpen && styles.grow, showScrollbar && styles.form)}
                             action="#"
                             onSubmit={handleOnSubmit ? handleSubmit(handleOnSubmit) : onSubmit}
+                            noValidate
                         >
                             <div
                                 className={classNames({
@@ -128,7 +143,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                                     <ButtonLink
                                         id="resetFilter"
                                         label={t('filter.reset')}
-                                        onClick={customReset ? customReset : reset}
+                                        onClick={handleReset}
                                         className={styles.clearButton}
                                         type="reset"
                                     />

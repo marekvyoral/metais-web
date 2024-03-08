@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { SPACES_REGEX } from '@isdd/metais-common/constants'
+import { ErrorBlock } from '@isdd/idsk-ui-kit/index'
 
 import { InputNames, UserDetailForm } from './UserDetailForm'
 import { UserManagementFormButtons } from './UserManagementFormButtons'
@@ -157,7 +158,9 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                     label: updateOrCreate.isLoading ? (isCreate ? t('userManagement.creationLoading') : t('userManagement.editLoading')) : undefined,
                 }}
             >
-                <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
+                {methods.formState.isSubmitted && !methods.formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                <form onSubmit={methods.handleSubmit(handleFormSubmit)} noValidate>
                     {(updateOrCreate.isError || updateOrCreate.isSuccess) && (
                         <div ref={wrapperRef}>
                             <MutationFeedback

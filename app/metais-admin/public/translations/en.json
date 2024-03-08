@@ -187,7 +187,8 @@
         "time": "Time"
     },
     "tab": {
-        "contents": "Contents"
+        "contents": "Contents",
+        "moreTabs": "More tabs"
     },
     "tabContent": {
         "buttonAddNewRelation": "Add a new relation",
@@ -442,6 +443,7 @@
         "collapse": "Collapse filter",
         "namePlaceholder": "Enter a name",
         "searchPlaceholder": "Search in table",
+        "cleared": "Filter has been cleared",
         "ks": {
             "name": "Name of end service"
         },
@@ -1227,7 +1229,12 @@
         "moreOptions": "More options",
         "documentGroup": "Document group",
         "type": "Type",
-        "deleteTooltip": "Deletion is only allowed for empty groups (delete existing documents first)"
+        "deleteTooltip": "Deletion is only allowed for empty groups (delete existing documents first)",
+        "uploadTemplate": "Upload template",
+        "deleteTemplate": "Delete template",
+        "deleteTemplateText": "Are you sure you want to delete the following template?",
+        "templateSuccessfullyAdded": "Template successfully added",
+        "templateSuccessfully Deleted": "Template successfully deleted"
     },
     "homePage": {
         "placeholder": "Home - login to see navigation items",
@@ -1518,5 +1525,28 @@
     "close": "Close",
     "accessibility": {
         "navigated": "Page changed to {{pageTitle}}"
+    },
+    "fileImport": {
+        "uploadFailed": "Upload action failed.",
+        "retry": "Retry",
+        "header": "Import items or relationships",
+        "onlyExisting": "Edit only existing items",
+        "existingAndNew": "Edit existing and add new",
+        "dropHere": "Drag and drop items here",
+        "or": "Or",
+        "chooseFile": "Choose file",
+        "browse": "No file is selected (Max. file size 20MB)",
+        "import": "Import",
+        "cancel": "Cancel",
+        "validate": "Validate",
+        "done": "Files are imported successfully!"
+    },
+    "error": "Error: ",
+    "sectionErrors": " List of section errors:",
+    "formErrors": "Form has validation errors.",
+    "listOfFormErrors": "List of form errors:",
+    "arrayInput": {
+        "deleteRow": "Remove {{itemName}}",
+        "changeRowsNumber": "Number of rows for item {{name}} changed. Number of rows is {{count}}"
     }
 }

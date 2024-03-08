@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Button, ButtonGroupRow, Input, TextHeading } from '@isdd/idsk-ui-kit'
+import { Button, ButtonGroupRow, ErrorBlock, Input, TextHeading } from '@isdd/idsk-ui-kit'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -60,7 +60,9 @@ export const FindView = ({ onSearchIco, data, isLoading, error, isSame, onCloseM
                 <div>
                     <TextHeading size="XL">{t('publicAuthorities.find.new')}</TextHeading>
                     <div className={styles.form}>
-                        <form onSubmit={handleSubmit(onSubmit)}>
+                        {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                        <form onSubmit={handleSubmit(onSubmit)} noValidate>
                             <Input
                                 {...register('ico')}
                                 label={t('publicAuthorities.find.ico')}

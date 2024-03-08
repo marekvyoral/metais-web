@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { CheckBox, Input, TextHeading, TextLink } from '@isdd/idsk-ui-kit/index'
+import { CheckBox, ErrorBlock, Input, TextHeading, TextLink } from '@isdd/idsk-ui-kit/index'
 import { useRegisterUser } from '@isdd/metais-common/api/generated/claim-manager-swagger'
 import { FilterMetaAttributesUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useStripAccentsHook } from '@isdd/metais-common/api/generated/iam-swagger'
@@ -64,7 +64,7 @@ export const RegistrationForm: React.FC<Props> = () => {
         handleSubmit,
         setValue,
         clearErrors,
-        formState: { errors, isSubmitted, isSubmitting, isValidating },
+        formState: { errors, isSubmitted, isSubmitting, isValidating, isValid },
         trigger,
     } = useForm({ resolver: yupResolver(getRegistrationSchema(t)) })
 
@@ -159,6 +159,8 @@ export const RegistrationForm: React.FC<Props> = () => {
                 errorProps={{ errorMessage: t('registration.formError') }}
                 withChildren
             >
+                {isSubmitted && !isValid && <ErrorBlock hidden errorTitle={t('formErrors')} />}
+
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Input
                         label={t('registration.firstName')}
@@ -231,6 +233,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         }
                         error={errors[InputNames.DATA_PROCESSING_CONSENT]?.message?.toString()}
                         required
+                        aria-label={t('registration.consentWith') + t('registration.dataProcessingConsent')}
                     />
 
                     <CheckBox
@@ -248,6 +251,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         {...register(InputNames.TERMS_OF_USE_CONSENT)}
                         error={errors[InputNames.TERMS_OF_USE_CONSENT]?.message?.toString()}
                         required
+                        aria-label={t('registration.consentWith') + t('registration.termsOfUseConsent')}
                     />
 
                     <SubmitWithFeedback submitButtonLabel={t('registration.submit')} loading={isRegisterLoading || isSubmitting || isValidating} />

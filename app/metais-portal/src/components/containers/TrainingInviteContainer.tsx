@@ -2,7 +2,7 @@ import { IOption } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { ConfigurationItemUi, useReadCiList1, useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ConsentType, useRegisterTrainee } from '@isdd/metais-common/api/generated/trainings-swagger'
-import { CiType, useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -12,6 +12,7 @@ import React, { useState } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { getErrorTranslateKeys } from '@/componentHelpers'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
@@ -59,7 +60,7 @@ export const TrainingInviteContainer: React.FC = () => {
 
     const navigate = useNavigate()
     const { invalidate } = useInvalidateTrainingsCache(entityId ?? '')
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName ?? '')
 
     const groupDataUuids = user?.groupData.map((item) => item.orgId) || []
 

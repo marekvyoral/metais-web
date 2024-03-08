@@ -22,6 +22,7 @@ export const OlaContractListView: React.FC<IOlaContractListView> = ({
     handleFilterChange,
     sort,
     ownerGid,
+    statesEnum,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -67,7 +68,7 @@ export const OlaContractListView: React.FC<IOlaContractListView> = ({
                     hiddenButtons={{ SELECT_COLUMNS: true }}
                 />
 
-                <OlaContractTable data={data} handleFilterChange={handleFilterChange} sort={sort} />
+                <OlaContractTable data={data} handleFilterChange={handleFilterChange} sort={sort} statesEnum={statesEnum} />
             </QueryFeedback>
         </>
     )

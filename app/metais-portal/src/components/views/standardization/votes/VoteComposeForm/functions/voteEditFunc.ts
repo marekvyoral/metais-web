@@ -13,7 +13,7 @@ import { VoteStateEnum } from '@/components/views/standardization/votes/voteProp
 export const getStandardRequestOptions = (allStandardRequestDataArray: ApiStandardRequestPreviewList | undefined): IOption<number | undefined>[] => {
     return (
         allStandardRequestDataArray?.standardRequests?.map((sr) => {
-            return { value: sr.id, label: sr.srName ?? '' }
+            return { value: sr.id, label: sr.name ?? '' }
         }) ?? []
     )
 }

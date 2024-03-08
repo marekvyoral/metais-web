@@ -247,11 +247,10 @@ export const guiProfilStandardRequestMap = new Map<string, string>([
     ['Gui_Profil_Standardy_std_proposal_state', 'standardRequestState'],
     ['Gui_Profil_Standardy_std_proposal_type', 'requestChannel'],
     ['Gui_Profil_Standardy_std_proposal_date_creation', 'createdAt'],
-    ['Gui_Profil_Standardy_std_proposal_name', 'name'],
+    ['Gui_Profil_Standardy_std_proposal_name', 'fullName'],
+    ['Gui_Profil_Standardy_std_proposal_title', 'name'],
     ['Gui_Profil_Standardy_std_proposal_email', 'email'],
-    ['Gui_Profil_Standardy_std_proposal_title', 'srName'],
-    ['Gui_Profil_Standardy_std_proposal_description', 'srDescription1'],
-    // ['Gui_Profil_Standardy_std_proposal_intended_location', 'srDescription2'],
+    ['Gui_Profil_Standardy_std_proposal_description', 'description'],
     ['Gui_Profil_Standardy_std_proposal_suitability', 'srDescription3'],
     ['Gui_Profil_Standardy_std_proposal_potential', 'srDescription4'],
     ['Gui_Profil_Standardy_std_proposal_openness', 'srDescription5'],
@@ -263,12 +262,9 @@ export const guiProfilStandardRequestMap = new Map<string, string>([
     ['Gui_Profil_Standardy_std_suitability', 'suitability'], //1
 
     ['Gui_Profil_Standardy_std_applicability', 'applicability'], //1.1
-    ['Gui_Profil_Standardy_std_suitability_applicability_purpose', 'applicabilityDescription1'], //1.1.1
-    ['Gui_Profil_Standardy_std_suitability_applicability_user', 'applicabilityDescription2'], //1.1.2
-    ['Gui_Profil_Standardy_std_suitability_applicability_applications', 'applicabilityDescription3'], //1.1.3
-    ['Gui_Profil_Standardy_std_suitability_applicability_functionality', 'applicabilityDescription4'], //1.1.4
 
     ['Gui_Profil_Standardy_std_relevance', 'relevance'], //1.2
+    ['Gui_Profil_Standardy_std_suitability_relevance_benefits', 'relevanceDescription1'], //1.2.1
     ['Gui_Profil_Standardy_std_suitability_relevance_benefits', 'relevanceDescription1'], //1.2.1
 
     ['Gui_Profil_Standardy_std_adaptability', 'adaptability'], //1.3
@@ -278,14 +274,14 @@ export const guiProfilStandardRequestMap = new Map<string, string>([
     ['Gui_Profil_Standardy_std_potential', 'potential'], //2
 
     ['Gui_Profil_Standardy_std_impact', 'impact'], //2.1
-    ['Gui_Profil_Standardy_std_potential_impact_financial', 'impactDescription1'], //2.1.1
+    ['Gui_Profil_Standardy_std_potential_impact_financial', 'financialImpact'], //2.1.1
     ['Gui_Profil_Standardy_std_potential_impact_organizational', 'impactDescription2'], //2.1.2
     ['Gui_Profil_Standardy_std_potential_impact_strategic', 'impactDescription3'], //2.1.3
     ['Gui_Profil_Standardy_std_potential_impact_migration', 'impactDescription4'], //2.1.4
     ['Gui_Profil_Standardy_std_potential_impact_security', 'impactDescriptionSecurity'], //2.1.5
-    ['Gui_Profil_Standardy_std_potential_impact_precautions', 'impactDescription5'], //2.1.5a
+    ['Gui_Profil_Standardy_std_potential_impact_precautions', 'securityImpact'], //2.1.5a
     ['Gui_Profil_Standardy_std_potential_impact_risks', 'impactDescription6'], //2.1.5b
-    ['Gui_Profil_Standardy_std_potential_impact_privacy', 'impactDescription7'], //2.1.6
+    ['Gui_Profil_Standardy_std_potential_impact_privacy', 'privacyImpact'], //2.1.6
     ['Gui_Profil_Standardy_std_potential_impact_interoperability', 'impactDescriptionPrivacy'], //2.1.7
     ['Gui_Profil_Standardy_std_potential_impact_interconnection', 'impactDescription8'], //2.1.7a
     ['Gui_Profil_Standardy_std_potential_impact_adapting', 'impactDescription9'], //2.1.7b
@@ -351,8 +347,8 @@ export const guiProfilStandardRequestMap = new Map<string, string>([
     ['Gui_Profil_Standardy_std_market_reusability_compatibility', 'reusabilityDescription2'], //4.3.2
 
     //['Gui_Profil_Standardy_std_proposal_description', 'proposalDescription1'],
-    ['Gui_Profil_Standardy_std_proposal_intended_location', 'proposalDescription2'],
-    ['Gui_Profil_Standardy_std_proposal_own_legislative_text', 'proposalDescription3'],
+    ['Gui_Profil_Standardy_std_proposal_intended_location', 'placementProposal'],
+    ['Gui_Profil_Standardy_std_proposal_own_legislative_text', 'legislativeTextProposal'],
 
     ['Gui_Profil_Standardy_std_proposal_denial_reason', 'actionDesription'],
 ])

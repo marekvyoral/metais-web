@@ -470,10 +470,6 @@ export interface CurrentSystemStateIn {
     systemStateColor?: string
 }
 
-export interface RequestIdUi {
-    requestId?: string
-}
-
 export interface MainAttributes {
     uuid?: string
     name?: string
@@ -499,8 +495,13 @@ export interface ApiOlaContractData {
     contractorIsvsName?: string
     documentName?: string
     crzLink?: string
+    profilState?: string
     vendorLock?: boolean
     administratorIsvs?: MainAttributes[]
+}
+
+export interface RequestIdUi {
+    requestId?: string
 }
 
 export type ApiImportMonitoringReportsChannel = (typeof ApiImportMonitoringReportsChannel)[keyof typeof ApiImportMonitoringReportsChannel]
@@ -2057,6 +2058,60 @@ export const useAddParameterValues = <TError = ApiError, TContext = unknown>(opt
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAddParameterValuesHook>>>, TError, { data: MonitoredValue[] }, TContext>
 }) => {
     const mutationOptions = useAddParameterValuesMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useOlaContractTransitionHook = () => {
+    const olaContractTransition = useMonitoringSwaggerClient<RequestIdUi>()
+
+    return (olaContractUuid: string, transition: string) => {
+        return olaContractTransition({ url: `/olacontract/${olaContractUuid}/transitions/${transition}`, method: 'post' })
+    }
+}
+
+export const useOlaContractTransitionMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useOlaContractTransitionHook>>>,
+        TError,
+        { olaContractUuid: string; transition: string },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useOlaContractTransitionHook>>>,
+    TError,
+    { olaContractUuid: string; transition: string },
+    TContext
+> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const olaContractTransition = useOlaContractTransitionHook()
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useOlaContractTransitionHook>>>,
+        { olaContractUuid: string; transition: string }
+    > = (props) => {
+        const { olaContractUuid, transition } = props ?? {}
+
+        return olaContractTransition(olaContractUuid, transition)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type OlaContractTransitionMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useOlaContractTransitionHook>>>>
+
+export type OlaContractTransitionMutationError = ApiError
+
+export const useOlaContractTransition = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useOlaContractTransitionHook>>>,
+        TError,
+        { olaContractUuid: string; transition: string },
+        TContext
+    >
+}) => {
+    const mutationOptions = useOlaContractTransitionMutationOptions(options)
 
     return useMutation(mutationOptions)
 }

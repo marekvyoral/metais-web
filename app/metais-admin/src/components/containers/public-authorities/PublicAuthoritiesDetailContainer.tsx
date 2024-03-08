@@ -47,7 +47,7 @@ export const PublicAuthoritiesDetailContainer: React.FC<IPublicAuthoritiesDetail
     const { data: personTypesCategories } = useGetEnum(GET_ENUM.TYP_OSOBY)
     const { data: personCategories } = useGetEnum(GET_ENUM.KATEGORIA_OSOBA)
     const { data: sources } = useGetEnum(GET_ENUM.ZDROJ)
-    const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook('PO')
+    const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook('PO', false)
     const { data: poData, refetch } = useReadConfigurationItem(entityId)
     const { setIsActionSuccess } = useActionSuccess()
     const {

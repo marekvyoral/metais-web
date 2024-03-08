@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, CheckBox, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, CheckBox, ErrorBlock, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { TFunction } from 'i18next'
@@ -41,7 +41,7 @@ export const CreateDocumentView: React.FC<IView> = ({ infoData, saveDocument, is
     const {
         register,
         handleSubmit,
-        formState: { errors, isValid },
+        formState: { errors, isValid, isSubmitted },
         clearErrors,
     } = useForm({ resolver: yupResolver(docSchema(t)) })
     const onSubmit = (fieldValues: FieldValues) => {
@@ -81,7 +81,8 @@ export const CreateDocumentView: React.FC<IView> = ({ infoData, saveDocument, is
         <QueryFeedback loading={isLoading} error={isError}>
             <div ref={wrapperRef} />
             <TextHeading size="L">{t('documentsManagement.addDocument')}</TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Input
                     placeholder={t('documentsManagement.input')}
                     required

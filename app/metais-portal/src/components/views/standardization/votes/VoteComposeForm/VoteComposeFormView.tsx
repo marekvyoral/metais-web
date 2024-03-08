@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, CheckBox, GridCol, GridRow, IOption, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, CheckBox, ErrorBlock, GridCol, GridRow, IOption, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { GroupWithIdentities } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ApiAttachment, ApiLink, ApiStandardRequestPreviewList, ApiVote, ApiVoteChoice } from '@isdd/metais-common/api/generated/standards-swagger'
 import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
@@ -247,7 +247,10 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                 setSelectedRequestId={setSelectedRequestId}
             />
             <TextHeading size="XL">{getPageTitle(isNewVote, t)}</TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
+
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')} noValidate>
                 <TextArea
                     rows={2}
                     id="voteSubject"
@@ -314,8 +317,6 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                             return {
                                 fileId: attachment.attachmentId,
                                 fileName: attachment.attachmentName,
-                                fileSize: attachment.attachmentSize,
-                                fileType: attachment.attachmentType,
                             }
                         }) ?? []
                     }

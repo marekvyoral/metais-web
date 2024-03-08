@@ -100,7 +100,7 @@ export const RefDatasetForm: React.FC<RefDatasetFormPropsType> = ({
 
     return (
         <>
-            <form>
+            <form noValidate>
                 {!isUpdate && (
                     <SimpleSelect
                         label={t('refIdentifiers.create.ownerUser')}

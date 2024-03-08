@@ -48,44 +48,46 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
     const currentEntityCiTypeConstraintsData = uuidsToMatchedCiItemsMap[ciItemData?.uuid ?? '']
 
     const tabsFromApi =
-        ciTypeData?.attributeProfiles?.map((attributesProfile) => {
-            return {
-                title:
-                    (i18n.language === Languages.SLOVAK ? attributesProfile.description : attributesProfile.engDescription) ??
-                    attributesProfile.name ??
-                    '',
-                content: (
-                    <DefinitionList>
-                        {attributesProfile?.attributes
-                            ?.filter((atr) => atr.valid === true && atr.invisible !== true)
-                            .sort((atr1, atr2) => (atr1.order || 0) - (atr2.order || 0))
-                            .map((attribute) => {
-                                const formattedRowValue = pairEnumsToEnumValues({
-                                    attribute,
-                                    ciItemData,
-                                    constraintsData,
-                                    t,
-                                    unitsData,
-                                    matchedAttributeNamesToCiItem: currentEntityCiTypeConstraintsData,
-                                    withDescription: !withoutDescription,
-                                })
-                                const isHTML = attribute.type === HTML_TYPE
-                                return (
-                                    !attribute?.invisible && (
-                                        <InformationGridRow
-                                            key={attribute?.technicalName}
-                                            label={(i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName) ?? ''}
-                                            value={isHTML ? <SafeHtmlComponent dirtyHtml={formattedRowValue as string} /> : formattedRowValue}
-                                            tooltip={attribute?.description}
-                                            lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
-                                        />
+        ciTypeData?.attributeProfiles
+            ?.filter((p) => p.valid)
+            .map((attributesProfile) => {
+                return {
+                    title:
+                        (i18n.language === Languages.SLOVAK ? attributesProfile.description : attributesProfile.engDescription) ??
+                        attributesProfile.name ??
+                        '',
+                    content: (
+                        <DefinitionList>
+                            {attributesProfile?.attributes
+                                ?.filter((atr) => atr.valid === true && atr.invisible !== true)
+                                .sort((atr1, atr2) => (atr1.order || 0) - (atr2.order || 0))
+                                .map((attribute) => {
+                                    const formattedRowValue = pairEnumsToEnumValues({
+                                        attribute,
+                                        ciItemData,
+                                        constraintsData,
+                                        t,
+                                        unitsData,
+                                        matchedAttributeNamesToCiItem: currentEntityCiTypeConstraintsData,
+                                        withDescription: !withoutDescription,
+                                    })
+                                    const isHTML = attribute.type === HTML_TYPE
+                                    return (
+                                        !attribute?.invisible && (
+                                            <InformationGridRow
+                                                key={attribute?.technicalName}
+                                                label={(i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName) ?? ''}
+                                                value={isHTML ? <SafeHtmlComponent dirtyHtml={formattedRowValue as string} /> : formattedRowValue}
+                                                tooltip={attribute?.description}
+                                                lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
+                                            />
+                                        )
                                     )
-                                )
-                            })}
-                    </DefinitionList>
-                ),
-            }
-        }) ?? []
+                                })}
+                        </DefinitionList>
+                    ),
+                }
+            }) ?? []
 
     return (
         <QueryFeedback

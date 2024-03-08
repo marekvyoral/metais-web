@@ -104,12 +104,9 @@ export const TableDragRow = <T,>({
                                 cell.getValue() === null ||
                                 !shortString
                             }
+                            on={['hover', 'focus']}
                             descriptionElement={<div className={styles.tooltipWidth500}>{tooltipText}</div>}
-                            tooltipContent={(open, close) => (
-                                <div className={styles.tooltipTextWrapper} onMouseOver={open} onMouseOut={close}>
-                                    {cellValue}
-                                </div>
-                            )}
+                            tooltipContent={() => <div className={styles.tooltipTextWrapper}>{cellValue}</div>}
                         />
                     </div>
                 )

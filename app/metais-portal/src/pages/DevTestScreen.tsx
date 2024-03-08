@@ -42,7 +42,7 @@ export const DevTestScreen: React.FC = () => {
     return (
         <MainContentWrapper>
             <h4>Obrazovka na testovanie komponentov</h4>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <SelectMeetingGroupWithActors setValue={setValue} errors={formState.errors} watch={watch} />
                 <button type="submit"> Ulozit</button>
             </form>

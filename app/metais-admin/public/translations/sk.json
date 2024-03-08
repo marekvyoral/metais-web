@@ -9,7 +9,7 @@
         "MIRRI": "Ministerstvo investícií, regionálneho rozvoja a informatizácie Slovenskej republiky",
         "operatorMIRRI": "Prevádzkovateľom služby je Ministerstvo investícií, regionálneho rozvoja a informatizácie SR.",
         "idsk": "Jednotným dizajn manuálom elektronických služieb.",
-        "createdInAccordance": "Vytvorené v súlade s",
+        "createdInAccordance": "Vytvorené v súlade s ",
         "exceptionsLegislation": "Osobitné postupy",
         "accessibilityDeclaration": "Vyhlásenie o prístupnosti",
         "webResidencyMap": "Mapa webového sídla",
@@ -121,6 +121,7 @@
     "filter": {
         "chooseState": "Vyberte stav",
         "chooseValue": "Vyberte hodnotu",
+        "cleared": "Kritéria filtrovania boli vyčistené",
         "publicAuthorities": {
             "name": "Meno",
             "ICO": "IČO",
@@ -156,7 +157,7 @@
             "placeholder": "ks_"
         },
         "reset": "Vyčistiť kritéria filtrovania",
-        "submit": "Vyfiltrovať"
+        "submit": "Filtrovať"
     },
     "table": {
         "selectAllItems": "Vyber všetky položky",
@@ -219,7 +220,8 @@
         "time": "Čas"
     },
     "tab": {
-        "contents": "Obsah"
+        "contents": "Obsah",
+        "moreTabs": "Viac"
     },
     "tabContent": {
         "buttonAddNewRelation": "Pridať nový vzťah",
@@ -1231,7 +1233,12 @@
         "moreOptions": "Viac možností",
         "documentGroup": "Skupina dokumentov",
         "type": "Typ",
-        "deleteTooltip": "Odstránenie je povolené len pre prázdne skupiny (najskôr odstráňte existujúce dokumenty)"
+        "deleteTooltip": "Odstránenie je povolené len pre prázdne skupiny (najskôr odstráňte existujúce dokumenty)",
+        "uploadTemplate": "Nahrať šablónu",
+        "deleteTemplate": "Odstrániť šablónu",
+        "deleteTemplateText": "Naozaj chcete odstrániť nasledujúcu šablónu?",
+        "templateSuccessfullyAdded": "Šablóna bola úspešne pridaná",
+        "templateSuccessfullyDeleted": "Šablóna bola úspešne vymazaná"
     },
     "homePage": {
         "placeholder": "Domov - pre zobrazenie navigácie je potrebné sa prihlásiť.",
@@ -1524,5 +1531,28 @@
     "close": "Zavrieť",
     "accessibility": {
         "navigated": "Zmena stránky na {{pageTitle}}"
+    },
+    "fileImport": {
+        "uploadFailed": "Import bol neúspešný.",
+        "retry": "Skúsiť znova",
+        "header": "Import položiek alebo vzťahov",
+        "onlyExisting": "Upraviť len existujúce položky",
+        "existingAndNew": "Upraviť existujúce a pridať nové",
+        "dropHere": "Potiahnite a pustite súbory sem",
+        "or": "Alebo",
+        "chooseFile": "Vybrať súbor",
+        "browse": "Nie je vybratý žiadny súbor (max. veľkosť súboru 20MB).",
+        "import": "Importovať",
+        "cancel": "Zrušiť",
+        "validate": "Zvalidovať",
+        "done": "Súbory sú naimportované."
+    },
+    "error": "Chyba: ",
+    "sectionErrors": " Zoznam chýb v sekcii:",
+    "formErrors": "Formulár obsahuje validačné chyby.",
+    "listOfFormErrors": "Zoznam chýb formulára:",
+    "arrayInput": {
+        "deleteRow": "Odstrániť {{itemName}}",
+        "changeRowsNumber": "Zmenil sa počet riadkov položky: {{name}}. Počet riadkov je {{count}}"
     }
 }

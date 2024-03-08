@@ -1,20 +1,23 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { META_IS_TITLE } from '@isdd/metais-common/constants'
+import { Languages } from '@isdd/metais-common/localization/languages'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { Languages } from '@isdd/metais-common/localization/languages'
-import { META_IS_TITLE } from '@isdd/metais-common/constants'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
 import { ITVSExceptionsCreateContainer } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
+import { useCiCreateEntityHook } from '@/hooks/useCiCreateEntity.hook'
 
 const CreateITVSExceptionsPage: React.FC = () => {
     const { t, i18n } = useTranslation()
     const { entityName } = useGetEntityParamsFromUrl()
-    const { data: ciTypeData } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData } = useGetCiTypeWrapper(entityName ?? '')
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+    const ciCreateData = useCiCreateEntityHook({ entityName: entityName ?? '' })
+
+    document.title = `${t('titles.ciCreateEntity', { ci: ciCreateData.ciTypeName })} ${META_IS_TITLE}`
 
     return (
         <>
@@ -27,14 +30,7 @@ const CreateITVSExceptionsPage: React.FC = () => {
                 ]}
             />
             <MainContentWrapper>
-                <CiCreateEntityContainer
-                    entityName={entityName ?? ''}
-                    View={(props) => {
-                        document.title = `${t('titles.ciCreateEntity', { ci: props.ciTypeName })} ${META_IS_TITLE}`
-
-                        return <ITVSExceptionsCreateContainer {...props} />
-                    }}
-                />
+                <ITVSExceptionsCreateContainer {...ciCreateData} />
             </MainContentWrapper>
         </>
     )

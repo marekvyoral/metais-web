@@ -1,4 +1,4 @@
-import { Button, CheckBox, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit'
+import { Button, CheckBox, ErrorBlock, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { QueryFeedback } from '@isdd/metais-common/index'
@@ -34,7 +34,9 @@ export const CreatePublicAuthoritiesView = (props: ICreatePublicAuthoritiesView)
                 </TextHeading>
             </FlexColumnReverseWrapper>
             <div className={styles.form}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Input
                         {...register('Gen_Profil_nazov')}
                         label={`${t('publicAuthorities.create.name')} ${t('input.requiredField')}`}

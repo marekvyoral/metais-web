@@ -14,6 +14,8 @@ export interface IDocType extends ConfigurationItemUi {
     pdType?: string
     name?: string
     id?: number
+    templateUuid?: string
+    required?: boolean
 }
 
 export interface ISection {
@@ -63,11 +65,10 @@ export const ProjectDocumentsListContainer: React.FC<IProjectDocumentsListContai
     const [sectionsByState, setSectionsByState] = useState(
         requiredDocuments?.find((rd) => rd.stavId == projectData?.attributes?.EA_Profil_Projekt_status),
     )
-
     useEffect(() => {
         setSectionsByState(requiredDocuments?.find((rd) => rd.stavId == projectData?.attributes?.EA_Profil_Projekt_status))
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [projectData?.attributes?.EA_Profil_Projekt_status])
+    }, [projectData?.attributes?.EA_Profil_Projekt_status, requiredDocuments])
+
     const { currentPreferences } = useUserPreferences()
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
     const defaultRequestApi = {

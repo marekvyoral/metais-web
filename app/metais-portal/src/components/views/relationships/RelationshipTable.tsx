@@ -150,42 +150,40 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                             descriptionElement={errorMessage}
                             position={'center center'}
                             tooltipContent={(open) => (
-                                <div>
-                                    <BulkPopup
-                                        disabled={isDisabledBulkButton}
-                                        checkedRowItems={checkedRowItems}
-                                        items={(closePopup) => [
-                                            <ButtonLink
-                                                key={'invalidate'}
-                                                onClick={() => {
-                                                    open()
-                                                    handleInvalidate(relationshipItemList, () => setShowInvalidate(true), open)
-                                                    closePopup()
-                                                }}
-                                                icon={CrossInACircleIcon}
-                                                label={t('actionOverTable.invalidateItems')}
-                                            />,
-                                            <ButtonLink
-                                                key={'reInvalidate'}
-                                                onClick={() => {
-                                                    handleReInvalidate(relationshipItemList, () => setShowReInvalidate(true), open)
-                                                    closePopup()
-                                                }}
-                                                icon={CheckInACircleIcon}
-                                                label={t('actionOverTable.validateItems')}
-                                            />,
-                                            <ButtonLink
-                                                key={'changeOwner'}
-                                                onClick={() => {
-                                                    handleChangeOwner(relationshipItemList, () => setShowChangeOwner(true), open)
-                                                    closePopup()
-                                                }}
-                                                icon={ChangeIcon}
-                                                label={t('actionOverTable.changeOwner')}
-                                            />,
-                                        ]}
-                                    />
-                                </div>
+                                <BulkPopup
+                                    disabled={isDisabledBulkButton}
+                                    checkedRowItems={checkedRowItems}
+                                    items={(closePopup) => [
+                                        <ButtonLink
+                                            key={'invalidate'}
+                                            onClick={() => {
+                                                open()
+                                                handleInvalidate(relationshipItemList, () => setShowInvalidate(true), open)
+                                                closePopup()
+                                            }}
+                                            icon={CrossInACircleIcon}
+                                            label={t('actionOverTable.invalidateItems')}
+                                        />,
+                                        <ButtonLink
+                                            key={'reInvalidate'}
+                                            onClick={() => {
+                                                handleReInvalidate(relationshipItemList, () => setShowReInvalidate(true), open)
+                                                closePopup()
+                                            }}
+                                            icon={CheckInACircleIcon}
+                                            label={t('actionOverTable.validateItems')}
+                                        />,
+                                        <ButtonLink
+                                            key={'changeOwner'}
+                                            onClick={() => {
+                                                handleChangeOwner(relationshipItemList, () => setShowChangeOwner(true), open)
+                                                closePopup()
+                                            }}
+                                            icon={ChangeIcon}
+                                            label={t('actionOverTable.changeOwner')}
+                                        />,
+                                    ]}
+                                />
                             )}
                         />
                     }

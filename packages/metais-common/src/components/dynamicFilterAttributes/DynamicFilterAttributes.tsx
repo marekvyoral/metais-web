@@ -77,6 +77,7 @@ export const DynamicFilterAttributes: FC<Props> = ({
     const location = useLocation()
     const currentFilterKey = FILTER_LOCAL_STORAGE_KEY + location.pathname
     const [addRowError, setAddRowError] = useState<string>('')
+    const [shouldFocusLastRow, setShouldShouldFocusLastRow] = useState<boolean>(false)
     const combinedAttributes = [
         ...(attributes ?? []),
         ...(attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? []),
@@ -121,6 +122,7 @@ export const DynamicFilterAttributes: FC<Props> = ({
     }, [])
 
     const removeAttrRow = (index: number, attribute: FilterAttribute) => {
+        setShouldShouldFocusLastRow(true)
         const copyAttribute = [...dynamicAttributes]
         const formName: `${string}${OPERATOR_SEPARATOR_TYPE}${string}` = formatAttributeOperatorString(attribute.name ?? '', attribute.operator ?? '')
         copyAttribute.splice(index, 1)
@@ -177,6 +179,7 @@ export const DynamicFilterAttributes: FC<Props> = ({
 
     const addRow = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
+        setShouldShouldFocusLastRow(true)
         const defaultDynamicValue = { value: '', operator: '', name: '' }
         if (dynamicAttributes.length < MAX_DYNAMIC_ATTRIBUTES_LENGHT) {
             setDynamicAttributes([...dynamicAttributes, defaultDynamicValue])
@@ -187,23 +190,27 @@ export const DynamicFilterAttributes: FC<Props> = ({
 
     return (
         <div>
-            {dynamicAttributes.map((attribute, index) => (
-                <DynamicFilterAttributeRow
-                    key={`custom-attribute-${index}`}
-                    index={index}
-                    ciName={ciName}
-                    selectedAttributes={dynamicAttributes}
-                    attributeProfiles={filteredAvailable}
-                    attributes={attributes}
-                    ignoreInputNames={ignoreInputNames}
-                    remove={() => removeAttrRow(index, attribute)}
-                    onChange={(attr, prevData, isNewName) => handleAttrChange(index, attr, prevData, isNewName)}
-                    attribute={attribute}
-                    attributeType={findAttributeType(attribute.name ?? '', combinedAttributes)}
-                    currentAttribute={attribute}
-                    attributeConstraints={findAttributeConstraints(attribute.name ?? '', combinedAttributes, constraintsData ?? [])}
-                />
-            ))}
+            {dynamicAttributes.map((attribute, index, arr) => {
+                const isLastRow = index + 1 === arr.length
+                return (
+                    <DynamicFilterAttributeRow
+                        key={`custom-attribute-${index}`}
+                        focus={isLastRow && shouldFocusLastRow}
+                        index={index}
+                        ciName={ciName}
+                        selectedAttributes={dynamicAttributes}
+                        attributeProfiles={filteredAvailable}
+                        attributes={attributes}
+                        ignoreInputNames={ignoreInputNames}
+                        remove={() => removeAttrRow(index, attribute)}
+                        onChange={(attr, prevData, isNewName) => handleAttrChange(index, attr, prevData, isNewName)}
+                        attribute={attribute}
+                        attributeType={findAttributeType(attribute.name ?? '', combinedAttributes)}
+                        currentAttribute={attribute}
+                        attributeConstraints={findAttributeConstraints(attribute.name ?? '', combinedAttributes, constraintsData ?? [])}
+                    />
+                )
+            })}
             {addRowError && (
                 <div className={style.addRowErrorDiv}>
                     <TextWarning>{addRowError}</TextWarning>

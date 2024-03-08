@@ -208,59 +208,57 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                             on={'click'}
                             position={'center center'}
                             tooltipContent={(open) => (
-                                <div>
-                                    <BulkPopup
-                                        disabled={isDisabledBulkButton}
-                                        checkedRowItems={checkedRowItems}
-                                        items={(closePopup) => [
-                                            <ButtonLink
-                                                key={'invalidate'}
-                                                className={styles.buttonLinkWithIcon}
-                                                onClick={() => {
-                                                    handleInvalidate(checkedItemList, () => setShowInvalidate(true), open)
-                                                    closePopup()
-                                                }}
-                                                icon={CrossInACircleIcon}
-                                                label={t('actionOverTable.invalidateItems')}
-                                            />,
-                                            <ButtonLink
-                                                key={'reInvalidate'}
-                                                className={styles.buttonLinkWithIcon}
-                                                onClick={() => {
-                                                    handleReInvalidate(checkedItemList, () => setShowReInvalidate(true), open)
-                                                    closePopup()
-                                                }}
-                                                icon={CheckInACircleIcon}
-                                                label={t('actionOverTable.validateItems')}
-                                            />,
-                                            <ButtonLink
-                                                key={'changeOwner'}
-                                                className={styles.buttonLinkWithIcon}
-                                                onClick={() => {
-                                                    handleChangeOwner(checkedItemList, () => setShowChangeOwner(true), open)
-                                                    closePopup()
-                                                }}
-                                                icon={ChangeIcon}
-                                                label={t('actionOverTable.changeOwner')}
-                                            />,
-                                            <ButtonLink
-                                                key={'favorite'}
-                                                className={styles.buttonLinkWithIcon}
-                                                onClick={() => {
-                                                    const ids = checkedItemList.map((item) => item.uuid ?? '')
-                                                    handleAddToFavorite(ids, FollowedItemItemType.CI, (actionResponse) =>
-                                                        handleCloseBulkModal(actionResponse, () => {
-                                                            return
-                                                        }),
-                                                    )
-                                                    closePopup()
-                                                }}
-                                                icon={NotificationBlackIcon}
-                                                label={t('userProfile.notifications.table.add')}
-                                            />,
-                                        ]}
-                                    />
-                                </div>
+                                <BulkPopup
+                                    disabled={isDisabledBulkButton}
+                                    checkedRowItems={checkedRowItems}
+                                    items={(closePopup) => [
+                                        <ButtonLink
+                                            key={'invalidate'}
+                                            className={styles.buttonLinkWithIcon}
+                                            onClick={() => {
+                                                handleInvalidate(checkedItemList, () => setShowInvalidate(true), open)
+                                                closePopup()
+                                            }}
+                                            icon={CrossInACircleIcon}
+                                            label={t('actionOverTable.invalidateItems')}
+                                        />,
+                                        <ButtonLink
+                                            key={'reInvalidate'}
+                                            className={styles.buttonLinkWithIcon}
+                                            onClick={() => {
+                                                handleReInvalidate(checkedItemList, () => setShowReInvalidate(true), open)
+                                                closePopup()
+                                            }}
+                                            icon={CheckInACircleIcon}
+                                            label={t('actionOverTable.validateItems')}
+                                        />,
+                                        <ButtonLink
+                                            key={'changeOwner'}
+                                            className={styles.buttonLinkWithIcon}
+                                            onClick={() => {
+                                                handleChangeOwner(checkedItemList, () => setShowChangeOwner(true), open)
+                                                closePopup()
+                                            }}
+                                            icon={ChangeIcon}
+                                            label={t('actionOverTable.changeOwner')}
+                                        />,
+                                        <ButtonLink
+                                            key={'favorite'}
+                                            className={styles.buttonLinkWithIcon}
+                                            onClick={() => {
+                                                const ids = checkedItemList.map((item) => item.uuid ?? '')
+                                                handleAddToFavorite(ids, FollowedItemItemType.CI, (actionResponse) =>
+                                                    handleCloseBulkModal(actionResponse, () => {
+                                                        return
+                                                    }),
+                                                )
+                                                closePopup()
+                                            }}
+                                            icon={NotificationBlackIcon}
+                                            label={t('userProfile.notifications.table.add')}
+                                        />,
+                                    ]}
+                                />
                             )}
                         />
                     }
