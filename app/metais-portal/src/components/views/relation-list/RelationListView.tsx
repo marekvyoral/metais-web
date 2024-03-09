@@ -141,6 +141,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
                     form={({ filter, setValue, watch }) => (
                         <div>
                             <SimpleSelect
+                                key={seed}
                                 id="relType"
                                 name="relType"
                                 label={t('relationshipList.relType')}
@@ -151,7 +152,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
                             />
 
                             <SimpleSelect
-                                key={seed}
+                                key={seed + 1}
                                 id="sourceType"
                                 name="sourceType"
                                 label={t('relationshipList.startTypeName')}
@@ -163,7 +164,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
                             />
 
                             <SimpleSelect
-                                key={seed + 1}
+                                key={seed + 2}
                                 id="targetType"
                                 name="targetType"
                                 label={t('relationshipList.endTypeName')}
