@@ -2,7 +2,12 @@ import { IFilter, SortType } from '@isdd/idsk-ui-kit/src/types'
 import { FieldValues } from 'react-hook-form'
 
 import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
-import { ApiChangeStateTargetState, GetFOPReferenceRegisters1Params } from '@isdd/metais-common/api/generated/reference-registers-swagger'
+import {
+    ApiChangeStateTargetState,
+    GetFOPReferenceRegisters1Muk,
+    GetFOPReferenceRegisters1Params,
+    GetFOPReferenceRegisters1State,
+} from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { CiListFilterContainerUi, NeighboursFilterContainerUi, NeighboursFilterUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
@@ -115,6 +120,44 @@ export const mapFilterToRefRegisters = (filterParams: FieldValues & IFilterParam
     }
     if (filterParams?.muk) {
         mappedFilter.muk = filterParams?.muk
+    }
+    if (!user) {
+        mappedFilter.state = ApiChangeStateTargetState.PUBLISHED
+    }
+
+    return mappedFilter
+}
+
+export const mapFilterToRefRegistersFilter = (
+    filterParams: FieldValues & IFilterParams & IFilter,
+    user?: User | null,
+): GetFOPReferenceRegisters1Params => {
+    const { pageNumber, pageSize, sort } = filterParams
+
+    const mappedFilter: GetFOPReferenceRegisters1Params = {
+        pageNumber: pageNumber ?? BASE_PAGE_NUMBER,
+        perPage: pageSize ?? BASE_PAGE_SIZE,
+        ascending: sort?.[0]?.sortDirection === SortType.ASC,
+        ...(sort?.[0]?.orderBy && { sortBy: sort?.[0]?.orderBy }),
+    }
+
+    if (filterParams?.attributeFilters?.registratorUuid) {
+        mappedFilter.registratorUuid = filterParams?.attributeFilters?.registratorUuid?.[0]?.value ?? filterParams.registratorUuid
+    }
+    if (filterParams?.attributeFilters?.managerUuid) {
+        mappedFilter.managerUuid = filterParams?.attributeFilters?.managerUuid?.[0]?.value ?? filterParams.managerUuid
+    }
+    if (filterParams?.isvsUuid) {
+        mappedFilter.isvsUuid = filterParams?.isvsUuid
+    }
+    if (filterParams?.attributeFilters?.stateCustom) {
+        mappedFilter.state =
+            (filterParams?.attributeFilters?.stateCustom?.[0].value as GetFOPReferenceRegisters1State) ??
+            (filterParams.stateCustom as GetFOPReferenceRegisters1State)
+    }
+    if (filterParams?.attributeFilters?.muk) {
+        mappedFilter.muk =
+            (filterParams?.attributeFilters?.muk?.[0]?.value as GetFOPReferenceRegisters1Muk) ?? (filterParams.muk as GetFOPReferenceRegisters1Muk)
     }
     if (!user) {
         mappedFilter.state = ApiChangeStateTargetState.PUBLISHED

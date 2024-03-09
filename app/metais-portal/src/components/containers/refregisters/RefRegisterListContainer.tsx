@@ -1,8 +1,12 @@
 import { ColumnSort, IFilter, Pagination, SortType } from '@isdd/idsk-ui-kit/types'
 import { ATTRIBUTE_NAME, Gui_Profil_RR, Reference_Registers } from '@isdd/metais-common'
-import { mapFilterToRefRegisters } from '@isdd/metais-common/api/filter/filterApi'
+import { mapFilterToRefRegistersFilter } from '@isdd/metais-common/api/filter/filterApi'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { ApiReferenceRegister, useGetFOPReferenceRegisters1 } from '@isdd/metais-common/api/generated/reference-registers-swagger'
+import {
+    ApiReferenceRegister,
+    GetFOPReferenceRegisters1State,
+    useGetFOPReferenceRegisters1,
+} from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { Attribute, AttributeProfile, CiType, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import {
@@ -47,7 +51,13 @@ interface IRefRegisterListContainer {
     entityName: string
 }
 
-const defaultFilterValues: RefRegisterFilter = { isvsUuid: '', managerUuid: '', registratorUuid: '', state: undefined, muk: undefined }
+const defaultFilterValues: RefRegisterFilter = {
+    isvsUuid: '',
+    managerUuid: '',
+    registratorUuid: '',
+    muk: undefined,
+    state: undefined,
+}
 
 export const RefRegisterListContainer = ({ View, entityName }: IRefRegisterListContainer) => {
     const {
@@ -68,7 +78,6 @@ export const RefRegisterListContainer = ({ View, entityName }: IRefRegisterListC
         isLoading: isAttributesLoading,
         unitsData,
     } = useAttributesHook(entityName)
-
     const { columnListData, saveColumnSelection, resetColumns } = useGetColumnData(Reference_Registers, true)
     const { data: guiData } = useGetAttributeProfile(Gui_Profil_RR)
 
@@ -76,7 +85,12 @@ export const RefRegisterListContainer = ({ View, entityName }: IRefRegisterListC
         data,
         isLoading: isRefRegisterLoading,
         isError: isRefRegisterError,
-    } = useGetFOPReferenceRegisters1(mapFilterToRefRegisters(filterParams, user))
+    } = useGetFOPReferenceRegisters1({
+        ...mapFilterToRefRegistersFilter(filterParams, user),
+        ...(!!filterParams?.attributeFilters?.stateCustom?.[0].value && {
+            state: filterParams?.attributeFilters?.stateCustom?.[0].value as GetFOPReferenceRegisters1State,
+        }),
+    })
 
     const pagination = usePagination({ pagination: { totaltems: data?.referenceRegistersCount ?? 0 } }, filterParams)
 

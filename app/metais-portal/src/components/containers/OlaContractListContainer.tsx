@@ -18,12 +18,9 @@ import { EnumItem, useGetEnum } from '@isdd/metais-common/api/generated/enums-re
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { getGId } from '@/components/views/ola-contract-list/helper'
 
-export interface IAdditionalFilterField extends ListOlaContractListParams {
-    liableEntities?: string[]
-}
 export interface IOlaContractListView {
     data?: ApiSlaContractReadList
-    defaultFilterValues: IAdditionalFilterField
+    defaultFilterValues: ListOlaContractListParams
     handleFilterChange: (changedFilter: IFilter) => void
     isLoading: boolean
     isError: boolean
@@ -38,23 +35,38 @@ interface IOlaContractListContainer {
 }
 
 export const OlaContractListContainer: React.FC<IOlaContractListContainer> = ({ View, defaultFilterValues }) => {
-    const { filter, handleFilterChange } = useFilterParams<IFilter & IAdditionalFilterField>(defaultFilterValues)
+    const { filter, handleFilterChange } = useFilterParams<IFilter & ListOlaContractListParams>(defaultFilterValues)
     const { currentPreferences } = useUserPreferences()
 
     const filterForApi: ListOlaContractListParams = {
-        name: filter.name,
-        contractCode: filter.contractCode,
+        ...(filter.name && { name: filter.name }),
+        ...(filter?.attributeFilters?.contractCode && {
+            contractCode: filter?.attributeFilters?.contractCode?.[0]?.value ?? filter.contractCode,
+        }),
         validityStart: filter.validityStart,
+        ...(filter?.attributeFilters?.validityStart && {
+            validityStart: filter?.attributeFilters?.validityStart?.[0]?.value ?? filter.validityStart,
+        }),
         validityEnd: filter.validityEnd,
-        contractorIsvsUuid: filter.contractorIsvsUuid,
-        liableEntities: filter.liableEntities,
-        metaIsCode: filter.metaIsCode,
+        ...(filter?.attributeFilters?.validityEnd && {
+            validityEnd: filter?.attributeFilters?.validityEnd?.[0]?.value ?? filter.validityEnd,
+        }),
+        ...(filter?.attributeFilters?.contractorIsvsUuid && {
+            contractorIsvsUuid: filter?.attributeFilters?.contractorIsvsUuid?.[0]?.value ?? filter.contractorIsvsUuid,
+        }),
+        ...(filter?.attributeFilters?.liableEntities && {
+            liableEntities: filter?.attributeFilters?.liableEntities?.map((e: { value: string }) => e.value) ?? filter.liableEntities,
+        }),
+        ...(filter?.attributeFilters?.metaIsCode && {
+            metaIsCode: filter?.attributeFilters?.metaIsCode?.[0]?.value ?? filter.metaIsCode,
+        }),
         page: filter.pageNumber,
         perPageSize: filter.pageSize,
-        sortBy: filter?.sort?.[0]?.orderBy ?? ATTRIBUTE_NAME.createdAt,
+        sortBy: filter?.sort?.[0]?.orderBy ?? ATTRIBUTE_NAME.lastModifiedAt,
         ascending: filter?.sort?.[0]?.sortDirection === SortType.ASC,
         onlyDraftState: !currentPreferences[UserPreferencesFormNamesEnum.SHOW_INVALIDATED],
     }
+
     const [ownerGid, setOwnerGid] = useState<string>()
     const {
         state: { user },
