@@ -11,11 +11,11 @@ export enum DraftsListFilterItems {
 }
 
 export interface RefRegisterFilter extends IFilterParams {
-    isvsUuid: string | undefined
-    managerUuid: string | undefined
-    registratorUuid: string | undefined
-    state: GetFOPReferenceRegisters1State | undefined
-    muk: GetFOPReferenceRegisters1Muk | undefined
+    isvsUuid?: string
+    managerUuid?: string
+    registratorUuid?: string
+    state?: GetFOPReferenceRegisters1State
+    muk?: GetFOPReferenceRegisters1Muk
 }
 
 export enum RefRegisterFilterItems {
@@ -23,6 +23,7 @@ export enum RefRegisterFilterItems {
     MANAGER_UUID = 'managerUuid',
     REGISTRATOR_UUID = 'registratorUuid',
     STATE = 'state',
+    STATE_CUSTOM = 'stateCustom',
     MUK = 'muk',
 }
 
