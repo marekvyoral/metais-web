@@ -269,9 +269,10 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                     />
                 }
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={Object.keys(rowSelection).length}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'buttonBlock'}
@@ -293,7 +294,7 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                             />,
                         ]}
                     />
-                }
+                )}
             />
             <MutationFeedback
                 success={mutateInvalidateFunc.isSuccess || mutateValidateFunc.isSuccess}

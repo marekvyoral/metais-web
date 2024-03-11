@@ -92,7 +92,7 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                                     aria-describedby={errorId}
                                 >
                                     {section.title}
-                                    <span className="idsk-stepper__icon" aria-hidden={currentSection === StepperArrayEnum.CLOSED} />
+                                    <span className="idsk-stepper__icon" aria-hidden />
                                 </button>
                             </TextHeading>
                             <div className={styles.icons}>

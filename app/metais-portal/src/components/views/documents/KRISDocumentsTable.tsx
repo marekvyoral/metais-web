@@ -395,7 +395,6 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                 pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
-                selectedRowsCount={Object.keys(rowSelection).length}
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
                 createButton={
                     <Button
@@ -405,12 +404,14 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                         className={styles.marginBottom0}
                     />
                 }
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <Tooltip
                         descriptionElement={errorMessage}
                         position={'center center'}
                         tooltipContent={(open) => (
                             <BulkPopup
+                                checkedRowItems={selectedRowsCount}
                                 items={(closePopup) => [
                                     <ButtonLink
                                         key={'buttonValidateItems'}
@@ -457,7 +458,7 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                             />
                         )}
                     />
-                }
+                )}
             />
             <InvalidateBulkModal
                 items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {}))}

@@ -74,9 +74,6 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
         fullTextSearch: filter?.neighboursFilter?.fullTextSearch,
     }
 
-    const checkedRowItems = Object.keys(rowSelections).length
-    const isDisabledBulkButton = checkedRowItems === 0
-
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: (value: React.SetStateAction<boolean>) => void) => {
         closeFunction(false)
         refetch()
@@ -144,15 +141,14 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                     entityName=""
                     simpleTableColumnsSelect={{ sections: sectionsConfig, selectedColumns, resetSelectedColumns, saveSelectedColumns }}
                     handleFilterChange={handleFilterChange}
-                    selectedRowsCount={checkedRowItems}
-                    bulkPopup={
+                    selectedRowsCount={Object.keys(rowSelections).length}
+                    bulkPopup={({ selectedRowsCount }) => (
                         <Tooltip
                             descriptionElement={errorMessage}
                             position={'center center'}
                             tooltipContent={(open) => (
                                 <BulkPopup
-                                    disabled={isDisabledBulkButton}
-                                    checkedRowItems={checkedRowItems}
+                                    checkedRowItems={selectedRowsCount}
                                     items={(closePopup) => [
                                         <ButtonLink
                                             key={'invalidate'}
@@ -186,7 +182,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                                 />
                             )}
                         />
-                    }
+                    )}
                 />
                 <ReInvalidateBulkModal
                     items={relationshipItemList}

@@ -557,10 +557,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                     )
                                 }
                                 selectedRowsCount={Object.keys(rowSelection).length}
-                                bulkPopup={
+                                bulkPopup={({ selectedRowsCount }) =>
                                     !!editData && (
                                         <BulkPopup
-                                            checkedRowItems={Object.keys(rowSelection).length}
+                                            checkedRowItems={selectedRowsCount}
                                             items={(closePopup) => [
                                                 <ButtonLink
                                                     key={'setDates'}

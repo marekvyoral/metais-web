@@ -45,9 +45,6 @@ export const RefRegisterListView = ({
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
 
-    const checkedRowItems = Object.keys(rowSelection).length
-    const isDisabledBulkButton = checkedRowItems === 0
-
     useEffect(() => {
         scrollToMutationFeedback()
     }, [bulkActionResult, scrollToMutationFeedback])
@@ -73,10 +70,10 @@ export const RefRegisterListView = ({
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={Reference_Registers}
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        disabled={isDisabledBulkButton}
-                        checkedRowItems={checkedRowItems}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'favorite'}
@@ -92,7 +89,7 @@ export const RefRegisterListView = ({
                             />,
                         ]}
                     />
-                }
+                )}
                 createButton={
                     <CreateEntityButton
                         label={t('refRegisters.createBtn')}

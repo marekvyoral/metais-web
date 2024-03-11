@@ -79,9 +79,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     const navigate = useNavigate()
     const location = useLocation()
 
-    const checkedRowItems = Object.keys(rowSelection).length
-    const isDisabledBulkButton = checkedRowItems === 0
-
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
     const [showChangeOwner, setShowChangeOwner] = useState<boolean>(false)
@@ -185,7 +182,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     attributes={attributes ?? []}
                     columnListData={columnListData}
                     ciTypeData={ciTypeData}
-                    selectedRowsCount={Object.keys(rowSelection).length}
                     createButton={
                         showCreateEntityButton && (
                             <CreateEntityButton
@@ -202,15 +198,15 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                             pagination={pagination}
                         />
                     }
-                    bulkPopup={
+                    selectedRowsCount={Object.keys(rowSelection).length}
+                    bulkPopup={({ selectedRowsCount }) => (
                         <Tooltip
                             descriptionElement={errorMessage}
                             on={'click'}
                             position={'center center'}
                             tooltipContent={(open) => (
                                 <BulkPopup
-                                    disabled={isDisabledBulkButton}
-                                    checkedRowItems={checkedRowItems}
+                                    checkedRowItems={selectedRowsCount}
                                     items={(closePopup) => [
                                         <ButtonLink
                                             key={'invalidate'}
@@ -261,7 +257,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                 />
                             )}
                         />
-                    }
+                    )}
                 />
             )}
             {isBulkLoading && <LoadingIndicator fullscreen />}

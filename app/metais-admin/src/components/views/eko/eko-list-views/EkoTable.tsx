@@ -47,7 +47,6 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
     const isUserLogged = !!user
     const dataLength = data?.length ?? 0
     const { rowSelection, setRowSelection } = rowSelectionState
-    const checkedRowItems = Object.keys(rowSelection).length
     const checkedToInvalidate = Object.values(rowSelection)?.filter((row) => row.ekoCodeState === EkoCodeEkoCodeState.ACTIVE)
     const checkedToDelete = Object.values(rowSelection)?.filter((row) => row.ekoCodeState === EkoCodeEkoCodeState.INVALIDATED)
     const [isOpenConfirmationModal, setIsOpenConfirmationModal] = useState<boolean>(false)
@@ -131,9 +130,10 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                 entityName={entityName ?? ''}
                 createButton={<CreateEntityButton onClick={() => navigate(`/${entityName}/create`)} label={t('eko.createdCode')} />}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={checkedRowItems}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'invalidateCodes'}
@@ -157,7 +157,7 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                             />,
                         ]}
                     />
-                }
+                )}
             />
             {(resultApiCall.isError || resultApiCall.isSuccess) && (
                 <MutationFeedback

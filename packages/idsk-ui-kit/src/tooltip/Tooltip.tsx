@@ -11,6 +11,7 @@ import './Tooltip.scss'
 interface ITooltip {
     id?: string
     descriptionElement: React.ReactNode
+    triggerElement?: React.ReactNode
     tooltipContent?: (open: () => void, close: () => void) => JSX.Element
     closeButton?: boolean
     open?: boolean
@@ -30,7 +31,7 @@ interface ITooltip {
     tabIndex?: number
 }
 
-export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, tooltipContent, closeButton = false, tabIndex, id, ...props }) => {
+export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, triggerElement, tooltipContent, closeButton = false, tabIndex, id, ...props }) => {
     const popupRef = useRef<PopupActions>(null)
     const { t } = useTranslation()
     const descriptionId = id ? `${id}-description` : `${uuidV4()}-description`
@@ -46,31 +47,31 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, tooltipContent
             className="tooltip"
             on={['click', 'hover', 'focus']}
             {...props}
-            trigger={() =>
-                tooltipContent ? (
-                    <div>
-                        {tooltipContent(
-                            () => popupRef.current?.open(),
-                            () => popupRef.current?.close(),
-                        )}
+            trigger={() => (
+                <div>
+                    {tooltipContent
+                        ? tooltipContent(
+                              () => popupRef.current?.open(),
+                              () => popupRef.current?.close(),
+                          )
+                        : triggerElement ?? (
+                              <>
+                                  <button
+                                      tabIndex={tabIndex}
+                                      className={styles.transparentButton}
+                                      type="button"
+                                      aria-label={props.altText}
+                                      aria-describedby={descriptionId}
+                                  >
+                                      <img alt="" src={InfoIcon} />
+                                  </button>
+                              </>
+                          )}
+                    <div id={descriptionId} className="govuk-visually-hidden" aria-live="polite">
+                        {descriptionElement}
                     </div>
-                ) : (
-                    <div onMouseOver={popupRef.current?.open} onMouseOut={popupRef.current?.close}>
-                        <button
-                            tabIndex={tabIndex}
-                            className={styles.transparentButton}
-                            type="button"
-                            aria-label={props.altText}
-                            aria-describedby={descriptionId}
-                        >
-                            <img alt="" src={InfoIcon} />
-                        </button>
-                        <div id={descriptionId} className="govuk-visually-hidden">
-                            {descriptionElement}
-                        </div>
-                    </div>
-                )
-            }
+                </div>
+            )}
         >
             <div className={styles.displayFlexCenter}>
                 {descriptionElement}

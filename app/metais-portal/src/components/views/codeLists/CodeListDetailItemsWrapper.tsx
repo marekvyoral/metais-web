@@ -184,16 +184,16 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                 entityName=""
                 handleFilterChange={handleFilterChange}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                selectedRowsCount={Object.keys(rowSelection).length}
                 createButton={
                     <Can I={Actions.CREATE} a={Subjects.ITEM}>
                         <CreateEntityButton label={t('codeListDetail.button.addNewItem')} onClick={() => handleOpenCreateItem()} />
                     </Can>
                 }
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <Can I={Actions.BULK_ACTIONS} a={Subjects.ITEM}>
                         <BulkPopup
-                            checkedRowItems={Object.keys(rowSelection).length}
+                            checkedRowItems={selectedRowsCount}
                             items={(closePopup) => [
                                 <ButtonLink
                                     key={'markReadyForPublishing'}
@@ -216,7 +216,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                             ]}
                         />
                     </Can>
-                }
+                )}
             />
             {items && (
                 <CodeListDetailItemsTable

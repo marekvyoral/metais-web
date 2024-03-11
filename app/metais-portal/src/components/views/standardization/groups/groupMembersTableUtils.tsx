@@ -24,6 +24,9 @@ const reduceTableDataToObjectWithUuid = <T extends { uuid?: string }>(array: T[]
 }
 
 export const sendBatchEmail = (selectedRows: Record<string, TableData>) => {
+    if (Object.keys(selectedRows).length === 0) {
+        return
+    }
     const emails = Object.entries(selectedRows).map((item) => item[1].email)
     const emailAddresses = emails.join(';')
     const mailtoLink = `mailto:${emailAddresses}`
@@ -153,12 +156,12 @@ export const buildColumns = (
                 row.original.roleName !== KSISVS_ROLES.STD_KSPRE &&
                 (row.original.roleName !== GROUP_ROLES.STD_PSPRE ? (
                     <TransparentButtonWrapper onClick={() => setIdentityToDelete(row.original.uuid)}>
-                        <img src={DeleteForeverRed} height={24} alt={t('delete')} />
+                        <img src={DeleteForeverRed} height={24} alt={t('delete', { subject: row.original.lastName_firstName })} />
                     </TransparentButtonWrapper>
                 ) : (
                     <Can I={Actions.EDIT} a={'groupMaster'}>
                         <TransparentButtonWrapper onClick={() => setIdentityToDelete(row.original.uuid)}>
-                            <img src={DeleteForeverRed} height={24} alt={t('delete')} />
+                            <img src={DeleteForeverRed} height={24} alt={t('delete', { subject: row.original.lastName_firstName })} />
                         </TransparentButtonWrapper>
                     </Can>
                 )),

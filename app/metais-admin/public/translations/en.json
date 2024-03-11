@@ -104,7 +104,8 @@
         "registration": "Registration",
         "login": "Login",
         "logout": "Logout",
-        "profile": "Profile"
+        "profile": "Profile",
+        "main": "Hlavná"
     },
     "sidebar": {
         "hide": "HIDE",
@@ -158,7 +159,7 @@
         "adress": "Adress",
         "expandableExpandItem": "Open item detail",
         "expandableCloseItem": "Close item detail",
-        "sortButtonLabel": "Sort by {{item}}, {{sortDirection}} ",
+        "sortButtonLabel": "Sort {{sortDirection}} by {{item}}",
         "asc": "ascending",
         "desc": "descending",
         "unsort": "Cancel sort by {{item}}"
@@ -396,6 +397,7 @@
         "selectColumn": "Columns",
         "view": "View",
         "actions": "Bulk actions",
+        "disabledTooltip": "For bulk actions select rows in table",
         "invalidateItems": "Invalidate items",
         "validateItems": "Validate items",
         "changeOwner": "Change owner"
@@ -1438,7 +1440,8 @@
         "noOptions": "No options",
         "loading": "Loading...",
         "availableResult_one": "{{count}} result",
-        "availableResult_other": "{{count}} results",
+        "availableResult": "{{count}} results",
+        "removeOption": "Remove option {{label}}",
         "onFocus": {
             "totalCount": "{{index}} of {{length}}",
             "disabled": "disabled",
@@ -1453,9 +1456,8 @@
         "onChange": {
             "deselected": "option {{label}}, deselected.",
             "cleared": "All selected options have been cleared.",
-            "initial": "{{option}} {{labels}}, selected.",
-            "option_one": "Option",
-            "option_many": "Options",
+            "initial_one": "Option {{labels}}, selected.",
+            "initial": "Options {{labels}}, selected.",
             "selected": {
                 "disabled": "option {{label}} is disabled. Select another option.",
                 "selected": "option {{label}}, selected."
