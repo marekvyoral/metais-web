@@ -65,7 +65,7 @@ export const OlaContractListFilter: React.FC<Props> = ({ defaultFilterValues }) 
                             name="contractorIsvsUuid"
                             valuesAsUuids={Array.isArray(value) ? [value?.[0]?.value] ?? [] : value?.value ? [value?.value] : []}
                             onChange={(val) => {
-                                if (val && val.length) {
+                                if (val && val.length && val.every((v) => v && v.uuid != '')) {
                                     onChange({ ...value, value: val?.[0]?.uuid })
                                 }
                             }}
