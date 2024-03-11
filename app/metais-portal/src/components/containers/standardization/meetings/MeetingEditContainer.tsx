@@ -12,6 +12,7 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useQueryClient } from '@tanstack/react-query'
 import { GET_MEETING_REQUEST_DETAIL } from '@isdd/metais-common/constants'
+import { formatDateTimeForAPI } from '@isdd/metais-common/index'
 
 import { MeetingCreateEditView } from '@/components/views/standardization/meetings/MeetingCreateEditView'
 import { MeetingFormEnum } from '@/components/views/standardization/meetings/meetingSchema'
@@ -70,8 +71,8 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
                 id: infoData?.id,
                 name: formData[MeetingFormEnum.NAME],
                 description: formData[MeetingFormEnum.DESCRIPTION],
-                beginDate: `${formData[MeetingFormEnum.DATE]}T${formData[MeetingFormEnum.TIME_START]}:00.000Z`,
-                endDate: `${formData[MeetingFormEnum.DATE]}T${formData[MeetingFormEnum.TIME_END]}:00.000Z`,
+                beginDate: formatDateTimeForAPI(formData[MeetingFormEnum.BEGIN_DATE]),
+                endDate: formatDateTimeForAPI(formData[MeetingFormEnum.END_DATE]),
                 place: formData[MeetingFormEnum.PLACE],
                 meetingActors: formData[MeetingFormEnum.MEETING_ACTORS],
                 standardRequestIds: formData[MeetingFormEnum.MEETING_PROPOSAL],

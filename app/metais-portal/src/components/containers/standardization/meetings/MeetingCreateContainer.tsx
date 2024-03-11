@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { FieldValues } from 'react-hook-form'
 import { ApiAttachment, useCreateMeeting } from '@isdd/metais-common/api/generated/standards-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { formatDateTimeForAPI } from '@isdd/metais-common/index'
 
 import { MeetingCreateEditView } from '@/components/views/standardization/meetings/MeetingCreateEditView'
 import { MeetingFormEnum } from '@/components/views/standardization/meetings/meetingSchema'
@@ -33,8 +34,8 @@ export const MeetingCreateContainer: React.FC = () => {
             data: {
                 name: formData[MeetingFormEnum.NAME],
                 description: formData[MeetingFormEnum.DESCRIPTION],
-                beginDate: `${formData[MeetingFormEnum.DATE]}T${formData[MeetingFormEnum.TIME_START]}:00.000`,
-                endDate: `${formData[MeetingFormEnum.DATE]}T${formData[MeetingFormEnum.TIME_END]}:00.000`,
+                beginDate: formatDateTimeForAPI(formData[MeetingFormEnum.BEGIN_DATE]),
+                endDate: formatDateTimeForAPI(formData[MeetingFormEnum.END_DATE]),
                 place: formData[MeetingFormEnum.PLACE],
                 groups: formData[MeetingFormEnum.GROUP],
                 meetingActors: formData[MeetingFormEnum.MEETING_ACTORS],

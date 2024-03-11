@@ -4,7 +4,8 @@ import { object, string, array, mixed } from 'yup'
 
 export enum MeetingFormEnum {
     NAME = 'name',
-    DATE = 'date',
+    BEGIN_DATE = 'beginDate',
+    END_DATE = 'endDate',
     TIME_START = 'timeStart',
     TIME_END = 'timeEnd',
     PLACE = 'place',
@@ -26,15 +27,13 @@ export enum MeetingFormEnum {
 export const createMeetingSchema = (t: TFunction<'translation', undefined, 'translation'>) => {
     return object().shape({
         [MeetingFormEnum.NAME]: string().required(t('meetings.errors.meetingNameRequired')),
-        [MeetingFormEnum.DATE]: string()
+        [MeetingFormEnum.BEGIN_DATE]: string()
             .required(t('meetings.errors.meetingDateRequired'))
             .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
-        [MeetingFormEnum.TIME_START]: string()
-            .required(t('meetings.errors.meetingTimeStartRequired'))
-            .test('timeStartValidation', t('meetings.errors.meetingTimeStartRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
-        [MeetingFormEnum.TIME_END]: string()
-            .required(t('meetings.errors.meetingTimeEndRequired'))
-            .test('timeStartValidation', t('meetings.errors.meetingTimeEndRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
+        [MeetingFormEnum.END_DATE]: string()
+            .required(t('meetings.errors.meetingDateRequired'))
+            .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
+
         [MeetingFormEnum.PLACE]: string().required(t('meetings.errors.meetingPlaceRequired')),
         [MeetingFormEnum.GROUP]: array().of(string()),
         [MeetingFormEnum.MEETING_ACTORS]: mixed<ApiMeetingActor[]>().test({
@@ -58,15 +57,13 @@ export const createMeetingSchema = (t: TFunction<'translation', undefined, 'tran
 export const editMeetingSchema = (t: TFunction<'translation', undefined, 'translation'>) => {
     return object().shape({
         [MeetingFormEnum.NAME]: string().required(t('meetings.errors.meetingNameRequired')),
-        [MeetingFormEnum.DATE]: string()
+        [MeetingFormEnum.BEGIN_DATE]: string()
             .required(t('meetings.errors.meetingDateRequired'))
             .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
-        [MeetingFormEnum.TIME_START]: string()
-            .required(t('meetings.errors.meetingTimeStartRequired'))
-            .test('timeStartValidation', t('meetings.errors.meetingTimeStartRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
-        [MeetingFormEnum.TIME_END]: string()
-            .required(t('meetings.errors.meetingTimeEndRequired'))
-            .test('timeStartValidation', t('meetings.errors.meetingTimeEndRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
+        [MeetingFormEnum.END_DATE]: string()
+            .required(t('meetings.errors.meetingDateRequired'))
+            .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
+
         [MeetingFormEnum.PLACE]: string().required(t('meetings.errors.meetingPlaceRequired')),
         [MeetingFormEnum.GROUP]: array().of(string()),
         [MeetingFormEnum.MEETING_ACTORS]: mixed<ApiMeetingActor[]>().test({
