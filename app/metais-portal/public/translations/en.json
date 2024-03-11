@@ -847,6 +847,7 @@
         "invalidEmail": "Enter a valid email",
         "invalidFullname": "Enter your full name",
         "invalidPhone": "Enter a valid phone number",
+        "invalidUrl": "Enter a valid url address",
         "wrongRegex": "Value must match {{regexFormat}}",
         "minValue": "Value must be at least",
         "maxValue": "Value can not be greater than",

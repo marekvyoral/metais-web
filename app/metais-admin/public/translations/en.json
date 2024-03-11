@@ -295,7 +295,8 @@
             "interval": "Interval",
             "ciType": "Entity",
             "mustBeNumber": "Must be a number",
-            "minCharacters": "This field requires at least {{min}} characters"
+            "minCharacters": "This field requires at least {{min}} characters",
+            "url": "URL"
         },
         "entity": {
             "editHeader": "Edit entity",
