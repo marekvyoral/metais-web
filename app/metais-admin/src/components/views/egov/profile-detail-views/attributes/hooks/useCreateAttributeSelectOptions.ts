@@ -38,6 +38,7 @@ export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: i
         { label: t('egov.create.string'), value: AttributeAttributeTypeEnum.STRING },
         { label: t('egov.create.boolean'), value: AttributeAttributeTypeEnum.BOOLEAN },
         { label: t('egov.create.date'), value: AttributeAttributeTypeEnum.DATE },
+        { label: t('egov.create.url'), value: AttributeAttributeTypeEnum.URL },
         { label: DATETIME_TYPE, value: AttributeAttributeTypeEnum.DATETIME },
         { label: HTML_TYPE, value: HTML_TYPE },
     ]

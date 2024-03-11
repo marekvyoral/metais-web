@@ -847,6 +847,7 @@
         "required": "Toto pole je povinné.",
         "invalidEmail": "Zadajte platný e-mail",
         "invalidPhone": "Zadajte platné telefónne číslo",
+        "invalidUrl": "Zadajte platnú adresu odkazu",
         "invalidFullname": "Zadajte celé meno",
         "wrongRegex": "Formát sa musí zhodovať s {{regexFormat}}",
         "minValue": "Hodnota musí byť aspoň",

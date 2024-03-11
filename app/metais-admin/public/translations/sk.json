@@ -328,7 +328,8 @@
             "interval": "Intervalové rozloženie",
             "ciType": "Entita",
             "mustBeNumber": "Hodnota musí byť číslo.",
-            "minCharacters": "Toto pole musí obsahovať minimálne {{min}} znaky."
+            "minCharacters": "Toto pole musí obsahovať minimálne {{min}} znaky.",
+            "url": "URL"
         },
         "entity": {
             "editHeader": "Editácia entity",
