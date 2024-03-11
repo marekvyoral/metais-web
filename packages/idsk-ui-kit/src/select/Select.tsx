@@ -7,7 +7,7 @@ import styles from './select.module.scss'
 import { useGetLocalMessages } from './useGetLocalMessages'
 
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
-import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles, MultiValueRemove } from '@isdd/idsk-ui-kit/common/SelectCommon'
+import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles, getMultiValueRemove } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 export interface IOption<T> {
@@ -88,7 +88,7 @@ export const Select = <T,>({
                     placeholder={placeholder || ''}
                     className={classNames('govuk-select', styles.reactSelect)}
                     classNames={{ menuList: () => styles.reactSelectMenuList }}
-                    components={{ Option, Menu, Control, MultiValueRemove }}
+                    components={{ Option, Menu, Control, MultiValueRemove: getMultiValueRemove(t) }}
                     options={options}
                     styles={selectStyles<IOption<T>>()}
                     unstyled

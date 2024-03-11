@@ -30,9 +30,7 @@ export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange
     const columns: Array<ColumnDef<ApiIntegrationLink>> = [
         {
             accessorKey: ColumnNames.integrationName,
-            header: () => {
-                return <span>{t('integrationLinks.columns.integName')}</span>
-            },
+            header: () => t('integrationLinks.columns.integName'),
             id: ColumnNames.integrationName,
             size: 200,
             cell: (ctx: CellContext<ApiIntegrationLink, unknown>) => (
@@ -47,9 +45,7 @@ export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange
         },
         {
             accessorKey: ColumnNames.providingProjects,
-            header: () => {
-                return <span>{t('integrationLinks.columns.providingProjName')}</span>
-            },
+            header: () => t('integrationLinks.columns.providingProjName'),
             id: ColumnNames.providingProjects,
             size: 200,
             cell: (ctx: CellContext<ApiIntegrationLink, unknown>) => ctx.row.original.providingProject?.name,
@@ -60,9 +56,7 @@ export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange
         },
         {
             accessorKey: ColumnNames.consumingProjects,
-            header: () => {
-                return <span>{t('integrationLinks.columns.consumingProjName')}</span>
-            },
+            header: () => t('integrationLinks.columns.consumingProjName'),
             id: ColumnNames.consumingProjects,
             size: 200,
             cell: (ctx: CellContext<ApiIntegrationLink, unknown>) => ctx.row.original.consumingProject?.name,
@@ -73,9 +67,7 @@ export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange
         },
         {
             accessorKey: ColumnNames.dizState,
-            header: () => {
-                return <span>{t('integrationLinks.columns.dizStatus')}</span>
-            },
+            header: () => t('integrationLinks.columns.dizStatus'),
             id: ColumnNames.dizState,
             size: 200,
             cell: (ctx: CellContext<ApiIntegrationLink, unknown>) => {

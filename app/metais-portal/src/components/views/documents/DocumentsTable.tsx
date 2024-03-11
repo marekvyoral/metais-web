@@ -346,7 +346,6 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
-                selectedRowsCount={Object.keys(rowSelection).length}
                 createButton={
                     <Button
                         disabled={isInvalidated}
@@ -355,12 +354,14 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                         className={styles.marginBottom0}
                     />
                 }
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <Tooltip
                         descriptionElement={errorMessage}
                         position={'center center'}
                         tooltipContent={(open) => (
                             <BulkPopup
+                                checkedRowItems={selectedRowsCount}
                                 items={(closePopup) => [
                                     <ButtonLink
                                         key={'buttonValidateItems'}
@@ -407,7 +408,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                             />
                         )}
                     />
-                }
+                )}
             />
             <InvalidateBulkModal
                 items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {}))}

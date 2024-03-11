@@ -33,9 +33,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
     const columns: Array<ColumnDef<ApiOlaContractData>> = [
         {
             accessorKey: ColumnNames.name,
-            header: () => {
-                return <span>{t('olaContracts.columns.name')}</span>
-            },
+            header: t('olaContracts.columns.name'),
             id: ColumnNames.name,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => (
@@ -50,9 +48,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.contractCode,
-            header: () => {
-                return <span>{t('olaContracts.columns.contractCode')}</span>
-            },
+            header: () => t('olaContracts.columns.contractCode'),
             id: ColumnNames.contractCode,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => ctx.row.original.contractCode,
@@ -63,9 +59,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.validityStartDate,
-            header: () => {
-                return <span>{t('olaContracts.columns.validityStartDate')}</span>
-            },
+            header: () => t('olaContracts.columns.validityStartDate'),
             id: ColumnNames.validityStartDate,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => t('date', { date: ctx.row.original.validityStartDate }),
@@ -76,9 +70,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.validityEndDate,
-            header: () => {
-                return <span>{t('olaContracts.columns.validityEndDate')}</span>
-            },
+            header: t('olaContracts.columns.validityEndDate'),
             id: ColumnNames.validityEndDate,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) =>
@@ -107,9 +99,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.contractorIsvsName,
-            header: () => {
-                return <span>{t('olaContracts.columns.contractorIsvsName')}</span>
-            },
+            header: () => t('olaContracts.columns.contractorIsvsName'),
             id: ColumnNames.contractorIsvsName,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => {
@@ -122,9 +112,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.administratorIsvs,
-            header: () => {
-                return <span>{t('olaContracts.columns.consumerIsvs')}</span>
-            },
+            header: () => t('olaContracts.columns.consumerIsvs'),
             id: ColumnNames.administratorIsvs,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => ctx.row.original.administratorIsvs?.map((i) => i.name).join(', '),
@@ -135,14 +123,14 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.vendorLock,
-            header: () => {
-                return <span>{t('olaContracts.columns.vendorLock')}</span>
-            },
+            header: t('olaContracts.columns.vendorLock'),
             id: ColumnNames.vendorLock,
             size: 200,
-            cell: (ctx: CellContext<ApiOlaContractData, unknown>) => (ctx.row.original.vendorLock == true ? 'true' : 'false'),
+            cell: (ctx: CellContext<ApiOlaContractData, unknown>) =>
+                ctx.row.original.vendorLock == true ? t('radioButton.yes') : t('radioButton.no'),
             meta: {
-                getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) => (ctx.row.original.vendorLock == true ? 'true' : 'false'),
+                getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) =>
+                    ctx.row.original.vendorLock == true ? t('radioButton.yes') : t('radioButton.no'),
             },
             enableSorting: true,
         },

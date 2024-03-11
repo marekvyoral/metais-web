@@ -373,7 +373,6 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         setPage && setPage(BASE_PAGE_NUMBER)
                     }
                 }}
-                selectedRowsCount={Object.keys(rowSelection).length}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, PAGING: !selectPageSize }}
@@ -387,12 +386,14 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         />
                     )
                 }
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <Tooltip
                         descriptionElement={errorMessage}
                         position={'center center'}
                         tooltipContent={() => (
                             <BulkPopup
+                                checkedRowItems={selectedRowsCount}
                                 items={(closePopup) => [
                                     <ButtonLink
                                         key={'downloadItems'}
@@ -440,7 +441,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                             />
                         )}
                     />
-                }
+                )}
             />
             <Table rowSelection={rowSelection} onRowSelectionChange={setRowSelection} columns={filteredColumns} data={docs} />
             {selectPageSize && (

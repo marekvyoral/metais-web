@@ -32,9 +32,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
     const columns: Array<ColumnDef<ApiSlaContractRead>> = [
         {
             accessorKey: ColumnNames.name,
-            header: () => {
-                return <span>{t('slaContracts.columns.name')}</span>
-            },
+            header: () => t('slaContracts.columns.name'),
             id: ColumnNames.name,
             size: 200,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => (
@@ -49,9 +47,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.validityStartDate,
-            header: () => {
-                return <span>{t('slaContracts.columns.validityStartDate')}</span>
-            },
+            header: () => t('slaContracts.columns.validityStartDate'),
             id: ColumnNames.validityStartDate,
             size: 120,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => t('date', { date: ctx.row.original.validityStartDate }),
@@ -62,9 +58,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.validityEndDate,
-            header: () => {
-                return <span>{t('slaContracts.columns.validityEndDate')}</span>
-            },
+            header: () => t('slaContracts.columns.validityEndDate'),
             id: ColumnNames.validityEndDate,
             size: 120,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => t('date', { date: ctx.row.original.validityEndDate }),
@@ -75,9 +69,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.phase,
-            header: () => {
-                return <span>{t('slaContracts.columns.phase')}</span>
-            },
+            header: () => t('slaContracts.columns.phase'),
             id: ColumnNames.phase,
             size: 200,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => {
@@ -94,9 +86,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.consumerIsvs,
-            header: () => {
-                return <span>{t('slaContracts.columns.consumerIsvs')}</span>
-            },
+            header: () => t('slaContracts.columns.consumerIsvs'),
             id: ColumnNames.consumerIsvs,
             size: 200,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => ctx.row.original.consumerIsvs?.name,
@@ -107,9 +97,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.providerIsvs,
-            header: () => {
-                return <span>{t('slaContracts.columns.providerIsvs')}</span>
-            },
+            header: () => t('slaContracts.columns.providerIsvs'),
             id: ColumnNames.providerIsvs,
             size: 200,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => ctx.row.original.providerIsvs?.name,

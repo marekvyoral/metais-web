@@ -72,7 +72,7 @@ export const PublicAuthoritiesAssignedTable = ({
                 if (ctx?.row?.original?.blocked)
                     return (
                         <Tooltip
-                            descriptionElement={ctx?.row?.original?.blockMessage ?? 'Test Message'}
+                            descriptionElement={ctx?.row?.original?.blockMessage ?? ''}
                             tooltipContent={() => (
                                 <div className="govuk-checkboxes govuk-checkboxes--small">
                                     <CheckBox

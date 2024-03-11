@@ -284,7 +284,6 @@ export const UserFavoritesNotifications = () => {
         refetch()
     }, [pagination, refetch])
 
-    const disabledBulkAction = !selectedUuids.length
     const isLoading = [isLoadingList, isLoadingCiListData, isLoadingUpdateMutation, isLoadingRemove, isRefetching].some((item) => item)
     const isError = [isErrorList, isErrorCiListData].some((item) => item)
     const isErrorMutation = [isErrorUpdateMutation, isErrorRemove].some((item) => item)
@@ -310,10 +309,10 @@ export const UserFavoritesNotifications = () => {
                 }}
                 pagination={{ ...pagination, dataLength: listData?.items?.length ?? 0 }}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                bulkPopup={
+                selectedRowsCount={selectedUuids.length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={selectedUuids.length}
-                        disabled={disabledBulkAction}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'remove'}
@@ -328,7 +327,7 @@ export const UserFavoritesNotifications = () => {
                             />,
                         ]}
                     />
-                }
+                )}
                 entityName={''}
             />
             <Table<FollowedItem>

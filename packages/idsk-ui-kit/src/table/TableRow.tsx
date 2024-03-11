@@ -33,7 +33,6 @@ export const TableRow = <T,>({
     const navigate = useNavigate()
     const location = useLocation()
     const hasCheckbox = row.getVisibleCells().find((cell) => cell.column.id === CHECKBOX_CELL)
-    const verticalHeaderColId = hasCheckbox ? row.getVisibleCells()[1].column.id : row.getVisibleCells()[0].column.id
 
     let headerUsed = false
 
@@ -100,7 +99,6 @@ export const TableRow = <T,>({
                 )
                 return useHeader ? (
                     <th
-                        tabIndex={0}
                         scope="row"
                         className={classNames('idsk-table__cell', styles.fontWeightNormal, {
                             [styles.fontWeightBolder]: isRowBold && isRowBold(row),
@@ -117,14 +115,12 @@ export const TableRow = <T,>({
                     </th>
                 ) : (
                     <td
-                        tabIndex={0}
                         className={classNames('idsk-table__cell', {
                             [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
                             [styles.rowSelected]: isRowSelected && isRowSelected(row),
                         })}
                         style={columnDef.size ? { width: columnDef.size } : { width: 'auto' }}
                         key={cell.id}
-                        headers={`${cell.column.id} ${verticalHeaderColId}`}
                     >
                         <TextBody size="S" className={'marginBottom0'}>
                             {cellContent}
