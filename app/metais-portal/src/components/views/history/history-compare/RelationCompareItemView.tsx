@@ -71,13 +71,13 @@ export const RelationCompareItemView: React.FC<IRelationCompareItemViewProps> = 
         <DefinitionListItem
             value={
                 <>
-                    <Table columns={columns} data={dataRelationFirst} />
+                    <Table columns={columns.map((item) => ({ ...item, size: 100 }))} data={dataRelationFirst} />
                 </>
             }
             secColValue={
                 !isSimple && (
                     <>
-                        <Table columns={columnsSec} data={dataRelationSecond} />
+                        <Table columns={columnsSec.map((item) => ({ ...item, size: 100 }))} data={dataRelationSecond} />
                     </>
                 )
             }

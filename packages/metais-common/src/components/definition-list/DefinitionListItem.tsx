@@ -18,14 +18,16 @@ interface IDefinitionListItemProps extends PropsWithChildren {
 export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, value, secColValue, valueWarning, lang, tooltip, hideIcon }) => {
     return (
         <GridRow className={styles.groupRow}>
-            <GridCol setWidth="one-third">
-                <TextBody className={styles.labelWrapper} lang={lang}>
-                    <dt tabIndex={0} className={classNames('govuk-label', styles.dt)}>
-                        {label}
-                    </dt>
-                    {tooltip && <InfoIconWithText tooltip={tooltip} hideIcon={hideIcon} label={label} />}
-                </TextBody>
-            </GridCol>
+            {(label || tooltip || hideIcon) && (
+                <GridCol setWidth="one-third">
+                    <TextBody className={styles.labelWrapper} lang={lang}>
+                        <dt tabIndex={0} className={classNames('govuk-label', styles.dt)}>
+                            {label}
+                        </dt>
+                        {tooltip && <InfoIconWithText tooltip={tooltip} hideIcon={hideIcon} label={label} />}
+                    </TextBody>
+                </GridCol>
+            )}
 
             <GridCol setWidth={secColValue ? (label ? 'one-third' : 'one-half') : 'two-thirds'}>
                 <dd tabIndex={0} className={styles.dd}>
