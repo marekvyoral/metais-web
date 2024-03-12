@@ -6,20 +6,6 @@ import { GroupCreateEditView } from '@/components/views/standardization/groups/G
 const GroupEditPage = () => {
     const { groupId } = useParams()
 
-    return (
-        <GroupEditContainer
-            id={groupId}
-            View={(props) => (
-                <GroupCreateEditView
-                    onSubmit={props.onSubmit}
-                    goBack={props.goBack}
-                    infoData={props.infoData}
-                    isLoading={false}
-                    resultApiCall={props.resultApiCall}
-                    resetResultSuccessApiCall={props.resetResultSuccessApiCall}
-                />
-            )}
-        />
-    )
+    return <GroupEditContainer id={groupId} backGroupId={groupId} View={(props) => <GroupCreateEditView {...props} />} />
 }
 export default GroupEditPage

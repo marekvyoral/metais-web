@@ -174,7 +174,7 @@ export const HTML_TYPE = 'HTML'
 export const DATETIME_TYPE = 'DATETIME'
 export const MUK = 'muk'
 
-export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
+export const P_REALIZUJE_AKT = 'Projekt_realizuje_aktivitu'
 export const ENTITY_ACTIVITY = 'Aktivita'
 
 export const DESCRIPTION = 'Popis'

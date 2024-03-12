@@ -144,12 +144,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
     return isSideMenu ? egovComponentsSubItemsSideMenu : egovComponentsSubItemsTopMenu
 }
 
-export const getPortalNavigationItems = (
-    t: TFunction,
-    isAuthorized = false,
-    ksisvsGroupId: string | undefined,
-    isSideMenu?: boolean,
-): NavigationItem[] => {
+export const getPortalNavigationItems = (t: TFunction, isAuthorized = false, isSideMenu?: boolean): NavigationItem[] => {
     const egovSubItems = getEgovSubItems(t, isSideMenu)
 
     const dataObjectSubItems = getDataObjectSubItems(t, isSideMenu)
@@ -167,7 +162,7 @@ export const getPortalNavigationItems = (
             title: t('navMenu.standardization'),
             icon: StandartsIcon,
             subItems: [
-                { title: t('navMenu.lists.commission'), path: `${NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE}/${ksisvsGroupId}` },
+                { title: t('navMenu.lists.commission'), path: `${NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL_ITVS}` },
                 { title: t('navMenu.lists.groups'), path: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE },
                 { title: t('navMenu.lists.concepts'), path: NavigationSubRoutes.ZOZNAM_NAVRHOV },
                 { title: t('navMenu.lists.votes'), path: NavigationSubRoutes.ZOZNAM_HLASOV },

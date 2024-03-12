@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
-import { GroupCreateEditView } from '@/components/views/standardization/groups/GroupCreateEditView'
 import { GroupFormEnum } from '@/components/views/standardization/groups/groupSchema'
 
 export interface IGroupForm {
@@ -39,9 +38,10 @@ export interface IGroupEditViewParams {
 export interface IGroupEditContainer {
     id?: string
     View: React.FC<IGroupEditViewParams>
+    backGroupId?: string
 }
 
-export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
+export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id, backGroupId, View }) => {
     const navigate = useNavigate()
     const { t } = useTranslation()
 
@@ -58,14 +58,14 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
     const invalidateGroupDetailCache = useInvalidateGroupsDetailCache(id ?? '')
     const invalidateCache = useInvalidateGroupsListCache()
     const goBack = () => {
-        navigate(`${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${infoData?.uuid}`)
+        navigate(`${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${backGroupId}`)
     }
     const { mutate: updateGroup, isLoading: isUpdating } = useUpdateOrCreate2({
         mutation: {
             onSuccess() {
                 setIsActionSuccess({
                     value: true,
-                    path: `${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${infoData?.uuid}`,
+                    path: `${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${backGroupId}`,
                     additionalInfo: { entity: 'group', type: 'edit' },
                 })
                 goBack()
@@ -123,7 +123,7 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
 
     return (
         <QueryFeedback loading={isLoading || isUpdating} error={isError} withChildren>
-            <GroupCreateEditView
+            <View
                 onSubmit={onSubmit}
                 goBack={goBack}
                 infoData={{ ...infoData }}

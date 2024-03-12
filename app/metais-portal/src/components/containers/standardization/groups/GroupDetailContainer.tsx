@@ -15,7 +15,6 @@ import {
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
 
 import { buildColumns } from '@/components/views/standardization/groups/groupMembersTableUtils'
 
@@ -53,7 +52,7 @@ export const identitiesFilter: FilterParams = {
 }
 
 export interface GroupDetailViewProps {
-    id: string
+    id?: string
     group: Group | undefined
     isAddModalOpen: boolean
     setAddModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -76,7 +75,7 @@ export interface GroupDetailViewProps {
 }
 
 interface GroupDetailContainer {
-    id: string
+    id?: string
     View: React.FC<GroupDetailViewProps>
 }
 
@@ -86,14 +85,12 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     } = useAuth()
     const isUserLogged = !!user
 
-    const { groupId } = useParams()
-
     const ability = useContext(AbilityContext)
 
     const { t } = useTranslation()
 
     const { filter, handleFilterChange } = useFilterParams<FilterParams>(identitiesFilter)
-    const { data: group, isLoading: isGroupLoading } = useFindByUuid3(groupId ?? '')
+    const { data: group, isLoading: isGroupLoading } = useFindByUuid3(id ?? '')
 
     const [rowSelection, setRowSelection] = useState<Record<string, TableData>>({})
 
@@ -168,9 +165,12 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     const columnsWithPermissions = isUserLogged ? selectableColumnsSpec : selectableColumnsSpec.slice(1)
 
     useEffect(() => {
-        refetch()
+        if (id) {
+            refetch()
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter, id, membersUpdated])
+
     document.title = `${t('titles.groupDetail')} ${group?.shortName ?? ''} ${META_IS_TITLE}`
     return (
         <View
