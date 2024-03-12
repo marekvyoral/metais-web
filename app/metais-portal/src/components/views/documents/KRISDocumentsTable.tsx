@@ -9,7 +9,6 @@ import { DMS_DOWNLOAD_FILE } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUi, getReadCiNeighboursQueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetProtokolPdfHook } from '@isdd/metais-common/api/generated/pdf-creator'
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
-import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting'
 import { INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
@@ -184,7 +183,7 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
             header: t('documentsTab.table.createdAt'),
             id: 'documentsTab.table.createdAt',
             size: 100,
-            cell: (row) => formatDateTimeForDefaultValue(row.getValue() as string),
+            cell: (ctx) => t('dateTime', { date: ctx.getValue() as string }),
         },
         ...(isUserLogged
             ? [
@@ -202,7 +201,7 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
             header: t('documentsTab.table.lastModifiedAt'),
             id: 'documentsTab.table.lastModifiedAt',
             size: 100,
-            cell: (row) => formatDateTimeForDefaultValue(row.getValue() as string),
+            cell: (ctx) => t('dateTime', { date: ctx.getValue() as string }),
         },
         ...(isUserLogged
             ? [
@@ -395,7 +394,6 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                 pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
-                selectedRowsCount={Object.keys(rowSelection).length}
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
                 createButton={
                     <Button
@@ -405,12 +403,14 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                         className={styles.marginBottom0}
                     />
                 }
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <Tooltip
                         descriptionElement={errorMessage}
                         position={'center center'}
                         tooltipContent={(open) => (
                             <BulkPopup
+                                checkedRowItems={selectedRowsCount}
                                 items={(closePopup) => [
                                     <ButtonLink
                                         key={'buttonValidateItems'}
@@ -457,7 +457,7 @@ export const KRISDocumentsTable: React.FC<KRISDocumentsTable> = ({
                             />
                         )}
                     />
-                }
+                )}
             />
             <InvalidateBulkModal
                 items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {}))}

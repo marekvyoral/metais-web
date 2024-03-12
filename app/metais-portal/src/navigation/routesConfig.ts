@@ -143,6 +143,9 @@ import EditTrainingEntityPage from '@/pages/ci/Trainings/[entityId]/edit'
 import AboutApplicationPage from '@/pages/about-application/aboutApp'
 import TrainingInformation from '@/pages/ci/Trainings/[entityId]/information'
 import ITVSExceptionsInformation from '@/pages/ci/OsobitnyPostup/[entityId]/information'
+import GroupItvsDetailPage from '@/pages/standardization/groupslist/itvs'
+import GroupEditItvsPage from '@/pages/standardization/groupslist/itvs/edit'
+import ReferenceRegisterDetail from '@/pages/ci/ReferenceRegister'
 
 export interface RouteConfig {
     path?: string
@@ -356,6 +359,11 @@ export const routesConfig: RouteConfig[] = [
                 component: GroupsListPage,
             },
             {
+                path: RouterRoutes.STANDARDIZATION_GROUPS_DETAIL_ITVS,
+                slug: RouterRoutes.STANDARDIZATION_GROUPS_DETAIL_ITVS,
+                component: GroupItvsDetailPage,
+            },
+            {
                 path: RouterRoutes.STANDARDIZATION_GROUPS_DETAIL,
                 slug: RouterRoutes.STANDARDIZATION_GROUPS_DETAIL,
                 component: GroupDetailPage,
@@ -364,6 +372,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.STANDARDIZATION_GROUPS_CREATE,
                 slug: RouterRoutes.STANDARDIZATION_GROUPS_CREATE,
                 component: CreateGroupPage,
+            },
+            {
+                path: RouterRoutes.STANDARDIZATION_GROUPS_EDIT_ITVS,
+                slug: RouterRoutes.STANDARDIZATION_GROUPS_EDIT_ITVS,
+                component: GroupEditItvsPage,
             },
             {
                 path: RouterRoutes.STANDARDIZATION_GROUPS_EDIT,
@@ -584,6 +597,11 @@ export const routesConfig: RouteConfig[] = [
                 path: FooterRouteNames.ABOUT_APPLICATION,
                 slug: FooterRouteNames.ABOUT_APPLICATION,
                 component: AboutApplicationPage,
+            },
+            {
+                path: RouterRoutes.CI_REFERENCE_REGISTER,
+                slug: RouterRoutes.CI_REFERENCE_REGISTER,
+                component: ReferenceRegisterDetail,
             },
             {
                 path: RouterRoutes.REF_REGISTERS_DETAIL,

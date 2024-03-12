@@ -8,6 +8,7 @@ export const BASE_PAGE_SIZE = 10
 
 export const REGEX_EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$|^$/
 export const REGEX_TEL = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$|^$/
+export const REGEX_URL = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/
 
 export const filterKeysToSkip = new Set(['fullTextSearch', 'attributeFilters', 'sort', 'pageSize', 'pageNumber'])
 
@@ -173,7 +174,7 @@ export const HTML_TYPE = 'HTML'
 export const DATETIME_TYPE = 'DATETIME'
 export const MUK = 'muk'
 
-export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
+export const P_REALIZUJE_AKT = 'Projekt_realizuje_aktivitu'
 export const ENTITY_ACTIVITY = 'Aktivita'
 
 export const DESCRIPTION = 'Popis'
@@ -317,11 +318,11 @@ export const API_MODULS = [
 ]
 export const CAN_CREATE_MEETING_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP']
 export const CAN_EDIT_MEETING_USER_ROLES = ['STD_KOORDINATOR_AGENDY']
-export const LOWER_CASE_NUMBER_DOT_REGEX = /^[a-z0-9.]*$/
+export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 export const SPACES_REGEX = /\s+/g
 export const baseWikiUrl = import.meta.env.VITE_REST_CLIENT_WIKI_BASE_URL
 export const STAV_DIZ_ENUM_CODE = 'STAV_DIZ'
-export const DECLARATION_ID = 'isvs_63'
+export const DECLARATION_ID = 'webove_sidlo_30'
 
 export const categoryParameterMap = new Map<string, string>([
     ['AS', 'c_typ_parametra_kategoria.3'],

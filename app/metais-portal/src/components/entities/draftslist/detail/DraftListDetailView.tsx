@@ -21,6 +21,7 @@ export const DraftListDetailView: React.FC<Props> = ({ data }) => {
 
     return (
         <AccordionContainer
+            sectionsHeadingSize="L"
             sections={[
                 {
                     title: t('DraftsList.detail.accordion.basicInformation'),

@@ -303,7 +303,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                             name="atributeValue"
                             valuesAsUuids={Array.isArray(value) ? [value?.[0]?.value] ?? [] : value?.value ? [value?.value] : []}
                             onChange={(val) => {
-                                if (val && val.length) {
+                                if (val && val.length && val.every((v) => v && v.uuid != '')) {
                                     onChange({ ...value, value: val?.[0]?.uuid })
                                 }
                             }}
@@ -392,10 +392,10 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                             pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
                             dataLength: data?.dataLength ?? 0,
                         }}
-                        bulkPopup={
+                        selectedRowsCount={selectedUuids.length}
+                        bulkPopup={({ selectedRowsCount }) => (
                             <BulkPopup
-                                checkedRowItems={selectedUuids.length}
-                                disabled={!selectedUuids.length}
+                                checkedRowItems={selectedRowsCount}
                                 items={(closePopup) => [
                                     <ButtonLink
                                         key={'favorite'}
@@ -410,7 +410,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                                     />,
                                 ]}
                             />
-                        }
+                        )}
                         entityName=""
                         handleFilterChange={handleFilterChange}
                         pagingOptions={DEFAULT_PAGESIZE_OPTIONS}

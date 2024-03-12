@@ -177,7 +177,7 @@ export const Table = <T,>({
             {!isLoading && isEmptyRows && (
                 <tbody className={styles.displayFlex}>
                     <tr>
-                        <td tabIndex={0}>
+                        <td>
                             <TableInfoMessage error={error} isEmptyRows={isEmptyRows} key="info" />
                         </td>
                     </tr>

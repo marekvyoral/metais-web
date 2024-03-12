@@ -18,7 +18,8 @@ export const BulkPopup: React.FC<IBulkPopupProps> = ({ checkedRowItems, label, d
     return (
         <div className={classnames(styles.mobileOrder3, styles.buttonPopup)} id="bulkActions">
             <ButtonPopup
-                disabled={disabled}
+                disabled={disabled ?? checkedRowItems === 0}
+                disabledTooltip={t('actionOverTable.disabledTooltip')}
                 buttonLabel={`${label ? label : t('actionOverTable.actions')} ${checkedRowItems ? '(' + checkedRowItems + ')' : ''}`}
                 buttonClassName="marginBottom0"
                 popupPosition={popupPosition}

@@ -139,20 +139,22 @@ export const CreateEntityView = ({
     ]
 
     const entityType = type === EntityType.ENTITY
-    const customTypeData = data?.existingEntityData?.type === AttributeProfileType.custom
+    const applicationTypeData = data?.existingEntityData?.type === AttributeProfileType.application
     const disabledInputsTypes = useMemo(() => {
         if (type === EntityType.ENTITY) {
-            return customTypeData || !isEdit ? { ...disabledInputs } : { ...disabledInputs, URI_PREFIX: true, DESCRIPTION: true, ROLE_LIST: true }
+            return applicationTypeData || !isEdit
+                ? { ...disabledInputs }
+                : { ...disabledInputs, URI_PREFIX: true, DESCRIPTION: true, ROLE_LIST: true }
         }
         if (type === EntityType.PROFILE) {
             return { ...disabledInputs }
         }
         if (type === EntityType.RELATION) {
-            return customTypeData || !isEdit
+            return applicationTypeData || !isEdit
                 ? { ...disabledInputs }
                 : { ...disabledInputs, DESCRIPTION: true, ENG_DESCRIPTION: true, ENG_NAME: true, NAME: true }
         } else return { ...disabledInputs }
-    }, [customTypeData, disabledInputs, isEdit, type])
+    }, [applicationTypeData, disabledInputs, isEdit, type])
 
     const { formMethods, tabsFromForm, sourcesFromForm, targetsFromForm } = useCreateForm({ data, hiddenInputs, disabledInputsTypes })
 
@@ -292,12 +294,11 @@ export const CreateEntityView = ({
                                 <SimpleSelect
                                     label={t('egov.type')}
                                     options={[
-                                        { value: 'custom', label: t('tooltips.type.custom') },
                                         { value: 'application', label: t('tooltips.type.application') },
                                         { value: 'system', label: t('tooltips.type.system') },
                                     ]}
                                     name="type"
-                                    defaultValue={data?.existingEntityData?.type || 'custom'}
+                                    defaultValue={data?.existingEntityData?.type || 'application'}
                                     setValue={formMethods.setValue}
                                     disabled
                                 />

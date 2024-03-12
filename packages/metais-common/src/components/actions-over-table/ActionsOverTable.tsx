@@ -49,7 +49,7 @@ interface IActionsOverTableProps extends PropsWithChildren {
     createButton?: React.ReactNode
     exportButton?: React.ReactNode
     importButton?: React.ReactNode
-    bulkPopup?: React.ReactNode
+    bulkPopup?: (params: { selectedRowsCount?: number }) => React.ReactNode
     metaAttributesColumnSection?: IColumnSectionType
     handlePagingSelect?: (page: string) => void
     simpleTableColumnsSelect?: ISimpleTableSelectParams
@@ -130,7 +130,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                     <Can I={Actions.BULK_ACTIONS} a={entityName} ability={ability}>
                         <>
                             {selectedRowsCount != undefined && <SelectedRowsAriaRead count={selectedRowsCount} />}
-                            {bulkPopup}
+                            {bulkPopup({ selectedRowsCount })}
                         </>
                     </Can>
                 )}

@@ -1,7 +1,7 @@
 import { BreadCrumbs, Filter, HomeIcon, IOption, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import React from 'react'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { RelationshipUi } from '@isdd/metais-common/api/generated/iam-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
@@ -47,6 +47,25 @@ export const RelationListView: React.FC<IRelationListView> = ({
     const { t } = useTranslation()
 
     const columns: Array<ColumnDef<RelationshipUi>> = [
+        {
+            id: 'summary',
+            header: t('relationshipList.summary'),
+            accessorFn: (row) => row,
+            cell: (row) => (
+                <Trans
+                    i18nKey="relationshipList.summaryValue"
+                    components={{
+                        strong: <strong />,
+                    }}
+                    values={{
+                        startName: row.row.original.startName,
+                        endName: row.row.original.endName,
+                    }}
+                />
+            ),
+            size: 300,
+            enableSorting: false,
+        },
         {
             id: 'startCiTypeName',
             header: t('relationshipList.startTypeName'),
@@ -131,7 +150,6 @@ export const RelationListView: React.FC<IRelationListView> = ({
                     { label: t('titles.relationsSearch'), href: RouterRoutes.RELATION_LIST },
                 ]}
             />
-
             <MainContentWrapper>
                 <TextHeading size="XL">{t('titles.relationsSearch')}</TextHeading>
 
@@ -141,6 +159,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
                     form={({ filter, setValue, watch }) => (
                         <div>
                             <SimpleSelect
+                                key={seed}
                                 id="relType"
                                 name="relType"
                                 label={t('relationshipList.relType')}
@@ -151,7 +170,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
                             />
 
                             <SimpleSelect
-                                key={seed}
+                                key={seed + 1}
                                 id="sourceType"
                                 name="sourceType"
                                 label={t('relationshipList.startTypeName')}
@@ -163,7 +182,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
                             />
 
                             <SimpleSelect
-                                key={seed + 1}
+                                key={seed + 2}
                                 id="targetType"
                                 name="targetType"
                                 label={t('relationshipList.endTypeName')}

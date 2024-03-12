@@ -105,7 +105,8 @@
         "notifications": "Notifikácie",
         "factChecker": "Fact-checker",
         "openMenu": "Otvor menu",
-        "closeMenu": "Skryť menu"
+        "closeMenu": "Skryť menu",
+        "main": "Hlavná"
     },
     "radioButton": {
         "yes": "Áno",
@@ -191,7 +192,7 @@
         "adress": "Adresa",
         "expandableExpandItem": "Otvoriť detail položky",
         "expandableCloseItem": "Zatvoriť detail položky",
-        "sortButtonLabel": "Zoradiť podľa {{item}}, {{sortDirection}} ",
+        "sortButtonLabel": "Zoradiť {{sortDirection}} podľa {{item}}",
         "asc": "vzostupne",
         "desc": "zostupne",
         "unsort": "Zrušit zoradenie podľa {{item}}"
@@ -328,7 +329,8 @@
             "interval": "Intervalové rozloženie",
             "ciType": "Entita",
             "mustBeNumber": "Hodnota musí byť číslo.",
-            "minCharacters": "Toto pole musí obsahovať minimálne {{min}} znaky."
+            "minCharacters": "Toto pole musí obsahovať minimálne {{min}} znaky.",
+            "url": "URL"
         },
         "entity": {
             "editHeader": "Editácia entity",
@@ -364,6 +366,7 @@
     "userManagement": {
         "title": "Používatelia",
         "fullName": "Meno a priezvisko",
+        "loginEmail": "Prihlasovací email",
         "login": "Používateľské meno",
         "phone": "Tel.č.",
         "mobile": "Mobil",
@@ -424,6 +427,7 @@
         "selectColumn": "Stĺpce",
         "view": "Zobraziť",
         "actions": "Hromadné úkony",
+        "disabledTooltip": "Pre hromadné úkony zvoľte položky v tabuľke",
         "invalidateItems": "Zneplatnenie položiek",
         "validateItems": "Splatnenie položiek",
         "changeOwner": "Zmena vlastníka",
@@ -562,6 +566,7 @@
         "phone": "Telefónne číslo",
         "mobile": "Mobil",
         "login": "Používateľské meno",
+        "loginEmail": "Prihlasovací email",
         "detailHeading": "Detail používateľa",
         "detailEditHeading": "Upravenie existujúceho používateľa",
         "detailCreateHeading": "Vytvorenie nového používateľa",
@@ -590,7 +595,8 @@
         "containerQueryError": "Loading of data for user management failed.",
         "noUserId": "There was mistake in fetching data.",
         "mutationError": "Počas akcie došlo k chybe.",
-        "emailFormat": "Formát emailu je zlý",
+        "emailFormat": "Formát emailu je chybný. Zadávajte ho vo formáte napríklad meno.priezvisko@domena.sk",
+        "emailFormatHint": "Prihlasovací email môže obsahovať písmená, čísla, bodky, podčiarkovníky, percentá a znamienka plus.",
         "phoneFormat": "Formát tel. čísla je zlý",
         "noChangesDetected": "Neboli zaznamenané žiadne zmeny.",
         "noSpacesError": "Položka {{value}} nesmie obsahovať medzery.",
@@ -1011,6 +1017,7 @@
         "gdprTitle": "Zoznam GDPR žiadostí",
         "fullName": "Priezvisko a meno",
         "identityLogin": "Používateľské meno",
+        "loginEmail": "Prihlasovací email",
         "telephone": "Telefón",
         "mobile": "Telefónne číslo",
         "email": "E-mailová adresa",
@@ -1081,7 +1088,8 @@
             "name": "Meno",
             "position": "Funkcia",
             "phoneNumber": "Telefónne číslo",
-            "email": "E-mailová adresa"
+            "email": "Emailová adresa",
+            "loginEmail": "Prihlasovací email"
         },
         "settings": "Osobné preferencie",
         "rights": "Oprávnenia",
@@ -1444,7 +1452,8 @@
         "noOptions": "Žiadne možnosti",
         "loading": "Načítanie...",
         "availableResult_one": "{{count}} výsledok",
-        "availableResult_other": "{{count}} výsledkov",
+        "availableResult": "{{count}} výsledkov",
+        "removeOption": "Odstrániť možnosť {{label}}",
         "onFocus": {
             "totalCount": "{{index}} z {{length}}",
             "disabled": "blokované",
@@ -1459,9 +1468,8 @@
         "onChange": {
             "deselected": "možnosť {{label}}, zrušený výber.",
             "cleared": "Všetky vybraté možnosti boli vyčistené.",
-            "initial": "{{option}} {{labels}}, zvolené.",
-            "option_one": "Možnosť",
-            "option_many": "Možnosti",
+            "initial_one": "Možnosť {{labels}}, zvolené.",
+            "initial": "Možnosťi {{labels}}, zvolené.",
             "selected": {
                 "disabled": "možnosť {{label}} je blokovaná. Vyberte inú možnosť.",
                 "selected": "možnosť {{label}}, zvolené."

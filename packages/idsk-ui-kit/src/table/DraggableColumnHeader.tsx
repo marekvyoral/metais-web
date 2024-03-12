@@ -1,5 +1,5 @@
 import React from 'react'
-import { Column, ColumnOrderState, Header, Table as ReactTable, flexRender } from '@tanstack/react-table'
+import { Column, ColumnOrderState, Header, Table as ReactTable, SortDirection, flexRender } from '@tanstack/react-table'
 import { useDrag, useDrop } from 'react-dnd'
 import classNames from 'classnames'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
@@ -25,6 +25,17 @@ type TableHeaderProps<T> = {
     header: Header<T, unknown>
     table: ReactTable<T>
     canDrag: boolean
+}
+
+const getAriaSort = (sort: SortDirection | false) => {
+    switch (sort) {
+        case 'asc':
+            return 'ascending'
+        case 'desc':
+            return 'descending'
+        default:
+            return undefined
+    }
 }
 
 export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeaderProps<T>): JSX.Element => {
@@ -56,6 +67,7 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
     const isNotSorted = column.getIsSorted() != 'asc' && column.getIsSorted() != 'desc'
     const sortedAsc = column.getIsSorted() == 'asc'
     const sortDesc = column.getIsSorted() == 'desc'
+    const ariaSort = getAriaSort(column.getIsSorted())
     const ariaLabelForSortButton = sortDesc
         ? t('table.unsort', { item: headerString })
         : t('table.sortButtonLabel', {
@@ -64,12 +76,9 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
           })
 
     return id === CHECKBOX_CELL ? (
-        <td tabIndex={0} className={classNames('idsk-table__header', styles.header, styles.checkBoxCell)}>
-            {flexRender(columnHeader, getContext())}
-        </td>
+        <td className={classNames('idsk-table__header', styles.header, styles.checkBoxCell)}>{flexRender(columnHeader, getContext())}</td>
     ) : (
         <th
-            tabIndex={0}
             scope="col"
             id={header.id}
             ref={dropRef}
@@ -77,6 +86,8 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
                 [styles.checkBoxCell]: id === CHECKBOX_CELL,
             })}
             colSpan={colSpan}
+            aria-sort={ariaSort}
+            aria-label={headerString}
             style={{ opacity: isDragging ? 0.5 : 1, ...(header.column.columnDef.size ? { width: header.column.columnDef.size } : { width: 'auto' }) }}
         >
             <div ref={previewRef}>

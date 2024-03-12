@@ -173,10 +173,10 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                     pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
                     dataLength: data?.configurationItemSet?.length ?? 0,
                 }}
-                bulkPopup={
+                selectedRowsCount={selectedUuids.length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={selectedUuids.length}
-                        disabled={!selectedUuids.length}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'favorite'}
@@ -191,7 +191,7 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                             />,
                         ]}
                     />
-                }
+                )}
                 entityName=""
                 createButton={
                     <CreateEntityButton

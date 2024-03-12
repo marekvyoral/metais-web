@@ -65,12 +65,7 @@ export const KrisTable: React.FC<ICiTable> = ({
 
         return {
             accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
-            header: () => {
-                if (isOwner) {
-                    return <span>{t('KRIS.responsibleAuthority')}</span>
-                }
-                return <span>{attributeHeader ?? technicalName}</span>
-            },
+            header: () => (isOwner ? t('KRIS.responsibleAuthority') : attributeHeader ?? technicalName),
             id: technicalName ?? '',
             size: index === 0 ? 300 : 200,
             cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (

@@ -1,4 +1,3 @@
-import { useFind2111 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { NavigationCloseIcon, NotificationIcon, NotificationBlackIcon } from '@isdd/metais-common/assets/images'
 import { NavBarHeader } from '@isdd/metais-common/components/navbar/navbar-header/NavBarHeader'
 import { IconWithNotification } from '@isdd/metais-common/components/navbar/navbar-main/IconWithNotification'
@@ -8,7 +7,6 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 import { useGetNotificationsWithRefresh } from '@isdd/metais-common/hooks/useGetNotificationsWithRefresh'
 import { useGetCurrentSystemState } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { InformationBar } from '@isdd/idsk-ui-kit/index'
@@ -39,12 +37,12 @@ export const Navbar: React.FC = () => {
             path={NavigationSubRoutes.NOTIFICATIONS}
             showAsLink
             altText={t('navbar.notifications')}
+            ariaLabel={t('notifications.youHave', { count: notificationsData?.pagination?.totalUnreadedItems ?? 0 })}
         />
     )
 
-    const { data: ksisvsGroup } = useFind2111({ shortName: KSIVS_SHORT_NAME })
     const iconGroupItems: React.FC[] = [TasksPopup, Notifications]
-    const topMenuPortalRoutes = getPortalNavigationItems(t, !!user, Array.isArray(ksisvsGroup) ? ksisvsGroup[0].uuid : ksisvsGroup?.uuid)
+    const topMenuPortalRoutes = getPortalNavigationItems(t, !!user)
     const topMenuWithoutPOAndMonitoring = topMenuPortalRoutes.filter((item) => item.path != RouteNames.HOW_TO_KRIS_STUDIES_PROJECTS)
 
     const { data: currentSystemState } = useGetCurrentSystemState()

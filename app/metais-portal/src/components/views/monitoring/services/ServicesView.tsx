@@ -92,7 +92,7 @@ export const ServicesView: React.FC<IServicesView> = ({ data, isError, isLoading
         <MainContentWrapper>
             <QueryFeedback loading={isLoading} error={false} withChildren>
                 <FlexColumnReverseWrapper>
-                    <TextHeading size="L">{t('titles.monitoringServices')}</TextHeading>
+                    <TextHeading size="XL">{t('titles.monitoringServices')}</TextHeading>
                     {isError && <QueryFeedback loading={false} error={isError} />}
                 </FlexColumnReverseWrapper>
                 <Filter<MonitoringFilterData>

@@ -79,9 +79,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     const navigate = useNavigate()
     const location = useLocation()
 
-    const checkedRowItems = Object.keys(rowSelection).length
-    const isDisabledBulkButton = checkedRowItems === 0
-
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
     const [showChangeOwner, setShowChangeOwner] = useState<boolean>(false)
@@ -141,7 +138,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
             </FlexColumnReverseWrapper>
             <Filter<CIFilterData>
                 defaultFilterValues={defaultFilterValues}
-                form={({ register, filter, setValue }) => {
+                form={({ register, filter, setValue, isOpen }) => {
                     return (
                         <div>
                             <Input
@@ -167,6 +164,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                 attributes={attributes as ExtendedAttribute[]}
                                 attributeProfiles={attributeProfiles}
                                 constraintsData={constraintsData}
+                                isFocusable={isOpen}
                             />
                         </div>
                     )
@@ -185,7 +183,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     attributes={attributes ?? []}
                     columnListData={columnListData}
                     ciTypeData={ciTypeData}
-                    selectedRowsCount={Object.keys(rowSelection).length}
                     createButton={
                         showCreateEntityButton && (
                             <CreateEntityButton
@@ -194,23 +191,29 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                             />
                         )
                     }
-                    importButton={<ImportButton ciType={entityName ?? ''} />}
+                    importButton={
+                        <ImportButton
+                            ciType={entityName ?? ''}
+                            ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
+                        />
+                    }
                     exportButton={
                         <ExportButton
+                            ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
                             defaultFilterValues={defaultFilterValues}
                             checkedItemsUuids={getRowSelectionUuids(rowSelection)}
                             pagination={pagination}
                         />
                     }
-                    bulkPopup={
+                    selectedRowsCount={Object.keys(rowSelection).length}
+                    bulkPopup={({ selectedRowsCount }) => (
                         <Tooltip
                             descriptionElement={errorMessage}
                             on={'click'}
                             position={'center center'}
                             tooltipContent={(open) => (
                                 <BulkPopup
-                                    disabled={isDisabledBulkButton}
-                                    checkedRowItems={checkedRowItems}
+                                    checkedRowItems={selectedRowsCount}
                                     items={(closePopup) => [
                                         <ButtonLink
                                             key={'invalidate'}
@@ -261,7 +264,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                 />
                             )}
                         />
-                    }
+                    )}
                 />
             )}
             {isBulkLoading && <LoadingIndicator fullscreen />}

@@ -111,7 +111,8 @@
         "notifications": "Notifikácie",
         "factChecker": "Fact-checker",
         "openMenu": "Otvor menu",
-        "closeMenu": "Skryť menu"
+        "closeMenu": "Skryť menu",
+        "main": "Hlavná"
     },
     "navMenu": {
         "publicAuthoritiesNav": "Orgány riadenia",
@@ -474,6 +475,7 @@
             "registrationDate": "Dátum príhlásenia"
         },
         "export-title": "Zvoľte typ súboru pre export",
+        "exportAria": "Export prihlásených na školenie",
         "from": "Začiatok školenia"
     },
     "listActions": {
@@ -847,6 +849,7 @@
         "required": "Toto pole je povinné.",
         "invalidEmail": "Zadajte platný e-mail",
         "invalidPhone": "Zadajte platné telefónne číslo",
+        "invalidUrl": "Zadajte platnú adresu odkazu",
         "invalidFullname": "Zadajte celé meno",
         "wrongRegex": "Formát sa musí zhodovať s {{regexFormat}}",
         "minValue": "Hodnota musí byť aspoň",
@@ -898,7 +901,7 @@
         "noDataLoaded": "Nenačítali sa žiadne záznamy.",
         "expandableExpandItem": "Otvoriť detail položky",
         "expandableCloseItem": "Zatvoriť detail položky",
-        "sortButtonLabel": "Zoradiť podľa {{item}}, {{sortDirection}} ",
+        "sortButtonLabel": "Zoradiť {{sortDirection}} podľa {{item}}",
         "asc": "vzostupne",
         "desc": "zostupne",
         "unsort": "Zrušit zoradenie podľa {{item}}"
@@ -928,11 +931,14 @@
             "addDocument": "Pridať dokument"
         },
         "import": "Import",
+        "importAria": "Import položiek alebo vzťahov {{ciTypeName}}",
         "export": "Export",
+        "exportAria": "Export položiek alebo vzťahov {{ciTypeName}}",
         "addItem": "Vytvoriť položku {{ciTypeName}} ",
         "selectColumn": "Stĺpce",
         "view": "Zobraziť",
         "actions": "Hromadné úkony",
+        "disabledTooltip": "Pre hromadné úkony zvoľte položky v tabuľke",
         "invalidateItems": "Zneplatnenie položiek",
         "deleteItems": "Odstránenie položiek",
         "validateItems": "Splatnenie položiek",
@@ -1004,6 +1010,7 @@
         "actualVersion": "Aktuálna verzia"
     },
     "notifications": {
+        "youHave": "Máte {{count}} upozornení",
         "all": "Všetky",
         "INFO": "Informácie",
         "ERROR": "Chyby",
@@ -1117,7 +1124,8 @@
         "removeGroupMember": "Odstránenie člena zo skupiny",
         "sureRemoveMember": "Naozaj chcete odstrániť člena zo skupiny?",
         "export": "Export",
-        "sendEmail": "Poslať e-mail.",
+        "sendEmail": "Poslať e-mail",
+        "sendEmailChooseRows": "Pre poslanie e-mailu, zvoľte riadky v tabuľke",
         "display": "Zobraziť",
         "showRecords": "záznamov",
         "name": "Meno a priezvisko",
@@ -1749,6 +1757,7 @@
             "code": "Kód"
         },
         "detail": {
+            "title": "Detail referenčného registra {{name}}",
             "informations": "Základné informácie",
             "history": "História zmien",
             "historyChanges": "História zmeny stavov",
@@ -1803,7 +1812,8 @@
             "name": "Meno a priezvisko",
             "position": "Funkcia",
             "phoneNumber": "Telefónne číslo",
-            "email": "E-mailová adresa"
+            "email": "Emailová adresa",
+            "loginEmail": "Prihlasovací email"
         },
         "settings": "Osobné preferencie",
         "rights": "Priradené role",
@@ -2090,7 +2100,8 @@
             "addExternalActors": "+ Pridať ďalšieho hosťa",
             "program": "Agenda",
             "proposalsSelect": "Súvisiace návrhy",
-            "proposalsButton": "Vybrať zo zoznamu"
+            "proposalsButton": "Vybrať zo zoznamu",
+            "delete": "Odstrániť hosťa {{order}}"
         },
         "proposals": {
             "standardRequestState": "Stav",
@@ -2262,7 +2273,8 @@
                 "organization": "Organizácia",
                 "role": "Rola"
             },
-            "save": "Uložiť"
+            "save": "Uložiť",
+            "detail": "Detail hlasovania {{name}}"
         },
         "voteEdit": {
             "newVoteTitle": "Pridať nové hlasovanie",
@@ -2346,24 +2358,25 @@
         }
     },
     "registration": {
-        "uniqueLogin": "Používateľ s týmto prihlasovacím menom je už registrovaný. Prihlasovacie meno musí byť jedinečné, dostupné prihlasovacie meno je napríklad {{available}}.",
+        "uniqueLogin": "Používateľ s týmto prihlasovacím emailom je už registrovaný. Prihlasovací email musí byť jedinečný, dostupný prihlasovací email je napríklad {{available}}.",
         "uniqueEmail": "Používateľ s týmto e-mailom je už registrovaný. E-mailová adresa musí byť jedinečná.",
         "firstName": "Meno",
         "lastName": "Priezvisko",
         "email": "E-mailová adresa",
         "phone": "Telefónne číslo",
         "po": "Zástupca za subjekt",
-        "login": "Prihlasovacie meno",
+        "loginEmail": "Prihlasovací email",
         "required": {
             "firstName": "Meno je povinný údaj.",
             "lastName": "Priezvisko je povinný údaj.",
             "phone": "Telefónne číslo je povinný údaj.",
             "email": "E-mailová adresa je povinný údaj.",
-            "default": "Táto položka je povinná"
+            "default": "Táto položka je povinná.",
+            "loginEmail": "Prihlasovací email email je povinný údaj."
         },
         "format": {
             "name": "Toto pole nesmie obsahovať špeciálne znaky ako „@, &“ atď.",
-            "email": "Emial zadávajte vo formáte napríklad meno.priezvisko@domena.sk",
+            "email": "Formát emailu je chybný. Zadávajte ho vo formáte napríklad meno.priezvisko@domena.sk",
             "phone": "Skontrolujte si prosím formát telefónneho čísla.",
             "login": "Prihlasovacie meno môže obsahovať iba malé písmená, čísla a bodky.",
             "noSpaces": "Táto položka nesmie obsahovať medzery."
@@ -2384,7 +2397,8 @@
         "error": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:",
         "consentWith": "Súhlasím s ",
         "dataProcessingConsent": "podmienkami spracúvania osobných údajov",
-        "termsOfUseConsent": "podmienkami používania Centrálneho metainformačného systému verejnej správy"
+        "termsOfUseConsent": "podmienkami používania Centrálneho metainformačného systému verejnej správy",
+        "loginFormat": "Prihlasovací email môže obsahovať písmená, čísla, bodky, podčiarkovníky, percentá a znamienka plus."
     },
     "Aktivita": {
         "target": "Cieľ aktivity",
@@ -2399,7 +2413,8 @@
         "heading": "Štandardy ITVS"
     },
     "draftsList": {
-        "heading": "Zoznam návrhov predložených prostredníctvom MetaIS"
+        "heading": "Zoznam návrhov predložených prostredníctvom MetaIS",
+        "detail": "Detail návrhu {{name}}"
     },
     "howto": {
         "guides": "Postupy a návody"
@@ -2511,7 +2526,9 @@
         "detail": {
             "toggleButton": "Zmeniť pohľad",
             "totalInPeriod": "Spolu za vybrané obdobie",
-            "avarageInPeriod": "Priemer za vybrané obdobie"
+            "avarageInPeriod": "Priemer za vybrané obdobie",
+            "changeToTable": "Prepnúť na tabuľkové zobrazenie",
+            "changeToGraph": "Prepnúť na grafové zobrazenie"
         },
         "filter": {
             "responsibleAuthority": "Povinná osoba",
@@ -2706,7 +2723,9 @@
         "endTypeName": "Typ (cieľ)",
         "endName": "Názov (cieľ)",
         "endKodMetaIS": "MetaIS kód (cieľ)",
-        "relType": "Typ vzťahu"
+        "relType": "Typ vzťahu",
+        "summary": "Zhrnutie vzťahu",
+        "summaryValue": "Vzťah z <strong>{{startName}}</strong> na <strong>{{endName}}</strong>"
     },
     "slaContracts": {
         "columns": {
@@ -2836,7 +2855,7 @@
     "closeFeedback": "Zatvoriť správu o spätnej väzbe",
     "valid": "Hodnota vstupu je valídna",
     "dnd": "Položku je možné ťahať a pustiť",
-    "delete": "Zmazať",
+    "delete": "Zmazať {{subject}}",
     "progressStepper": {
         "expand": "Rozbaliť",
         "collapse": "Zbaliť",
@@ -2860,7 +2879,8 @@
         "noOptions": "Žiadne možnosti",
         "loading": "Načítanie...",
         "availableResult_one": "{{count}} výsledok",
-        "availableResult_other": "{{count}} výsledkov",
+        "availableResult": "{{count}} výsledkov",
+        "removeOption": "Odstrániť možnosť {{label}}",
         "onFocus": {
             "totalCount": "{{index}} z {{length}}",
             "disabled": "blokované",
@@ -2875,9 +2895,8 @@
         "onChange": {
             "deselected": "možnosť {{label}}, zrušený výber.",
             "cleared": "Všetky vybraté možnosti boli vyčistené.",
-            "initial": "{{option}} {{labels}}, zvolené.",
-            "option_one": "Možnosť",
-            "option_other": "Možnosti",
+            "initial_one": "Možnosť {{labels}}, zvolené.",
+            "initial": "Možnosťi {{labels}}, zvolené.",
             "selected": {
                 "disabled": "možnosť {{label}} je blokovaná. Vyberte inú možnosť.",
                 "selected": "možnosť {{label}}, zvolené."

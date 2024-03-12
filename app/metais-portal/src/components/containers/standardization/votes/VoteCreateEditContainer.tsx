@@ -147,7 +147,6 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
                             loading={isLoading}
                             error={isError}
                             indicatorProps={{ layer: 'parent', transparentMask: false, label: getLoaderLabel() }}
-                            withChildren
                         >
                             <View
                                 user={user.user}

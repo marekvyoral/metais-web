@@ -12,6 +12,7 @@ interface IIconWithNotification {
     path: string
     showAsLink: boolean
     altText: string
+    ariaLabel: string
 }
 
 export const IconWithNotification: React.FC<IIconWithNotification> = ({
@@ -23,19 +24,37 @@ export const IconWithNotification: React.FC<IIconWithNotification> = ({
     path,
     showAsLink,
     altText,
+    ariaLabel,
 }) => {
     const location = useLocation()
     return showAsLink ? (
         <Link to={path} title={title} state={{ from: location }} onClick={onClick}>
-            <span className="govuk-visually-hidden">{title}</span>
-            <img src={count > 0 ? iconActive : iconInactive} alt={altText} />
-            {count > 0 && <div className={styles.notificationIcon}>{count}</div>}
+            <img src={count > 0 ? iconActive : iconInactive} alt="" />
+            {count > 0 && (
+                <>
+                    <div aria-hidden className={styles.notificationIcon}>
+                        {count}
+                    </div>
+                    <span className="govuk-visually-hidden">
+                        {title} {ariaLabel}
+                    </span>
+                </>
+            )}
         </Link>
     ) : (
-        <div onClick={onClick}>
-            <span className="govuk-visually-hidden">{title}</span>
-            <img src={count > 0 ? iconActive : iconInactive} alt={altText} />
-            {count > 0 && <div className={styles.notificationIcon}>{count}</div>}
+        <div onClick={onClick} role="button">
+            <span className="govuk-visually-hidden" aria-label={altText}>
+                {title}
+            </span>
+            <img src={count > 0 ? iconActive : iconInactive} alt="" />
+            {count > 0 && (
+                <>
+                    <div className={styles.notificationIcon} aria-hidden>
+                        {count}
+                    </div>
+                    <span className="govuk-visually-hidden">{ariaLabel}</span>
+                </>
+            )}
         </div>
     )
 }

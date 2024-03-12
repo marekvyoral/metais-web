@@ -112,7 +112,8 @@
         "notifications": "Notifications",
         "factChecker": "Fact-checker",
         "openMenu": "Open menu",
-        "closeMenu": "Close menu"
+        "closeMenu": "Close menu",
+        "main": "Hlavná"
     },
     "navMenu": {
         "monitoringNav": "Reports and monitoring",
@@ -476,6 +477,7 @@
             "registrationDate": "Registration date"
         },
         "export-title": "Select the file type to export",
+        "exportAria": "Export registered for training",
         "from": "Training start date"
     },
     "listActions": {
@@ -847,6 +849,7 @@
         "invalidEmail": "Enter a valid email",
         "invalidFullname": "Enter your full name",
         "invalidPhone": "Enter a valid phone number",
+        "invalidUrl": "Enter a valid url address",
         "wrongRegex": "Value must match {{regexFormat}}",
         "minValue": "Value must be at least",
         "maxValue": "Value can not be greater than",
@@ -897,7 +900,7 @@
         "noDataLoaded": "No data loaded",
         "expandableExpandItem": "Open item detail",
         "expandableCloseItem": "Close item detail",
-        "sortButtonLabel": "Sort by {{item}}, {{sortDirection}} ",
+        "sortButtonLabel": "Sort {{sortDirection}} by {{item}}",
         "asc": "ascending",
         "desc": "descending",
         "unsort": "Cancel sort by {{item}}"
@@ -923,11 +926,14 @@
             "addDocument": "Add document"
         },
         "import": "Import",
+        "importAria": "Import items or relations {{ciTypeName}}",
         "export": "Export",
+        "exportAria": "Export items or relations {{ciTypeName}}",
         "addItem": "Create item {{ciTypeName}} ",
         "selectColumn": "Columns",
         "view": "View",
         "actions": "Bulk actions",
+        "disabledTooltip": "For bulk actions select rows in table",
         "invalidateItems": "Invalidate items",
         "deleteItems": "Delete items",
         "validateItems": "Validate actions",
@@ -998,6 +1004,7 @@
         "actualVersion": "Actual version"
     },
     "notifications": {
+        "youHave": "You have {{count}} Notifications",
         "all": "All",
         "INFO": "Informations",
         "ERROR": "Errors",
@@ -1113,6 +1120,7 @@
         "sureRemoveMember": "Are you sure you want to remove a group member?",
         "export": "Export",
         "sendEmail": "Send email",
+        "sendEmailChooseRows": "For send to e-mail, select rows in the table",
         "display": "Show",
         "showRecords": "items",
         "name": "Name",
@@ -1703,6 +1711,7 @@
             "code": "Code"
         },
         "detail": {
+            "title": "Referential register detail of {{name}}",
             "informations": "Basic informations",
             "history": "History of changes",
             "historyChanges": "History of state changes",
@@ -1797,7 +1806,8 @@
             "name": "Name",
             "position": "Position",
             "phoneNumber": "Phone",
-            "email": "Email"
+            "email": "Email",
+            "loginEmail": "Login email"
         },
         "settings": "Personal preferences",
         "rights": "Rights",
@@ -2082,7 +2092,8 @@
             "addExternalActors": "+ Add another guest",
             "program": "Agenda",
             "proposalsSelect": "Related proposals",
-            "proposalsButton": "Select from list"
+            "proposalsButton": "Select from list",
+            "delete": "Remove guest {{order}}"
         },
         "proposals": {
             "standardRequestState": "Status",
@@ -2254,7 +2265,8 @@
                 "organization": "Organization",
                 "role": "Role"
             },
-            "save": "Save"
+            "save": "Save",
+            "detail": "Voting detail of {{name}}"
         },
         "voteEdit": {
             "newVoteTitle": "Add new vote",
@@ -2338,24 +2350,25 @@
         }
     },
     "registration": {
-        "uniqueLogin": "User with this login already exists. Login must be unique, available login is for exmaple {{available}}",
+        "uniqueLogin": "User with this login email already exists. Login email must be unique, available login email is for exmaple {{available}}",
         "uniqueEmail": "User with this email already exists. Email must be unique.",
         "firstName": "First name",
         "lastName": "Last name",
         "email": "Email address",
         "phone": "Phone number",
         "po": "Representative of the subject",
-        "login": "Login",
+        "loginEmail": "Login email",
         "required": {
             "firstName": "Your first name is required.",
             "lastName": "Your last name is required.",
-            "phone": "Your phone number is required",
-            "email": "Your email address is required",
-            "default": "This is required field"
+            "phone": "Your phone number is required.",
+            "email": "Your email address is required.",
+            "default": "This is required field.",
+            "loginEmail": "Login email is required."
         },
         "format": {
             "name": "This field can not contain special signs as '@,&' etc.",
-            "email": "Email should be for example in format  name.surname@domain.com",
+            "email": "Email format is wrong. Format should for example be name.surname@domain.com",
             "phone": "Phone number format is incorrect.",
             "login": "Login accepts only lowercase letters, numbers and dots.",
             "noSpaces": "Spaces can not be included in this field"
@@ -2376,7 +2389,8 @@
         "error": "Error while executing your action. Please try again or contact support at:",
         "consentWith": "I agree with ",
         "dataProcessingConsent": "terms of personal data processing",
-        "termsOfUseConsent": "terms of use of the Central Metainformation System of Public Administration"
+        "termsOfUseConsent": "terms of use of the Central Metainformation System of Public Administration",
+        "loginFormat": "Login email may contain letters, numbers, dots, underscores, percent signs, and plus signs."
     },
     "Aktivita": {
         "target": "Objective of the activity",
@@ -2393,7 +2407,8 @@
         "heading": "Standards of ISVS"
     },
     "draftsList": {
-        "heading": "Drafts list"
+        "heading": "Drafts list",
+        "detail": "Draft detail of {{name}}"
     },
     "howto": {
         "guides": "Procedures and guides"
@@ -2505,7 +2520,9 @@
         "detail": {
             "toggleButton": "Show table",
             "totalInPeriod": "Total in period",
-            "avarageInPeriod": "Average in period"
+            "avarageInPeriod": "Average in period",
+            "changeToTable": "Show table view",
+            "changeToGraph": "Show graph view"
         },
         "filter": {
             "responsibleAuthority": "Responsible authority",
@@ -2700,7 +2717,9 @@
         "endTypeName": "Type (target)",
         "endName": "Name (target)",
         "endKodMetaIS": "MetaIS code (target)",
-        "relType": "Relationship type"
+        "relType": "Relationship type",
+        "summary": "Relationship summary",
+        "summaryValue": "Relationship from <strong>{{startName}}</strong> to <strong>{{endName}}</strong>"
     },
     "slaContracts": {
         "columns": {
@@ -2830,7 +2849,7 @@
     "closeFeedback": "Close feedback message",
     "valid": "Input value is valid",
     "dnd": "Item can be dragged and dropped",
-    "delete": "Delete",
+    "delete": "Delete {{subject}}",
     "progressStepeer": {
         "expand": "Expand",
         "collapse": "Collapse",
@@ -2854,7 +2873,8 @@
         "noOptions": "No options",
         "loading": "Loading...",
         "availableResult_one": "{{count}} result",
-        "availableResult_other": "{{count}} results",
+        "availableResult": "{{count}} results",
+        "removeOption": "Remove option {{label}}",
         "onFocus": {
             "totalCount": "{{index}} of {{length}}",
             "disabled": "disabled",
@@ -2869,9 +2889,8 @@
         "onChange": {
             "deselected": "option {{label}}, deselected.",
             "cleared": "All selected options have been cleared.",
-            "initial": "{{option}} {{labels}}, selected.",
-            "option_one": "Option",
-            "option_many": "Options",
+            "initial_one": "Option {{labels}}, selected.",
+            "initial": "Options {{labels}}, selected.",
             "selected": {
                 "disabled": "option {{label}} is disabled. Select another option.",
                 "selected": "option {{label}}, selected."

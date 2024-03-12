@@ -68,7 +68,6 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
     const navigate = useNavigate()
     const location = useLocation()
     const [rowSelection, setRowSelection] = useState<Array<string>>([])
-
     const handleCheckboxChange = useCallback(
         (row: Row<IEgovTable>) => {
             if (row.original.technicalName) {
@@ -89,13 +88,13 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
 
         const checkedAll = data
             .slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
-            .filter((row) => row.type == AttributeProfileType.custom)
-            .every((row) => row.type == AttributeProfileType.custom && rowSelection.includes(row.technicalName || ''))
+            .filter((row) => row.type == AttributeProfileType.application)
+            .every((row) => row.type == AttributeProfileType.application && rowSelection.includes(row.technicalName || ''))
 
         const customRows =
             data
                 .slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
-                .filter((row) => row.type == AttributeProfileType.custom)
+                .filter((row) => row.type == AttributeProfileType.application)
                 .map((row) => row.technicalName || '') || []
 
         if (checkedAll) {
@@ -110,14 +109,14 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
             header: () => {
                 const checkedAll = data
                     ?.slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
-                    ?.filter((row) => row.type == AttributeProfileType.custom)
-                    .every((row) => row.type == AttributeProfileType.custom && rowSelection.includes(row.technicalName || ''))
+                    ?.filter((row) => row.type == AttributeProfileType.application)
+                    .every((row) => row.type == AttributeProfileType.application && rowSelection.includes(row.technicalName || ''))
 
                 return (
                     <>
                         {data
                             ?.slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
-                            .some((a) => a.type == AttributeProfileType.custom) ? (
+                            .some((a) => a.type == AttributeProfileType.application) ? (
                             <div className="govuk-checkboxes govuk-checkboxes--small">
                                 <CheckBox
                                     label=""
@@ -139,7 +138,7 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
             cell: ({ row }) => {
                 return (
                     <>
-                        {row.original.type == AttributeProfileType.custom ? (
+                        {row.original.type == AttributeProfileType.application ? (
                             <div className="govuk-checkboxes govuk-checkboxes--small">
                                 <CheckBox
                                     label=""
@@ -269,9 +268,10 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                     />
                 }
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={Object.keys(rowSelection).length}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'buttonBlock'}
@@ -293,7 +293,7 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                             />,
                         ]}
                     />
-                }
+                )}
             />
             <MutationFeedback
                 success={mutateInvalidateFunc.isSuccess || mutateValidateFunc.isSuccess}

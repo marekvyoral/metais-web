@@ -30,7 +30,6 @@ const TabItemDesktop: React.FC<ITabItemDesktop> = ({ handleSelect, tab, isSelect
             <a
                 className={classnames('idsk-tabs__tab')}
                 href={`#${tab.id}`}
-                title={tab.title}
                 onClick={(event) => handleSelect(event, tab)}
                 role="tab"
                 aria-selected={isSelected}
@@ -60,7 +59,7 @@ const TabItemContent: React.FC<ITabItemContent> = ({ tab, handleMobileSelect, is
                 aria-selected={isSelected}
                 onClick={() => handleMobileSelect(tab)}
             >
-                {tab.title}
+                <span id={tab.id}>{tab.title}</span>
                 <span className="idsk-tabs__tab-arrow-mobile" />
             </button>
             <section

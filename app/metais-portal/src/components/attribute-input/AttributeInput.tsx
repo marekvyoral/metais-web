@@ -123,6 +123,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     const isDateTime = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.DATETIME
     const isBoolean = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.BOOLEAN
     const isFile = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.IMAGE
+    const isUrl = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.URL
 
     const isArray = attribute.array
     const isHTML = attribute.type === HTML_TYPE
@@ -233,6 +234,21 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         isUpload
                         correct={isCorrect}
                         type="file"
+                        info={attribute.description}
+                        id={attribute.technicalName}
+                        disabled={attribute.readOnly || disabled}
+                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
+                        error={error?.message?.toString()}
+                        {...register(attribute.technicalName + nameSufix)}
+                        hint={defaultValueFromCiItem?.toString()}
+                    />
+                )
+            }
+            case isUrl: {
+                return (
+                    <Input
+                        correct={isCorrect}
+                        type="url"
                         info={attribute.description}
                         id={attribute.technicalName}
                         disabled={attribute.readOnly || disabled}

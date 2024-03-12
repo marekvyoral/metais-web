@@ -104,7 +104,8 @@
         "registration": "Registration",
         "login": "Login",
         "logout": "Logout",
-        "profile": "Profile"
+        "profile": "Profile",
+        "main": "Hlavná"
     },
     "sidebar": {
         "hide": "HIDE",
@@ -158,7 +159,7 @@
         "adress": "Adress",
         "expandableExpandItem": "Open item detail",
         "expandableCloseItem": "Close item detail",
-        "sortButtonLabel": "Sort by {{item}}, {{sortDirection}} ",
+        "sortButtonLabel": "Sort {{sortDirection}} by {{item}}",
         "asc": "ascending",
         "desc": "descending",
         "unsort": "Cancel sort by {{item}}"
@@ -295,7 +296,8 @@
             "interval": "Interval",
             "ciType": "Entity",
             "mustBeNumber": "Must be a number",
-            "minCharacters": "This field requires at least {{min}} characters"
+            "minCharacters": "This field requires at least {{min}} characters",
+            "url": "URL"
         },
         "entity": {
             "editHeader": "Edit entity",
@@ -336,6 +338,7 @@
     "userManagement": {
         "title": "Users",
         "fullName": "Surname and name",
+        "loginEmail": "Login email",
         "login": "Login",
         "phone": "Phone",
         "mobile": "Mobile",
@@ -396,6 +399,7 @@
         "selectColumn": "Columns",
         "view": "View",
         "actions": "Bulk actions",
+        "disabledTooltip": "For bulk actions select rows in table",
         "invalidateItems": "Invalidate items",
         "validateItems": "Validate items",
         "changeOwner": "Change owner"
@@ -912,6 +916,7 @@
         "phone": "Phone",
         "mobile": "Mobile phone",
         "login": "Login",
+        "loginEmail": "Login email",
         "detailHeading": "User detail",
         "detailEditHeading": "Editing of exisitng user",
         "detailCreateHeading": "Creation of user",
@@ -940,7 +945,8 @@
         "containerQueryError": "Loading of data for user management failed.",
         "noUserId": "There was mistake in fetching data.",
         "mutationError": "Error while performing action.",
-        "emailFormat": "Bad email format",
+        "emailFormat":  "Login email format is wrong. Format should for example be name.surname@domain.com",
+        "emailFormatHint": "Login email may contain letters, numbers, dots, underscores, percent signs, and plus signs.",
         "phoneFormat": "Bad phone format",
         "noChangesDetected": "No changes were detected.",
         "noSpacesError": "Spaces can not be included in {{value}}",
@@ -1008,6 +1014,7 @@
         "gdprTitle": "Request list",
         "fullName": "FullName",
         "identityLogin": "Login",
+        "loginEmail": "Login email",
         "telephone": "Telephone",
         "mobile": "Mobil",
         "email": "Email",
@@ -1078,7 +1085,8 @@
             "name": "Name",
             "position": "Position",
             "phoneNumber": "Phone",
-            "email": "Email"
+            "email": "Email",
+            "loginEmail": "Login email"
         },
         "settings": "Personal preferences",
         "rights": "Rights",
@@ -1438,7 +1446,8 @@
         "noOptions": "No options",
         "loading": "Loading...",
         "availableResult_one": "{{count}} result",
-        "availableResult_other": "{{count}} results",
+        "availableResult": "{{count}} results",
+        "removeOption": "Remove option {{label}}",
         "onFocus": {
             "totalCount": "{{index}} of {{length}}",
             "disabled": "disabled",
@@ -1453,9 +1462,8 @@
         "onChange": {
             "deselected": "option {{label}}, deselected.",
             "cleared": "All selected options have been cleared.",
-            "initial": "{{option}} {{labels}}, selected.",
-            "option_one": "Option",
-            "option_many": "Options",
+            "initial_one": "Option {{labels}}, selected.",
+            "initial": "Options {{labels}}, selected.",
             "selected": {
                 "disabled": "option {{label}} is disabled. Select another option.",
                 "selected": "option {{label}}, selected."

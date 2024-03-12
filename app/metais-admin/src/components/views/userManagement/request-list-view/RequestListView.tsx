@@ -56,7 +56,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
             ),
         },
         {
-            header: t('requestList.identityLogin'),
+            header: t('requestList.loginEmail'),
             accessorFn: (row) => row?.identityLogin,
             enableSorting: true,
             id: 'identityLogin',
@@ -74,16 +74,6 @@ export const RequestListView: React.FC<IRequestListView> = ({
                 getCellContext: (ctx) => ctx?.row?.original?.mobile,
             },
             cell: (ctx) => <span>{ctx?.row?.original?.mobile}</span>,
-        },
-        {
-            header: t('requestList.email'),
-            accessorFn: (row) => row?.email,
-            enableSorting: true,
-            id: 'email',
-            meta: {
-                getCellContext: (ctx) => ctx?.row?.original?.email,
-            },
-            cell: (ctx) => <span>{ctx?.row?.original?.email}</span>,
         },
         {
             header: t('requestList.createdAt'),

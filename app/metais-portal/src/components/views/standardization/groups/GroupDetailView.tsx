@@ -9,6 +9,7 @@ import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 import GroupMembersFilter from './components/GroupMembersFilter'
 import { sendBatchEmail } from './groupMembersTableUtils'
@@ -108,7 +109,6 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                 <GroupDetailBaseInfo infoData={group} />
                 <TextHeading size="L">{t('groups.listOfMembers')}</TextHeading>
                 <GroupMembersFilter defaultFilterValues={identitiesFilter} isKsisvs={group?.shortName === KSIVS_SHORT_NAME} filter={filter} />
-
                 <ActionsOverTable
                     pagination={{ dataLength: identitiesData?.count ?? 0, pageNumber: Number(filter.pageNumber), pageSize: Number(filter.pageSize) }}
                     handleFilterChange={handleFilterChange}
@@ -117,15 +117,21 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                     createButton={
                         <Button className={styles.marginBottom0} label={'+ ' + t('groups.addMember')} onClick={() => setAddModalOpen(true)} />
                     }
-                    exportButton={<Button className={styles.marginBottom0} label={t('groups.export')} variant="secondary" disabled />}
                 >
                     <Can I={Actions.CREATE} a={'sendEmail'}>
-                        <Button
-                            className={styles.marginBottom0}
-                            label={t('groups.sendEmail')}
-                            variant="secondary"
-                            disabled={Object.keys(rowSelection).length <= 0}
-                            onClick={() => sendBatchEmail(rowSelection)}
+                        <Tooltip
+                            on={['click']}
+                            defaultOpen={false}
+                            descriptionElement={t('groups.sendEmailChooseRows')}
+                            triggerElement={
+                                <Button
+                                    className={styles.marginBottom0}
+                                    label={t('groups.sendEmail')}
+                                    variant="secondary"
+                                    onClick={() => sendBatchEmail(rowSelection)}
+                                />
+                            }
+                            altText={`Tooltip ${t('groups.sendEmail')}`}
                         />
                     </Can>
                 </ActionsOverTable>

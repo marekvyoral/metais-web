@@ -37,6 +37,7 @@ interface ISelectProps {
     menuPosition?: MenuPosition
     required?: boolean
     focus?: boolean
+    tabIndex?: number
 }
 
 export const SelectWithGroupedOptions = ({
@@ -58,6 +59,7 @@ export const SelectWithGroupedOptions = ({
     menuPosition = 'fixed',
     required,
     focus = false,
+    tabIndex,
 }: ISelectProps) => {
     const { t } = useTranslation()
     const localMessages = useGetLocalMessages()
@@ -118,6 +120,7 @@ export const SelectWithGroupedOptions = ({
                     ariaLiveMessages={localMessages.ariaLiveMessages}
                     screenReaderStatus={localMessages.screenReaderStatus}
                     loadingMessage={localMessages.loadingMessage}
+                    tabIndex={tabIndex}
                 />
                 {correct && <img src={GreenCheckMarkIcon} className={isClearable ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />}
             </div>

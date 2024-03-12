@@ -231,9 +231,10 @@ export const PublicAuthoritiesMassUpdateTable = ({
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={entityName ?? ''}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                bulkPopup={
+                selectedRowsCount={selectedUuids.length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={selectedUuids.length}
+                        checkedRowItems={selectedRowsCount}
                         disabled={disabledBulkAction}
                         items={(closePopup) => [
                             <ButtonLink
@@ -258,7 +259,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
                             />,
                         ]}
                     />
-                }
+                )}
             />
             <Table
                 data={data?.configurationItemSet}

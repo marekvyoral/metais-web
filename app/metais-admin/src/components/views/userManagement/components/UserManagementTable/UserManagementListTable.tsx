@@ -144,7 +144,7 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
             cell: (ctx) => <UserTableRowActions ctx={ctx} updateIdentityStateBatchMutation={updateIdentityStateBatchMutation} />,
             id: 'actions',
         },
-        { header: t('userManagement.login'), accessorFn: (row) => row.identity.login, enableSorting: true, id: 'login' },
+        { header: t('userManagement.loginEmail'), accessorFn: (row) => row.identity.login, enableSorting: true, id: 'login' },
         { header: t('userManagement.mobile'), accessorFn: (row) => row.identity.mobile, enableSorting: true, id: 'mobile' },
         {
             header: t('userManagement.organization'),

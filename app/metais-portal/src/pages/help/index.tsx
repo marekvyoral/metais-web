@@ -10,7 +10,7 @@ const TutorialPage = () => {
         <>
             <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />
             <MainContentWrapper>
-                <TextHeading size="L">{t('howto.guides')}</TextHeading>
+                <TextHeading size="XL">{t('howto.guides')}</TextHeading>
             </MainContentWrapper>
         </>
     )

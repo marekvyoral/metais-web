@@ -5,13 +5,12 @@ import styles from '@isdd/metais-common/components/actions-over-table/actionsOve
 export interface IIconLabelProps {
     label?: string
     icon: string
-    alt?: string
     withMargin?: boolean
 }
-export const IconLabel: React.FC<IIconLabelProps> = ({ label, icon, alt, withMargin }) => {
+export const IconLabel: React.FC<IIconLabelProps> = ({ label, icon, withMargin }) => {
     return (
         <div className={styles.buttonWithIcon}>
-            <img className={withMargin ? styles.iconAddItems : styles.iconWithoutMargin} src={icon} alt={alt ?? ''} />
+            <img className={withMargin ? styles.iconAddItems : styles.iconWithoutMargin} src={icon} alt="" />
             {label}
         </div>
     )

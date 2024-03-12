@@ -334,6 +334,7 @@ export const AttributeAttributeTypeEnum = {
     STRING_PAIR: 'STRING_PAIR',
     IMAGE: 'IMAGE',
     HTML: 'HTML',
+    URL: 'URL',
 } as const
 
 export type AttributeConstraintsItem = AttributeConstraintCiType | AttributeConstraintEnum | AttributeConstraintInterval | AttributeConstraintRegex

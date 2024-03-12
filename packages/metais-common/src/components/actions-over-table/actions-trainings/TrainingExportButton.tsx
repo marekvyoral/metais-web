@@ -63,6 +63,7 @@ export const TrainingExportButton: React.FC<IExportButtonProps> = ({ trainingUui
                 onClick={() => setModalOpen(true)}
                 className="marginBottom0"
                 variant="secondary"
+                aria-label={t('trainings.exportAria')}
                 label={<IconLabel label={t('actionOverTable.export')} icon={ExportIcon} />}
             />
             <BaseModal isOpen={modalOpen} close={closeModal}>

@@ -83,6 +83,8 @@ export const ChangePasswordForm: React.FC<Props> = ({ isLoading, isError }) => {
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Input
                     {...register('password')}
+                    required
+                    hint={t('validation.password')}
                     label={t('managementList.newPassword')}
                     error={formState.errors.password?.message}
                     autoFocus
@@ -91,7 +93,6 @@ export const ChangePasswordForm: React.FC<Props> = ({ isLoading, isError }) => {
                 <UserManagementFormButtons
                     handleBackNavigate={() => navigate(-1)}
                     handleResetForm={() => null}
-                    isError={!!formState.errors.password}
                     saveButtonLabel={t('managementList.edit')}
                     hideCancelButton
                 />

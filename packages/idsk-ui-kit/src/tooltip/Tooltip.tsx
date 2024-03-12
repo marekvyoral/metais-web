@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Popup } from 'reactjs-popup'
 import { EventType, PopupActions, PopupPosition } from 'reactjs-popup/dist/types'
 import { v4 as uuidV4 } from 'uuid'
@@ -11,6 +11,7 @@ import './Tooltip.scss'
 interface ITooltip {
     id?: string
     descriptionElement: React.ReactNode
+    triggerElement?: React.ReactNode
     tooltipContent?: (open: () => void, close: () => void) => JSX.Element
     closeButton?: boolean
     open?: boolean
@@ -30,10 +31,20 @@ interface ITooltip {
     tabIndex?: number
 }
 
-export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, tooltipContent, closeButton = false, tabIndex, id, ...props }) => {
+export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, triggerElement, tooltipContent, closeButton = false, tabIndex, id, ...props }) => {
     const popupRef = useRef<PopupActions>(null)
     const { t } = useTranslation()
     const descriptionId = id ? `${id}-description` : `${uuidV4()}-description`
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+
+    useEffect(() => {
+        setIsOpen(props.defaultOpen ?? false)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    useEffect(() => {
+        setIsOpen(props.open ?? false)
+    }, [props.open])
 
     return (
         <Popup
@@ -44,33 +55,35 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, tooltipContent
             closeOnEscape
             keepTooltipInside
             className="tooltip"
-            on={['click', 'hover', 'focus']}
+            on={['click', 'hover']}
+            onOpen={() => setIsOpen(true)}
+            onClose={() => setIsOpen(false)}
             {...props}
-            trigger={() =>
-                tooltipContent ? (
-                    <div>
-                        {tooltipContent(
-                            () => popupRef.current?.open(),
-                            () => popupRef.current?.close(),
-                        )}
+            trigger={() => (
+                <div>
+                    {tooltipContent
+                        ? tooltipContent(
+                              () => popupRef.current?.open(),
+                              () => popupRef.current?.close(),
+                          )
+                        : triggerElement ?? (
+                              <>
+                                  <button
+                                      tabIndex={tabIndex}
+                                      className={styles.transparentButton}
+                                      type="button"
+                                      aria-label={props.altText}
+                                      aria-describedby={descriptionId}
+                                  >
+                                      <img alt="" src={InfoIcon} />
+                                  </button>
+                              </>
+                          )}
+                    <div id={descriptionId} className="govuk-visually-hidden" aria-live="polite">
+                        {isOpen ? descriptionElement : ''}
                     </div>
-                ) : (
-                    <div onMouseOver={popupRef.current?.open} onMouseOut={popupRef.current?.close}>
-                        <button
-                            tabIndex={tabIndex}
-                            className={styles.transparentButton}
-                            type="button"
-                            aria-label={props.altText}
-                            aria-describedby={descriptionId}
-                        >
-                            <img alt="" src={InfoIcon} />
-                        </button>
-                        <div id={descriptionId} className="govuk-visually-hidden">
-                            {descriptionElement}
-                        </div>
-                    </div>
-                )
-            }
+                </div>
+            )}
         >
             <div className={styles.displayFlexCenter}>
                 {descriptionElement}

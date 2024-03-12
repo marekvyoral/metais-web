@@ -7,16 +7,15 @@ import styles from './userView.module.scss'
 interface Props {
     handleBackNavigate: () => void
     handleResetForm: () => void
-    isError: boolean
     hideCancelButton?: boolean
     saveButtonLabel?: string
 }
 
-export const UserManagementFormButtons: React.FC<Props> = ({ handleBackNavigate, handleResetForm, isError, hideCancelButton, saveButtonLabel }) => {
+export const UserManagementFormButtons: React.FC<Props> = ({ handleBackNavigate, handleResetForm, hideCancelButton, saveButtonLabel }) => {
     const { t } = useTranslation()
     return (
         <div className={styles.formButtonsWrapper}>
-            <Button label={saveButtonLabel ?? t('managementList.save')} type="submit" disabled={isError} />
+            <Button label={saveButtonLabel ?? t('managementList.save')} type="submit" />
             {!hideCancelButton && (
                 <Button
                     className={styles.cancelButton}

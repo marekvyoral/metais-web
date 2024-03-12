@@ -158,7 +158,6 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                     pageSize: userManagementFilter.pageSize ?? BASE_PAGE_SIZE,
                     dataLength: data.dataLength,
                 }}
-                selectedRowsCount={Object.keys(rowSelection).length}
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 createButton={
@@ -175,10 +174,11 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                         variant="secondary"
                     />
                 }
+                selectedRowsCount={Object.keys(rowSelection).length}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                bulkPopup={
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={Object.keys(rowSelection).length}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'buttonBlock'}
@@ -210,7 +210,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                             />,
                         ]}
                     />
-                }
+                )}
                 entityName={''}
             />
             <UserManagementListTable
