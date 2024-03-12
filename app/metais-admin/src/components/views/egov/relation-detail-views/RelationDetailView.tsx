@@ -91,7 +91,7 @@ export const RelationDetailView = ({
                             <Button
                                 label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
                                 onClick={() => unValidRelationShipTypeMutation?.(ciTypeData?.technicalName)}
-                                disabled={ciTypeData?.type !== AttributeProfileType.custom}
+                                disabled={ciTypeData?.type === AttributeProfileType.system}
                             />
                         </ButtonGroupRow>
                     </div>

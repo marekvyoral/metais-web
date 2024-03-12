@@ -385,7 +385,7 @@ export const ProfileDetailView = <T,>({
                                 <Button
                                     label={profileData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
                                     onClick={() => setValidityOfProfile(profileData?.technicalName)}
-                                    disabled={profileData?.type !== AttributeProfileType.custom}
+                                    disabled={profileData?.type === AttributeProfileType.system}
                                 />
                             </div>
                         </div>

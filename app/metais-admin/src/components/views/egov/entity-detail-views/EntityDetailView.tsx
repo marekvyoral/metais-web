@@ -93,7 +93,7 @@ export const EntityDetailView = ({
                             <Button
                                 label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
                                 onClick={() => setValidityOfEntity(ciTypeData?.technicalName)}
-                                disabled={ciTypeData?.type !== AttributeProfileType.custom}
+                                disabled={ciTypeData?.type === AttributeProfileType.system}
                             />
                         </ButtonGroupRow>
                     </div>
