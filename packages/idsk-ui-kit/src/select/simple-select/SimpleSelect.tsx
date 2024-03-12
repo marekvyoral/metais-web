@@ -27,6 +27,7 @@ interface ISelectProps<T> {
     isClearable?: boolean
     menuPosition?: MenuPosition
     required?: boolean
+    tabIndex?: number
 }
 
 export const SimpleSelect = <T,>({
@@ -50,6 +51,7 @@ export const SimpleSelect = <T,>({
     isClearable,
     menuPosition,
     required,
+    tabIndex,
 }: ISelectProps<T>) => {
     const handleOnChange = (selectedOption: MultiValue<IOption<T>> | SingleValue<IOption<T>>) => {
         const opt: IOption<T> | undefined = Array.isArray(selectedOption) ? selectedOption[0] : selectedOption
@@ -79,6 +81,7 @@ export const SimpleSelect = <T,>({
             menuPosition={menuPosition}
             onChange={handleOnChange}
             required={required}
+            tabIndex={tabIndex}
         />
     )
 }

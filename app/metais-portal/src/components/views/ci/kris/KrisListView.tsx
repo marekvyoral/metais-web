@@ -69,7 +69,7 @@ export const KrisListView: React.FC<ICiListContainerView<KRISFilterType>> = ({
 
             <Filter<KRISFilterType>
                 defaultFilterValues={defaultFilterValues}
-                form={({ filter, setValue }) => {
+                form={({ filter, setValue, isOpen }) => {
                     const ownerInputName = formatAttributeOperatorString(MetainformationColumns.OWNER, OPERATOR_OPTIONS_URL.FULLTEXT)
                     const defaultValuesAsUuids = filter.metaAttributeFilters?.liableEntity?.map((item) => item ?? '') ?? []
 
@@ -106,6 +106,7 @@ export const KrisListView: React.FC<ICiListContainerView<KRISFilterType>> = ({
                                 attributeProfiles={[]}
                                 constraintsData={constraintsData}
                                 ignoreInputNames={[MetainformationColumns.OWNER, MetainformationColumns.CREATED_AT, MetainformationColumns.STATE]}
+                                isFocusable={isOpen}
                             />
                         </div>
                     )

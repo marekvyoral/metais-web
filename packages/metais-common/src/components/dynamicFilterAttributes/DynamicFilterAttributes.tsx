@@ -56,6 +56,7 @@ interface Props {
     constraintsData: (EnumType | undefined)[] | undefined
     ignoreInputNames?: string[]
     ciName?: string
+    isFocusable?: boolean
 }
 
 export const DynamicFilterAttributes: FC<Props> = ({
@@ -67,6 +68,7 @@ export const DynamicFilterAttributes: FC<Props> = ({
     defaults,
     ignoreInputNames,
     ciName,
+    isFocusable = true,
 }) => {
     const attributeFiltersData = filterData?.attributeFilters
     const metaAttributeFiltersData = filterData?.metaAttributeFilters
@@ -208,6 +210,7 @@ export const DynamicFilterAttributes: FC<Props> = ({
                         attributeType={findAttributeType(attribute.name ?? '', combinedAttributes)}
                         currentAttribute={attribute}
                         attributeConstraints={findAttributeConstraints(attribute.name ?? '', combinedAttributes, constraintsData ?? [])}
+                        isFocusable={isFocusable}
                     />
                 )
             })}

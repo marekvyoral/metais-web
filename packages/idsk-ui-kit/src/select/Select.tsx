@@ -36,6 +36,7 @@ interface ISelectProps<T> {
     isClearable?: boolean
     menuPosition?: MenuPosition
     required?: boolean
+    tabIndex?: number
 }
 
 export const Select = <T,>({
@@ -58,6 +59,7 @@ export const Select = <T,>({
     isClearable = true,
     menuPosition = 'fixed',
     required,
+    tabIndex,
 }: ISelectProps<T>) => {
     const Option = (props: OptionProps<IOption<T>>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
@@ -106,6 +108,7 @@ export const Select = <T,>({
                     ariaLiveMessages={localMessages.ariaLiveMessages}
                     screenReaderStatus={localMessages.screenReaderStatus}
                     loadingMessage={localMessages.loadingMessage}
+                    tabIndex={tabIndex}
                     required={required}
                 />
                 {correct && <img src={GreenCheckMarkIcon} className={isClearable ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />}

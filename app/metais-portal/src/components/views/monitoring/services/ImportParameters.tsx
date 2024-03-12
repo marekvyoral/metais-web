@@ -1,7 +1,7 @@
 import { FileImportStepEnum, MutationFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@isdd/idsk-ui-kit/index'
+import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { FileImportList } from '@isdd/metais-common/components/file-import/FileImportList'
@@ -86,6 +86,7 @@ export const ImportParametersView: React.FC<IImportParametersView> = () => {
 
     return (
         <MainContentWrapper>
+            <TextHeading size="XL">{t('navMenu.lists.monitoringImport')}</TextHeading>
             <MutationFeedback
                 success={uploadFilesStatus[0]?.response?.body?.ok === true ?? false}
                 error={false}

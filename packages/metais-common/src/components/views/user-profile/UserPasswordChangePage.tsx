@@ -75,13 +75,27 @@ export const UserPasswordChangePage = () => {
                 successMessage={t('feedback.passwordChanged')}
                 onMessageClose={() => setIsSuccess(false)}
             />
-            <Input {...register('oldPassword')} label={t('userProfile.oldPassword')} error={formState.errors.oldPassword?.message} type="password" />
-            <Input {...register('newPassword')} label={t('userProfile.newPassword')} error={formState.errors.newPassword?.message} type="password" />
+            <Input
+                {...register('oldPassword')}
+                required
+                label={t('userProfile.oldPassword')}
+                error={formState.errors.oldPassword?.message}
+                type="password"
+            />
+            <Input
+                {...register('newPassword')}
+                required
+                hint={t('validation.password')}
+                label={t('userProfile.newPassword')}
+                error={formState.errors.newPassword?.message}
+                type="password"
+            />
             <Input
                 {...register('newPasswordRepeat')}
                 label={t('userProfile.repeatPassword')}
                 error={formState.errors.newPasswordRepeat?.message}
                 type="password"
+                required
             />
             <Button label={t('userProfile.save')} type="submit" />
         </form>

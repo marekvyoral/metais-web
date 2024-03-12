@@ -40,7 +40,7 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
     return (
         <Filter<POFilterData>
             defaultFilterValues={defaultFilterValues}
-            form={({ register, filter, setValue }) => (
+            form={({ register, filter, setValue, isOpen }) => (
                 <div>
                     <Input label={t(`filter.${PO}.name`)} placeholder={t(`filter.namePlaceholder`)} {...register(ATTRIBUTE_NAME.Gen_Profil_nazov)} />
                     <Input label={t('filter.metaisCode.label')} placeholder={codePrefix} {...register('Gen_Profil_kod_metais')} />
@@ -76,6 +76,7 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
                         constraintsData={constraintsData}
                         setValue={setValue}
                         filterData={{ attributeFilters: filter.attributeFilters ?? {}, metaAttributeFilters: filter.metaAttributeFilters ?? {} }}
+                        isFocusable={isOpen}
                     />
                 </div>
             )}

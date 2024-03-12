@@ -78,7 +78,7 @@ const RefRegistersDetail = () => {
     }, [referenceRegisterData, isLoading, currentState, stateMachineService])
     const refRegisterIdHeaderIsLoading = isLoading && currentState !== StateMachineStatesExtension.FETCHING
 
-    document.title = formatTitleString(referenceRegisterData?.isvsName ?? '')
+    document.title = formatTitleString(t('refRegisters.detail.title', { name: referenceRegisterData?.isvsName ?? '' }))
     return (
         <>
             <BreadCrumbs
@@ -112,7 +112,7 @@ const RefRegistersDetail = () => {
                             <Tabs tabList={tabList} />
                             {showList && (
                                 <>
-                                    <TextHeading size="XL">{t('refRegisters.detail.items.heading')}</TextHeading>
+                                    <TextHeading size="L">{t('refRegisters.detail.items.heading')}</TextHeading>
                                     <RefRegisterItemsContainer
                                         entityId={entityId ?? ''}
                                         View={(props) => (

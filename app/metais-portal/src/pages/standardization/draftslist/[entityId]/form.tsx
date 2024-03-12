@@ -38,7 +38,7 @@ const DraftDetailView: FC<DraftDetailViewProps> = ({ entityId, isLoading, isErro
     const { t } = useTranslation()
     const { requestData } = data
     const { isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
-    document.title = formatTitleString(requestData?.name ?? '')
+    document.title = formatTitleString(t('draftsList.detail', { name: requestData?.name ?? '' }))
 
     return (
         <>

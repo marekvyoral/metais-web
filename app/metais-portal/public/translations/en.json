@@ -1707,6 +1707,7 @@
             "code": "Code"
         },
         "detail": {
+            "title": "Referential register detail of {{name}}",
             "informations": "Basic informations",
             "history": "History of changes",
             "historyChanges": "History of state changes",
@@ -2258,7 +2259,8 @@
                 "organization": "Organization",
                 "role": "Role"
             },
-            "save": "Save"
+            "save": "Save",
+            "detail": "Voting detail of {{name}}"
         },
         "voteEdit": {
             "newVoteTitle": "Add new vote",
@@ -2397,7 +2399,8 @@
         "heading": "Standards of ISVS"
     },
     "draftsList": {
-        "heading": "Drafts list"
+        "heading": "Drafts list",
+        "detail": "Draft detail of {{name}}"
     },
     "howto": {
         "guides": "Procedures and guides"
@@ -2704,7 +2707,9 @@
         "endTypeName": "Type (target)",
         "endName": "Name (target)",
         "endKodMetaIS": "MetaIS code (target)",
-        "relType": "Relationship type"
+        "relType": "Relationship type",
+        "summary": "Relationship summary",
+        "summaryValue": "Relationship from <strong>{{startName}}</strong> to <strong>{{endName}}</strong>"
     },
     "slaContracts": {
         "columns": {

@@ -1753,6 +1753,7 @@
             "code": "Kód"
         },
         "detail": {
+            "title": "Detail referenčného registra {{name}}",
             "informations": "Základné informácie",
             "history": "História zmien",
             "historyChanges": "História zmeny stavov",
@@ -2266,7 +2267,8 @@
                 "organization": "Organizácia",
                 "role": "Rola"
             },
-            "save": "Uložiť"
+            "save": "Uložiť",
+            "detail": "Detail hlasovania {{name}}"
         },
         "voteEdit": {
             "newVoteTitle": "Pridať nové hlasovanie",
@@ -2403,7 +2405,8 @@
         "heading": "Štandardy ITVS"
     },
     "draftsList": {
-        "heading": "Zoznam návrhov predložených prostredníctvom MetaIS"
+        "heading": "Zoznam návrhov predložených prostredníctvom MetaIS",
+        "detail": "Detail návrhu {{name}}"
     },
     "howto": {
         "guides": "Postupy a návody"
@@ -2710,7 +2713,9 @@
         "endTypeName": "Typ (cieľ)",
         "endName": "Názov (cieľ)",
         "endKodMetaIS": "MetaIS kód (cieľ)",
-        "relType": "Typ vzťahu"
+        "relType": "Typ vzťahu",
+        "summary": "Zhrnutie vzťahu",
+        "summaryValue": "Vzťah z <strong>{{startName}}</strong> na <strong>{{endName}}</strong>"
     },
     "slaContracts": {
         "columns": {
