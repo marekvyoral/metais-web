@@ -7,7 +7,6 @@ import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { DMS_DOWNLOAD_FILE } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUi, getReadCiNeighboursQueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import {
@@ -174,7 +173,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             header: t('documentsTab.table.createdAt'),
             id: 'documentsTab.table.createdAt',
             size: 100,
-            cell: (row) => formatDateTimeForDefaultValue(row.getValue() as string),
+            cell: (ctx) => t('dateTime', { date: ctx.getValue() as string }),
         },
         ...(isUserLogged
             ? [
@@ -192,7 +191,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             header: t('documentsTab.table.lastModifiedAt'),
             id: 'documentsTab.table.lastModifiedAt',
             size: 100,
-            cell: (row) => formatDateTimeForDefaultValue(row.getValue() as string),
+            cell: (ctx) => t('dateTime', { date: ctx.getValue() as string }),
         },
         ...(isUserLogged
             ? [
