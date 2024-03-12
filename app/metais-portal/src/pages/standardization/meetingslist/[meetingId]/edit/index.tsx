@@ -16,6 +16,10 @@ const MeetingEditPage = () => {
                     infoData={props.infoData}
                     isLoading={props.isLoading}
                     isError={props.isError}
+                    fileUploadRef={props.fileUploadRef}
+                    handleDeleteSuccess={props.handleDeleteSuccess}
+                    handleUploadSuccess={props.handleUploadSuccess}
+                    id={props.id}
                 />
             )}
         />

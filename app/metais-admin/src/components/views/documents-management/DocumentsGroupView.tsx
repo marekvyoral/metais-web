@@ -1,6 +1,6 @@
 import { BaseModal, Button, ButtonGroupRow, ButtonLink, ISelectColumnType, Tab, Table, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
-import { useDeleteContent } from '@isdd/metais-common/api/generated/dms-swagger'
+import { RefAttributesRefType, useDeleteContent } from '@isdd/metais-common/api/generated/dms-swagger'
 import { Document, getGetDocumentsQueryKey, useSaveDocument } from '@isdd/metais-common/api/generated/kris-swagger'
 import { FileUpload, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
@@ -375,6 +375,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
                                 })
                             }}
                             multiple={false}
+                            refType={RefAttributesRefType.CI}
                         />
                         <ModalButtons
                             submitButtonLabel={t('codelists.save')}

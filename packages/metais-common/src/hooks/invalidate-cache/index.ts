@@ -24,11 +24,12 @@ import {
     getGetOriginalCodelistHeaderQueryKey,
     getGetTemporalCodelistHeaderWithLockQueryKey,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { getGetMetaQueryKey } from '@isdd/metais-common/api/generated/dms-swagger'
 import { getFind2111QueryKey, getFindByUuid3QueryKey, getFindRelatedIdentitiesAndCountQueryKey } from '@isdd/metais-common/api/generated/iam-swagger'
 import { getGetTraineesQueryKey, getGetTrainingsForUserQueryKey } from '@isdd/metais-common/api/generated/trainings-swagger'
 import { getGetAttributeProfileQueryKey } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
+import { getGetVoteDetailQueryKey } from '@isdd/metais-common/api/generated/standards-swagger'
+import { getGetMeta1QueryKey } from '@isdd/metais-common/api/generated/dms-swagger'
 
 const isCiListFilterContainerUi = (obj: unknown): obj is CiListFilterContainerUi => {
     return !!obj && typeof obj === 'object'
@@ -73,7 +74,7 @@ export const useInvalidateDmsFileCache = () => {
     const queryClient = useQueryClient()
 
     const invalidate = (ciItemUuid: string) => {
-        const QK = getGetMetaQueryKey(ciItemUuid)
+        const QK = getGetMeta1QueryKey(ciItemUuid)
         queryClient.invalidateQueries(QK)
     }
 
@@ -235,6 +236,16 @@ export const useInvalidateCiReadCache = () => {
 
     const invalidate = (uuid: string) => {
         const ciQueryKey = getReadConfigurationItemQueryKey(uuid)
+        queryClient.invalidateQueries(ciQueryKey)
+    }
+    return { invalidate }
+}
+
+export const useInvalidateVoteCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (id: number) => {
+        const ciQueryKey = getGetVoteDetailQueryKey(id)
         queryClient.invalidateQueries(ciQueryKey)
     }
     return { invalidate }

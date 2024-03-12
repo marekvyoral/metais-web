@@ -1,18 +1,13 @@
 import { BaseModal, TextArea, TextBody } from '@isdd/idsk-ui-kit/index'
 import { ApiReferenceRegisterState, useGenerateReferenceRegisterByUuidHook } from '@isdd/metais-common/api/generated/reference-registers-swagger'
-import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
-import React, { useContext, useState } from 'react'
+import { useCallback, useContext, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { StatusBar } from '@uppy/react'
-import { FileImportList } from '@isdd/metais-common/components/file-import/FileImportList'
 import { FieldValues, useForm } from 'react-hook-form'
-import { useUppy } from '@isdd/metais-common/hooks/useUppy'
-import { DMS_DOWNLOAD_BASE, DMS_DOWNLOAD_FILE, FileImportStepEnum, ModalButtons } from '@isdd/metais-common/index'
+import { DMS_DOWNLOAD_FILE, ModalButtons } from '@isdd/metais-common/index'
 import { useStateMachine } from '@isdd/metais-common/components/state-machine/hooks/useStateMachine'
-import stylesImport from '@isdd/metais-common/components/file-import/FileImport.module.scss'
-import { UppyFile } from '@uppy/core'
-import { v4 as uuidV4 } from 'uuid'
-import { ApiStandardRequestRequestChannel, useCreateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ApiStandardRequest, ApiStandardRequestRequestChannel, useCreateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
+import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 
 import { downloadFile } from '@/components/views/documents/utils'
 import { RefRegisterStateMachine } from '@/pages/refregisters/[entityId]'
@@ -24,6 +19,7 @@ interface IRefRegisterChangeStateModal {
     targetState: ApiReferenceRegisterState | undefined
     handleChangeState: (attachementIds: string[], description: string) => Promise<void>
     entityItemName: string
+    owner: string
 }
 
 export const RefRegisterChangeStateModal = ({
@@ -33,6 +29,7 @@ export const RefRegisterChangeStateModal = ({
     targetState,
     handleChangeState,
     entityItemName,
+    owner,
 }: IRefRegisterChangeStateModal) => {
     const refRegisterStateContext = useContext(RefRegisterStateMachine)
 
@@ -41,36 +38,16 @@ export const RefRegisterChangeStateModal = ({
     const machine = useStateMachine({ stateContext: refRegisterStateContext })
 
     const { t } = useTranslation()
-    const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
+    const [desc, setDesc] = useState('')
 
     const generate = useGenerateReferenceRegisterByUuidHook()
     const standardRequest = useCreateStandardRequest()
-    const { uppy, currentFiles, handleRemoveFile, uploadFilesStatus, handleUpload, generalErrorMessages, removeGeneralErrorMessages } = useUppy({
-        multiple: true,
-        fileImportStep,
-        endpointUrl: `${DMS_DOWNLOAD_BASE}`,
-        setFileImportStep,
-        setCustomFileMeta: () => {
-            const id = uuidV4()
-            return {
-                'x-content-uuid': id,
-                refAttributes: new Blob(
-                    [
-                        JSON.stringify({
-                            refType: 'STANDARD',
-                        }),
-                    ],
-                    { type: 'application/json' },
-                ),
-            }
-        },
-    })
+    const fileUploadRef = useRef<IFileUploadRef>(null)
 
-    const requestData = {
+    const requestData: ApiStandardRequest = {
         name: 'Žiadosť o zaradenie ISVS: ' + entityItemName + ' do zoznamu referenčných registrov',
         description:
             'Vecný popis návrhu nového štandardu: Základné údaje referenčného registra aopis referenčných údajov je uvedený v priloženom súbore.',
-
         attachments: [],
         requestChannel: ApiStandardRequestRequestChannel.RR,
         requestChannelAttributes: [
@@ -81,37 +58,65 @@ export const RefRegisterChangeStateModal = ({
         ],
     }
 
+    const handleUploadData = useCallback(() => {
+        fileUploadRef.current?.startUploading()
+    }, [])
+
+    const onStandardRequestSuccess = () => {
+        if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+            handleUploadData()
+        }
+    }
+
+    const handleUploadSuccess = async (data: FileUploadData[]) => {
+        const currentFilesIds = data?.map((file: FileUploadData) => file.fileId ?? '')
+        await handleChangeState(currentFilesIds ?? [], desc)
+        targetState && machine.changeState(targetState)
+        reset()
+        setOpenChangeStateDialog(false)
+    }
+
     const onSubmit = async (formValues: FieldValues) => {
         if (targetState) {
+            setDesc(formValues.description)
             if (targetState === ApiReferenceRegisterState.MPK_IN_PROGRESS) {
                 const metadata = await generate(entityId)
 
                 downloadFile(`${DMS_DOWNLOAD_FILE}${metadata?.uuid}`, metadata?.uuid ?? '')
-            }
-            if (targetState === ApiReferenceRegisterState.APPROVAL_IN_PROGRESS) {
+            } else if (targetState === ApiReferenceRegisterState.APPROVAL_IN_PROGRESS) {
                 const metadata = await generate(entityId)
-                standardRequest.mutateAsync({
-                    data: {
-                        ...requestData,
-                        attachments: [
-                            {
-                                attachmentId: entityId,
-                                attachmentName: metadata.filename,
-                            },
-                        ],
+                standardRequest.mutateAsync(
+                    {
+                        data: {
+                            ...requestData,
+                            attachments: [
+                                {
+                                    attachmentId: entityId,
+                                    attachmentName: metadata.filename,
+                                },
+                            ],
+                        },
                     },
-                })
+                    { onSuccess: onStandardRequestSuccess, onError: onStandardRequestSuccess },
+                )
+            } else {
+                handleUploadData()
             }
-
-            if (currentFiles?.length > 0) await handleUpload()
-            const currentFilesIds = currentFiles?.map((file: UppyFile) => file.meta['x-content-uuid'] as string)
-            await handleChangeState(currentFilesIds ?? [], formValues?.description)
-            machine.changeState(targetState)
-            reset()
-            setOpenChangeStateDialog(false)
         }
     }
-
+    const fileMetaAttributes = {
+        refAttributes: new Blob(
+            [
+                JSON.stringify({
+                    refCiTechnicalName: 'ReferenceRegister',
+                    refCiOwner: owner,
+                    refType: RefAttributesRefType.CI,
+                    refCiId: entityId,
+                }),
+            ],
+            { type: 'application/json' },
+        ),
+    }
     return (
         <BaseModal isOpen={openChangeStateDialog} close={() => setOpenChangeStateDialog(false)}>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -123,25 +128,16 @@ export const RefRegisterChangeStateModal = ({
                         </>
                     )}
                     <TextArea rows={3} {...register('description')} label={t('refRegisters.header.description')} />
-                    <FileImportDragDrop uppy={uppy} />
-                    <div>
-                        <StatusBar
-                            className={stylesImport.statusBar}
-                            uppy={uppy}
-                            hideAfterFinish={false}
-                            hideCancelButton
-                            hidePauseResumeButton
-                            hideRetryButton
-                            hideUploadButton
-                        />
-                        <FileImportList
-                            handleRemoveFile={handleRemoveFile}
-                            fileList={currentFiles}
-                            uploadFilesStatus={uploadFilesStatus}
-                            generalErrorMessages={generalErrorMessages}
-                            removeGeneralErrorMessages={removeGeneralErrorMessages}
-                        />
-                    </div>
+
+                    <FileUpload
+                        ref={fileUploadRef}
+                        allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
+                        multiple
+                        refType={RefAttributesRefType.CI}
+                        onUploadSuccess={handleUploadSuccess}
+                        refId={entityId}
+                        fileMetaAttributes={fileMetaAttributes}
+                    />
 
                     <ModalButtons
                         submitButtonLabel={

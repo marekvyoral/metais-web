@@ -2,11 +2,14 @@ import { Gui_Profil_Standardy } from '@isdd/metais-common/api'
 import { useCreateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { Attribute, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { guiProfilStandardRequestMap } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
+import { FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+
+import { mapUploadedFilesToApiAttachment } from '@/components/views/standardization/votes/VoteComposeForm/functions/voteEditFunc'
 
 interface IViewProps {
     onSubmit: (values: FieldValues) => Promise<void>
@@ -15,18 +18,40 @@ interface IViewProps {
     guiAttributes: Attribute[]
     isGuiDataLoading: boolean
     isGuiDataError: boolean
+    fileUploadRef: React.RefObject<IFileUploadRef>
+    handleUploadSuccess: (data: FileUploadData[]) => void
+    sendData: (values: FieldValues, name?: string, email?: string, capthcaToken?: string) => Promise<void>
+    id: number
 }
 interface DraftsListFormContainerProps {
     View: React.FC<IViewProps>
 }
+
+const baseURL = import.meta.env.VITE_REST_CLIENT_STANDARDS_TARGET_URL
+
 export const DraftsListCreateContainer: React.FC<DraftsListFormContainerProps> = ({ View }) => {
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
+    const fileUploadRef = useRef<IFileUploadRef>(null)
+
+    const [draftlistId, setDraftlistId] = useState(0)
+    const [customLoading, setCustomLoading] = useState(false)
+    const [customError, setCustomError] = useState(false)
+    const [creatingFilesLoading, setCreatingFilesLoading] = useState(false)
+
+    const handleUploadData = useCallback(() => {
+        fileUploadRef.current?.startUploading()
+    }, [])
+
     const { mutateAsync, isError, isLoading } = useCreateStandardRequest({
         mutation: {
-            onSuccess() {
-                setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV, additionalInfo: { type: 'create' } })
-                navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV)
+            onSuccess(data) {
+                setDraftlistId(data.id ?? 0)
+                setTimeout(() => {
+                    if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                        handleUploadData()
+                    }
+                }, 100)
             },
         },
     })
@@ -50,14 +75,65 @@ export const DraftsListCreateContainer: React.FC<DraftsListFormContainerProps> =
         })
     }
 
+    const sendData = async (values: FieldValues, name?: string, email?: string, capthcaToken?: string) => {
+        const files = fileUploadRef.current?.getFilesToUpload()
+        const fileIds = Object.values(fileUploadRef.current?.fileUuidsMapping().current ?? {})
+
+        if (capthcaToken) {
+            setCustomLoading(true)
+            const response = await fetch(`${baseURL}/standards/requests`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'recaptcha-response': capthcaToken },
+                body: JSON.stringify({
+                    ...values,
+                    name,
+                    email,
+                    attachments: mapUploadedFilesToApiAttachment(
+                        files?.map((file, index) => {
+                            return { ...file, fileId: fileIds[index] }
+                        }) ?? [],
+                    ),
+                }),
+            })
+            if (response.ok) {
+                if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                    setCustomLoading(false)
+                    handleUploadData()
+                }
+            } else {
+                setCustomLoading(false)
+                setCustomError(true)
+            }
+        } else {
+            handleSubmit({
+                ...values,
+                attachments: mapUploadedFilesToApiAttachment(
+                    files?.map((file, index) => {
+                        return { ...file, fileId: fileIds[index] }
+                    }) ?? [],
+                ),
+            })
+        }
+    }
+
+    const handleUploadSuccess = () => {
+        setCreatingFilesLoading(false)
+        setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV, additionalInfo: { type: 'create' } })
+        navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV)
+    }
+
     return (
         <View
             onSubmit={handleSubmit}
-            isError={isError}
-            isLoading={isLoading}
+            isError={isError || customError}
+            isLoading={isLoading || customLoading || creatingFilesLoading}
             guiAttributes={guiAttributes}
             isGuiDataLoading={isGuiDataLoading}
             isGuiDataError={isGuiDataError}
+            fileUploadRef={fileUploadRef}
+            handleUploadSuccess={handleUploadSuccess}
+            sendData={sendData}
+            id={draftlistId}
         />
     )
 }

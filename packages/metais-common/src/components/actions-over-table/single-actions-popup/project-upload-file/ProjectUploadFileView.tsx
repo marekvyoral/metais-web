@@ -10,6 +10,7 @@ import styles from '@isdd/metais-common/components/actions-over-table/actionsOve
 import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 import { ModalButtons } from '@isdd/metais-common/components/modal-buttons/ModalButtons'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 
 interface IProjectUploadFileViewProps {
     items?: ConfigurationItemUi[]
@@ -69,6 +70,7 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
                     onUploadSuccess={onFileUploadSuccess}
                     onFileUploadFailed={onFileUploadFailed}
                     setCurrentFiles={setCurrentFiles}
+                    refType={RefAttributesRefType.CI}
                 />
                 {duplicateDocNamesError && (
                     <MutationFeedback success={false} error={duplicateDocNamesError} onMessageClose={() => setDuplicateDocNamesError('')} />

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -12,10 +12,16 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useQueryClient } from '@tanstack/react-query'
 import { GET_MEETING_REQUEST_DETAIL } from '@isdd/metais-common/constants'
+import { FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { formatDateTimeForAPI } from '@isdd/metais-common/index'
 
 import { MeetingCreateEditView } from '@/components/views/standardization/meetings/MeetingCreateEditView'
 import { MeetingFormEnum } from '@/components/views/standardization/meetings/meetingSchema'
+import { IExistingFilesHandlerRef } from '@/components/views/standardization/votes/VoteComposeForm/components/ExistingFilesHandler/ExistingFilesHandler'
+import {
+    mapProcessedExistingFilesToApiAttachment,
+    mapUploadedFilesToApiAttachment,
+} from '@/components/views/standardization/votes/VoteComposeForm/functions/voteEditFunc'
 
 export interface IMeetingForm {
     name: string
@@ -33,6 +39,10 @@ export interface IMeetingEditViewParams {
     id?: string
     isLoading: boolean
     isError: boolean
+    fileUploadRef: React.RefObject<IFileUploadRef>
+    existingFilesProcessRef?: React.RefObject<IExistingFilesHandlerRef>
+    handleUploadSuccess: (data: FileUploadData[]) => void
+    handleDeleteSuccess: () => void
 }
 
 interface IMeetingEditContainer {
@@ -45,8 +55,23 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
     const { setIsActionSuccess } = useActionSuccess()
     const { data: infoData, isLoading: meetingDetailLoading, isError: meetingDetailError, refetch } = useGetMeetingRequestDetail(Number(id))
     const queryClient = useQueryClient()
+
     const goBack = () => {
-        navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}`)
+        navigate(NavigationSubRoutes.ZOZNAM_ZASADNUTI)
+    }
+    const fileUploadRef = useRef<IFileUploadRef>(null)
+    const existingFilesProcessRef = useRef<IExistingFilesHandlerRef>(null)
+    const attachmentsDataRef = useRef<ApiAttachment[]>([])
+
+    const [creatingFilesLoading, setCreatingFilesLoading] = useState(false)
+    const [deletingFilesLoading, setDeletingFilesLoading] = useState(false)
+
+    const handleUploadData = useCallback(() => {
+        fileUploadRef.current?.startUploading()
+    }, [])
+
+    const handleDeleteFiles = () => {
+        existingFilesProcessRef?.current?.startFilesProcessing()
     }
     const {
         mutate: updateMeeting,
@@ -55,17 +80,24 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
     } = useUpdateMeetingRequest({
         mutation: {
             onSuccess() {
-                refetch().then(() => {
-                    setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}` })
-                    queryClient.invalidateQueries([GET_MEETING_REQUEST_DETAIL])
-                    goBack()
-                })
+                setCreatingFilesLoading(true)
+                if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                    handleUploadData()
+                }
             },
         },
     })
     const isLoading = meetingDetailLoading || updateMeetingLoading
     const isError = meetingDetailError || updateMeetingError
-    const onSubmit = (formData: FieldValues, attachments: ApiAttachment[]) => {
+    const onSubmit = (formData: FieldValues) => {
+        const files = fileUploadRef.current?.getFilesToUpload()
+        const fileIds = Object.values(fileUploadRef.current?.fileUuidsMapping().current ?? {})
+        const newFiles = mapUploadedFilesToApiAttachment(
+            files?.map((file, index) => {
+                return { ...file, fileId: fileIds[index] }
+            }) ?? [],
+        )
+        const existingFiles = mapProcessedExistingFilesToApiAttachment(existingFilesProcessRef.current?.getRemainingFileList() ?? [])
         updateMeeting({
             data: {
                 id: infoData?.id,
@@ -81,11 +113,50 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
                 ignorePersonalSettings: formData[MeetingFormEnum.IGNORE_PERSONAL_SETTINGS],
                 meetingExternalActors: formData[MeetingFormEnum.MEETING_EXTERNAL_ACTORS],
                 meetingLinks: formData[MeetingFormEnum.MEETING_LINKS].filter((meetingLink: ApiLink) => !!meetingLink),
-                meetingAttachments: attachments,
+                meetingAttachments: newFiles.concat(existingFiles),
             },
             meetingRequestId: infoData?.id || 0,
         })
     }
 
-    return <MeetingCreateEditView onSubmit={onSubmit} goBack={goBack} infoData={infoData} isEdit isLoading={isLoading} isError={isError} />
+    const handleDeleteSuccess = () => {
+        refetch().then(() => {
+            setDeletingFilesLoading(false)
+            setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}` })
+            queryClient.invalidateQueries([GET_MEETING_REQUEST_DETAIL])
+            goBack()
+        })
+    }
+
+    const handleUploadSuccess = (data: FileUploadData[]) => {
+        const attachmentsData = mapUploadedFilesToApiAttachment(data)
+        if (existingFilesProcessRef.current?.hasDataToProcess()) {
+            setDeletingFilesLoading(true)
+            attachmentsDataRef.current = attachmentsData
+            handleDeleteFiles()
+        } else {
+            refetch().then(() => {
+                setCreatingFilesLoading(false)
+                setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}` })
+                queryClient.invalidateQueries([GET_MEETING_REQUEST_DETAIL])
+                goBack()
+            })
+        }
+    }
+
+    return (
+        <MeetingCreateEditView
+            id={id}
+            onSubmit={onSubmit}
+            goBack={goBack}
+            infoData={infoData}
+            isEdit
+            isLoading={isLoading || creatingFilesLoading || deletingFilesLoading}
+            isError={isError}
+            fileUploadRef={fileUploadRef}
+            existingFilesProcessRef={existingFilesProcessRef}
+            handleDeleteSuccess={handleDeleteSuccess}
+            handleUploadSuccess={handleUploadSuccess}
+        />
+    )
 }
