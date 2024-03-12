@@ -6,6 +6,9 @@ export const formatDateForDefaultValue = (date: string, format = 'yyyy-MM-dd') =
 export const formatDateTimeForDefaultValue = (date: string, format = 'yyyy-MM-dd HH:mm') =>
     DateTime.fromJSDate(new Date(date)).isValid ? DateTime.fromJSDate(new Date(date)).toFormat(format) : ''
 
+export const formatDateTimeForAPI = (date: string, format = "yyyy-MM-dd'T'HH:mm:ss.SSS") =>
+    DateTime.fromJSDate(new Date(date)).isValid ? DateTime.fromJSDate(new Date(date)).toFormat(format) : ''
+
 export const formatDateTimeToIs = (date: string, format = 'yyyy-MM-dd HH:mm') =>
     DateTime.fromJSDate(new Date(date)).isValid ? DateTime.fromJSDate(new Date(date)).toFormat(format) : ''
 

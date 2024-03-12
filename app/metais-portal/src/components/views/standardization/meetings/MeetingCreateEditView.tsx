@@ -3,7 +3,7 @@ import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
+import { formatDateTimeForAPI, formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { QueryFeedback } from '@isdd/metais-common/index'
@@ -11,7 +11,7 @@ import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagg
 import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { v4 as uuidV4 } from 'uuid'
 import { formatTitleString } from '@isdd/metais-common/utils/utils'
-import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { DateInput, DateTypeEnum } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import styles from './createEditView.module.scss'
 import { MeetingFormEnum, createMeetingSchema, editMeetingSchema } from './meetingSchema'
@@ -105,9 +105,8 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                 })) || [],
             [MeetingFormEnum.GROUP]: infoData?.groups || [],
             [MeetingFormEnum.NAME]: infoData?.name || '',
-            [MeetingFormEnum.DATE]: formatDateForDefaultValue(infoData?.beginDate ?? ''),
-            [MeetingFormEnum.TIME_START]: formatDateTimeForDefaultValue(infoData?.beginDate ?? '', 'HH:mm'),
-            [MeetingFormEnum.TIME_END]: formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'),
+            [MeetingFormEnum.BEGIN_DATE]: formatDateTimeForDefaultValue(infoData?.beginDate ?? '', 'HH:mm'),
+            [MeetingFormEnum.END_DATE]: formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'),
             [MeetingFormEnum.PLACE]: infoData?.place || '',
             [MeetingFormEnum.MEETING_LINKS]:
                 infoData?.meetingLinks?.map((link) => ({
@@ -185,9 +184,8 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
         )
         setValue(MeetingFormEnum.GROUP, infoData?.groups || [])
         setValue(MeetingFormEnum.NAME, infoData?.name || '')
-        setValue(MeetingFormEnum.DATE, formatDateForDefaultValue(infoData?.beginDate ?? ''))
-        setValue(MeetingFormEnum.TIME_START, formatDateTimeForDefaultValue(infoData?.beginDate ?? '', 'HH:mm'))
-        setValue(MeetingFormEnum.TIME_END, formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'))
+        setValue(MeetingFormEnum.BEGIN_DATE, formatDateTimeForAPI(infoData?.beginDate ?? ''))
+        setValue(MeetingFormEnum.END_DATE, formatDateTimeForAPI(infoData?.endDate ?? ''))
         setValue(MeetingFormEnum.PLACE, infoData?.place || '')
         setSelectedProposals(infoData?.standardRequestIds?.map((o) => o.toString()) ?? [])
     }, [infoData, setValue])
@@ -203,7 +201,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
             { type: 'application/json' },
         ),
     }
-
+    const startDate = watch(MeetingFormEnum.BEGIN_DATE)
     return (
         <>
             {!isEdit && (
@@ -253,34 +251,27 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                         <GridRow>
                             <GridCol setWidth="one-half">
                                 <DateInput
-                                    label={`${t('meetings.form.date')} (${t('meetings.mandatory')}):`}
-                                    id={MeetingFormEnum.DATE}
-                                    error={errors[MeetingFormEnum.DATE]?.message}
-                                    {...register(MeetingFormEnum.DATE, { value: formatDateForDefaultValue(infoData?.beginDate ?? '') })}
+                                    label={`${t('meetings.start')} (${t('meetings.mandatory')}):`}
+                                    id={MeetingFormEnum.BEGIN_DATE}
+                                    error={errors[MeetingFormEnum.BEGIN_DATE]?.message}
+                                    {...register(MeetingFormEnum.BEGIN_DATE, { value: formatDateTimeForAPI(infoData?.beginDate ?? '') })}
                                     control={control}
                                     setValue={setValue}
+                                    type={DateTypeEnum.DATETIME}
                                 />
                             </GridCol>
-                            <GridCol setWidth="one-quarter">
-                                <Input
-                                    label={`${t('meetings.form.timeStart')} (${t('meetings.mandatory')}):`}
-                                    type="time"
-                                    id={MeetingFormEnum.TIME_START}
-                                    error={errors[MeetingFormEnum.TIME_START]?.message}
-                                    {...register(MeetingFormEnum.TIME_START, {
-                                        value: formatDateTimeForDefaultValue(infoData?.beginDate ?? '', 'HH:mm'),
-                                    })}
-                                />
-                            </GridCol>
-                            <GridCol setWidth="one-quarter">
-                                <Input
-                                    label={`${t('meetings.form.timeEnd')} (${t('meetings.mandatory')}):`}
-                                    type="time"
-                                    id={MeetingFormEnum.TIME_END}
-                                    error={errors[MeetingFormEnum.TIME_END]?.message}
-                                    {...register(MeetingFormEnum.TIME_END, {
-                                        value: formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'),
-                                    })}
+                            <GridCol setWidth="one-half">
+                                <DateInput
+                                    disabled={!startDate}
+                                    label={`${t('meetings.end')} (${t('meetings.mandatory')}):`}
+                                    id={MeetingFormEnum.END_DATE}
+                                    error={errors[MeetingFormEnum.END_DATE]?.message}
+                                    {...register(MeetingFormEnum.END_DATE, { value: formatDateTimeForAPI(infoData?.beginDate ?? '') })}
+                                    control={control}
+                                    setValue={setValue}
+                                    type={DateTypeEnum.DATETIME}
+                                    maxDate={new Date(startDate)}
+                                    minDate={new Date(startDate)}
                                 />
                             </GridCol>
                         </GridRow>
