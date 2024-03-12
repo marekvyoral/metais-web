@@ -37,7 +37,6 @@ const AttrProfileFilter = ({ defaultFilterValues }: Props) => {
                         options={[
                             { value: 'application', label: t('tooltips.type.application') },
                             { value: 'system', label: t('tooltips.type.system') },
-                            { value: 'custom', label: t('tooltips.type.custom') },
                         ]}
                         setValue={setValue}
                         defaultValue={filter.type || defaultFilterValues.type}

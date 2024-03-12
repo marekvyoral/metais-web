@@ -32,7 +32,7 @@ export const MoreActionsColumn = ({
                     return (
                         <div className={styles.actions}>
                             <ButtonLink onClick={() => editRow(ctx?.row?.original.id ?? 0)} label={t('actionsInTable.edit')} />
-                            {profile?.type === AttributeProfileType.custom && (
+                            {profile?.type === AttributeProfileType.application && (
                                 <ButtonLink
                                     onClick={() => {
                                         setValidityOfAttributeProfile?.(ctx?.row?.original?.technicalName, ctx?.row?.original?.valid)

@@ -13,7 +13,6 @@ export const EntityFilter = ({ defaultFilterValues }: Props) => {
     const typeOptions: IOption<string>[] = [
         { label: t('tooltips.type.application'), value: 'application' },
         { label: t('tooltips.type.system'), value: 'system' },
-        { label: t('tooltips.type.custom'), value: 'custom' },
     ]
 
     const validOption: IOption<string>[] = [
