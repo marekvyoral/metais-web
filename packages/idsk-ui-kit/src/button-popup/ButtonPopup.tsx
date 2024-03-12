@@ -2,6 +2,7 @@ import React, { ReactNode, RefObject, useEffect, useRef, useState, useId } from 
 import { Popup } from 'reactjs-popup'
 import { PopupActions } from 'reactjs-popup/dist/types'
 import classNames from 'classnames'
+import { v4 as uuidV4 } from 'uuid'
 
 import styles from './buttonPopup.module.scss'
 
@@ -67,19 +68,28 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({
     buttonClassName,
 }) => {
     const popupRef = useRef<PopupActions>(null)
+    const labelId = `label_button_${uuidV4()}`
     const contentRef = useRef(null)
     const triggerId = useId()
     const [isExpanded, setIsExpanded] = useState<boolean>(false)
     const label = (
         <div className={styles.buttonLabel}>
-            {buttonLabel} <img src={ArrowDownIcon} alt="" className={styles.downArrow} />
+            <span id={labelId}>{buttonLabel}</span>
+            <img src={ArrowDownIcon} alt="" className={styles.downArrow} />
         </div>
     )
 
     useTabbing(contentRef, isExpanded)
 
     const trigger = (
-        <Button id={triggerId} label={label} variant="secondary" className={classNames(buttonClassName, styles.button)} aria-expanded={isExpanded} />
+        <Button
+            id={triggerId}
+            label={label}
+            aria-labelledby={labelId}
+            variant="secondary"
+            className={classNames(buttonClassName, styles.button)}
+            aria-expanded={isExpanded}
+        />
     )
 
     if (disabled && disabledTooltip) {

@@ -29,6 +29,7 @@ interface Props {
     ignoreInputNames?: string[]
     ciName?: string
     focus?: boolean
+    isFocusable?: boolean
 }
 
 export const DynamicFilterAttributeRow: FC<Props> = ({
@@ -45,6 +46,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     attributeProfiles,
     ciName,
     focus = false,
+    isFocusable,
 }) => {
     const { t, i18n } = useTranslation()
 
@@ -116,6 +118,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 onChange={(val) => {
                     onChange({ ...attribute, name: val?.value }, attribute, true)
                 }}
+                tabIndex={isFocusable ? undefined : -1}
             />
             <SimpleSelect
                 isClearable={false}
@@ -127,6 +130,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 options={availableOperators}
                 value={attribute.operator}
                 onChange={(val) => onChange({ ...attribute, operator: val }, attribute)}
+                tabIndex={isFocusable ? undefined : -1}
             />
             <DynamicFilterAttributeInput
                 constraints={attributeConstraints}

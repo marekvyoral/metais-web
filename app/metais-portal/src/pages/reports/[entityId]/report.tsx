@@ -36,7 +36,7 @@ export const ReportsDetailPage: React.FC = () => {
                         <MainContentWrapper>
                             <QueryFeedback loading={props.isLoading} error={false} withChildren>
                                 <FlexColumnReverseWrapper>
-                                    <TextHeading size="L">{props.data?.name}</TextHeading>
+                                    <TextHeading size="XL">{props.data?.name}</TextHeading>
                                     {props.isError && <QueryFeedback loading={false} error={props.isError} />}
                                     <MutationFeedback
                                         success={!!props?.reportResult}

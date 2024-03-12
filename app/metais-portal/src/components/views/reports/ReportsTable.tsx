@@ -1,4 +1,3 @@
-import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
@@ -65,7 +64,6 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, filter, pagination
 
     return (
         <>
-            <TextHeading size="XL">{t('navMenu.reports')}</TextHeading>
             <QueryFeedback loading={!!isFetching} error={false} withChildren>
                 <Table
                     columns={columns}

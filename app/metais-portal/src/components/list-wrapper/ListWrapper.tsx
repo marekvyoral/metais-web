@@ -138,7 +138,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
             </FlexColumnReverseWrapper>
             <Filter<CIFilterData>
                 defaultFilterValues={defaultFilterValues}
-                form={({ register, filter, setValue }) => {
+                form={({ register, filter, setValue, isOpen }) => {
                     return (
                         <div>
                             <Input
@@ -164,6 +164,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                 attributes={attributes as ExtendedAttribute[]}
                                 attributeProfiles={attributeProfiles}
                                 constraintsData={constraintsData}
+                                isFocusable={isOpen}
                             />
                         </div>
                     )
