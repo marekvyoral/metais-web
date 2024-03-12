@@ -366,6 +366,7 @@
     "userManagement": {
         "title": "Používatelia",
         "fullName": "Meno a priezvisko",
+        "loginEmail": "Prihlasovací email",
         "login": "Používateľské meno",
         "phone": "Tel.č.",
         "mobile": "Mobil",
@@ -565,6 +566,7 @@
         "phone": "Telefónne číslo",
         "mobile": "Mobil",
         "login": "Používateľské meno",
+        "loginEmail": "Prihlasovací email",
         "detailHeading": "Detail používateľa",
         "detailEditHeading": "Upravenie existujúceho používateľa",
         "detailCreateHeading": "Vytvorenie nového používateľa",
@@ -593,7 +595,8 @@
         "containerQueryError": "Loading of data for user management failed.",
         "noUserId": "There was mistake in fetching data.",
         "mutationError": "Počas akcie došlo k chybe.",
-        "emailFormat": "Formát emailu je zlý",
+        "emailFormat": "Formát emailu je chybný. Zadávajte ho vo formáte napríklad meno.priezvisko@domena.sk",
+        "emailFormatHint": "Prihlasovací email môže obsahovať písmená, čísla, bodky, podčiarkovníky, percentá a znamienka plus.",
         "phoneFormat": "Formát tel. čísla je zlý",
         "noChangesDetected": "Neboli zaznamenané žiadne zmeny.",
         "noSpacesError": "Položka {{value}} nesmie obsahovať medzery.",
@@ -1014,6 +1017,7 @@
         "gdprTitle": "Zoznam GDPR žiadostí",
         "fullName": "Priezvisko a meno",
         "identityLogin": "Používateľské meno",
+        "loginEmail": "Prihlasovací email",
         "telephone": "Telefón",
         "mobile": "Telefónne číslo",
         "email": "E-mailová adresa",
@@ -1084,7 +1088,8 @@
             "name": "Meno",
             "position": "Funkcia",
             "phoneNumber": "Telefónne číslo",
-            "email": "E-mailová adresa"
+            "email": "Emailová adresa",
+            "loginEmail": "Prihlasovací email"
         },
         "settings": "Osobné preferencie",
         "rights": "Oprávnenia",

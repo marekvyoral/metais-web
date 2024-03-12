@@ -338,6 +338,7 @@
     "userManagement": {
         "title": "Users",
         "fullName": "Surname and name",
+        "loginEmail": "Login email",
         "login": "Login",
         "phone": "Phone",
         "mobile": "Mobile",
@@ -915,6 +916,7 @@
         "phone": "Phone",
         "mobile": "Mobile phone",
         "login": "Login",
+        "loginEmail": "Login email",
         "detailHeading": "User detail",
         "detailEditHeading": "Editing of exisitng user",
         "detailCreateHeading": "Creation of user",
@@ -943,7 +945,8 @@
         "containerQueryError": "Loading of data for user management failed.",
         "noUserId": "There was mistake in fetching data.",
         "mutationError": "Error while performing action.",
-        "emailFormat": "Bad email format",
+        "emailFormat":  "Login email format is wrong. Format should for example be name.surname@domain.com",
+        "emailFormatHint": "Login email may contain letters, numbers, dots, underscores, percent signs, and plus signs.",
         "phoneFormat": "Bad phone format",
         "noChangesDetected": "No changes were detected.",
         "noSpacesError": "Spaces can not be included in {{value}}",
@@ -1011,6 +1014,7 @@
         "gdprTitle": "Request list",
         "fullName": "FullName",
         "identityLogin": "Login",
+        "loginEmail": "Login email",
         "telephone": "Telephone",
         "mobile": "Mobil",
         "email": "Email",
@@ -1081,7 +1085,8 @@
             "name": "Name",
             "position": "Position",
             "phoneNumber": "Phone",
-            "email": "Email"
+            "email": "Email",
+            "loginEmail": "Login email"
         },
         "settings": "Personal preferences",
         "rights": "Rights",

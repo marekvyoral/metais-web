@@ -1808,7 +1808,8 @@
             "name": "Meno a priezvisko",
             "position": "Funkcia",
             "phoneNumber": "Telefónne číslo",
-            "email": "E-mailová adresa"
+            "email": "Emailová adresa",
+            "loginEmail": "Prihlasovací email"
         },
         "settings": "Osobné preferencie",
         "rights": "Priradené role",
@@ -2352,24 +2353,25 @@
         }
     },
     "registration": {
-        "uniqueLogin": "Používateľ s týmto prihlasovacím menom je už registrovaný. Prihlasovacie meno musí byť jedinečné, dostupné prihlasovacie meno je napríklad {{available}}.",
+        "uniqueLogin": "Používateľ s týmto prihlasovacím emailom je už registrovaný. Prihlasovací email musí byť jedinečný, dostupný prihlasovací email je napríklad {{available}}.",
         "uniqueEmail": "Používateľ s týmto e-mailom je už registrovaný. E-mailová adresa musí byť jedinečná.",
         "firstName": "Meno",
         "lastName": "Priezvisko",
         "email": "E-mailová adresa",
         "phone": "Telefónne číslo",
         "po": "Zástupca za subjekt",
-        "login": "Prihlasovacie meno",
+        "loginEmail": "Prihlasovací email",
         "required": {
             "firstName": "Meno je povinný údaj.",
             "lastName": "Priezvisko je povinný údaj.",
             "phone": "Telefónne číslo je povinný údaj.",
             "email": "E-mailová adresa je povinný údaj.",
-            "default": "Táto položka je povinná"
+            "default": "Táto položka je povinná.",
+            "loginEmail": "Prihlasovací email email je povinný údaj."
         },
         "format": {
             "name": "Toto pole nesmie obsahovať špeciálne znaky ako „@, &“ atď.",
-            "email": "Emial zadávajte vo formáte napríklad meno.priezvisko@domena.sk",
+            "email": "Formát emailu je chybný. Zadávajte ho vo formáte napríklad meno.priezvisko@domena.sk",
             "phone": "Skontrolujte si prosím formát telefónneho čísla.",
             "login": "Prihlasovacie meno môže obsahovať iba malé písmená, čísla a bodky.",
             "noSpaces": "Táto položka nesmie obsahovať medzery."
@@ -2390,7 +2392,8 @@
         "error": "Nastala chyba pri vykonávaní Vašej akcie. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte, prosím, administrátora MetaIS e-mailom na adrese:",
         "consentWith": "Súhlasím s ",
         "dataProcessingConsent": "podmienkami spracúvania osobných údajov",
-        "termsOfUseConsent": "podmienkami používania Centrálneho metainformačného systému verejnej správy"
+        "termsOfUseConsent": "podmienkami používania Centrálneho metainformačného systému verejnej správy",
+        "loginFormat": "Prihlasovací email môže obsahovať písmená, čísla, bodky, podčiarkovníky, percentá a znamienka plus."
     },
     "Aktivita": {
         "target": "Cieľ aktivity",

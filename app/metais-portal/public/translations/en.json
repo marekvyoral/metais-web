@@ -1802,7 +1802,8 @@
             "name": "Name",
             "position": "Position",
             "phoneNumber": "Phone",
-            "email": "Email"
+            "email": "Email",
+            "loginEmail": "Login email"
         },
         "settings": "Personal preferences",
         "rights": "Rights",
@@ -2344,24 +2345,25 @@
         }
     },
     "registration": {
-        "uniqueLogin": "User with this login already exists. Login must be unique, available login is for exmaple {{available}}",
+        "uniqueLogin": "User with this login email already exists. Login email must be unique, available login email is for exmaple {{available}}",
         "uniqueEmail": "User with this email already exists. Email must be unique.",
         "firstName": "First name",
         "lastName": "Last name",
         "email": "Email address",
         "phone": "Phone number",
         "po": "Representative of the subject",
-        "login": "Login",
+        "loginEmail": "Login email",
         "required": {
             "firstName": "Your first name is required.",
             "lastName": "Your last name is required.",
-            "phone": "Your phone number is required",
-            "email": "Your email address is required",
-            "default": "This is required field"
+            "phone": "Your phone number is required.",
+            "email": "Your email address is required.",
+            "default": "This is required field.",
+            "loginEmail": "Login email is required."
         },
         "format": {
             "name": "This field can not contain special signs as '@,&' etc.",
-            "email": "Email should be for example in format  name.surname@domain.com",
+            "email": "Email format is wrong. Format should for example be name.surname@domain.com",
             "phone": "Phone number format is incorrect.",
             "login": "Login accepts only lowercase letters, numbers and dots.",
             "noSpaces": "Spaces can not be included in this field"
@@ -2382,7 +2384,8 @@
         "error": "Error while executing your action. Please try again or contact support at:",
         "consentWith": "I agree with ",
         "dataProcessingConsent": "terms of personal data processing",
-        "termsOfUseConsent": "terms of use of the Central Metainformation System of Public Administration"
+        "termsOfUseConsent": "terms of use of the Central Metainformation System of Public Administration",
+        "loginFormat": "Login email may contain letters, numbers, dots, underscores, percent signs, and plus signs."
     },
     "Aktivita": {
         "target": "Objective of the activity",
