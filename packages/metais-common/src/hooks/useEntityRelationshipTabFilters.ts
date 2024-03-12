@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useListRelatedCiTypesWrapper } from './useListRelatedCiTypes.hook'
 
@@ -12,6 +13,7 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
     const {
         state: { user },
     } = useAuth()
+    const { i18n } = useTranslation()
     const { currentPreferences } = useUserPreferences()
     const isUserLogged = !!user
     const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypesWrapper(technicalName ?? '')
@@ -29,8 +31,12 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
             const relType: string[] = []
 
             relatedCiTypePreviewArray?.forEach((relatedCiType) => {
-                relatedCiType.ciTypeTechnicalName && ciType.push(relatedCiType.ciTypeTechnicalName)
-                relatedCiType.relationshipTypeTechnicalName && relType.push(relatedCiType.relationshipTypeTechnicalName)
+                i18n.language == 'sk'
+                    ? relatedCiType.ciTypeName && ciType.push(relatedCiType.ciTypeName)
+                    : relatedCiType.engCiTypeName && ciType.push(relatedCiType.engCiTypeName)
+                i18n.language == 'sk'
+                    ? relatedCiType.relationshipTypeName && relType.push(relatedCiType.relationshipTypeName)
+                    : relatedCiType.engRelationshipTypeName && relType.push(relatedCiType.engRelationshipTypeName)
             })
 
             const uniqueCiType = removeDuplicates(ciType)
@@ -46,7 +52,7 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
                 },
             }
         },
-        [currentPreferences.showInvalidatedItems],
+        [currentPreferences.showInvalidatedItems, i18n.language],
     )
 
     const defaultSourceRelationshipTabFilter: NeighboursFilterContainerUi = useMemo(

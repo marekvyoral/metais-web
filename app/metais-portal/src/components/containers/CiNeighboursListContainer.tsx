@@ -97,7 +97,6 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         defaultSourceRelationshipTabFilter,
         defaultTargetRelationshipTabFilter,
     } = useEntityRelationshipTabFilters(entityName ?? '')
-
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName)
     const { data: relationData, isLoading: isRelationListLoading, isError: isRelationListError } = useListRelationshipTypes({ filter: {} })
     const { isLoading: isLoadingRelated, isError: isErrorRelated, data: relatedTypes } = useListRelatedCiTypesWrapper(entityName)
