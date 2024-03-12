@@ -191,9 +191,15 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                             />
                         )
                     }
-                    importButton={<ImportButton ciType={entityName ?? ''} />}
+                    importButton={
+                        <ImportButton
+                            ciType={entityName ?? ''}
+                            ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
+                        />
+                    }
                     exportButton={
                         <ExportButton
+                            ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
                             defaultFilterValues={defaultFilterValues}
                             checkedItemsUuids={getRowSelectionUuids(rowSelection)}
                             pagination={pagination}

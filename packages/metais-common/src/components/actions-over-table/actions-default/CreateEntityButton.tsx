@@ -18,13 +18,7 @@ export const CreateEntityButton: React.FC<ICreateEntityButtonProps> = ({ onClick
         <Button
             className={(styles.mobileOrder1, 'marginBottom0')}
             onClick={onClick}
-            label={
-                <IconLabel
-                    label={label ?? t('actionOverTable.addItem', { ciTypeName })}
-                    icon={icon}
-                    alt={label ?? t('actionOverTable.addItem', { ciTypeName })}
-                />
-            }
+            label={<IconLabel icon={icon} label={label ?? t('actionOverTable.addItem', { ciTypeName })} />}
         />
     )
 }

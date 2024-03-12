@@ -477,6 +477,7 @@
             "registrationDate": "Registration date"
         },
         "export-title": "Select the file type to export",
+        "exportAria": "Export registered for training",
         "from": "Training start date"
     },
     "listActions": {
@@ -925,7 +926,9 @@
             "addDocument": "Add document"
         },
         "import": "Import",
+        "importAria": "Import items or relations {{ciTypeName}}",
         "export": "Export",
+        "exportAria": "Export items or relations {{ciTypeName}}",
         "addItem": "Create item {{ciTypeName}} ",
         "selectColumn": "Columns",
         "view": "View",
@@ -1001,6 +1004,7 @@
         "actualVersion": "Actual version"
     },
     "notifications": {
+        "youHave": "You have {{count}} Notifications",
         "all": "All",
         "INFO": "Informations",
         "ERROR": "Errors",
@@ -2087,7 +2091,8 @@
             "addExternalActors": "+ Add another guest",
             "program": "Agenda",
             "proposalsSelect": "Related proposals",
-            "proposalsButton": "Select from list"
+            "proposalsButton": "Select from list",
+            "delete": "Remove guest {{order}}"
         },
         "proposals": {
             "standardRequestState": "Status",
@@ -2512,7 +2517,9 @@
         "detail": {
             "toggleButton": "Show table",
             "totalInPeriod": "Total in period",
-            "avarageInPeriod": "Average in period"
+            "avarageInPeriod": "Average in period",
+            "changeToTable": "Show table view",
+            "changeToGraph": "Show graph view"
         },
         "filter": {
             "responsibleAuthority": "Responsible authority",

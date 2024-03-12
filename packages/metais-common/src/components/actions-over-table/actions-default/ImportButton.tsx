@@ -9,9 +9,10 @@ import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-
 
 export interface IImportButtonProps {
     ciType: string
+    ciTypeName?: string
 }
 
-export const ImportButton: React.FC<IImportButtonProps> = ({ ciType }) => {
+export const ImportButton: React.FC<IImportButtonProps> = ({ ciType, ciTypeName }) => {
     const { t } = useTranslation()
     const [modalImportOpen, setModalImportOpen] = useState(false)
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
@@ -33,7 +34,8 @@ export const ImportButton: React.FC<IImportButtonProps> = ({ ciType }) => {
                 onClick={openImportModal}
                 variant="secondary"
                 className="marginBottom0"
-                label={<IconLabel label={t('actionOverTable.import')} icon={ImportIcon} alt={t('fileImport.header')} />}
+                aria-label={t('actionOverTable.importAria', { ciTypeName })}
+                label={<IconLabel label={t('actionOverTable.import')} icon={ImportIcon} />}
             />
             <FileImport
                 allowedFileTypes={['.xml', '.csv', '.xlsx']}

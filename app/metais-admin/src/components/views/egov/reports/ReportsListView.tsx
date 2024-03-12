@@ -43,7 +43,7 @@ export const ReportsListView = ({
                 form={({ setValue, filter }) => (
                     <div>
                         <SimpleSelect
-                            label={t('report.filter.category')}
+                            label={t('reports.filter.category')}
                             name={'category'}
                             id="category"
                             options={mapCategoriesToOptions(categories?.categories)}

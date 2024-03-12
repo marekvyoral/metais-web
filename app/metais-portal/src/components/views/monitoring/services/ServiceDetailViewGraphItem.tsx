@@ -151,7 +151,10 @@ export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> =
                                     <Button
                                         variant="secondary"
                                         onClick={() => setToggleTable(!toggleTable)}
-                                        label={<IconLabel label={''} icon={ChangeIcon} />}
+                                        aria-label={
+                                            toggleTable ? t('monitoringServices.detail.changeToGraph') : t('monitoringServices.detail.changeToTable')
+                                        }
+                                        label={<IconLabel icon={ChangeIcon} />}
                                     />
                                     <label className="govuk-label">
                                         <TextHeading size="M">{item.name} </TextHeading>

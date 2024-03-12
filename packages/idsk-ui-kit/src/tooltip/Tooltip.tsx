@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Popup } from 'reactjs-popup'
 import { EventType, PopupActions, PopupPosition } from 'reactjs-popup/dist/types'
 import { v4 as uuidV4 } from 'uuid'
@@ -35,6 +35,16 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, triggerElement
     const popupRef = useRef<PopupActions>(null)
     const { t } = useTranslation()
     const descriptionId = id ? `${id}-description` : `${uuidV4()}-description`
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+
+    useEffect(() => {
+        setIsOpen(props.defaultOpen ?? false)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    useEffect(() => {
+        setIsOpen(props.open ?? false)
+    }, [props.open])
 
     return (
         <Popup
@@ -45,7 +55,9 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, triggerElement
             closeOnEscape
             keepTooltipInside
             className="tooltip"
-            on={['click', 'hover', 'focus']}
+            on={['click', 'hover']}
+            onOpen={() => setIsOpen(true)}
+            onClose={() => setIsOpen(false)}
             {...props}
             trigger={() => (
                 <div>
@@ -68,7 +80,7 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, triggerElement
                               </>
                           )}
                     <div id={descriptionId} className="govuk-visually-hidden" aria-live="polite">
-                        {descriptionElement}
+                        {isOpen ? descriptionElement : ''}
                     </div>
                 </div>
             )}
