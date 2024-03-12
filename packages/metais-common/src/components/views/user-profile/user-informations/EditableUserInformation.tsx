@@ -19,7 +19,6 @@ enum UserInformationFormKeysEnum {
     NAME = 'name',
     MOBILE = 'mobile',
     POSITION = 'position',
-    EMAIL = 'email',
 }
 
 type Props = {
@@ -29,7 +28,6 @@ type Props = {
 
 type UserInformationForm = {
     name?: string
-    email?: string
     mobile?: string
     position?: string
 }
@@ -44,7 +42,6 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
 
     const userInformationsSchema: ObjectSchema<UserInformationForm> = object().shape({
         [UserInformationFormKeysEnum.NAME]: string().required(t('validation.required')),
-        [UserInformationFormKeysEnum.EMAIL]: string().email(t('validation.invalidEmail')).required(t('validation.required')),
         [UserInformationFormKeysEnum.MOBILE]: string().matches(REGEX_TEL, t('validation.invalidPhone')).required(t('validation.required')),
         [UserInformationFormKeysEnum.POSITION]: string(),
     })
@@ -59,7 +56,6 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
             [UserInformationFormKeysEnum.NAME]: user?.displayName,
             [UserInformationFormKeysEnum.POSITION]: user?.position != NULL ? user?.position ?? '' : '',
             [UserInformationFormKeysEnum.MOBILE]: user?.mobile,
-            [UserInformationFormKeysEnum.EMAIL]: user?.email,
         },
         resolver: yupResolver(userInformationsSchema),
     })
@@ -79,10 +75,8 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
                     return { data: { ...oldData.data, ...context.data }, statusCode: oldData.statusCode }
                 })
             },
-            onError(error) {
-                if (JSON.parse(error.message as string).message == 'email not unique') {
-                    setErrorMessage(t('userProfile.uniqueEmail'))
-                } else setErrorMessage(t('userProfile.changedUserInformationError'))
+            onError() {
+                setErrorMessage(t('userProfile.changedUserInformationError'))
             },
         },
     })
@@ -93,7 +87,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
 
     const onSubmit = (formData: UserInformationForm) => {
         setIsChangeSuccess(false)
-        changeUserInformation({ data: { email: formData.email, mobile: formData.mobile, disabledNotifications: false } })
+        changeUserInformation({ data: { mobile: formData.mobile, disabledNotifications: false } })
     }
 
     return (
@@ -144,19 +138,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
                         }
                         hideIcon
                     />
-                    <InformationGridRow
-                        label={t('userProfile.information.email') + ':'}
-                        value={
-                            <Input
-                                error={errors.email?.message}
-                                label=""
-                                type="email"
-                                {...register(UserInformationFormKeysEnum.EMAIL)}
-                                autoComplete="email"
-                            />
-                        }
-                        hideIcon
-                    />
+                    <InformationGridRow label={`${t('userProfile.information.loginEmail')}:`} value={user?.login ?? ''} hideIcon />
                 </DefinitionList>
                 <SubmitWithFeedback
                     submitButtonLabel={t('userProfile.save')}

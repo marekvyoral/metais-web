@@ -2,14 +2,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { CheckBox, ErrorBlock, Input, TextHeading, TextLink } from '@isdd/idsk-ui-kit/index'
 import { useRegisterUser } from '@isdd/metais-common/api/generated/claim-manager-swagger'
 import { FilterMetaAttributesUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useStripAccentsHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { LOWER_CASE_NUMBER_DOT_REGEX, REGEX_TEL, SPACES_REGEX } from '@isdd/metais-common/constants'
+import { EMAIL_REGEX, REGEX_TEL } from '@isdd/metais-common/constants'
 import { MutationFeedback, QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { FooterRouteNames, RegistrationRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { TFunction } from 'i18next'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -25,7 +24,6 @@ interface Props {
 export enum InputNames {
     FIRST_NAME = 'identityFirstName',
     LAST_NAME = 'identityLastName',
-    EMAIL = 'email',
     MOBILE = 'mobile',
     PO = 'po',
     LOGIN = 'identityLogin',
@@ -39,13 +37,12 @@ const getRegistrationSchema = (t: TFunction) => {
         [InputNames.TERMS_OF_USE_CONSENT]: boolean().oneOf([true], t('registration.required.default')),
         [InputNames.FIRST_NAME]: string().required(t('registration.required.firstName')),
         [InputNames.LAST_NAME]: string().required(t('registration.required.lastName')),
-        [InputNames.EMAIL]: string().email(t('registration.format.email')).required(t('registration.required.email')),
         [InputNames.MOBILE]: string().matches(REGEX_TEL, t('registration.format.phone')).required(t('registration.required.phone')),
         [InputNames.PO]: mixed().required(t('registration.required.default')),
         [InputNames.LOGIN]: string()
-            .test('no-spaces', t('registration.format.noSpaces'), (value) => !/\s/.test(value ?? ''))
-            .matches(LOWER_CASE_NUMBER_DOT_REGEX, t('managementList.loginFormat'))
-            .required(t('registration.required.default')),
+            .required(t('registration.required.loginEmail'))
+            .email(t('registration.format.email'))
+            .matches(EMAIL_REGEX, t('registration.format.email')),
     })
 
     return registrationFormSchema
@@ -60,19 +57,12 @@ export const RegistrationForm: React.FC<Props> = () => {
 
     const {
         register,
-        watch,
         handleSubmit,
         setValue,
         clearErrors,
         formState: { errors, isSubmitted, isSubmitting, isValidating, isValid },
-        trigger,
     } = useForm({ resolver: yupResolver(getRegistrationSchema(t)) })
 
-    const formValues = watch()
-    const hasLastName = !!formValues[InputNames.LAST_NAME]
-    const loginString = `${formValues[InputNames.FIRST_NAME] ?? ''}${hasLastName ? '.' + formValues[InputNames.LAST_NAME] : ''}`
-
-    const stripAccents = useStripAccentsHook()
     const {
         mutate,
         isLoading: isRegisterLoading,
@@ -94,23 +84,6 @@ export const RegistrationForm: React.FC<Props> = () => {
     const metaAttributesForRegistrationCiSelect: FilterMetaAttributesUi = {
         state: ['DRAFT', 'APPROVED_BY_OWNER'],
     }
-
-    useEffect(() => {
-        const setLoginWithStrippedAccent = async () => {
-            if (loginString) {
-                const strippedAccentLogin = await stripAccents(loginString.replace(SPACES_REGEX, '').toLocaleLowerCase())
-                setValue(InputNames.LOGIN, strippedAccentLogin)
-            } else {
-                setValue(InputNames.LOGIN, '')
-            }
-
-            if (isSubmitted) {
-                trigger(InputNames.LOGIN)
-            }
-        }
-        setLoginWithStrippedAccent()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isSubmitted, loginString])
 
     const onSubmit = async (formData: FieldValues) => {
         mutate({
@@ -182,17 +155,10 @@ export const RegistrationForm: React.FC<Props> = () => {
                     />
                     <Input
                         error={errors[InputNames.LOGIN]?.message?.toString()}
-                        label={t('registration.login')}
+                        label={t('registration.loginEmail')}
                         correct={!errors[InputNames.LOGIN] && isSubmitted}
                         {...register(InputNames.LOGIN)}
-                        required
-                        type="text"
-                    />
-                    <Input
-                        error={errors[InputNames.EMAIL]?.message?.toString()}
-                        label={t('registration.email')}
-                        correct={!errors[InputNames.EMAIL] && isSubmitted}
-                        {...register(InputNames.EMAIL)}
+                        hint={t('registration.loginFormat')}
                         required
                         type="email"
                         autoComplete="email"
