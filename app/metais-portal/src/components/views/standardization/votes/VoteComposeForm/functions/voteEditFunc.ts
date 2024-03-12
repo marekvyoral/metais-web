@@ -38,8 +38,6 @@ export const mapUploadedFilesToApiAttachment = (uploadData: FileUploadData[]): A
         return {
             attachmentId: uploadedData.fileId,
             attachmentName: uploadedData.fileName,
-            attachmentSize: uploadedData.fileSize,
-            attachmentType: uploadedData.fileType,
             attachmentDescription: '',
         }
     })
@@ -51,8 +49,6 @@ export const mapProcessedExistingFilesToApiAttachment = (data: ExistingFileData[
         return {
             attachmentId: processedData.fileId,
             attachmentName: processedData.fileName,
-            attachmentSize: processedData.fileSize,
-            attachmentType: processedData.fileType,
             attachmentDescription: '',
         }
     })

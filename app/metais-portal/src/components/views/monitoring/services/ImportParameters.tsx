@@ -7,6 +7,7 @@ import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { FileImportList } from '@isdd/metais-common/components/file-import/FileImportList'
 import { StatusBar } from '@uppy/react'
 import styles from '@isdd/metais-common/src/components/file-import/FileImport.module.scss'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
@@ -46,6 +47,7 @@ export const ImportParametersView: React.FC<IImportParametersView> = () => {
         endpointUrl,
         setFileImportStep,
         fileImportStep,
+        refType: RefAttributesRefType.CI,
     })
 
     const handleCancelImport = () => {

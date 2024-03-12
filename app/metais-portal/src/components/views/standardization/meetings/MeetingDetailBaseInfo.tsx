@@ -31,6 +31,8 @@ import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useMeeti
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import headerStyles from '@isdd/metais-common/src/components/entity-header/ciEntityHeader.module.scss'
 import classNames from 'classnames'
+import { GetMeta200 } from '@isdd/metais-common/api/generated/dms-swagger'
+import { formatBytes } from '@isdd/metais-common/components/file-import/fileImportUtils'
 
 import { MeetingActorsTable } from './MeetingActorsTable'
 import { MeetingExternalActorsTable } from './MeetingExternalActorsTable'
@@ -42,13 +44,14 @@ import styles from '@/components/views/standardization/meetings/meetingStyles.mo
 interface MeetingDetailBaseInfoProps {
     infoData: ApiMeetingRequest | undefined
     refetch: () => void
+    attachmentsMetaData?: GetMeta200
 }
 export enum MeetingParticipateValue {
     ACCEPTED = 'ACCEPTED',
     DECLINED = 'DECLINED',
 }
 
-const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData, refetch }) => {
+const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData, refetch, attachmentsMetaData }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { isActionSuccess } = useActionSuccess()
@@ -156,15 +159,17 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                     {infoData?.meetingAttachments?.length ? (
                         <>
                             <TextBody>{t('meetings.otherDocuments')}:</TextBody>
-                            {infoData?.meetingAttachments?.map((index) => (
-                                <GridRow key={index?.id}>
+                            {infoData?.meetingAttachments?.map((attachment) => (
+                                <GridRow key={attachment?.id}>
                                     <GridCol setWidth="full">
                                         <img src={IconDocument} className={styles.documentIcon} alt="" />
                                         <TextLinkExternal
-                                            key={index?.id}
-                                            title={index?.attachmentName ?? ''}
-                                            href={`${DMS_DOWNLOAD_FILE}${index?.attachmentId}`}
-                                            textLink={index?.attachmentName ?? ''}
+                                            key={attachment?.id}
+                                            title={`${attachment?.attachmentName}`}
+                                            href={`${DMS_DOWNLOAD_FILE}${attachment?.attachmentId}`}
+                                            textLink={`${attachment?.attachmentName} (${formatBytes(
+                                                attachmentsMetaData?.[attachment.attachmentId ?? 0]?.contentLength ?? 0,
+                                            )})`}
                                             newTab
                                         />
                                     </GridCol>

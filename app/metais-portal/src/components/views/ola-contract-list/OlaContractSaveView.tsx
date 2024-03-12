@@ -16,13 +16,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { v4 as uuidV4 } from 'uuid'
 import { boolean, mixed, object, string } from 'yup'
 import { useQueryClient } from '@tanstack/react-query'
 import { RequestIdUi, getGetOlaContractQueryKey, getListOlaContractListQueryKey } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
-import { getGetHistoryQueryKey, getGetMetaQueryKey, useGetContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
+import { RefAttributesRefType, getGetHistoryQueryKey, getGetMeta1QueryKey, useGetContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { OLA_Kontrakt_dodavatela_ISVS } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
@@ -97,7 +96,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
     const deleteRel = useDeleteRelationshipHook()
     const queryClient = useQueryClient()
     const listKey = getListOlaContractListQueryKey()
-    const dmsKey = getGetMetaQueryKey(olaContract?.uuid ?? '')
+    const dmsKey = getGetMeta1QueryKey(olaContract?.uuid ?? '')
     const contractKey = getGetOlaContractQueryKey(olaContract?.uuid ?? '')
     const downloadVersionFile = useGetContentHook()
     const fileHistoryKey = getGetHistoryQueryKey(olaContract?.uuid ?? '')
@@ -115,17 +114,6 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
         }
     }, [ciCode, setValue])
 
-    const fileMetaAttributes = {
-        'x-content-uuid': uuidV4(),
-        refAttributes: new Blob(
-            [
-                JSON.stringify({
-                    refType: 'STANDARD',
-                }),
-            ],
-            { type: 'application/json' },
-        ),
-    }
     const handleUploadData = useCallback(() => {
         fileUploadRef.current?.startUploading()
     }, [])
@@ -291,7 +279,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                         allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
                         multiple={false}
                         isUsingUuidInFilePath
-                        fileMetaAttributes={fileMetaAttributes}
+                        refType={RefAttributesRefType.CI}
                         onUploadSuccess={handleUploadSuccess}
                         customUuid={olaContract?.uuid}
                     />

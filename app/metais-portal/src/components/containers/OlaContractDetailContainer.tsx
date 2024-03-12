@@ -1,4 +1,4 @@
-import { GetContentParams, Metadata, useGetContentHook, useGetMeta } from '@isdd/metais-common/api/generated/dms-swagger'
+import { GetContentParams, Metadata, useGetContentHook, useGetMeta1 } from '@isdd/metais-common/api/generated/dms-swagger'
 import { ApiError, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import {
     ApiOlaContractData,
@@ -62,7 +62,7 @@ export const OlaContractDetailContainer: React.FC<IOlaContractAddContainer> = ({
         data: olaContractDocument,
         isLoading: isOlaContractDocumentLoading,
         isError: isOlaContractDocumentError,
-    } = useGetMeta(entityId ?? '', {}, { query: { retry: 1 } })
+    } = useGetMeta1(entityId ?? '', {}, { query: { retry: 1 } })
     const downloadVersionFile = useGetContentHook()
     const [showHistory, setShowHistory] = useState(false)
     const { data: ciType, isLoading: isCiTypeLoading, isError: isCiTypeError } = useGetCiTypeWrapper(OLA_Kontrakt)

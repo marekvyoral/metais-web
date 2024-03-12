@@ -107,6 +107,7 @@ const RefRegistersDetail = () => {
                                     entityItemName={referenceRegisterData?.isvsName ?? 'Detail'}
                                     isLoading={refRegisterIdHeaderIsLoading}
                                     isError={isError}
+                                    owner={referenceRegisterData?.owner ?? ''}
                                 />
                             )}
                             <Tabs tabList={tabList} />
