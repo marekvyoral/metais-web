@@ -46,10 +46,10 @@ enum TasksPreferences {
     TASK_CHANGED_ASSIGNEE = 'TASK_CHANGED_ASSIGNEE',
     TASK_CLOSED = 'TASK_CLOSED',
 }
-enum IntegrationsPreferences {
-    INTEGRATION_STARTED = 'INTEGRATION_STARTED',
-    INTEGRATION_DELAYED = 'INTEGRATION_DELAYED',
-}
+// enum IntegrationsPreferences {
+//     INTEGRATION_STARTED = 'INTEGRATION_STARTED',
+//     INTEGRATION_DELAYED = 'INTEGRATION_DELAYED',
+// }
 enum StandardizationPreferences {
     STANDARD_REQUEST = 'STANDARD_REQUEST',
     STANDARD_MEETING = 'STANDARD_MEETING',
@@ -63,11 +63,6 @@ enum UserPreferences {
     USER_ACCEPTED = 'USER_ACCEPTED',
     USER_REFUSED = 'USER_REFUSED',
 }
-enum LicensesPreferences {
-    LICENSE_ADDED = 'LICENSE_ADDED',
-    LICENSE_MOVED = 'LICENSE_MOVED',
-    LICENSE_CHANGED_UNUSED = 'LICENSE_CHANGED_UNUSED',
-}
 enum CodeListsPreferences {
     CODELIST_REQUEST = 'CODELIST_REQUEST',
     CODELIST_CHANGE_STATUS = 'CODELIST_CHANGE_STATUS',
@@ -78,10 +73,9 @@ const Sections = {
     [Tabs.ITEMS]: ItemsPreferences,
     [Tabs.RELATIONS]: RelationsPreferences,
     [Tabs.TASKS]: TasksPreferences,
-    [Tabs.INTEGRATIONS]: IntegrationsPreferences,
+    // [Tabs.INTEGRATIONS]: IntegrationsPreferences,
     [Tabs.STANDARDIZATION]: StandardizationPreferences,
     [Tabs.USER]: UserPreferences,
-    [Tabs.LICENSES]: LicensesPreferences,
     [Tabs.CODELIST]: CodeListsPreferences,
 }
 
