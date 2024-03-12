@@ -1,7 +1,7 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react'
 import { TextBody, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
 import { ImportDeleteIcon } from '@isdd/metais-common/assets/images'
-import { useDeleteContent } from '@isdd/metais-common/api/generated/dms-swagger'
+import { useDeleteContent, useGetMeta } from '@isdd/metais-common/api/generated/dms-swagger'
 import { formatBytes } from '@isdd/metais-common/components/file-import/fileImportUtils'
 import { useTranslation } from 'react-i18next'
 
@@ -34,7 +34,9 @@ export const ExistingFilesHandler = forwardRef<IExistingFilesHandlerRef, IExisti
         const [fileList, setFileList] = useState<ExistingFileData[]>(existingFiles)
         const [filesToProcessList, setFilesToProcessList] = useState<string[]>([])
         const { mutateAsync: deleteFilesMutationAsync, isError: isDeleteFilesError, error: deleteFilesError } = useDeleteContent()
-
+        const { data: attachmentsMetaData } = useGetMeta(fileList.map((file) => file.fileId ?? '') ?? [], {
+            query: { enabled: (fileList?.length ?? 0) > 0 },
+        })
         const callDeleteFileApi = useCallback(
             async (fileUuids: string[]) => {
                 try {
@@ -95,7 +97,9 @@ export const ExistingFilesHandler = forwardRef<IExistingFilesHandlerRef, IExisti
                 {fileList.map((file) => (
                     <li key={file.fileId}>
                         <div>
-                            <TextBody size="S">{`${file.fileName} (${formatBytes(file.fileSize ?? 0)})`}</TextBody>
+                            <TextBody size="S">{`${file.fileName} (${formatBytes(
+                                attachmentsMetaData?.[file.fileId ?? ''].contentLength ?? 0,
+                            )})`}</TextBody>
                         </div>
                         <TransparentButtonWrapper onClick={() => handleRemoveFileFromList(file.fileId)}>
                             <img src={ImportDeleteIcon} alt={t('fileList.delete', { fileName: file.fileName })} />

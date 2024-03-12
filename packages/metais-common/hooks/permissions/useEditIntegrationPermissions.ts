@@ -10,7 +10,7 @@ import { useGetRightsForPO, useIsOwnerByGid } from '@isdd/metais-common/api/gene
 import { CI_ITEM_QUERY_KEY, INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { getUniqueRules } from '@isdd/metais-common/permissions/helpers'
-import { useGetMeta } from '@isdd/metais-common/api/generated/dms-swagger'
+import { useGetMeta1 } from '@isdd/metais-common/api/generated/dms-swagger'
 import { useIntegrationLinkConsumingAndProvidingProject } from '@isdd/metais-common/hooks/useIntegrationLink'
 import { isOwnershipOnPoSide } from '@isdd/metais-common/utils/utils'
 import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
@@ -97,7 +97,7 @@ export const useEditIntegrationPermissions = (entityName: string, entityId: stri
         },
         { query: { enabled: !ciLoading && token !== null && isLoggedIn } },
     )
-    const { data: dmsFileMetaData } = useGetMeta(entityId ?? '')
+    const { data: dmsFileMetaData } = useGetMeta1(entityId ?? '')
 
     const ciOwner = ciData?.metaAttributes?.owner
     const isOwnerOfCi = isOwnerByGid?.isOwner?.[0]?.owner

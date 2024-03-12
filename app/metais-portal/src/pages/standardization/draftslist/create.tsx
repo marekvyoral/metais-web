@@ -32,7 +32,18 @@ const DraftsListCreatePage: React.FC = () => {
                 <TextWarning>{t('DraftsList.create.warning')}</TextWarning>
                 <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
                     <DraftsListCreateContainer
-                        View={({ onSubmit, guiAttributes, isGuiDataError, isGuiDataLoading, isError, isLoading }) => (
+                        View={({
+                            onSubmit,
+                            guiAttributes,
+                            isGuiDataError,
+                            isGuiDataLoading,
+                            isError,
+                            isLoading,
+                            sendData,
+                            fileUploadRef,
+                            handleUploadSuccess,
+                            id,
+                        }) => (
                             <QueryFeedback loading={isGuiDataLoading} error={isGuiDataError}>
                                 <DraftsListCreateForm
                                     onSubmit={onSubmit}
@@ -42,6 +53,10 @@ const DraftsListCreatePage: React.FC = () => {
                                     }}
                                     isError={isError}
                                     isLoading={isLoading}
+                                    sendData={sendData}
+                                    fileUploadRef={fileUploadRef}
+                                    handleUploadSuccess={handleUploadSuccess}
+                                    id={id}
                                 />
                             </QueryFeedback>
                         )}

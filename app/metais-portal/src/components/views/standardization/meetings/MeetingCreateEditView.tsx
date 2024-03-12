@@ -1,16 +1,15 @@
 import { BreadCrumbs, Button, ButtonGroupRow, ButtonLink, ErrorBlock, GridCol, GridRow, HomeIcon, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { formatDateTimeForAPI, formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { QueryFeedback } from '@isdd/metais-common/index'
-import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagger'
-import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
-import { v4 as uuidV4 } from 'uuid'
+import { FileUpload } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { formatTitleString } from '@isdd/metais-common/utils/utils'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 import { DateInput, DateTypeEnum } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import styles from './createEditView.module.scss'
@@ -22,29 +21,33 @@ import { SelectMeetingGroupWithActors } from './SelectMeetingGroupWithActors'
 import { MeetingProposalsModal } from './MeetingProposalsModal'
 
 import {
-    mapProcessedExistingFilesToApiAttachment,
-    mapUploadedFilesToApiAttachment,
-} from '@/components/views/standardization/votes/VoteComposeForm/functions/voteEditFunc'
-import {
     ExistingFileData,
     ExistingFilesHandler,
-    IExistingFilesHandlerRef,
 } from '@/components/views/standardization/votes/VoteComposeForm/components/ExistingFilesHandler/ExistingFilesHandler'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { IMeetingEditViewParams } from '@/components/containers/standardization/meetings/MeetingEditContainer'
 import { LinksImport } from '@/components/LinksImport/LinksImport'
 
-export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, isLoading, isError }) => {
+export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
+    onSubmit,
+    goBack,
+    infoData,
+    isEdit,
+    isLoading,
+    isError,
+    fileUploadRef,
+    existingFilesProcessRef,
+    handleDeleteSuccess,
+    handleUploadSuccess,
+    id,
+}) => {
     const { t } = useTranslation()
     const titleDetailName = infoData?.name ? `- ${infoData?.name}` : ''
     document.title = formatTitleString(`${isEdit ? t('meetings.editMeeting') : t('meetings.addNewMeeting')} ${titleDetailName}`)
 
     const formRef = useRef<HTMLFormElement>(null)
-    //files
-    const fileUploadRef = useRef<IFileUploadRef>(null)
     const formDataRef = useRef<FieldValues>([])
-    const existingFilesProcessRef = useRef<IExistingFilesHandlerRef>(null)
-    const attachmentsDataRef = useRef<ApiAttachment[]>([])
+    //files
 
     const [selectedProposals, setSelectedProposals] = useState(infoData?.standardRequestIds?.map((o) => o.toString()) ?? [])
     // modals
@@ -62,21 +65,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
     const onCloseReason = () => {
         setModalOpenReason(false)
     }
-    // files
-    const handleUploadData = useCallback(() => {
-        fileUploadRef.current?.startUploading()
-    }, [])
-    const handleDeleteFiles = () => {
-        existingFilesProcessRef?.current?.startFilesProcessing()
-    }
-    const handleDeleteSuccess = () => {
-        onSubmit(
-            formDataRef.current,
-            attachmentsDataRef.current.concat(
-                mapProcessedExistingFilesToApiAttachment(existingFilesProcessRef.current?.getRemainingFileList() ?? []),
-            ),
-        )
-    }
+
     // forms
     const {
         register,
@@ -128,31 +117,15 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
 
     const callSubmit = (data: FieldValues) => {
         formDataRef.current = { ...data }
-        if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
-            handleUploadData()
-            return
-        }
-        if (existingFilesProcessRef.current?.hasDataToProcess()) {
-            handleDeleteFiles()
-            return
-        }
-
         onSubmit(data, [])
     }
+
     const submit = () => {
         handleSubmit((data) => {
             callSubmit(data)
         })()
     }
-    const handleUploadSuccess = (data: FileUploadData[]) => {
-        const attachmentsData = mapUploadedFilesToApiAttachment(data)
-        if (existingFilesProcessRef.current?.hasDataToProcess()) {
-            attachmentsDataRef.current = attachmentsData
-            handleDeleteFiles()
-        } else {
-            onSubmit(formDataRef.current, attachmentsData)
-        }
-    }
+
     useEffect(() => {
         setValue(MeetingFormEnum.DESCRIPTION, infoData?.description || '')
         setValue(
@@ -190,17 +163,6 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
         setSelectedProposals(infoData?.standardRequestIds?.map((o) => o.toString()) ?? [])
     }, [infoData, setValue])
 
-    const fileMetaAttributes = {
-        'x-content-uuid': uuidV4(),
-        refAttributes: new Blob(
-            [
-                JSON.stringify({
-                    refType: 'STANDARD',
-                }),
-            ],
-            { type: 'application/json' },
-        ),
-    }
     const startDate = watch(MeetingFormEnum.BEGIN_DATE)
     return (
         <>
@@ -341,21 +303,24 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                             allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
                             multiple
                             isUsingUuidInFilePath
-                            fileMetaAttributes={fileMetaAttributes}
+                            refType={RefAttributesRefType.MEETING_REQUEST}
+                            refId={id}
                             onUploadSuccess={handleUploadSuccess}
                         />
-                        <ExistingFilesHandler
-                            existingFiles={
-                                infoData?.meetingAttachments?.map<ExistingFileData>((attachment) => {
-                                    return {
-                                        fileId: attachment.attachmentId,
-                                        fileName: attachment.attachmentName,
-                                    }
-                                }) ?? []
-                            }
-                            ref={existingFilesProcessRef}
-                            onFilesProcessingSuccess={handleDeleteSuccess}
-                        />
+                        {infoData?.meetingAttachments && infoData?.meetingAttachments.length > 0 && (
+                            <ExistingFilesHandler
+                                existingFiles={
+                                    infoData?.meetingAttachments?.map<ExistingFileData>((attachment) => {
+                                        return {
+                                            fileId: attachment.attachmentId,
+                                            fileName: attachment.attachmentName,
+                                        }
+                                    }) ?? []
+                                }
+                                ref={existingFilesProcessRef}
+                                onFilesProcessingSuccess={handleDeleteSuccess}
+                            />
+                        )}
                         {isEdit ? (
                             <>
                                 <ButtonGroupRow>

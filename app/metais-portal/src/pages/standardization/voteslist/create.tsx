@@ -23,6 +23,11 @@ const VoteCreatePage: React.FC = () => {
                     createVote={props.createVote}
                     updateVote={props.updateVote}
                     onCancel={props.onCancel}
+                    existingFilesProcessRef={props.existingFilesProcessRef}
+                    fileUploadRef={props.fileUploadRef}
+                    handleDeleteSuccess={props.handleDeleteSuccess}
+                    handleUploadSuccess={props.handleUploadSuccess}
+                    voteId={props.voteId}
                 />
             )}
         />

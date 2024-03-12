@@ -5,7 +5,7 @@ import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useGetMetaHook } from '@isdd/metais-common/api/generated/dms-swagger'
+import { useGetMeta1Hook } from '@isdd/metais-common/api/generated/dms-swagger'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS, INVALIDATED, ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -73,7 +73,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
         refetch()
         setBulkActionResult(actionResult)
     }
-    const getMeta = useGetMetaHook()
+    const getMeta = useGetMeta1Hook()
 
     const getDefaultBulkActions = (row: CellContext<IDocType, unknown>) => [
         <ButtonLink

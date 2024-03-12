@@ -7,15 +7,15 @@ import { getInfoGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/c
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useUppy } from '@isdd/metais-common/hooks/useUppy'
-import { API_STANDARD_REQUEST_ATTRIBUTES, DMS_DOWNLOAD_BASE, FileImportStepEnum, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { API_STANDARD_REQUEST_ATTRIBUTES, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { v4 as uuidV4 } from 'uuid'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
+import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 import { DraftListCreateFormDialog } from '@/components/entities/draftslist/DraftListCreateFormDialog'
 import { DraftsListAttachmentsZone } from '@/components/entities/draftslist/DraftsListAttachmentsZone'
@@ -27,19 +27,19 @@ interface CreateForm {
         guiAttributes: Attribute[]
         defaultData: ApiStandardRequest | undefined
     }
+    id: number
     onSubmit(data: FieldValues): Promise<void>
     isError: boolean
     isLoading: boolean
+    fileUploadRef: React.RefObject<IFileUploadRef>
+    handleUploadSuccess: (data: FileUploadData[]) => void
+    sendData: (values: FieldValues, name?: string, email?: string, capthcaToken?: string) => Promise<void>
 }
-const baseURL = import.meta.env.VITE_REST_CLIENT_STANDARDS_TARGET_URL
 
-export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: CreateForm) => {
+export const DraftsListCreateForm = ({ data, isError, isLoading, fileUploadRef, handleUploadSuccess, sendData, id }: CreateForm) => {
     const { t } = useTranslation()
     const [openCreateFormDialog, setOpenCreateFormDialog] = useState<FieldValues>()
     const navigate = useNavigate()
-    const { setIsActionSuccess } = useActionSuccess()
-    const [customLoading, setCustomLoading] = useState(false)
-    const [customError, setCustomError] = useState(false)
 
     const {
         state: { user },
@@ -65,73 +65,6 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
         setValue('links', newAttachments)
     }
 
-    const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
-
-    // eslint-disable-next-line no-warning-comments
-    const { uppy, currentFiles, handleRemoveFile, uploadFilesStatus, handleUpload, removeGeneralErrorMessages, generalErrorMessages } = useUppy({
-        multiple: true,
-        fileImportStep,
-        endpointUrl: `${DMS_DOWNLOAD_BASE}`,
-        setFileImportStep,
-        setCustomFileMeta: () => {
-            const id = uuidV4()
-            return {
-                'x-content-uuid': id,
-                refAttributes: new Blob(
-                    [
-                        JSON.stringify({
-                            refType: 'STANDARD',
-                        }),
-                    ],
-                    { type: 'application/json' },
-                ),
-            }
-        },
-    })
-
-    const sendData = async (values: FieldValues, fullName?: string, email?: string, capthcaToken?: string) => {
-        if (currentFiles?.length > 0) {
-            setCustomLoading(true)
-            await handleUpload()
-        }
-        const uploadedFiles =
-            currentFiles?.map((file) => ({
-                attachmentId: file?.meta['x-content-uuid'],
-                attachmentName: file?.name,
-                attachmentSize: file?.size,
-                attachmentType: file?.extension,
-                attachmentDescription: '-',
-            })) ?? []
-
-        if (capthcaToken) {
-            setCustomLoading(true)
-            const response = await fetch(`${baseURL}/standards/requests`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'recaptcha-response': capthcaToken },
-                body: JSON.stringify({
-                    ...values,
-                    fullName,
-                    email,
-                    attachments: uploadedFiles,
-                }),
-            })
-            if (response.ok) {
-                setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV, additionalInfo: { type: 'create' } })
-                navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV)
-            } else {
-                setCustomError(true)
-            }
-            setCustomLoading(false)
-        } else {
-            onSubmit({
-                ...values,
-                fullName,
-                email,
-                attachments: uploadedFiles,
-            })
-        }
-    }
-
     const handleSubmitForm = async (values: FieldValues) => {
         if (user) {
             sendData(values)
@@ -143,7 +76,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
     const errors = formState?.errors
 
     return (
-        <QueryFeedback loading={isLoading || customLoading} withChildren>
+        <QueryFeedback loading={isLoading} withChildren>
             <DraftListCreateFormDialog
                 openCreateFormDialog={openCreateFormDialog}
                 closeCreateFormDialog={() => setOpenCreateFormDialog(undefined)}
@@ -152,7 +85,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
 
             <FlexColumnReverseWrapper>
                 <TextHeading size="L">{t('DraftsList.createForm.heading')}</TextHeading>
-                {(isError || customError) && <MutationFeedback error={t('feedback.mutationErrorMessage')} showSupportEmail success={false} />}
+                {isError && <MutationFeedback error={t('feedback.mutationErrorMessage')} showSupportEmail success={false} />}
             </FlexColumnReverseWrapper>
 
             {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
@@ -225,14 +158,20 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
                     error={formState?.errors?.privacyImpact?.message}
                     isRequired
                 />
-                <DraftsListAttachmentsZone
-                    links={links}
-                    register={register}
-                    addNewLink={addNewLink}
-                    onDelete={removeLink}
-                    errors={errors}
-                    uppyHelpers={{ uppy, uploadFilesStatus, handleRemoveFile, removeGeneralErrorMessages, generalErrorMessages, currentFiles }}
-                />
+                <DraftsListAttachmentsZone links={links} register={register} addNewLink={addNewLink} onDelete={removeLink} errors={errors} />
+                <TextHeading size="M">{t('DraftsList.createForm.links.andOrAddFile')}</TextHeading>
+                {user && (
+                    <FileUpload
+                        ref={fileUploadRef}
+                        allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
+                        multiple
+                        isUsingUuidInFilePath
+                        refType={RefAttributesRefType.STANDARD_REQUEST}
+                        onUploadSuccess={handleUploadSuccess}
+                        refId={id?.toString()}
+                    />
+                )}
+                <Spacer vertical />
                 <div className={styles.buttonGroup}>
                     <Button
                         label={t('DraftsList.createForm.cancel')}

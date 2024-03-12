@@ -6,6 +6,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/index'
 import { Group, useFind2111 } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import React, { useMemo } from 'react'
 import { GET_MEETING_REQUEST_DETAIL } from '@isdd/metais-common/constants'
+import { GetMeta200, useGetMeta } from '@isdd/metais-common/api/generated/dms-swagger'
 
 import { MeetingsDetailPermissionsWrapper } from '@/components/permissions/MeetingsDetailPermissionsWrapper'
 
@@ -42,6 +43,7 @@ export interface MeetingDetailViewProps {
     meetingId: number
     group: Group | undefined
     refetch: () => void
+    attachmentsMetaData?: GetMeta200
 }
 
 interface MeetingDetailContainer {
@@ -62,6 +64,11 @@ const MeetingDetailContainer: React.FC<MeetingDetailContainer> = ({ View, meetin
         refetch,
         isFetching,
     } = useGetMeetingRequestDetail(meetingId, { query: { queryKey: [GET_MEETING_REQUEST_DETAIL] } })
+    const { data: attachmentsMetaData, isLoading: isMetaDataLoading } = useGetMeta(
+        meetingDetailData?.meetingAttachments?.map((att) => att.attachmentId ?? '') ?? [],
+        { query: { enabled: (meetingDetailData?.meetingAttachments?.length ?? 0) > 0 } },
+    )
+
     const { data: groups } = useFind2111({})
 
     const group = useMemo(() => {
@@ -73,7 +80,7 @@ const MeetingDetailContainer: React.FC<MeetingDetailContainer> = ({ View, meetin
     return (
         <MeetingsDetailPermissionsWrapper meetingDetailData={meetingDetailData}>
             <View
-                isLoading={isLoading || isFetching}
+                isLoading={isLoading || isFetching || isMetaDataLoading}
                 filter={filter}
                 handleFilterChange={handleFilterChange}
                 user={user}
@@ -81,6 +88,7 @@ const MeetingDetailContainer: React.FC<MeetingDetailContainer> = ({ View, meetin
                 meetingId={meetingId}
                 group={group}
                 refetch={() => refetch()}
+                attachmentsMetaData={attachmentsMetaData}
             />
         </MeetingsDetailPermissionsWrapper>
     )

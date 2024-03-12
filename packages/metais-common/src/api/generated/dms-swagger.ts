@@ -8,13 +8,11 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useDmsSwaggerClient } from '../hooks/useDmsSwaggerClient'
-export type GetMetaParams = {
+export type GetMeta1Params = {
     version?: string
 }
 
-export type FindMetaForConfigItems200 = { [key: string]: Metadata }
-
-export type CreateContentBodyRefAttributes = CiRefAttributes | StandardRefAttributes | UnknownRefAttributes
+export type GetMeta200 = { [key: string]: Metadata }
 
 export type CreateContentBody = {
     file: Blob
@@ -22,14 +20,10 @@ export type CreateContentBody = {
     refAttributes: CreateContentBodyRefAttributes
 }
 
-export type UpdateContentBodyRefAttributes = CiRefAttributes | StandardRefAttributes | UnknownRefAttributes
-
 export type UpdateContentBody = {
     file: Blob
     refAttributes: UpdateContentBodyRefAttributes
 }
-
-export type UpdateContent1BodyRefAttributes = CiRefAttributes | StandardRefAttributes | UnknownRefAttributes
 
 export type UpdateContent1Body = {
     file: Blob
@@ -39,14 +33,6 @@ export type UpdateContent1Body = {
 export type GetContentParams = {
     version?: string
 }
-
-export type UpdateBatchRefAttributesBody = { [key: string]: CiRefAttributes | StandardRefAttributes | UnknownRefAttributes }
-
-export type UpdateBatchRefAttributes1Body = { [key: string]: CiRefAttributes | StandardRefAttributes | UnknownRefAttributes }
-
-export type UpdateRefAttributesBody = CiRefAttributes | StandardRefAttributes | UnknownRefAttributes
-
-export type UpdateRefAttributes1Body = CiRefAttributes | StandardRefAttributes | UnknownRefAttributes
 
 export interface MetaVersion {
     version?: string
@@ -120,7 +106,10 @@ export type RefAttributesRefType = (typeof RefAttributesRefType)[keyof typeof Re
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RefAttributesRefType = {
     CI: 'CI',
-    STANDARD: 'STANDARD',
+    STANDARD_REQUEST: 'STANDARD_REQUEST',
+    MEETING_REQUEST: 'MEETING_REQUEST',
+    VOTE: 'VOTE',
+    DOCUMENT_TEMPLATE: 'DOCUMENT_TEMPLATE',
     UNKNOWN: 'UNKNOWN',
 } as const
 
@@ -129,14 +118,89 @@ export interface RefAttributes {
 }
 
 /**
+ * Class eligible for Votes parent (in STANDARDS module).
+ */
+export type VoteRefAttributes = RefAttributes
+
+/**
  * This class is be just as an return value of old DMS documents for which we were not able to find parent object (and so fill their Metadata.RefAttributes). It can not be used for creation of new DMS documents or updating of old DMS documents. If you are updating an old document then you know who the parent is, so fill RefAttributes object with proper data.
  */
 export type UnknownRefAttributes = RefAttributes
 
 /**
- * Class eligible for Standard parent.
+ * Class eligible for Standard parent (in STANDARDS module).
  */
-export type StandardRefAttributes = RefAttributes
+export type StandardRequestRefAttributes = RefAttributes
+
+/**
+ * Class eligible for Meeting_requests parent (in STANDARDS module).
+ */
+export type MeetingRequestRefAttributes = RefAttributes
+
+/**
+ * Class eligible for Document parent (in KRIS module).
+ */
+export type DocumentTemplateRefAttributes = RefAttributes
+
+export type CreateContentBodyRefAttributes =
+    | CiRefAttributes
+    | DocumentTemplateRefAttributes
+    | MeetingRequestRefAttributes
+    | StandardRequestRefAttributes
+    | UnknownRefAttributes
+    | VoteRefAttributes
+
+export type UpdateContentBodyRefAttributes =
+    | CiRefAttributes
+    | DocumentTemplateRefAttributes
+    | MeetingRequestRefAttributes
+    | StandardRequestRefAttributes
+    | UnknownRefAttributes
+    | VoteRefAttributes
+
+export type UpdateContent1BodyRefAttributes =
+    | CiRefAttributes
+    | DocumentTemplateRefAttributes
+    | MeetingRequestRefAttributes
+    | StandardRequestRefAttributes
+    | UnknownRefAttributes
+    | VoteRefAttributes
+
+export type UpdateBatchRefAttributesBody = {
+    [key: string]:
+        | CiRefAttributes
+        | DocumentTemplateRefAttributes
+        | MeetingRequestRefAttributes
+        | StandardRequestRefAttributes
+        | UnknownRefAttributes
+        | VoteRefAttributes
+}
+
+export type UpdateBatchRefAttributes1Body = {
+    [key: string]:
+        | CiRefAttributes
+        | DocumentTemplateRefAttributes
+        | MeetingRequestRefAttributes
+        | StandardRequestRefAttributes
+        | UnknownRefAttributes
+        | VoteRefAttributes
+}
+
+export type UpdateRefAttributesBody =
+    | CiRefAttributes
+    | DocumentTemplateRefAttributes
+    | MeetingRequestRefAttributes
+    | StandardRequestRefAttributes
+    | UnknownRefAttributes
+    | VoteRefAttributes
+
+export type UpdateRefAttributes1Body =
+    | CiRefAttributes
+    | DocumentTemplateRefAttributes
+    | MeetingRequestRefAttributes
+    | StandardRequestRefAttributes
+    | UnknownRefAttributes
+    | VoteRefAttributes
 
 export type CiRefAttributesAllOf = {
     /** The technical name of configuration item (CI) to which the DMS document is bound. */
@@ -154,7 +218,13 @@ export type CiRefAttributesAllOf = {
  */
 export type CiRefAttributes = RefAttributes & CiRefAttributesAllOf
 
-export type MetadataRefAttributes = CiRefAttributes | StandardRefAttributes | UnknownRefAttributes
+export type MetadataRefAttributes =
+    | CiRefAttributes
+    | DocumentTemplateRefAttributes
+    | MeetingRequestRefAttributes
+    | StandardRequestRefAttributes
+    | UnknownRefAttributes
+    | VoteRefAttributes
 
 export type ApiErrorData = { [key: string]: any }
 
@@ -635,45 +705,45 @@ export const useCreateContent = <TError = ApiError, TContext = unknown>(options?
     return useMutation(mutationOptions)
 }
 
-export const useFindMetaForConfigItemsHook = () => {
-    const findMetaForConfigItems = useDmsSwaggerClient<FindMetaForConfigItems200>()
+export const useGetMetaHook = () => {
+    const getMeta = useDmsSwaggerClient<GetMeta200>()
 
-    return (findMetaForConfigItemsBody: string[]) => {
-        return findMetaForConfigItems({
-            url: `/file/meta/uuids`,
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            data: findMetaForConfigItemsBody,
-        })
+    return (getMetaBody: string[]) => {
+        return getMeta({ url: `/file/meta/uuids`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: getMetaBody })
     }
 }
 
-export const useFindMetaForConfigItemsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useFindMetaForConfigItemsHook>>>, TError, { data: string[] }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useFindMetaForConfigItemsHook>>>, TError, { data: string[] }, TContext> => {
-    const { mutation: mutationOptions } = options ?? {}
+export const getGetMetaQueryKey = (getMetaBody: string[]) => [`/file/meta/uuids`, getMetaBody] as const
 
-    const findMetaForConfigItems = useFindMetaForConfigItemsHook()
+export const useGetMetaQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError = ApiError>(
+    getMetaBody: string[],
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useFindMetaForConfigItemsHook>>>, { data: string[] }> = (props) => {
-        const { data } = props ?? {}
+    const queryKey = queryOptions?.queryKey ?? getGetMetaQueryKey(getMetaBody)
 
-        return findMetaForConfigItems(data)
-    }
+    const getMeta = useGetMetaHook()
 
-    return { mutationFn, ...mutationOptions }
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>> = () => getMeta(getMetaBody)
+
+    return { queryKey, queryFn, ...queryOptions }
 }
 
-export type FindMetaForConfigItemsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useFindMetaForConfigItemsHook>>>>
-export type FindMetaForConfigItemsMutationBody = string[]
-export type FindMetaForConfigItemsMutationError = ApiError
+export type GetMetaQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>>
+export type GetMetaQueryError = ApiError
 
-export const useFindMetaForConfigItems = <TError = ApiError, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useFindMetaForConfigItemsHook>>>, TError, { data: string[] }, TContext>
-}) => {
-    const mutationOptions = useFindMetaForConfigItemsMutationOptions(options)
+export const useGetMeta = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError = ApiError>(
+    getMetaBody: string[],
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetMetaQueryOptions(getMetaBody, options)
 
-    return useMutation(mutationOptions)
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }
 
 export const useDeleteDocumentsHook = () => {
@@ -712,41 +782,41 @@ export const useDeleteDocuments = <TError = ApiError, TContext = unknown>(option
     return useMutation(mutationOptions)
 }
 
-export const useGetMetaHook = () => {
-    const getMeta = useDmsSwaggerClient<Metadata>()
+export const useGetMeta1Hook = () => {
+    const getMeta1 = useDmsSwaggerClient<Metadata>()
 
-    return (uuid: string, params?: GetMetaParams, signal?: AbortSignal) => {
-        return getMeta({ url: `/file/meta/${uuid}`, method: 'get', params, signal })
+    return (uuid: string, params?: GetMeta1Params, signal?: AbortSignal) => {
+        return getMeta1({ url: `/file/meta/${uuid}`, method: 'get', params, signal })
     }
 }
 
-export const getGetMetaQueryKey = (uuid: string, params?: GetMetaParams) => [`/file/meta/${uuid}`, ...(params ? [params] : [])] as const
+export const getGetMeta1QueryKey = (uuid: string, params?: GetMeta1Params) => [`/file/meta/${uuid}`, ...(params ? [params] : [])] as const
 
-export const useGetMetaQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError = ApiError>(
+export const useGetMeta1QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetMeta1Hook>>>, TError = ApiError>(
     uuid: string,
-    params?: GetMetaParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError, TData> },
-): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    params?: GetMeta1Params,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMeta1Hook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMeta1Hook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetMetaQueryKey(uuid, params)
+    const queryKey = queryOptions?.queryKey ?? getGetMeta1QueryKey(uuid, params)
 
-    const getMeta = useGetMetaHook()
+    const getMeta1 = useGetMeta1Hook()
 
-    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>> = ({ signal }) => getMeta(uuid, params, signal)
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetMeta1Hook>>>> = ({ signal }) => getMeta1(uuid, params, signal)
 
     return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
 }
 
-export type GetMetaQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>>
-export type GetMetaQueryError = ApiError
+export type GetMeta1QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetMeta1Hook>>>>
+export type GetMeta1QueryError = ApiError
 
-export const useGetMeta = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError = ApiError>(
+export const useGetMeta1 = <TData = Awaited<ReturnType<ReturnType<typeof useGetMeta1Hook>>>, TError = ApiError>(
     uuid: string,
-    params?: GetMetaParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError, TData> },
+    params?: GetMeta1Params,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMeta1Hook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useGetMetaQueryOptions(uuid, params, options)
+    const queryOptions = useGetMeta1QueryOptions(uuid, params, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 

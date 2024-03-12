@@ -16,7 +16,7 @@ const DraftsListEditPage = () => {
     return (
         <DraftsListFormContainer
             entityId={entityId}
-            View={({ data, isLoading }) => {
+            View={({ data, handleUploadSuccess, fileUploadRef, onSubmit, isError, isLoading }) => {
                 document.title = formatTitleString(data?.requestData?.name ?? '')
                 return (
                     <>
@@ -34,7 +34,14 @@ const DraftsListEditPage = () => {
                         />
                         <MainContentWrapper>
                             <QueryFeedback loading={isLoading} error={false} withChildren>
-                                <DraftsListEditForm defaultData={data?.requestData} />
+                                <DraftsListEditForm
+                                    defaultData={data?.requestData}
+                                    handleUploadSuccess={handleUploadSuccess}
+                                    fileUploadRef={fileUploadRef}
+                                    onSubmit={onSubmit}
+                                    isError={isError}
+                                    isLoading={isLoading}
+                                />
                             </QueryFeedback>
                         </MainContentWrapper>
                     </>

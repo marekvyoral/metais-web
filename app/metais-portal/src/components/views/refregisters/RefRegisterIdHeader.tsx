@@ -26,9 +26,10 @@ interface Props {
     entityItemName: string
     isLoading: boolean
     isError: boolean
+    owner: string
 }
 
-export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName, isLoading, isError }) => {
+export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName, isLoading, isError, owner }) => {
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
@@ -102,6 +103,7 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
                     targetState={targetState}
                     handleChangeState={handleChangeState}
                     entityItemName={entityItemName}
+                    owner={owner}
                 />
                 <RefRegisterGeneratePropDialog
                     openGeneratePropDialog={openGeneratePropDialog}

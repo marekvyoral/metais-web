@@ -12,6 +12,7 @@ import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useCountdown } from '@isdd/metais-common/hooks/useCountdown'
 import { cleanFileName } from '@isdd/metais-common/utils/utils'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 
 interface iUseUppy {
     allowedFileTypes?: string[] // if undefined all file types are allowed
@@ -23,6 +24,8 @@ interface iUseUppy {
     setCustomFileMeta?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => { [metaKey: string]: unknown }
     setFileUuidAsync?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => Promise<{ uuid: string }>
     fileUploadError?: (responseError: { responseText: string; response: unknown }) => string
+    refId?: string
+    refType?: RefAttributesRefType
 }
 
 export type UploadFileResponse = {
@@ -54,6 +57,8 @@ export const useUppy = ({
     setFileUuidAsync,
     fileImportStep,
     fileUploadError,
+    refId,
+    refType,
 }: iUseUppy) => {
     const { i18n, t } = useTranslation()
     const uppy = useMemo(() => {
@@ -99,6 +104,39 @@ export const useUppy = ({
         setGeneralErrorMessages([])
         return
     }
+
+    useEffect(() => {
+        const getBlob = async () => {
+            const prevRefAttrs = await new Response(uppy.getState().meta['refAttributes']).text()
+            if (prevRefAttrs && prevRefAttrs.length > 0) {
+                uppy.setMeta({
+                    refAttributes: new Blob(
+                        [
+                            JSON.stringify({
+                                ...JSON.parse(prevRefAttrs),
+                                refType: refType,
+                                refCiId: refId,
+                            }),
+                        ],
+                        { type: 'application/json' },
+                    ),
+                })
+            } else {
+                uppy.setMeta({
+                    refAttributes: new Blob(
+                        [
+                            JSON.stringify({
+                                refType: refType,
+                                refCiId: refId,
+                            }),
+                        ],
+                        { type: 'application/json' },
+                    ),
+                })
+            }
+        }
+        getBlob()
+    }, [refId, refType, uppy])
 
     useCountdown({
         shouldCount: generalErrorMessages.length > 0,
@@ -201,6 +239,7 @@ export const useUppy = ({
             if (setCustomFileMeta) {
                 uppy.setFileMeta(file?.id, setCustomFileMeta?.(file))
             }
+
             if (setFileUuidAsync) {
                 const fileUuid = await setFileUuidAsync?.(file)
                 uppy.setFileState(file.id, {

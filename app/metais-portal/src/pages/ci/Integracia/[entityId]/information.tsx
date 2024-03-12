@@ -1,7 +1,7 @@
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
 import { useIntegrationLink } from '@isdd/metais-common/src/hooks/useIntegrationLink'
-import { useGetMeta } from '@isdd/metais-common/api/generated/dms-swagger'
+import { useGetMeta1 } from '@isdd/metais-common/api/generated/dms-swagger'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { IntegrationLinkAccordion } from '@/components/views/prov-integration/integration-link/IntegrationLinkAccordion'
@@ -17,7 +17,7 @@ export const IntegrationLinkInformation = () => {
             createdByLogin: ciItemData?.metaAttributes?.createdBy ?? '',
             lastModifiedByLogin: ciItemData?.metaAttributes?.lastModifiedBy ?? '',
         })
-    const { data: dmsFileMetaData, isLoading: isDmsFileMetaDataLoading, isError: isDmsFileMetaDataError } = useGetMeta(entityId ?? '')
+    const { data: dmsFileMetaData, isLoading: isDmsFileMetaDataLoading, isError: isDmsFileMetaDataError } = useGetMeta1(entityId ?? '')
 
     return (
         <>

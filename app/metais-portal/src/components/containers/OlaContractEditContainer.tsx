@@ -1,4 +1,4 @@
-import { useGetMeta, useUpdateContent } from '@isdd/metais-common/api/generated/dms-swagger'
+import { useGetMeta1, useUpdateContent } from '@isdd/metais-common/api/generated/dms-swagger'
 import { Role, useFindAll11, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ListOlaContractListParams, useGetOlaContract, useUpdateOlaContract } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -33,7 +33,7 @@ export const OlaContractEditContainer: React.FC<IOlaContractEditContainer> = ({ 
     const { mutateAsync: saveDoc, isError: isSaveDocError, isLoading: isSaveDocLoading } = useUpdateContent()
     const { data: roleData } = useFindAll11({ name: SLA_SPRAVA })
     const [ownerGid, setOwnerGid] = useState<string>()
-    const { data: olaContractDocument, isLoading: isOlaContractDocumentLoading, isError: isOlaContractdocumentError } = useGetMeta(entityId ?? '')
+    const { data: olaContractDocument, isLoading: isOlaContractDocumentLoading, isError: isOlaContractdocumentError } = useGetMeta1(entityId ?? '')
     const { data: ciType, isLoading: isCiTypeLoading, isError: isCiTypeError } = useGetCiTypeWrapper(OLA_Kontrakt)
 
     const {
