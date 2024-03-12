@@ -37,6 +37,7 @@ export const Navbar: React.FC = () => {
             path={NavigationSubRoutes.NOTIFICATIONS}
             showAsLink
             altText={t('navbar.notifications')}
+            ariaLabel={t('notifications.youHave', { count: notificationsData?.pagination?.totalUnreadedItems ?? 0 })}
         />
     )
 

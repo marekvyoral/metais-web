@@ -55,7 +55,12 @@ export const MeetingExternalActorsForm = ({ meetingActor, index, register, remov
                         />
                     </div>
                     <div className={styles.externalActorsButton}>
-                        <Button label={<IconLabel label={''} icon={ImportDeleteIcon} />} onClick={() => remove(index)} variant="secondary" />
+                        <Button
+                            aria-label={t('meetings.form.delete', { order: index + 1 })}
+                            label={<IconLabel label={''} icon={ImportDeleteIcon} />}
+                            onClick={() => remove(index)}
+                            variant="secondary"
+                        />
                     </div>
                 </div>
             </div>

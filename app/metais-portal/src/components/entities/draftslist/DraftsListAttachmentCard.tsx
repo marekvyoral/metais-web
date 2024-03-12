@@ -69,7 +69,8 @@ export const DraftsListAttachmentCard = ({ register, index, onDelete, errors }: 
                 <Button
                     onClick={() => onDelete(index)}
                     variant="secondary"
-                    label={<IconLabel icon={ImportDeleteIcon} alt={t('DraftsList.createForm.links.delete')} />}
+                    aria-label={t('DraftsList.createForm.links.delete')}
+                    label={<IconLabel icon={ImportDeleteIcon} />}
                 />
             </div>
         </div>
