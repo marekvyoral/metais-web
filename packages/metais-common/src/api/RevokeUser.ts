@@ -3,7 +3,7 @@ export const revokeUser = async (login: string, token: string | null) => {
     const baseUrl = import.meta.env.VITE_REST_CLIENT_BASE_URL
     const iamName = import.meta.env.VITE_IAM_NAME
 
-    return fetch(baseUrl + `/${iamName}/revoke_user?${query}`, {
+    return fetch(baseUrl + `/${iamName}/revoke_user?login=${query}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
