@@ -85,7 +85,7 @@ export const DraftsListCreateForm = ({ data, isError, isLoading, fileUploadRef, 
 
             <FlexColumnReverseWrapper>
                 <TextHeading size="L">{t('DraftsList.createForm.heading')}</TextHeading>
-                {isError && <MutationFeedback error={t('feedback.mutationErrorMessage')} showSupportEmail success={false} />}
+                <MutationFeedback error={isError} />
             </FlexColumnReverseWrapper>
 
             {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}

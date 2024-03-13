@@ -110,11 +110,12 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                     <MutationFeedback
                         success={isSuccessAddToFavorite}
                         successMessage={successMessage}
-                        error={errorAddToFavorite ? t('userProfile.notifications.feedback.error') : undefined}
+                        error={!!errorAddToFavorite}
+                        errorMessage={t('userProfile.notifications.feedback.error')}
                         onMessageClose={() => resetState()}
                     />
                     {isError && <QueryFeedback error loading={false} />}
-                    {isExternalSuccess && <MutationFeedback success error={false} />}
+                    <MutationFeedback success={isExternalSuccess} />
                 </div>
             </FlexColumnReverseWrapper>
 

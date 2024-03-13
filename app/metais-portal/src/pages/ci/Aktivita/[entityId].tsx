@@ -79,9 +79,7 @@ const ActivityEntityDetailPage: React.FC = () => {
                                 refetchCi={refetch}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
-                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
-                                <MutationFeedback error={false} success={isActionSuccess.value} />
-                            )}
+                            <MutationFeedback success={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'} />
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} />
                     </QueryFeedback>

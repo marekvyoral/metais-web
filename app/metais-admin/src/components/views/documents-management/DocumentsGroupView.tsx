@@ -275,7 +275,6 @@ export const DocumentsGroupView: React.FC<IView> = ({
             </ButtonGroupRow>
             <MutationFeedback
                 success={isActionSuccess.value && isActionSuccess?.additionalInfo?.type == 'editGroup'}
-                error={undefined}
                 successMessage={t('mutationFeedback.successfulUpdated')}
             />
 
@@ -302,7 +301,6 @@ export const DocumentsGroupView: React.FC<IView> = ({
                         isActionSuccess.value &&
                         (isActionSuccess?.additionalInfo?.type == 'create' || isActionSuccess?.additionalInfo?.type == 'edit')
                     }
-                    error={undefined}
                     successMessage={
                         isActionSuccess?.additionalInfo?.type == 'create'
                             ? t('mutationFeedback.successfulCreated')
@@ -311,14 +309,9 @@ export const DocumentsGroupView: React.FC<IView> = ({
                 />
                 <MutationFeedback
                     success={isDocumentSuccessfullyUpdated && !isTemplateSuccessfullyDeleted && !isTemplateDeleting}
-                    error={undefined}
                     successMessage={t('documentsManagement.templateSuccessfullyAdded')}
                 />
-                <MutationFeedback
-                    success={isTemplateSuccessfullyDeleted}
-                    error={undefined}
-                    successMessage={t('documentsManagement.templateSuccessfullyDeleted')}
-                />
+                <MutationFeedback success={isTemplateSuccessfullyDeleted} successMessage={t('documentsManagement.templateSuccessfullyDeleted')} />
             </div>
             <Table
                 columns={columns.filter(

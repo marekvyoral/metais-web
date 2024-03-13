@@ -73,17 +73,14 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
     return (
         <>
             <TextHeading size="XL">{t('monitoring.list.heading')}</TextHeading>
-            {isSuccess && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success
-                        error={false}
-                        successMessage={
-                            additionalInfo?.type == 'create' ? t('mutationFeedback.successfulCreated') : t('mutationFeedback.successfulUpdated')
-                        }
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={isSuccess}
+                    successMessage={
+                        additionalInfo?.type == 'create' ? t('mutationFeedback.successfulCreated') : t('mutationFeedback.successfulUpdated')
+                    }
+                />
+            </div>
             <Filter<IMonitoringListFilterData>
                 heading={t('monitoring.list.filter.title')}
                 defaultFilterValues={defaultFilterValues}

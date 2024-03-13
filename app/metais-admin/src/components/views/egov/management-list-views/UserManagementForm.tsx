@@ -147,25 +147,22 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                 }}
             >
                 {methods.formState.isSubmitted && !methods.formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
-
-                <form onSubmit={methods.handleSubmit(handleFormSubmit)} noValidate>
-                    {(updateOrCreate.isError || updateOrCreate.isSuccess) && (
-                        <div ref={wrapperRef}>
-                            <MutationFeedback
-                                error={
-                                    !updateOrCreate.isSuccess &&
-                                    (errorType === NO_CHANGES_DETECTED
-                                        ? t('managementList.noChangesDetected')
-                                        : errorType === UNIQUE_LOGIN
-                                        ? t('userManagement.error.uniqueLogin')
-                                        : errorType === UNIQUE_EMAIL
-                                        ? t('userProfile.uniqueEmail')
-                                        : t('managementList.mutationError'))
-                                }
-                                success={updateOrCreate.isSuccess}
-                            />
-                        </div>
-                    )}
+                <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
+                    <div ref={wrapperRef}>
+                        <MutationFeedback
+                            error={updateOrCreate.isError}
+                            errorMessage={
+                                errorType === NO_CHANGES_DETECTED
+                                    ? t('managementList.noChangesDetected')
+                                    : errorType === UNIQUE_LOGIN
+                                    ? t('userManagement.error.uniqueLogin')
+                                    : errorType === UNIQUE_EMAIL
+                                    ? t('userProfile.uniqueEmail')
+                                    : t('managementList.mutationError')
+                            }
+                            success={updateOrCreate.isSuccess}
+                        />
+                    </div>
                     <UserDetailForm
                         isCreate={isCreate}
                         userData={detailData?.userData}

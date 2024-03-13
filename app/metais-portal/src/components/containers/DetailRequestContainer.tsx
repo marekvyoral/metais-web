@@ -16,10 +16,10 @@ import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/
 import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { ErrorTranslateKeyType, getErrorTranslateKeys } from '@isdd/metais-common/src/utils/errorMapper'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { API_DATE_FORMAT } from '@/componentHelpers/requests'
-import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 export enum ApiRequestAction {
     ACCEPT = 'requestToAccepted',
@@ -43,7 +43,7 @@ export interface DetailRequestViewProps {
     isLoading: boolean
     isLoadingMutation: boolean
     isError: boolean
-    actionsErrorMessages: string[]
+    actionsErrorMessages: ErrorTranslateKeyType[]
     requestId?: string
     filter: IFilter
     onAccept: (action: ApiRequestAction, note?: string) => void

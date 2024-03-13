@@ -297,7 +297,6 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
             />
             <MutationFeedback
                 success={mutateInvalidateFunc.isSuccess || mutateValidateFunc.isSuccess}
-                error={false}
                 successMessage={
                     mutateInvalidateFunc.isSuccess ? t('mutationFeedback.successfulInvalidated') : t('mutationFeedback.successfulRevalidated')
                 }

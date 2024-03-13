@@ -72,9 +72,11 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
                     setCurrentFiles={setCurrentFiles}
                     refType={RefAttributesRefType.CI}
                 />
-                {duplicateDocNamesError && (
-                    <MutationFeedback success={false} error={duplicateDocNamesError} onMessageClose={() => setDuplicateDocNamesError('')} />
-                )}
+                <MutationFeedback
+                    error={!!duplicateDocNamesError}
+                    errorMessage={duplicateDocNamesError}
+                    onMessageClose={() => setDuplicateDocNamesError('')}
+                />
 
                 <ModalButtons
                     submitButtonLabel={t('bulkActions.addFile.upload')}

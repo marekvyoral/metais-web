@@ -156,7 +156,7 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
     return (
         <MainContentWrapper>
             <QueryFeedback loading={isLoading} error={isError} withChildren>
-                <MutationFeedback success={isSuccess} error={false} successMessage={t('mutationFeedback.monitoringInsert')} />
+                <MutationFeedback success={isSuccess} successMessage={t('mutationFeedback.monitoringInsert')} />
                 <FlexColumnReverseWrapper>
                     <TextHeading size="L">{t('titles.monitoringInsert')}</TextHeading>
                 </FlexColumnReverseWrapper>

@@ -33,9 +33,8 @@ export const ProvIntegrationListView: React.FC<IProvIntegrationListView> = ({
             <FlexColumnReverseWrapper>
                 <TextHeading size="L">{t('integrationLinks.heading')}</TextHeading>
                 <QueryFeedback loading={false} error={isError} />
-                <ElementToScrollTo isVisible={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}>
+                <ElementToScrollTo trigger={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}>
                     <MutationFeedback
-                        error={false}
                         success={isActionSuccess.value}
                         successMessage={
                             isActionSuccess.additionalInfo?.type === 'create'

@@ -99,21 +99,22 @@ export const EntityDetailView = ({
                     </div>
                     {isError && <QueryFeedback error loading={false} />}
                     <div ref={wrapperRef}>
-                        {isActionSuccess.value && isActionSuccess?.additionalInfo?.type === 'attrEdit' && (
-                            <MutationFeedback success successMessage={t('mutationFeedback.attrSuccessfulUpdated')} error={false} />
-                        )}
-                        {isActionSuccess.value &&
-                            (isActionSuccess.additionalInfo?.type === 'edit' || isActionSuccess.additionalInfo?.type === 'create') && (
-                                <MutationFeedback
-                                    success={isActionSuccess.value}
-                                    error={false}
-                                    successMessage={
-                                        isActionSuccess.additionalInfo?.type === 'edit'
-                                            ? t('mutationFeedback.successfulUpdated')
-                                            : t('mutationFeedback.successfulCreated')
-                                    }
-                                />
-                            )}
+                        <MutationFeedback
+                            success={isActionSuccess.value && isActionSuccess?.additionalInfo?.type === 'attrEdit'}
+                            successMessage={t('mutationFeedback.attrSuccessfulUpdated')}
+                        />
+
+                        <MutationFeedback
+                            success={
+                                isActionSuccess.value &&
+                                (isActionSuccess.additionalInfo?.type === 'edit' || isActionSuccess.additionalInfo?.type === 'create')
+                            }
+                            successMessage={
+                                isActionSuccess.additionalInfo?.type === 'edit'
+                                    ? t('mutationFeedback.successfulUpdated')
+                                    : t('mutationFeedback.successfulCreated')
+                            }
+                        />
                     </div>
                 </FlexColumnReverseWrapper>
                 <BasicInformation data={{ ciTypeData, constraintsData, unitsData }} roles={roles} />

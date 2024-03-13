@@ -33,11 +33,7 @@ export const ReportsListView = ({
     return (
         <>
             <div ref={scrollRef} />
-            <MutationFeedback
-                success={saveMutationIsSuccess || changeMutationIsSuccess}
-                error={false}
-                onMessageClose={changeMutationIsSuccessReset}
-            />
+            <MutationFeedback success={saveMutationIsSuccess || changeMutationIsSuccess} onMessageClose={changeMutationIsSuccessReset} />
             <Filter<ReportsFilterData>
                 defaultFilterValues={defaultFilterValues}
                 form={({ setValue, filter }) => (

@@ -121,14 +121,13 @@ export const VotesHandler: React.FC<ICastVote> = ({
             error={votesProcessingError}
             indicatorProps={{ transparentMask: true, layer: 'dialog', label: t('votes.voteDetail.voteProcessing') }}
         >
-            {voted && (
-                <MutationFeedback
-                    success={voted}
-                    error={votesProcessingError && t('votes.actions.failedToSend')}
-                    successMessage={t('votes.actions.sent')}
-                    onMessageClose={() => setVotesProcessingError(false)}
-                />
-            )}
+            <MutationFeedback
+                success={voted}
+                error={votesProcessingError}
+                errorMessage={t('votes.actions.failedToSend')}
+                successMessage={t('votes.actions.sent')}
+                onMessageClose={() => setVotesProcessingError(false)}
+            />
             <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')} noValidate>
                 <RadioGroupWithLabel
                     label={t('votes.voteDetail.votesHandlingRadioLabel')}

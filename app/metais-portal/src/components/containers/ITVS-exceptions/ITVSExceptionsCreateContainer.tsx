@@ -278,15 +278,9 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                 </TextHeading>
                 {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
             </FlexColumnReverseWrapper>
-            {!(isRedirectError || isProcessedError || isRedirectLoading) && (
-                <div ref={mutationRef}>
-                    <MutationFeedback
-                        success={false}
-                        showSupportEmail
-                        error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
-                    />
-                </div>
-            )}
+            <div ref={mutationRef}>
+                <MutationFeedback error={storeConfigurationItem.isError} errorMessage={t('createEntity.mutationError')} />
+            </div>
             {(isRedirectError || isProcessedError || isTooManyFetchesError) && <div ref={wrapperRef} />}
             <QueryFeedback
                 loading={isRedirectLoading || isCreationLoading}

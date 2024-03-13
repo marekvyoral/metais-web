@@ -264,14 +264,11 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
             loading={isLoading || isLoadingAddData || isFetching || isLoadingKrisToBeData}
             error={isError || isErrorAddData || isErrorKrisToBeData}
         >
-            {resultSuccessApiCall.isSuccess && (
-                <MutationFeedback
-                    success={resultSuccessApiCall.isSuccess}
-                    successMessage={resultSuccessApiCall.message}
-                    error={undefined}
-                    onMessageClose={() => setResultSuccessApiCall({ isSuccess: false, message: '' })}
-                />
-            )}
+            <MutationFeedback
+                success={resultSuccessApiCall.isSuccess}
+                successMessage={resultSuccessApiCall.message}
+                onMessageClose={() => setResultSuccessApiCall({ isSuccess: false, message: '' })}
+            />
             <div className={styles.expandableRowContent}>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Table columns={columnsDetail} data={mappedData(evalData)} />

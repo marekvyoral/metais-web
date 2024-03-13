@@ -195,17 +195,16 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
             <TextBody>{voteData?.description ?? ''}</TextBody>
             <Spacer vertical />
             <TextHeading size="L">{t('votes.voteDetail.votesHandlingTitle')}</TextHeading>
-            {(castVoteSuccess || castVoteError) && (
-                <MutationFeedback
-                    success={castVoteSuccess}
-                    error={castVoteError ? castVoteMessage : t('votes.actions.failedToSend')}
-                    successMessage={t('votes.actions.sent')}
-                    onMessageClose={() => {
-                        setCastVoteError(false)
-                        setCastVoteMessage('')
-                    }}
-                />
-            )}
+            <MutationFeedback
+                success={castVoteSuccess}
+                error={castVoteError}
+                errorMessage={castVoteMessage || t('votes.actions.failedToSend')}
+                successMessage={t('votes.actions.sent')}
+                onMessageClose={() => {
+                    setCastVoteError(false)
+                    setCastVoteMessage('')
+                }}
+            />
             <VotesHandler
                 voteData={voteData}
                 handleCastVote={handleCastVote}

@@ -1,6 +1,6 @@
+import { MutationFeedback } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { MutationFeedback } from '@isdd/metais-common/index'
 
 import { CodeListDetailMutations } from '@/components/containers/Codelist/CodelistDetailContainer'
 
@@ -23,12 +23,5 @@ export const CodelistDetailFeedback: React.FC<ICodelistSucces> = ({ mutations })
         return ''
     }
 
-    return (
-        <MutationFeedback
-            success={isSuccess}
-            showSupportEmail
-            error={isError ? t('feedback.mutationErrorMessage') : undefined}
-            successMessage={successMessage()}
-        />
-    )
+    return <MutationFeedback success={isSuccess} error={isError} successMessage={successMessage()} />
 }

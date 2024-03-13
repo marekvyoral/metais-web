@@ -10,11 +10,11 @@ import {
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { QueryFeedback, MutationFeedback, ModalButtons } from '@isdd/metais-common/index'
 import { useCallback, useEffect } from 'react'
+import { getErrorTranslateKeys } from '@isdd/metais-common/src/utils/errorMapper'
 
 import styles from './newLanguageVersionModal.module.scss'
 
 import { NewLanguageFormData, useNewLanguageSchema, AddNewLanguageList } from '@/components/views/codeLists/useCodeListSchemas'
-import { getErrorTranslateKeys } from '@/componentHelpers'
 
 export interface NewLanguageVersionModalProps {
     code: string
@@ -122,12 +122,7 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
                             </TextHeading>
                             {isError && <QueryFeedback error={isError} loading={false} />}
                             {errorMessages.map((errorMessage, index) => (
-                                <MutationFeedback
-                                    success={false}
-                                    key={index}
-                                    showSupportEmail
-                                    error={t([errorMessage, 'feedback.mutationErrorMessage'])}
-                                />
+                                <MutationFeedback key={index} error errorMessage={errorMessage && t(errorMessage)} />
                             ))}
 
                             <SimpleSelect

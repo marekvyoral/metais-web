@@ -41,7 +41,8 @@ export const ReportsDetailPage: React.FC = () => {
                                     <MutationFeedback
                                         success={!!props?.reportResult}
                                         successMessage={t('mutationFeedback.runMutationSuccess')}
-                                        error={props.isError ? <>{t('mutationFeedback.runMutationError')}</> : undefined}
+                                        error={props.isError}
+                                        errorMessage={t('mutationFeedback.runMutationError')}
                                     />
                                 </FlexColumnReverseWrapper>
                                 <ReportsCard data={props.data} />

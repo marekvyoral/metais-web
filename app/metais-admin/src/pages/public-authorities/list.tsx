@@ -70,26 +70,23 @@ const PublicAuthoritiesPage = () => {
                             <QueryFeedback withChildren loading={isLoading} error={false}>
                                 <FlexColumnReverseWrapper>
                                     <TextHeading size="XL">{t('navMenu.publicAuthorities.publicAuthorities')}</TextHeading>
-                                    {(isInvalidateError || isActionSuccess.value) && (
-                                        <div ref={mutationRef}>
-                                            <MutationFeedback
-                                                error={
-                                                    !isActionSuccess.value
-                                                        ? isActionSuccess.additionalInfo?.type === 'invalid'
-                                                            ? t('mutationFeedback.invalidatePOError')
-                                                            : t('mutationFeedback.validatePOError')
-                                                        : ''
-                                                }
-                                                success={isActionSuccess.value}
-                                                successMessage={
-                                                    isActionSuccess.additionalInfo?.type === 'invalid'
-                                                        ? t('mutationFeedback.invalidatePOSuccess')
-                                                        : t('mutationFeedback.validatePOSuccess')
-                                                }
-                                                onMessageClose={() => setIsInvalidateError(false)}
-                                            />
-                                        </div>
-                                    )}
+                                    <div ref={mutationRef}>
+                                        <MutationFeedback
+                                            error={isInvalidateError}
+                                            errorMessage={
+                                                isActionSuccess.additionalInfo?.type === 'invalid'
+                                                    ? t('mutationFeedback.invalidatePOError')
+                                                    : t('mutationFeedback.validatePOError')
+                                            }
+                                            success={isActionSuccess.value}
+                                            successMessage={
+                                                isActionSuccess.additionalInfo?.type === 'invalid'
+                                                    ? t('mutationFeedback.invalidatePOSuccess')
+                                                    : t('mutationFeedback.validatePOSuccess')
+                                            }
+                                            onMessageClose={() => setIsInvalidateError(false)}
+                                        />
+                                    </div>
                                 </FlexColumnReverseWrapper>
                                 <OrganizationFilter defaultFilterValues={defaultFilterValues} />
                                 <PublicAuthoritiesTable

@@ -89,11 +89,7 @@ export const ImportParametersView: React.FC<IImportParametersView> = () => {
     return (
         <MainContentWrapper>
             <TextHeading size="XL">{t('navMenu.lists.monitoringImport')}</TextHeading>
-            <MutationFeedback
-                success={uploadFilesStatus[0]?.response?.body?.ok === true ?? false}
-                error={false}
-                successMessage={t(`errors.import.successUload`)}
-            />
+            <MutationFeedback success={uploadFilesStatus[0]?.response?.body?.ok === true ?? false} successMessage={t(`errors.import.successUload`)} />
             <FileImportDragDrop uppy={uppy} />
             <div>
                 <StatusBar

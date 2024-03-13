@@ -83,15 +83,12 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     return (
         <>
             <TextHeading size="L">{t('neighboursCardList.heading')}</TextHeading>
-            {isActionSuccess && isActionSuccess.additionalInfo?.type === 'relationCreated' && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={isActionSuccess.value}
-                        successMessage={t('mutationFeedback.successfulRelationCreated')}
-                        error={false}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={isActionSuccess.value && isActionSuccess.additionalInfo?.type === 'relationCreated'}
+                    successMessage={t('mutationFeedback.successfulRelationCreated')}
+                />
+            </div>
             <QueryFeedback loading={areTypesLoading} withChildren>
                 {!areTypesLoading && (
                     <>

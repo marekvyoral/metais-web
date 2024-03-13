@@ -126,17 +126,15 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 {(isError || isCiTypeConstraintsError) && (
                     <QueryFeedback loading={false} error errorProps={{ errorMessage: t('feedback.failedFetch') }} />
                 )}
-                {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                    <div ref={wrapperRef}>
-                        <MutationFeedback
-                            success={bulkActionResult?.isSuccess}
-                            successMessage={bulkActionResult?.successMessage}
-                            showSupportEmail
-                            error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
-                            onMessageClose={() => setBulkActionResult(undefined)}
-                        />
-                    </div>
-                )}
+                <div ref={wrapperRef}>
+                    <MutationFeedback
+                        success={bulkActionResult?.isSuccess}
+                        successMessage={bulkActionResult?.successMessage}
+                        error={bulkActionResult?.isError}
+                        errorMessage={bulkActionResult?.errorMessage}
+                        onMessageClose={() => setBulkActionResult(undefined)}
+                    />
+                </div>
             </FlexColumnReverseWrapper>
             <Filter<CIFilterData>
                 defaultFilterValues={defaultFilterValues}

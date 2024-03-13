@@ -38,12 +38,7 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
     return (
         <BaseModal isOpen={isOpen} close={close}>
             {isLoading && <LoadingIndicator label={t('exportItemsOrRelations.loading')} />}
-            <MutationFeedback
-                success={isActionSuccess.value}
-                showSupportEmail
-                error={isError ? t('feedback.mutationErrorMessage') : undefined}
-                successMessage={t('exportItemsOrRelations.exportSuccess')}
-            />
+            <MutationFeedback success={isActionSuccess.value} error={isError} successMessage={t('exportItemsOrRelations.exportSuccess')} />
             <div className={styles.modalContainer}>
                 <div className={styles.content}>
                     <div className={styles.icon}>

@@ -143,7 +143,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
 
     return (
         <>
-            <MutationFeedback success={isActionSuccess.value} error={false} successMessage={t('feedback.mutationCreateSuccessMessage')} />
+            <MutationFeedback success={isActionSuccess.value} successMessage={t('feedback.mutationCreateSuccessMessage')} />
             <Filter<MeetingsFilterData>
                 onlyForm
                 defaultFilterValues={defaultFilterValues}

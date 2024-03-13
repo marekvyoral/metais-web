@@ -107,8 +107,7 @@ export const ActivitiesAndGoalsView: React.FC<IView> = ({
         <QueryFeedback loading={isLoading || isMutateLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
             <MutationFeedback
                 success={isMutateSuccess}
-                showSupportEmail
-                error={isMutateError ? t('feedback.mutationErrorMessage') : undefined}
+                error={isMutateError}
                 onMessageClose={() => {
                     resetSuccess()
                     resetError()

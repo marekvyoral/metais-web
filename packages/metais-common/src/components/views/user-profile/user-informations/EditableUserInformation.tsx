@@ -92,7 +92,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
 
     return (
         <>
-            <MutationFeedback success={false} error={isError ? errorMessage : ''} />
+            <MutationFeedback error={isError} errorMessage={errorMessage} />
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className={styles.justifyEndDiv}>
                     <SubmitWithFeedback submitButtonLabel={t('userProfile.save')} loading={isLoading || isSubmitting || isValidating} />

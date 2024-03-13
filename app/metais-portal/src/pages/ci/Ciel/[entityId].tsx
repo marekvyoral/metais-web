@@ -79,17 +79,14 @@ const GoalEntityDetailPage: React.FC = () => {
                                 refetchCi={refetch}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
-                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
-                                <MutationFeedback
-                                    error={false}
-                                    success={isActionSuccess.value}
-                                    successMessage={
-                                        isActionSuccess.additionalInfo?.type === 'create'
-                                            ? t('mutationFeedback.successfulCreated')
-                                            : t('mutationFeedback.successfulUpdated')
-                                    }
-                                />
-                            )}
+                            <MutationFeedback
+                                success={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}
+                                successMessage={
+                                    isActionSuccess.additionalInfo?.type === 'create'
+                                        ? t('mutationFeedback.successfulCreated')
+                                        : t('mutationFeedback.successfulUpdated')
+                                }
+                            />
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} />
                     </QueryFeedback>

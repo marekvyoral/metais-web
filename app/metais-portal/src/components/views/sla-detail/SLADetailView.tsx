@@ -254,7 +254,6 @@ export const SlaDetailView: React.FC<IView> = ({
 
                 <MutationFeedback
                     success={isUpdateSuccess || isInvalidateSuccess}
-                    error={''}
                     successMessage={isInvalidateSuccess ? t('mutationFeedback.successfulInvalidated') : t('mutationFeedback.successfulUpdated')}
                     onMessageClose={() => {
                         setIsInvalidateSuccess(false)

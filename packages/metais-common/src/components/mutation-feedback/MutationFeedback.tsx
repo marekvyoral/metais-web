@@ -22,10 +22,10 @@ export interface MutationFeedbackError {
 }
 
 interface MutationFeedbackProps {
-    success: boolean
+    success?: boolean
     successMessage?: string
-    error: React.ReactNode
-    showSupportEmail?: boolean
+    error?: boolean
+    errorMessage?: string
     onMessageClose?: () => void
     successMessageClassName?: string
 }
@@ -33,7 +33,7 @@ interface MutationFeedbackProps {
 export const MutationFeedback: React.FC<MutationFeedbackProps> = ({
     success,
     error,
-    showSupportEmail,
+    errorMessage,
     successMessage,
     onMessageClose,
     successMessageClassName,
@@ -64,8 +64,12 @@ export const MutationFeedback: React.FC<MutationFeedbackProps> = ({
             {error && (
                 <TextWarning aria-live="assertive">
                     <div className={styles.column}>
-                        {error}
-                        {showSupportEmail && <Link to={`mailto:${metaisEmail}`}>{metaisEmail}</Link>}
+                        {errorMessage ?? (
+                            <>
+                                {t('feedback.mutationErrorMessage')}
+                                <Link to={`mailto:${metaisEmail}`}>{metaisEmail}</Link>
+                            </>
+                        )}
                     </div>
                 </TextWarning>
             )}
