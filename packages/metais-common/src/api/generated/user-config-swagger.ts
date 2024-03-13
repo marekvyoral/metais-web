@@ -30,12 +30,17 @@ export interface FavoriteCiType {
     metaAttributes?: FavoriteColumn[]
 }
 
-export interface GetFollowedItemsRequest {
+export interface Paging {
     page?: number
     perPage?: number
-    orderBy?: string
+    totalCount?: number
+    sortBy?: string
     ascending?: boolean
+}
+
+export interface GetFollowedItemsRequest {
     name?: string
+    paging?: Paging
 }
 
 export type FollowedItemItemType = (typeof FollowedItemItemType)[keyof typeof FollowedItemItemType]
@@ -60,6 +65,7 @@ export interface FollowedItem {
 }
 
 export interface FollowedItemList {
+    paging?: Paging
     items?: FollowedItem[]
 }
 

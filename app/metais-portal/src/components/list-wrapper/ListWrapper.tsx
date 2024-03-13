@@ -85,7 +85,9 @@ export const ListWrapper: React.FC<IListWrapper> = ({
 
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
 
-    const checkedItemList = tableData?.configurationItemSet?.filter((i) => Object.keys(rowSelection).includes(i.uuid || '')) || []
+    const checkedItemList = Object.keys(rowSelection)
+        .map((key) => rowSelection[key])
+        .filter((i) => !!i.uuid)
     const queryClient = useQueryClient()
     const typeTraining = entityName === ENTITY_TRAINING
     const typeProject = entityName === ENTITY_PROJECT

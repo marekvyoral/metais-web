@@ -1,8 +1,10 @@
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 import { CiTypeFilter, CiTypePreview, useListCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { EntityFilterData, filterEntityData } from '@isdd/metais-common/componentHelpers/filter/feFilters'
+import { CI_TYPES_QUERY_KEY } from '@isdd/metais-common/constants'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React, { SetStateAction, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export interface IView {
     data?: CiTypePreview[]
@@ -18,6 +20,7 @@ interface IEntityListContainer {
 }
 
 export const EntityListContainer: React.FC<IEntityListContainer> = ({ View, defaultFilterValues }) => {
+    const { i18n } = useTranslation()
     const defaultListQueryArgs: CiTypeFilter = {
         role: 'admin',
         roles: [],
@@ -25,7 +28,10 @@ export const EntityListContainer: React.FC<IEntityListContainer> = ({ View, defa
 
     const [listQueryArgs] = useState<CiTypeFilter>(defaultListQueryArgs)
 
-    const { data, isLoading, isError } = useListCiTypes({ filter: listQueryArgs })
+    const { data, isLoading, isError } = useListCiTypes(
+        { filter: listQueryArgs },
+        { query: { queryKey: [CI_TYPES_QUERY_KEY, listQueryArgs, i18n.language] } },
+    )
     const { filter } = useFilterParams(defaultFilterValues ?? {})
     const filteredData = !defaultFilterValues ? data?.results : filterEntityData(filter, data?.results)
     const [sort, setSort] = useState<ColumnSort[]>([])
