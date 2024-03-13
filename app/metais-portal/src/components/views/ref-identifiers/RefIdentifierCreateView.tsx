@@ -226,11 +226,9 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
             />
 
             <MainContentWrapper>
-                {!(isRedirectError || isProcessedError || isRedirectLoading) && (
-                    <div ref={wrapperRef}>
-                        <MutationFeedback success={false} error={isStoreError ? t('createEntity.mutationError') : ''} />
-                    </div>
-                )}
+                <div ref={wrapperRef}>
+                    <MutationFeedback error={!!isStoreError} errorMessage={t('createEntity.mutationError')} />
+                </div>
                 <QueryFeedback loading={isLoading} error={isError}>
                     <QueryFeedback
                         loading={isRedirectLoading}

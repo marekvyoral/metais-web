@@ -56,7 +56,7 @@ export const FindView = ({ onSearchIco, data, isLoading, error, isSame, onCloseM
                 indicatorProps={{ label: findIco ? t('publicAuthorities.find.loading') : t('loading.loadingSubPage') }}
                 withChildren
             >
-                {isSame && <MutationFeedback success={false} error={t('publicAuthorities.find.icoExist')} onMessageClose={onCloseMessage} />}
+                <MutationFeedback error={isSame} errorMessage={t('publicAuthorities.find.icoExist')} onMessageClose={onCloseMessage} />
                 <div>
                     <TextHeading size="XL">{t('publicAuthorities.find.new')}</TextHeading>
                     <div className={styles.form}>

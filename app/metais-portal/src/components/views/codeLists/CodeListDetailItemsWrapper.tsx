@@ -172,7 +172,6 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
             <MutationFeedback
                 success={isSuccessItemActionMutation}
                 successMessage={t('codeListDetail.feedback.editCodeListItems')}
-                error={undefined}
                 onMessageClose={() => onModalOpen()}
             />
             <ActionsOverTable

@@ -71,13 +71,10 @@ const Assigned = () => {
                                                 props?.data?.configurationItem,
                                             )}`}</TextHeading>
                                             <div ref={wrapperRef}>
-                                                {isActionSuccess.value && (
-                                                    <MutationFeedback
-                                                        error={false}
-                                                        success={isActionSuccess.value}
-                                                        successMessage={t('publicAuthorities.assigned.successFeedback')}
-                                                    />
-                                                )}
+                                                <MutationFeedback
+                                                    success={isActionSuccess.value}
+                                                    successMessage={t('publicAuthorities.assigned.successFeedback')}
+                                                />
 
                                                 {!isActionSuccess.value && isActionSuccess.additionalInfo?.type === 'error' && (
                                                     <QueryFeedback

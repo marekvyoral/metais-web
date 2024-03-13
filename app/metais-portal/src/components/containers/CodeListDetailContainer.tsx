@@ -16,9 +16,10 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useCodeListWorkingLanguage } from '@isdd/metais-common/contexts/codeListWorkingLanguage/codeListWorkingLanguageContext'
+import { ErrorTranslateKeyType, getErrorTranslateKeys } from '@isdd/metais-common/utils/errorMapper'
 
 import { getAllWorkingLanguages } from '@/components/views/codeLists/CodeListDetailUtils'
-import { ApiCodeListActions, getErrorTranslateKeys } from '@/componentHelpers/codeList'
+import { ApiCodeListActions } from '@/componentHelpers/codeList'
 
 export interface CodeListDetailData {
     codeList?: ApiCodelistPreview
@@ -32,7 +33,7 @@ export interface CodeListDetailWrapperProps {
     isLoading: boolean
     isLoadingMutation: boolean
     isError: boolean
-    actionsErrorMessages: string[]
+    actionsErrorMessages: ErrorTranslateKeyType[]
     isSuccessMutation: boolean
     successMessage?: string
     workingLanguage: string

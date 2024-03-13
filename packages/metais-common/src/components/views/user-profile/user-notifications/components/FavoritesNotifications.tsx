@@ -330,7 +330,8 @@ export const UserFavoritesNotifications = () => {
         <QueryFeedback loading={isLoading} error={isError} withChildren>
             <MutationFeedback
                 success={isSuccessMutation}
-                error={isErrorMutation ? t('userProfile.notifications.feedback.error') : undefined}
+                error={isErrorMutation}
+                errorMessage={t('userProfile.notifications.feedback.error')}
                 successMessage={isSuccessRemove ? successMessage : undefined}
                 onMessageClose={() => {
                     resetRemoveState()

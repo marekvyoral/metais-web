@@ -80,8 +80,8 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                         <QueryFeedback loading={false} error={isError} />
                         <MutationFeedback
                             success={isEditSuccess}
-                            showSupportEmail
-                            error={isEditError ? t('relationDetail.editError', { relationName: relationTypeData?.name }) : ''}
+                            error={isEditError}
+                            errorMessage={t('relationDetail.editError', { relationName: relationTypeData?.name })}
                             successMessage={t('relationDetail.editSuccess', { relationName: relationTypeData?.name })}
                         />
                     </FlexColumnReverseWrapper>

@@ -256,14 +256,11 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
 
     return (
         <QueryFeedback loading={isLoading || isLoadingAddData || isFetching} error={isError || isErrorAddData}>
-            {resultSuccessApiCall.isSuccess && (
-                <MutationFeedback
-                    success={resultSuccessApiCall.isSuccess}
-                    successMessage={resultSuccessApiCall.message}
-                    error={undefined}
-                    onMessageClose={() => setResultSuccessApiCall({ isSuccess: false, message: '' })}
-                />
-            )}
+            <MutationFeedback
+                success={resultSuccessApiCall.isSuccess}
+                successMessage={resultSuccessApiCall.message}
+                onMessageClose={() => setResultSuccessApiCall({ isSuccess: false, message: '' })}
+            />
             <div className={styles.expandableRowContent}>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Table columns={columnsDetail} data={mappedData(evalData)} />

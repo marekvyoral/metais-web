@@ -390,21 +390,19 @@ export const ProfileDetailView = <T,>({
                             </div>
                         </div>
                         <div ref={wrapperRef}>
-                            {isActionSuccess.value && (
-                                <MutationFeedback
-                                    successMessage={
-                                        isActionSuccess.additionalInfo?.type === 'edit'
-                                            ? isActionSuccess.additionalInfo?.entity === 'attribute'
-                                                ? t('mutationFeedback.attrSuccessfulUpdated')
-                                                : t('mutationFeedback.successfulUpdated')
-                                            : isActionSuccess.additionalInfo?.entity === 'attribute'
-                                            ? t('mutationFeedback.attrSuccessfulCreated')
-                                            : t('mutationFeedback.successfulCreated')
-                                    }
-                                    success={isActionSuccess.value}
-                                    error={false}
-                                />
-                            )}
+                            <MutationFeedback
+                                successMessage={
+                                    isActionSuccess.additionalInfo?.type === 'edit'
+                                        ? isActionSuccess.additionalInfo?.entity === 'attribute'
+                                            ? t('mutationFeedback.attrSuccessfulUpdated')
+                                            : t('mutationFeedback.successfulUpdated')
+                                        : isActionSuccess.additionalInfo?.entity === 'attribute'
+                                        ? t('mutationFeedback.attrSuccessfulCreated')
+                                        : t('mutationFeedback.successfulCreated')
+                                }
+                                success={isActionSuccess.value}
+                                error={false}
+                            />
                         </div>
                     </FlexColumnReverseWrapper>
                     <BasicInformation data={{ ciTypeData: profileData, constraintsData, unitsData }} roles={roles} />

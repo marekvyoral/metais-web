@@ -95,11 +95,7 @@ const PublicAuthoritiesDetailView: React.FC<Props> = ({
                     </ButtonGroupRow>
                 </div>
                 <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={isActionSuccess.value}
-                        error={false}
-                        successMessage={getSuccessMsg(isActionSuccess.additionalInfo?.type)}
-                    />
+                    <MutationFeedback success={isActionSuccess.value} successMessage={getSuccessMsg(isActionSuccess.additionalInfo?.type)} />
                 </div>
             </FlexColumnReverseWrapper>
             <DefinitionList>

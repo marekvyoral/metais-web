@@ -12,7 +12,7 @@ import styles from '@/components/views/eko/ekoView.module.scss'
 export interface IResultApiCall {
     isSuccess: boolean
     isError: boolean
-    message: React.ReactNode
+    message?: string
 }
 
 export const reduceTableDataToObject = <T extends { ekoCode?: string }>(array: T[]): Record<string, T> => {

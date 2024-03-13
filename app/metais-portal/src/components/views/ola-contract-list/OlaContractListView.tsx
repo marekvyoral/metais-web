@@ -44,7 +44,6 @@ export const OlaContractListView: React.FC<IOlaContractListView> = ({
                 <div ref={wrapperRef} />
                 <MutationFeedback
                     success={isActionSuccess.value && isActionSuccess?.additionalInfo?.type == 'create'}
-                    error={undefined}
                     successMessage={t('mutationFeedback.successfulCreated')}
                 />
                 <OlaContractListFilter defaultFilterValues={defaultFilterValues} />

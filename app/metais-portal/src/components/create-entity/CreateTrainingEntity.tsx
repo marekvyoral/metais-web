@@ -193,9 +193,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
 
     return (
         <>
-            {!(isRedirectError || isProcessedError || isRedirectLoading) && (
-                <MutationFeedback success={false} showSupportEmail error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''} />
-            )}
+            <MutationFeedback error={storeConfigurationItem.isError} errorMessage={t('createEntity.mutationError')} />
 
             <QueryFeedback
                 loading={isRedirectLoading}

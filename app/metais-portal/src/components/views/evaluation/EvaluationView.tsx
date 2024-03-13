@@ -126,14 +126,11 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
         <QueryFeedback loading={isLoading || isLoadingApi} error={isError || isErrorApi} withChildren>
             {versionData?.length ? (
                 <>
-                    {resultSuccessApiCall.isSuccess && (
-                        <MutationFeedback
-                            success={resultSuccessApiCall.isSuccess}
-                            successMessage={resultSuccessApiCall.message}
-                            error={undefined}
-                            onMessageClose={resetResultSuccessApiCall}
-                        />
-                    )}
+                    <MutationFeedback
+                        success={resultSuccessApiCall.isSuccess}
+                        successMessage={resultSuccessApiCall.message}
+                        onMessageClose={resetResultSuccessApiCall}
+                    />
                     <GridRow className={styles.heading}>
                         <GridCol setWidth="one-half">
                             <InformationGridRow

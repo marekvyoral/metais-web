@@ -39,7 +39,7 @@ export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, clos
             <div className={styles.center}>
                 <TextHeading size="L">{t('codelists.createNewCodelist')}</TextHeading>
             </div>
-            <MutationFeedback success={false} error={mutationError} onMessageClose={() => setMutationError('')} />
+            <MutationFeedback error={!!mutationError} errorMessage={mutationError} onMessageClose={() => setMutationError('')} />
             <Input error={errors[CodelistEnum.CODE]?.message} label={t('codelists.code')} {...register(CodelistEnum.CODE)} />
             <Input error={errors[CodelistEnum.NAME]?.message} label={t('codelists.name')} {...register(CodelistEnum.NAME)} />
             <TextArea

@@ -112,9 +112,8 @@ export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewP
                     <>
                         {isError && <QueryFeedback error={isError} loading={false} />}
 
-                        <ElementToScrollTo isVisible={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}>
+                        <ElementToScrollTo trigger={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}>
                             <MutationFeedback
-                                error={false}
                                 success={isActionSuccess.value}
                                 successMessage={getActionSuccessMessage(isActionSuccess.additionalInfo?.type)}
                             />

@@ -102,9 +102,10 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
             <BreadCrumbs withWidthContainer links={breadCrumbsLinks} />
             <MainContentWrapper>
                 <div ref={wrapperRef}>
-                    {isActionSuccess.value && isActionSuccess.additionalInfo?.entity === 'group' && (
-                        <MutationFeedback successMessage={getSuccessMsg()} success={isActionSuccess.value} error={false} />
-                    )}
+                    <MutationFeedback
+                        successMessage={getSuccessMsg()}
+                        success={isActionSuccess.value && isActionSuccess.additionalInfo?.entity === 'group'}
+                    />
                 </div>
                 <GroupDetailBaseInfo infoData={group} />
                 <TextHeading size="L">{t('groups.listOfMembers')}</TextHeading>
@@ -136,9 +137,10 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                     </Can>
                 </ActionsOverTable>
                 <div ref={wrapperRef}>
-                    {isActionSuccess.value && isActionSuccess.additionalInfo?.entity === 'member' && (
-                        <MutationFeedback successMessage={getSuccessMsg()} success={isActionSuccess.value} error={false} />
-                    )}
+                    <MutationFeedback
+                        successMessage={getSuccessMsg()}
+                        success={isActionSuccess.value && isActionSuccess.additionalInfo?.entity === 'member'}
+                    />
                 </div>
                 <QueryFeedback
                     loading={isLoading || isIdentitiesLoading || !!isAbilityLoading}

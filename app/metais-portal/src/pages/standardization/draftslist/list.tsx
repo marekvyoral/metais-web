@@ -55,7 +55,6 @@ const DraftsListListPage: React.FC = () => {
                                 <TextHeading size="XL">{t('draftsList.heading')}</TextHeading>
                                 <MutationFeedback
                                     success={isActionSuccess.value}
-                                    error={false}
                                     successMessage={
                                         isActionSuccess.additionalInfo?.type == 'create'
                                             ? t('mutationFeedback.successfulCreated')

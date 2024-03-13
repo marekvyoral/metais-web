@@ -115,13 +115,13 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 <TextHeading size="XL">{t('userManagement.title')}</TextHeading>
                 {isError && <QueryFeedback loading={false} error errorProps={{ errorMessage: t('userManagement.error.query') }} />}
                 {isErrorExport && <QueryFeedback loading={false} error errorProps={{ errorMessage: t('userManagement.error.export') }} />}
-                {(isMutationError || isMutationSuccess) && (
-                    <MutationFeedback success={isMutationSuccess} error={isMutationError && t('userManagement.error.mutation')} />
-                )}
-                {isSuccess && <MutationFeedback success error={false} />}
-                {successRolesUpdate && (
-                    <MutationFeedback success error={false} successMessage={successRolesUpdate} successMessageClassName={styles.successMessage} />
-                )}
+                <MutationFeedback success={isMutationSuccess} error={isMutationError} errorMessage={t('userManagement.error.mutation')} />
+                <MutationFeedback success={isSuccess} />
+                <MutationFeedback
+                    success={!!successRolesUpdate}
+                    successMessage={successRolesUpdate}
+                    successMessageClassName={styles.successMessage}
+                />
             </FlexColumnReverseWrapper>
             <Filter<UserManagementFilterData>
                 defaultFilterValues={defaultFilterValues}

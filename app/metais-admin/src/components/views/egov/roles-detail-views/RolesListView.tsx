@@ -164,17 +164,14 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                     <FlexColumnReverseWrapper>
                         <TextHeading size="XL">{t('adminRolesPage.rolesList')}</TextHeading>
                         {isError && <QueryFeedback error loading={false} />}
-                        {isActionSuccess.value && (
-                            <MutationFeedback
-                                success
-                                successMessage={
-                                    isActionSuccess.additionalInfo?.type === 'edit'
-                                        ? t('mutationFeedback.successfulUpdated')
-                                        : t('mutationFeedback.successfulCreated')
-                                }
-                                error={false}
-                            />
-                        )}
+                        <MutationFeedback
+                            success={isActionSuccess.value}
+                            successMessage={
+                                isActionSuccess.additionalInfo?.type === 'edit'
+                                    ? t('mutationFeedback.successfulUpdated')
+                                    : t('mutationFeedback.successfulCreated')
+                            }
+                        />
                     </FlexColumnReverseWrapper>
                     <RolesFilter tableRoleGroups={tableRoleGroups} />
                     <ActionsOverTable

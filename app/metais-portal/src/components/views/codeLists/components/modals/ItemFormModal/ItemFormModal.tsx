@@ -16,18 +16,17 @@ import {
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useMutation } from '@tanstack/react-query'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { getErrorTranslateKeys } from '@isdd/metais-common/src/utils/errorMapper'
 
 import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
 import { useItemSchema } from '@/components/views/codeLists/useCodeListSchemas'
 import {
     ApiCodeListItemsActions,
     CodeListItemState,
-    getErrorTranslateKeys,
     mapCodeListItemToForm,
     mapFormToCodeListItem,
     removeOtherLanguagesFromItem,
 } from '@/componentHelpers/codeList'
-
 export interface IItemForm {
     id?: string
     code: string
@@ -327,7 +326,8 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
                         <MutationFeedback
                             success={isSuccess}
                             successMessage={isEdit ? t('codeListDetail.feedback.editItemSuccess') : t('codeListDetail.feedback.createItemSuccess')}
-                            error={submitErrorMessage && t([submitErrorMessage, 'feedback.mutationErrorMessage'])}
+                            error={!!submitErrorMessage}
+                            errorMessage={submitErrorMessage}
                         />
 
                         <ModalButtons submitButtonLabel={t('codeListDetail.button.save')} closeButtonLabel={t('form.cancel')} onClose={close} />

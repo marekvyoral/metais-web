@@ -36,7 +36,7 @@ const CookiesSettings = () => {
         <>
             <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />
             <MainContentWrapper>
-                <MutationFeedback success={saved} error={false} onMessageClose={() => setIsSaved(false)} />
+                <MutationFeedback success={saved} onMessageClose={() => setIsSaved(false)} />
                 <TextHeading size="XL">{t('cookies.settings.heading')}</TextHeading>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <CheckBox label={t('cookies.settings.necessarily')} id="necessarily" name="necessarily" value="true" checked disabled />

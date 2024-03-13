@@ -85,15 +85,12 @@ export const VotesListView: React.FC<IVotesListView> = ({
     return (
         <>
             <TextHeading size="XL">{t('votes.votesList.title')}</TextHeading>
-            {isSuccess && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success
-                        error={false}
-                        successMessage={additionalInfo?.type == 'create' ? t('votes.voteDetail.created') : t('mutationFeedback.successfulUpdated')}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={isSuccess}
+                    successMessage={additionalInfo?.type == 'create' ? t('votes.voteDetail.created') : t('mutationFeedback.successfulUpdated')}
+                />
+            </div>
             <Filter<IVotesListFilterData>
                 heading={t('votes.votesList.filter.title')}
                 defaultFilterValues={defaultFilterValues}

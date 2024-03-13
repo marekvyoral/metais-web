@@ -241,7 +241,6 @@ export const DocumentsManagementView: React.FC<IView> = ({
                 />
             </ActionsOverTable>
             <MutationFeedback
-                error={false}
                 success={isActionSuccess.value}
                 successMessage={
                     isActionSuccess?.additionalInfo?.type === 'delete'
