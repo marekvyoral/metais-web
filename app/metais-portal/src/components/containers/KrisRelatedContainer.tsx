@@ -6,6 +6,7 @@ import {
     useReadNeighboursConfigurationItems,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
+    CI_TYPES_QUERY_KEY,
     ENTITY_AGENDA,
     ENTITY_ISVS,
     ENTITY_KS,
@@ -21,6 +22,7 @@ import { useAgendaAndZsCezPo } from '@isdd/metais-common/src/hooks/useAgendaAndZ
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import { useListCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetCiTabDataForKris } from '@isdd/metais-common/hooks/useGetCiTabDataForKris'
+import { useTranslation } from 'react-i18next'
 
 import { KrisRelatedItemsView } from '@/components/views/ci/kris/KrisRelatedItemsView'
 
@@ -64,6 +66,7 @@ const remmapNameAndValueArrayToObj = (dataToRemap: AgendaAndZsCustomType[]): Con
 
 export const KrisRelatedContainer: React.FC<Props> = ({ currentKrisUuid }) => {
     const { currentPreferences } = useUserPreferences()
+    const { i18n } = useTranslation()
 
     const showInvalidated = currentPreferences?.[UserPreferencesFormNamesEnum.SHOW_INVALIDATED] ?? false
     const preferredPageSize = currentPreferences.defaultPerPage ?? BASE_PAGE_SIZE
@@ -134,7 +137,11 @@ export const KrisRelatedContainer: React.FC<Props> = ({ currentKrisUuid }) => {
     const remmapedAgenda = remmapNameAndValueArrayToObj(agendaData as AgendaAndZsCustomType[])
     const remmapedZsData = remmapNameAndValueArrayToObj(zsData as AgendaAndZsCustomType[])
 
-    const { data: listOfCiTypes, isLoading: isListOfCiTypeLoading, isError: isListOfCiTypesError } = useListCiTypes({ filter: {} })
+    const {
+        data: listOfCiTypes,
+        isLoading: isListOfCiTypeLoading,
+        isError: isListOfCiTypesError,
+    } = useListCiTypes({ filter: {} }, { query: { queryKey: [CI_TYPES_QUERY_KEY, i18n.language] } })
 
     const countList = [
         { name: ENTITY_AGENDA, count: agendaData?.length },
