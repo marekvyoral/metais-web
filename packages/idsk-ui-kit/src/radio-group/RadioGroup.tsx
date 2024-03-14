@@ -4,9 +4,7 @@ import classNames from 'classnames'
 import { v4 as uuidV4 } from 'uuid'
 import { useTranslation } from 'react-i18next'
 
-import styles from './radioGroupWithLabel.module.scss'
-
-import { RadioButtonGroup } from '@isdd/idsk-ui-kit/radio-button-group/RadioButtonGroup'
+import styles from './radioGroup.module.scss'
 
 interface IRadioWithLabelProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id?: string
@@ -15,9 +13,10 @@ interface IRadioWithLabelProps extends DetailedHTMLProps<React.InputHTMLAttribut
     error?: FieldError
     disabled?: boolean
     inline?: boolean
+    small?: boolean
 }
-export const RadioGroupWithLabel = forwardRef<HTMLDivElement, IRadioWithLabelProps>(
-    ({ children, id, label, hint, error, disabled, className, inline, ...rest }, ref) => {
+export const RadioGroup = forwardRef<HTMLDivElement, IRadioWithLabelProps>(
+    ({ children, id, label, hint, error, disabled, className, inline, small, ...rest }, ref) => {
         const { t } = useTranslation()
         const aID = id ? id : uuidV4()
         const hintId = `${aID}-hint`
@@ -29,7 +28,7 @@ export const RadioGroupWithLabel = forwardRef<HTMLDivElement, IRadioWithLabelPro
                 aria-invalid={!!(error && error.message)}
                 className={classNames(className, styles.fieldset, 'govuk-form-group', { 'govuk-form-group--error': !!error })}
             >
-                <legend className="govuk-label">{label}</legend>
+                {label && <legend className="govuk-label">{label}</legend>}
                 <span id={hintId} className={classNames({ 'govuk-visually-hidden': !hint, 'govuk-hint': !!hint })}>
                     {hint}
                 </span>
@@ -43,9 +42,15 @@ export const RadioGroupWithLabel = forwardRef<HTMLDivElement, IRadioWithLabelPro
                     )}
                 </span>
 
-                <RadioButtonGroup {...rest} inline={inline} aria-describedby={hint ? hintId : undefined} disabled={disabled} ref={ref}>
+                <div
+                    ref={ref}
+                    aria-describedby={hint ? hintId : undefined}
+                    aria-disabled={disabled}
+                    className={classNames('govuk-radios', { 'govuk-radios--inline': inline, 'govuk-radios--small': small })}
+                    {...rest}
+                >
                     {children}
-                </RadioButtonGroup>
+                </div>
             </fieldset>
         )
     },

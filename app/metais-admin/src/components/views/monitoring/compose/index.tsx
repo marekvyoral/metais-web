@@ -6,7 +6,7 @@ import {
     ILoadOptionsResponse,
     Input,
     RadioButton,
-    RadioGroupWithLabel,
+    RadioGroup,
     SelectLazyLoading,
     SimpleSelect,
     TextHeading,
@@ -164,7 +164,7 @@ export const MonitoringComposeView: React.FC<IMonitoringComposeView> = ({
                             summary: null,
                             content: (
                                 <>
-                                    <RadioGroupWithLabel label={t('monitoring.compose.httpMethod')} className="govuk-radios--small" inline>
+                                    <RadioGroup label={t('monitoring.compose.httpMethod')} small inline>
                                         <RadioButton
                                             id={'httpMethod.get'}
                                             value={'GET'}
@@ -178,7 +178,7 @@ export const MonitoringComposeView: React.FC<IMonitoringComposeView> = ({
                                             label={t('monitoring.compose.radioButton.post')}
                                             {...register('httpMethod')}
                                         />
-                                    </RadioGroupWithLabel>
+                                    </RadioGroup>
 
                                     <HttpRequestHeaders
                                         register={register}

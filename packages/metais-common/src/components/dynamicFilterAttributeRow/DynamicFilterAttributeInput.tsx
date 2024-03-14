@@ -1,4 +1,4 @@
-import { Input, MultiSelect, RadioButton, RadioButtonGroup } from '@isdd/idsk-ui-kit'
+import { Input, MultiSelect, RadioButton, RadioGroup } from '@isdd/idsk-ui-kit'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
@@ -129,7 +129,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
             case isBoolean: {
                 return (
                     <div className={style.radioButtonDiv}>
-                        <RadioButtonGroup inline>
+                        <RadioGroup inline small label={t('customAttributeFilter.value.label')}>
                             <RadioButton
                                 className={style.rowItem}
                                 id={`attribute-value-${index}-yes`}
@@ -148,7 +148,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
                                 value={RadioInputValue.FALSE}
                                 onChange={(e) => onChange({ ...value, value: e.target.value })}
                             />
-                        </RadioButtonGroup>
+                        </RadioGroup>
                     </div>
                 )
             }

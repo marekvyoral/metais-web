@@ -6,7 +6,7 @@ import {
     HomeIcon,
     PaginatorWrapper,
     RadioButton,
-    RadioButtonGroup,
+    RadioGroup,
     SimpleSelect,
     Table,
     TextHeading,
@@ -139,8 +139,7 @@ export const TasksListView: React.FC<ITasksListView> = ({
                                         />
                                     </GridCol>
                                 </GridRow>
-                                <label className="govuk-label">{t('tasks.state')}:</label>
-                                <RadioButtonGroup inline>
+                                <RadioGroup inline label={`${t('tasks.state')}:`}>
                                     <RadioButton
                                         {...register('state')}
                                         value="ALL"
@@ -169,7 +168,7 @@ export const TasksListView: React.FC<ITasksListView> = ({
                                         name="doneRadioBtn"
                                         onChange={(val) => setValue('state', val.target.value)}
                                     />
-                                </RadioButtonGroup>
+                                </RadioGroup>
                             </div>
                         )
                     }}
