@@ -9,6 +9,7 @@ import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanst
 import { ColumnDef, Row, Table } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
 import React from 'react'
+import { GroupPermissionSubject } from '@isdd/metais-common/hooks/permissions/useGroupsPermissions'
 
 import GroupMemberTableRoleSelector from './components/TableRoleSelector'
 
@@ -125,7 +126,7 @@ export const buildColumns = (
         },
         { id: 'orgName', header: t('groups.organization'), accessorKey: 'orgName', enableSorting: true, size: 480 },
     ]
-    if (ability.can(Actions.READ, 'groupMemberEmail')) {
+    if (ability.can(Actions.READ, GroupPermissionSubject.GROUP_MEMBER_EMAIL)) {
         selectableColumnsSpec.push({ header: t('groups.email'), id: 'email', accessorKey: 'email', size: 200 })
     }
     selectableColumnsSpec.push({
@@ -147,7 +148,7 @@ export const buildColumns = (
         ),
     })
 
-    if (ability.can(Actions.EDIT, 'groups')) {
+    if (ability.can(Actions.EDIT, GroupPermissionSubject.GROUPS)) {
         selectableColumnsSpec.push({
             header: t('groups.action'),
             id: DELETE_CELL,
@@ -159,7 +160,7 @@ export const buildColumns = (
                         <img src={DeleteForeverRed} height={24} alt={t('delete', { subject: row.original.lastName_firstName })} />
                     </TransparentButtonWrapper>
                 ) : (
-                    <Can I={Actions.EDIT} a={'groupMaster'}>
+                    <Can I={Actions.EDIT} a={GroupPermissionSubject.GROUP_MASTER}>
                         <TransparentButtonWrapper onClick={() => setIdentityToDelete(row.original.uuid)}>
                             <img src={DeleteForeverRed} height={24} alt={t('delete', { subject: row.original.lastName_firstName })} />
                         </TransparentButtonWrapper>
