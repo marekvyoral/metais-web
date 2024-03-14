@@ -52,16 +52,18 @@ export const RelationListView: React.FC<IRelationListView> = ({
             header: t('relationshipList.summary'),
             accessorFn: (row) => row,
             cell: (row) => (
-                <Trans
-                    i18nKey="relationshipList.summaryValue"
-                    components={{
-                        strong: <strong />,
-                    }}
-                    values={{
-                        startName: row.row.original.startName,
-                        endName: row.row.original.endName,
-                    }}
-                />
+                <Link to={`/relation/${row.row.original.startType}/${row.row.original.startUuid}/${row.row.original.uuid}`}>
+                    <Trans
+                        i18nKey="relationshipList.summaryValue"
+                        components={{
+                            strong: <strong />,
+                        }}
+                        values={{
+                            startName: row.row.original.startName,
+                            endName: row.row.original.endName,
+                        }}
+                    />
+                </Link>
             ),
             size: 300,
             enableSorting: false,
@@ -83,7 +85,6 @@ export const RelationListView: React.FC<IRelationListView> = ({
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (row) => <Link to={`/ci/${row.row.original.startType}/${row.row.original.startUuid}`}>{row.row.original.startName}</Link>,
             enableSorting: true,
         },
         {
@@ -112,7 +113,6 @@ export const RelationListView: React.FC<IRelationListView> = ({
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (row) => <Link to={`/ci/${row.row.original.endType}/${row.row.original.endUuid}`}>{row.row.original.endName}</Link>,
             enableSorting: true,
         },
         {
@@ -132,11 +132,6 @@ export const RelationListView: React.FC<IRelationListView> = ({
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (row) => (
-                <Link to={`/relation/${row.row.original.startType}/${row.row.original.startUuid}/${row.row.original.uuid}`}>
-                    {row.row.original.type}
-                </Link>
-            ),
             enableSorting: false,
         },
     ]

@@ -5,7 +5,7 @@ import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { INVALIDATED } from '@isdd/metais-common/constants'
 import { useQueryClient } from '@tanstack/react-query'
 import { getReadRelationshipQueryKey, useStoreRelationship } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -87,9 +87,22 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                     </FlexColumnReverseWrapper>
 
                     <DefinitionList>
-                        <InformationGridRow label={t('relationDetail.source')} value={ciSourceData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]} />
-                        <InformationGridRow label={t('relationDetail.target')} value={ciTargetData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]} />
-
+                        <InformationGridRow
+                            label={t('relationDetail.source')}
+                            value={
+                                <Link to={`/ci/${ciSourceData?.type}/${ciSourceData?.uuid}`}>
+                                    {ciSourceData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
+                                </Link>
+                            }
+                        />
+                        <InformationGridRow
+                            label={t('relationDetail.target')}
+                            value={
+                                <Link to={`/ci/${ciTargetData?.type}/${ciTargetData?.uuid}`}>
+                                    {ciTargetData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
+                                </Link>
+                            }
+                        />
                         <InformationGridRow
                             label={t('relationDetail.owner')}
                             value={
