@@ -836,7 +836,7 @@ export const routesConfig: RouteConfig[] = [
             {
                 path: RouterRoutes.ITVS_EXCEPTIONS_DETAIL,
                 slug: RouterRoutes.ITVS_EXCEPTIONS_DETAIL,
-                component: TrainingEntityDetailPage,
+                component: EntityDetailPage,
                 subRoutes: [
                     {
                         slug: RouterRoutes.CI_DETAIL,
