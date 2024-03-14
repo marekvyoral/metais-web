@@ -15,6 +15,7 @@ import { Row } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { GroupPermissionSubject } from '@isdd/metais-common/hooks/permissions/useGroupsPermissions'
 
 import { TableData } from '@/components/containers/standardization/groups/GroupDetailContainer'
 import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standardization/groups/defaultRoles'
@@ -83,8 +84,8 @@ const GroupMemberTableRoleSelector: React.FC<GroupMemberTableRoleSelectorProps> 
             />
         )
     } else {
-        return (row.original.roleName !== GROUP_ROLES.STD_PSPRE && ability.can(Actions.EDIT, 'groups')) ||
-            (row.original.roleName === GROUP_ROLES.STD_PSPRE && ability.can(Actions.EDIT, 'groupMaster')) ? (
+        return (row.original.roleName !== GROUP_ROLES.STD_PSPRE && ability.can(Actions.EDIT, GroupPermissionSubject.GROUPS)) ||
+            (row.original.roleName === GROUP_ROLES.STD_PSPRE && ability.can(Actions.EDIT, GroupPermissionSubject.GROUP_MASTER)) ? (
             <a
                 className={styles.cursorPointer}
                 onClick={() => {
