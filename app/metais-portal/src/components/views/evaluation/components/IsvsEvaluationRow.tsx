@@ -184,6 +184,7 @@ export const IsvsEvaluationRow: React.FC<IIsvsEvaluationRowProps> = ({ uuid, ent
                             value="checkbox-all"
                             onChange={() => handleAllCheckboxChange()}
                             checked={checkedAll}
+                            title={t('table.selectAllItems')}
                         />
                     </div>
                 )

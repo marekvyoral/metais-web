@@ -1,4 +1,4 @@
-import { Button, ButtonGroupRow, InformationBar, RadioButton, RadioGroupWithLabel, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, ButtonGroupRow, InformationBar, RadioButton, RadioGroup, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { getGetCurrentSystemStateQueryKey } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
@@ -63,7 +63,7 @@ export const SystemStatusView: React.FC<IView> = ({
             />
             {currentSystemState && (
                 <React.Fragment>
-                    <RadioGroupWithLabel label={t('systemState.status')} className="govuk-radios--small" inline>
+                    <RadioGroup label={t('systemState.status')} small inline>
                         {systemStates?.map((status, index) => (
                             <RadioButton
                                 key={index}
@@ -80,8 +80,8 @@ export const SystemStatusView: React.FC<IView> = ({
                                 }
                             />
                         ))}
-                    </RadioGroupWithLabel>
-                    <RadioGroupWithLabel label={t('systemState.color')} className="govuk-radios--small" inline>
+                    </RadioGroup>
+                    <RadioGroup label={t('systemState.color')} small inline>
                         {systemStatesColors?.map((status, index) => (
                             <RadioButton
                                 key={index}
@@ -98,7 +98,7 @@ export const SystemStatusView: React.FC<IView> = ({
                                 }
                             />
                         ))}
-                    </RadioGroupWithLabel>
+                    </RadioGroup>
                 </React.Fragment>
             )}
             <RichTextQuill

@@ -185,6 +185,7 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
                             value="checkbox-all"
                             onChange={() => handleAllCheckboxChange()}
                             checked={checkedAll}
+                            title={t('table.selectAllItems')}
                         />
                     </div>
                 )

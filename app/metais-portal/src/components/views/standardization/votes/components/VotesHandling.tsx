@@ -1,4 +1,4 @@
-import { Button, RadioButton, RadioGroupWithLabel, TextArea } from '@isdd/idsk-ui-kit/index'
+import { Button, RadioButton, RadioGroup, TextArea } from '@isdd/idsk-ui-kit/index'
 import { ApiVote } from '@isdd/metais-common/api/generated/standards-swagger'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import classNames from 'classnames'
@@ -129,7 +129,7 @@ export const VotesHandler: React.FC<ICastVote> = ({
                 onMessageClose={() => setVotesProcessingError(false)}
             />
             <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')} noValidate>
-                <RadioGroupWithLabel
+                <RadioGroup
                     label={t('votes.voteDetail.votesHandlingRadioLabel')}
                     hint={
                         cancelState
@@ -156,7 +156,7 @@ export const VotesHandler: React.FC<ICastVote> = ({
                             />
                         )
                     })}
-                </RadioGroupWithLabel>
+                </RadioGroup>
                 {(canCast || canSendNote) && (
                     <TextArea
                         rows={3}
