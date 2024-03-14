@@ -60,7 +60,7 @@ export const UserDetailForm: React.FC<Props> = ({ userData, handleBackNavigate, 
                 error={errors[InputNames.LOGIN]?.message?.toString()}
                 label={t('managementList.loginEmail')}
                 correct={!errors[InputNames.LOGIN] && isSubmitted && (isCreate || !!userData?.login)}
-                // disabled={!isCreate}
+                disabled={!isCreate}
                 {...register(InputNames.LOGIN)}
                 defaultValue={isCreate ? undefined : userData?.login}
                 type="email"
