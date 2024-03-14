@@ -40,11 +40,11 @@ const CookiesSettings = () => {
                 <TextHeading size="XL">{t('cookies.settings.heading')}</TextHeading>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <CheckBox label={t('cookies.settings.necessarily')} id="necessarily" name="necessarily" value="true" checked disabled />
-                    <TextBody size="L">{t('cookies.settings.necessarilyDescription')}</TextBody>
+                    <TextBody>{t('cookies.settings.necessarilyDescription')}</TextBody>
                     <CheckBox {...register('analytically')} label={t('cookies.settings.analytically')} id="analytically" name="analytically" />
-                    <TextBody size="L">{t('cookies.settings.analyticallyDescription')}</TextBody>
+                    <TextBody>{t('cookies.settings.analyticallyDescription')}</TextBody>
                     <CheckBox {...register('preferential')} label={t('cookies.settings.preferential')} id="preferential" name="preferential" />
-                    <TextBody size="L">{t('cookies.settings.preferentialDescription')}</TextBody>
+                    <TextBody>{t('cookies.settings.preferentialDescription')}</TextBody>
                     <Button label={t('cookies.settings.save')} type="submit" />
                 </form>
             </MainContentWrapper>
