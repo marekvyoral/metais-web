@@ -123,9 +123,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{ciName}</TextHeading>
-                {(isError || isCiTypeConstraintsError) && (
-                    <QueryFeedback loading={false} error errorProps={{ errorMessage: t('feedback.failedFetch') }} />
-                )}
+                <QueryFeedback loading={false} error={isError || isCiTypeConstraintsError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
                 <div ref={wrapperRef}>
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}

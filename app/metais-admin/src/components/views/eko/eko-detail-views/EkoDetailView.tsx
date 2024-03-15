@@ -27,7 +27,7 @@ export const EkoDetailView = ({ data, isError, isLoading }: IEkoDetailView) => {
                             />
                         </div>
                     </div>
-                    {isError && <QueryFeedback error loading={false} />}
+                    <QueryFeedback error={isError} loading={false} />
                 </FlexColumnReverseWrapper>
                 <Tabs
                     tabList={[

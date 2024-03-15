@@ -102,7 +102,7 @@ const MassUpdate = () => {
 
                             <FlexColumnReverseWrapper>
                                 <TextHeading size="XL">{t('publicAuthorities.massUpdate.title')}</TextHeading>
-                                {isError && <QueryFeedback error={isError} loading={false} />}
+                                <QueryFeedback error={isError} loading={false} />
                             </FlexColumnReverseWrapper>
                             <PublicAuthoritiesMassUpdateFilter entityName={entityName} defaultFilterValues={defaultFilterValues} />
                             <PublicAuthoritiesMassUpdateTable

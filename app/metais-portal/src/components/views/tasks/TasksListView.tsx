@@ -98,7 +98,7 @@ export const TasksListView: React.FC<ITasksListView> = ({
             <MainContentWrapper noSideMenu={isWrapped}>
                 <FlexColumnReverseWrapper>
                     {!isWrapped && <TextHeading size="L">{t('tasks.tasks')}</TextHeading>}
-                    {isError && <QueryFeedback loading={false} error={isError} />}
+                    <QueryFeedback loading={false} error={isError} />
                 </FlexColumnReverseWrapper>
                 <Filter<TasksFilter>
                     defaultFilterValues={defaultFilterValues}

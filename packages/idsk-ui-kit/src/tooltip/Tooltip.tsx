@@ -52,12 +52,11 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, triggerElement
             ref={popupRef}
             disabled={!descriptionElement}
             arrow={props.position != 'center center'}
-            closeOnEscape
-            keepTooltipInside
             className="tooltip"
             on={['click', 'hover']}
             onOpen={() => setIsOpen(true)}
             onClose={() => setIsOpen(false)}
+            keepTooltipInside
             {...props}
             trigger={() => (
                 <div>
@@ -96,8 +95,9 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, triggerElement
                         onClick={() => {
                             popupRef.current?.close()
                         }}
+                        aria-label={t('close')}
                     >
-                        <img src={NavigationCloseIcon} alt={t('close')} />
+                        <img src={NavigationCloseIcon} alt="" />
                     </button>
                 )}
             </div>

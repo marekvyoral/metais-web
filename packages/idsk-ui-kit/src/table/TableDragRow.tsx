@@ -122,10 +122,8 @@ export const TableDragRow = <T,>({
                         id={cell.column.id}
                         ref={index === 0 ? dropRef : null}
                     >
-                        <div ref={index === 0 ? dragRef : null} className={styles.flexCenter}>
-                            {index === 0 && (
-                                <img height={30} className={classNames({ [styles.handlePointer]: index === 0 })} src={DndIcon} alt={t('dnd')} />
-                            )}
+                        <div ref={index === 0 ? dragRef : null} className={styles.flexCenter} aria-label={t('dnd')}>
+                            {index === 0 && <img height={30} className={classNames({ [styles.handlePointer]: index === 0 })} src={DndIcon} alt="" />}
                             {cellContent}
                         </div>
                     </th>

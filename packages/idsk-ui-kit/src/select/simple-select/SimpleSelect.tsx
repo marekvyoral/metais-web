@@ -25,6 +25,7 @@ interface ISelectProps<T> {
     disabled?: boolean
     onBlur?: React.FocusEventHandler<HTMLInputElement>
     isClearable?: boolean
+    isSearchable?: boolean
     menuPosition?: MenuPosition
     required?: boolean
     tabIndex?: number
@@ -49,6 +50,7 @@ export const SimpleSelect = <T,>({
     disabled,
     onBlur,
     isClearable,
+    isSearchable,
     menuPosition,
     required,
     tabIndex,
@@ -78,6 +80,7 @@ export const SimpleSelect = <T,>({
             disabled={disabled}
             onBlur={onBlur}
             isClearable={isClearable}
+            isSearchable={isSearchable}
             menuPosition={menuPosition}
             onChange={handleOnChange}
             required={required}

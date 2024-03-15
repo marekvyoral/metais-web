@@ -483,8 +483,7 @@
         "addNewCodelistDetail": "Pridať novú položku",
         "items": "Položky",
         "tooltipOrder": "Potiahni a pusti riadok pre zmenu poradia",
-        "codeExist": "Takýto kód už existuje. Kód musí byť jedinečný.",
-        "orderDescription": "Popis k stĺpcu poradie"
+        "codeExist": "Takýto kód už existuje. Kód musí byť jedinečný."
     },
     "adminRolesPage": {
         "addNewRole": "Pridať novú rolu",
@@ -1533,6 +1532,8 @@
         "ownerError": "Vo vytváraní nie je možné pokračovať, pretože nie ste vlastníkom tejto položky."
     },
     "close": "Zavrieť",
+    "closeFeedback": "Zatvoriť správu o spätnej väzbe",
+    "dnd": "Položku je možné ťahať a pustiť",
     "accessibility": {
         "navigated": "Zmena stránky na {{pageTitle}}"
     },

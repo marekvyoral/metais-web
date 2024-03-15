@@ -137,7 +137,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
 
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
-            {isError && <QueryFeedback error={isError} loading={false} />}
+            <QueryFeedback error={isError} loading={false} />
             <TextHeading size="L">{t('codeListDetail.title.items')}</TextHeading>
             <Filter<CodeListDetailFilterData>
                 heading={t('codeList.filter.title')}

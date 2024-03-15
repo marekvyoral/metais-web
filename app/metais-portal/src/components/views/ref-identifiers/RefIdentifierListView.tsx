@@ -114,7 +114,7 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                         errorMessage={t('userProfile.notifications.feedback.error')}
                         onMessageClose={() => resetState()}
                     />
-                    {isError && <QueryFeedback error loading={false} />}
+                    <QueryFeedback error={isError} loading={false} />
                     <MutationFeedback success={isExternalSuccess} />
                 </div>
             </FlexColumnReverseWrapper>

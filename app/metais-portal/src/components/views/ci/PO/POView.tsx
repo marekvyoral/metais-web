@@ -42,7 +42,7 @@ export const POView: React.FC<ICiListContainerView<POFilterData>> = memo(
             <QueryFeedback loading={isLoading} error={false} withChildren>
                 <FlexColumnReverseWrapper>
                     <TextHeading size="XL">{t(`ciType.${POType}_Heading`)}</TextHeading>
-                    {isError && <QueryFeedback error={isError} loading={false} />}
+                    <QueryFeedback error={isError} loading={false} />
                 </FlexColumnReverseWrapper>
                 <FilterPO
                     entityName={entityName}

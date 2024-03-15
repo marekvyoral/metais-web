@@ -28,7 +28,7 @@ const NotificationsDetailView: React.FC<NotificationsDetailViewParams> = ({ data
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
                         <TextHeading size="L">{data?.messagePerex}</TextHeading>
-                        {isError && <QueryFeedback loading={false} error={isError} />}
+                        <QueryFeedback loading={false} error={isError} />
                     </FlexColumnReverseWrapper>
                     <GridCol setWidth="two-thirds">
                         <DefinitionList>

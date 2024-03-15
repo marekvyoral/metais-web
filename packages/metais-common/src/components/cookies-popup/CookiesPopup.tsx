@@ -61,8 +61,8 @@ export const CookiesPopup: React.FC = () => {
                         </Link>
                     </TextHeading>
                     {windowWidth && !windowWidth.desktop && (
-                        <button className={styles.closeButton} onClick={() => setIsShown(false)}>
-                            <img src={NavigationCloseIcon} alt="navigation-close" />
+                        <button className={styles.closeButton} onClick={() => setIsShown(false)} aria-label={t('close')}>
+                            <img src={NavigationCloseIcon} alt="" />
                         </button>
                     )}
                 </div>
@@ -97,8 +97,8 @@ export const CookiesPopup: React.FC = () => {
                     <TextBody className={styles.marginBottom0}>{t('cookies.settings.heading')} </TextBody>
                 </Link>
                 {windowWidth && windowWidth.desktop && (
-                    <button className={styles.closeButton} onClick={() => setIsShown(false)}>
-                        <img src={NavigationCloseIcon} alt={t('close')} />
+                    <button className={styles.closeButton} onClick={() => setIsShown(false)} aria-label={t('close')}>
+                        <img src={NavigationCloseIcon} />
                     </button>
                 )}
             </div>

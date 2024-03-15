@@ -49,8 +49,8 @@ export const ReportsParameterCard: React.FC<IReportsParameterCardProps> = ({
     return (
         <div className={classNames([styles.itemBox], { [styles.errorItemBox]: status === 'INVALIDATED' })}>
             <div className={styles.closeButton}>
-                <TransparentButtonWrapper onClick={onClick}>
-                    <img src={CloseIcon} alt={t('report.cards.close')} />
+                <TransparentButtonWrapper onClick={onClick} aria-label={t('report.cards.close')}>
+                    <img src={CloseIcon} alt="" />
                 </TransparentButtonWrapper>
             </div>
             <Input

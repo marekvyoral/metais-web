@@ -97,7 +97,7 @@ export const EntityDetailView = ({
                             />
                         </ButtonGroupRow>
                     </div>
-                    {isError && <QueryFeedback error loading={false} />}
+                    <QueryFeedback error={isError} loading={false} />
                     <div ref={wrapperRef}>
                         <MutationFeedback
                             success={isActionSuccess.value && isActionSuccess?.additionalInfo?.type === 'attrEdit'}

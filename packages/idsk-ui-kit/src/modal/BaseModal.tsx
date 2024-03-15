@@ -23,8 +23,8 @@ export const BaseModal: React.FC<IBaseModalProps> = ({ isOpen, close, children, 
             ariaHideApp={false}
             style={{ content: { width: widthInPx } }}
         >
-            <button className={styles.closeButton} onClick={close}>
-                <img src={NavigationCloseIcon} alt={t('close')} />
+            <button className={styles.closeButton} onClick={close} aria-label={t('close')}>
+                <img src={NavigationCloseIcon} alt="" />
             </button>
             {children}
         </Modal>

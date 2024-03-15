@@ -120,7 +120,7 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
                             <TextHeading size="L" className={styles.heading}>
                                 {t('codeListDetail.modal.title.addLanguageVersion')}
                             </TextHeading>
-                            {isError && <QueryFeedback error={isError} loading={false} />}
+                            <QueryFeedback error={isError} loading={false} />
                             {errorMessages.map((errorMessage, index) => (
                                 <MutationFeedback key={index} error errorMessage={errorMessage && t(errorMessage)} />
                             ))}
