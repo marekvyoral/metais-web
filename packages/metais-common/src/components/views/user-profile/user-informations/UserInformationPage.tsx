@@ -14,7 +14,6 @@ export const UserInformationPage = () => {
         <div>
             <MutationFeedback
                 success={isChangeSuccess}
-                error={false}
                 successMessage={t('userProfile.changedUserInformation')}
                 onMessageClose={() => setIsChangeSuccess(false)}
             />

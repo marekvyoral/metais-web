@@ -316,29 +316,23 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
 
     return (
         <QueryFeedback loading={isLoading || isBulkLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && bulkActionResult?.additionalInfo?.action !== 'addedDocuments' && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage + successfullyAdded.join(',')}
-                        showSupportEmail
-                        error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
-                        onMessageClose={() => setBulkActionResult(undefined)}
-                    />
-                </div>
-            )}
-            {bulkActionResult?.isSuccess && bulkActionResult?.additionalInfo?.action === 'addedDocuments' && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={t(`addFile${successfullyAdded.length > 1 ? 's' : ''}Success`, {
-                            docs: successfullyAdded.join(', '),
-                        })}
-                        error={''}
-                        onMessageClose={() => setBulkActionResult(undefined)}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess && bulkActionResult?.additionalInfo?.action !== 'addedDocuments'}
+                    successMessage={bulkActionResult?.successMessage + successfullyAdded.join(',')}
+                    error={bulkActionResult?.isError && bulkActionResult?.additionalInfo?.action !== 'addedDocuments'}
+                    onMessageClose={() => setBulkActionResult(undefined)}
+                />
+            </div>
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess && bulkActionResult?.additionalInfo?.action === 'addedDocuments'}
+                    successMessage={t(`addFile${successfullyAdded.length > 1 ? 's' : ''}Success`, {
+                        docs: successfullyAdded.join(', '),
+                    })}
+                    onMessageClose={() => setBulkActionResult(undefined)}
+                />
+            </div>
 
             <ActionsOverTable
                 pagination={pagination}

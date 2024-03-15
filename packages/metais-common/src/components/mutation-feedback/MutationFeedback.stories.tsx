@@ -13,6 +13,6 @@ type Story = StoryObj<typeof MutationFeedback>
 export const Basic: Story = {
     args: {
         success: false,
-        error: 'Priestor pre popis, k akým chybám došlo a ako ich opraviť.',
+        error: true,
     },
 }

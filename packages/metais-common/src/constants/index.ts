@@ -166,6 +166,8 @@ export const TYP_DATOVEHO_PRVKU = 'TYP_DATOVEHO_PRVKU'
 export const STAV_PROJEKTU = 'STAV_PROJEKTU'
 export const FAZA_PROJEKTU = 'FAZA_PROJEKTU'
 export const CI_ITEM_QUERY_KEY = 'ciItemData'
+export const RELATIONSHIP_TYPES_QUERY_KEY = 'useListRelationshipTypes'
+export const CI_TYPES_QUERY_KEY = 'useListCiTypes'
 export const REPORTS_LIST_QUERY_KEY = '/reports/list'
 export const ADMIN_EGOV_ENTITY_LIST_QKEY = `/citypes/list`
 export const ADMIN_EGOV_RELATION_LIST_QKEY = `/relationshiptypes/list`
@@ -202,6 +204,8 @@ export const PO_PO = 'PO_PO'
 export const PO_IS_PO = 'PO_IS_PO'
 export const PO = 'PO'
 export const PROJECT = 'Projekt'
+export const PROGRAM = 'Program'
+export const WEBOVE_SIDLO = 'WeboveSidlo'
 export const ENTITY_KS = 'KS'
 export const ENTITY_AS = 'AS'
 export const ENTITY_ISVS = 'ISVS'
@@ -249,7 +253,7 @@ export enum ROLES {
 }
 export const NO_USER_COLUMNS_LS_KEY = 'METAIS_columns_noUser/'
 
-export const CAN_CREATE_AND_EDIT_VOTES_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP']
+export const CAN_CREATE_AND_EDIT_VOTES_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP', 'STD_KOORDINATOR_AGENDY']
 
 export const CAN_NOT_MANAGE_CI = [
     'Agenda',
@@ -316,7 +320,7 @@ export const API_MODULS = [
     'metaisiam-rest',
     'trainings',
 ]
-export const CAN_CREATE_MEETING_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP']
+export const CAN_CREATE_MEETING_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP', 'STD_KOORDINATOR_AGENDY']
 export const CAN_EDIT_MEETING_USER_ROLES = ['STD_KOORDINATOR_AGENDY']
 export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 export const SPACES_REGEX = /\s+/g
@@ -368,4 +372,13 @@ export const OLA_CONTRACT_STATE_ACTIONS = {
     RETURN: 'RETURN',
     PLAN: 'PLAN',
     CONTRACT: 'CONTRACT',
+}
+
+export enum HowTo {
+    EGOV_HOWTO = 'EGOV_HOWTO',
+    SPK_HOWTO = 'SPK_HOWTO',
+    CODELISTS_HOWTO = 'CODELISTS_HOWTO',
+    URI_HOWTO = 'URI_HOWTO',
+    REF_REG_HOWTO = 'REF_REG_HOWTO',
+    MONITORING_HOWTO = 'MONITORING_HOWTO',
 }

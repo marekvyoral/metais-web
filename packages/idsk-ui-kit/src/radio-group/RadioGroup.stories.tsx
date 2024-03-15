@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 
-import { RadioGroupWithLabel } from './RadioGroupWithLabel'
+import { RadioGroup } from './RadioGroup'
 
 import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
 
-const meta: Meta<typeof RadioGroupWithLabel> = {
+const meta: Meta<typeof RadioGroup> = {
     title: 'Components/RadioGroupWithLabel',
-    component: RadioGroupWithLabel,
+    component: RadioGroup,
     tags: ['autodocs'],
 }
 
 export default meta
 
-type Story = StoryObj<typeof RadioGroupWithLabel>
+type Story = StoryObj<typeof RadioGroup>
 
 export const GroupRadioButton: Story = {
     args: {

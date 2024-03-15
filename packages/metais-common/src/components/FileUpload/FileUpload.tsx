@@ -36,6 +36,7 @@ interface IFileUpload {
     customUuid?: string
     refId?: string
     refType: RefAttributesRefType
+    textSize?: 'S' | 'L'
 }
 
 export interface IFileUploadRef {
@@ -65,6 +66,7 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             refId,
             refType,
             onFileUploadFailed,
+            textSize,
         },
         ref,
     ) => {
@@ -230,6 +232,7 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
                         hideUploadButton
                     />
                     <FileImportList
+                        textSize={textSize}
                         handleRemoveFile={handleRemoveFile}
                         removeGeneralErrorMessages={removeGeneralErrorMessages}
                         fileList={currentFiles}

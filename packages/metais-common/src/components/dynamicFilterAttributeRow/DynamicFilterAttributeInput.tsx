@@ -1,4 +1,4 @@
-import { Input, MultiSelect, RadioButton, RadioButtonGroup } from '@isdd/idsk-ui-kit'
+import { Input, MultiSelect, RadioButton, RadioGroup } from '@isdd/idsk-ui-kit'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
@@ -30,7 +30,9 @@ interface Props {
     constraints: EnumType | undefined
     onChange: (data: FilterAttribute, prevData?: FilterAttribute, isNewName?: boolean) => void
 }
-
+export const isDateParsable = (date: string) => {
+    return !isNaN(Date.parse(date))
+}
 export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, index, value, onChange, constraints, customComponent }) => {
     const { t } = useTranslation()
 
@@ -118,7 +120,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
                             placeholderText="dd.mm.yyyy"
                             popperClassName={styleDateInput.dateInputPopperClass}
                             name="atributeValueDate"
-                            selected={value.value ? new Date(value.value as string) : null}
+                            selected={value.value && isDateParsable(value.value as string) ? new Date(value.value as string) : null}
                             onChange={(val) => onChange({ ...value, value: formatDateForDefaultValue(val?.toISOString() ?? '') })}
                             dateFormat="dd.MM.yyyy"
                         />
@@ -129,7 +131,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
             case isBoolean: {
                 return (
                     <div className={style.radioButtonDiv}>
-                        <RadioButtonGroup inline>
+                        <RadioGroup inline small label={t('customAttributeFilter.value.label')}>
                             <RadioButton
                                 className={style.rowItem}
                                 id={`attribute-value-${index}-yes`}
@@ -148,7 +150,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
                                 value={RadioInputValue.FALSE}
                                 onChange={(e) => onChange({ ...value, value: e.target.value })}
                             />
-                        </RadioButtonGroup>
+                        </RadioGroup>
                     </div>
                 )
             }

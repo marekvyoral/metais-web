@@ -2,7 +2,6 @@ import classnames from 'classnames'
 import React, { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { StepperArrayEnum } from './Stepper'
 import styles from './stepper.module.scss'
 
 import { AlertTriangleIcon, InfoIcon } from '@isdd/idsk-ui-kit/assets/images'
@@ -30,29 +29,16 @@ export interface ISection {
 }
 
 interface IStepperSection {
-    sectionArray: number[]
-    setSectionArray: React.Dispatch<React.SetStateAction<StepperArrayEnum[]>>
     section: ISection
     index: number
     textHeadingSize?: 'S' | 'M' | 'L' | 'XL'
+    handleSectionOpen: (id: string) => void
 }
 
-export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArray, index, setSectionArray, textHeadingSize }) => {
+export const StepperSection: React.FC<IStepperSection> = ({ section, textHeadingSize, handleSectionOpen }) => {
     const { t } = useTranslation()
-    const currentSection = sectionArray.at(index)
     const uniqueId = `expand-section${useId()}`
     const errorId = `error-${useId()}`
-
-    const handleOpen = () => {
-        const updatedArray = [...sectionArray]
-        if (updatedArray.at(index) === StepperArrayEnum.EXPANDED) {
-            updatedArray[index] = StepperArrayEnum.CLOSED
-        } else {
-            updatedArray[index] = StepperArrayEnum.EXPANDED
-        }
-
-        setSectionArray(updatedArray)
-    }
 
     return (
         <>
@@ -61,7 +47,7 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                     className={classnames({
                         'idsk-stepper__section': true,
                         'idsk-stepper__section--last-item': section.last,
-                        'idsk-stepper__section--expanded': currentSection === StepperArrayEnum.EXPANDED,
+                        'idsk-stepper__section--expanded': section.isOpen,
                     })}
                 >
                     <div className="idsk-stepper__section-header">
@@ -87,8 +73,8 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                                     id="expand-button"
                                     aria-controls={uniqueId}
                                     className="idsk-stepper__section-button"
-                                    aria-expanded={currentSection === StepperArrayEnum.EXPANDED}
-                                    onClick={handleOpen}
+                                    aria-expanded={section.isOpen}
+                                    onClick={() => section.id && handleSectionOpen(section.id)}
                                     aria-describedby={errorId}
                                 >
                                     {section.title}

@@ -231,12 +231,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                             </Can>
                         </div>
                         {actionsErrorMessages.map((errorMessage, index) => (
-                            <MutationFeedback
-                                success={false}
-                                key={index}
-                                showSupportEmail
-                                error={t([errorMessage, 'feedback.mutationErrorMessage'])}
-                            />
+                            <MutationFeedback key={index} error errorMessage={errorMessage && t(errorMessage)} />
                         ))}
                         <BasicInfoTabView
                             codeList={data.detail}

@@ -78,15 +78,12 @@ export const TrainingView: React.FC<TrainingContainerView> = ({
     return (
         <QueryFeedback loading={isLoading} error={isError} withChildren>
             <TextHeading size="L">{t('trainings.invitedTitle')}</TextHeading>
-            {isActionSuccess && isActionSuccess.additionalInfo?.type === 'relationCreated' && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={isActionSuccess.value}
-                        successMessage={t('mutationFeedback.successfulRelationCreated')}
-                        error={false}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={isActionSuccess.value && isActionSuccess.additionalInfo?.type === 'relationCreated'}
+                    successMessage={t('mutationFeedback.successfulRelationCreated')}
+                />
+            </div>
             <Filter form={() => <></>} defaultFilterValues={filter} onlySearch />
             <ActionsOverTable
                 pagination={{

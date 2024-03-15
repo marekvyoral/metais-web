@@ -1,8 +1,7 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import React from 'react'
 
-import { CodeListsMutations } from '../containers/Codelist/CodelistContainer'
+import { CodeListsMutations } from '@/components/containers/Codelist/CodelistContainer'
 
 interface ICodelistSucces {
     mutations: CodeListsMutations
@@ -10,7 +9,6 @@ interface ICodelistSucces {
 }
 
 export const CodelistsFeedback: React.FC<ICodelistSucces> = ({ mutations, isFetchError }) => {
-    const { t } = useTranslation()
     const { updateEnum, createEnum, validateEnum, deleteEnum } = mutations
 
     const isError = updateEnum.isError || validateEnum.isError || deleteEnum.isError
@@ -18,7 +16,7 @@ export const CodelistsFeedback: React.FC<ICodelistSucces> = ({ mutations, isFetc
 
     return (
         <>
-            <MutationFeedback success={isSuccess} showSupportEmail error={isError ? t('feedback.mutationErrorMessage') : undefined} />
+            <MutationFeedback success={isSuccess} error={isError} />
             <QueryFeedback loading={false} error={isFetchError} withChildren />
         </>
     )

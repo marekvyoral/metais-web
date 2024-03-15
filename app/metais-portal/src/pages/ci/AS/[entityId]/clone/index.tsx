@@ -8,6 +8,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiCloneContainer } from '@/components/containers/CiCloneContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CloneCiEntityView } from '@/components/views/ci/clone/CloneCiEntityView'
+import { getCiHowToBreadCrumb } from '@/componentHelpers/ci'
 
 const CloneASPage = () => {
     const { t } = useTranslation()
@@ -34,6 +35,7 @@ const CloneASPage = () => {
                                 withWidthContainer
                                 links={[
                                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                                    ...getCiHowToBreadCrumb(entityName ?? '', t),
                                     { label: t('titles.ciList', { ci: props.ciTypeData?.name }), href: `/ci/${entityName}` },
                                     { label: props.ciName ? props.ciName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
                                     { label: t('breadcrumbs.ciClone', { itemName: props.ciName }), href: `/ci/${entityName}/${entityId}/edit` },

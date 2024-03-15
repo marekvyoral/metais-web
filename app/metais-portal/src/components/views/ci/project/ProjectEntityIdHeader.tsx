@@ -105,14 +105,13 @@ export const ProjectEntityIdHeader: React.FC<Props> = ({
 
     return (
         <>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <MutationFeedback
-                    success={bulkActionResult?.isSuccess}
-                    successMessage={bulkActionResult?.successMessage}
-                    error={bulkActionResult?.isError ? bulkActionResult.errorMessage : ''}
-                    onMessageClose={() => setBulkActionResult(undefined)}
-                />
-            )}
+            <MutationFeedback
+                success={bulkActionResult?.isSuccess}
+                successMessage={bulkActionResult?.successMessage}
+                error={bulkActionResult?.isError}
+                errorMessage={bulkActionResult?.errorMessage}
+                onMessageClose={() => setBulkActionResult(undefined)}
+            />
             <div className={styles.headerDiv}>
                 {isBulkLoading && <LoadingIndicator fullscreen />}
                 <TextHeading size="XL" className={classNames({ [styles.invalidated]: isInvalidated })}>

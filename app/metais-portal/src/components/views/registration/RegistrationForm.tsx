@@ -117,14 +117,12 @@ export const RegistrationForm: React.FC<Props> = () => {
         <>
             <FlexColumnReverseWrapper>
                 <TextHeading size="L">{t('registration.title')}</TextHeading>
-                {errorFromBE && (
-                    <MutationFeedback
-                        error={errorFromBE === CHYBA_BE ? t('registration.error') : getTranslatedError(errorFromBE)}
-                        showSupportEmail={errorFromBE === CHYBA_BE}
-                        success={false}
-                        onMessageClose={() => setErrorFromBE('')}
-                    />
-                )}
+
+                <MutationFeedback
+                    error={isRegisterError}
+                    errorMessage={errorFromBE === CHYBA_BE ? t('registration.error') : getTranslatedError(errorFromBE)}
+                    onMessageClose={() => setErrorFromBE('')}
+                />
             </FlexColumnReverseWrapper>
             <QueryFeedback
                 loading={isRegisterLoading}

@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+import { TFunction } from 'i18next'
 
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
@@ -134,4 +135,10 @@ export const sanitizeFileName = (fileName: string): string => {
     const truncatedFileName = sanitizedFileName.substring(0, maxLength)
 
     return truncatedFileName
+}
+
+export const getHowToTranslate = (howToType: string, t: TFunction) => {
+    const baseTranslate = 'breadcrumbs.wiki.'
+
+    return t(`${baseTranslate}${howToType}`)
 }

@@ -96,7 +96,8 @@ const MassUpdate = () => {
                             <MutationFeedback
                                 success={isActionSuccess}
                                 successMessage={successMessage}
-                                error={isActionError ? errorMessage : undefined}
+                                error={isActionError}
+                                errorMessage={errorMessage}
                             />
 
                             <FlexColumnReverseWrapper>

@@ -141,13 +141,6 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
                 },
             ],
         },
-        //not sure about this TODO
-        {
-            title: t('navMenu.templateReferenceIdentifiersManagement'),
-            path: AdminRouteNames.TEMPLATE_REFERENCE_IDENTIFIERS,
-            icon: InstructionsIcon,
-            role: [AdminRouteRoles.ADMIN],
-        },
         {
             title: t('navMenu.systemState.heading'),
             path: AdminRouteNames.SYSTEM_STATUS_SETTINGS,

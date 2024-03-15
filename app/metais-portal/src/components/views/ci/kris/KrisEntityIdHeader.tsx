@@ -446,22 +446,18 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
 
     return (
         <>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage}
-                        showSupportEmail
-                        error={bulkActionResult?.isError || isError ? t('feedback.mutationErrorMessage') : ''}
-                        onMessageClose={() => setBulkActionResult(undefined)}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess}
+                    successMessage={bulkActionResult?.successMessage}
+                    error={bulkActionResult?.isError || isError}
+                    onMessageClose={() => setBulkActionResult(undefined)}
+                />
+            </div>
             <MutationFeedback
                 success={succesMessage !== undefined}
                 successMessage={succesMessage}
-                showSupportEmail
-                error={isError || isErrorNeighbours ? t('feedback.mutationErrorMessage') : ''}
+                error={isError || isErrorNeighbours}
                 onMessageClose={() => setSuccesMessage(undefined)}
             />
             {showWarning && <TextWarning>{t('modalKris.generatePdf.docGenStart')}</TextWarning>}

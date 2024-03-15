@@ -1,4 +1,4 @@
-import { RadioButton, RadioGroupWithLabel, TextArea, TextHeading, TextLinkExternal } from '@isdd/idsk-ui-kit'
+import { RadioButton, RadioGroup, TextArea, TextHeading, TextLinkExternal } from '@isdd/idsk-ui-kit'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -49,7 +49,7 @@ export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
                 selectedRole={selectedRole}
                 ciRoles={ciRoles}
             />
-            <RadioGroupWithLabel label={t('bulkActions.changeOwner.reason')}>
+            <RadioGroup label={t('bulkActions.changeOwner.reason')}>
                 {CHANGE_OWNER_CHANGE_REASON.map((item) => (
                     <RadioButton
                         key={item}
@@ -59,15 +59,15 @@ export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
                         {...register('changeReason')}
                     />
                 ))}
-            </RadioGroupWithLabel>
+            </RadioGroup>
 
             <TextArea {...register('changeDescription')} label={t('bulkActions.changeOwner.changeDescription')} rows={3} />
 
-            <RadioGroupWithLabel label={t('bulkActions.changeOwner.changeType')}>
+            <RadioGroup label={t('bulkActions.changeOwner.changeType')}>
                 {CHANGE_OWNER_CHANGE_TYPE.map((item) => (
                     <RadioButton key={item} value={item} label={t(`bulkActions.changeOwner.types.${item}`)} id={item} {...register('changeType')} />
                 ))}
-            </RadioGroupWithLabel>
+            </RadioGroup>
 
             {multiple && <BulkList title={t('bulkActions.changeOwner.listText', { count: items.length })} items={items} />}
 

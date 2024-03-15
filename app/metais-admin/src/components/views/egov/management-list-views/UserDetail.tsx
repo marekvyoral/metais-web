@@ -49,7 +49,7 @@ export const UserDetail: React.FC<IUserDetail> = ({ userData, userId }) => {
                     />
                 </div>
                 <div ref={wrapperRef}>
-                    <MutationFeedback error={false} success={isActionSuccess.value} />
+                    <MutationFeedback success={isActionSuccess.value} />
                 </div>
             </FlexColumnReverseWrapper>
 

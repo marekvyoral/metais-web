@@ -2,6 +2,7 @@ import { GetFOPReferenceRegisters1Muk, GetFOPReferenceRegisters1State } from '@i
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 export enum DraftsListFilterItems {
     STATE = 'state',
+    STATE_CUSTOM = 'stateCustom',
     REQUEST_CHANNEL = 'requestChannel',
     WORK_GROUP_ID = 'workGroupId',
     DRAFT_NAME = 'draftName',

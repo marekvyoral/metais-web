@@ -726,7 +726,6 @@
             "financeManagement": "Finančné limity schvaľovacieho procesu"
         },
         "documentsManagement": "Dokumenty",
-        "templateReferenceIdentifiersManagement": "Správa šablón referencovateľných identifikátorov",
         "publicAuthorities": {
             "management": "Správa orgánov riadenia",
             "publicAuthorities": "Orgány riadenia",
@@ -1375,9 +1374,6 @@
             "approvalProcessName": "Názov schvaľovacieho procesu",
             "more": "Viac"
         }
-    },
-    "templateReferenceIdentifiers": {
-        "heading": "Správa šablón referencovateľných identifikátorov"
     },
     "titles": {
         "mainPage": "MetaIS Admin"

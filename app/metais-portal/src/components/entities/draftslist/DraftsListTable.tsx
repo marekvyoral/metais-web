@@ -40,14 +40,6 @@ export const DraftsListTable: React.FC<IDraftsListTable> = ({ data, handleFilter
             size: 200,
         },
         {
-            accessorFn: (row) => row?.name,
-            header: t('DraftsList.table.name'),
-            id: 'name',
-            cell: (row) => <span>{row?.getValue?.() as string}</span>,
-            enableSorting: true,
-            size: 200,
-        },
-        {
             accessorFn: (row) => row?.requestChannel,
             header: t('DraftsList.table.requestChannel'),
             id: 'requestChannel',

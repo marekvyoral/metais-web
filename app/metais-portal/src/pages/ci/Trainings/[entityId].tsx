@@ -20,6 +20,7 @@ import { SortBy } from '@isdd/idsk-ui-kit/types'
 import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import {
+    getCiHowToBreadCrumb,
     getDefaultCiEntityTabList,
     getSuccessMessageKeyByType,
     useCiDetailPageTitle,
@@ -124,6 +125,8 @@ const EntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(entityName ?? '', t),
+
                     { label: getHeading(), href: `/ci/${entityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
@@ -167,15 +170,12 @@ const EntityDetailPage: React.FC = () => {
                                 refetchCi={refetch}
                             />
                             <QueryFeedback loading={false} error={isError} />
-                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
-                                <div ref={wrapperRef}>
-                                    <MutationFeedback
-                                        error={false}
-                                        success={isActionSuccess.value}
-                                        successMessage={t(getSuccessMessageKeyByType(isActionSuccess.additionalInfo?.type))}
-                                    />
-                                </div>
-                            )}
+                            <div ref={wrapperRef}>
+                                <MutationFeedback
+                                    success={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}
+                                    successMessage={t(getSuccessMessageKeyByType(isActionSuccess.additionalInfo?.type))}
+                                />
+                            </div>
                         </FlexColumnReverseWrapper>
 
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />

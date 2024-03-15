@@ -3,11 +3,12 @@ import { ReadCiNeighboursWithAllRelsParams, RoleParticipantUI } from '@isdd/meta
 import { useEntityRelationsDataList } from '@isdd/metais-common/hooks/useEntityRelationsDataList'
 import { IKeyToDisplay, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelationsTypesCount'
 import React, { SetStateAction, useEffect, useMemo, useState } from 'react'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, RELATIONSHIP_TYPES_QUERY_KEY } from '@isdd/metais-common/constants'
 import { mapFilterToNeighboursWithAllRelsApi } from '@isdd/metais-common/componentHelpers'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { RelationshipTypePreview, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
+import { useTranslation } from 'react-i18next'
 
 import { NeighboursCardList } from '@/components/entities/NeighboursCardList'
 import { getRelationsSorter } from '@/componentHelpers/ci/ciRelationsSortConfig'
@@ -42,6 +43,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
     hidePageSizeSelect = false,
     includeDeleted = false,
 }) => {
+    const { i18n } = useTranslation()
     const { data: ciTypeData } = useGetCiTypeWrapper(technicalName)
     const {
         isLoading: areTypesLoading,
@@ -51,7 +53,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
 
     const keysToDisplay = useMemo(() => keysToDisplayUnsorted.sort(getRelationsSorter(technicalName)), [keysToDisplayUnsorted, technicalName])
 
-    const { data: relationTypes } = useListRelationshipTypes({ filter: { role: undefined } })
+    const { data: relationTypes } = useListRelationshipTypes({ filter: {} }, { query: { queryKey: [RELATIONSHIP_TYPES_QUERY_KEY, i18n.language] } })
 
     const { currentPreferences } = useUserPreferences()
 

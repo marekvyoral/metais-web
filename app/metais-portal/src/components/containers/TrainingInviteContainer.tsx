@@ -12,9 +12,9 @@ import React, { useState } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { ErrorTranslateKeyType, getErrorTranslateKeys } from '@isdd/metais-common/src/utils/errorMapper'
 import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
-import { getErrorTranslateKeys } from '@/componentHelpers'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { TrainingInviteView } from '@/components/views/trainings/TrainingInviteView'
 
@@ -38,7 +38,7 @@ export interface TrainingInviteContainerViewProps {
     isLoading: boolean
     isLoadingMutation: boolean
     isError: boolean
-    errorMessages: string[]
+    errorMessages: ErrorTranslateKeyType[]
     handleInvite: (data: ITrainingInviteForm) => void
     isUserAlreadyEnrolled: boolean
 }

@@ -227,8 +227,8 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
             <TextHeading size={'XL'}>{t('projects.financeManagement.heading')}</TextHeading>
             <MutationFeedback
                 success={isSuccess}
-                showSupportEmail
-                error={isError ? t('relationDetail.editError', { relationName: program?.name }) : ''}
+                error={isError}
+                errorMessage={t('relationDetail.editError', { relationName: program?.name })}
                 successMessage={t('relationDetail.editSuccess', { relationName: program?.name })}
             />
             <QueryFeedback loading={isLoading}>

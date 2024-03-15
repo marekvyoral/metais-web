@@ -2,6 +2,7 @@ import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
+import { RadioGroup } from '@isdd/idsk-ui-kit'
 
 import styles from './FileImport.module.scss'
 
@@ -23,7 +24,7 @@ export const FileImportHeader: React.FC<IFileImportHeader> = ({ setRadioButtonMe
             <img src={ExportIcon} alt="" />
             <TextHeading size="L">{t('fileImport.header')}</TextHeading>
 
-            <div>
+            <RadioGroup small inline>
                 <RadioButton
                     label={t('fileImport.onlyExisting')}
                     id={FileImportEditOptions.EXISTING_ONLY}
@@ -31,7 +32,6 @@ export const FileImportHeader: React.FC<IFileImportHeader> = ({ setRadioButtonMe
                     value={FileImportEditOptions.EXISTING_ONLY}
                     defaultChecked
                     onChange={() => setRadioButtonMetaData(FileImportEditOptions.EXISTING_ONLY)}
-                    className="govuk-radios--small"
                 />
                 <RadioButton
                     label={t('fileImport.existingAndNew')}
@@ -39,9 +39,8 @@ export const FileImportHeader: React.FC<IFileImportHeader> = ({ setRadioButtonMe
                     name="import-radio-button"
                     value={FileImportEditOptions.EXISTING_AND_NEW}
                     onChange={() => setRadioButtonMetaData(FileImportEditOptions.EXISTING_AND_NEW)}
-                    className="govuk-radios--small"
                 />
-            </div>
+            </RadioGroup>
         </div>
     )
 }

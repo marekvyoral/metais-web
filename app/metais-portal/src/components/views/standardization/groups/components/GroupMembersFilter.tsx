@@ -5,9 +5,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { GroupPermissionSubject } from '@isdd/metais-common/hooks/permissions/useGroupsPermissions'
 
-import { FilterParams } from '@/components/containers/standardization/groups/GroupDetailContainer'
 import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standardization/groups/defaultRoles'
+import { FilterParams } from '@/components/containers/standardization/groups/GroupDetailContainer'
 
 interface FilterProps {
     defaultFilterValues: FilterParams
@@ -116,17 +119,19 @@ const GroupMembersFilter: React.FC<FilterProps> = ({ defaultFilterValues, isKsis
                 form={({ setValue }) => (
                     <>
                         {isLoggedIn && (
-                            <SelectLazyLoading<Identity>
-                                key={seed1}
-                                defaultValue={selectedIdentity}
-                                placeholder={t('groups.select')}
-                                setValue={setValue}
-                                label={t('groups.member')}
-                                name={'memberUuid'}
-                                getOptionValue={(item) => item.uuid ?? ''}
-                                getOptionLabel={(item) => item.firstName + ' ' + item.lastName}
-                                loadOptions={(searchTerm, _, additional) => loadMembersOptions(searchTerm, additional)}
-                            />
+                            <Can I={Actions.READ} a={GroupPermissionSubject.SEE_MEMBERS}>
+                                <SelectLazyLoading<Identity>
+                                    key={seed1}
+                                    defaultValue={selectedIdentity}
+                                    placeholder={t('groups.select')}
+                                    setValue={setValue}
+                                    label={t('groups.member')}
+                                    name={'memberUuid'}
+                                    getOptionValue={(item) => item.uuid ?? ''}
+                                    getOptionLabel={(item) => item.firstName + ' ' + item.lastName}
+                                    loadOptions={(searchTerm, _, additional) => loadMembersOptions(searchTerm, additional)}
+                                />
+                            </Can>
                         )}
 
                         <SelectLazyLoading<ConfigurationItemUi>

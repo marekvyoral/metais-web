@@ -26,7 +26,7 @@ export const CreateCiEntityView: React.FC<Props> = ({ data, entityName, ownerId,
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('ciType.createEntity', { entityName: data.attributesData.ciTypeData?.name })}</TextHeading>
-                <ElementToScrollTo isVisible={isError}>
+                <ElementToScrollTo trigger={isError}>
                     <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
                 </ElementToScrollTo>
             </FlexColumnReverseWrapper>

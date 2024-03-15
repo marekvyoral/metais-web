@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import classNames from 'classnames'
+import { GroupPermissionSubject } from '@isdd/metais-common/hooks/permissions/useGroupsPermissions'
 
 import styles from '@/components/views/standardization/groups/groupslist.module.scss'
 import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect'
@@ -73,14 +74,16 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
             {isUserLogged && (
                 <div className="idsk-table-filter idsk-table-filter__panel">
                     <form onSubmit={handleSubmit} noValidate>
-                        <IdentitySelect
-                            placeholder={t('groups.select')}
-                            name="memberSelect"
-                            onChange={(val) => {
-                                setSelectedIdentity(Array.isArray(val) ? val[0] : val)
-                            }}
-                            label={t('groups.member')}
-                        />
+                        <Can I={Actions.READ} a={GroupPermissionSubject.SEE_MEMBERS}>
+                            <IdentitySelect
+                                placeholder={t('groups.select')}
+                                name="memberSelect"
+                                onChange={(val) => {
+                                    setSelectedIdentity(Array.isArray(val) ? val[0] : val)
+                                }}
+                                label={t('groups.member')}
+                            />
+                        </Can>
                         <CiLazySelect
                             ciType="PO"
                             selectedCi={selectedOrg}
@@ -94,7 +97,7 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
             )}
             <QueryFeedback loading={isLoading} error={isError}>
                 <div className={classNames([styles.actionsWrapper, isUserLogged ? styles.justifySpaceBetween : styles.justifyFlexEnd])}>
-                    <Can I={Actions.CREATE} a={'groups'}>
+                    <Can I={Actions.CREATE} a={GroupPermissionSubject.GROUPS}>
                         <Button
                             label={label}
                             className={'idsk-button'}

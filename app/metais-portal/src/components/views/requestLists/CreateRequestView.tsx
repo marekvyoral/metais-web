@@ -151,7 +151,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         } else {
             setIsCodeAvailable(false)
             result.errorTranslateKeys?.forEach((error) => {
-                setError(RequestFormEnum.CODELISTCODE, { message: t([error, 'feedback.mutationErrorMessage']) })
+                setError(RequestFormEnum.CODELISTCODE, { message: t([error ?? '', 'feedback.mutationErrorMessage']) })
             })
         }
     }
@@ -535,10 +535,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             </GridRow>
                             <TextHeading size="L">{t('codeListList.requestCreate.codeListTableTitle')}</TextHeading>
                             <MutationFeedback
-                                success={isSuccessSetDates ?? false}
+                                success={isSuccessSetDates}
                                 successMessage={t('codeListDetail.feedback.editCodeListItems')}
-                                showSupportEmail
-                                error={errorMessageSetDates && t([errorMessageSetDates, 'feedback.mutationErrorMessage'])}
+                                error={!!errorMessageSetDates}
+                                errorMessage={t([errorMessageSetDates ?? '', 'feedback.mutationErrorMessage'])}
                             />
                             <ActionsOverTable
                                 pagination={{ pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE, dataLength: 0 }}
@@ -601,12 +601,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 handlePageChange={(filter) => setPagination({ ...pagination, pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER })}
                             />
                             {errorMessages.map((errorMessage, index) => (
-                                <MutationFeedback
-                                    success={false}
-                                    key={index}
-                                    showSupportEmail={!errorMessage}
-                                    error={t([errorMessage, 'feedback.mutationErrorMessage'])}
-                                />
+                                <MutationFeedback key={index} error errorMessage={errorMessage && t(errorMessage)} />
                             ))}
                             <ButtonGroupRow>
                                 <Button

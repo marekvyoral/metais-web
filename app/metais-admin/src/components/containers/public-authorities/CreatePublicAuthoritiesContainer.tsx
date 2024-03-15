@@ -1,14 +1,13 @@
-import React from 'react'
-import { EnumType, useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { useStorePoWithHierarchyRel, useStorePo, PoWithHierarchyUi, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
-import { useTranslation } from 'react-i18next'
-import { useInvalidateCiListFilteredCache, useInvalidateCiReadCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { GET_ENUM } from '@isdd/metais-common/api/constants'
-import { useNavigate } from 'react-router-dom'
-import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { ConfigurationItemUi, PoWithHierarchyUi, useStorePo, useStorePoWithHierarchyRel } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType, useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useInvalidateCiListFilteredCache, useInvalidateCiReadCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export interface ICreatePublicAuthoritiesView {
     data: {
@@ -30,7 +29,6 @@ interface ICreatePublicAuthorities {
 }
 
 export const CreatePublicAuthoritiesContainer: React.FC<ICreatePublicAuthorities> = ({ View }: ICreatePublicAuthorities) => {
-    const { t } = useTranslation()
     const navigate = useNavigate()
     const { data: personTypes, isLoading: personTypesLoading, isError: personTypesError } = useGetEnum(GET_ENUM.TYP_OSOBY)
     const { data: personCategories, isLoading: personCategoriesLoading, isError: personCategoriesError } = useGetEnum(GET_ENUM.KATEGORIA_OSOBA)
@@ -101,7 +99,7 @@ export const CreatePublicAuthoritiesContainer: React.FC<ICreatePublicAuthorities
 
     return (
         <>
-            {isError && <MutationFeedback success={false} showSupportEmail error={t('feedback.mutationErrorMessage')} />}
+            <MutationFeedback error={isError} />
             <View
                 data={{
                     personCategories,
