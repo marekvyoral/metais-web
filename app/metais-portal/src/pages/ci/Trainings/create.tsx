@@ -3,7 +3,7 @@ import { META_IS_TITLE } from '@isdd/metais-common/constants'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { getCiHowToBreadCrumb, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { useCiCreateEntityHook } from '@/hooks/useCiCreateEntity.hook'
 import { CreateTrainingEntityView } from '@/components/views/ci/create/CreateTrainingEntityView'
@@ -20,6 +20,7 @@ const CreateTrainingEntityPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(entityName ?? '', t),
                     { label: t('titles.ciList', { ci: ciCreateData.ciTypeName }), href: `/ci/${entityName}` },
                     {
                         label: t('breadcrumbs.ciCreateEntity', { entityName: ciCreateData.data.attributesData.ciTypeData?.name }),

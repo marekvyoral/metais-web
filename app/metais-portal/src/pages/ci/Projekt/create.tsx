@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CreateProjectView } from '@/components/views/ci/project/CreateProjectView'
 import { useCiCreateEntityHook } from '@/hooks/useCiCreateEntity.hook'
+import { getCiHowToBreadCrumb } from '@/componentHelpers/ci'
 
 const CreateProjectPage: React.FC = () => {
     const { t } = useTranslation()
@@ -19,6 +20,7 @@ const CreateProjectPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(entityName ?? '', t),
                     { label: t('titles.ciList', { ci: ciCreateData.ciTypeName }), href: `/ci/${entityName}` },
                     {
                         label: t('breadcrumbs.ciCreateEntity', { entityName: ciCreateData.data.attributesData.ciTypeData?.name }),

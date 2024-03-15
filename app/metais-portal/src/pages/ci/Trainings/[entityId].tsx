@@ -20,6 +20,7 @@ import { SortBy } from '@isdd/idsk-ui-kit/types'
 import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import {
+    getCiHowToBreadCrumb,
     getDefaultCiEntityTabList,
     getSuccessMessageKeyByType,
     useCiDetailPageTitle,
@@ -124,6 +125,8 @@ const EntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(entityName ?? '', t),
+
                     { label: getHeading(), href: `/ci/${entityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),

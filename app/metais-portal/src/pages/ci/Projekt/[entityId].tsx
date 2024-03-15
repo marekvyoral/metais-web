@@ -13,7 +13,13 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useSetStatesHook } from '@isdd/metais-common/api/generated/kris-swagger'
 import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
-import { getDefaultCiEntityTabList, useCiDetailPageTitle, useCiListPageHeading, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import {
+    getCiHowToBreadCrumb,
+    getDefaultCiEntityTabList,
+    useCiDetailPageTitle,
+    useCiListPageHeading,
+    useGetEntityParamsFromUrl,
+} from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { ProjectStateContainer } from '@/components/containers/ProjectStateContainer'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
@@ -78,6 +84,8 @@ const ProjectEntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(ENTITY_PROJECT, t),
+
                     { label: getHeading(), href: `/ci/${ENTITY_PROJECT}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),

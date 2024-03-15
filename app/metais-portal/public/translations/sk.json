@@ -1295,7 +1295,7 @@
             "STD_HOWTO": "Štandardizácia",
             "SDO_HOWTO": "Dátové objekty",
             "TOTAL_OWNERSHIP_COSTS_HOWT": "Celkové náklady na vlastníctvo",
-            "URI_HOWTO": ""
+            "URI_HOWTO": "Referencovateľné identifikátory"
         }
     },
     "codeList": {
@@ -2983,5 +2983,18 @@
     "arrayInput": {
         "deleteRow": "Odstrániť {{itemName}}",
         "changeRowsNumber": "Zmenil sa počet riadkov položky: {{name}}. Počet riadkov je {{count}}"
+    },
+    "entitySummary": {
+        "operated": "(prevádzkované)",
+        "ksState": "Koncové služby štátnej správy",
+        "ksSelf": "Koncové služby samosprávy",
+        "kris": "Koncepcie rozvoja ISVS",
+        "as": "Aplikačné služby",
+        "isvs": "Ínformačné systémy verejnej správy",
+        "codelist": "Základné číselníky",
+        "project": "Projekty rozvoja IT",
+        "loading": "Načítava sa zhrnutie počtu entít",
+        "lastModifiedEntities": "Posledné editované entity:",
+        "loadingLatestCi": "Načítavajú sa posledné editované entity"
     }
 }

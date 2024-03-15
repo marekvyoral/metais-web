@@ -1135,7 +1135,7 @@
         "successfulMemberUpdated": "Role was successfully changed",
         "successfulMemberAdded": "Member was successfully added",
         "successfulMemberDeleted": "Member was successfully removed from group",
-        "successfulGroupDeleted":"Group was successfully removed.",
+        "successfulGroupDeleted": "Group was successfully removed.",
         "mandatory": "mandatory",
         "editGroup": "Edit group",
         "addingMember": "Adding member",
@@ -1291,7 +1291,7 @@
             "STD_HOWTO": "Standardization",
             "SDO_HOWTO": "Data objects",
             "TOTAL_OWNERSHIP_COSTS_HOWT": "Total cost of ownership",
-            "URI_HOWTO": ""
+            "URI_HOWTO": "Reference identifiers"
         }
     },
     "codeList": {
@@ -2977,5 +2977,18 @@
     "arrayInput": {
         "deleteRow": "Remove {{itemName}}",
         "changeRowsNumber": "Number of rows for item {{name}} changed. Number of rows is {{count}}"
+    },
+    "entitySummary": {
+        "operated": "(operated)",
+        "ksState": "eGov services of state administration",
+        "ksSelf": "eGov services of self-government",
+        "kris": "eGov municipal services",
+        "as": "Application services",
+        "isvs": "Public administration information systems",
+        "codelist": "Codelists",
+        "project": "Projects",
+        "loading": "Loading entities count summary",
+        "lastModifiedEntities": "Last modified entities:",
+        "loadingLatestCi": "Loading latest modified entities"
     }
 }

@@ -2,7 +2,9 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
-import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { HowTo } from '@isdd/metais-common/constants'
+import { getHowToTranslate } from '@isdd/metais-common/utils/utils'
 
 import { ServiceDetailView } from '@/components/views/monitoring/services/ServiceDetailView'
 import { MonitoringDetailFilterData, MonitoringServiceDetailContainer } from '@/components/containers/MonitoringServiceDetailContainer'
@@ -48,6 +50,7 @@ const DetailServicePage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    { label: getHowToTranslate(HowTo.MONITORING_HOWTO, t), href: RouteNames.HOW_TO_MONITORING },
                     { label: t('titles.monitoringServices') ?? '', href: RouterRoutes.MONITORING_SERVICES },
                 ]}
             />

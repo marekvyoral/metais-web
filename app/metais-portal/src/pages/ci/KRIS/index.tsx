@@ -8,7 +8,7 @@ import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { KrisListView } from '@/components/views/ci/kris/KrisListView'
-import { useCiListPageHeading } from '@/componentHelpers/ci'
+import { getCiHowToBreadCrumb, useCiListPageHeading } from '@/componentHelpers/ci'
 
 export interface KRISFilterType extends IFilterParams {
     owner?: string
@@ -36,6 +36,7 @@ const KRISListPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(ciType, t),
                     { label: getHeading(), href: `/ci/${ciType}` },
                 ]}
             />
