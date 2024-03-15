@@ -6,7 +6,7 @@ import { Languages } from '@isdd/metais-common/localization/languages'
 import { useTranslation } from 'react-i18next'
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
-import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { getCiHowToBreadCrumb, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { EditCiEntityView } from '@/components/views/ci/edit/EditCiEntityView'
@@ -35,6 +35,7 @@ const EditEntityPage = () => {
                     withWidthContainer
                     links={[
                         { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                        ...getCiHowToBreadCrumb(entityName ?? '', t),
                         { label: t('titles.ciList', { ci: ciTypeName }), href: `/ci/${entityName}` },
                         { label: currentName ? currentName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
                         { label: t('breadcrumbs.ciEdit', { itemName: currentName }), href: `/ci/${entityName}/${entityId}/edit` },

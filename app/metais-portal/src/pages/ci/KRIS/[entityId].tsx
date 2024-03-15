@@ -13,7 +13,13 @@ import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
-import { getDefaultCiEntityTabList, useCiDetailPageTitle, useCiListPageHeading, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import {
+    getCiHowToBreadCrumb,
+    getDefaultCiEntityTabList,
+    useCiDetailPageTitle,
+    useCiListPageHeading,
+    useGetEntityParamsFromUrl,
+} from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { KrisRelatedContainer } from '@/components/containers/KrisRelatedContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
@@ -120,6 +126,8 @@ const KrisEntityDetailPage: React.FC = () => {
                     withWidthContainer
                     links={[
                         { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                        ...getCiHowToBreadCrumb(ENTITY_KRIS, t),
+
                         { label: getHeading(), href: `/ci/${ENTITY_KRIS}` },
                         {
                             label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),

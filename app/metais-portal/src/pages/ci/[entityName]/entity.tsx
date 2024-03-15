@@ -3,7 +3,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { getCiHowToBreadCrumb, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { ListWrapper } from '@/components/list-wrapper/ListWrapper'
@@ -30,6 +30,7 @@ const CiListPage: React.FC = () => {
                             withWidthContainer
                             links={[
                                 { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                                ...getCiHowToBreadCrumb(props.entityName, t),
                                 {
                                     label: t('titles.ciList', { ci: props.ciTypeData?.name }) ?? '',
                                     href: `/ci/${ciType}`,

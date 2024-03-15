@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { EditProjectView } from '@/components/views/ci/project/EditProjectView'
+import { getCiHowToBreadCrumb } from '@/componentHelpers/ci'
 
 const EditProjectPage = () => {
     const { t, i18n } = useTranslation()
@@ -35,6 +36,7 @@ const EditProjectPage = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(entityName ?? '', t),
                     { label: t('titles.ciList', { ci: ciTypeData?.name }), href: `/ci/${entityName}` },
                     { label: currentName ? currentName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
                     { label: t('breadcrumbs.ciEdit', { itemName: currentName }), href: `/ci/${entityName}/${entityId}/edit` },

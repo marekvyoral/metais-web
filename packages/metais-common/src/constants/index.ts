@@ -204,6 +204,8 @@ export const PO_PO = 'PO_PO'
 export const PO_IS_PO = 'PO_IS_PO'
 export const PO = 'PO'
 export const PROJECT = 'Projekt'
+export const PROGRAM = 'Program'
+export const WEBOVE_SIDLO = 'WeboveSidlo'
 export const ENTITY_KS = 'KS'
 export const ENTITY_AS = 'AS'
 export const ENTITY_ISVS = 'ISVS'
@@ -370,4 +372,13 @@ export const OLA_CONTRACT_STATE_ACTIONS = {
     RETURN: 'RETURN',
     PLAN: 'PLAN',
     CONTRACT: 'CONTRACT',
+}
+
+export enum HowTo {
+    EGOV_HOWTO = 'EGOV_HOWTO',
+    SPK_HOWTO = 'SPK_HOWTO',
+    CODELISTS_HOWTO = 'CODELISTS_HOWTO',
+    URI_HOWTO = 'URI_HOWTO',
+    REF_REG_HOWTO = 'REF_REG_HOWTO',
+    MONITORING_HOWTO = 'MONITORING_HOWTO',
 }

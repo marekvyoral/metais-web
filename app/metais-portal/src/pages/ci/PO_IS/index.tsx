@@ -6,6 +6,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
 import { POView } from '@/components/views/ci/PO/POView'
+import { getCiHowToBreadCrumb } from '@/componentHelpers/ci'
 
 const POIsListPage = () => {
     const { t } = useTranslation()
@@ -27,6 +28,7 @@ const POIsListPage = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(PO_IS, t),
                     { label: t('ciType.PO_IS_Heading') ?? '', href: `/ci/${PO_IS}` },
                 ]}
             />
