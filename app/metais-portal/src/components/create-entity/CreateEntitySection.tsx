@@ -1,12 +1,12 @@
 import { ErrorBlockList } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
-import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Attribute, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import React, { useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { Attribute, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 
 import { HasResetState } from './CreateCiEntityForm'
 import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits, getHint, getSectionErrorList } from './createEntityHelpers'
@@ -16,12 +16,12 @@ import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 interface ISection {
     sectionId: string
     attributes: Attribute[]
-    setSectionError: React.Dispatch<React.SetStateAction<{ [x: string]: boolean }>>
     generatedEntityId: CiCode
     constraintsData: (EnumType | undefined)[]
     unitsData: EnumType | undefined
     defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
     hasResetState: HasResetState
+    setSectionError?: React.Dispatch<React.SetStateAction<{ [x: string]: boolean }>>
     updateCiItemId?: string
     sectionRoles: string[]
     selectedRole?: GidRoleData | null
@@ -32,11 +32,11 @@ export const CreateEntitySection: React.FC<ISection> = ({
     sectionId,
     constraintsData,
     generatedEntityId,
-    setSectionError,
     unitsData,
     defaultItemAttributeValues,
     hasResetState,
     updateCiItemId,
+    setSectionError,
     sectionRoles,
     selectedRole,
 }) => {
@@ -47,15 +47,16 @@ export const CreateEntitySection: React.FC<ISection> = ({
 
     const thisSectionErrorList = getSectionErrorList(attributes, formState?.errors, sectionId)
 
+    const canEditSection = useMemo(() => (selectedRole ? sectionRoles.includes(selectedRole?.roleName ?? '') : true), [sectionRoles, selectedRole])
+    const isUpdateSectionDisabled = !!updateCiItemId && !ability?.can(Actions.EDIT, `ci.${updateCiItemId}.attributeProfile.${sectionId}`)
+
     const isSectionError = Object.keys(errors)
         .map((item) => item.includes(sectionId))
         .some((item) => item)
-    useEffect(() => {
-        setSectionError((prev) => ({ ...prev, [sectionId]: isSectionError }))
-    }, [sectionId, isSectionError, setSectionError])
 
-    const canEditSection = useMemo(() => (selectedRole ? sectionRoles.includes(selectedRole?.roleName ?? '') : true), [sectionRoles, selectedRole])
-    const isUpdateSectionDisabled = !!updateCiItemId && !ability?.can(Actions.EDIT, `ci.${updateCiItemId}.attributeProfile.${sectionId}`)
+    useEffect(() => {
+        setSectionError?.((prev) => ({ ...prev, [sectionId]: isSectionError }))
+    }, [sectionId, isSectionError, setSectionError])
 
     return (
         <div>

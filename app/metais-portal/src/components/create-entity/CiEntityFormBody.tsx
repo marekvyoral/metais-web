@@ -1,9 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, ErrorBlock } from '@isdd/idsk-ui-kit/index'
+import { Button } from '@isdd/idsk-ui-kit/index'
 import { Stepper } from '@isdd/idsk-ui-kit/stepper/Stepper'
 import { SubmitWithFeedback } from '@isdd/metais-common/index'
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
-import { FieldValues, FormProvider, useForm } from 'react-hook-form'
+import { FieldValues, FieldErrors, FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AttributeProfile, CiCode, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -11,9 +11,8 @@ import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { ConfigurationItemUiAttributes, HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ENTITY_PROJECT } from '@isdd/metais-common/constants'
-import { StepperSectionErrorBlock } from '@isdd/idsk-ui-kit/src/stepper/StepperSectionErrorBlock'
 
-import { getFilteredAttributeProfilesBasedOnRole, getSectionErrorList, getValidAndVisibleAttributes } from './createEntityHelpers'
+import { getFilteredAttributeProfilesBasedOnRole, getValidAndVisibleAttributes } from './createEntityHelpers'
 import { generateFormSchema } from './createCiEntityFormSchema'
 import styles from './createEntity.module.scss'
 
@@ -25,6 +24,7 @@ type Props = {
     generatedEntityId: CiCode
     ciTypeData: CiType | undefined
     onSubmit: (formData: FieldValues) => void
+    onError?: (errors: FieldErrors) => void
     isProcessing?: boolean
     selectedRole?: GidRoleData | null
     stepperList: ISection[]
@@ -33,12 +33,15 @@ type Props = {
     setHasReset: Dispatch<SetStateAction<boolean>>
     isSubmitDisabled: boolean
     selectedOrg?: HierarchyRightsUi | null
+    handleSectionOpen: (id: string) => void
+    openOrCloseAllSections: () => void
 }
 
 export const CiEntityFormBody: React.FC<Props> = ({
     entityName,
     formDefaultValues,
     onSubmit,
+    onError,
     stepperList,
     selectedRole,
     isUpdate,
@@ -48,6 +51,8 @@ export const CiEntityFormBody: React.FC<Props> = ({
     isSubmitDisabled,
     ciTypeData,
     selectedOrg,
+    handleSectionOpen,
+    openOrCloseAllSections,
 }) => {
     const navigate = useNavigate()
     const { t, i18n } = useTranslation()
@@ -105,31 +110,15 @@ export const CiEntityFormBody: React.FC<Props> = ({
         if (entityName === ENTITY_PROJECT) setValue(AttributesConfigTechNames.EA_Profil_Projekt_prijimatel, selectedOrg?.poName)
     }, [selectedOrg, setValue, entityName])
 
-    const modifiedStepperList: ISection[] = stepperList.map((section) => ({
-        ...section,
-        errorMessages: getSectionErrorList(
-            [...(ciTypeData?.attributes ?? []), ...(ciTypeData?.attributeProfiles?.flatMap((prof) => prof.attributes ?? {}) ?? [])],
-            formState?.errors,
-            section.id,
-        ),
-    }))
-
     return (
         <FormProvider {...methods}>
-            {formState.isSubmitted && !formState.isValid && (
-                <ErrorBlock
-                    hidden
-                    errorTitle={t('formErrors') + t('listOfFormErrors')}
-                    errorMessage={modifiedStepperList
-                        .filter((section) => section.error)
-                        .map((section, index) => (
-                            <StepperSectionErrorBlock key={`${section.id}-${index}`} section={section} />
-                        ))}
+            <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
+                <Stepper
+                    subtitleTitle=""
+                    stepperList={stepperList}
+                    handleSectionOpen={handleSectionOpen}
+                    openOrCloseAllSections={openOrCloseAllSections}
                 />
-            )}
-
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                <Stepper subtitleTitle="" stepperList={modifiedStepperList} />
                 <SubmitWithFeedback
                     className={styles.buttonGroup}
                     additionalButtons={[

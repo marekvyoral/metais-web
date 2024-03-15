@@ -98,22 +98,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
         return getModifiedCiTypeData(ciTypeData, CI_TYPE_DATA_TRAINING_BLACK_LIST)
     }, [ciTypeData])
 
-    const attProfiles = useMemo(() => modifiedCiTypeData?.attributeProfiles?.map((profile) => profile) ?? [], [modifiedCiTypeData?.attributeProfiles])
-    const attProfileTechNames = attProfiles.map((profile) => profile.technicalName)
-    const mappedProfileTechNames: Record<string, boolean> = attProfileTechNames.reduce<Record<string, boolean>>((accumulator, attributeName) => {
-        if (attributeName != null) {
-            accumulator[attributeName] = false
-        }
-        return accumulator
-    }, {})
-
     const attributes = useMemo(() => getValidAndVisibleAttributes(modifiedCiTypeData), [modifiedCiTypeData])
-
-    const sectionErrorDefaultConfig: { [x: string]: boolean } = {
-        [Gen_Profil]: false,
-        ...mappedProfileTechNames,
-    }
-    const [, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
 
     const defaultValuesFromSchema = useMemo(() => {
         return attributes.reduce((acc, att) => {
@@ -245,7 +230,6 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
                             <CreateEntitySection
                                 sectionId={Gen_Profil}
                                 attributes={attributes}
-                                setSectionError={setSectionError}
                                 constraintsData={constraintsData}
                                 unitsData={unitsData}
                                 generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
