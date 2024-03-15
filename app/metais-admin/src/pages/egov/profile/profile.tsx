@@ -37,7 +37,7 @@ const Profiles = () => {
                             >
                                 <FlexColumnReverseWrapper>
                                     <TextHeading size={'L'}>{t('egov.routing.profileList')}</TextHeading>
-                                    {(props.isError || invalidateEntity.isError || validateEntity.isError) && <QueryFeedback error loading={false} />}
+                                    <QueryFeedback error={props.isError || invalidateEntity.isError || validateEntity.isError} loading={false} />
                                 </FlexColumnReverseWrapper>
                                 <EntityFilter defaultFilterValues={defaultFilterValues} />
                                 <EgovTable

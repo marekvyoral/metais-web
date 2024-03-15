@@ -62,15 +62,18 @@ export const PublicAuthoritiesHierarchyView: React.FC<IPublicAuthoritiesHierarch
                                 (expandableRowIdLoading === row.original.uuid ? (
                                     <img className={styles.spinner} src={CircleLoadingArrowIcon} alt={t('loading.subitems')} />
                                 ) : (
-                                    <TransparentButtonWrapper onClick={() => handleExpandClick(row)}>
+                                    <TransparentButtonWrapper
+                                        onClick={() => handleExpandClick(row)}
+                                        aria-label={
+                                            isExpanded
+                                                ? t('publicAuthorities.collapse', { rowName: row.original.name })
+                                                : t('publicAuthorities.expand', { rowName: row.original.name })
+                                        }
+                                    >
                                         <img
                                             src={PaginatorRightArrowIcon}
                                             className={classNames([styles.expandIcon, isExpanded ? styles.rotate90 : styles.rotate0])}
-                                            alt={
-                                                isExpanded
-                                                    ? t('publicAuthorities.collapse', { rowName: row.original.name })
-                                                    : t('publicAuthorities.expand', { rowName: row.original.name })
-                                            }
+                                            alt=""
                                         />
                                     </TransparentButtonWrapper>
                                 ))}

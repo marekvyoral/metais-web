@@ -118,8 +118,9 @@ export const RefRegisterItemViewItemLazySelects = ({
                                 onClick={() => {
                                     removeElementFromFormValues(val)
                                 }}
+                                aria-label={t('close')}
                             >
-                                <img src={CloseIcon} alt={t('close')} className={styles.closeButton} />
+                                <img src={CloseIcon} alt="" className={styles.closeButton} />
                             </TransparentButtonWrapper>
                             <span>{[val?.sourceIsvsMetaisCode, val?.sourceIsvsName, `(${val?.sourceRegistratorName})`]?.join(' ')}</span>
                         </div>

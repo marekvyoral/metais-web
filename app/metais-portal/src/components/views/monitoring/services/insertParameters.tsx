@@ -156,7 +156,7 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
     return (
         <MainContentWrapper>
             <QueryFeedback loading={isLoading} error={isError} withChildren>
-                <MutationFeedback success={isSuccess} successMessage={t('mutationFeedback.monitoringInsert')} />
+                <MutationFeedback success={isSuccess} successMessage={t('insertMonitoring.feedbackSuccess')} />
                 <FlexColumnReverseWrapper>
                     <TextHeading size="L">{t('titles.monitoringInsert')}</TextHeading>
                 </FlexColumnReverseWrapper>
@@ -278,8 +278,9 @@ export const InsertParametersView: React.FC<IInsertMonitoringView> = ({ isLoadin
                                             onClick={() => {
                                                 removeParam(param?.id)
                                             }}
+                                            aria-label={t('insertMonitoring.buttonRemoveRow', { parameterType: param.name })}
                                         >
-                                            <img src={ImportDeleteIcon} className={styles.clickable} />
+                                            <img src={ImportDeleteIcon} className={styles.clickable} alt="" />
                                         </TransparentButtonWrapper>
 
                                         <input

@@ -314,8 +314,11 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             cell: (ctx) => {
                 const rowObject = ctx.getValue() as CodelistsTableColumnsDefinition
                 return (
-                    <TransparentButtonWrapper onClick={() => navigate('./' + rowObject.code)}>
-                        <img src={ListIcon} className={styles.iconList} alt={t('codelists.link', { itemName: rowObject.name })} />
+                    <TransparentButtonWrapper
+                        onClick={() => navigate('./' + rowObject.code)}
+                        aria-label={t('codelists.link', { itemName: rowObject.name })}
+                    >
+                        <img src={ListIcon} className={styles.iconList} alt="" />
                     </TransparentButtonWrapper>
                 )
             },

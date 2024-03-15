@@ -64,7 +64,7 @@ export const EkoCreateView = ({ data, mutate, editData, isError, isLoading }: IE
                         })
                     }
                 />
-                {isError && <QueryFeedback error loading={false} />}
+                <QueryFeedback error={isError} loading={false} />
             </FlexColumnReverseWrapper>
 
             {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}

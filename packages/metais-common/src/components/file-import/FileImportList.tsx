@@ -80,13 +80,9 @@ export const FileImportList: React.FC<IFileImportList> = ({
                                     handleRemoveFile(file.id)
                                     removeGeneralErrorMessages()
                                 }}
+                                aria-label={t('upload.deleteItem', { itemName: file.name })}
                             >
-                                <img
-                                    src={ImportDeleteIcon}
-                                    className={styles.clickable}
-                                    hidden={isUploaded(file)}
-                                    alt={t('upload.deleteItem', { itemName: file.name })}
-                                />
+                                <img src={ImportDeleteIcon} className={styles.clickable} hidden={isUploaded(file)} alt="" />
                             </TransparentButtonWrapper>
                         </div>
                     </li>

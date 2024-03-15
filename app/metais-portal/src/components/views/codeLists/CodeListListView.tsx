@@ -353,7 +353,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                                 errorMessage={t('userProfile.notifications.feedback.error')}
                                 onMessageClose={() => resetState()}
                             />
-                            {isError && <QueryFeedback error loading={false} />}
+                            <QueryFeedback error={isError} loading={false} />
                             <MutationFeedback success={isExternalSuccess} />
                         </div>
                     </FlexColumnReverseWrapper>

@@ -288,7 +288,7 @@ export const RefIdentifierCreateView: React.FC<RefIdentifierCreateViewPropsType>
                         }}
                         withChildren
                     >
-                        {isError && <QueryFeedback error loading={false} />}
+                        <QueryFeedback error={isError} loading={false} />
                         <TextHeading size="XL">{isUpdate ? t('refIdentifiers.create.editTitle') : t('refIdentifiers.create.title')}</TextHeading>
                         <Stepper
                             subtitleTitle=""

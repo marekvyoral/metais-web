@@ -57,7 +57,7 @@ export const TaskDetailView: React.FC<ITaskDetailView> = ({
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
                         <TextHeading size="L">{task?.name}</TextHeading>
-                        {isError && <QueryFeedback loading={false} error={isError} />}
+                        <QueryFeedback loading={false} error={isError} />
                     </FlexColumnReverseWrapper>
                     {task?.state !== TaskState.DONE ? (
                         <>

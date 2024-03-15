@@ -130,12 +130,12 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                 <React.Fragment key={index}>
                     {isTextarea && (
                         <div className={styles.inputWithCloseIconDivTextarea}>
-                            <TransparentButtonWrapper onClick={() => handleDeleteInput(index)} type="button">
-                                <img
-                                    src={CloseIcon}
-                                    alt={t('arrayInput.deleteRow', { itemName: getRowItemLabel(index) })}
-                                    className={styles.cancelRowIcon}
-                                />
+                            <TransparentButtonWrapper
+                                onClick={() => handleDeleteInput(index)}
+                                type="button"
+                                aria-label={t('arrayInput.deleteRow', { itemName: getRowItemLabel(index) })}
+                            >
+                                <img src={CloseIcon} alt="" className={styles.cancelRowIcon} />
                             </TransparentButtonWrapper>
                             <TextArea
                                 name={`${id}${index}`}
@@ -152,12 +152,12 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                     )}
                     {!isTextarea && (
                         <div className={styles.inputWithCloseIconDivInput}>
-                            <TransparentButtonWrapper onClick={() => handleDeleteInput(index)} type="button">
-                                <img
-                                    src={CloseIcon}
-                                    alt={t('arrayInput.deleteRow', { itemName: getRowItemLabel(index) })}
-                                    className={styles.cancelRowIcon}
-                                />
+                            <TransparentButtonWrapper
+                                onClick={() => handleDeleteInput(index)}
+                                type="button"
+                                aria-label={t('arrayInput.deleteRow', { itemName: getRowItemLabel(index) })}
+                            >
+                                <img src={CloseIcon} alt="" className={styles.cancelRowIcon} />
                             </TransparentButtonWrapper>
                             <Input
                                 name={`${id}${index}`}

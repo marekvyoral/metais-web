@@ -195,7 +195,7 @@ export const CreateAndEditIntegrationLinkView: React.FC<ICreateIntegrationLinkCo
 
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('ciType.createEntity', { entityName: ciTypeData?.name })}</TextHeading>
-                {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
+                <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
             </FlexColumnReverseWrapper>
 
             <IntegrationLinkFormBody {...props} onSubmit={onSubmit} />

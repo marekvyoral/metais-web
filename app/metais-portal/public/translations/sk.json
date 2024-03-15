@@ -2845,7 +2845,9 @@
         "buttonInsertParam": "Pridať parametre",
         "buttonInsertDescParam": "Vkladané hodnoty parametrov budú platné pre všetky vybrané služby.",
         "buttonInsertParamValue": "Pridať hodnoty parametrov",
-        "buttonSendForm": "Odoslať"
+        "buttonSendForm": "Odoslať",
+        "buttonRemoveRow": "Odstrániť typ parametra {{parameterType}}",
+        "feedbackSuccess": "Monitorovacie parametre boli úspešne vložené"
     },
     "upload": {
         "success": "Dokument bol úspešne pridaný",

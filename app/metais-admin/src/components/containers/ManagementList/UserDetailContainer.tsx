@@ -47,7 +47,9 @@ export const UserDetailContainer: React.FC<IUserDetailContainer> = ({ userId, Vi
     const isFetching = [isUserDataFetching, isRolesFetching && !passwordChange, isUserOrganizationsFetching && !passwordChange].some((item) => item)
     const isError = [isUserDataError, isRolesError, isUserOrganizationsError].some((item) => item)
 
-    if (!userId) return <QueryFeedback loading={false} error errorProps={{ errorMessage: t('managementList.noUserId') }} />
-
-    return <View data={{ userData, userRelatedRoles, userOrganizations }} isLoading={isLoading || isFetching} isError={isError} />
+    return (
+        <QueryFeedback loading={false} error={!userId} errorProps={{ errorMessage: t('managementList.noUserId') }}>
+            <View data={{ userData, userRelatedRoles, userOrganizations }} isLoading={isLoading || isFetching} isError={isError} />
+        </QueryFeedback>
+    )
 }

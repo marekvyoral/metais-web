@@ -156,13 +156,19 @@ export const buildColumns = (
             cell: ({ row }) =>
                 row.original.roleName !== KSISVS_ROLES.STD_KSPRE &&
                 (row.original.roleName !== GROUP_ROLES.STD_PSPRE ? (
-                    <TransparentButtonWrapper onClick={() => setIdentityToDelete(row.original.uuid)}>
-                        <img src={DeleteForeverRed} height={24} alt={t('delete', { subject: row.original.lastName_firstName })} />
+                    <TransparentButtonWrapper
+                        onClick={() => setIdentityToDelete(row.original.uuid)}
+                        aria-label={t('delete', { subject: row.original.lastName_firstName })}
+                    >
+                        <img src={DeleteForeverRed} height={24} alt="" />
                     </TransparentButtonWrapper>
                 ) : (
                     <Can I={Actions.EDIT} a={GroupPermissionSubject.GROUP_MASTER}>
-                        <TransparentButtonWrapper onClick={() => setIdentityToDelete(row.original.uuid)}>
-                            <img src={DeleteForeverRed} height={24} alt={t('delete', { subject: row.original.lastName_firstName })} />
+                        <TransparentButtonWrapper
+                            onClick={() => setIdentityToDelete(row.original.uuid)}
+                            aria-label={t('delete', { subject: row.original.lastName_firstName })}
+                        >
+                            <img src={DeleteForeverRed} height={24} alt="" />
                         </TransparentButtonWrapper>
                     </Can>
                 )),

@@ -276,7 +276,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                         ? t('ciType.createEntity', { entityName: t('ITVSExceptions.vynimky_ITVS') })
                         : t('ciType.editEntity', { entityName: t('ITVSExceptions.vynimky_ITVS') })}
                 </TextHeading>
-                {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
+                <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
             </FlexColumnReverseWrapper>
             <div ref={mutationRef}>
                 <MutationFeedback error={storeConfigurationItem.isError} errorMessage={t('createEntity.mutationError')} />

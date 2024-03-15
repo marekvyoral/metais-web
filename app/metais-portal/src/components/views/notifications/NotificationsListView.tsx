@@ -66,7 +66,7 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                 <QueryFeedback loading={isLoading || isMutateLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
                         <TextHeading size="XL">{t('notifications.notifications')}</TextHeading>
-                        {isError && <QueryFeedback loading={false} error={isError} />}
+                        <QueryFeedback loading={false} error={isError} />
                         <MutationFeedback
                             success={isMutateDeleteSuccess || isSetAllAsReadSuccess}
                             error={isMutateError}
