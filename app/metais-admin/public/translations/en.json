@@ -635,7 +635,6 @@
             "financeManagement": "Financial limits of the approval process"
         },
         "documentsManagement": "Documents",
-        "templateReferenceIdentifiersManagement": "Management of referenceable identifier templates",
         "publicAuthorities": {
             "management": "Public authorities management",
             "publicAuthorities": "Public authorities",
@@ -1369,9 +1368,6 @@
             "approvalProcessName": "Approval process name",
             "more": "More"
         }
-    },
-    "templateReferenceIdentifiers": {
-        "heading": "Template reference identifiers"
     },
     "titles": {
         "mainPage": "MetaIS Admin"
