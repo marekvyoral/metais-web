@@ -1,5 +1,5 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { Input, MultiSelect, RadioButton, RadioGroupWithLabel } from '@isdd/idsk-ui-kit/index'
+import { Input, MultiSelect, RadioButton, RadioGroup } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -44,7 +44,7 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
                 <div>
                     <Input label={t(`filter.${PO}.name`)} placeholder={t(`filter.namePlaceholder`)} {...register(ATTRIBUTE_NAME.Gen_Profil_nazov)} />
                     <Input label={t('filter.metaisCode.label')} placeholder={codePrefix} {...register('Gen_Profil_kod_metais')} />
-                    <RadioGroupWithLabel label={t('filter.PO.itIsChapter')} className="govuk-radios--small" inline>
+                    <RadioGroup label={t('filter.PO.itIsChapter')} small inline>
                         <RadioButton
                             id={'itIsChapter.yes'}
                             value={'true'}
@@ -57,7 +57,7 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
                             label={t('radioButton.no')}
                             {...register(ATTRIBUTE_NAME.EA_Profil_PO_je_kapitola)}
                         />
-                    </RadioGroupWithLabel>
+                    </RadioGroup>
                     <SelectPersonCategory filter={filter} setValue={setValue} />
                     <MultiSelect
                         label={t('filter.PO.evidenceStatus')}

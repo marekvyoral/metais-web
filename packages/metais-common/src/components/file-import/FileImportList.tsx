@@ -21,6 +21,7 @@ interface IFileImportList {
     removeGeneralErrorMessages: () => void
     uploadFilesStatus: UploadingFilesStatus
     generalErrorMessages: string[]
+    textSize?: 'S' | 'L'
 }
 
 export const FileImportList: React.FC<IFileImportList> = ({
@@ -29,6 +30,7 @@ export const FileImportList: React.FC<IFileImportList> = ({
     removeGeneralErrorMessages,
     uploadFilesStatus,
     generalErrorMessages,
+    textSize,
 }) => {
     const { t } = useTranslation()
     const hasError = (file: UppyFile) => {
@@ -68,7 +70,7 @@ export const FileImportList: React.FC<IFileImportList> = ({
                             <div className={styles.fileErrorWrapper}>
                                 <TextBody size="S">{uploadFilesStatus.find((ufs) => ufs.fileId == file.id)?.uploadError}</TextBody>
                             </div>
-                            <TextBody size="S">{`${file.name} (${formatBytes(file.size)})`}</TextBody>
+                            <TextBody size={textSize ?? 'S'}>{`${file.name} (${formatBytes(file.size)})`}</TextBody>
                         </div>
                         <div>
                             {hasError(file) && <img src={ErrorTriangleIcon} alt={t('upload.itemError', { itemName: file.name })} />}

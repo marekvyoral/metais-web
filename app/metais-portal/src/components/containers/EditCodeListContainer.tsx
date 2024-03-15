@@ -22,12 +22,12 @@ import { Roles } from '@isdd/metais-common/api'
 import { getOrgIdFromGid, getRoleUuidFromGid } from '@isdd/metais-common/utils/utils'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCodeListWorkingLanguage } from '@isdd/metais-common/contexts/codeListWorkingLanguage/codeListWorkingLanguageContext'
+import { ErrorTranslateKeyType, getErrorTranslateKeys } from '@isdd/metais-common/src/utils/errorMapper'
 
 import { getAllWorkingLanguages } from '@/components/views/codeLists/CodeListDetailUtils'
 import { CodeListPermissionsWrapper } from '@/components/permissions/CodeListPermissionsWrapper'
 import { IEditCodeListForm, mapEditFormDataToCodeList, mapFormToContactData } from '@/componentHelpers'
 import { IOption } from '@/components/views/codeLists/CodeListEditView'
-import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 import { getRoleUUID } from '@/componentHelpers/requests'
 
 export interface CodeListDetailData {
@@ -44,7 +44,7 @@ export interface EditCodeListContainerViewProps {
     isLoading: boolean
     isLoadingMutation: boolean
     isError: boolean
-    errorMessages: string[]
+    errorMessages: ErrorTranslateKeyType[]
     handleSave: (formData: IEditCodeListForm) => Promise<void>
     loadOptions: (
         searchQuery: string,

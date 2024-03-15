@@ -71,7 +71,8 @@ export const UserPasswordChangePage = () => {
             {isLoading && <LoadingIndicator />}
             <MutationFeedback
                 success={isSuccess}
-                error={error}
+                error={!!error}
+                errorMessage={error}
                 successMessage={t('feedback.passwordChanged')}
                 onMessageClose={() => setIsSuccess(false)}
             />

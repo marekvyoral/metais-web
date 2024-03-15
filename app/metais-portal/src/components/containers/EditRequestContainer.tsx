@@ -10,24 +10,24 @@ import {
     useSaveAndSendCodelist,
     useSaveDates,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { RequestListState } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { getErrorTranslateKeys } from '@isdd/metais-common/src/utils/errorMapper'
+import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { RequestListState } from '@isdd/metais-common/constants'
-import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { formatDateForDefaultValue } from '@isdd/metais-common/index'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
-import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
-import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
 
-import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
+import { IRequestForm, getRoleUUID, mapFormToSave, mapToForm } from '@/componentHelpers/requests'
 import { CreateRequestViewProps } from '@/components/containers/CreateRequestContainer'
+import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { IItemDates } from '@/components/views/requestLists/components/modalItem/DateModalItem'
 import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
-import { IRequestForm, getRoleUUID, mapFormToSave, mapToForm } from '@/componentHelpers/requests'
-import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 interface EditRequestContainerProps {
     View: React.FC<CreateRequestViewProps>
@@ -203,6 +203,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     const errorMessages = getErrorTranslateKeys(
         [errorAddOrGetGroup, errorDetail, errorSend, errorSave, errorSaveDates].map((item) => item as { message: string }),
     )
+
     const errorMessageSetDates = getErrorTranslateKeys([errorItemAction].map((item) => item as { message: string })).pop()
     const canEdit =
         data &&

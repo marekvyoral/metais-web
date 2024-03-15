@@ -1,13 +1,15 @@
 import { mapFilterToExecuteParams } from '@isdd/metais-common/componentHelpers'
 import { ReportExportButton } from '@isdd/metais-common/components/actions-over-table'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { DEFAULT_PAGESIZE_OPTIONS, REPORTS } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, HowTo, REPORTS } from '@isdd/metais-common/constants'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { getHowToTranslate } from '@isdd/metais-common/utils/utils'
 
 import { ReportsDetailContainer } from '@/components/containers/ReportsDetailContainer'
 import { ReportTable } from '@/components/views/reports/ReportTable'
@@ -30,6 +32,7 @@ export const ReportsDetailPage: React.FC = () => {
                             withWidthContainer
                             links={[
                                 { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                                { label: getHowToTranslate(HowTo.MONITORING_HOWTO, t), href: RouteNames.HOW_TO_MONITORING },
                                 { label: t('reports.heading') ?? '', href: `/ci/${REPORTS}` },
                             ]}
                         />
@@ -41,7 +44,8 @@ export const ReportsDetailPage: React.FC = () => {
                                     <MutationFeedback
                                         success={!!props?.reportResult}
                                         successMessage={t('mutationFeedback.runMutationSuccess')}
-                                        error={props.isError ? <>{t('mutationFeedback.runMutationError')}</> : undefined}
+                                        error={props.isError}
+                                        errorMessage={t('mutationFeedback.runMutationError')}
                                     />
                                 </FlexColumnReverseWrapper>
                                 <ReportsCard data={props.data} />

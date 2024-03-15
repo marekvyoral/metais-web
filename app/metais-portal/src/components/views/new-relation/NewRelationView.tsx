@@ -282,7 +282,7 @@ export const NewRelationView: React.FC<Props> = ({
                     {t('breadcrumbs.newRelation', { itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })}
                 </TextHeading>
 
-                <ElementToScrollTo isVisible={isError || storeGraph.isError || isRequestStatusError || isProcessedError || isTooManyFetchesError}>
+                <ElementToScrollTo trigger={isError || storeGraph.isError || isRequestStatusError || isProcessedError || isTooManyFetchesError}>
                     <QueryFeedback loading={false} error />
                 </ElementToScrollTo>
             </FlexColumnReverseWrapper>

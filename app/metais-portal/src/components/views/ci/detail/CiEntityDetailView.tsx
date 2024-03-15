@@ -58,19 +58,17 @@ export const CiEntityDetailView: FC<Props> = ({ isLoading, isError, entityName, 
                     refetchCi={ciItemDataRefetch}
                 />
                 <QueryFeedback loading={false} error={isError || isAbilityError} />
-                <ElementToScrollTo isVisible={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}>
+                <ElementToScrollTo trigger={isActionSuccess.additionalInfo?.type !== 'relationCreated'}>
                     <MutationFeedback
-                        error={false}
-                        success={isActionSuccess.value}
+                        success={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}
                         successMessage={
                             isActionSuccess.additionalInfo?.type === 'create'
                                 ? t('mutationFeedback.successfulCreated')
                                 : t('mutationFeedback.successfulUpdated')
                         }
+                        error={!isActionSuccess.value && isActionSuccess.additionalInfo?.type === 'createRelationError'}
+                        errorMessage={t('ciType.messages.errorRelationsCreation')}
                     />
-                </ElementToScrollTo>
-                <ElementToScrollTo isVisible={!isActionSuccess.value && isActionSuccess.additionalInfo?.type === 'createRelationError'}>
-                    <MutationFeedback error={t('ciType.messages.errorRelationsCreation')} success={isActionSuccess.value} />
                 </ElementToScrollTo>
             </FlexColumnReverseWrapper>
 

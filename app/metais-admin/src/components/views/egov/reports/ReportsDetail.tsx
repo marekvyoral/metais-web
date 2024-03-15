@@ -28,8 +28,8 @@ interface IReportsDetail {
     saveIsLoading: boolean
     isSaveError?: boolean
     mutationIsLoading: boolean
+    isMutationError?: boolean
     runMutationIsSuccess: boolean
-    mutationError: { message: string }
 }
 
 export interface IReportFormData {
@@ -78,7 +78,7 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
     runReport,
     saveIsLoading,
     mutationIsLoading,
-    mutationError,
+    isMutationError,
     isSaveError,
     runMutationIsSuccess,
     categories,
@@ -159,7 +159,8 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
                 <MutationFeedback
                     success={runMutationIsSuccess}
                     successMessage={t('mutationFeedback.runMutationSuccess')}
-                    error={mutationError ? <>{t('mutationFeedback.runMutationError')}</> : undefined}
+                    error={isMutationError}
+                    errorMessage={t('mutationFeedback.runMutationError')}
                 />
                 <div className={styles.submitArea}>
                     {mutationIsLoading && <LoadingIndicator label={t('feedback.executingScript')} />}
@@ -198,7 +199,7 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
                 ))}
                 <Button label={t('report.detail.addParameter')} onClick={addNewParameter} className={styles.addConnection} />
                 <SubmitWithFeedback submitButtonLabel={t('report.detail.save')} loading={saveIsLoading} />
-                <MutationFeedback error={isSaveError ? <>{t('feedback.mutationErrorMessage')}</> : undefined} success={false} showSupportEmail />
+                <MutationFeedback error={isSaveError} />
                 {saveIsLoading && <LoadingIndicator label={t('feedback.saving')} />}
             </div>
         </form>

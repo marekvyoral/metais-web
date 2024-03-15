@@ -96,7 +96,6 @@ export const Filter = <T extends FieldValues & IFilterParams>({
         <div id="tableFilter" data-module="idsk-table-filter" className={classNames('idsk-table-filter', styles.filter)}>
             <div className={classNames('idsk-table-filter__panel idsk-table-filter__inputs', { 'idsk-table-filter--expanded': isOpen })}>
                 <MutationFeedback
-                    error={false}
                     success={showCleared}
                     successMessage={t('filter.cleared')}
                     onMessageClose={() => {

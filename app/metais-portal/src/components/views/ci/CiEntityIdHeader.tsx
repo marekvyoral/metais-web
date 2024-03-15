@@ -68,17 +68,14 @@ export const CiEntityIdHeader: React.FC<Props> = ({
 
     return (
         <>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage}
-                        showSupportEmail
-                        error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
-                        onMessageClose={() => setBulkActionResult(undefined)}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess}
+                    successMessage={bulkActionResult?.successMessage}
+                    error={bulkActionResult?.isError}
+                    onMessageClose={() => setBulkActionResult(undefined)}
+                />
+            </div>
             <div className={styles.headerDiv}>
                 {isBulkLoading && <LoadingIndicator fullscreen />}
                 <TextHeading size="XL" className={classNames({ [styles.invalidated]: isInvalidated })}>

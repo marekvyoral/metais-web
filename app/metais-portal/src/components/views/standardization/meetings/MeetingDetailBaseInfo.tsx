@@ -254,7 +254,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
 
     return (
         <>
-            <MutationFeedback success={isActionSuccess.value} error={false} />
+            <MutationFeedback success={isActionSuccess.value} />
             <div ref={wrapperRef} />
             <div className={headerStyles.headerDiv}>
                 <TextHeading size="XL">{infoData?.name}</TextHeading>

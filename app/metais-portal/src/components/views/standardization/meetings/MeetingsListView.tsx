@@ -143,7 +143,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
 
     return (
         <>
-            <MutationFeedback success={isActionSuccess.value} error={false} successMessage={t('feedback.mutationCreateSuccessMessage')} />
+            <MutationFeedback success={isActionSuccess.value} successMessage={t('feedback.mutationCreateSuccessMessage')} />
             <Filter<MeetingsFilterData>
                 onlyForm
                 defaultFilterValues={defaultFilterValues}
@@ -221,19 +221,18 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
                     pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
                     dataLength: meetings?.length ?? 0,
                 }}
-                createButton={
-                    <Can I={Actions.CREATE} a={Subject.MEETING}>
-                        <CreateEntityButton
-                            label={t('meetings.addNewMeeting')}
-                            onClick={() => navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI_CREATE}`)}
-                        />
-                    </Can>
-                }
                 handleFilterChange={handleFilterChange}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName=""
-            />
+            >
+                <Can I={Actions.CREATE} a={Subject.MEETING}>
+                    <CreateEntityButton
+                        label={t('meetings.addNewMeeting')}
+                        onClick={() => navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI_CREATE}`)}
+                    />
+                </Can>
+            </ActionsOverTable>
 
             <Table
                 columns={columns}

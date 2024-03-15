@@ -71,7 +71,7 @@ export const RequestDetailView: React.FC<IRequestDetailProps> = ({
 
     return (
         <>
-            {(successesMutation || errorMessage) && <MutationFeedback success={successesMutation} error={errorMessage} />}
+            <MutationFeedback success={successesMutation} error={!!errorMessage} errorMessage={errorMessage} />
             <div className={styles.basicInformationSpace}>
                 <TextHeading size="L">{t('requestList.identityDetail')}</TextHeading>
                 <DefinitionList>

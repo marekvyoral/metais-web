@@ -82,14 +82,7 @@ export const ApproveModal: React.FC<IApproveModalProps> = ({ user, uuid, open, o
                             noValidate
                         >
                             <TextHeading size="L">{t('ciType.approve')}</TextHeading>
-                            {isError && (
-                                <MutationFeedback
-                                    error={isError ? t('feedback.mutationErrorMessage') : ''}
-                                    success={false}
-                                    showSupportEmail
-                                    onMessageClose={() => setIsError(false)}
-                                />
-                            )}
+                            <MutationFeedback error={isError} onMessageClose={() => setIsError(false)} />
                             <GridRow>
                                 <GridCol>
                                     <TextArea

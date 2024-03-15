@@ -144,7 +144,6 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
                 <div ref={wrapperRef} />
                 <MutationFeedback
                     success={isActionSuccess.value && isActionSuccess?.additionalInfo?.type == 'edit'}
-                    error={undefined}
                     successMessage={t('mutationFeedback.successfulUpdated')}
                 />
                 <MutationFeedback

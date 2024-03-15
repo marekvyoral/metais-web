@@ -133,15 +133,14 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
             <MainContentWrapper>
                 <FlexColumnReverseWrapper>
                     <TextHeading size="XL">{isEdit ? `${t('groups.editGroup')} - ${infoData?.name}` : t('groups.addNewGroup')}</TextHeading>
-                    {(resultApiCall?.isError || resultApiCall?.isSuccess) && (
-                        <div ref={wrapperRef}>
-                            <MutationFeedback
-                                error={resultApiCall.message}
-                                success={resultApiCall.isSuccess}
-                                onMessageClose={resetResultSuccessApiCall}
-                            />
-                        </div>
-                    )}
+                    <div ref={wrapperRef}>
+                        <MutationFeedback
+                            error={resultApiCall?.isError}
+                            errorMessage={resultApiCall?.message}
+                            success={resultApiCall?.isSuccess}
+                            onMessageClose={resetResultSuccessApiCall}
+                        />
+                    </div>
                 </FlexColumnReverseWrapper>
                 <QueryFeedback
                     loading={isLoading}

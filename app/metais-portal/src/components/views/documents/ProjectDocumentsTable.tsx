@@ -273,7 +273,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         }}
                     />
                 ) : (
-                    (row.getValue() as string) + ' ' + (row.cell.row.original.required && t('input.requiredField'))
+                    (row.getValue() as string) + ' ' + (row.cell.row.original.required ? t('input.requiredField') : '')
                 )
             },
         },
@@ -349,18 +349,15 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
     }, [bulkActionResult, scrollToMutationFeedback])
     return (
         <QueryFeedback loading={isLoading || isBulkLoading || isLocalLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage}
-                        showSupportEmail
-                        error={bulkActionResult?.isError ? bulkActionResult.errorMessage ?? t('feedback.mutationErrorMessage') : ''}
-                        onMessageClose={() => setBulkActionResult(undefined)}
-                    />
-                </div>
-            )}
-
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess}
+                    successMessage={bulkActionResult?.successMessage}
+                    error={bulkActionResult?.isError}
+                    errorMessage={bulkActionResult?.errorMessage}
+                    onMessageClose={() => setBulkActionResult(undefined)}
+                />
+            </div>
             <ActionsOverTable
                 pagination={{
                     pageNumber: page ?? BASE_PAGE_NUMBER,

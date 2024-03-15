@@ -1,13 +1,14 @@
 import { BreadCrumbs, Filter, HomeIcon, IOption, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import React from 'react'
-import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { Trans, useTranslation } from 'react-i18next'
 import { RelationshipUi } from '@isdd/metais-common/api/generated/iam-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, HowTo } from '@isdd/metais-common/constants'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { ActionsOverTable, QueryFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
 import { Link } from 'react-router-dom'
+import { getHowToTranslate } from '@isdd/metais-common/utils/utils'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { RelationshipsFilterData, defaultFilterValues } from '@/components/containers/relation-list/RelationListContainer'
@@ -52,16 +53,18 @@ export const RelationListView: React.FC<IRelationListView> = ({
             header: t('relationshipList.summary'),
             accessorFn: (row) => row,
             cell: (row) => (
-                <Trans
-                    i18nKey="relationshipList.summaryValue"
-                    components={{
-                        strong: <strong />,
-                    }}
-                    values={{
-                        startName: row.row.original.startName,
-                        endName: row.row.original.endName,
-                    }}
-                />
+                <Link to={`/relation/${row.row.original.startType}/${row.row.original.startUuid}/${row.row.original.uuid}`}>
+                    <Trans
+                        i18nKey="relationshipList.summaryValue"
+                        components={{
+                            strong: <strong />,
+                        }}
+                        values={{
+                            startName: row.row.original.startName,
+                            endName: row.row.original.endName,
+                        }}
+                    />
+                </Link>
             ),
             size: 300,
             enableSorting: false,
@@ -83,7 +86,6 @@ export const RelationListView: React.FC<IRelationListView> = ({
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (row) => <Link to={`/ci/${row.row.original.startType}/${row.row.original.startUuid}`}>{row.row.original.startName}</Link>,
             enableSorting: true,
         },
         {
@@ -112,7 +114,6 @@ export const RelationListView: React.FC<IRelationListView> = ({
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (row) => <Link to={`/ci/${row.row.original.endType}/${row.row.original.endUuid}`}>{row.row.original.endName}</Link>,
             enableSorting: true,
         },
         {
@@ -132,11 +133,6 @@ export const RelationListView: React.FC<IRelationListView> = ({
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (row) => (
-                <Link to={`/relation/${row.row.original.startType}/${row.row.original.startUuid}/${row.row.original.uuid}`}>
-                    {row.row.original.type}
-                </Link>
-            ),
             enableSorting: false,
         },
     ]
@@ -147,6 +143,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
                 withWidthContainer
                 links={[
                     { label: t('tasks.home'), href: '/', icon: HomeIcon },
+                    { label: getHowToTranslate(HowTo.EGOV_HOWTO, t), href: RouteNames.HOW_TO_EGOV_COMPONENTS },
                     { label: t('titles.relationsSearch'), href: RouterRoutes.RELATION_LIST },
                 ]}
             />

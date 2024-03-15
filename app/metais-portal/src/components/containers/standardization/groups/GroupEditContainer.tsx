@@ -22,7 +22,7 @@ export interface IGroupForm {
 interface IResultApiCall {
     isSuccess: boolean
     isError: boolean
-    message: React.ReactNode
+    message?: string
 }
 export interface IGroupEditViewParams {
     onSubmit: (formData: FieldValues) => void

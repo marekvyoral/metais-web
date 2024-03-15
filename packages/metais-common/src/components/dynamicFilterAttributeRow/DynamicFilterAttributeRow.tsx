@@ -1,14 +1,14 @@
 import { GroupedOption, SelectWithGroupedOptions, SimpleSelect } from '@isdd/idsk-ui-kit'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import style from './customFilterAttribute.module.scss'
 import { DynamicFilterAttributeInput } from './DynamicFilterAttributeInput'
 
-import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { CustomAttributeType } from '@isdd/metais-common/componentHelpers/filter/findAttributeType'
 import { findAvailableOperators } from '@isdd/metais-common/componentHelpers/filter/findAvailableOperators'
 import { ExtendedAttribute, FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
@@ -53,6 +53,8 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     const language = i18n.language
     const isLangSK = language === Languages.SLOVAK
     const currentAvailableOperators = selectedAttributes.filter((item) => item.name === currentAttribute.name).map((item) => item.operator)
+    const [seed, setSeed] = useState(1)
+
     const operatorsToDisable = findAvailableOperators(
         attributeType,
         attributeConstraints,
@@ -116,11 +118,22 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 options={options}
                 placeholder={t('customAttributeFilter.attribute.placeholder')}
                 onChange={(val) => {
-                    onChange({ ...attribute, name: val?.value }, attribute, true)
+                    onChange(
+                        {
+                            ...attribute,
+                            name: val?.value,
+                            operator: availableOperators.at(0)?.value,
+                            value: undefined,
+                        },
+                        attribute,
+                        true,
+                    )
+                    setSeed(Math.random())
                 }}
                 tabIndex={isFocusable ? undefined : -1}
             />
             <SimpleSelect
+                key={seed}
                 isClearable={false}
                 className={style.rowItem}
                 id={`attribute-operator-${index}`}
@@ -128,6 +141,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 label={t('customAttributeFilter.operator.label')}
                 placeholder={t('customAttributeFilter.operator.placeholder')}
                 options={availableOperators}
+                defaultValue={availableOperators.at(0)?.value}
                 value={attribute.operator}
                 onChange={(val) => onChange({ ...attribute, operator: val }, attribute)}
                 tabIndex={isFocusable ? undefined : -1}

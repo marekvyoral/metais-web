@@ -13,7 +13,13 @@ import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
-import { getDefaultCiEntityTabList, useCiDetailPageTitle, useCiListPageHeading, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import {
+    getCiHowToBreadCrumb,
+    getDefaultCiEntityTabList,
+    useCiDetailPageTitle,
+    useCiListPageHeading,
+    useGetEntityParamsFromUrl,
+} from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { KrisRelatedContainer } from '@/components/containers/KrisRelatedContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
@@ -120,6 +126,8 @@ const KrisEntityDetailPage: React.FC = () => {
                     withWidthContainer
                     links={[
                         { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                        ...getCiHowToBreadCrumb(ENTITY_KRIS, t),
+
                         { label: getHeading(), href: `/ci/${ENTITY_KRIS}` },
                         {
                             label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
@@ -152,17 +160,14 @@ const KrisEntityDetailPage: React.FC = () => {
                                     isEvaluation={evaluationData?.inEvaluation ?? false}
                                 />
                                 <QueryFeedback loading={false} error={isCiItemDataError} />
-                                {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
-                                    <MutationFeedback
-                                        error={false}
-                                        success={isActionSuccess.value}
-                                        successMessage={
-                                            isActionSuccess.additionalInfo?.type === 'create'
-                                                ? t('mutationFeedback.successfulCreated')
-                                                : t('mutationFeedback.successfulUpdated')
-                                        }
-                                    />
-                                )}
+                                <MutationFeedback
+                                    success={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}
+                                    successMessage={
+                                        isActionSuccess.additionalInfo?.type === 'create'
+                                            ? t('mutationFeedback.successfulCreated')
+                                            : t('mutationFeedback.successfulUpdated')
+                                    }
+                                />
                             </FlexColumnReverseWrapper>
 
                             <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />

@@ -89,13 +89,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
             />
 
             <MainContentWrapper>
-                {isSuccess && (
-                    <MutationFeedback
-                        success
-                        error={false}
-                        successMessage={t([additionalInfo?.messageKey ?? '', 'mutationFeedback.successfulUpdated'])}
-                    />
-                )}
+                <MutationFeedback success={isSuccess} successMessage={t([additionalInfo?.messageKey ?? '', 'mutationFeedback.successfulUpdated'])} />
                 <QueryFeedback loading={isLoading || !!isAbilityLoading} error={isError || isAbilityError} withChildren>
                     {ability.can(Actions.SHOW, Subjects.LIST) && (
                         <>

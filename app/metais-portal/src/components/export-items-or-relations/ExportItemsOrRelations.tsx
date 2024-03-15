@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next'
 import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
 import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
-import { RadioButtonGroup } from '@isdd/idsk-ui-kit/radio-button-group/RadioButtonGroup'
 import { ExportIcon } from '@isdd/metais-common/assets/images'
 import { ModalButtons } from '@isdd/metais-common/index'
+import { RadioGroup } from '@isdd/idsk-ui-kit/index'
 
 import styles from './exportItemsOrRelations.module.scss'
 
@@ -35,24 +35,22 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
                     <TextHeading size={'L'} className={styles.heading}>
                         {t('exportItemsOrRelations.header')}
                     </TextHeading>
-                    <div className="govuk-radios--small">
-                        <RadioButtonGroup inline>
-                            <RadioButton
-                                id={'id1'}
-                                name={'RadioButton'}
-                                value={'RadioButton'}
-                                label={t('exportItemsOrRelations.items')}
-                                onChange={() => setExportValue('items')}
-                            />
-                            <RadioButton
-                                id={'id2'}
-                                name={'RadioButton'}
-                                value={'RadioButton'}
-                                label={t('exportItemsOrRelations.relations')}
-                                onChange={() => setExportValue('relations')}
-                            />
-                        </RadioButtonGroup>
-                    </div>
+                    <RadioGroup inline small>
+                        <RadioButton
+                            id={'id1'}
+                            name={'RadioButton'}
+                            value={'RadioButton'}
+                            label={t('exportItemsOrRelations.items')}
+                            onChange={() => setExportValue('items')}
+                        />
+                        <RadioButton
+                            id={'id2'}
+                            name={'RadioButton'}
+                            value={'RadioButton'}
+                            label={t('exportItemsOrRelations.relations')}
+                            onChange={() => setExportValue('relations')}
+                        />
+                    </RadioGroup>
                     <div className={styles.buttonGroup}>
                         <Button
                             label={t('exportItemsOrRelations.buttonRDF')}

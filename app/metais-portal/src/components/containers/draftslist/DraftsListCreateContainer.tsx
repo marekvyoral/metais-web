@@ -52,6 +52,10 @@ export const DraftsListCreateContainer: React.FC<DraftsListFormContainerProps> =
                         handleUploadData()
                     }
                 }, 100)
+                if (data.id) {
+                    setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV + '/' + data.id, additionalInfo: { type: 'create' } })
+                    navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV + '/' + data.id)
+                }
             },
         },
     })
@@ -118,8 +122,8 @@ export const DraftsListCreateContainer: React.FC<DraftsListFormContainerProps> =
 
     const handleUploadSuccess = () => {
         setCreatingFilesLoading(false)
-        setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV, additionalInfo: { type: 'create' } })
-        navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV)
+        setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV + '/' + draftlistId, additionalInfo: { type: 'create' } })
+        navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV + '/' + draftlistId)
     }
 
     return (

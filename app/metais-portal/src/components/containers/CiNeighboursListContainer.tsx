@@ -21,6 +21,7 @@ import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEn
 import { CellContext, ColumnDef, Table as ITable, Row } from '@tanstack/react-table'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { RELATIONSHIP_TYPES_QUERY_KEY } from '@isdd/metais-common/constants'
 
 import { LangWrapper } from '@/components/lang-wrapper/LangWrapper'
 import { getOwnerInformation } from '@/componentHelpers/ci/ciTableHelpers'
@@ -67,7 +68,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         apiType === NeighboursApiType.source,
     )
 
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const [uiFilterState, setUiFilterState] = useState<INeighboursFilter>({
         pageNumber: BASE_PAGE_NUMBER,
@@ -98,7 +99,11 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         defaultTargetRelationshipTabFilter,
     } = useEntityRelationshipTabFilters(entityName ?? '')
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName)
-    const { data: relationData, isLoading: isRelationListLoading, isError: isRelationListError } = useListRelationshipTypes({ filter: {} })
+    const {
+        data: relationData,
+        isLoading: isRelationListLoading,
+        isError: isRelationListError,
+    } = useListRelationshipTypes({ filter: {} }, { query: { queryKey: [RELATIONSHIP_TYPES_QUERY_KEY, i18n.language] } })
     const { isLoading: isLoadingRelated, isError: isErrorRelated, data: relatedTypes } = useListRelatedCiTypesWrapper(entityName)
     const types = useMemo(() => (relatedTypes?.cisAsSources || []).concat(relatedTypes?.cisAsTargets || []), [relatedTypes])
 

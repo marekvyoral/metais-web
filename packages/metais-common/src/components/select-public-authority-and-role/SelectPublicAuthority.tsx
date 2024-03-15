@@ -13,9 +13,10 @@ interface Props {
     onChangeAuthority: (e: HierarchyRightsUi | null) => void
     selectedOrg: HierarchyRightsUi | null
     ciRoles: string[]
+    publicAuthorityLabel?: string
 }
 
-export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, selectedOrg, ciRoles }) => {
+export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, selectedOrg, ciRoles, publicAuthorityLabel }) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -73,7 +74,7 @@ export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, sele
                 getOptionLabel={(item) => item.poName ?? ''}
                 getOptionValue={(item) => item.poUUID ?? ''}
                 loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
-                label={t('createEntity.publicAuthority')}
+                label={publicAuthorityLabel || t('createEntity.publicAuthority')}
                 name="public-authority"
                 onChange={(val: HierarchyRightsUi | MultiValue<HierarchyRightsUi> | null) => onChangeAuthority(Array.isArray(val) ? val[0] : val)}
             />

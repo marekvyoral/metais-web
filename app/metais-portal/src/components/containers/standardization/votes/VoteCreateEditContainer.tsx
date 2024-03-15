@@ -1,12 +1,5 @@
-import { QueryFeedback } from '@isdd/metais-common/index'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { FindAllWithIdentities1Params, useFindAllWithIdentities1 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useTranslation } from 'react-i18next'
-import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { BreadCrumbs, BreadCrumbsItemProps, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { FindAllWithIdentities1Params, useFindAllWithIdentities1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import {
     ApiAttachment,
     ApiVote,
@@ -15,18 +8,26 @@ import {
     useGetVoteDetail,
     useUpdateVote,
 } from '@isdd/metais-common/api/generated/standards-swagger'
-import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useInvalidateVoteCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { getErrorTranslateKey } from '@isdd/metais-common/utils/errorMapper'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-import { IVoteEditView } from '@/components/views/standardization/votes/VoteComposeForm/VoteComposeFormView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { IVoteEditView } from '@/components/views/standardization/votes/VoteComposeForm/VoteComposeFormView'
+import { IExistingFilesHandlerRef } from '@/components/views/standardization/votes/VoteComposeForm/components/ExistingFilesHandler/ExistingFilesHandler'
 import {
     getPageDocumentTitle,
     mapProcessedExistingFilesToApiAttachment,
     mapUploadedFilesToApiAttachment,
 } from '@/components/views/standardization/votes/VoteComposeForm/functions/voteEditFunc'
-import { IExistingFilesHandlerRef } from '@/components/views/standardization/votes/VoteComposeForm/components/ExistingFilesHandler/ExistingFilesHandler'
 
 interface IVoteEditContainer {
     View: React.FC<IVoteEditView>
@@ -77,6 +78,7 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
     const {
         isLoading: isCreateVoteLoading,
         isError: isCreateVoteError,
+        error: createVoteError,
         mutateAsync: createVoteAsyncMutation,
     } = useCreateVote({
         mutation: {
@@ -110,6 +112,7 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
     const {
         isLoading: isUpdateVoteLoading,
         isError: isUpdateVoteError,
+        error: updateVoteError,
         mutateAsync: updateVoteAsyncMutation,
     } = useUpdateVote({
         mutation: {
@@ -144,7 +147,11 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
         isUpdateVoteLoading ||
         creatingFilesLoading ||
         deletingFilesLoading
-    const isError = voteDataError || allStandardRequestsError || groupWithIdentitiesError || isCreateVoteError || isUpdateVoteError
+
+    const isError = voteDataError || allStandardRequestsError || groupWithIdentitiesError
+
+    const isMutationError = isCreateVoteError || isUpdateVoteError
+
     const getLoaderLabel = (): string | undefined => {
         return isCreateVoteLoading || isUpdateVoteLoading ? t('votes.type.callingVote') : undefined
     }
@@ -209,6 +216,8 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
         }
     }, [isError, scrollToMutationFeedback])
 
+    const mutationErrorKey = getErrorTranslateKey(createVoteError || updateVoteError)
+
     return (
         <>
             {isUserLogged && (
@@ -216,6 +225,7 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
                     <BreadCrumbs links={getBreadCrumbLinks(!!isNewVote)} withWidthContainer />
                     <MainContentWrapper>
                         <div ref={queryFeedbackRef} />
+                        <MutationFeedback error={isMutationError} errorMessage={mutationErrorKey && t(mutationErrorKey)} />
                         <QueryFeedback
                             loading={isLoading}
                             error={isError}

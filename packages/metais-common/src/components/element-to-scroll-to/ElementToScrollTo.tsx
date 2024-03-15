@@ -3,16 +3,16 @@ import React, { useEffect } from 'react'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 type Props = {
-    isVisible: boolean
+    trigger: boolean
 }
 
-export const ElementToScrollTo: React.FC<Props & React.PropsWithChildren> = ({ children, isVisible }) => {
+export const ElementToScrollTo: React.FC<Props & React.PropsWithChildren> = ({ children, trigger }) => {
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
     useEffect(() => {
-        if (isVisible) {
+        if (trigger) {
             scrollToMutationFeedback()
         }
-    }, [scrollToMutationFeedback, isVisible])
+    }, [scrollToMutationFeedback, trigger])
 
-    return <>{isVisible && <div ref={wrapperRef}>{children}</div>}</>
+    return <>{<div ref={wrapperRef}>{children}</div>}</>
 }

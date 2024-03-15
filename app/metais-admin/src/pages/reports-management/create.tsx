@@ -36,7 +36,7 @@ const ReportsDetailPage: React.FC = () => {
                                     saveIsLoading={props.saveIsLoading}
                                     mutationIsLoading={props.mutationIsLoading}
                                     runMutationIsSuccess={props.runMutationIsSuccess}
-                                    mutationError={props.mutationError}
+                                    isMutationError={props.isMutationError}
                                     isSaveError={props.isMutationError}
                                 />
                             </>

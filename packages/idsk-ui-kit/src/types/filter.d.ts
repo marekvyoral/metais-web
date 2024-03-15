@@ -19,6 +19,8 @@ export enum SortBy {
     HIERARCHY_FROM_ROOT = 'HIERARCHY_FROM_ROOT',
     GEN_PROFIL_NAZOV = 'Gen_Profil_nazov',
     NAME = 'name',
+    CODE = 'code',
+    LAST_MODIFIED_AT = 'lastModifiedAt',
 }
 
 export enum MetaAttributesState {

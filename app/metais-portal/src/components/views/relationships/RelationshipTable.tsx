@@ -83,15 +83,13 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
 
     return (
         <>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <MutationFeedback
-                    success={bulkActionResult?.isSuccess}
-                    successMessage={bulkActionResult?.successMessage}
-                    showSupportEmail
-                    error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
-                    onMessageClose={() => setBulkActionResult(undefined)}
-                />
-            )}
+            <MutationFeedback
+                success={bulkActionResult?.isSuccess}
+                successMessage={bulkActionResult?.successMessage}
+                error={bulkActionResult?.isError}
+                errorMessage={bulkActionResult?.errorMessage}
+                onMessageClose={() => setBulkActionResult(undefined)}
+            />
             <Filter<RelationFilterData>
                 defaultFilterValues={defaultValues}
                 handleOnSubmit={({ ciType, metaAttributes, relType, fullTextSearch }) => {

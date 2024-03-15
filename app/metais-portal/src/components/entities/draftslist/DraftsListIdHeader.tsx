@@ -2,7 +2,7 @@ import { Button, ButtonGroupRow, ButtonPopup, LoadingIndicator, TextHeading } fr
 import styles from '@isdd/metais-common/components/entity-header/ciEntityHeader.module.scss'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
@@ -15,6 +15,8 @@ import {
 import { MutationFeedback } from '@isdd/metais-common/index'
 import { FieldValues } from 'react-hook-form'
 import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { DraftsListButtonPopupContent } from '@/components/entities/draftslist/DraftsListButtonPopupContent'
 import { DraftsListChangeStateModal } from '@/components/entities/draftslist/DraftsListChangeStateModal'
@@ -32,7 +34,8 @@ export const DraftsListIdHeader: React.FC<Props> = ({ entityId, entityItemName, 
     const location = useLocation()
     const navigate = useNavigate()
     const { invalidateAll: invalidateCodelists } = useInvalidateCodeListCache()
-
+    const { isActionSuccess } = useActionSuccess()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
     const [openChangeStateDialog, setOpenChangeStateDialog] = useState<boolean>(false)
     const [targetState, setTargetState] = useState<StandardDraftsDraftStates>()
     const {
@@ -86,13 +89,19 @@ export const DraftsListIdHeader: React.FC<Props> = ({ entityId, entityItemName, 
         [assignToPS, entityId],
     )
 
+    useEffect(() => {
+        scrollToMutationFeedback()
+    }, [isActionSuccess, scrollToMutationFeedback])
+
     return (
         <>
             <MutationFeedback
-                success={mutationIsSuccess || isSuccess}
-                showSupportEmail
-                error={mutationIsError || isError ? t('feedback.mutationErrorMessage') : undefined}
+                success={mutationIsSuccess || isSuccess || isActionSuccess.value}
+                error={mutationIsError || isError}
+                successMessage={isActionSuccess?.additionalInfo?.type == 'create' ? t('mutationFeedback.successfulCreated') : undefined}
             />
+
+            <div ref={wrapperRef} />
             {(mutationIsLoading || isLoading) && <LoadingIndicator label={t('feedback.saving')} />}
             <div className={styles.headerDiv}>
                 <DraftsListChangeStateModal

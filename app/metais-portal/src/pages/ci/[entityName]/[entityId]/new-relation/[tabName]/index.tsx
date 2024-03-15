@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
 import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
-import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { getCiHowToBreadCrumb, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { NewCiRelationContainer } from '@/components/containers/NewCiRelationContainer'
 import { RelationTypePermissionWrapper } from '@/components/permissions/CreateRelationPermissionWrapper'
@@ -34,6 +34,7 @@ const NewCiRelationPage: React.FC = () => {
                             withWidthContainer
                             links={[
                                 { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                                ...getCiHowToBreadCrumb(entityName ?? '', t),
                                 { label: t('titles.ciList', { ci: ciTypeData?.name }) ?? '', href: `/ci/${entityName}` },
                                 { label: props.ciName ? props.ciName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
                                 {

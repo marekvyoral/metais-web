@@ -263,7 +263,9 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                     onUploadSuccess={handleUploadSuccess}
                     refId={voteId.toString()}
                     refType={RefAttributesRefType.VOTE}
+                    textSize="L"
                 />
+                <Spacer vertical />
 
                 <ExistingFilesHandler
                     existingFiles={

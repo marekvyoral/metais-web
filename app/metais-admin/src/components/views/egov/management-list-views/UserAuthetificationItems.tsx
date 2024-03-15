@@ -105,7 +105,7 @@ export const UserAuthetificationItems: React.FC<Props> = ({ userData }) => {
     return (
         <>
             <TextHeading size="L">{t('managementList.authetificationItemsHeading')}</TextHeading>
-            <MutationFeedback success={isRemoveAuthSuccess} showSupportEmail error={isRemoveAuthError ? t('feedback.mutationErrorMessage') : ''} />
+            <MutationFeedback success={isRemoveAuthSuccess} error={isRemoveAuthError} />
             <Table<IAuthItemTable> columns={authTableColumns} data={authTableData} isLoading={isRemoveAuthLoading} />
         </>
     )

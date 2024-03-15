@@ -179,11 +179,11 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('breadcrumbs.newCiAndRelation', { itemName: ciName })}</TextHeading>
 
-                <ElementToScrollTo isVisible={isError || isProcessedError || isTooManyFetchesError || isRequestStatusError}>
+                <ElementToScrollTo trigger={isError || isProcessedError || isTooManyFetchesError || isRequestStatusError}>
                     <QueryFeedback loading={false} error />
                 </ElementToScrollTo>
-                <ElementToScrollTo isVisible={storeGraph.isError}>
-                    <MutationFeedback success={false} error={t('newRelation.mutationError')} />
+                <ElementToScrollTo trigger={storeGraph.isError}>
+                    <MutationFeedback error={storeGraph.isError} errorMessage={t('newRelation.mutationError')} />
                 </ElementToScrollTo>
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />

@@ -1,16 +1,38 @@
 import { AbilityTuple, MongoAbility, MongoQuery } from '@casl/ability'
-import { Tab } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbsItemProps, Tab } from '@isdd/idsk-ui-kit/index'
 import { ConfigurationItemUi, ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Attribute, AttributeAttributeTypeEnum, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { META_IS_TITLE, ciInformationTab } from '@isdd/metais-common/constants'
+import {
+    ENTITY_ACTIVITY,
+    ENTITY_CIEL,
+    ENTITY_KRIS,
+    ENTITY_PRINCIP,
+    HowTo,
+    META_IS_TITLE,
+    PO_PO,
+    PO_IS,
+    PO_IS_PO,
+    PROGRAM,
+    PROJECT,
+    ciInformationTab,
+    ENTITY_KS,
+    ENTITY_ISVS,
+    ENTITY_INFRA_SLUZBA,
+    ENTITY_AS,
+    WEBOVE_SIDLO,
+    ENTITY_TRAINING,
+    ENTITY_OSOBITNY_POSTUP,
+    PO,
+} from '@isdd/metais-common/constants'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
-import { isFalsyStringValue, replaceDotForUnderscore } from '@isdd/metais-common/utils/utils'
+import { getHowToTranslate, isFalsyStringValue, replaceDotForUnderscore } from '@isdd/metais-common/utils/utils'
 import { TFunction } from 'i18next'
 import { FieldValues } from 'react-hook-form'
 import { Location, Outlet, useLocation, useParams } from 'react-router-dom'
 import { ApiIntegrationHarmonogram } from '@isdd/metais-common/api/generated/provisioning-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { HarmonogramInputNames } from '@/components/views/prov-integration/integration-link/IntegrationHarmonogramView'
 
@@ -267,5 +289,39 @@ export const useCiListPageHeading = (ciName: string, t: TFunction) => {
     return {
         getHeading,
         getTitle,
+    }
+}
+
+export const getCiHowToBreadCrumb = (ciType: string, t: TFunction): BreadCrumbsItemProps[] => {
+    switch (ciType) {
+        case ENTITY_CIEL:
+        case ENTITY_PRINCIP:
+        case ENTITY_KRIS: {
+            return [
+                { label: getHowToTranslate(HowTo.EGOV_HOWTO, t), href: RouteNames.HOW_TO_EGOV_COMPONENTS },
+                { label: getHowToTranslate(HowTo.SPK_HOWTO, t), href: RouteNames.HOW_TO_KRIS_STUDIES_PROJECTS },
+            ]
+        }
+
+        case ENTITY_ACTIVITY:
+        case PROJECT:
+        case PROGRAM:
+        case PO:
+        case PO_IS:
+        case PO_IS_PO:
+        case PO_PO:
+        case ENTITY_KS:
+        case ENTITY_AS:
+        case ENTITY_ISVS:
+        case ENTITY_INFRA_SLUZBA:
+        case WEBOVE_SIDLO:
+        case ENTITY_TRAINING:
+        case ENTITY_OSOBITNY_POSTUP: {
+            return [{ label: getHowToTranslate(HowTo.EGOV_HOWTO, t), href: RouteNames.HOW_TO_EGOV_COMPONENTS }]
+        }
+
+        default: {
+            return []
+        }
     }
 }

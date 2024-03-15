@@ -1,18 +1,50 @@
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/src/types'
 import { FieldValues } from 'react-hook-form'
 
-import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
+import { CiListFilterContainerUi, NeighboursFilterContainerUi, NeighboursFilterUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     ApiChangeStateTargetState,
     GetFOPReferenceRegisters1Muk,
     GetFOPReferenceRegisters1Params,
     GetFOPReferenceRegisters1State,
 } from '@isdd/metais-common/api/generated/reference-registers-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
-import { CiListFilterContainerUi, NeighboursFilterContainerUi, NeighboursFilterUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { GetFOPStandardRequestsRequestChannel } from '@isdd/metais-common/api/generated/standards-swagger'
 import { DEFAULT_PAGESIZE_OPTIONS, FIRST_PAGE_NUMBER } from '@isdd/metais-common/constants'
 import { User } from '@isdd/metais-common/contexts/auth/authContext'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
+
+export interface DraftFilter extends IFilterParams {
+    pageNumber?: number
+    perPage?: number
+    sortBy?: string
+    ascending?: boolean
+    stateCustom?: string
+    state?: string
+    createdBy?: string
+    name?: string
+    workGroupId?: string
+    requestChannel?: GetFOPStandardRequestsRequestChannel
+    fromDate?: string
+    toDate?: string
+    draftName?: string
+}
+
+export interface DraftFilterResponse extends IFilterParams {
+    pageNumber: number
+    perPage: number
+    sortBy?: string
+    ascending?: boolean
+    stateCustom?: string
+    state?: string
+    createdBy?: string
+    name?: string
+    workGroupId?: string
+    requestChannel?: GetFOPStandardRequestsRequestChannel
+    fromDate?: string
+    toDate?: string
+    draftName?: string
+}
 
 export interface INeighboursFilter extends IFilter {
     neighboursFilter?: NeighboursFilterUi
@@ -76,21 +108,35 @@ export const mapFilterToRelationApi = (filter: INeighboursFilter, defaultApiFilt
     }
 }
 
-export const mapFilterToStandardDrafts = (filterParams: FieldValues & IFilterParams & IFilter): GetFOPStandardRequestsParams => {
+export const mapFilterToStandardDrafts = (filterParams: FieldValues & IFilterParams & IFilter): DraftFilterResponse => {
     const { pageNumber, pageSize, sort } = filterParams
 
-    const mappedFilter: GetFOPStandardRequestsParams = {
+    const mappedFilter: DraftFilterResponse = {
         pageNumber: pageNumber ?? BASE_PAGE_NUMBER,
         perPage: pageSize ?? BASE_PAGE_SIZE,
         ascending: sort?.[0]?.sortDirection === SortType.ASC,
         ...(sort?.[0]?.orderBy && { sortBy: sort?.[0]?.orderBy }),
-        ...(filterParams?.createdBy && { createdBy: filterParams?.createdBy }),
         ...(filterParams?.draftName && { draftName: filterParams?.draftName }),
-        ...(filterParams?.state && { state: filterParams?.state }),
-        ...(filterParams?.requestChannel && { requestChannel: filterParams?.requestChannel }),
-        ...(filterParams?.fromDate && { fromDate: filterParams?.fromDate }),
-        ...(filterParams?.toDate && { toDate: filterParams?.toDate }),
-        ...(filterParams?.workGroupId && { workGroupId: filterParams?.workGroupId }),
+    }
+    if (filterParams?.attributeFilters?.createdBy) {
+        mappedFilter.createdBy = filterParams?.attributeFilters?.createdBy.at(0)?.value ?? filterParams?.createdBy
+    }
+
+    if (filterParams?.attributeFilters?.workGroupId) {
+        mappedFilter.workGroupId = filterParams?.attributeFilters?.workGroupId.at(0)?.value ?? filterParams?.workGroupId
+    }
+
+    if (filterParams?.attributeFilters?.stateCustom) {
+        mappedFilter.state = filterParams?.attributeFilters?.stateCustom.at(0)?.value ?? filterParams?.stateCustom
+    }
+    if (filterParams?.attributeFilters?.requestChannel) {
+        mappedFilter.requestChannel = filterParams?.attributeFilters?.requestChannel.at(0)?.value ?? filterParams?.requestChannel
+    }
+    if (filterParams?.attributeFilters?.fromDate) {
+        mappedFilter.fromDate = filterParams?.attributeFilters?.fromDate.at(0)?.value ?? filterParams?.fromDate
+    }
+    if (filterParams?.attributeFilters?.toDate) {
+        mappedFilter.toDate = filterParams?.attributeFilters?.toDate.at(0)?.value ?? filterParams?.toDate
     }
 
     return mappedFilter

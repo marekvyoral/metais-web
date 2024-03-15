@@ -90,19 +90,16 @@ export const SlaContractDetailPage: React.FC = () => {
                                 ciRoles={[]}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError} />
-                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
-                                <div ref={wrapperRef}>
-                                    <MutationFeedback
-                                        error={false}
-                                        success={isActionSuccess.value}
-                                        successMessage={
-                                            isActionSuccess.additionalInfo?.type === 'create'
-                                                ? t('mutationFeedback.successfulCreated')
-                                                : t('mutationFeedback.successfulUpdated')
-                                        }
-                                    />
-                                </div>
-                            )}
+                            <div ref={wrapperRef}>
+                                <MutationFeedback
+                                    success={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}
+                                    successMessage={
+                                        isActionSuccess.additionalInfo?.type === 'create'
+                                            ? t('mutationFeedback.successfulCreated')
+                                            : t('mutationFeedback.successfulUpdated')
+                                    }
+                                />
+                            </div>
                         </FlexColumnReverseWrapper>
 
                         <Tabs tabList={tabList} />

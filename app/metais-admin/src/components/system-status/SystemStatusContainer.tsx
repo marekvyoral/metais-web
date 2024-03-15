@@ -90,7 +90,6 @@ export const SystemStatusContainer: React.FC<ISystemStatusContainer> = ({ View }
         >
             <MutationFeedback
                 success={isSuccessfullySaved || isSuccessfullyDeleted}
-                error={false}
                 successMessage={isSuccessfullyDeleted ? t('mutationFeedback.successfulDeleted') : t('mutationFeedback.successfulUpdated')}
             />
             <View

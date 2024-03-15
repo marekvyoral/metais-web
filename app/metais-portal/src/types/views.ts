@@ -1,3 +1,4 @@
+import { IOption } from '@isdd/idsk-ui-kit/index'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Group } from '@isdd/metais-common/api/generated/iam-swagger'
@@ -15,6 +16,7 @@ export interface IDraftsListTable {
     sort: ColumnSort[]
     isLoading: boolean
     isError: boolean
+    workingGroupOptions?: IOption<string>[]
 }
 
 export interface AttributesData {

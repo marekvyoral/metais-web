@@ -53,16 +53,16 @@ export const RefRegisterListView = ({
         <QueryFeedback loading={isLoading || isBulkLoading} error={isError} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('refRegisters.title')}</TextHeading>
-                {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                    <div ref={wrapperRef}>
-                        <MutationFeedback
-                            success={bulkActionResult?.isSuccess}
-                            successMessage={bulkActionResult?.successMessage}
-                            error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
-                            onMessageClose={() => setBulkActionResult(undefined)}
-                        />
-                    </div>
-                )}
+
+                <div ref={wrapperRef}>
+                    <MutationFeedback
+                        success={bulkActionResult?.isSuccess}
+                        successMessage={bulkActionResult?.successMessage}
+                        error={bulkActionResult?.isError}
+                        errorMessage={bulkActionResult?.errorMessage}
+                        onMessageClose={() => setBulkActionResult(undefined)}
+                    />
+                </div>
             </FlexColumnReverseWrapper>
             <RefRegistersFilter defaultFilterValues={defaultFilterValues} />
             <ActionsOverTable

@@ -159,19 +159,18 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                     />
                 )}
             />
-            {(resultApiCall.isError || resultApiCall.isSuccess) && (
-                <MutationFeedback
-                    error={resultApiCall.message}
-                    success={resultApiCall.isSuccess}
-                    onMessageClose={() =>
-                        setResultApiCall({
-                            isError: false,
-                            isSuccess: false,
-                            message: undefined,
-                        })
-                    }
-                />
-            )}
+            <MutationFeedback
+                error={resultApiCall.isError}
+                errorMessage={resultApiCall.message}
+                success={resultApiCall.isSuccess}
+                onMessageClose={() =>
+                    setResultApiCall({
+                        isError: false,
+                        isSuccess: false,
+                        message: undefined,
+                    })
+                }
+            />
 
             <Table
                 key={'ekoTable'}

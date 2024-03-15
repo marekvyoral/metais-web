@@ -164,15 +164,9 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
 
     return (
         <>
-            {!(isRedirectError || isProcessedError || isRedirectLoading) && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={false}
-                        showSupportEmail
-                        error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback error={storeConfigurationItem.isError} errorMessage={t('createEntity.mutationError')} />
+            </div>
             <QueryFeedback
                 loading={isRedirectLoading}
                 error={isRedirectError || isProcessedError || isTooManyFetchesError}

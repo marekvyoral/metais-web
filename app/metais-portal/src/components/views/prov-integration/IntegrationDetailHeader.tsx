@@ -104,12 +104,11 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
 
     return (
         <>
-            <ElementToScrollTo isVisible={bulkActionResult?.isError || bulkActionResult?.isSuccess || isError || isSuccess}>
+            <ElementToScrollTo trigger={bulkActionResult?.isError || bulkActionResult?.isSuccess || isError || isSuccess}>
                 <MutationFeedback
                     success={bulkActionResult?.isSuccess || isSuccess}
                     successMessage={bulkActionResult?.successMessage}
-                    showSupportEmail
-                    error={bulkActionResult?.isError || isError ? t('feedback.mutationErrorMessage') : ''}
+                    error={bulkActionResult?.isError || isError}
                 />
             </ElementToScrollTo>
             <div className={styles.headerDiv}>

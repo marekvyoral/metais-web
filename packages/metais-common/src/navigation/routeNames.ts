@@ -198,7 +198,6 @@ export enum AdminRouteNames {
     PROJECTS_MANAGEMENT = '/projects',
     PROJECTS_FINANCE_MANAGEMENT = '/projects/finance-management',
     DOCUMENTS_MANAGEMENT = '/projects/documents',
-    TEMPLATE_REFERENCE_IDENTIFIERS = '/template-reference-identifiers',
     TEMPLATES_MANAGEMENT = '/templates-management',
     SYSTEM_STATUS_SETTINGS = '/system-status-settings',
 }
