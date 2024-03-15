@@ -76,22 +76,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     const attProfiles = useMemo(() => ciTypeModified?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeModified?.attributeProfiles])
 
     const genProfilTechName = Gen_Profil
-    const attProfileTechNames = attProfiles.map((profile) => profile.technicalName)
-
-    const mappedProfileTechNames: Record<string, boolean> = attProfileTechNames.reduce<Record<string, boolean>>((accumulator, attributeName) => {
-        if (attributeName != null) {
-            accumulator[attributeName] = false
-        }
-        return accumulator
-    }, {})
-
     const [hasReset, setHasReset] = useState(false)
-    const sectionErrorDefaultConfig: { [x: string]: boolean } = {
-        [genProfilTechName]: false,
-        ...mappedProfileTechNames,
-    }
-
-    const [, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
 
     const [relationSchemaCombinedAttributes, setRelationSchemaCombinedAttributest] = useState<(Attribute | undefined)[]>([])
     useEffect(() => {
@@ -160,7 +145,6 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                         <CreateEntitySection
                             sectionId={genProfilTechName}
                             attributes={ciTypeModified.attributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
-                            setSectionError={setSectionError}
                             constraintsData={constraintsData}
                             generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                             unitsData={unitsData}
@@ -176,7 +160,6 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                 <CreateEntitySection
                                     sectionId={profile.technicalName ?? ''}
                                     attributes={profile.attributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
-                                    setSectionError={setSectionError}
                                     constraintsData={constraintsData}
                                     generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                                     unitsData={unitsData}
