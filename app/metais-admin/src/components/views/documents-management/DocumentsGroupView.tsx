@@ -232,12 +232,14 @@ export const DocumentsGroupView: React.FC<IView> = ({
     const handleUploadData = useCallback(() => {
         fileUploadRef.current?.startUploading()
     }, [])
+
     const fileMetaAttributes = {
         'x-content-uuid': uuidV4(),
         refAttributes: new Blob(
             [
                 JSON.stringify({
-                    refType: 'STANDARD',
+                    refType: 'DOCUMENT_TEMPLATE',
+                    refDocumentTemplateId: documentToAddTemplate?.id,
                 }),
             ],
             { type: 'application/json' },
@@ -367,6 +369,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
                                     setDocumentToAddTemplate(undefined)
                                 })
                             }}
+                            onFileUploadFailed={() => setIsUploading(false)}
                             multiple={false}
                             refType={RefAttributesRefType.CI}
                         />
