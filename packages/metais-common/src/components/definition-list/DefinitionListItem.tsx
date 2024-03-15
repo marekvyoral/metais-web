@@ -21,16 +21,14 @@ export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, 
             {(label || tooltip || hideIcon) && (
                 <GridCol setWidth="one-third">
                     <TextBody className={styles.labelWrapper} lang={lang}>
-                        <dt tabIndex={0} className={classNames('govuk-label', styles.dt)}>
-                            {label}
-                        </dt>
+                        <dt className={classNames('govuk-label', styles.dt)}>{label}</dt>
                         {tooltip && <InfoIconWithText tooltip={tooltip} hideIcon={hideIcon} label={label} />}
                     </TextBody>
                 </GridCol>
             )}
 
             <GridCol setWidth={secColValue ? (label ? 'one-third' : 'one-half') : 'two-thirds'}>
-                <dd tabIndex={0} className={styles.dd}>
+                <dd className={styles.dd}>
                     <TextBody className={classNames({ [styles.valueRed]: valueWarning })} lang={lang}>
                         {value}
                     </TextBody>
@@ -38,7 +36,7 @@ export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, 
             </GridCol>
             {secColValue && (
                 <GridCol setWidth={label ? 'one-third' : 'one-half'}>
-                    <dd tabIndex={0} className={styles.dd}>
+                    <dd className={styles.dd}>
                         <TextBody lang={lang}>{secColValue}</TextBody>
                     </dd>
                 </GridCol>

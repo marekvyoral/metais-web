@@ -30,6 +30,7 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({
     onMouseOut,
     hidden = false,
     id,
+    ...rest
 }) => {
     const { t } = useTranslation()
     const ref = useRef<HTMLButtonElement>(null)
@@ -50,6 +51,7 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({
                     disabled={disabled}
                     ref={ref}
                     id={id}
+                    {...rest}
                 >
                     {icon && <img className={styles.iconInButtonLink} src={icon} alt="" />}
                     {label ?? t('errors.fixLink')}

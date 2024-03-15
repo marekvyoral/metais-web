@@ -101,8 +101,11 @@ export const ExistingFilesHandler = forwardRef<IExistingFilesHandlerRef, IExisti
                                 attachmentsMetaData?.[file.fileId ?? ''].contentLength ?? 0,
                             )})`}</TextBody>
                         </div>
-                        <TransparentButtonWrapper onClick={() => handleRemoveFileFromList(file.fileId)}>
-                            <img src={ImportDeleteIcon} alt={t('fileList.delete', { fileName: file.fileName })} />
+                        <TransparentButtonWrapper
+                            onClick={() => handleRemoveFileFromList(file.fileId)}
+                            aria-label={t('fileList.delete', { fileName: file.fileName })}
+                        >
+                            <img src={ImportDeleteIcon} alt="" />
                         </TransparentButtonWrapper>
                     </li>
                 ))}

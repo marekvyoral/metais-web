@@ -33,6 +33,7 @@ interface ISelectProps<T> {
     isMulti?: boolean
     disabled?: boolean
     onBlur?: React.FocusEventHandler<HTMLInputElement>
+    isSearchable?: boolean
     isClearable?: boolean
     menuPosition?: MenuPosition
     required?: boolean
@@ -57,6 +58,7 @@ export const Select = <T,>({
     disabled,
     onBlur,
     isClearable = true,
+    isSearchable = true,
     menuPosition = 'fixed',
     required,
     tabIndex,
@@ -99,6 +101,7 @@ export const Select = <T,>({
                     isMulti={isMulti}
                     onBlur={onBlur}
                     isClearable={isClearable}
+                    isSearchable={isSearchable}
                     isOptionDisabled={(opt) => !!opt.disabled}
                     onChange={onChange}
                     aria-invalid={!!error}

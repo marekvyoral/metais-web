@@ -44,7 +44,7 @@ const ReportsListPage: React.FC = () => {
                             <QueryFeedback loading={props.isLoading} error={false} withChildren>
                                 <FlexColumnReverseWrapper>
                                     <TextHeading size="XL">{t('reports.heading')}</TextHeading>
-                                    {props.isError && <QueryFeedback loading={false} error={props.isError} />}
+                                    <QueryFeedback loading={false} error={props.isError} />
                                 </FlexColumnReverseWrapper>
                                 <Filter<ReportsFilterData>
                                     defaultFilterValues={defaultFilterValues}

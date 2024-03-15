@@ -1,4 +1,4 @@
-import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, InfoIcon, Input, PaginatorWrapper, Table, TextArea } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, Input, PaginatorWrapper, Table, TextArea } from '@isdd/idsk-ui-kit/index'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
 import { ActionsOverTable, CreateEntityButton, isRowSelected, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -213,14 +213,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                 return (
                     <>
                         <span className={styles.tooltipIcon}>{t('codelists.order')}</span>
-                        {isUserLogged && (
-                            <Tooltip
-                                tooltipContent={() => <img src={InfoIcon} alt={t('codelists.orderDescription')} />}
-                                descriptionElement={t('codelists.tooltipOrder')}
-                                position={'right bottom'}
-                                arrow={false}
-                            />
-                        )}
+                        {isUserLogged && <Tooltip descriptionElement={t('codelists.tooltipOrder')} position={'right bottom'} arrow={false} />}
                     </>
                 )
             },

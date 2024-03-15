@@ -43,7 +43,7 @@ export const HistoryTabView: React.FC<CodeListDetailHistoryViewProps> = ({ data,
 
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
-            {isError && <QueryFeedback error={isError} loading={false} />}
+            <QueryFeedback error={isError} loading={false} />
             <Filter<CodeListDetailHistoryFilterData>
                 heading={t('codeList.filter.title')}
                 defaultFilterValues={defaultFilterValues}

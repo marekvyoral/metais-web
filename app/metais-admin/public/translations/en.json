@@ -439,8 +439,7 @@
         "items": "Items",
         "tooltipOrder": "Drag and drop a row to change the order",
         "codeExist": "The code is incorrect. This code already exists.",
-        "order": "Order",
-        "orderDescription": "Order column description"
+        "order": "Order"
     },
     "filter": {
         "expand": "Expand filter",
@@ -1527,6 +1526,8 @@
         "ownerError": "Can not proceed in creation because you are not an owner of this item."
     },
     "close": "Close",
+    "closeFeedback": "Zatvoriť správu o spätnej väzbe",
+    "dnd": "Item can be dragged and dropped",
     "accessibility": {
         "navigated": "Page changed to {{pageTitle}}"
     },

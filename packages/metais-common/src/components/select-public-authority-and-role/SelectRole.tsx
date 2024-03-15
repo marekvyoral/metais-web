@@ -62,9 +62,12 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
 
     return (
         <>
-            {isRightsForPOLoading && !rightsForPOData && selectedOrg?.poUUID && (
-                <QueryFeedback loading={isRightsForPOLoading} error={false} indicatorProps={{ label: t('selectRole.loading') }} withChildren />
-            )}
+            <QueryFeedback
+                loading={isRightsForPOLoading && !rightsForPOData && !!selectedOrg?.poUUID}
+                error={false}
+                indicatorProps={{ label: t('selectRole.loading') }}
+                withChildren
+            />
             <SimpleSelect
                 key={seed}
                 error={!selectedRole ? t('selectRole.required') : isRightsForPOError ? t('selectRole.error') : ''}

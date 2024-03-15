@@ -64,7 +64,7 @@ export const GlobalSearchView: React.FC<GlobalSearchViewProps> = ({ data, isErro
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
                         <TextHeading size="XL">{t('globalSearch.header', { item: `"${searchParams.get(GlobalSearchParams.SEARCH)}"` })}</TextHeading>
-                        {isError && <QueryFeedback loading={false} error />}
+                        <QueryFeedback loading={false} error={isError} />
                     </FlexColumnReverseWrapper>
                     <ActionsOverTable
                         pagination={{

@@ -95,7 +95,7 @@ export const RelationDetailView = ({
                             />
                         </ButtonGroupRow>
                     </div>
-                    {isError && <QueryFeedback error loading={false} />}
+                    <QueryFeedback error={isError} loading={false} />
                     <MutationFeedback success={isActionSuccess.value} />
                 </FlexColumnReverseWrapper>
                 <BasicInformation data={{ ciTypeData, constraintsData, unitsData }} roles={roles} />

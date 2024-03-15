@@ -21,6 +21,8 @@ export const ExpandableRowCellWrapper = <T,>({ row, children }: ExpandableRowCel
                 display: 'flex',
                 gap: 6,
             }}
+            role="button"
+            aria-label={row.getIsExpanded() ? t('table.expandableCloseItem') : t('table.expandableExpandItem')}
         >
             {row.getCanExpand() && (
                 <div>
@@ -32,7 +34,7 @@ export const ExpandableRowCellWrapper = <T,>({ row, children }: ExpandableRowCel
                             width: '1.1rem',
                             height: '1.1rem',
                         }}
-                        alt={row.getIsExpanded() ? t('table.expandableCloseItem') : t('table.expandableExpandItem')}
+                        alt=""
                     />
                 </div>
             )}

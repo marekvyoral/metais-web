@@ -68,8 +68,8 @@ export const Navbar: React.FC = () => {
                     <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={topMenuWithoutPOAndMonitoring} />
                     {!!currentSystemState?.text && showInfoBar && (
                         <div className={styles.modalContent}>
-                            <button className={styles.closeButton} onClick={() => closeInfoBar()}>
-                                <img src={NavigationCloseIcon} alt={t('close')} />
+                            <button className={styles.closeButton} onClick={() => closeInfoBar()} aria-label={t('close')}>
+                                <img src={NavigationCloseIcon} alt="" />
                             </button>
                             <InformationBar
                                 color={currentSystemState?.systemStateColor?.value}
