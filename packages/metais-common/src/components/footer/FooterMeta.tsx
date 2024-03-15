@@ -31,7 +31,7 @@ export const FooterMeta: React.FC<Props> = ({ metaList }) => {
                 </div>
             </div>
             <div className="govuk-grid-column-one-third idsk-footer-extended-logo-box">
-                <img className="idsk-footer-extended-logo" src="/assets/images/footer-extended-logo.svg" alt={t('footer.MIRRI') ?? ''} />
+                <img className="idsk-footer-extended-logo" src="/assets/images/footer-extended-logo.svg" alt={t('footer.MIRRI')} />
             </div>
             <div className={styles.metaList}>
                 <ul className={classNames('govuk-footer__inline-list', styles.ul)}>

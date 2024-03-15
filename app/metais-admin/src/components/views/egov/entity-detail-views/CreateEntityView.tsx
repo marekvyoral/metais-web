@@ -215,7 +215,7 @@ export const CreateEntityView = ({
                         <TextHeading size="XL">
                             {isEdit ? t(`egov.${type}.editHeader`) + ` - ${data.existingEntityData?.name}` : t(`egov.${type}.createHeader`)}
                         </TextHeading>
-                        {isError && <QueryFeedback error loading={false} />}
+                        <QueryFeedback error={isError} loading={false} />
                         <MutationFeedback
                             success={successedMutation}
                             errorMessage={error?.errorMessage}

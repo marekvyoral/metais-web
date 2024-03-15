@@ -37,7 +37,7 @@ const Relation = () => {
                             >
                                 <FlexColumnReverseWrapper>
                                     <TextHeading size="L">{t('navMenu.egov.relations')}</TextHeading>
-                                    {(props.isError || invalidateEntity.isError || validateEntity.isError) && <QueryFeedback error loading={false} />}
+                                    <QueryFeedback error={props.isError || invalidateEntity.isError || validateEntity.isError} loading={false} />
                                 </FlexColumnReverseWrapper>
                                 <EntityFilter defaultFilterValues={defaultFilterValues} />
                                 <EgovTable

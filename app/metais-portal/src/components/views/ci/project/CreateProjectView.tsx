@@ -32,7 +32,7 @@ export const CreateProjectView: React.FC<Props> = ({ data, entityName, ownerId, 
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('ciType.createEntity', { entityName: data.attributesData.ciTypeData?.name })}</TextHeading>
-                {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
+                <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
             </FlexColumnReverseWrapper>
             <CreateProjectEntity
                 data={{ attributesData: { ...rest, ciTypeData: filteredProjectSchema }, generatedEntityId, ownerId }}

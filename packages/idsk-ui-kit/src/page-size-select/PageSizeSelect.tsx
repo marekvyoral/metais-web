@@ -40,6 +40,7 @@ export const PageSizeSelect: React.FC<Props> = ({ pagingOptions, handlePagingSel
             onChange={(value) => handlePagingSelect && handlePagingSelect(value || '')}
             defaultValue={urlParams.get('pageSize') || currentPreferences.defaultPerPage || defaultPagingOptions[0].value}
             isClearable={false}
+            isSearchable={false}
         />
     )
 }

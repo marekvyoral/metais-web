@@ -2839,7 +2839,9 @@
         "buttonInsertParam": "Insert parameters",
         "buttonInsertDescParam": "Insert param value will be valid for all seleceted services.",
         "buttonInsertParamValue": "Add value of parameters",
-        "buttonSendForm": "Send"
+        "buttonSendForm": "Send",
+        "buttonRemoveRow": "Remove parameter type {{parameterType}}",
+        "feedbackSuccess": "The monitoring parameters have been successfully inserted"
     },
     "upload": {
         "success": "Document has been added successfully",

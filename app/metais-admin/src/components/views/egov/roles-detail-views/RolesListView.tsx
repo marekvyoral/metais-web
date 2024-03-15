@@ -162,8 +162,8 @@ const RoleListView: React.FC<RoleListViewParams> = ({
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
-                        <TextHeading size="XL">{t('adminRolesPage.rolesList')}</TextHeading>
-                        {isError && <QueryFeedback error loading={false} />}
+                        <TextHeading size="XL">{t('adminRolesPage.rolesList')}</TextHeading>\
+                        <QueryFeedback error={isError} loading={false} />
                         <MutationFeedback
                             success={isActionSuccess.value}
                             successMessage={

@@ -51,7 +51,7 @@ export const EditProjectView: React.FC<Props> = ({
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('ciType.editEntity', { entityName: entityName })}</TextHeading>
-                {isError && <QueryFeedback loading={false} error={isError} />}
+                <QueryFeedback loading={false} error={isError} />
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
             <CreateProjectEntity

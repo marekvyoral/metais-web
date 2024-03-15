@@ -24,9 +24,10 @@ export const BulkPopup: React.FC<IBulkPopupProps> = ({ checkedRowItems, label, d
                 buttonClassName="marginBottom0"
                 popupPosition={popupPosition}
                 popupContent={(closePopup) => (
-                    <div className={styles.popupActions} id="bulkActionsList">
+                    <div className={styles.popupActions} id="bulkActionsList" role="list">
                         {items(closePopup)?.map((item) =>
                             cloneElement(item, {
+                                role: 'listitem',
                                 className: styles.buttonLinkWithIcon,
                             }),
                         )}

@@ -112,10 +112,11 @@ export const RequestListView: React.FC<IRequestListView> = ({
                         {listType === RequestListType.REGISTRATION && t('requestList.registrationLitle')}
                         {listType === RequestListType.REQUESTS && t('requestList.title')}
                     </TextHeading>
-                    {isError ||
-                        (isAbilityError && (
-                            <QueryFeedback error loading={false} errorProps={{ errorMessage: t('managementList.containerQueryError') }} />
-                        ))}
+                    <QueryFeedback
+                        error={isError || isAbilityError}
+                        loading={false}
+                        errorProps={{ errorMessage: t('managementList.containerQueryError') }}
+                    />
                 </FlexColumnReverseWrapper>
                 <Filter<IRequestListFilterView>
                     defaultFilterValues={defaultFilterParams}

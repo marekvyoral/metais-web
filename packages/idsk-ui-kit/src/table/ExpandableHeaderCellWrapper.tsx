@@ -16,11 +16,14 @@ export const ExpandableHeaderCellWrapper = <T,>({ table, children }: ExpandableH
     return (
         <div className={styles.expandCheckboxCell}>
             {table.getCanSomeRowsExpand() && (
-                <TransparentButtonWrapper onClick={() => table.getToggleAllRowsExpandedHandler()}>
+                <TransparentButtonWrapper
+                    onClick={() => table.getToggleAllRowsExpandedHandler()}
+                    aria-label={table.getIsAllRowsExpanded() ? t('table.expandableCloseItem') : t('table.expandableExpandItem')}
+                >
                     <img
                         src={PaginatorRightArrowIcon}
                         style={{ cursor: 'pointer', transform: table.getIsAllRowsExpanded() ? 'rotate(90deg)' : 'rotate(0deg)' }}
-                        alt={table.getIsAllRowsExpanded() ? t('table.expandableCloseItem') : t('table.expandableExpandItem')}
+                        alt=""
                     />
                 </TransparentButtonWrapper>
             )}

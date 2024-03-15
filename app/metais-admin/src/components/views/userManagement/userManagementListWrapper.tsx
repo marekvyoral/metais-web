@@ -113,8 +113,8 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
         >
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('userManagement.title')}</TextHeading>
-                {isError && <QueryFeedback loading={false} error errorProps={{ errorMessage: t('userManagement.error.query') }} />}
-                {isErrorExport && <QueryFeedback loading={false} error errorProps={{ errorMessage: t('userManagement.error.export') }} />}
+                <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('userManagement.error.query') }} />
+                <QueryFeedback loading={false} error={isErrorExport} errorProps={{ errorMessage: t('userManagement.error.export') }} />
                 <MutationFeedback success={isMutationSuccess} error={isMutationError} errorMessage={t('userManagement.error.mutation')} />
                 <MutationFeedback success={isSuccess} />
                 <MutationFeedback

@@ -53,7 +53,7 @@ export const RoleEditView: React.FC<IRoleEditViewParams> = ({ currentRole, roleI
                 <QueryFeedback loading={isLoading} error={false}>
                     <FlexColumnReverseWrapper>
                         <TextHeading size="L">{t('adminRolesPage.editRole')}</TextHeading>
-                        {isError && <QueryFeedback error loading={false} />}
+                        <QueryFeedback error={isError} loading={false} />
                     </FlexColumnReverseWrapper>
 
                     {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}

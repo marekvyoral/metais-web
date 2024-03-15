@@ -64,7 +64,7 @@ export const KrisListView: React.FC<ICiListContainerView<KRISFilterType>> = ({
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{ciTypeData?.name}</TextHeading>
-                {isError && <QueryFeedback loading={false} error errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
+                <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
             </FlexColumnReverseWrapper>
 
             <Filter<KRISFilterType>

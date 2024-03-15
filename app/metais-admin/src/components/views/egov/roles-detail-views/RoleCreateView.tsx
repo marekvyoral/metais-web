@@ -40,7 +40,7 @@ export const RoleCreateView: React.FC<ICreateRoleViewParams> = ({ roleGroups, cr
                 <QueryFeedback loading={isLoading} withChildren error={false}>
                     <FlexColumnReverseWrapper>
                         <TextHeading size="L">{t('adminRolesPage.newRole')}</TextHeading>
-                        {isError && <QueryFeedback error loading={false} />}
+                        <QueryFeedback error={isError} loading={false} />
                     </FlexColumnReverseWrapper>
 
                     {methods.formState.isSubmitted && !methods.formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
