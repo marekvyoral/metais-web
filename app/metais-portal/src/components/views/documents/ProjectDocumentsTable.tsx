@@ -273,7 +273,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         }}
                     />
                 ) : (
-                    (row.getValue() as string) + ' ' + (row.cell.row.original.required && t('input.requiredField'))
+                    (row.getValue() as string) + ' ' + (row.cell.row.original.required ? t('input.requiredField') : '')
                 )
             },
         },
