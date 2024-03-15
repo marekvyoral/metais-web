@@ -467,6 +467,8 @@
         "unregisterFromTraining": "Unregister from training",
         "sureUnregister": "Do you really want to unsubscribe from training?",
         "register": "Register",
+        "trainingGestor": "Training authority",
+        "trainingGestorTooltip": "Training guarantor",
         "alreadyEnrolled": "The user with the given email is already registered for this training",
         "table": {
             "firstName": "First name",

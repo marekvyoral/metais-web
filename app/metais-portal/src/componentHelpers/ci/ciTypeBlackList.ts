@@ -20,7 +20,13 @@ export const CI_TYPE_DATA_ITVS_EXCEPTIONS_BLACK_LIST: BlackListType = {
 }
 
 export const CI_TYPE_DATA_TRAINING_BLACK_LIST: BlackListType = {
-    attributes: [ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov, ATTRIBUTE_NAME.Gen_Profil_anglicky_popis, ATTRIBUTE_NAME.Gen_Profil_poznamka],
+    attributes: [
+        ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov,
+        ATTRIBUTE_NAME.Gen_Profil_anglicky_popis,
+        ATTRIBUTE_NAME.Gen_Profil_poznamka,
+        ATTRIBUTE_NAME.Gen_Profil_zdroj,
+        ATTRIBUTE_NAME.Gen_Profil_ref_id,
+    ],
     attributeProfiles: [{ technicalName: ATTRIBUTE_PROFILE_NAME.Gen_Profil_EA }],
 }
 

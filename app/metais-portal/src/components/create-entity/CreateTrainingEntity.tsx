@@ -92,8 +92,6 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
         }
     }, [isProcessedError, isRedirectError, isRedirectLoading, isTooManyFetchesError, uploadError, scrollToMutationFeedback])
 
-    const isSubmitDisabled = !roleState?.selectedRole?.roleUuid && !updateCiItemId
-
     const modifiedCiTypeData = useMemo(() => {
         return getModifiedCiTypeData(ciTypeData, CI_TYPE_DATA_TRAINING_BLACK_LIST)
     }, [ciTypeData])
@@ -198,10 +196,12 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
                 <div ref={wrapperRef} />
                 {!isUpdate && publicAuthorityState && roleState && (
                     <SelectPublicAuthorityAndRole
+                        publicAuthorityLabel={t('trainings.trainingGestor')}
                         selectedRole={roleState.selectedRole ?? {}}
                         onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
                         onChangeRole={roleState.setSelectedRole}
                         selectedOrg={publicAuthorityState.selectedPublicAuthority}
+                        hideRoleSelect
                         ciRoles={modifiedCiTypeData?.roleList ?? []}
                     />
                 )}
@@ -228,6 +228,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
                     <FormProvider {...methods}>
                         <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
                             <CreateEntitySection
+                                hideErrorBlock
                                 sectionId={Gen_Profil}
                                 attributes={attributes}
                                 constraintsData={constraintsData}
@@ -255,7 +256,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
                                 ]}
                                 submitButtonLabel={t('button.saveChanges')}
                                 loading={storeConfigurationItem.isLoading || formState.isValidating || formState.isSubmitting}
-                                disabled={isSubmitDisabled}
+                                // disabled={isSubmitDisabled}
                             />
                         </form>
                     </FormProvider>
