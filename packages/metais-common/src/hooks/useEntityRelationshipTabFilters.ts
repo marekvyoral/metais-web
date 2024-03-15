@@ -6,9 +6,29 @@ import { useListRelatedCiTypesWrapper } from './useListRelatedCiTypes.hook'
 import { RelatedCiTypePreview, RelatedCiTypePreviewList } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { isRelatedCiTypeCmdbView, removeDuplicates } from '@isdd/metais-common/hooks/common'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
-import { NeighboursFilterContainerUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { FilterMetaAttributesUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
+export interface NeighboursFilterUiCustom {
+    relType?: { label: string; value: string }[]
+    ciType?: { label: string; value: string }[]
+    usageType?: string[]
+    fullTextSearch?: string
+    searchFields?: string[]
+    filterType?: string
+    metaAttributes?: FilterMetaAttributesUi
+    excludedRelTypes?: string[]
+    excludedCiUuids?: string[]
+}
+
+export interface NeighboursFilterContainerUiCustom {
+    page?: number
+    perpage?: number
+    sortBy?: string
+    sortType?: string
+    sortSource?: string
+    neighboursFilter?: NeighboursFilterUiCustom
+}
 export const useEntityRelationshipTabFilters = (technicalName: string) => {
     const {
         state: { user },
@@ -26,17 +46,25 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
     }, [relatedData, isUserLogged])
 
     const mapFilterToNeighboursContainerUi = useCallback(
-        (relatedCiTypePreviewArray: RelatedCiTypePreview[] | undefined): NeighboursFilterContainerUi => {
-            const ciType: string[] = []
-            const relType: string[] = []
+        (relatedCiTypePreviewArray: RelatedCiTypePreview[] | undefined): NeighboursFilterContainerUiCustom => {
+            const ciType: { label: string; value: string }[] = []
+            const relType: { label: string; value: string }[] = []
 
             relatedCiTypePreviewArray?.forEach((relatedCiType) => {
                 i18n.language == 'sk'
-                    ? relatedCiType.ciTypeName && ciType.push(relatedCiType.ciTypeName)
-                    : relatedCiType.engCiTypeName && ciType.push(relatedCiType.engCiTypeName)
+                    ? relatedCiType.ciTypeName &&
+                      relatedCiType.ciTypeTechnicalName &&
+                      ciType.push({ label: relatedCiType.ciTypeName, value: relatedCiType.ciTypeTechnicalName })
+                    : relatedCiType.engCiTypeName &&
+                      relatedCiType.ciTypeTechnicalName &&
+                      ciType.push({ label: relatedCiType.engCiTypeName, value: relatedCiType.ciTypeTechnicalName })
                 i18n.language == 'sk'
-                    ? relatedCiType.relationshipTypeName && relType.push(relatedCiType.relationshipTypeName)
-                    : relatedCiType.engRelationshipTypeName && relType.push(relatedCiType.engRelationshipTypeName)
+                    ? relatedCiType.relationshipTypeName &&
+                      relatedCiType.relationshipTypeTechnicalName &&
+                      relType.push({ label: relatedCiType.relationshipTypeName, value: relatedCiType.relationshipTypeTechnicalName })
+                    : relatedCiType.engRelationshipTypeName &&
+                      relatedCiType.relationshipTypeTechnicalName &&
+                      relType.push({ label: relatedCiType.engRelationshipTypeName, value: relatedCiType.relationshipTypeTechnicalName })
             })
 
             const uniqueCiType = removeDuplicates(ciType)
@@ -55,12 +83,12 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
         [currentPreferences.showInvalidatedItems, i18n.language],
     )
 
-    const defaultSourceRelationshipTabFilter: NeighboursFilterContainerUi = useMemo(
-        (): NeighboursFilterContainerUi => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsTargets),
+    const defaultSourceRelationshipTabFilter: NeighboursFilterContainerUiCustom = useMemo(
+        (): NeighboursFilterContainerUiCustom => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsTargets),
         [mapFilterToNeighboursContainerUi, relatedCiTypesFilteredForView.cisAsTargets],
     )
-    const defaultTargetRelationshipTabFilter: NeighboursFilterContainerUi = useMemo(
-        (): NeighboursFilterContainerUi => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsSources),
+    const defaultTargetRelationshipTabFilter: NeighboursFilterContainerUiCustom = useMemo(
+        (): NeighboursFilterContainerUiCustom => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsSources),
         [mapFilterToNeighboursContainerUi, relatedCiTypesFilteredForView.cisAsSources],
     )
 

@@ -43,6 +43,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
     apiFilterData,
     handleFilterChange,
     handleSortChange,
+    defaultFilterValues,
 }) => {
     const { t } = useTranslation()
     const {
@@ -60,19 +61,20 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
 
     const canSelectInvalidated = !!user?.uuid && currentPreferences.showInvalidatedItems
 
-    const ciTypeOption = apiFilterData?.ciType?.map((type) => ({ label: type, value: type })) || []
-    const relTypeOption = apiFilterData?.relType?.map((type) => ({ label: type, value: type })) || []
+    const ciTypeOption = apiFilterData?.ciType?.map((type) => ({ label: type.label, value: type.value })) || []
+    const relTypeOption = apiFilterData?.relType?.map((type) => ({ label: type.label, value: type.value })) || []
     const stateOption: IOption<string>[] = [
         { value: 'DRAFT', label: t('metaAttributes.state.DRAFT') },
         { value: 'INVALIDATED', label: t('metaAttributes.state.INVALIDATED'), disabled: !canSelectInvalidated },
     ]
 
-    const defaultValues: RelationFilterData = {
-        relType: filter?.neighboursFilter?.relType,
-        ciType: filter?.neighboursFilter?.ciType,
-        metaAttributes: filter?.neighboursFilter?.metaAttributes,
-        fullTextSearch: filter?.neighboursFilter?.fullTextSearch,
-    }
+    // const defaultValues: RelationFilterData = {
+    //     relType: apiFilterData?.relType?.map((type) => type.value),
+    //     ciType: apiFilterData?.ciType?.map((type) => type.value),
+    //     metaAttributes: apiFilterData?.metaAttributes,
+    //     fullTextSearch: apiFilterData?.fullTextSearch,
+    // }
+    console.log('filter', filter)
 
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: (value: React.SetStateAction<boolean>) => void) => {
         closeFunction(false)
@@ -91,7 +93,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                 onMessageClose={() => setBulkActionResult(undefined)}
             />
             <Filter<RelationFilterData>
-                defaultFilterValues={defaultValues}
+                defaultFilterValues={defaultFilterValues}
                 handleOnSubmit={({ ciType, metaAttributes, relType, fullTextSearch }) => {
                     handleFilterChange({
                         neighboursFilter: {
@@ -102,6 +104,10 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                         },
                     })
                 }}
+                // customReset={() => {
+                //     handleFilterChange(defaultFilterValues)
+                //     refetch()
+                // }}
                 form={({ setValue }) => (
                     <div>
                         <MultiSelect
@@ -109,7 +115,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                             label={t('relationshipsTab.table.ciType')}
                             placeholder={t('relationshipsTab.select.ciType')}
                             options={ciTypeOption}
-                            defaultValue={filter?.neighboursFilter?.ciType}
+                            defaultValue={defaultFilterValues?.neighboursFilter?.ciType}
                             setValue={setValue}
                             disabled={ciTypeOption.length === 0}
                         />
@@ -118,7 +124,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                             label={t('relationshipsTab.table.relationshipType')}
                             placeholder={t('relationshipsTab.select.relationshipType')}
                             options={relTypeOption}
-                            defaultValue={filter?.neighboursFilter?.relType}
+                            defaultValue={defaultFilterValues?.neighboursFilter?.relType}
                             setValue={setValue}
                             disabled={relTypeOption.length === 0}
                         />
@@ -127,7 +133,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                             label={t('relationshipsTab.table.evidenceStatus')}
                             placeholder={t('relationshipsTab.select.evidenceStatus')}
                             options={stateOption}
-                            defaultValue={filter?.neighboursFilter?.metaAttributes?.state}
+                            defaultValue={defaultFilterValues?.neighboursFilter?.metaAttributes?.state}
                             setValue={setValue}
                         />
                     </div>

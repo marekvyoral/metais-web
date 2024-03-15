@@ -5,8 +5,9 @@ import { ATTRIBUTE_NAME, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-c
 import { INeighboursFilter, mapFilterToRelationApi } from '@isdd/metais-common/api/filter/filterApi'
 import {
     ConfigurationItemUiAttributes,
+    FilterMetaAttributesUi,
     NeighbourPairUi,
-    NeighboursFilterUi,
+    NeighboursFilterContainerUi,
     useGetRoleParticipantBulk,
     useReadCiNeighbours,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -17,7 +18,7 @@ import { GENERIC_NAMES, useGetRelationColumnData } from '@isdd/metais-common/api
 import { useListRelatedCiTypesWrapper } from '@isdd/metais-common/hooks/useListRelatedCiTypes.hook'
 import { RelationSelectedRowType } from '@isdd/metais-common/api/userConfigKvRepo'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
-import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
+import { NeighboursFilterUiCustom, useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
 import { CellContext, ColumnDef, Table as ITable, Row } from '@tanstack/react-table'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -42,12 +43,13 @@ export interface ICiNeighboursListContainerView {
     refetch: () => void
     saveSelectedColumns: (columnSelection: ISelectColumnType[]) => void
     resetSelectedColumns: () => Promise<void>
-    apiFilterData?: NeighboursFilterUi
+    apiFilterData?: NeighboursFilterUiCustom
     handleFilterChange: (filter: INeighboursFilter) => void
     isLoading: boolean
     isError: boolean
     isSource: boolean
     handleSortChange: (sort: ColumnSort[]) => void
+    defaultFilterValues: INeighboursFilter
 }
 
 interface ICiNeighboursListContainer {
@@ -70,11 +72,12 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
 
     const { t, i18n } = useTranslation()
 
-    const [uiFilterState, setUiFilterState] = useState<INeighboursFilter>({
+    const defaultFilterValues = {
         pageNumber: BASE_PAGE_NUMBER,
         pageSize: BASE_PAGE_SIZE,
         sort: [{ orderBy: GENERIC_NAMES.CI_TYPE, sortDirection: SortType.DESC }],
-    })
+    }
+    const [uiFilterState, setUiFilterState] = useState<INeighboursFilter>(defaultFilterValues)
 
     const [rowSelection, setRowSelection] = useState<RelationSelectedRowType>({})
 
@@ -98,6 +101,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         defaultSourceRelationshipTabFilter,
         defaultTargetRelationshipTabFilter,
     } = useEntityRelationshipTabFilters(entityName ?? '')
+
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName)
     const {
         data: relationData,
@@ -107,7 +111,17 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
     const { isLoading: isLoadingRelated, isError: isErrorRelated, data: relatedTypes } = useListRelatedCiTypesWrapper(entityName)
     const types = useMemo(() => (relatedTypes?.cisAsSources || []).concat(relatedTypes?.cisAsTargets || []), [relatedTypes])
 
-    const selectedRequestApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
+    const selectedRequestForApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
+    const { ciType, relType, ...restNeighboursFilter } = selectedRequestForApi.neighboursFilter || {}
+    const selectedRequestApi: NeighboursFilterContainerUi = {
+        ...selectedRequestForApi,
+        neighboursFilter: {
+            ...restNeighboursFilter,
+            ...(ciType ? { ciType: ciType.map((type) => type.value) } : {}),
+            ...(relType ? { relType: relType.map((type) => type.value) } : {}),
+        },
+    }
+    const selectedRelationshipFilter = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
 
     const {
         isLoading: isRelationLoading,
@@ -320,6 +334,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
                 isLoading={false}
                 isError
                 handleSortChange={handleSortChange}
+                defaultFilterValues={defaultFilterValues}
             />
         )
     return (
@@ -337,11 +352,12 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
             resetRowSelection={() => setRowSelection({})}
             saveSelectedColumns={storeColumns}
             resetSelectedColumns={restoreColumns}
-            apiFilterData={selectedRequestApi.neighboursFilter}
+            apiFilterData={selectedRelationshipFilter.neighboursFilter}
             handleFilterChange={handleFilterChange}
             isLoading={isLoading}
             isError={isError}
             handleSortChange={handleSortChange}
+            defaultFilterValues={defaultFilterValues}
         />
     )
 }
