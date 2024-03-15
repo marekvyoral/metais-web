@@ -25,6 +25,7 @@ interface ISection {
     updateCiItemId?: string
     sectionRoles: string[]
     selectedRole?: GidRoleData | null
+    hideErrorBlock?: boolean
 }
 
 export const CreateEntitySection: React.FC<ISection> = ({
@@ -39,6 +40,7 @@ export const CreateEntitySection: React.FC<ISection> = ({
     setSectionError,
     sectionRoles,
     selectedRole,
+    hideErrorBlock,
 }) => {
     const ability = useAbilityContext()
 
@@ -60,7 +62,7 @@ export const CreateEntitySection: React.FC<ISection> = ({
 
     return (
         <div>
-            <ErrorBlockList errorList={thisSectionErrorList} />
+            {!hideErrorBlock && <ErrorBlockList errorList={thisSectionErrorList} />}
             {attributes?.map?.((attribute) => (
                 <React.Fragment key={attribute.technicalName}>
                     {!attribute.invisible && attribute.valid && (

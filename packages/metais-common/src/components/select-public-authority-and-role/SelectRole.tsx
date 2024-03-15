@@ -12,10 +12,11 @@ interface Props {
     selectedOrg: HierarchyRightsUi | null
     selectedRole: GidRoleData
     ciRoles: string[]
+    hideRoleSelect?: boolean
     disabled?: boolean
 }
 
-export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selectedRole, ciRoles, disabled }) => {
+export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selectedRole, ciRoles, disabled, hideRoleSelect }) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -56,6 +57,9 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
         // Change of key forces the component to render changed default value.
         setSeed(Math.random())
     }, [defaultValue])
+
+    if (hideRoleSelect) return <></>
+
     return (
         <>
             {isRightsForPOLoading && !rightsForPOData && selectedOrg?.poUUID && (
