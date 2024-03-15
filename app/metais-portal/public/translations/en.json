@@ -1135,7 +1135,7 @@
         "successfulMemberUpdated": "Role was successfully changed",
         "successfulMemberAdded": "Member was successfully added",
         "successfulMemberDeleted": "Member was successfully removed from group",
-        "successfulGroupDeleted":"Group was successfully removed.",
+        "successfulGroupDeleted": "Group was successfully removed.",
         "mandatory": "mandatory",
         "editGroup": "Edit group",
         "addingMember": "Adding member",
@@ -2461,7 +2461,7 @@
     },
     "ITVSExceptions": {
         "vynimky_ITVS": "ITVS Exceptions",
-        "relatedISVS": "Related ISVSs",
+        "relatedITVS": "Related ITVS",
         "relatedPO": "Related POs",
         "note": "Note"
     },
