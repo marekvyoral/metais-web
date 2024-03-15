@@ -2467,7 +2467,7 @@
     },
     "ITVSExceptions": {
         "vynimky_ITVS": "Osobitný postup",
-        "relatedISVS": "Súvisiace ISVS",
+        "relatedITVS": "Súvisiace ITVS",
         "relatedPO": "Súvisiace orgány riadenia",
         "note": "Poznámka"
     },
