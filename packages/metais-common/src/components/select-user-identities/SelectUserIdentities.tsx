@@ -1,11 +1,9 @@
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit'
 import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import React, { useCallback, useEffect, useState } from 'react'
-import { UseFormSetValue } from 'react-hook-form'
 import { OptionProps } from 'react-select'
 
-import { Identity, useFind1Hook, useFindAll311Hook } from '@isdd/metais-common/api/generated/iam-swagger'
-import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
+import { Identity, useFind1Hook, useFindAll311 } from '@isdd/metais-common/api/generated/iam-swagger'
 
 export type SelectFilterIdentityOptionType = {
     uuid: string
@@ -31,17 +29,19 @@ const mapToOption = (data?: Identity[]): SelectFilterIdentityOptionType[] => {
     )
 }
 
-interface SelectUserIdentitiesProps {
-    filter: GetFOPStandardRequestsParams
-    setValue: UseFormSetValue<GetFOPStandardRequestsParams>
+interface SelectUserIdentitiesProps<T> {
     name: string
     label: string
+    value?: T
+    onChange: (val?: SelectFilterIdentityOptionType) => void
 }
 
-export const SelectUserIdentities = ({ filter, setValue, name, label }: SelectUserIdentitiesProps) => {
+export const SelectUserIdentities = <T,>({ value, name, label, onChange }: SelectUserIdentitiesProps<T>) => {
     const getIdentities = useFind1Hook()
-    const getIdentityByLogin = useFindAll311Hook()
-    const [defaultValue, setDefaultValue] = useState<SelectFilterIdentityOptionType | undefined>(undefined)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    const { data, isLoading, isError, refetch } = useFindAll311({ login: value }, { query: { enabled: !!value && value != '' } })
+    const [selectedOption, setSelectedOption] = useState<SelectFilterIdentityOptionType>()
 
     const [seed, setSeed] = useState(1)
 
@@ -65,21 +65,25 @@ export const SelectUserIdentities = ({ filter, setValue, name, label }: SelectUs
     )
 
     useEffect(() => {
-        if (!defaultValue && filter.createdBy) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            getIdentityByLogin({ login: filter?.createdBy }).then((response) => {
-                if (response) setDefaultValue(mapToOption([response as Identity])[0])
-            })
-        }
-    }, [defaultValue, filter.createdBy, getIdentityByLogin])
+        onChange(selectedOption)
+        setSeed(Math.random())
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedOption])
 
     useEffect(() => {
-        // SelectLazyLoading component does not rerender on defaultValue change.
-        // Once default value is set, it cant be changed.
-        // Change of key forces the component to render changed default value.
-        setSeed(Math.random())
-    }, [defaultValue])
+        if (!selectedOption && data && (!isLoading || !isError)) {
+            setSelectedOption(mapToOption(Array.isArray(data) ? (data as Identity[]) : [data as Identity])[0])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoading, isError])
+
+    useEffect(() => {
+        if (!selectedOption && value) {
+            refetch().then((res) => {
+                setSelectedOption(mapToOption(Array.isArray(res?.data) ? (res.data as Identity[]) : [res.data as Identity])[0])
+            })
+        }
+    }, [value, refetch, selectedOption])
 
     return (
         <>
@@ -91,8 +95,8 @@ export const SelectUserIdentities = ({ filter, setValue, name, label }: SelectUs
                 label={label}
                 name={name}
                 option={(ctx) => formatOption(ctx)}
-                setValue={setValue}
-                defaultValue={defaultValue}
+                value={selectedOption}
+                onChange={(val) => setSelectedOption(val as SelectFilterIdentityOptionType)}
             />
         </>
     )

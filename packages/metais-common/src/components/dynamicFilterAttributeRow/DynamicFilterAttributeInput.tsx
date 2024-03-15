@@ -30,7 +30,9 @@ interface Props {
     constraints: EnumType | undefined
     onChange: (data: FilterAttribute, prevData?: FilterAttribute, isNewName?: boolean) => void
 }
-
+export const isDateParsable = (date: string) => {
+    return !isNaN(Date.parse(date))
+}
 export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, index, value, onChange, constraints, customComponent }) => {
     const { t } = useTranslation()
 
@@ -118,7 +120,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
                             placeholderText="dd.mm.yyyy"
                             popperClassName={styleDateInput.dateInputPopperClass}
                             name="atributeValueDate"
-                            selected={value.value ? new Date(value.value as string) : null}
+                            selected={value.value && isDateParsable(value.value as string) ? new Date(value.value as string) : null}
                             onChange={(val) => onChange({ ...value, value: formatDateForDefaultValue(val?.toISOString() ?? '') })}
                             dateFormat="dd.MM.yyyy"
                         />
