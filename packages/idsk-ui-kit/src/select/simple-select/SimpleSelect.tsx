@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 import { MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
 
@@ -31,60 +31,67 @@ interface ISelectProps<T> {
     tabIndex?: number
 }
 
-export const SimpleSelect = <T,>({
-    label,
-    name,
-    options,
-    option,
-    value,
-    defaultValue,
-    onChange,
-    placeholder,
-    className,
-    id,
-    error,
-    setValue,
-    clearErrors,
-    info,
-    correct,
-    disabled,
-    onBlur,
-    isClearable,
-    isSearchable,
-    menuPosition,
-    required,
-    tabIndex,
-}: ISelectProps<T>) => {
-    const handleOnChange = (selectedOption: MultiValue<IOption<T>> | SingleValue<IOption<T>>) => {
-        const opt: IOption<T> | undefined = Array.isArray(selectedOption) ? selectedOption[0] : selectedOption
-        opt && clearErrors && clearErrors(name)
-        setValue && setValue(name, opt?.value || '')
-        onChange && onChange(opt?.value)
-    }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const SimpleSelect = forwardRef<HTMLSelectElement, ISelectProps<any>>(
+    (
+        {
+            label,
+            name,
+            options,
+            option,
+            value,
+            defaultValue,
+            onChange,
+            placeholder,
+            className,
+            id,
+            error,
+            setValue,
+            clearErrors,
+            info,
+            correct,
+            disabled,
+            onBlur,
+            isClearable,
+            isSearchable,
+            menuPosition,
+            required,
+            tabIndex,
+        },
+        ref,
+    ) => {
+        const handleOnChange = (selectedOption: MultiValue<IOption<unknown>> | SingleValue<IOption<unknown>>) => {
+            const opt: IOption<unknown> | undefined = Array.isArray(selectedOption) ? selectedOption[0] : selectedOption
+            opt && clearErrors && clearErrors(name)
+            setValue && setValue(name, opt?.value || '')
+            onChange && onChange(opt?.value)
+        }
 
-    return (
-        <Select
-            id={id}
-            name={name}
-            label={label}
-            value={value === null ? null : options.find((opt) => opt.value === value)}
-            defaultValue={options.find((opt) => opt.value === defaultValue) || null}
-            placeholder={placeholder || ''}
-            className={className}
-            error={error}
-            info={info}
-            correct={correct}
-            option={option}
-            options={options}
-            isMulti={false}
-            disabled={disabled}
-            onBlur={onBlur}
-            isClearable={isClearable}
-            isSearchable={isSearchable}
-            menuPosition={menuPosition}
-            onChange={handleOnChange}
-            required={required}
-            tabIndex={tabIndex}
-        />
-    )
-}
+        return (
+            <Select
+                ref={ref}
+                id={id}
+                name={name}
+                label={label}
+                value={value === null ? null : options.find((opt) => opt.value === value)}
+                defaultValue={options.find((opt) => opt.value === defaultValue) || null}
+                placeholder={placeholder || ''}
+                className={className}
+                error={error}
+                info={info}
+                correct={correct}
+                option={option}
+                options={options}
+                isMulti={false}
+                disabled={disabled}
+                onBlur={onBlur}
+                isClearable={isClearable}
+                isSearchable={isSearchable}
+                menuPosition={menuPosition}
+                onChange={handleOnChange}
+                required={required}
+                tabIndex={tabIndex}
+            />
+        )
+    },
+)

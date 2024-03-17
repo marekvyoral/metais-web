@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 import { MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
 
@@ -29,64 +29,71 @@ interface ISelectProps<T> {
     menuPosition?: MenuPosition
 }
 
-export const MultiSelect = <T,>({
-    label,
-    name,
-    options,
-    option,
-    value,
-    defaultValue,
-    onChange,
-    placeholder,
-    className,
-    id,
-    error,
-    setValue,
-    clearErrors,
-    info,
-    correct,
-    required,
-    disabled,
-    onBlur,
-    isClearable,
-    menuPosition,
-}: ISelectProps<T>) => {
-    const handleOnChange = (selectedOption: MultiValue<IOption<T>> | SingleValue<IOption<T>>) => {
-        const values: string[] = Array.isArray(selectedOption) ? selectedOption?.map((opt) => opt.value) : []
-        values.length && clearErrors && clearErrors(name)
-        setValue && setValue(name, values)
-        onChange && onChange(values)
-    }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const MultiSelect = forwardRef<HTMLSelectElement, ISelectProps<any>>(
+    (
+        {
+            label,
+            name,
+            options,
+            option,
+            value,
+            defaultValue,
+            onChange,
+            placeholder,
+            className,
+            id,
+            error,
+            setValue,
+            clearErrors,
+            info,
+            correct,
+            required,
+            disabled,
+            onBlur,
+            isClearable,
+            menuPosition,
+        },
+        ref,
+    ) => {
+        const handleOnChange = (selectedOption: MultiValue<IOption<unknown>> | SingleValue<IOption<unknown>>) => {
+            const values: string[] = Array.isArray(selectedOption) ? selectedOption?.map((opt) => opt.value) : []
+            values.length && clearErrors && clearErrors(name)
+            setValue && setValue(name, values)
+            onChange && onChange(values)
+        }
 
-    const getValues = (val?: string[]) => {
-        const results: IOption<T>[] = []
-        val?.forEach((optionVal) => {
-            const result = options.find((opt) => opt.value === optionVal)
-            result && results.push(result)
-        })
-        return results
-    }
-    return (
-        <Select
-            required={required}
-            id={id}
-            name={name}
-            label={label}
-            value={value && getValues(value)}
-            defaultValue={defaultValue && getValues(defaultValue)}
-            placeholder={placeholder || ''}
-            className={className}
-            error={error}
-            info={info}
-            correct={correct}
-            option={option}
-            options={options}
-            isMulti
-            disabled={disabled}
-            onBlur={onBlur}
-            isClearable={isClearable}
-            menuPosition={menuPosition}
-            onChange={handleOnChange}
-        />
-    )
-}
+        const getValues = (val?: string[]) => {
+            const results: IOption<unknown>[] = []
+            val?.forEach((optionVal) => {
+                const result = options.find((opt) => opt.value === optionVal)
+                result && results.push(result)
+            })
+            return results
+        }
+        return (
+            <Select
+                ref={ref}
+                required={required}
+                id={id}
+                name={name}
+                label={label}
+                value={value && getValues(value)}
+                defaultValue={defaultValue && getValues(defaultValue)}
+                placeholder={placeholder || ''}
+                className={className}
+                error={error}
+                info={info}
+                correct={correct}
+                option={option}
+                options={options}
+                isMulti
+                disabled={disabled}
+                onBlur={onBlur}
+                isClearable={isClearable}
+                menuPosition={menuPosition}
+                onChange={handleOnChange}
+            />
+        )
+    },
+)

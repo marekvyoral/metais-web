@@ -305,43 +305,57 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                 if (constraints) {
                     if (attribute.array) {
                         return (
-                            <MultiSelect
-                                id={attribute.technicalName ?? ''}
-                                name={attribute.technicalName ?? '' + nameSufix}
-                                label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
-                                correct={isCorrect}
-                                options={createOptions(constraints)}
-                                setValue={setValue}
-                                error={error?.message?.toString()}
-                                clearErrors={clearErrors}
-                                disabled={disabled}
-                                placeholder={t('createEntity.select')}
-                                defaultValue={createDefaultValuesForMulti(
-                                    constraints,
-                                    getDefaultArrayValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate),
+                            <Controller
+                                control={control}
+                                name={attribute.technicalName + nameSufix}
+                                render={({ field: { ref } }) => (
+                                    <MultiSelect
+                                        ref={ref}
+                                        id={attribute.technicalName ?? ''}
+                                        name={attribute.technicalName ?? '' + nameSufix}
+                                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
+                                        correct={isCorrect}
+                                        options={createOptions(constraints)}
+                                        setValue={setValue}
+                                        error={error?.message?.toString()}
+                                        clearErrors={clearErrors}
+                                        disabled={disabled}
+                                        placeholder={t('createEntity.select')}
+                                        defaultValue={createDefaultValuesForMulti(
+                                            constraints,
+                                            getDefaultArrayValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate),
+                                        )}
+                                        menuPosition="absolute"
+                                    />
                                 )}
-                                menuPosition="absolute"
                             />
                         )
                     } else {
                         return (
-                            <SimpleSelect
-                                id={attribute.technicalName ?? ''}
-                                label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
-                                error={error?.message?.toString()}
-                                info={attribute.description}
-                                correct={isCorrect}
-                                options={createOptions(constraints)}
-                                disabled={attribute.readOnly || disabled}
-                                defaultValue={getDefaultValueForSimple(
-                                    constraints,
-                                    getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate),
-                                )}
+                            <Controller
+                                control={control}
                                 name={attribute.technicalName + nameSufix}
-                                setValue={setValue}
-                                clearErrors={clearErrors}
-                                placeholder={t('createEntity.select')}
-                                menuPosition="absolute"
+                                render={({ field: { ref } }) => (
+                                    <SimpleSelect
+                                        ref={ref}
+                                        id={attribute.technicalName ?? ''}
+                                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
+                                        error={error?.message?.toString()}
+                                        info={attribute.description}
+                                        correct={isCorrect}
+                                        options={createOptions(constraints)}
+                                        disabled={attribute.readOnly || disabled}
+                                        defaultValue={getDefaultValueForSimple(
+                                            constraints,
+                                            getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate),
+                                        )}
+                                        name={attribute.technicalName + nameSufix}
+                                        setValue={setValue}
+                                        clearErrors={clearErrors}
+                                        placeholder={t('createEntity.select')}
+                                        menuPosition="absolute"
+                                    />
+                                )}
                             />
                         )
                     }
