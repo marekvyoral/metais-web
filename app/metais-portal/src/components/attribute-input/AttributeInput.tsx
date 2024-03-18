@@ -315,6 +315,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 error={error?.message?.toString()}
                                 clearErrors={clearErrors}
                                 disabled={disabled}
+                                control={control}
                                 placeholder={t('createEntity.select')}
                                 defaultValue={createDefaultValuesForMulti(
                                     constraints,
@@ -333,6 +334,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 correct={isCorrect}
                                 options={createOptions(constraints)}
                                 disabled={attribute.readOnly || disabled}
+                                control={control}
                                 defaultValue={getDefaultValueForSimple(
                                     constraints,
                                     getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate),
