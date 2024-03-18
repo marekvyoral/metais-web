@@ -2459,6 +2459,10 @@
         "commitmentLabel": "Týmto prehlasujeme, že pri budovaní a rozvoji ITVS budeme napĺňať nami definované ciele, podciele a dodržiavať princípy Národnej koncepcie informatizácie verejnej správy.",
         "noCheckedItems": "Pred potvrdením záväzku dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy je potrebné vybrať aspoň jeden cieľ."
     },
+    "WeboveSidlo" : {
+        "declarationLink": "Linka na stránku \"Vyhlásenie o prístupnosti\"",
+        "declarationLinkTooltip": "Túto linku môžete použiť na webové sídlo pre zobrazenie dokumentu o prístupnosti."
+    },
     "crash": {
         "heading": "Ups, niečo sa pokazilo",
         "description": "Zaznamenali sme interný problém s aplikáciou.",
