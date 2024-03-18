@@ -22,7 +22,7 @@ type FormatRowValueByRowArgs = {
     unitsData: EnumType | undefined
 }
 
-const formatRowValueByRowType = ({ attribute, rowValue, t, unitsData }: FormatRowValueByRowArgs) => {
+export const formatRowValueByRowType = ({ attribute, rowValue, t, unitsData }: FormatRowValueByRowArgs) => {
     if (attribute?.units && attribute?.type && rowValue) {
         const unitValue = findUnitValue(attribute, unitsData)
         return t(`units.${unitValue}`, { val: rowValue })
