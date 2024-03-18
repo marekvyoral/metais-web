@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useId } from 'react'
 import ReactSelect, { GroupBase, MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
 import { useTranslation } from 'react-i18next'
 import { Controller, Control as ControlReactForm } from 'react-hook-form'
@@ -73,11 +73,13 @@ export const Select = <T,>({
     const { t } = useTranslation()
     const localMessages = useGetLocalMessages()
 
+    const uniqueId = useId()
+    const inputId = id ?? uniqueId
     const errorId = `${id}-error`
     return (
         <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
             <div className={styles.labelDiv}>
-                <label className="govuk-label" htmlFor={id}>
+                <label className="govuk-label" htmlFor={inputId}>
                     {label} {required && t('input.requiredField')}
                 </label>
                 {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
@@ -94,7 +96,7 @@ export const Select = <T,>({
                         render={({ field: { ref } }) => (
                             <ReactSelect<IOption<T>, boolean, GroupBase<IOption<T>>>
                                 ref={ref}
-                                inputId={id}
+                                inputId={inputId}
                                 aria-label={label}
                                 name={name}
                                 value={value}
@@ -128,7 +130,7 @@ export const Select = <T,>({
                     />
                 ) : (
                     <ReactSelect<IOption<T>, boolean, GroupBase<IOption<T>>>
-                        inputId={id}
+                        inputId={inputId}
                         aria-label={label}
                         name={name}
                         value={value}
