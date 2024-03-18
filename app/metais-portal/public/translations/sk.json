@@ -388,7 +388,7 @@
         "cl.header.inappropriate.wfstate": "Nesprávna požiadavka. Číselník nie je v korektnom stave pre danú operáciu.",
         "cl.item.inappropriate.wfstate": "Nesprávna požiadavka. Položka číselníka nie je v korektnom stave pre danú operáciu.",
         "cl.request.not.reject.wsstate": "Nesprávna požiadavka. Číselník s rovnakým kódom už existuje alebo existuje žiadosť na pridanie číselníka s rovnakým kódom.",
-        "cl.request.notexists": "REQUEST_CODE_DOES_NOT_EXINesprávna požiadavka. Požiadavka na číselník s daným kódom neexistuje.STS",
+        "cl.request.notexists": "Nesprávna požiadavka. Požiadavka na číselník s daným kódom neexistuje.",
         "cl.header.`": "Nesprávna požiadavka. Číselník s daným kódom neexistuje.",
         "cl.item.notexists": "Nesprávna požiadavka. Položka číselníka s daným kódom neexistuje.",
         "cl.header.locked": "Nesprávna požiadavka. Číselník s daným kódom je zamknutý.",

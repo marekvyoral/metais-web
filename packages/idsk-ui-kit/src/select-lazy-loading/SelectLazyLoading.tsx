@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useId } from 'react'
 import classNames from 'classnames'
 import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 import { GroupBase, MenuPosition, MultiValue, OptionProps, OptionsOrGroups, PropsValue } from 'react-select'
@@ -76,6 +76,8 @@ export const SelectLazyLoading = <T,>({
     tooltipPosition,
 }: ISelectProps<T>): JSX.Element => {
     const { t } = useTranslation()
+    const uniqueId = useId()
+    const inputId = id ?? uniqueId
     const errorId = `${id}-error`
     const localMessages = useGetLocalMessages()
     const Option = (props: OptionProps<T>) => {
@@ -106,7 +108,7 @@ export const SelectLazyLoading = <T,>({
     return (
         <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!error })}>
             <div className={styles.labelDiv}>
-                <label className="govuk-label" htmlFor={id}>
+                <label className="govuk-label" htmlFor={inputId}>
                     {label} {required && t('input.requiredField')}
                 </label>
                 {info && <Tooltip descriptionElement={info} position={tooltipPosition} altText={`Tooltip ${label}`} />}
@@ -117,7 +119,7 @@ export const SelectLazyLoading = <T,>({
             </span>
 
             <AsyncPaginate<T, GroupBase<T>, { page: number } | undefined, boolean>
-                id={id}
+                inputId={inputId}
                 name={name}
                 value={value}
                 loadOptions={loadOptions}
