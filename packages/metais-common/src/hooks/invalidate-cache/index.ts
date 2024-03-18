@@ -4,6 +4,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import {
     CiListFilterContainerUi,
     getGetRoleParticipantBulkQueryKey,
+    getReadCiDerivedRelTypesCountQueryKey,
     getReadCiHistoryVersionsQueryKey,
     getReadCiList1QueryKey,
     getReadCiNeighboursQueryKey,
@@ -104,11 +105,22 @@ export const useInvalidateCiHistoryListCache = () => {
     return { invalidate }
 }
 
-export const useInvalidateCiNeighboursWithAllRelsCache = (ciItemUuid: string) => {
+export const useInvalidateCiNeighboursWithAllRelsCacheByUuid = (ciItemUuid: string) => {
     const queryClient = useQueryClient()
     const listQueryKey = getReadCiNeighboursWithAllRelsQueryKey(ciItemUuid)
 
     const invalidate = () => {
+        queryClient.invalidateQueries([listQueryKey[0]])
+    }
+
+    return { invalidate }
+}
+
+export const useInvalidateCiNeighboursWithAllRelsCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (ciItemUuid: string) => {
+        const listQueryKey = getReadCiNeighboursWithAllRelsQueryKey(ciItemUuid)
         queryClient.invalidateQueries([listQueryKey[0]])
     }
 
@@ -227,6 +239,16 @@ export const useInvalidateRelationsCountCache = () => {
     const invalidate = (uuid: string) => {
         const ciNeighboursCountQueryKey = getReadNeighboursConfigurationItemsCountQueryKey(uuid)
         queryClient.invalidateQueries(ciNeighboursCountQueryKey)
+    }
+    return { invalidate }
+}
+
+export const useInvalidateDerivedRelationsCountCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (uuid: string) => {
+        const ciDerivedNeighboursCountQueryKey = getReadCiDerivedRelTypesCountQueryKey(uuid)
+        queryClient.invalidateQueries(ciDerivedNeighboursCountQueryKey)
     }
     return { invalidate }
 }

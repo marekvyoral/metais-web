@@ -28,7 +28,7 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import {
     useInvalidateCiHistoryListCache,
-    useInvalidateCiNeighboursWithAllRelsCache,
+    useInvalidateCiNeighboursWithAllRelsCacheByUuid,
     useInvalidateRelationsCountCache,
 } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
@@ -162,7 +162,7 @@ export const NewRelationView: React.FC<Props> = ({
     } = useGetStatus()
 
     const invalidateRelationsCountCache = useInvalidateRelationsCountCache()
-    const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCache(entityId)
+    const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCacheByUuid(entityId)
     const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
 
     const onStoreGraphSuccess = () => {
