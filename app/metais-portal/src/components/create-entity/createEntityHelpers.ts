@@ -125,6 +125,19 @@ export const getAttributeInputErrorMessage = (attribute: Attribute, errors: Fiel
     return undefined
 }
 
+export const getAttributesInputErrorMessage = (attributes: Attribute[], errors: FieldErrors<FieldValues>) => {
+    if (attributes.length) {
+        attributes.forEach((attribute: Attribute) => {
+            if (attribute.technicalName != null) {
+                const error = Object.keys(errors).includes(attribute.technicalName)
+                return error ? errors[attribute.technicalName] : undefined
+            }
+            return undefined
+        })
+    }
+    return undefined
+}
+
 export const findAttributeConstraint = (enumCodes: string[], constraintsData: (EnumType | undefined)[]) => {
     const attributeConstraint = constraintsData.find((constraint) => constraint?.code === enumCodes[0])
     return attributeConstraint
