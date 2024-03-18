@@ -1,11 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, ErrorBlock, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Input } from '@isdd/idsk-ui-kit/src/input/Input'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 import { ApiLink, ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { getInfoGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
+import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { API_STANDARD_REQUEST_ATTRIBUTES, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
@@ -13,9 +16,6 @@ import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
-import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
-import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 import { DraftListCreateFormDialog } from '@/components/entities/draftslist/DraftListCreateFormDialog'
 import { DraftsListAttachmentsZone } from '@/components/entities/draftslist/DraftsListAttachmentsZone'
@@ -27,16 +27,26 @@ interface CreateForm {
         guiAttributes: Attribute[]
         defaultData: ApiStandardRequest | undefined
     }
-    id: number
+    id?: number
     onSubmit(data: FieldValues): Promise<void>
     isError: boolean
     isLoading: boolean
     fileUploadRef: React.RefObject<IFileUploadRef>
     handleUploadSuccess: (data: FileUploadData[]) => void
     sendData: (values: FieldValues, name?: string, email?: string, capthcaToken?: string) => Promise<void>
+    handleUploadFailed?: () => void
 }
 
-export const DraftsListCreateForm = ({ data, isError, isLoading, fileUploadRef, handleUploadSuccess, sendData, id }: CreateForm) => {
+export const DraftsListCreateForm = ({
+    data,
+    isError,
+    isLoading,
+    fileUploadRef,
+    handleUploadSuccess,
+    sendData,
+    id,
+    handleUploadFailed,
+}: CreateForm) => {
     const { t } = useTranslation()
     const [openCreateFormDialog, setOpenCreateFormDialog] = useState<FieldValues>()
     const navigate = useNavigate()
@@ -169,6 +179,7 @@ export const DraftsListCreateForm = ({ data, isError, isLoading, fileUploadRef, 
                         refType={RefAttributesRefType.STANDARD_REQUEST}
                         onUploadSuccess={handleUploadSuccess}
                         refId={id?.toString()}
+                        onFileUploadFailed={handleUploadFailed}
                     />
                 )}
                 <Spacer vertical />
