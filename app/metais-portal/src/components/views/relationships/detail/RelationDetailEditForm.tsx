@@ -140,6 +140,7 @@ export const RelationDetailEditForm: React.FC<Props> = ({
                           stepLabel: { label: (index + 1).toString(), variant: 'circle' },
                           id: profile.id ? profile.id.toString() : 'default_id',
                           last: relationTypeData?.attributeProfiles?.length === index + 1 ? true : false,
+                          isOpen: sections[index]?.isOpen ?? false,
                           content: profile.attributes?.map((attribute) => {
                               return (
                                   attribute?.valid &&
@@ -170,6 +171,7 @@ export const RelationDetailEditForm: React.FC<Props> = ({
                   })
                 : [],
         )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         clearErrors,
         constraintsData,
