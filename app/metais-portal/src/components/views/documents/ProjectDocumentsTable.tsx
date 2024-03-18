@@ -263,7 +263,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                     <ButtonLink
                         className={classNames(styles.buttonLinkWithIcon, { [styles.invalidated]: isInvalid(row.cell.row) })}
                         key="downloadFile"
-                        label={row.getValue() as string}
+                        label={(row.getValue() as string) + ' ' + (row.cell.row.original.required ? t('input.requiredField') : '')}
                         onClick={async () => {
                             const item = docs ? docs[row.row.index] : {}
                             const response = await getMeta(item.uuid ?? '')

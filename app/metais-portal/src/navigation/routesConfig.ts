@@ -146,6 +146,7 @@ import ITVSExceptionsInformation from '@/pages/ci/OsobitnyPostup/[entityId]/info
 import GroupItvsDetailPage from '@/pages/standardization/groupslist/itvs'
 import GroupEditItvsPage from '@/pages/standardization/groupslist/itvs/edit'
 import ReferenceRegisterDetail from '@/pages/ci/ReferenceRegister'
+import WebPortalInformation from '@/pages/ci/WeboveSidlo/[entityId]/information'
 
 export interface RouteConfig {
     path?: string
@@ -841,6 +842,18 @@ export const routesConfig: RouteConfig[] = [
                     {
                         slug: RouterRoutes.CI_DETAIL,
                         component: ITVSExceptionsInformation,
+                        index: true,
+                    },
+                ],
+            },
+            {
+                path: RouterRoutes.WEBOVE_SIDLO_DETAIL,
+                slug: RouterRoutes.WEBOVE_SIDLO_DETAIL,
+                component: EntityDetailPage,
+                subRoutes: [
+                    {
+                        slug: RouterRoutes.CI_DETAIL,
+                        component: WebPortalInformation,
                         index: true,
                     },
                 ],

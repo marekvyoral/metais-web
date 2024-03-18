@@ -119,6 +119,7 @@ export const DateInput = forwardRef<ReactDatePickerProps, Props>(
                             </span>
                             <div className={classNames(styles.inputWrapper, inputClassName)} style={{ position: 'relative' }}>
                                 <DatePicker
+                                    id={id}
                                     wrapperClassName={styles.fullWidth}
                                     className={classNames('govuk-input', { 'govuk-input--error': !!error })}
                                     placeholderText={placeholder}

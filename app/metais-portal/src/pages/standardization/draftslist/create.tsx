@@ -43,9 +43,11 @@ const DraftsListCreatePage: React.FC = () => {
                             fileUploadRef,
                             handleUploadSuccess,
                             id,
+                            handleUploadFailed,
                         }) => (
                             <QueryFeedback loading={isGuiDataLoading} error={isGuiDataError}>
                                 <DraftsListCreateForm
+                                    handleUploadFailed={handleUploadFailed}
                                     onSubmit={onSubmit}
                                     data={{
                                         defaultData: undefined,

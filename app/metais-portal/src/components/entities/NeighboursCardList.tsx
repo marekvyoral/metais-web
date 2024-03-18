@@ -130,7 +130,6 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                                             )}
                                             {!hidePageSizeSelect && (
                                                 <PageSizeSelect
-                                                    id="relationPerPage"
                                                     className={styles.perPageSelectWrapper}
                                                     handlePagingSelect={(page) => {
                                                         setPageConfig((pageConfig) => {

@@ -64,7 +64,7 @@ const DeclarationPage = () => {
 
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading || isFetching} error={isError} withChildren>
-                    <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(sanitizedData ?? '') }} />
+                    <div className="wiki" dangerouslySetInnerHTML={{ __html: sanitizeHtml(sanitizedData ?? '') }} />
                 </QueryFeedback>
             </MainContentWrapper>
         </>

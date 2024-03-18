@@ -44,7 +44,7 @@ export const IdentitySelect: React.FC<IIdentitySelect> = ({
         async (searchQuery: string, additional: { page: number } | undefined) => {
             const page = !additional?.page ? 1 : (additional?.page || 0) + 1
 
-            const loginOptions = await loginOptionsHook(page, perPage, { searchIn: 'login', expression: searchQuery })
+            const loginOptions = await loginOptionsHook(page, perPage, { searchIn: 'login firstName lastName', expression: searchQuery })
 
             return {
                 options: loginOptions || [],

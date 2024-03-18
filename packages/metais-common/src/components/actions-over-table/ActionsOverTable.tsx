@@ -5,7 +5,7 @@ import { PageSizeSelect } from '@isdd/idsk-ui-kit/page-size-select/PageSizeSelec
 import { CiTableSelectColumns, IColumnSectionType } from '@isdd/idsk-ui-kit/src/ci-table-select-columns/CiTableSelectColumns'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import classnames from 'classnames'
-import { PropsWithChildren, default as React, useId } from 'react'
+import { PropsWithChildren, default as React } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './actionsOverTable.module.scss'
@@ -87,7 +87,6 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
 }) => {
     const ability = useCreateCiAbility(ciTypeData, entityName)
     const { t } = useTranslation()
-    const pagingSelectId = useId()
 
     const attributeProfilesColumnSections: IColumnSectionType[] =
         attributeProfiles?.map((attributeProfile) => ({
@@ -181,7 +180,6 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                 )}
                 {!hiddenButtons?.PAGING && pagingOptions && (
                     <PageSizeSelect
-                        id={pagingSelectId}
                         pagingOptions={pagingOptions}
                         handlePagingSelect={handlePagingSelect ? handlePagingSelect : defaultHandlePagingSelect}
                         className={styles.selectGroup}
