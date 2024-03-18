@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import React, { ReactElement } from 'react'
 import ReactSelect, { GroupBase, MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
 import { useTranslation } from 'react-i18next'
+import { Controller, Control as ControlReactForm } from 'react-hook-form'
 
 import styles from './select.module.scss'
 import { useGetLocalMessages } from './useGetLocalMessages'
@@ -38,6 +39,8 @@ interface ISelectProps<T> {
     menuPosition?: MenuPosition
     required?: boolean
     tabIndex?: number
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    control?: ControlReactForm<any>
 }
 
 export const Select = <T,>({
@@ -62,6 +65,7 @@ export const Select = <T,>({
     menuPosition = 'fixed',
     required,
     tabIndex,
+    control,
 }: ISelectProps<T>) => {
     const Option = (props: OptionProps<IOption<T>>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
@@ -83,37 +87,78 @@ export const Select = <T,>({
                 {error}
             </span>
             <div className={styles.inputWrapper}>
-                <ReactSelect<IOption<T>, boolean, GroupBase<IOption<T>>>
-                    inputId={id}
-                    aria-label={label}
-                    name={name}
-                    value={value}
-                    defaultValue={defaultValue}
-                    placeholder={placeholder || ''}
-                    className={classNames('govuk-select', styles.reactSelect)}
-                    classNames={{ menuList: () => styles.reactSelectMenuList }}
-                    components={{ Option, Menu, Control, MultiValueRemove: getMultiValueRemove(t) }}
-                    options={options}
-                    styles={selectStyles<IOption<T>>()}
-                    unstyled
-                    menuPosition={menuPosition}
-                    isDisabled={disabled}
-                    isMulti={isMulti}
-                    onBlur={onBlur}
-                    isClearable={isClearable}
-                    isSearchable={isSearchable}
-                    isOptionDisabled={(opt) => !!opt.disabled}
-                    onChange={onChange}
-                    aria-invalid={!!error}
-                    aria-describedby={errorId}
-                    aria-errormessage={errorId}
-                    noOptionsMessage={localMessages.noOptionsMessage}
-                    ariaLiveMessages={localMessages.ariaLiveMessages}
-                    screenReaderStatus={localMessages.screenReaderStatus}
-                    loadingMessage={localMessages.loadingMessage}
-                    tabIndex={tabIndex}
-                    required={required}
-                />
+                {control ? (
+                    <Controller
+                        name={name}
+                        control={control}
+                        render={({ field: { ref } }) => (
+                            <ReactSelect<IOption<T>, boolean, GroupBase<IOption<T>>>
+                                ref={ref}
+                                inputId={id}
+                                aria-label={label}
+                                name={name}
+                                value={value}
+                                defaultValue={defaultValue}
+                                placeholder={placeholder || ''}
+                                className={classNames('govuk-select', styles.reactSelect)}
+                                classNames={{ menuList: () => styles.reactSelectMenuList }}
+                                components={{ Option, Menu, Control, MultiValueRemove: getMultiValueRemove(t) }}
+                                options={options}
+                                styles={selectStyles<IOption<T>>()}
+                                unstyled
+                                menuPosition={menuPosition}
+                                isDisabled={disabled}
+                                isMulti={isMulti}
+                                onBlur={onBlur}
+                                isClearable={isClearable}
+                                isSearchable={isSearchable}
+                                isOptionDisabled={(opt) => !!opt.disabled}
+                                onChange={onChange}
+                                aria-invalid={!!error}
+                                aria-describedby={errorId}
+                                aria-errormessage={errorId}
+                                noOptionsMessage={localMessages.noOptionsMessage}
+                                ariaLiveMessages={localMessages.ariaLiveMessages}
+                                screenReaderStatus={localMessages.screenReaderStatus}
+                                loadingMessage={localMessages.loadingMessage}
+                                tabIndex={tabIndex}
+                                required={required}
+                            />
+                        )}
+                    />
+                ) : (
+                    <ReactSelect<IOption<T>, boolean, GroupBase<IOption<T>>>
+                        inputId={id}
+                        aria-label={label}
+                        name={name}
+                        value={value}
+                        defaultValue={defaultValue}
+                        placeholder={placeholder || ''}
+                        className={classNames('govuk-select', styles.reactSelect)}
+                        classNames={{ menuList: () => styles.reactSelectMenuList }}
+                        components={{ Option, Menu, Control, MultiValueRemove: getMultiValueRemove(t) }}
+                        options={options}
+                        styles={selectStyles<IOption<T>>()}
+                        unstyled
+                        menuPosition={menuPosition}
+                        isDisabled={disabled}
+                        isMulti={isMulti}
+                        onBlur={onBlur}
+                        isClearable={isClearable}
+                        isSearchable={isSearchable}
+                        isOptionDisabled={(opt) => !!opt.disabled}
+                        onChange={onChange}
+                        aria-invalid={!!error}
+                        aria-describedby={errorId}
+                        aria-errormessage={errorId}
+                        noOptionsMessage={localMessages.noOptionsMessage}
+                        ariaLiveMessages={localMessages.ariaLiveMessages}
+                        screenReaderStatus={localMessages.screenReaderStatus}
+                        loadingMessage={localMessages.loadingMessage}
+                        tabIndex={tabIndex}
+                        required={required}
+                    />
+                )}
                 {correct && <img src={GreenCheckMarkIcon} className={isClearable ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />}
             </div>
         </div>
