@@ -4,7 +4,7 @@ import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectP
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
 import {
     useInvalidateCiHistoryListCache,
-    useInvalidateCiNeighboursWithAllRelsCache,
+    useInvalidateCiNeighboursWithAllRelsCacheByUuid,
     useInvalidateRelationsCountCache,
 } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
@@ -101,7 +101,7 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
         isProcessedError,
         isTooManyFetchesError,
     } = useGetStatus()
-    const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCache(entityId)
+    const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCacheByUuid(entityId)
     const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
     const invalidateRelationsCountCache = useInvalidateRelationsCountCache()
 

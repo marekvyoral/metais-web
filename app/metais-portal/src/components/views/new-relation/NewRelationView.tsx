@@ -8,7 +8,7 @@ import {
     SimpleSelect,
     TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { ConfigurationItemUi, useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemUi, GraphRequestUi, useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
@@ -16,8 +16,8 @@ import { JOIN_OPERATOR, metaisEmail } from '@isdd/metais-common/constants'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import classNames from 'classnames'
-import React, { useEffect, useState } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
+import React, { useEffect, useMemo, useState } from 'react'
+import { FieldErrors, FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { MultiValue } from 'react-select'
@@ -28,18 +28,26 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import {
     useInvalidateCiHistoryListCache,
-    useInvalidateCiNeighboursWithAllRelsCache,
+    useInvalidateCiNeighboursWithAllRelsCacheByUuid,
     useInvalidateRelationsCountCache,
 } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
+import { Stepper } from '@isdd/idsk-ui-kit/stepper/Stepper'
+import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
+import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import styles from './newRelationView.module.scss'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
-import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits } from '@/components/create-entity/createEntityHelpers'
+import {
+    findAttributeConstraint,
+    getAttributeInputErrorMessage,
+    getAttributeUnits,
+    getAttributesInputErrorMessage,
+} from '@/components/create-entity/createEntityHelpers'
 import { SelectCiItem } from '@/components/select-ci-item/SelectCiItem'
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/hooks/useNewCiRelation.hook'
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
@@ -73,6 +81,7 @@ export const NewRelationView: React.FC<Props> = ({
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
+    const [sections, setSections] = useState<ISection[]>([])
 
     const ability = useAbilityContext()
     const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
@@ -88,15 +97,17 @@ export const NewRelationView: React.FC<Props> = ({
 
     const relatedListAsSources = relationData?.relatedListAsSources
     const relatedListAsTargets = relationData?.relatedListAsTargets
-    const constraintsData = relationData?.constraintsData ?? []
+
+    const constraintsData = useMemo(() => {
+        return relationData?.constraintsData ?? []
+    }, [relationData?.constraintsData])
+
     const unitsData = relationData?.unitsData
 
     const { register, handleSubmit: handleFormSubmit, formState, setValue, clearErrors, trigger, control } = useForm()
     const relationSchema = relationData?.relationTypeData
-    const relationSchemaCombinedAttributes = [
-        ...(relationSchema?.attributes ?? []),
-        ...(relationSchema?.attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? []),
-    ]
+
+    const relationSchemaCombinedAttributes = [...(relationSchema?.attributes ?? [])]
 
     const existingRelations = relationData?.readRelationShipsData
 
@@ -151,7 +162,7 @@ export const NewRelationView: React.FC<Props> = ({
     } = useGetStatus()
 
     const invalidateRelationsCountCache = useInvalidateRelationsCountCache()
-    const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCache(entityId)
+    const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCacheByUuid(entityId)
     const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
 
     const onStoreGraphSuccess = () => {
@@ -177,6 +188,7 @@ export const NewRelationView: React.FC<Props> = ({
 
     const handleSubmit = (formData: FieldValues) => {
         setHasMutationError(false)
+
         const splittedFormData = Object.keys(formData)
             .map((key) => key.split(JOIN_OPERATOR))
             .map((item) => ({ name: item[0], id: item[1] }))
@@ -185,28 +197,47 @@ export const NewRelationView: React.FC<Props> = ({
             relationData?.relatedListAsTargets &&
             relationData?.relatedListAsTargets.find((data) => data.relationshipTypeTechnicalName === selectedRelationTypeTechnicalName)
 
+        const profileAtt: Attribute[] = []
+
+        const first =
+            selectedItems && Array.isArray(selectedItems)
+                ? selectedItems.map((item: ConfigurationItemUi) => {
+                      relationSchema?.attributeProfiles && Array.isArray(relationSchema?.attributeProfiles)
+                          ? relationSchema?.attributeProfiles.map((profile: AttributeProfile) => {
+                                profile.attributes?.map((att: Attribute) => {
+                                    profileAtt.push({
+                                        ...splittedFormData
+                                            .filter((key) => key.name === att.technicalName ?? '')
+                                            .map((key) => ({ name: key.name, value: formData[key.name + JOIN_OPERATOR + key.id] }))[0],
+                                    })
+                                })
+                            })
+                          : []
+
+                      return {
+                          type: selectedRelationTypeTechnicalName,
+                          attributes: [
+                              ...splittedFormData
+                                  .filter((key) => key.id == item.uuid)
+                                  .map((key) => ({ name: key.name, value: formData[key.name + JOIN_OPERATOR + key.id] })),
+                              ...profileAtt,
+                          ],
+                          //uuid of picked entities
+                          startUuid: isRelatedEntityAsTarget ? entityId : item.uuid,
+                          //id of current entity
+                          endUuid: isRelatedEntityAsTarget ? item.uuid : entityId,
+                          //from getGroup Api
+                          owner: ownerGid,
+                          uuid: uuidV4(),
+                      }
+                  })
+                : []
+
         const data = {
             storeSet: {
-                relationshipSet:
-                    selectedItems && Array.isArray(selectedItems)
-                        ? selectedItems.map((item: ConfigurationItemUi) => ({
-                              type: selectedRelationTypeTechnicalName,
-                              attributes: [
-                                  ...splittedFormData
-                                      .filter((key) => key.id == item.uuid)
-                                      .map((key) => ({ name: key.name, value: formData[key.name + JOIN_OPERATOR + key.id] })),
-                              ],
-                              //uuid of picked entities
-                              startUuid: isRelatedEntityAsTarget ? entityId : item.uuid,
-                              //id of current entity
-                              endUuid: isRelatedEntityAsTarget ? item.uuid : entityId,
-                              //from getGroup Api
-                              owner: ownerGid,
-                              uuid: uuidV4(),
-                          }))
-                        : [],
+                relationshipSet: [...first],
             },
-        }
+        } as GraphRequestUi
 
         storeGraph.mutateAsync({ data })
     }
@@ -217,7 +248,85 @@ export const NewRelationView: React.FC<Props> = ({
         navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
     }
 
-    const sections: IAccordionSection[] =
+    const handleSectionOpen = (id: string) => {
+        setSections((prev) => prev.map((item) => (item.id === id ? { ...item, isOpen: !item.isOpen } : item)))
+    }
+
+    const openOrCloseAllSections = () => {
+        setSections((prev) => {
+            const allOpen = prev.every((item) => item.isOpen)
+            return prev.map((item) => ({ ...item, isOpen: !allOpen }))
+        })
+    }
+
+    const handleSectionBasedOnError = (errors: FieldErrors) => {
+        setSections((prev) =>
+            prev.map((section) => {
+                const isSectionError = Object.keys(errors).find((item) => item.includes(section.id ?? ''))
+                if (isSectionError) {
+                    return { ...section, isOpen: true, error: true }
+                }
+                return { ...section, error: false }
+            }),
+        )
+    }
+
+    useEffect(() => {
+        setSections(
+            relationSchema?.attributeProfiles && Array.isArray(relationSchema?.attributeProfiles)
+                ? relationSchema?.attributeProfiles?.map((profile: AttributeProfile, index) => {
+                      return {
+                          title: (i18n.language === Languages.SLOVAK ? profile.description : profile.engDescription) ?? profile.name ?? '',
+                          error: getAttributesInputErrorMessage(profile.attributes ?? [], formState.errors),
+                          stepLabel: { label: (index + 1).toString(), variant: 'circle' },
+                          id: profile.id ? profile.id.toString() : 'default_id',
+                          last: relationSchema?.attributeProfiles?.length === index + 1 ? true : false,
+                          content: profile.attributes?.map(
+                              (attribute) =>
+                                  attribute?.valid &&
+                                  !attribute.invisible && (
+                                      <AttributeInput
+                                          key={`${attribute?.id}+${profile.id}`}
+                                          attribute={attribute ?? {}}
+                                          register={register}
+                                          setValue={setValue}
+                                          clearErrors={clearErrors}
+                                          trigger={trigger}
+                                          isSubmitted={formState.isSubmitted}
+                                          error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
+                                          nameSufix={JOIN_OPERATOR + profile.id}
+                                          hasResetState={{ hasReset, setHasReset }}
+                                          constraints={findAttributeConstraint(
+                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                              //@ts-ignore
+                                              attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
+                                              constraintsData,
+                                          )}
+                                          unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                                          control={control}
+                                      />
+                                  ),
+                          ),
+                      }
+                  })
+                : [],
+        )
+    }, [
+        clearErrors,
+        constraintsData,
+        control,
+        formState.errors,
+        formState.isSubmitted,
+        hasReset,
+        i18n.language,
+        register,
+        relationSchema?.attributeProfiles,
+        setValue,
+        trigger,
+        unitsData,
+    ])
+
+    const sectionsNew: IAccordionSection[] =
         selectedItems && Array.isArray(selectedItems)
             ? selectedItems.map((item: ConfigurationItemUi) => ({
                   title: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
@@ -270,10 +379,20 @@ export const NewRelationView: React.FC<Props> = ({
                                       />
                                   ),
                           )}
+                          <Stepper
+                              subtitleTitle=""
+                              stepperList={sections}
+                              handleSectionOpen={handleSectionOpen}
+                              openOrCloseAllSections={openOrCloseAllSections}
+                          />
                       </>
                   ),
               }))
             : []
+
+    const onError = (errors: FieldErrors) => {
+        handleSectionBasedOnError(errors)
+    }
 
     return (
         <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading} error={false} withChildren>
@@ -294,7 +413,6 @@ export const NewRelationView: React.FC<Props> = ({
                 selectedOrg={publicAuthorityState.selectedPublicAuthority}
                 ciRoles={relationData?.relationTypeData?.roleList ?? []}
             />
-
             <SimpleSelect
                 isClearable={false}
                 label={t('newRelation.selectRelType')}
@@ -304,7 +422,6 @@ export const NewRelationView: React.FC<Props> = ({
                 onChange={(val) => setSelectedRelationTypeTechnicalName(val ?? '')}
                 error={!canCreateRelationType ? t('newRelation.wrongRoleRelTypeError') : ''}
             />
-
             <SelectCiItem
                 ciType={tabName}
                 isOpen={isOpen}
@@ -315,8 +432,8 @@ export const NewRelationView: React.FC<Props> = ({
                 existingRelations={existingRelations}
             />
 
-            {selectedItems && Array.isArray(selectedItems) && selectedItems.length > 0 && <AccordionContainer sections={sections} />}
-            <form onSubmit={handleFormSubmit(handleSubmit)} noValidate>
+            <form onSubmit={handleFormSubmit(handleSubmit, onError)} noValidate>
+                {selectedItems && Array.isArray(selectedItems) && selectedItems.length > 0 && <AccordionContainer sections={sectionsNew} />}
                 {hasMutationError && (
                     <ErrorBlock
                         errorTitle={t('newRelation.errorTitle')}

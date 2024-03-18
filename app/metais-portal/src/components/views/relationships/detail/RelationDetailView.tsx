@@ -2,13 +2,17 @@ import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useState } from 'react'
+import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback, formatRowValueByRowType } from '@isdd/metais-common/index'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { INVALIDATED } from '@isdd/metais-common/constants'
 import { useQueryClient } from '@tanstack/react-query'
 import { getReadRelationshipQueryKey, useStoreRelationship } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
+import { AttributeAttributeTypeEnum, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Languages } from '@isdd/metais-common/localization/languages'
+import { Stepper } from '@isdd/idsk-ui-kit/stepper/Stepper'
 
 import { RelationDetailEditForm } from './RelationDetailEditForm'
 
@@ -23,8 +27,9 @@ type Props = RelationDetailProps & {
 }
 
 export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId, entityId, data, isLoading, isError, refetchRelationship }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const navigate = useNavigate()
+    const [sections, setSections] = useState<ISection[]>([])
     const { ownerData, relationTypeData, relationshipData, ciSourceData, ciTargetData, constraintsData, unitsData } = data
     const isInvalidated = relationshipData?.metaAttributes?.state === INVALIDATED
 
@@ -45,6 +50,57 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
             },
         },
     })
+
+    const handleSectionOpen = (id: string) => {
+        setSections((prev) => prev.map((item) => (item.id === id ? { ...item, isOpen: !item.isOpen } : item)))
+    }
+
+    const openOrCloseAllSections = () => {
+        setSections((prev) => {
+            const allOpen = prev.every((item) => item.isOpen)
+            return prev.map((item) => ({ ...item, isOpen: !allOpen }))
+        })
+    }
+
+    useEffect(() => {
+        setSections(
+            relationTypeData?.attributeProfiles && Array.isArray(relationTypeData?.attributeProfiles)
+                ? relationTypeData?.attributeProfiles?.map((profile: AttributeProfile, index) => {
+                      return {
+                          title: (i18n.language === Languages.SLOVAK ? profile.description : profile.engDescription) ?? profile.name ?? '',
+                          //error: getAttributesInputErrorMessage(profile.attributes ?? [], formState.errors),
+                          stepLabel: { label: (index + 1).toString(), variant: 'circle' },
+                          id: profile.id ? profile.id.toString() : 'default_id',
+                          last: relationTypeData?.attributeProfiles?.length === index + 1 ? true : false,
+                          content: profile.attributes?.map((attribute) => {
+                              const value = relationshipData?.attributes?.find((relAttr) => relAttr.name === attribute.technicalName)?.value ?? ''
+
+                              const constraint = constraintsData
+                                  ?.find((c) => c?.enumItems?.find((e) => e?.code === value.toString()))
+                                  ?.enumItems?.find((e) => e?.code === value.toString())?.value
+
+                              return (
+                                  attribute?.valid &&
+                                  !attribute.invisible && (
+                                      <InformationGridRow
+                                          key={attribute.technicalName}
+                                          label={attribute.name ?? ''}
+                                          value={
+                                              attribute.type === AttributeAttributeTypeEnum.STRING
+                                                  ? constraint
+                                                      ? constraint
+                                                      : value.toString()
+                                                  : formatRowValueByRowType({ attribute, rowValue: value.toString(), t, unitsData })
+                                          }
+                                      />
+                                  )
+                              )
+                          }),
+                      }
+                  })
+                : [],
+        )
+    }, [relationTypeData?.attributeProfiles, i18n.language, relationshipData?.attributes, constraintsData, t, unitsData, ciSourceData])
 
     return (
         <>
@@ -130,20 +186,14 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                     {!isEditable && (
                         <>
                             <DefinitionList>
-                                {relationTypeData?.attributes
-                                    ?.concat(relationTypeData?.attributeProfiles?.flatMap((profile) => profile.attributes ?? []) ?? [])
-                                    .map((attribute) => {
-                                        const value = relationshipData?.attributes?.find((relAttr) => relAttr.name === attribute.technicalName)?.value
-                                        return (
-                                            <InformationGridRow
-                                                key={attribute.technicalName}
-                                                label={attribute.name ?? ''}
-                                                //cause of bad generated type
-                                                value={typeof value == 'string' ? value : ''}
-                                            />
-                                        )
-                                    })}
+                                <Stepper
+                                    subtitleTitle=""
+                                    stepperList={sections}
+                                    handleSectionOpen={handleSectionOpen}
+                                    openOrCloseAllSections={openOrCloseAllSections}
+                                />
                             </DefinitionList>
+
                             <Button variant="secondary" label={t('relationDetail.back')} onClick={() => navigate(`/ci/${entityName}/${entityId}`)} />
                         </>
                     )}

@@ -41,6 +41,7 @@ interface IFileUpload {
 
 export interface IFileUploadRef {
     startUploading: () => void
+    setCustomMeta: (fileNewMetaAttributes: { 'x-content-uuid': string; refAttributes: Blob }) => void
     cancelImport: () => void
     getFilesToUpload: () => FileUploadData[]
     fileUuidsMapping: () => React.MutableRefObject<{
@@ -117,6 +118,19 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             refType: refType,
         })
 
+        const getNewMeta = useCallback(
+            (fileNewMetaAttributes: Record<string, unknown>, file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => {
+                const metaAttrs = { ...fileNewMetaAttributes }
+                if (!isUsingUuidInFilePath) {
+                    const id = uuidV4()
+                    metaAttrs['x-content-uuid'] = id
+                    fileUuidsMapping.current[`${file?.id}`] = id
+                }
+                return metaAttrs
+            },
+            [isUsingUuidInFilePath],
+        )
+
         const [isLoading, setIsLoading] = useState<boolean>(false)
 
         useEffect(
@@ -175,6 +189,9 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             ref,
             () => {
                 return {
+                    setCustomMeta(fileNewMetaAttributes: { 'x-content-uuid': string; refAttributes: Blob }) {
+                        currentFiles.forEach((file) => uppy.setFileMeta(file.id, getNewMeta(fileNewMetaAttributes, file)))
+                    },
                     fileUuidsMapping() {
                         return fileUuidsMapping
                     },
@@ -215,7 +232,7 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
                     },
                 }
             },
-            [cancelImport, currentFiles, handleUpload, onUploadingStart, uploadFilesStatus],
+            [cancelImport, currentFiles, getNewMeta, handleUpload, onUploadingStart, uploadFilesStatus, uppy],
         )
 
         return (

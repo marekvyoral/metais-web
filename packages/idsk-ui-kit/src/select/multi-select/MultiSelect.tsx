@@ -1,5 +1,5 @@
 import React from 'react'
-import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
+import { Control, UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 import { MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
 
 import { IOption, Select } from '@isdd/idsk-ui-kit/select/Select'
@@ -17,6 +17,8 @@ interface ISelectProps<T> {
     setValue?: UseFormSetValue<any>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     clearErrors?: UseFormClearErrors<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    control?: Control<any>
     defaultValue?: string[]
     value?: string[]
     error?: string
@@ -50,6 +52,7 @@ export const MultiSelect = <T,>({
     onBlur,
     isClearable,
     menuPosition,
+    control,
 }: ISelectProps<T>) => {
     const handleOnChange = (selectedOption: MultiValue<IOption<T>> | SingleValue<IOption<T>>) => {
         const values: string[] = Array.isArray(selectedOption) ? selectedOption?.map((opt) => opt.value) : []
@@ -68,6 +71,7 @@ export const MultiSelect = <T,>({
     }
     return (
         <Select
+            control={control}
             required={required}
             id={id}
             name={name}
