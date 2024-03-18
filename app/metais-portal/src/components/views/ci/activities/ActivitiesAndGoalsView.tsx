@@ -59,7 +59,7 @@ export const ActivitiesAndGoalsView: React.FC<IView> = ({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (ctx) => (
-                <Link to={`${NavigationSubRoutes.AKTIVITA}/${ctx?.row.original.uuid}`} state={{ from: location }}>
+                <Link to={`${NavigationSubRoutes.CIEL}/${ctx?.row.original.uuid}`} state={{ from: location }}>
                     {ctx?.getValue?.() as string}
                 </Link>
             ),

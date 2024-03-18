@@ -101,7 +101,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
     const [showApprove, setShowApprove] = useState<boolean>(false)
     const [showRevalidate, setRevalidate] = useState<boolean>(false)
     const [showReturnToWorkout, setShowReturnToWorkout] = useState<boolean>(false)
-    const [isPdfDisabled, setIsPdfDisabled] = useState<boolean | undefined>(undefined)
+    const [isPdfDisabled, setIsPdfDisabled] = useState<boolean | undefined>(true)
     const [isLoadingApi, setIsLoadingApi] = useState<boolean>(false)
     const [isError, setIsError] = useState<boolean>(false)
     const [showWarning, setShowWarning] = useState<boolean>(false)
@@ -114,7 +114,8 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
         isLoading: isLoadingNeighbours,
         isError: isErrorNeighbours,
     } = useReadNeighboursConfigurationItems(entityId, { nodeType: 'Dokument', relationshipType: 'Dokument_sa_tyka_KRIS' })
-    const { data: dataKris, isLoading: isLoadingKris } = useGetKris(entityData?.uuid ?? '')
+    const { data: dataKris, isLoading: isLoadingGetKris } = useGetKris(entityData?.uuid ?? '', { query: { enabled: !!user } })
+    const isLoadingKris = !!user && isLoadingGetKris
     const { data: isOwnerByGid } = useIsOwnerByGid(
         {
             gids: [entityData?.metaAttributes?.owner ?? ''],
@@ -436,11 +437,13 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
         const fetchDisabledStatus = async () => {
             const newCi = (await refetchCi()).data
 
-            const status = await disableGeneratePdf(newCi)
-            setIsPdfDisabled(status)
+            if (user) {
+                const status = await disableGeneratePdf(newCi)
+                setIsPdfDisabled(status)
+            }
         }
         fetchDisabledStatus()
-    }, [disableGeneratePdf, queryClient, refetchCi, updateButton])
+    }, [disableGeneratePdf, queryClient, refetchCi, updateButton, user])
 
     const isLoading = [isBulkLoading, isLoadingApi, isLoadingNeighbours, isLoadingDataPoRole, isLoadingKris].some((item) => item)
 
