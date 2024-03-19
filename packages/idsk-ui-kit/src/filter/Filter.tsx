@@ -30,7 +30,7 @@ type FilterProps<T extends FieldValues & IFilterParams> = {
     schema?: ObjectSchema<T & IFilterParams>
     onlySearch?: boolean
     onlyForm?: boolean
-    customReset?: () => void
+    customReset?: (resetFilters: () => void) => void
 }
 
 export const Filter = <T extends FieldValues & IFilterParams>({
@@ -80,7 +80,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
 
     const handleReset = useCallback(() => {
         if (customReset) {
-            customReset()
+            customReset(resetFilters)
         } else {
             resetFilters()
         }

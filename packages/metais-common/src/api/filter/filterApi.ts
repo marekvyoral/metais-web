@@ -1,6 +1,7 @@
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/src/types'
 import { FieldValues } from 'react-hook-form'
 
+import { IRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { CiListFilterContainerUi, NeighboursFilterContainerUi, NeighboursFilterUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
@@ -79,18 +80,20 @@ export const mapFilterToNeighborsApiWithTextSearch = <T>(
         sortType: sort?.[0]?.sortDirection,
     }
 }
-export const mapFilterToRelationApi = (filter: INeighboursFilter, defaultApiFilter?: NeighboursFilterContainerUi): NeighboursFilterContainerUi => {
+
+export const mapFilterToRelationApi = (filter: INeighboursFilter, defaultApiFilter?: IRelationshipTabFilters): NeighboursFilterContainerUi => {
     const { pageNumber, pageSize, sort } = filter
     const currentNeighboursFilter = filter.neighboursFilter
+
     const neighboursFilter: NeighboursFilterUi = {
         ciType:
             currentNeighboursFilter?.ciType && currentNeighboursFilter.ciType.length > 0
                 ? currentNeighboursFilter.ciType
-                : defaultApiFilter?.neighboursFilter?.ciType,
+                : defaultApiFilter?.neighboursFilter?.ciType.map((item) => item.value),
         relType:
             currentNeighboursFilter?.relType && currentNeighboursFilter.relType.length > 0
                 ? currentNeighboursFilter.relType
-                : defaultApiFilter?.neighboursFilter?.relType,
+                : defaultApiFilter?.neighboursFilter?.relType.map((item) => item.value),
         metaAttributes: {
             state:
                 currentNeighboursFilter?.metaAttributes?.state && currentNeighboursFilter.metaAttributes.state.length > 0
@@ -99,6 +102,7 @@ export const mapFilterToRelationApi = (filter: INeighboursFilter, defaultApiFilt
         },
         fullTextSearch: filter.neighboursFilter?.fullTextSearch,
     }
+
     return {
         neighboursFilter,
         page: pageNumber,
