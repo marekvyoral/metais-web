@@ -2,17 +2,18 @@ import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback, formatRowValueByRowType } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback, pairEnumsToEnumValues } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { INVALIDATED } from '@isdd/metais-common/constants'
+import { DESCRIPTION, HTML_TYPE, INVALIDATED } from '@isdd/metais-common/constants'
 import { useQueryClient } from '@tanstack/react-query'
 import { getReadRelationshipQueryKey, useStoreRelationship } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
-import { AttributeAttributeTypeEnum, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { Stepper } from '@isdd/idsk-ui-kit/stepper/Stepper'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 
 import { RelationDetailEditForm } from './RelationDetailEditForm'
 
@@ -73,11 +74,15 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                           id: profile.id ? profile.id.toString() : 'default_id',
                           last: relationTypeData?.attributeProfiles?.length === index + 1 ? true : false,
                           content: profile.attributes?.map((attribute) => {
-                              const value = relationshipData?.attributes?.find((relAttr) => relAttr.name === attribute.technicalName)?.value ?? ''
-
-                              const constraint = constraintsData
-                                  ?.find((c) => c?.enumItems?.find((e) => e?.code === value.toString()))
-                                  ?.enumItems?.find((e) => e?.code === value.toString())?.value
+                              const rowValue = pairEnumsToEnumValues({
+                                  attribute,
+                                  ciItemData: relationshipData,
+                                  constraintsData,
+                                  t,
+                                  unitsData,
+                                  matchedAttributeNamesToCiItem: undefined,
+                              })
+                              const isHTML = attribute.type === HTML_TYPE || attribute.name == DESCRIPTION
 
                               return (
                                   attribute?.valid &&
@@ -85,13 +90,7 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                                       <InformationGridRow
                                           key={attribute.technicalName}
                                           label={attribute.name ?? ''}
-                                          value={
-                                              attribute.type === AttributeAttributeTypeEnum.STRING
-                                                  ? constraint
-                                                      ? constraint
-                                                      : value.toString()
-                                                  : formatRowValueByRowType({ attribute, rowValue: value.toString(), t, unitsData })
-                                          }
+                                          value={isHTML ? <SafeHtmlComponent dirtyHtml={(rowValue as string)?.replace(/\n/g, '<br>')} /> : rowValue}
                                       />
                                   )
                               )
@@ -100,6 +99,7 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                   })
                 : [],
         )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [relationTypeData?.attributeProfiles, i18n.language, relationshipData?.attributes, constraintsData, t, unitsData, ciSourceData])
 
     return (
@@ -169,6 +169,25 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                             label={t('relationDetail.evidenceStatus')}
                             value={t(`metaAttributes.state.${relationshipData?.metaAttributes?.state}`)}
                         />
+                        {relationTypeData?.attributes?.map((attribute) => {
+                            const rowValue = pairEnumsToEnumValues({
+                                attribute,
+                                ciItemData: relationshipData,
+                                constraintsData,
+                                t,
+                                unitsData,
+                                matchedAttributeNamesToCiItem: undefined,
+                            })
+                            const isHTML = attribute.type === HTML_TYPE || attribute.name == DESCRIPTION
+
+                            return (
+                                <InformationGridRow
+                                    key={attribute.technicalName}
+                                    label={(i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName) ?? attribute.name ?? ''}
+                                    value={isHTML ? <SafeHtmlComponent dirtyHtml={(rowValue as string)?.replace(/\n/g, '<br>')} /> : rowValue}
+                                />
+                            )
+                        })}
                     </DefinitionList>
 
                     {isEditable && (
@@ -183,7 +202,7 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                         />
                     )}
 
-                    {!isEditable && (
+                    {!isEditable && sections.length > 0 && (
                         <>
                             <DefinitionList>
                                 <Stepper

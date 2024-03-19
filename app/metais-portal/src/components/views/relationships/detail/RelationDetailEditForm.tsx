@@ -193,7 +193,14 @@ export const RelationDetailEditForm: React.FC<Props> = ({
 
     return (
         <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
-            <Stepper subtitleTitle="" stepperList={sections} handleSectionOpen={handleSectionOpen} openOrCloseAllSections={openOrCloseAllSections} />
+            {sections.length > 0 && (
+                <Stepper
+                    subtitleTitle=""
+                    stepperList={sections}
+                    handleSectionOpen={handleSectionOpen}
+                    openOrCloseAllSections={openOrCloseAllSections}
+                />
+            )}
             <SubmitWithFeedback
                 submitButtonLabel={t('relationDetail.submit')}
                 loading={isEditLoading}
