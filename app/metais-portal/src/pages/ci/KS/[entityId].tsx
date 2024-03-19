@@ -23,7 +23,7 @@ import { RelationsListContainer } from '@/components/containers/RelationsListCon
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { EndOrApplicationServiceEntityIdHeader } from '@/components/views/ci/end-or-application-service/EndOrApplicationServiceEntityIdHeader'
 
-const AsEntityDetailPage: React.FC = () => {
+const KsEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId } = useGetEntityParamsFromUrl()
@@ -111,4 +111,4 @@ const AsEntityDetailPage: React.FC = () => {
     )
 }
 
-export default AsEntityDetailPage
+export default KsEntityDetailPage
