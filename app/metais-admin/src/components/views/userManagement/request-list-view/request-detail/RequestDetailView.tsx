@@ -46,7 +46,7 @@ export const RequestDetailView: React.FC<IRequestDetailProps> = ({
     const detailRows = [
         { label: t('managementList.firstName'), value: request?.identityFirstName },
         { label: t('managementList.lastName'), value: request?.identityLastName },
-        { label: t('managementList.displayName'), value: request?.name },
+        // { label: t('managementList.displayName'), value: request?.name },
         { label: t('managementList.loginEmail'), value: request?.identityLogin },
         // { label: t('managementList.email'), value: request?.email },
         { label: t('managementList.position'), value: request?.position },
