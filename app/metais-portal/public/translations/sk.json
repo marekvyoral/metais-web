@@ -1201,7 +1201,7 @@
             "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
             "reason": "Poznámka/Dôvod zmazania",
             "deleteFile": "Zmazanie",
-            "success": "Položky boli odoslané na spracovanie, prosím, počkajte na notifikáciu o odstránení dokumentov."
+            "success": "Položky boli úspešne odstránené"
         },
         "invalidate": {
             "title": "Zneplatnenie položky",
