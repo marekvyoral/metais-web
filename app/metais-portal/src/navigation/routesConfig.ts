@@ -847,6 +847,11 @@ export const routesConfig: RouteConfig[] = [
                 ],
             },
             {
+                path: RouterRoutes.ITVS_EXCEPTIONS_EDIT,
+                slug: RouterRoutes.ITVS_EXCEPTIONS_EDIT,
+                component: ITVSExceptionsEditPage,
+            },
+            {
                 path: RouterRoutes.WEBOVE_SIDLO_DETAIL,
                 slug: RouterRoutes.WEBOVE_SIDLO_DETAIL,
                 component: EntityDetailPage,
@@ -859,9 +864,9 @@ export const routesConfig: RouteConfig[] = [
                 ],
             },
             {
-                path: RouterRoutes.ITVS_EXCEPTIONS_EDIT,
-                slug: RouterRoutes.ITVS_EXCEPTIONS_EDIT,
-                component: ITVSExceptionsEditPage,
+                path: RouterRoutes.WEBOVE_SIDLO_CREATE,
+                slug: RouterRoutes.WEBOVE_SIDLO_CREATE,
+                component: CreateEntityPage,
             },
             {
                 path: LoginRouteNames.LOGIN_PROBLEMS,

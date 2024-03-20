@@ -98,7 +98,7 @@ export const ExistingFilesHandler = forwardRef<IExistingFilesHandlerRef, IExisti
                     <li key={file.fileId}>
                         <div>
                             <TextBody size="S">{`${file.fileName} (${formatBytes(
-                                attachmentsMetaData?.[file.fileId ?? ''].contentLength ?? 0,
+                                attachmentsMetaData?.[file.fileId ?? '']?.contentLength ?? 0,
                             )})`}</TextBody>
                         </div>
                         <TransparentButtonWrapper

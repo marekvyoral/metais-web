@@ -180,7 +180,7 @@
             "princip": "Princípy",
             "ciel": "Ciele",
             "aktivita": "Aktivity",
-            "krit": "Koncepty rozvoja IT",
+            "krit": "Koncepcia rozvoja IT",
             "registersList": "Zoznam referenčných registrov",
             "registersRequestsList": "Zoznam žiadostí o pridanie referenčného registra",
             "codelistsList": "Zoznam číselníkov",
@@ -1201,7 +1201,7 @@
             "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
             "reason": "Poznámka/Dôvod zmazania",
             "deleteFile": "Zmazanie",
-            "success": "Položky boli odoslané na spracovanie, prosím, počkajte na notifikáciu o odstránení dokumentov."
+            "success": "Položky boli úspešne odstránené"
         },
         "invalidate": {
             "title": "Zneplatnenie položky",
@@ -2459,7 +2459,7 @@
         "commitmentLabel": "Týmto prehlasujeme, že pri budovaní a rozvoji ITVS budeme napĺňať nami definované ciele, podciele a dodržiavať princípy Národnej koncepcie informatizácie verejnej správy.",
         "noCheckedItems": "Pred potvrdením záväzku dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy je potrebné vybrať aspoň jeden cieľ."
     },
-    "WeboveSidlo" : {
+    "WeboveSidlo": {
         "declarationLink": "Linka na stránku \"Vyhlásenie o prístupnosti\"",
         "declarationLinkTooltip": "Túto linku môžete použiť na webové sídlo pre zobrazenie dokumentu o prístupnosti."
     },

@@ -23,9 +23,18 @@ interface IDraftsListEditForm {
     onSubmit: (values: FieldValues) => void
     isError: boolean
     isLoading: boolean
+    onFileUploadFailed?: () => void
 }
 
-export const DraftsListEditForm = ({ defaultData, fileUploadRef, handleUploadSuccess, onSubmit, isError, isLoading }: IDraftsListEditForm) => {
+export const DraftsListEditForm = ({
+    defaultData,
+    fileUploadRef,
+    handleUploadSuccess,
+    onSubmit,
+    isError,
+    isLoading,
+    onFileUploadFailed,
+}: IDraftsListEditForm) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const {
@@ -89,6 +98,7 @@ export const DraftsListEditForm = ({ defaultData, fileUploadRef, handleUploadSuc
                         isUsingUuidInFilePath
                         refType={RefAttributesRefType.STANDARD_REQUEST}
                         onUploadSuccess={handleUploadSuccess}
+                        onFileUploadFailed={onFileUploadFailed}
                         refId={defaultData?.id?.toString()}
                     />
                 )}

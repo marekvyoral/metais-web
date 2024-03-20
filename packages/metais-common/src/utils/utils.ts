@@ -142,3 +142,4 @@ export const getHowToTranslate = (howToType: string, t: TFunction) => {
 
     return t(`${baseTranslate}${howToType}`)
 }
+export const transformJsonToArray = (jsonData = {}) => Object.entries(jsonData).map(([key, value]) => ({ name: key, value }))

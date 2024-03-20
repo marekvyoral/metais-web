@@ -33,11 +33,11 @@ import {
 } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
-import { Stepper } from '@isdd/idsk-ui-kit/stepper/Stepper'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import styles from './newRelationView.module.scss'
+import { RelationStepperWrapper } from './RelationStepperWrapper'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
@@ -81,12 +81,12 @@ export const NewRelationView: React.FC<Props> = ({
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
-    const [sections, setSections] = useState<ISection[]>([])
 
     const ability = useAbilityContext()
     const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
 
     const [hasReset, setHasReset] = useState(false)
+    const [hasErrors, setErrors] = useState<FieldErrors>({})
     const [hasMutationError, setHasMutationError] = useState(false)
     const location = useLocation()
 
@@ -208,7 +208,10 @@ export const NewRelationView: React.FC<Props> = ({
                                     profileAtt.push({
                                         ...splittedFormData
                                             .filter((key) => key.name === att.technicalName ?? '')
-                                            .map((key) => ({ name: key.name, value: formData[key.name + JOIN_OPERATOR + key.id] }))[0],
+                                            .map((key) => ({
+                                                name: key.name,
+                                                value: formData[key.name + JOIN_OPERATOR + key.id + JOIN_OPERATOR + item.uuid],
+                                            }))[0],
                                     })
                                 })
                             })
@@ -219,7 +222,7 @@ export const NewRelationView: React.FC<Props> = ({
                           attributes: [
                               ...splittedFormData
                                   .filter((key) => key.id == item.uuid)
-                                  .map((key) => ({ name: key.name, value: formData[key.name + JOIN_OPERATOR + key.id] })),
+                                  .map((key) => ({ name: key.name, value: formData[key.name + JOIN_OPERATOR + key.id + JOIN_OPERATOR + item.uuid] })),
                               ...profileAtt,
                           ],
                           //uuid of picked entities
@@ -248,150 +251,113 @@ export const NewRelationView: React.FC<Props> = ({
         navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
     }
 
-    const handleSectionOpen = (id: string) => {
-        setSections((prev) => prev.map((item) => (item.id === id ? { ...item, isOpen: !item.isOpen } : item)))
+    const getSections = (itemId: string): ISection[] => {
+        return relationSchema?.attributeProfiles && Array.isArray(relationSchema?.attributeProfiles)
+            ? relationSchema?.attributeProfiles?.map((profile: AttributeProfile, index) => {
+                  return {
+                      title: (i18n.language === Languages.SLOVAK ? profile.description : profile.engDescription) ?? profile.name ?? '',
+                      error: getAttributesInputErrorMessage(profile.attributes ?? [], formState.errors),
+                      stepLabel: { label: (index + 1).toString(), variant: 'circle' },
+                      id: itemId + JOIN_OPERATOR + profile.id,
+                      last: relationSchema?.attributeProfiles?.length === index + 1 ? true : false,
+                      isOpen: true,
+                      content: profile.attributes?.map(
+                          (attribute) =>
+                              attribute?.valid &&
+                              !attribute.invisible && (
+                                  <AttributeInput
+                                      key={`${attribute?.id}+${profile.id}+${itemId}`}
+                                      attribute={attribute ?? {}}
+                                      register={register}
+                                      setValue={setValue}
+                                      clearErrors={clearErrors}
+                                      trigger={trigger}
+                                      isSubmitted={formState.isSubmitted}
+                                      error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
+                                      nameSufix={JOIN_OPERATOR + profile.id + JOIN_OPERATOR + itemId}
+                                      hasResetState={{ hasReset, setHasReset }}
+                                      constraints={findAttributeConstraint(
+                                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                          //@ts-ignore
+                                          attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
+                                          constraintsData,
+                                      )}
+                                      unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                                      control={control}
+                                  />
+                              ),
+                      ),
+                  }
+              })
+            : []
     }
-
-    const openOrCloseAllSections = () => {
-        setSections((prev) => {
-            const allOpen = prev.every((item) => item.isOpen)
-            return prev.map((item) => ({ ...item, isOpen: !allOpen }))
-        })
-    }
-
-    const handleSectionBasedOnError = (errors: FieldErrors) => {
-        setSections((prev) =>
-            prev.map((section) => {
-                const isSectionError = Object.keys(errors).find((item) => item.includes(section.id ?? ''))
-                if (isSectionError) {
-                    return { ...section, isOpen: true, error: true }
-                }
-                return { ...section, error: false }
-            }),
-        )
-    }
-
-    useEffect(() => {
-        setSections(
-            relationSchema?.attributeProfiles && Array.isArray(relationSchema?.attributeProfiles)
-                ? relationSchema?.attributeProfiles?.map((profile: AttributeProfile, index) => {
-                      return {
-                          title: (i18n.language === Languages.SLOVAK ? profile.description : profile.engDescription) ?? profile.name ?? '',
-                          error: getAttributesInputErrorMessage(profile.attributes ?? [], formState.errors),
-                          stepLabel: { label: (index + 1).toString(), variant: 'circle' },
-                          id: profile.id ? profile.id.toString() : 'default_id',
-                          last: relationSchema?.attributeProfiles?.length === index + 1 ? true : false,
-                          content: profile.attributes?.map(
-                              (attribute) =>
-                                  attribute?.valid &&
-                                  !attribute.invisible && (
-                                      <AttributeInput
-                                          key={`${attribute?.id}+${profile.id}`}
-                                          attribute={attribute ?? {}}
-                                          register={register}
-                                          setValue={setValue}
-                                          clearErrors={clearErrors}
-                                          trigger={trigger}
-                                          isSubmitted={formState.isSubmitted}
-                                          error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
-                                          nameSufix={JOIN_OPERATOR + profile.id}
-                                          hasResetState={{ hasReset, setHasReset }}
-                                          constraints={findAttributeConstraint(
-                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                              //@ts-ignore
-                                              attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
-                                              constraintsData,
-                                          )}
-                                          unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
-                                          control={control}
-                                      />
-                                  ),
-                          ),
-                      }
-                  })
-                : [],
-        )
-    }, [
-        clearErrors,
-        constraintsData,
-        control,
-        formState.errors,
-        formState.isSubmitted,
-        hasReset,
-        i18n.language,
-        register,
-        relationSchema?.attributeProfiles,
-        setValue,
-        trigger,
-        unitsData,
-    ])
 
     const sectionsNew: IAccordionSection[] =
         selectedItems && Array.isArray(selectedItems)
-            ? selectedItems.map((item: ConfigurationItemUi) => ({
-                  title: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
-                  summary: (
-                      <ButtonGroupRow key={item.uuid} className={styles.accordionButtonDiv}>
-                          <ButtonLink
-                              label={t('newRelation.detailButton')}
-                              className={classNames(styles.buttonLink, styles.blue)}
-                              onClick={() => {
-                                  window.open(`/ci/${tabName}/${item.uuid}`, '_blank')
-                              }}
-                          />
-                          <ButtonLink
-                              label={t('newRelation.deleteButton')}
-                              className={classNames(styles.buttonLink, styles.red)}
-                              onClick={() =>
-                                  setSelectedItems((prev: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | ColumnsOutputDefinition | null) =>
-                                      Array.isArray(prev) ? prev.filter((prevItem: ConfigurationItemUi) => prevItem.uuid !== item.uuid) : prev,
-                                  )
-                              }
-                          />
-                      </ButtonGroupRow>
-                  ),
-                  content: (
-                      <>
-                          {relationSchemaCombinedAttributes.map(
-                              (attribute) =>
-                                  attribute?.valid &&
-                                  !attribute.invisible && (
-                                      <AttributeInput
-                                          key={`${attribute?.id}+${item.uuid}`}
-                                          attribute={attribute ?? {}}
-                                          register={register}
-                                          setValue={setValue}
-                                          clearErrors={clearErrors}
-                                          trigger={trigger}
-                                          isSubmitted={formState.isSubmitted}
-                                          error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
-                                          nameSufix={JOIN_OPERATOR + item.uuid}
-                                          hint={attribute?.description}
-                                          hasResetState={{ hasReset, setHasReset }}
-                                          constraints={findAttributeConstraint(
-                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                              //@ts-ignore
-                                              attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
-                                              constraintsData,
-                                          )}
-                                          unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
-                                          control={control}
-                                      />
-                                  ),
-                          )}
-                          <Stepper
-                              subtitleTitle=""
-                              stepperList={sections}
-                              handleSectionOpen={handleSectionOpen}
-                              openOrCloseAllSections={openOrCloseAllSections}
-                          />
-                      </>
-                  ),
-              }))
+            ? selectedItems.map((item: ConfigurationItemUi) => {
+                  return {
+                      title: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+                      summary: (
+                          <ButtonGroupRow key={item.uuid} className={styles.accordionButtonDiv}>
+                              <ButtonLink
+                                  label={t('newRelation.detailButton')}
+                                  className={classNames(styles.buttonLink, styles.blue)}
+                                  onClick={() => {
+                                      window.open(`/ci/${tabName}/${item.uuid}`, '_blank')
+                                  }}
+                              />
+                              <ButtonLink
+                                  label={t('newRelation.deleteButton')}
+                                  className={classNames(styles.buttonLink, styles.red)}
+                                  onClick={() =>
+                                      setSelectedItems(
+                                          (prev: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | ColumnsOutputDefinition | null) =>
+                                              Array.isArray(prev)
+                                                  ? prev.filter((prevItem: ConfigurationItemUi) => prevItem.uuid !== item.uuid)
+                                                  : prev,
+                                      )
+                                  }
+                              />
+                          </ButtonGroupRow>
+                      ),
+                      content: (
+                          <>
+                              {relationSchemaCombinedAttributes.map(
+                                  (attribute) =>
+                                      attribute?.valid &&
+                                      !attribute.invisible && (
+                                          <AttributeInput
+                                              key={`${attribute?.id}+${item.uuid}`}
+                                              attribute={attribute ?? {}}
+                                              register={register}
+                                              setValue={setValue}
+                                              clearErrors={clearErrors}
+                                              trigger={trigger}
+                                              isSubmitted={formState.isSubmitted}
+                                              error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
+                                              nameSufix={JOIN_OPERATOR + item.uuid}
+                                              hint={attribute?.description}
+                                              hasResetState={{ hasReset, setHasReset }}
+                                              constraints={findAttributeConstraint(
+                                                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                  //@ts-ignore
+                                                  attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
+                                                  constraintsData,
+                                              )}
+                                              unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                                              control={control}
+                                          />
+                                      ),
+                              )}
+                              <RelationStepperWrapper data={getSections(item.uuid ?? '')} errors={hasErrors} />
+                          </>
+                      ),
+                  }
+              })
             : []
 
     const onError = (errors: FieldErrors) => {
-        handleSectionBasedOnError(errors)
+        setErrors(errors)
     }
 
     return (
