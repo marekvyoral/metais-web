@@ -3,7 +3,7 @@ import { DefinitionList } from '@isdd/metais-common/components/definition-list/D
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback, pairEnumsToEnumValues } from '@isdd/metais-common/index'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { DESCRIPTION, HTML_TYPE, INVALIDATED } from '@isdd/metais-common/constants'
@@ -31,6 +31,7 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
     const [sections, setSections] = useState<ISection[]>([])
+    const scrollRef = useRef<HTMLDivElement>(null)
     const { ownerData, relationTypeData, relationshipData, ciSourceData, ciTargetData, constraintsData, unitsData } = data
     const isInvalidated = relationshipData?.metaAttributes?.state === INVALIDATED
 
@@ -48,6 +49,9 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
             onSuccess(_data, variables) {
                 setIsEditable(false)
                 queryClient.setQueryData(relationshipQueryKey, variables.data)
+            },
+            onSettled() {
+                scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
             },
         },
     })
@@ -120,6 +124,7 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                 ]}
             />
             <MainContentWrapper>
+                <div ref={scrollRef} />
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
                         <CiEntityIdHeader
@@ -134,6 +139,7 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                             isRelation
                         />
                         <QueryFeedback loading={false} error={isError} />
+
                         <MutationFeedback
                             success={isEditSuccess}
                             error={isEditError}

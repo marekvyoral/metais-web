@@ -11,6 +11,7 @@ import { FileUpload } from '@isdd/metais-common/components/FileUpload/FileUpload
 import { formatTitleString } from '@isdd/metais-common/utils/utils'
 import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 import { DateInput, DateTypeEnum } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { useNavigate } from 'react-router-dom'
 
 import styles from './createEditView.module.scss'
 import { MeetingFormEnum, createMeetingSchema, editMeetingSchema } from './meetingSchema'
@@ -30,7 +31,6 @@ import { LinksImport } from '@/components/LinksImport/LinksImport'
 
 export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
     onSubmit,
-    goBack,
     infoData,
     isEdit,
     isLoading,
@@ -42,6 +42,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
     id,
 }) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const titleDetailName = infoData?.name ? `- ${infoData?.name}` : ''
     document.title = formatTitleString(`${isEdit ? t('meetings.editMeeting') : t('meetings.addNewMeeting')} ${titleDetailName}`)
 
@@ -94,8 +95,8 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
                 })) || [],
             [MeetingFormEnum.GROUP]: infoData?.groups || [],
             [MeetingFormEnum.NAME]: infoData?.name || '',
-            [MeetingFormEnum.BEGIN_DATE]: formatDateTimeForDefaultValue(infoData?.beginDate ?? '', 'HH:mm'),
-            [MeetingFormEnum.END_DATE]: formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'),
+            [MeetingFormEnum.BEGIN_DATE]: formatDateTimeForDefaultValue(infoData?.beginDate ?? ''),
+            [MeetingFormEnum.END_DATE]: formatDateTimeForDefaultValue(infoData?.endDate ?? ''),
             [MeetingFormEnum.PLACE]: infoData?.place || '',
             [MeetingFormEnum.MEETING_LINKS]:
                 infoData?.meetingLinks?.map((link) => ({
@@ -228,7 +229,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
                                     label={`${t('meetings.end')} (${t('meetings.mandatory')}):`}
                                     id={MeetingFormEnum.END_DATE}
                                     error={errors[MeetingFormEnum.END_DATE]?.message}
-                                    {...register(MeetingFormEnum.END_DATE, { value: formatDateTimeForAPI(infoData?.beginDate ?? '') })}
+                                    {...register(MeetingFormEnum.END_DATE, { value: formatDateTimeForAPI(infoData?.endDate ?? '') })}
                                     control={control}
                                     setValue={setValue}
                                     type={DateTypeEnum.DATETIME}
@@ -304,7 +305,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
                             multiple
                             isUsingUuidInFilePath
                             refType={RefAttributesRefType.MEETING_REQUEST}
-                            refId={id}
+                            refId={id?.toString()}
                             onUploadSuccess={handleUploadSuccess}
                         />
                         {infoData?.meetingAttachments && infoData?.meetingAttachments.length > 0 && (
@@ -324,7 +325,12 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
                         {isEdit ? (
                             <>
                                 <ButtonGroupRow>
-                                    <Button label={t('form.cancel')} type="reset" variant="secondary" onClick={goBack} />
+                                    <Button
+                                        label={t('form.cancel')}
+                                        type="reset"
+                                        variant="secondary"
+                                        onClick={() => navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${infoData?.id}`)}
+                                    />
                                     <Button label={t('form.submit')} onClick={openModalReason} />
                                 </ButtonGroupRow>
                                 <MeetingReasonModal
@@ -339,7 +345,12 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
                         ) : (
                             <>
                                 <ButtonGroupRow>
-                                    <Button label={t('form.cancel')} type="reset" variant="secondary" onClick={goBack} />
+                                    <Button
+                                        label={t('form.cancel')}
+                                        type="reset"
+                                        variant="secondary"
+                                        onClick={() => navigate(NavigationSubRoutes.ZOZNAM_ZASADNUTI)}
+                                    />
                                     <Button label={t('form.submit')} type="submit" />
                                 </ButtonGroupRow>
                             </>

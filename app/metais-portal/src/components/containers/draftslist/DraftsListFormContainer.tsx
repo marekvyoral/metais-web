@@ -1,6 +1,11 @@
 import { Gui_Profil_Standardy } from '@isdd/metais-common/api'
 import { Group, useFindByUuid3 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { ApiStandardRequest, useGetStandardRequestDetail, useUpdateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
+import {
+    ApiStandardRequest,
+    getGetStandardRequestDetailQueryKey,
+    useGetStandardRequestDetail,
+    useUpdateStandardRequest,
+} from '@isdd/metais-common/api/generated/standards-swagger'
 import { Attribute, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { guiProfilStandardRequestMap } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
@@ -9,6 +14,8 @@ import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { v4 as uuidV4 } from 'uuid'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { mapUploadedFilesToApiAttachment } from '@/components/views/standardization/votes/VoteComposeForm/functions/voteEditFunc'
 
@@ -22,6 +29,7 @@ export interface IView {
     isError: boolean
     fileUploadRef: React.RefObject<IFileUploadRef>
     handleUploadSuccess: (data: FileUploadData[]) => void
+    onFileUploadFailed: () => void
     onSubmit: (values: FieldValues) => void
 }
 interface IReportsDetailContainer {
@@ -37,7 +45,8 @@ export const DraftsListFormContainer: React.FC<IReportsDetailContainer> = ({ ent
     const fileUploadRef = useRef<IFileUploadRef>(null)
 
     const [creatingFilesLoading, setCreatingFilesLoading] = useState(false)
-
+    const queryKey = getGetStandardRequestDetailQueryKey(Number(entityId))
+    const queryClient = useQueryClient()
     const handleUploadData = useCallback(() => {
         fileUploadRef.current?.startUploading()
     }, [])
@@ -48,9 +57,21 @@ export const DraftsListFormContainer: React.FC<IReportsDetailContainer> = ({ ent
         isLoading: isUpdateLoading,
     } = useUpdateStandardRequest({
         mutation: {
-            onSuccess: () => {
-                setCreatingFilesLoading(true)
+            onSuccess: (resp) => {
                 if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                    fileUploadRef.current?.setCustomMeta({
+                        'x-content-uuid': uuidV4(),
+                        refAttributes: new Blob(
+                            [
+                                JSON.stringify({
+                                    refType: 'STANDARD_REQUEST',
+                                    refStandardRequestId: resp.id,
+                                }),
+                            ],
+                            { type: 'application/json' },
+                        ),
+                    })
+                    setCreatingFilesLoading(true)
                     handleUploadData()
                 }
             },
@@ -96,8 +117,12 @@ export const DraftsListFormContainer: React.FC<IReportsDetailContainer> = ({ ent
 
     const handleUploadSuccess = () => {
         setCreatingFilesLoading(false)
-        setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV, additionalInfo: { type: 'edit' } })
-        navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV)
+        setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV + '/' + entityId, additionalInfo: { type: 'edit' } })
+        queryClient.invalidateQueries(queryKey)
+        navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV + '/' + entityId)
+    }
+    const onFileUploadFailed = () => {
+        setCreatingFilesLoading(false)
     }
 
     return (
@@ -108,6 +133,7 @@ export const DraftsListFormContainer: React.FC<IReportsDetailContainer> = ({ ent
             isLoading={isLoading}
             isError={isError}
             onSubmit={onSubmit}
+            onFileUploadFailed={onFileUploadFailed}
         />
     )
 }

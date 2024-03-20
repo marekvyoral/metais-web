@@ -39,7 +39,7 @@ const defaultColumns = [
 ]
 
 export const useGetRelationColumnData = (entityName: string, isSource: boolean) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const {
         state: { user },
@@ -161,7 +161,7 @@ export const useGetRelationColumnData = (entityName: string, isSource: boolean) 
                 )
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user])
+    }, [user, i18n.language])
 
     const restoreColumns = (): Promise<void> => {
         const defaultSelectedNames = relationDefaultSelectedColumns.filter((i) => i.selected).map((i) => i.technicalName)

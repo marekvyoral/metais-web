@@ -141,6 +141,7 @@ export enum RouterRoutes {
     ITVS_EXCEPTIONS_DETAIL = 'ci/OsobitnyPostup/:entityId',
     ITVS_EXCEPTIONS_EDIT = 'ci/OsobitnyPostup/:entityId/edit',
     WEBOVE_SIDLO_DETAIL = 'ci/WeboveSidlo/:entityId',
+    WEBOVE_SIDLO_CREATE = 'ci/WeboveSidlo/create',
     INTEGRATION_LIST = '/ci/Integracia',
     INTEGRATION_CREATE = '/ci/Integracia/create',
     INTEGRATION_EDIT = '/ci/Integracia/:entityId/edit',
