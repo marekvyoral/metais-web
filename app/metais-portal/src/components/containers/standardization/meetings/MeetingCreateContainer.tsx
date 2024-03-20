@@ -1,11 +1,12 @@
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FieldValues } from 'react-hook-form'
 import { useCreateMeeting } from '@isdd/metais-common/api/generated/standards-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { formatDateTimeForAPI } from '@isdd/metais-common/index'
+import { v4 as uuidV4 } from 'uuid'
 
 import { MeetingCreateEditView } from '@/components/views/standardization/meetings/MeetingCreateEditView'
 import { MeetingFormEnum } from '@/components/views/standardization/meetings/meetingSchema'
@@ -14,9 +15,7 @@ import { mapUploadedFilesToApiAttachment } from '@/components/views/standardizat
 export const MeetingCreateContainer: React.FC = () => {
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
-    const goBack = () => {
-        navigate(NavigationSubRoutes.ZOZNAM_ZASADNUTI)
-    }
+
     const fileUploadRef = useRef<IFileUploadRef>(null)
 
     const handleUploadData = useCallback(() => {
@@ -26,20 +25,36 @@ export const MeetingCreateContainer: React.FC = () => {
     const [meetingId, setMeetingId] = useState(0)
     const [creatingFilesLoading, setCreatingFilesLoading] = useState(false)
 
+    useEffect(() => {
+        if (meetingId != 0 && (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0)) {
+            setCreatingFilesLoading(true)
+            handleUploadData()
+        } else if (meetingId != 0) {
+            setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${meetingId}`, additionalInfo: { type: 'create' } })
+            navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${meetingId}`)
+        }
+    }, [handleUploadData, meetingId, navigate, setIsActionSuccess])
+
     const {
-        mutate: createMeeting,
+        mutateAsync: createMeeting,
         isLoading,
         isError,
     } = useCreateMeeting({
         mutation: {
             onSuccess(data) {
                 setMeetingId(data.id ?? 0)
-                setCreatingFilesLoading(true)
-                setTimeout(() => {
-                    if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
-                        handleUploadData()
-                    }
-                }, 100)
+                fileUploadRef.current?.setCustomMeta({
+                    'x-content-uuid': uuidV4(),
+                    refAttributes: new Blob(
+                        [
+                            JSON.stringify({
+                                refType: 'MEETING_REQUEST',
+                                refMeetingRequestId: data.id,
+                            }),
+                        ],
+                        { type: 'application/json' },
+                    ),
+                })
             },
         },
     })
@@ -71,20 +86,19 @@ export const MeetingCreateContainer: React.FC = () => {
     }
 
     const handleDeleteSuccess = () => {
-        setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_ZASADNUTI })
-        goBack()
+        setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${meetingId}`, additionalInfo: { type: 'create' } })
+        navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${meetingId}`)
     }
 
     const handleUploadSuccess = () => {
         setCreatingFilesLoading(false)
-        setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_ZASADNUTI })
-        goBack()
+        setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${meetingId}`, additionalInfo: { type: 'create' } })
+        navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${meetingId}`)
     }
 
     return (
         <MeetingCreateEditView
             onSubmit={onSubmit}
-            goBack={goBack}
             infoData={undefined}
             fileUploadRef={fileUploadRef}
             handleDeleteSuccess={handleDeleteSuccess}

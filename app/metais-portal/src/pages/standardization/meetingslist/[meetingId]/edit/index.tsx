@@ -12,7 +12,6 @@ const MeetingEditPage = () => {
             View={(props) => (
                 <MeetingCreateEditView
                     onSubmit={props.onSubmit}
-                    goBack={props.goBack}
                     infoData={props.infoData}
                     isLoading={props.isLoading}
                     isError={props.isError}

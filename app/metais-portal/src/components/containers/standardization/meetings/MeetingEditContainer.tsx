@@ -5,15 +5,16 @@ import {
     ApiAttachment,
     ApiLink,
     ApiMeetingRequest,
+    getGetMeetingRequestDetailQueryKey,
     useGetMeetingRequestDetail,
     useUpdateMeetingRequest,
 } from '@isdd/metais-common/api/generated/standards-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useQueryClient } from '@tanstack/react-query'
-import { GET_MEETING_REQUEST_DETAIL } from '@isdd/metais-common/constants'
 import { FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { formatDateTimeForAPI } from '@isdd/metais-common/index'
+import { v4 as uuidV4 } from 'uuid'
 
 import { MeetingCreateEditView } from '@/components/views/standardization/meetings/MeetingCreateEditView'
 import { MeetingFormEnum } from '@/components/views/standardization/meetings/meetingSchema'
@@ -33,7 +34,6 @@ export interface IMeetingForm {
 
 export interface IMeetingEditViewParams {
     onSubmit: (formData: FieldValues, attachments: ApiAttachment[]) => void
-    goBack: () => void
     infoData: ApiMeetingRequest | undefined
     isEdit?: boolean
     id?: string
@@ -54,11 +54,8 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
     const { data: infoData, isLoading: meetingDetailLoading, isError: meetingDetailError, refetch } = useGetMeetingRequestDetail(Number(id))
+    const infoQueryKey = getGetMeetingRequestDetailQueryKey(Number(id))[0]
     const queryClient = useQueryClient()
-
-    const goBack = () => {
-        navigate(NavigationSubRoutes.ZOZNAM_ZASADNUTI)
-    }
     const fileUploadRef = useRef<IFileUploadRef>(null)
     const existingFilesProcessRef = useRef<IExistingFilesHandlerRef>(null)
     const attachmentsDataRef = useRef<ApiAttachment[]>([])
@@ -79,10 +76,26 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
         isError: updateMeetingError,
     } = useUpdateMeetingRequest({
         mutation: {
-            onSuccess() {
-                setCreatingFilesLoading(true)
+            onSuccess(data) {
                 if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                    fileUploadRef.current?.setCustomMeta({
+                        'x-content-uuid': uuidV4(),
+                        refAttributes: new Blob(
+                            [
+                                JSON.stringify({
+                                    refType: 'MEETING_REQUEST',
+                                    refMeetingRequestId: data.id,
+                                }),
+                            ],
+                            { type: 'application/json' },
+                        ),
+                    })
+                    setCreatingFilesLoading(true)
                     handleUploadData()
+                } else {
+                    setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}`, additionalInfo: { type: 'update' } })
+                    queryClient.invalidateQueries([infoQueryKey])
+                    navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}`)
                 }
             },
         },
@@ -118,13 +131,12 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
             meetingRequestId: infoData?.id || 0,
         })
     }
-
     const handleDeleteSuccess = () => {
         refetch().then(() => {
             setDeletingFilesLoading(false)
             setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}` })
-            queryClient.invalidateQueries([GET_MEETING_REQUEST_DETAIL])
-            goBack()
+            queryClient.invalidateQueries([infoQueryKey])
+            navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}`)
         })
     }
 
@@ -138,8 +150,8 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
             refetch().then(() => {
                 setCreatingFilesLoading(false)
                 setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}` })
-                queryClient.invalidateQueries([GET_MEETING_REQUEST_DETAIL])
-                goBack()
+                queryClient.invalidateQueries([infoQueryKey])
+                navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${id}`)
             })
         }
     }
@@ -148,7 +160,6 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
         <MeetingCreateEditView
             id={id}
             onSubmit={onSubmit}
-            goBack={goBack}
             infoData={infoData}
             isEdit
             isLoading={isLoading || creatingFilesLoading || deletingFilesLoading}
