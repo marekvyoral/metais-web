@@ -1196,7 +1196,7 @@
             "newWindowText": "Show the whole list of instances and their relations (in new window)",
             "reason": "Note / Removal reason",
             "deleteFile": "Delete file",
-            "success": "Item was sent for processing, please wait for documents removal notification."
+            "success": "Items were successfully removed"
         },
         "invalidate": {
             "title": "Invalidate item",
