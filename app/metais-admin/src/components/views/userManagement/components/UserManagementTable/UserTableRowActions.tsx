@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
 import { IdentityState } from '@isdd/metais-common/api/generated/iam-swagger'
-import { UseMutationResult } from '@tanstack/react-query'
+import { UseMutateFunction, UseMutationResult } from '@tanstack/react-query'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import styles from './userManagementListTable.module.scss'
 
@@ -21,11 +22,23 @@ interface IUserTableRowActions {
         },
         unknown
     >
+    revokeUserBatchMutation: UseMutateFunction<
+        Response[],
+        unknown,
+        {
+            login: string
+            token: string | null
+        }[],
+        unknown
+    >
 }
 
-export const UserTableRowActions = ({ ctx, updateIdentityStateBatchMutation }: IUserTableRowActions) => {
+export const UserTableRowActions = ({ ctx, updateIdentityStateBatchMutation, revokeUserBatchMutation }: IUserTableRowActions) => {
     const navigate = useNavigate()
     const { t } = useTranslation()
+    const {
+        state: { token },
+    } = useAuth()
     return (
         <>
             <ButtonPopup
@@ -39,8 +52,11 @@ export const UserTableRowActions = ({ ctx, updateIdentityStateBatchMutation }: I
                                 onClick={() => {
                                     updateIdentityStateBatchMutation.mutate({
                                         uuids: [ctx.row.original.identity.uuid ?? ''],
-                                        activate: ctx.row.original.identity.state === 'BLOCKED',
+                                        activate: ctx.row.original.identity.state === IdentityState.BLOCKED,
                                     })
+                                    if (ctx.row.original.identity.state !== IdentityState.BLOCKED && ctx.row.original.identity.login) {
+                                        revokeUserBatchMutation([{ login: ctx.row.original.identity.login, token: token }])
+                                    }
                                     closePopup()
                                 }}
                                 label={

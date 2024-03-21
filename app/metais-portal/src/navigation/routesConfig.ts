@@ -10,8 +10,6 @@ import { IdentityTermsPage } from '@/pages/IdentityTermsPage'
 import { LoginProblemsPage } from '@/pages/LoginProblemsPage'
 import AsEntityDetailPage from '@/pages/ci/AS/[entityId]'
 import CloneASPage from '@/pages/ci/AS/[entityId]/clone'
-import ActivityEntityDetailPage from '@/pages/ci/Aktivita/[entityId]'
-import GoalEntityDetailPage from '@/pages/ci/Ciel/[entityId]'
 import { IntegrationLinkDetailPage } from '@/pages/ci/Integracia/[entityId]'
 import { IntegrationHarmonogram } from '@/pages/ci/Integracia/[entityId]/harmonogram'
 import { IntegrationLinkHistory } from '@/pages/ci/Integracia/[entityId]/history'
@@ -718,31 +716,9 @@ export const routesConfig: RouteConfig[] = [
                 component: TrainingInvitePage,
             },
             {
-                path: RouterRoutes.CI_GOAL_DETAIL,
-                slug: RouterRoutes.CI_GOAL_DETAIL,
-                component: GoalEntityDetailPage,
-                subRoutes: [generalCiDetailInformationOutlet],
-            },
-            {
-                path: RouterRoutes.CI_GOAL_CREATE,
-                slug: RouterRoutes.CI_GOAL_CREATE,
-                component: CreateEntityPage,
-            },
-            {
-                path: RouterRoutes.CI_ACTIVITY_DETAIL,
-                slug: RouterRoutes.CI_ACTIVITY_DETAIL,
-                component: ActivityEntityDetailPage,
-                subRoutes: [generalCiDetailInformationOutlet],
-            },
-            {
                 path: RouterRoutes.CI_KRIS_LIST,
                 slug: RouterRoutes.CI_KRIS_LIST,
                 component: KRISListPage,
-            },
-            {
-                path: RouterRoutes.CI_ACTIVITY_CREATE,
-                slug: RouterRoutes.CI_ACTIVITY_CREATE,
-                component: CreateEntityPage,
             },
             {
                 path: RouterRoutes.CI_KRIS_DETAIL,

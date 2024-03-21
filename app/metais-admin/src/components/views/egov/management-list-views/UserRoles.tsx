@@ -51,9 +51,9 @@ export const UserRoles: React.FC<IUserRoles> = ({ userOrganizations }) => {
 
     const sections =
         uniqueUserOrg?.map((org) => ({
-            title: `${org.orgName} ${org.orgStreet ? '- ' + org.orgStreet : ''} ${org.orgNumber ? org.orgNumber + ',' : ''} ${org.orgZIP ?? ''} ${
-                org.orgVillage ?? ''
-            }`,
+            title: `${org.orgName ?? ''} ${org.orgStreet ? '- ' + org.orgStreet : ''} ${org.orgNumber ? org.orgNumber + ',' : ''} ${
+                org.orgZIP ?? ''
+            } ${org.orgVillage ?? ''}`,
             summary: null,
             content: <Table<RoleTable> data={getDataForUserRolesTable(userOrganizations, org)} columns={roleColumns} />,
         })) ?? []

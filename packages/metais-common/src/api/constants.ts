@@ -103,6 +103,7 @@ export enum ATTRIBUTE_NAME {
     Profil_Skolenie = 'Profil_Skolenie',
     Profil_Skolenie_pocet_volnych_miest = 'Profil_Skolenie_pocet_volnych_miest',
     Profil_Skolenie_pocet_miest = 'Profil_Skolenie_pocet_miest',
+    Profil_Skolenie_zaciatok = 'Profil_Skolenie_zaciatok',
 }
 
 export enum ATTRIBUTE_PROFILE_NAME {

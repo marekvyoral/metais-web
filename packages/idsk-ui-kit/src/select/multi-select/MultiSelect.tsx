@@ -20,7 +20,7 @@ interface ISelectProps<T> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control?: Control<any>
     defaultValue?: string[]
-    value?: string[]
+    value?: string[] | null
     error?: string
     info?: string
     correct?: boolean

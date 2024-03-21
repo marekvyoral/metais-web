@@ -11,7 +11,6 @@ import {
 import { FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useInvalidateVoteCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -19,6 +18,7 @@ import { getErrorTranslateKey } from '@isdd/metais-common/utils/errorMapper'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useInvalidateVoteCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { IVoteEditView } from '@/components/views/standardization/votes/VoteComposeForm/VoteComposeFormView'
@@ -84,12 +84,18 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
         mutation: {
             onSuccess: (data: ApiVote) => {
                 setVoteId(data.id ?? 0)
-                setCreatingFilesLoading(true)
                 setTimeout(() => {
                     if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                        setCreatingFilesLoading(true)
                         handleUploadData()
                     }
                 }, 100)
+                setIsActionSuccess({
+                    value: true,
+                    path: NavigationSubRoutes.ZOZNAM_HLASOV,
+                    additionalInfo: { type: isNewVote ? 'create' : 'edit' },
+                })
+                navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV}`, { state: { from: location } })
             },
         },
     })
@@ -118,9 +124,16 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
         mutation: {
             onSuccess: () => {
                 invalidateVoteDetailCache.invalidate(voteId)
-                setCreatingFilesLoading(true)
                 if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                    setCreatingFilesLoading(true)
                     handleUploadData()
+                } else {
+                    setIsActionSuccess({
+                        value: true,
+                        path: NavigationSubRoutes.ZOZNAM_HLASOV,
+                        additionalInfo: { type: isNewVote ? 'create' : 'edit' },
+                    })
+                    navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV}`, { state: { from: location } })
                 }
             },
         },
@@ -230,6 +243,7 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
                             loading={isLoading}
                             error={isError}
                             indicatorProps={{ layer: 'parent', transparentMask: false, label: getLoaderLabel() }}
+                            withChildren
                         >
                             <View
                                 user={user.user}
