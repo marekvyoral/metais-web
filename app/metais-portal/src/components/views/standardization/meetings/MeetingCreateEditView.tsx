@@ -351,7 +351,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
                                         variant="secondary"
                                         onClick={() => navigate(NavigationSubRoutes.ZOZNAM_ZASADNUTI)}
                                     />
-                                    <Button label={t('form.submit')} type="submit" />
+                                    <Button label={t('meetings.form.createBtn')} type="submit" />
                                 </ButtonGroupRow>
                             </>
                         )}
