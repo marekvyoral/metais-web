@@ -10,3 +10,19 @@
         flex-direction: column;
     }
 }
+
+.buttonContainerSection {
+    justify-content: flex-start;
+}
+
+.text {
+    overflow-y: visible !important;
+    overflow-x: visible !important;
+    margin-bottom: 0 !important;
+}
+
+.textWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
