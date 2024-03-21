@@ -1,14 +1,14 @@
 import { AccordionContainer, CheckBox, SelectLazyLoading, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Row } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Row } from '@tanstack/react-table'
-import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
-import styles from './userView.module.scss'
-import { SelectableColumnsSpec } from './userManagementUtils'
 import { UserRolesEditable } from './UserRolesEditable'
 import { formatOrgData, getDefaultRolesKeys, getUniqueUserOrg, useGetLoadOptions } from './managementListHelpers'
+import { SelectableColumnsSpec } from './userManagementUtils'
+import styles from './userView.module.scss'
 
 import { UserDetailData } from '@/components/containers/ManagementList/UserDetailContainer'
 import { UserManagementData } from '@/components/containers/ManagementList/UserManagementContainer'
@@ -81,7 +81,20 @@ export const UserRolesForm: React.FC<Props> = ({
     //set users default values for rows, organizations, etc.
     useEffect(() => {
         const selectedGroupDefault: Record<string, boolean> =
-            roleGroupsData?.enumItems?.map((item) => item.code).reduce((o, key) => ({ ...o, [key ?? '']: false }), {}) ?? {}
+            roleGroupsData?.enumItems
+                ?.map((item) => item.code)
+                .reduce((o, key) => {
+                    const allRoles = managementData?.allRolesData
+                    const userRoles = detailData?.userRelatedRoles
+                    if (allRoles && Array.isArray(allRoles)) {
+                        const groupRolesLength = allRoles.filter((role) => role.assignedGroup === key).length
+                        const userGroupRoleLength = userRoles?.filter((role) => role.assignedGroup === key).length
+
+                        return { ...o, [key ?? '']: groupRolesLength === userGroupRoleLength }
+                    }
+
+                    return { ...o, [key ?? '']: false }
+                }, {}) ?? {}
         setSelectedGroups(selectedGroupDefault)
 
         if (!isCreate) {
@@ -109,7 +122,7 @@ export const UserRolesForm: React.FC<Props> = ({
                 setEditedUserOrgAndRoles({ ...defaultRolesKeys })
             }
         }
-    }, [detailData, isCreate, roleGroupsData, setEditedUserOrgAndRoles, shouldReset])
+    }, [detailData, isCreate, managementData?.allRolesData, roleGroupsData, setEditedUserOrgAndRoles, shouldReset])
 
     //handle clicking on group checkboxes
     const handleGroupCheckboxChange = (item: EnumItem) => {
