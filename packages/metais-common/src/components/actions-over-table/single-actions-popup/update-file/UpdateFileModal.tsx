@@ -1,15 +1,17 @@
 import { BaseModal, LoadingIndicator } from '@isdd/idsk-ui-kit'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 
 import { UpdateFileView } from './UpdateFileView'
 
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { cleanFileName } from '@isdd/metais-common/utils/utils'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 
 export interface IUpdateFileModalProps {
     addButtonSectionName?: string
@@ -45,7 +47,11 @@ export const UpdateFileModal: React.FC<IUpdateFileModalProps> = ({ item, open, o
             new Blob(
                 [
                     JSON.stringify({
-                        refType: 'STANDARD',
+                        refCiTechnicalName: item?.type,
+                        refCiId: item?.uuid,
+                        refCiMetaisCode: item?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais],
+                        refCiOwner: item?.metaAttributes?.owner,
+                        refType: RefAttributesRefType.CI,
                     }),
                 ],
                 { type: 'application/json' },
@@ -64,15 +70,15 @@ export const UpdateFileModal: React.FC<IUpdateFileModalProps> = ({ item, open, o
             if (response.ok) {
                 setIsLoading(false)
                 reset()
-                onSubmit({ isSuccess: true, isError: false, successMessage: t('bulkActions.deleteFile.success') })
+                onSubmit({ isSuccess: true, isError: false, successMessage: t('bulkActions.updateFile.success') })
             } else {
                 setIsLoading(false)
                 reset()
-                onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.deleteFile.success') })
+                onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.updateFile.success') })
             }
         } catch (e) {
             setIsLoading(false)
-            onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.deleteFile.success') })
+            onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.updateFile.success') })
         }
     }
 
