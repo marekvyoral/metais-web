@@ -295,7 +295,7 @@ export const CAN_NOT_MANAGE_CI = [
     'Ciel',
 ]
 
-export const API_MODULS = [
+export const API_MODULES_DEV = [
     'userconfig',
     'dms',
     'typesrepository',
@@ -319,7 +319,36 @@ export const API_MODULS = [
     'monitoring',
     'metaisiam-rest',
     'trainings',
+    'wiki',
 ]
+
+export const API_MODULES = [
+    'user-config',
+    'dms',
+    'types-repo',
+    'bpm-engine',
+    'validation',
+    'notification-engine',
+    'report',
+    'claim-manager',
+    'clarity',
+    'controls',
+    'tco',
+    'enums-repo',
+    'impexp-cmdb',
+    'license',
+    'standards',
+    'codelist-repo',
+    'kris',
+    'pdf-creator',
+    'provisioning',
+    'notification-manager',
+    'monitoring',
+    'iam',
+    'trainings',
+    'wiki',
+]
+
 export const CAN_CREATE_MEETING_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP', 'STD_KOORDINATOR_AGENDY']
 export const CAN_EDIT_MEETING_USER_ROLES = ['STD_KOORDINATOR_AGENDY']
 export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/

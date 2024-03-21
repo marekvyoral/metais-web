@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FooterRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { API_MODULS } from '@isdd/metais-common/constants'
+import { API_MODULES, API_MODULES_DEV } from '@isdd/metais-common/constants'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import ApiModuleInformation from '@/components/api-module-information/apiModuleInformation'
@@ -28,7 +28,7 @@ const AboutApplicationPage = () => {
                     value={import.meta.env.VITE_APP_VERSION}
                     hideIcon
                 />
-                {API_MODULS.map((module) => (
+                {(import.meta.env.VITE_ENVIRONMENT === 'DEV' ? API_MODULES_DEV : API_MODULES).map((module) => (
                     <ApiModuleInformation key={module} moduleName={module} />
                 ))}
             </MainContentWrapper>
