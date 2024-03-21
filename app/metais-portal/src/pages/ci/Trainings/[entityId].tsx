@@ -86,8 +86,21 @@ const EntityDetailPage: React.FC = () => {
         return trainingData?.configurationItemSet?.some((training) => training.uuid === ciItemData?.uuid)
     }, [trainingData, ciItemData])
 
-    const canRegisteredOnTraining = useMemo(() => {
-        return ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Skolenie_pocet_volnych_miest] > 0
+    const canRegisterOnTraining = useMemo(() => {
+        const hasFreeVacancies = ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Skolenie_pocet_volnych_miest] > 0
+        const dateNow = new Date(Date.now())
+        const dateFrom = new Date(ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Skolenie_zaciatok])
+        const isPlanned = dateFrom.getTime() - dateNow.getTime() > 0
+
+        return hasFreeVacancies && isPlanned
+    }, [ciItemData])
+
+    const canUnRegisterOnTraining = useMemo(() => {
+        const dateNow = new Date(Date.now())
+        const dateFrom = new Date(ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Skolenie_zaciatok])
+        const isPlanned = dateFrom.getTime() - dateNow.getTime() > 0
+
+        return isPlanned
     }, [ciItemData])
 
     const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
@@ -141,19 +154,20 @@ const EntityDetailPage: React.FC = () => {
                         <FlexColumnReverseWrapper>
                             <TrainingEntityIdHeader
                                 inviteButton={
-                                    canRegisteredOnTraining &&
-                                    (user && isRegisteredOnTraining ? (
-                                        <Button
-                                            label={t('trainings.unregisterFromTraining')}
-                                            variant="warning"
-                                            onClick={() => setShowUnregisterModal(true)}
-                                        />
-                                    ) : (
-                                        <Button
-                                            label={t('trainings.registerForTraining')}
-                                            onClick={() => navigate(`/ci/${entityName}/${entityId}/invite`, { state: location.state })}
-                                        />
-                                    ))
+                                    user && isRegisteredOnTraining
+                                        ? canUnRegisterOnTraining && (
+                                              <Button
+                                                  label={t('trainings.unregisterFromTraining')}
+                                                  variant="warning"
+                                                  onClick={() => setShowUnregisterModal(true)}
+                                              />
+                                          )
+                                        : canRegisterOnTraining && (
+                                              <Button
+                                                  label={t('trainings.registerForTraining')}
+                                                  onClick={() => navigate(`/ci/${entityName}/${entityId}/invite`, { state: location.state })}
+                                              />
+                                          )
                                 }
                                 editButton={
                                     <ButtonLink
