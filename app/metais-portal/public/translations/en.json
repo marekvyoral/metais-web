@@ -1187,7 +1187,7 @@
             "newWindowText": "Show the whole list of instances and their relationships (in new window)",
             "reason": "Note / Reason",
             "updateFile": "Update file",
-            "success": "Item was sent for processing, please wait for documents removal notification."
+            "success": "Items were successfully updated"
         },
         "deleteFile": {
             "title": "Remove documents",

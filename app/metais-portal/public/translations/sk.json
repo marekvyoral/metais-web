@@ -1192,7 +1192,7 @@
             "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
             "reason": "Poznámka/Dôvod",
             "updateFile": "Aktualizácia dokumentu",
-            "successList": "Položky boli odoslané na spracovanie, prosím, počkajte na notifikáciu o aktualizácii dokumentov."
+            "success": "Položka bola úspešne aktualizovaná"
         },
         "deleteFile": {
             "title": "Zmazanie dokumentov",
