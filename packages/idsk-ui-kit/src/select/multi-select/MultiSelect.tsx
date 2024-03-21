@@ -20,7 +20,7 @@ interface ISelectProps<T> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control?: Control<any>
     defaultValue?: string[]
-    value?: string[]
+    value?: string[] | null
     error?: string
     info?: string
     correct?: boolean
@@ -76,7 +76,7 @@ export const MultiSelect = <T,>({
             id={id}
             name={name}
             label={label}
-            value={value ? getValues(value) : null}
+            value={value && getValues(value)}
             defaultValue={defaultValue && getValues(defaultValue)}
             placeholder={placeholder || ''}
             className={className}
