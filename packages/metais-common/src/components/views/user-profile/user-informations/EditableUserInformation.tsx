@@ -19,6 +19,7 @@ enum UserInformationFormKeysEnum {
     NAME = 'name',
     MOBILE = 'mobile',
     POSITION = 'position',
+    EMAIL = 'email',
 }
 
 type Props = {
@@ -30,6 +31,7 @@ type UserInformationForm = {
     name?: string
     mobile?: string
     position?: string
+    email?: string
 }
 
 export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsChangeSuccess }) => {
@@ -44,6 +46,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
         [UserInformationFormKeysEnum.NAME]: string().required(t('validation.required')),
         [UserInformationFormKeysEnum.MOBILE]: string().matches(REGEX_TEL, t('validation.invalidPhone')).required(t('validation.required')),
         [UserInformationFormKeysEnum.POSITION]: string(),
+        [UserInformationFormKeysEnum.EMAIL]: string().required(t('validation.required')),
     })
 
     const {
@@ -56,6 +59,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
             [UserInformationFormKeysEnum.NAME]: user?.displayName,
             [UserInformationFormKeysEnum.POSITION]: user?.position != NULL ? user?.position ?? '' : '',
             [UserInformationFormKeysEnum.MOBILE]: user?.mobile,
+            [UserInformationFormKeysEnum.EMAIL]: user?.login,
         },
         resolver: yupResolver(userInformationsSchema),
     })
@@ -87,7 +91,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
 
     const onSubmit = (formData: UserInformationForm) => {
         setIsChangeSuccess(false)
-        changeUserInformation({ data: { mobile: formData.mobile, disabledNotifications: false } })
+        changeUserInformation({ data: { mobile: formData.mobile, disabledNotifications: false, email: formData.email } })
     }
 
     return (
@@ -138,7 +142,20 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
                         }
                         hideIcon
                     />
-                    <InformationGridRow label={`${t('userProfile.information.loginEmail')}:`} value={user?.login ?? ''} hideIcon />
+                    <InformationGridRow
+                        label={`${t('userProfile.information.loginEmail')}:`}
+                        value={
+                            <Input
+                                error={errors.email?.message}
+                                label=""
+                                type="text"
+                                disabled
+                                {...register(UserInformationFormKeysEnum.EMAIL)}
+                                autoComplete="email"
+                            />
+                        }
+                        hideIcon
+                    />
                 </DefinitionList>
                 <SubmitWithFeedback
                     submitButtonLabel={t('userProfile.save')}

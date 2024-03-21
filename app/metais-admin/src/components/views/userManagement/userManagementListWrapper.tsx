@@ -10,7 +10,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isd
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { UseMutationResult } from '@tanstack/react-query'
+import { UseMutateFunction, UseMutationResult } from '@tanstack/react-query'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -28,6 +28,27 @@ import {
 import { SelectFilterOrganizationHierarchy } from '@/components/views/userManagement/components/SelectFilterOrganizationHierarchy/SelectFilterOrganizationHierarchy'
 import { SelectFilterRole } from '@/components/views/userManagement/components/SelectFilterRole/SelectFilterRole'
 import { UserManagementListTable } from '@/components/views/userManagement/components/UserManagementTable/UserManagementListTable'
+
+export interface UserStateBatchMutation {
+    updateIdentityStateBatchMutation: UseMutationResult<
+        void[],
+        unknown,
+        {
+            uuids: string[]
+            activate: boolean
+        },
+        unknown
+    >
+    revokeUserBatchMutation: UseMutateFunction<
+        Response[],
+        unknown,
+        {
+            login: string
+            token: string | null
+        }[],
+        unknown
+    >
+}
 
 export interface UserManagementListPageViewProps {
     data: UserManagementListData
@@ -48,17 +69,9 @@ export interface UserManagementListPageViewProps {
     isMutationError: boolean
     isMutationSuccess: boolean
     successRolesUpdate: string | undefined
-    updateIdentityStateBatchMutation: UseMutationResult<
-        void[],
-        unknown,
-        {
-            uuids: string[]
-            activate: boolean
-        },
-        unknown
-    >
     rowSelection: Record<string, UserManagementListItem>
     setRowSelection: React.Dispatch<React.SetStateAction<Record<string, UserManagementListItem>>>
+    mutations: UserStateBatchMutation
 }
 
 export const UserManagementListPageView: React.FC<UserManagementListPageViewProps> = ({
@@ -74,10 +87,10 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     isMutationError,
     isMutationSuccess,
     successRolesUpdate,
-    updateIdentityStateBatchMutation,
     rowSelection,
     setRowSelection,
     handleUpdateRolesBulk,
+    mutations,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -218,7 +231,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 filter={userManagementFilter}
                 rowSelection={rowSelection}
                 setRowSelection={setRowSelection}
-                updateIdentityStateBatchMutation={updateIdentityStateBatchMutation}
+                mutations={mutations}
                 handleFilterChange={handleFilterChange}
             />
             <PaginatorWrapper

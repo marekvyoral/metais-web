@@ -1113,6 +1113,14 @@
             "save": "Uložiť",
             "edit": "Upraviť",
             "confirmRemove": "Naozaj chcete odstrániť položky z obľúbených?",
+            "checkPortalSection": "Zapnúť všetky notifikácie pre {{section}} na Portáli",
+            "uncheckPortalSection": "Vypnúť všetky notifikácie pre {{section}} na Portáli",
+            "checkEmailSection": "Zapnúť všetky notifikácie pre {{section}} na Emaile",
+            "uncheckEmailSection": "Vypnúť všetky notifikácie pre {{section}} na Emaile",
+            "checkPortal": "Zapnúť notifikácie pre {{name}} na Portáli",
+            "uncheckPortal": "Vypnúť notifikácie pre {{name}} na Portáli",
+            "checkEmail": "Zapnúť notifikácie pre {{name}} na Emaile",
+            "uncheckEmail": "Vypnúť notifikácie pre {{name}} na Emaile",
             "feedback": {
                 "editSuccess": "Nastavenia notifikácií boli úspešne uložené",
                 "addSuccess_few": "Položky boli úspešne pridané do obľúbených",
@@ -1201,7 +1209,7 @@
         "required": "Toto pole je povinné.",
         "minCharacters": "{{itemName}} musí obsahovať aspoň {{min}} znakov.",
         "maxCharacters": "{{itemName}} môže obsahovať maximálne {{max}} znakov.",
-        "password": "Heslo musí obsahovať aspoň jeden veľký znak, aspoň jeden malý znak a aspoň jeden iný znak."
+        "password": "Heslo musí obsahovať min 8 znakov, aspoň jeden veľký znak, aspoň jeden malý znak a aspoň jeden iný znak."
     },
     "documentsManagement": {
         "heading": "Správa dokumentov Projektov",

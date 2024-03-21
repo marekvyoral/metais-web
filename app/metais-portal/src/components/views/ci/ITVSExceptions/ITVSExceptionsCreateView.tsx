@@ -7,13 +7,10 @@ import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectP
 import { ENTITY_OSOBITNY_POSTUP, metaisEmail } from '@isdd/metais-common/constants'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import classNames from 'classnames'
 import React, { useEffect, useMemo, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-
-import styles from './styles.module.scss'
 
 import { formatForFormDefaultValues } from '@/componentHelpers/ci'
 import { CI_TYPE_DATA_ITVS_EXCEPTIONS_BLACK_LIST, getModifiedCiTypeData } from '@/componentHelpers/ci/ciTypeBlackList'
@@ -129,6 +126,9 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         setValue(AttributesConfigTechNames.METAIS_CODE, metaIsCodeValue)
     }, [metaIsCodeValue, referenceIdValue, setValue])
 
+    const defaultDataISVS = allCIsInRelations?.filter((ciRel) => ciRel.rels?.[0].type === 'osobitny_postup_vztah_ISVS')
+    const defaultDataPO = allCIsInRelations?.filter((ciRel) => ciRel.rels?.[0].type === 'osobitny_postup_vztah_PO')
+
     const ciTypeAttributes = attributes?.filter((attribute) => !GENERATED_ATTRIBUTES.includes(attribute?.technicalName as ATTRIBUTE_NAME)) ?? []
 
     const generatedAttributes = attributes?.filter((attribute) => GENERATED_ATTRIBUTES.includes(attribute?.technicalName as ATTRIBUTE_NAME)) ?? []
@@ -145,7 +145,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                 />
             )}
 
-            <QueryFeedback loading={isLoading || isProcessing} error={isError} withChildren>
+            <QueryFeedback loading={isLoading || isProcessing} error={isError}>
                 <FormProvider {...methods}>
                     <form noValidate onSubmit={handleSubmit(onSubmit)}>
                         <CreateEntitySection
@@ -187,25 +187,9 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             relationshipSetState={relationshipSetState}
                             label={t('ITVSExceptions.relatedITVS')}
                             existingRelations={existingRelations}
+                            defaultData={defaultDataISVS}
                         />
-                        <div className={styles.margin30}>
-                            {allCIsInRelations
-                                ?.filter((ciRel) => ciRel.rels?.[0].type === 'osobitny_postup_vztah_ISVS')
-                                .map((ciWithRel) => (
-                                    <div className={classNames(['govuk-accordion__section'])} key={ciWithRel.ci?.uuid}>
-                                        <div className={classNames(['govuk-accordion__section-header', styles.existingRelWrapper])}>
-                                            <a className="govuk-accordion__section-button">
-                                                {ciWithRel.ci?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
-                                            </a>
-                                            {ciWithRel.rels?.[0].attributes?.[0]?.value && (
-                                                <small>
-                                                    {t('ITVSExceptions.note')}: {ciWithRel.rels?.[0].attributes?.[0]?.value?.toString() ?? ''}
-                                                </small>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                        </div>
+
                         <RelationForITVSExceptionSelect
                             ciType="PO"
                             relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
@@ -217,23 +201,8 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             relationshipSetState={relationshipSetState}
                             label={t('ITVSExceptions.relatedPO')}
                             existingRelations={existingRelations}
+                            defaultData={defaultDataPO}
                         />
-                        {allCIsInRelations
-                            ?.filter((ciRel) => ciRel.rels?.[0].type === 'osobitny_postup_vztah_PO')
-                            .map((ciWithRel) => (
-                                <div className={classNames(['govuk-accordion__section'])} key={ciWithRel.ci?.uuid}>
-                                    <div className={classNames(['govuk-accordion__section-header', styles.existingRelWrapper])}>
-                                        <a className="govuk-accordion__section-button">
-                                            {ciWithRel.ci?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
-                                        </a>
-                                        {ciWithRel.rels?.[0].attributes?.[0]?.value && (
-                                            <small>
-                                                {t('ITVSExceptions.note')}: {ciWithRel.rels?.[0].attributes?.[0]?.value?.toString() ?? ''}
-                                            </small>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
 
                         <CreateEntitySection
                             hideErrorBlock

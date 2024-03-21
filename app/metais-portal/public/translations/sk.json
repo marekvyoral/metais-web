@@ -865,7 +865,7 @@
         "minCharacters": "{{itemName}} musí obsahovať aspoň {{min}} znakov",
         "maxCharacters": "{{itemName}} môže obsahovať maximálne {{max}} znakov",
         "noNumbers": "Nemôže obsahovať čísla",
-        "password": "Heslo musí obsahovať aspoň jeden veľký znak, aspoň jeden malý znak a aspoň jeden iný znak.",
+        "password": "Heslo musí obsahovať min 8 znakov, aspoň jeden veľký znak, aspoň jeden malý znak a aspoň jeden iný znak.",
         "repeatPassword": "Opakované heslo musí byť rovnaké",
         "phone": "Telefón",
         "name": "Meno",
@@ -1103,7 +1103,7 @@
         "groupMembersHistory": "História členstva v pracovnej skupine",
         "addNewGroup": "Pridať pracovnú skupinu",
         "groupName": "Názov skupiny",
-        "shortGroupName": "Skratka skupiny",
+        "shortGroupName": "Skratka pracovnej skupiny",
         "nextMeetingDate": "Dátum najbližšieho zasadnutia",
         "lastMeetingDate": "Dátum posledného zasadnutia",
         "show": "Zobraziť",
@@ -1123,7 +1123,7 @@
         "editItem": "Upraviť položku",
         "deleteItem": "Vymazať skupinu",
         "description": "Popis",
-        "shortName": "Skratka názvu",
+        "shortName": "Skratka pracovnej skupiny",
         "removeGroupMember": "Odstránenie člena zo skupiny",
         "removeGroup": "Odstrániť skupinu",
         "sureRemoveMember": "Naozaj chcete odstrániť člena zo skupiny?",
@@ -1192,7 +1192,7 @@
             "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
             "reason": "Poznámka/Dôvod",
             "updateFile": "Aktualizácia dokumentu",
-            "successList": "Položky boli odoslané na spracovanie, prosím, počkajte na notifikáciu o aktualizácii dokumentov."
+            "success": "Položka bola úspešne aktualizovaná"
         },
         "deleteFile": {
             "title": "Zmazanie dokumentov",
@@ -1873,6 +1873,14 @@
             "save": "Uložiť",
             "edit": "Upraviť",
             "confirmRemove": "Naozaj chcete odstrániť položky z obľúbených?",
+            "checkPortalSection": "Zapnúť všetky notifikácie pre {{section}} na Portáli",
+            "uncheckPortalSection": "Vypnúť všetky notifikácie pre {{section}} na Portáli",
+            "checkEmailSection": "Zapnúť všetky notifikácie pre {{section}} na Emaile",
+            "uncheckEmailSection": "Vypnúť všetky notifikácie pre {{section}} na Emaile",
+            "checkPortal": "Zapnúť notifikácie pre {{name}} na Portáli",
+            "uncheckPortal": "Vypnúť notifikácie pre {{name}} na Portáli",
+            "checkEmail": "Zapnúť notifikácie pre {{name}} na Emaile",
+            "uncheckEmail": "Vypnúť notifikácie pre {{name}} na Emaile",
             "feedback": {
                 "editSuccess": "Nastavenia notifikácií boli úspešne uložené",
                 "addSuccess_few": "Položky boli úspešne pridané do obľúbených",
@@ -2107,7 +2115,8 @@
             "program": "Agenda",
             "proposalsSelect": "Súvisiace návrhy",
             "proposalsButton": "Vybrať zo zoznamu",
-            "delete": "Odstrániť hosťa {{order}}"
+            "delete": "Odstrániť hosťa {{order}}",
+            "createBtn": "Vytvoriť zasadnutie"
         },
         "proposals": {
             "standardRequestState": "Stav",

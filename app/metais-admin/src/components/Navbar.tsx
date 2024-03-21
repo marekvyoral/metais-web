@@ -39,7 +39,7 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
         },
         {
             title: t('navMenu.publicAuthorities.management'),
-            path: '/public-authorities',
+            path: AdminRouteNames.PUBLIC_AUTHORITIES_LIST,
             icon: InstructionsIcon,
             role: [AdminRouteRoles.ADMIN],
             subItems: [
