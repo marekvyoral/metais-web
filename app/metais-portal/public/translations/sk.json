@@ -2115,7 +2115,8 @@
             "program": "Agenda",
             "proposalsSelect": "Súvisiace návrhy",
             "proposalsButton": "Vybrať zo zoznamu",
-            "delete": "Odstrániť hosťa {{order}}"
+            "delete": "Odstrániť hosťa {{order}}",
+            "createBtn": "Vytvoriť zasadnutie"
         },
         "proposals": {
             "standardRequestState": "Stav",

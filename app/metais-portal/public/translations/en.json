@@ -2107,7 +2107,8 @@
             "program": "Agenda",
             "proposalsSelect": "Related proposals",
             "proposalsButton": "Select from list",
-            "delete": "Remove guest {{order}}"
+            "delete": "Remove guest {{order}}",
+            "createBtn": "Create meeting"
         },
         "proposals": {
             "standardRequestState": "Status",
@@ -2461,7 +2462,7 @@
         "commitmentLabel": "We declare that the building and developing ITVS will meet our defined objectives, sub-objectives and adhere to the principles of the National Informatization Concept of Public Administration",
         "noCheckedItems": "Before confirming the commitment to comply with the goals and principles of the National Concept of Informatization of Public Administration, it is necessary to select at least one goal."
     },
-    "WeboveSidlo" : {
+    "WeboveSidlo": {
         "declarationLink": "Link to page \"Accessibility declaration\"",
         "declarationLinkTooltip": "Use this link show page Accessibility declaration."
     },
