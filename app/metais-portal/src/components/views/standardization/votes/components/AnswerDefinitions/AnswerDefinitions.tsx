@@ -26,8 +26,7 @@ interface IAnswerDefinitions {
 const AnswerDefinitionLine: React.FC<AnswerDefinitionLineType> = ({ index, errors, register, unregister }) => {
     const { t } = useTranslation()
 
-    useEffect(() => () => unregister?.(`answerDefinitions.${index}.value`), [index, unregister])
-
+    // useEffect(() => () => unregister?.(`answerDefinitions.${index}.value`), [index, unregister])
     return (
         <div>
             <Input
@@ -42,7 +41,7 @@ const AnswerDefinitionLine: React.FC<AnswerDefinitionLineType> = ({ index, error
 
 export const AnswerDefinitions: React.FC<IAnswerDefinitions> = ({ register, unregister, watch, errors, initialValues }) => {
     const { t } = useTranslation()
-
+    console.log('initialValues', initialValues)
     return (
         <div className={styles.flex}>
             <DynamicElements<ApiVoteChoice>
@@ -55,6 +54,7 @@ export const AnswerDefinitions: React.FC<IAnswerDefinitions> = ({ register, unre
                     return t('votes.voteEdit.answers.removeAnswer', { answer: value ?? '' })
                 }}
                 initialElementsData={initialValues}
+                unregister={unregister}
             />
         </div>
     )

@@ -126,8 +126,9 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
     voteId,
 }) => {
     const isNewVote = !existingVoteDataToEdit
+    console.log('existingVoteDataToEdit', existingVoteDataToEdit)
     const { t } = useTranslation()
-    const formDataRef = useRef<FieldValues>([])
+    // const formDataRef = useRef<FieldValues>([])
     const standardRequestOptions: IOption<number | undefined>[] = useMemo(() => {
         return getStandardRequestOptions(allStandardRequestData)
     }, [allStandardRequestData])
@@ -153,6 +154,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
     const { register, unregister, setValue, handleSubmit, formState, watch, control } = useForm<IVoteEditForm>({
         resolver: yupResolver(schema(t)),
         defaultValues: mapApiVoteToFormData(existingVoteDataToEdit),
+        // shouldUnregister: false,
     })
 
     const handleDateChange = (date: Date | null, name: string) => {
@@ -179,6 +181,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
     const callApi = (formData: FieldValues, attachments: ApiAttachment[]) => {
         const apiData: ApiVote = mapFormToApiRequestBody(formData, existingVoteDataToEdit?.id, user, attachments)
         if (isNewVote) {
+            console.log('callApi -----', apiData)
             createVote(apiData)
         } else {
             updateVote(apiData)
@@ -186,10 +189,12 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
     }
 
     const onSubmit = (formData: FieldValues) => {
-        formDataRef.current = { ...formData }
+        // formDataRef.current = { ...formData }
+        console.log('onSubmit -----', formData)
         callApi(formData, [])
     }
-
+    const answerDef = watch('answerDefinitions')
+    console.log('answerDef -----', answerDef)
     return (
         <>
             <StandardRequestsListModal

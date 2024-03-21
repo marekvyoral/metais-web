@@ -1,7 +1,7 @@
 import { TextWarning } from '@isdd/idsk-ui-kit'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import React, { MouseEvent, useId, useState } from 'react'
-import { UseFormSetValue } from 'react-hook-form'
+import { FieldValues, UseFormSetValue, UseFormUnregister } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import style from './customElement.module.scss'
@@ -18,6 +18,7 @@ interface DynamicElementsProps<T extends object> {
     renderableComponent: (index: number | undefined, data: RenderableComponentProps<T>) => React.ReactNode | undefined
     setValue?: UseFormSetValue<T>
     onChange?: (data: T[]) => void
+    unregister?: UseFormUnregister<FieldValues>
 }
 
 export const DynamicElements: <T extends object>({
@@ -31,17 +32,21 @@ export const DynamicElements: <T extends object>({
     nonRemovableElementIndexes,
     renderableComponent,
     onChange,
+    unregister,
 }) => {
     const [dynamicElementsData, setDynamicElementsData] = useState([...initialElementsData])
     const { t } = useTranslation()
     const [addRowError, setAddRowError] = useState<string>('')
     const id = useId()
+    console.log('dynamicElementsData', dynamicElementsData)
+    console.log('initialElementsData', initialElementsData)
 
     const removeRow = (index: number) => {
         const copyDynamicElementsData = [...dynamicElementsData]
         copyDynamicElementsData.splice(index, 1)
         setDynamicElementsData(copyDynamicElementsData)
         onChange?.(copyDynamicElementsData)
+        unregister?.(`answerDefinitions.${index}.value`)
     }
 
     const getFocusableId = (index: number) => {

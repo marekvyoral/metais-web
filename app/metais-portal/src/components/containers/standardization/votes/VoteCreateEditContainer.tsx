@@ -97,6 +97,20 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
         const files = fileUploadRef.current?.getFilesToUpload()
         const fileIds = Object.values(fileUploadRef.current?.fileUuidsMapping().current ?? {})
         setVoteId(Math.random())
+        console.log('newVoteData', newVoteData)
+        const newData = {
+            ...newVoteData,
+            attachments: mapUploadedFilesToApiAttachment(
+                files?.map((file, index) => {
+                    return { ...file, fileId: fileIds[index] }
+                }) ?? [],
+            ),
+        }
+        const test = { ...newVoteData }
+        console.log('newVoteData', newVoteData)
+        console.log('test', test)
+        console.log('newData', newData)
+        // createVoteAsyncMutation({ data: test })
         createVoteAsyncMutation({
             data: {
                 ...newVoteData,
