@@ -1,21 +1,22 @@
-import { Button, ButtonLink, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, ButtonLink, ButtonPopup, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { ConfigurationItemUi, getReadCiNeighboursWithAllRelsQueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
-import { BulkPopup, FileHistoryModal, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import stylesPopup from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
+import { OLA_CONTRACT_STATES, OLA_CONTRACT_STATE_ACTIONS } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { FileHistoryModal, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ConfigurationItemUi, getReadCiNeighboursWithAllRelsQueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { OLA_CONTRACT_STATES, OLA_CONTRACT_STATE_ACTIONS } from '@isdd/metais-common/constants'
 
+import styles from './olaContract.module.scss'
 import { OlaContractDetailBasicInfo } from './OlaContractDetailBasicInfo'
 import { OlaContractInvalidateModal } from './OlaContractInvalidateModal'
-import styles from './olaContract.module.scss'
 import { OlaContractRevalidateModal } from './OlaContractRevalidateModal'
 
 import { IOlaContractDetailView } from '@/components/containers/OlaContractDetailContainer'
@@ -62,6 +63,7 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
             key={'buttonBlock'}
             icon={CrossInACircleIcon}
             label={t('ciType.invalidateItem')}
+            className={stylesPopup.buttonLinkWithIcon}
             onClick={() => {
                 setInvalidateShow(true)
                 closePopup()
@@ -72,6 +74,7 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
             key={'buttonUnblock'}
             icon={CheckInACircleIcon}
             label={t('ciType.revalidateItem')}
+            className={stylesPopup.buttonLinkWithIcon}
             onClick={() => {
                 setRevalidateShow(true)
                 closePopup()
@@ -88,6 +91,7 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
                     <ButtonLink
                         key={'APPROVE'}
                         label={t('olaContracts.stateActions.approve')}
+                        className={stylesPopup.buttonLinkWithIcon}
                         onClick={() => {
                             moveState({ olaContractUuid: olaContract?.uuid ?? '', transition: OLA_CONTRACT_STATE_ACTIONS.APPROVE })
                             closePopup()
@@ -96,6 +100,7 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
                     <ButtonLink
                         key={'RETURN'}
                         label={t('olaContracts.stateActions.return')}
+                        className={stylesPopup.buttonLinkWithIcon}
                         onClick={() => {
                             moveState({ olaContractUuid: olaContract?.uuid ?? '', transition: OLA_CONTRACT_STATE_ACTIONS.RETURN })
                             closePopup()
@@ -107,6 +112,7 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
                     <ButtonLink
                         key={'PLAN'}
                         label={t('olaContracts.stateActions.plan')}
+                        className={stylesPopup.buttonLinkWithIcon}
                         onClick={() => {
                             moveState({ olaContractUuid: olaContract?.uuid ?? '', transition: OLA_CONTRACT_STATE_ACTIONS.PLAN })
                             closePopup()
@@ -118,6 +124,7 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
                     <ButtonLink
                         key={'CONTRACT'}
                         label={t('olaContracts.stateActions.contract')}
+                        className={stylesPopup.buttonLinkWithIcon}
                         onClick={() => {
                             moveState({ olaContractUuid: olaContract?.uuid ?? '', transition: OLA_CONTRACT_STATE_ACTIONS.CONTRACT })
                             closePopup()
@@ -162,11 +169,19 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
                                 disabled={isInvalid}
                                 onClick={() => navigate('./edit', { relative: 'path' })}
                             />
-                            <BulkPopup
-                                popupPosition="right"
-                                checkedRowItems={0}
-                                items={(closePopup) => [...getDefaultActions(closePopup), ...getStateActions(closePopup)]}
-                            />
+                            <div>
+                                <div className={classNames(stylesPopup.mobileOrder3, stylesPopup.buttonPopup)} id="bulkActions">
+                                    <ButtonPopup
+                                        buttonLabel={t('actionOverTable.actions')}
+                                        popupPosition="right"
+                                        popupContent={(closePopup) => (
+                                            <div className={stylesPopup.popupActions} id="bulkActionsList" role="list">
+                                                {[...getDefaultActions(closePopup), ...getStateActions(closePopup)]}
+                                            </div>
+                                        )}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>
