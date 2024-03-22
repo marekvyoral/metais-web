@@ -1,4 +1,5 @@
 import { TextBody } from '@isdd/idsk-ui-kit/index'
+import { looseFocus } from '@isdd/metais-common/componentHelpers'
 import { WizardState, Wizard } from '@isdd/metais-common/components/onboarding-wizard/Wizard'
 import { WizardTypes, useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -174,6 +175,7 @@ export const CiListWizard: React.FC = () => {
             } else if (currentPreferences[WizardTypes.FILTER]) {
                 setFilterWizard({ steps: filterSteps, run: true })
             }
+            looseFocus()
         }
     }
     return (

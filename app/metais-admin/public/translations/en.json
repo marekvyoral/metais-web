@@ -100,7 +100,7 @@
         "info": "Digitization",
         "invest": "Investments",
         "inovations": "Innovations",
-        "newItem": "+ New Item",
+        "newItem": "New Item",
         "registration": "Registration",
         "login": "Login",
         "logout": "Logout",
@@ -397,7 +397,9 @@
         "export": "Export",
         "addISVSitem": "Add ITVS item",
         "selectColumn": "Columns",
+        "selectColumnAriaLabel": "Column selection for table",
         "view": "View",
+        "viewAriaLabel": "Rows per page",
         "actions": "Bulk actions",
         "disabledTooltip": "For bulk actions select rows in table",
         "invalidateItems": "Invalidate items",
@@ -1498,6 +1500,7 @@
         "addRowErrorClose": "Close warning"
     },
     "quill": {
+        "description": "Rich text area",
         "buttonLabels": {
             "HEADER_1": "First level heading",
             "HEADER_2": "Second level heading",
@@ -1537,7 +1540,7 @@
     "closeFeedback": "Zatvoriť správu o spätnej väzbe",
     "dnd": "Item can be dragged and dropped",
     "accessibility": {
-        "navigated": "Page changed to {{pageTitle}}"
+        "navigated": "Navigation to new page"
     },
     "fileImport": {
         "uploadFailed": "Upload action failed.",

@@ -20,7 +20,6 @@ export const LanguageItem: React.FC<ILanguageItem> = ({ handleClick, value }) =>
                 title={t(`language.${value}`) ?? ''}
                 href="#"
                 onClick={(event) => handleClick(event, value)}
-                lang={value}
             >
                 {t(`language.${value}`)}
             </a>

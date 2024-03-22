@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { useUserInfo } from '@isdd/metais-common/hooks/useUserInfo'
 import { useTranslation } from 'react-i18next'
+import { ScrollToTop } from '@isdd/metais-common/components/scroll-to-top/ScrollToTop'
 
 import { Router } from '@/navigation/Router'
 
@@ -10,6 +11,7 @@ export const App: React.FC = () => {
     document.title = `${t('titles.mainPage')}`
     return (
         <Suspense>
+            <ScrollToTop />
             <Router />
         </Suspense>
     )
