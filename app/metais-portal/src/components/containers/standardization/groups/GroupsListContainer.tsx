@@ -1,12 +1,13 @@
+import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Find2111Params, Group, Identity, useFind2111 } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useGroupsWithMeetings } from '@isdd/metais-common/api/generated/standards-swagger'
+import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'
+import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
-import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
-import { useGroupsWithMeetings } from '@isdd/metais-common/api/generated/standards-swagger'
 
 import { GroupsListView } from '@/components/views/standardization/groups/GroupsListView'
 
@@ -60,31 +61,40 @@ export const GroupsListContainer: React.FC = () => {
 
     const [selectedIdentity, setSelectedIdentity] = useState<Identity | undefined>(undefined)
     const [selectedOrg, setSelectedOrg] = useState<ConfigurationItemUi | undefined>(undefined)
+    const [groupName, setGroupName] = useState<string>('')
+    const [groupNameRequest, setGroupNameRequest] = useState<string>('')
     const [groups, setGroups] = useState<GroupWithMeetings[]>()
     const [sort, setSort] = useState<ColumnSort[]>([{ orderBy: 'name', sortDirection: SortType.ASC }])
     const [groupsRequest, setGroupsRequest] = useState<Find2111Params>()
 
     const { data, isError, isLoading } = useFind2111(groupsRequest)
 
-    const { data: groupMeetings, isError: isMeetingsError, isLoading: isMeetingsLoading } = useGroupsWithMeetings()
+    const filteredData = useMemo(() => {
+        if (!groupNameRequest) return data
+        return (Array.isArray(data) ? data : [data]).filter((item) => {
+            return latiniseString(item?.name ?? '').includes(latiniseString(groupNameRequest).toLowerCase())
+        })
+    }, [data, groupNameRequest])
 
+    const { data: groupMeetings, isError: isMeetingsError, isLoading: isMeetingsLoading } = useGroupsWithMeetings()
     useEffect(() => {
-        data &&
+        filteredData &&
             setGroups(
-                (Array.isArray(data) ? data : [data])
+                (Array.isArray(filteredData) ? filteredData : [filteredData])
                     .map((g) => {
-                        const meetings = groupMeetings?.find((gm) => g.uuid === gm.group?.uuid)
+                        const meetings = groupMeetings?.find((gm) => g?.uuid === gm.group?.uuid)
                         return { ...g, nextMeetingDate: meetings?.nextMeetingDate, lastMeetingDate: meetings?.lastMeetingDate }
                     })
                     .filter((group) => group.shortName !== KSIVS_SHORT_NAME),
             )
-    }, [data, groupMeetings])
+    }, [filteredData, groupMeetings])
 
     const loadGroups = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const request: Find2111Params = { sortBy: 'name', ascending: true }
         if (selectedIdentity) request.identity = selectedIdentity.uuid
         if (selectedOrg) request.organization = selectedOrg.uuid
+        setGroupNameRequest(groupName)
         setGroupsRequest(request)
     }
 
@@ -95,6 +105,8 @@ export const GroupsListContainer: React.FC = () => {
             setSelectedIdentity={setSelectedIdentity}
             selectedOrg={selectedOrg}
             setSelectedOrg={setSelectedOrg}
+            groupName={groupName}
+            setGroupName={setGroupName}
             handleSubmit={loadGroups}
             isLoading={isLoading || isMeetingsLoading}
             isError={isError || isMeetingsError}
