@@ -109,13 +109,21 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
 
     const entityListData = entityData ? [entityData] : []
+    const canGetKrisData =
+        entityData?.attributes?.[ATTRIBUTE_NAME.Profil_KRIS_stav_kris] !== 'c_stav_kris.1' &&
+        entityData?.attributes?.[ATTRIBUTE_NAME.Profil_KRIS_stav_kris] !== undefined
+
     const {
         data: dataNeighbours,
         isLoading: isLoadingNeighbours,
         isError: isErrorNeighbours,
     } = useReadNeighboursConfigurationItems(entityId, { nodeType: 'Dokument', relationshipType: 'Dokument_sa_tyka_KRIS' })
-    const { data: dataKris, isLoading: isLoadingGetKris } = useGetKris(entityData?.uuid ?? '', { query: { enabled: !!user } })
-    const isLoadingKris = !!user && isLoadingGetKris
+    const { data: dataKris, isLoading: isLoadingGetKris } = useGetKris(entityData?.uuid ?? '', {
+        query: {
+            enabled: canGetKrisData,
+        },
+    })
+    const isLoadingKris = !!user && isLoadingGetKris && canGetKrisData
     const { data: isOwnerByGid } = useIsOwnerByGid(
         {
             gids: [entityData?.metaAttributes?.owner ?? ''],
