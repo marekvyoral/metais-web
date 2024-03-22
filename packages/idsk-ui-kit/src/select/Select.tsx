@@ -20,6 +20,7 @@ export interface IOption<T> {
 interface ISelectProps<T> {
     id?: string
     label: string
+    ariaLabel?: string
     name: string
     options: MultiValue<IOption<T>>
     option?: (props: OptionProps<IOption<T>>) => JSX.Element
@@ -45,6 +46,7 @@ interface ISelectProps<T> {
 
 export const Select = <T,>({
     label,
+    ariaLabel,
     name,
     options,
     option,
@@ -97,7 +99,6 @@ export const Select = <T,>({
                             <ReactSelect<IOption<T>, boolean, GroupBase<IOption<T>>>
                                 ref={ref}
                                 inputId={inputId}
-                                aria-label={label}
                                 name={name}
                                 value={value}
                                 defaultValue={defaultValue}
@@ -116,6 +117,7 @@ export const Select = <T,>({
                                 isSearchable={isSearchable}
                                 isOptionDisabled={(opt) => !!opt.disabled}
                                 onChange={onChange}
+                                aria-label={ariaLabel}
                                 aria-invalid={!!error}
                                 aria-describedby={errorId}
                                 aria-errormessage={errorId}
@@ -131,7 +133,6 @@ export const Select = <T,>({
                 ) : (
                     <ReactSelect<IOption<T>, boolean, GroupBase<IOption<T>>>
                         inputId={inputId}
-                        aria-label={label}
                         name={name}
                         value={value}
                         defaultValue={defaultValue}
@@ -150,6 +151,7 @@ export const Select = <T,>({
                         isSearchable={isSearchable}
                         isOptionDisabled={(opt) => !!opt.disabled}
                         onChange={onChange}
+                        aria-label={ariaLabel}
                         aria-invalid={!!error}
                         aria-describedby={errorId}
                         aria-errormessage={errorId}

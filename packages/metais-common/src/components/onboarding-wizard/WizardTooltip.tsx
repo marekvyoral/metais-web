@@ -1,5 +1,5 @@
 import { TextHeading, Button, ButtonGroupRow } from '@isdd/idsk-ui-kit/index'
-import React from 'react'
+import React, { useId } from 'react'
 import { TooltipRenderProps } from 'react-joyride'
 import { useTranslation } from 'react-i18next'
 
@@ -18,22 +18,25 @@ export const WizardTooltip: React.FC<TooltipRenderProps> = ({
     closeProps,
 }: TooltipRenderProps) => {
     const { t } = useTranslation()
+    const headerId = useId()
+    const contentId = useId()
 
     return (
-        <div {...tooltipProps} className={styles.tooltipWrapper}>
-            <div className={styles.tooltipHeader}>
+        <div {...tooltipProps} className={styles.tooltipWrapper} aria-labelledby={headerId} aria-describedby={contentId}>
+            <div className={styles.tooltipHeader} id={headerId}>
                 <TextHeading size="L">
+                    <span className="govuk-visually-hidden">{t('wizard.ariaDescription')}</span>
                     {index + 1}/{size} {step.title}
                 </TextHeading>
-                <img src={CloseIcon} {...closeProps} className={styles.pointer} />
+                <img src={CloseIcon} {...closeProps} className={styles.pointer} aria-hidden />
             </div>
-            <div>{step.content}</div>
+            <div id={contentId}>{step.content}</div>
             <ButtonGroupRow className="">
-                <Button disabled={index === 0} {...backProps} label={t('wizard.actions.back')} variant="secondary" />
+                <Button disabled={index === 0} {...backProps} label={backProps.title} variant="secondary" tabIndex={1} />
                 {!isLastStep ? (
-                    <Button disabled={isLastStep} {...primaryProps} label={t('wizard.actions.next')} />
+                    <Button disabled={isLastStep} {...primaryProps} label={primaryProps.title} />
                 ) : (
-                    <Button {...closeProps} label={t('wizard.actions.close')} />
+                    <Button {...closeProps} label={closeProps.title} />
                 )}
             </ButtonGroupRow>
         </div>

@@ -12,6 +12,7 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 interface IButtonPopupProps {
     popupPosition?: 'left' | 'right'
     buttonLabel: string
+    buttonAriaLabel?: string
     popupContent: (closePopup: () => void) => ReactNode
     buttonClassName?: string
     disabled?: boolean
@@ -60,6 +61,7 @@ export const useTabbing = (contentRef: RefObject<HTMLElement>, active = true) =>
 
 export const ButtonPopup: React.FC<IButtonPopupProps> = ({
     buttonLabel,
+    buttonAriaLabel,
     popupContent,
     disabled,
     disabledTooltip,
@@ -80,7 +82,14 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({
     useTabbing(contentRef, isExpanded)
 
     const trigger = (
-        <Button id={triggerId} label={label} variant="secondary" className={classNames(buttonClassName, styles.button)} aria-expanded={isExpanded} />
+        <Button
+            id={triggerId}
+            label={label}
+            variant="secondary"
+            className={classNames(buttonClassName, styles.button)}
+            aria-label={buttonAriaLabel}
+            aria-expanded={isExpanded}
+        />
     )
 
     if (disabled && disabledTooltip) {
