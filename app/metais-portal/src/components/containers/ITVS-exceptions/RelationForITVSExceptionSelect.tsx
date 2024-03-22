@@ -92,6 +92,7 @@ export const RelationForITVSExceptionSelect: React.FC<Props> = ({
                               }}
                           />
                           <ButtonLink
+                              type="button"
                               label={t('newRelation.deleteButton')}
                               className={classNames(styles.buttonLink, styles.red)}
                               onClick={() =>

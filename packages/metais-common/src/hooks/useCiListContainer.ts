@@ -10,9 +10,15 @@ interface Props<T extends FieldValues & IFilterParams> {
     entityName: string
     defaultFilterValues: T
     defaultFilterOperators?: T
+    onlyValidItems?: boolean
 }
 
-export const useCiListContainer = <T extends FieldValues & IFilterParams>({ entityName, defaultFilterValues, defaultFilterOperators }: Props<T>) => {
+export const useCiListContainer = <T extends FieldValues & IFilterParams>({
+    entityName,
+    defaultFilterValues,
+    defaultFilterOperators,
+    onlyValidItems,
+}: Props<T>) => {
     const { columnListData, saveColumnSelection, resetColumns, isLoading: isColumnsLoading, isError: isColumnsError } = useGetColumnData(entityName)
     const { currentPreferences } = useUserPreferences()
 
@@ -25,9 +31,10 @@ export const useCiListContainer = <T extends FieldValues & IFilterParams>({ enti
     const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, defaultRequestApi)
 
     const liableEntity = currentPreferences.myPO ? [currentPreferences.myPO] : undefined
-    const metaAttributes = currentPreferences.showInvalidatedItems
-        ? { state: ['DRAFT', 'INVALIDATED'], liableEntity, ...filterParams.metaAttributeFilters }
-        : { state: ['DRAFT'], liableEntity, ...filterParams.metaAttributeFilters }
+
+    const state = currentPreferences.showInvalidatedItems && !onlyValidItems ? ['DRAFT', 'INVALIDATED'] : ['DRAFT']
+
+    const metaAttributes = { state, liableEntity, ...filterParams.metaAttributeFilters }
 
     const {
         data: tableData,

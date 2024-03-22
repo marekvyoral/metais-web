@@ -300,6 +300,7 @@ export const NewRelationView: React.FC<Props> = ({
                       summary: (
                           <ButtonGroupRow key={item.uuid} className={styles.accordionButtonDiv}>
                               <ButtonLink
+                                  type="button"
                                   label={t('newRelation.detailButton')}
                                   className={classNames(styles.buttonLink, styles.blue)}
                                   onClick={() => {
@@ -360,6 +361,8 @@ export const NewRelationView: React.FC<Props> = ({
         setErrors(errors)
     }
 
+    const isQueryError = [isError || storeGraph.isError || isRequestStatusError || isProcessedError || isTooManyFetchesError].some((item) => item)
+
     return (
         <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
@@ -367,8 +370,8 @@ export const NewRelationView: React.FC<Props> = ({
                     {t('breadcrumbs.newRelation', { itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })}
                 </TextHeading>
 
-                <ElementToScrollTo trigger={isError || storeGraph.isError || isRequestStatusError || isProcessedError || isTooManyFetchesError}>
-                    <QueryFeedback loading={false} error />
+                <ElementToScrollTo trigger={isQueryError}>
+                    <QueryFeedback loading={false} error={isQueryError} />
                 </ElementToScrollTo>
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} ciType={ciItemData?.type ?? ''} />
@@ -395,6 +398,7 @@ export const NewRelationView: React.FC<Props> = ({
                 onChangeSelectedCiItem={(val) => setSelectedItems(val)}
                 onCloseModal={() => setIsOpen(false)}
                 onOpenModal={() => setIsOpen(true)}
+                perPage={200}
                 existingRelations={existingRelations}
             />
 
