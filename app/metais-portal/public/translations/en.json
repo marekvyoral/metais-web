@@ -864,7 +864,7 @@
         "minCharacters": "{{itemName}} must be at least {{min}} characters",
         "maxCharacters": "{{itemName}} must be at most {{max}} characters",
         "noNumbers": "Can't contain numbers",
-        "password": "Password must meet the criteria:  minimum of 8 symbols long, at least one uppercase, one lowercase, and one other character."
+        "password": "Password must meet the criteria:  minimum of 8 symbols long, at least one uppercase, one lowercase, and one other character.",
         "repeatPassword": "Repeated password must be same ",
         "phone": "Phone",
         "name": "Name",
