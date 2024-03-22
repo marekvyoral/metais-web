@@ -1,5 +1,5 @@
 import { Button, NavigationCloseIcon, TextBody, TextHeading } from '@isdd/idsk-ui-kit'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useId, useState } from 'react'
 import { Link } from 'react-router-dom'
 import StickyBox from 'react-sticky-box'
 import Cookies from 'universal-cookie'
@@ -25,6 +25,7 @@ export const CookiesPopup: React.FC = () => {
     const { t } = useTranslation()
     const cookies = new Cookies()
     const windowWidth = useWindowWidthBreakpoints()
+    const headerId = useId()
     const getIsShownCookies = () => {
         if (
             cookies.get(COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT) == undefined &&
@@ -52,8 +53,8 @@ export const CookiesPopup: React.FC = () => {
 
     return isShown ? (
         <StickyBox bottom offsetBottom={0} className={styles.stickyStyles}>
-            <div className={styles.popupBoxStyle} tabIndex={1}>
-                <div className={styles.flexMobileClose}>
+            <div className={styles.popupBoxStyle} tabIndex={1} role="region" aria-labelledby={headerId}>
+                <div className={styles.flexMobileClose} id={headerId}>
                     <TextHeading className={classNames(styles.marginBottom0)} size={'S'}>
                         {t('cookies.thisPageUsesCookies1')}
                         <Link to={FooterRouteNames.COOKIES}>

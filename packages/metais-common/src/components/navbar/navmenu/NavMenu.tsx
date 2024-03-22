@@ -41,7 +41,6 @@ export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded,
             onBlur={(event) => closeOnClickOutside<boolean>(event, setIsMenuExpanded, false)}
             onKeyDown={(event) => closeOnEscapeKey<boolean>(event, setIsMenuExpanded, false)}
             className={classNames({ 'idsk-header-web__nav': true, 'idsk-header-web__nav--mobile': !isMenuExpanded })}
-            aria-hidden
         >
             <div className="govuk-width-container">
                 <div className="govuk-grid-row">

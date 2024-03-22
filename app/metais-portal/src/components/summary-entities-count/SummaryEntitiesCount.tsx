@@ -22,17 +22,19 @@ export type EntityCountProps = {
 export const EntityCount: React.FC<EntityCountProps> = ({ label, count, href, isOperated }) => {
     const { t } = useTranslation()
     return (
-        <Link to={href} className={styles.link}>
+        <div>
             <TextBody size="L" className={styles.h1}>
                 {count}
             </TextBody>
-            <TextBody size="S" className={classNames({ [styles.noMargin]: isOperated })}>
-                {label}
-            </TextBody>
-            <TextBody size="S" className={styles.noMargin}>
-                {isOperated && t('entitySummary.operated')}
-            </TextBody>
-        </Link>
+            <Link to={href} className={styles.link}>
+                <TextBody size="S" className={classNames({ [styles.noMargin]: isOperated })}>
+                    {label}
+                </TextBody>
+                <TextBody size="S" className={styles.noMargin}>
+                    {isOperated && t('entitySummary.operated')}
+                </TextBody>
+            </Link>
+        </div>
     )
 }
 

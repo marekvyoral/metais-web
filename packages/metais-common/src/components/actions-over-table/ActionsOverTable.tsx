@@ -152,6 +152,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                 {!hiddenButtons?.SELECT_COLUMNS && (
                     <ButtonPopup
                         buttonLabel={t('actionOverTable.selectColumn')}
+                        buttonAriaLabel={t('actionOverTable.selectColumnAriaLabel')}
                         buttonClassName="marginBottom0"
                         popupPosition="right"
                         popupContent={(closePopup) => {

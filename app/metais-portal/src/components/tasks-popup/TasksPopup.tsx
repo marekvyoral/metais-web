@@ -1,4 +1,4 @@
-import { Button, TextHeading, useTabbing } from '@isdd/idsk-ui-kit/index'
+import { TextHeading, useTabbing } from '@isdd/idsk-ui-kit/index'
 import React, { useId, useRef, useState } from 'react'
 import { PopupActions } from 'reactjs-popup/dist/types'
 import { useTranslation } from 'react-i18next'
@@ -32,20 +32,16 @@ export const TasksPopup: React.FC = () => {
 
     const popupRef = useRef<PopupActions>(null)
     const popupTrigger = (
-        <Button
+        <IconWithNotification
             id={triggerId}
-            label={
-                <IconWithNotification
-                    title={t('tasks.tasks')}
-                    iconActive={FactCheckBlackIcon}
-                    iconInactive={FactCheckIcon}
-                    count={(tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0)}
-                    path=""
-                    showAsLink={false}
-                    altText={t('tasks.tasks')}
-                    ariaLabel={youHaveCountTitle}
-                />
-            }
+            title={t('tasks.tasks')}
+            iconActive={FactCheckBlackIcon}
+            iconInactive={FactCheckIcon}
+            count={(tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0)}
+            path=""
+            showAsLink={false}
+            altText={t('tasks.tasks')}
+            ariaLabel={youHaveCountTitle}
             className={styles.tasksPopupBtn}
         />
     )
@@ -58,7 +54,6 @@ export const TasksPopup: React.FC = () => {
             arrow={false}
             ref={popupRef}
             position="bottom right"
-            className={styles['task-popup']}
             onOpen={() => {
                 setIsExpanded(true)
             }}

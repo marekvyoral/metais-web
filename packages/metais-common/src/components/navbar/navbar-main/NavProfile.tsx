@@ -47,7 +47,7 @@ export const NavProfile: React.FC = () => {
                     >
                         {t('navbar.logout')}
                     </Link>
-                    <span> | </span>
+                    <span aria-hidden> | </span>
                     <Link
                         state={{ from: location }}
                         className={classnames(

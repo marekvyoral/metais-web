@@ -55,7 +55,8 @@ export const NewItemButtonPopup = () => {
     return (
         <ButtonPopup
             buttonClassName={classnames('idsk-button idsk-button--secondary', styles.noWrap)}
-            buttonLabel={t('navbar.newItem')}
+            buttonLabel={`+ ${t('navbar.newItem')}`}
+            buttonAriaLabel={t('navbar.newItem')}
             popupPosition="right"
             popupContent={(closePopup) => {
                 return (
