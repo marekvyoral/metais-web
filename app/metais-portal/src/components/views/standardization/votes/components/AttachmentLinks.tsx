@@ -1,49 +1,29 @@
-import { useGetContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
-import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
-import { QueryFeedback } from '@isdd/metais-common/index'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { ButtonLink } from '@isdd/idsk-ui-kit/index'
+import { TextLinkExternal } from '@isdd/idsk-ui-kit/index'
 import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagger'
 
 import styles from '@/components/views/standardization/votes/vote.module.scss'
+const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
 
 interface IAttachmentLink {
     attachments: ApiAttachment[] | undefined
 }
 
 export const AttachmentLinks: React.FC<IAttachmentLink> = ({ attachments }) => {
-    const { t } = useTranslation()
-    const [isFileError, setFileError] = useState<boolean>(false)
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const downloadAttachmentFile = useGetContentHook()
-    const downloadAttachment = async (attachment: ApiAttachment) => {
-        try {
-            setFileError(false)
-            setIsLoading(true)
-            const blobData = await downloadAttachmentFile(attachment.attachmentId ?? '')
-            downloadBlobAsFile(new Blob([blobData]), attachment.attachmentName ?? '', true)
-        } catch {
-            setFileError(true)
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
     return (
-        <QueryFeedback
-            loading={isLoading}
-            error={isFileError}
-            withChildren
-            indicatorProps={{ layer: 'dialog', transparentMask: true, label: t('votes.voteDetail.downloadingFile') }}
-        >
+        <>
             {attachments?.map((attachment) => {
                 return (
                     <div key={attachment.id} className={styles.linkAlign}>
-                        <ButtonLink type="button" onClick={() => downloadAttachment(attachment)} label={attachment.attachmentName} />
+                        <TextLinkExternal
+                            key={attachment?.id}
+                            title={`${attachment?.attachmentName}`}
+                            href={`${DMS_DOWNLOAD_FILE}${attachment?.attachmentId}`}
+                            textLink={attachment?.attachmentName ?? ''}
+                            newTab
+                        />{' '}
                     </div>
                 )
             })}
-        </QueryFeedback>
+        </>
     )
 }

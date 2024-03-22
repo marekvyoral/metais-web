@@ -1,5 +1,5 @@
 import { AccordionContainer, Button, Tab, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ApiStandardRequest, ApiVote, ApiVoteResult } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ApiStandardRequest, ApiVote, ApiVoteResult, getGetVoteDetailQueryKey } from '@isdd/metais-common/api/generated/standards-swagger'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +9,9 @@ import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useVotes
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { TableWithPagination } from '@isdd/metais-common/components/TableWithPagination/TableWithPagination'
 import { MutationFeedback } from '@isdd/metais-common/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
 import { voteActorResultsColumns } from './voteActorResultsColumns'
@@ -50,6 +53,8 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     const location = useLocation()
     const navigate = useNavigate()
 
+    const { isActionSuccess } = useActionSuccess()
+
     const getTabTitle = (textValue: string | undefined, numberValue: number | undefined): string => {
         return `${textValue ?? ''} (${numberValue ?? ''})`
     }
@@ -64,6 +69,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     const [castVoteError, setCastVoteError] = useState(false)
     const [castVoteSuccess, setCastVoteSuccess] = useState(false)
     const [castVoteMessage, setCastVoteMessage] = useState('')
+    const queryClient = useQueryClient()
 
     const tabList: Tab[] = useMemo((): Tab[] => {
         const choiceResultsList = voteResultData?.choiceResults ?? []
@@ -170,10 +176,31 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
         return voteState == VoteStateOptionEnum.CANCELED
     }, [voteState])
 
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        if (isActionSuccess.value) {
+            scrollToMutationFeedback()
+            if (isActionSuccess.additionalInfo?.type != 'create') {
+                queryClient.invalidateQueries(getGetVoteDetailQueryKey(voteData?.id ?? 0))
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isActionSuccess.value])
+
     return (
         <>
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={isActionSuccess.value}
+                    successMessage={
+                        isActionSuccess.additionalInfo?.type == 'create' ? t('votes.voteDetail.created') : t('mutationFeedback.successfulUpdated')
+                    }
+                />
+            </div>
             <div className={styles.inlineSpaceBetween}>
                 <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
+
                 {isUserLoggedIn && !hideVoteModifyingButtons && (
                     <div className={styles.inlineSpaceBetween}>
                         <Can I={Actions.EDIT} a={Subject.VOTE}>
