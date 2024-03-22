@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 
+// Screen reader announcer for page change
+// Reader is detecting change of element content, thus the timeout with empty string
 export const NavAnnouncer: React.FC = () => {
-    const location = useLocation()
     const { t } = useTranslation()
-    const [title, setTitle] = useState<string>('')
+    const location = useLocation()
+    const [message, setMessage] = useState<string>('')
 
     useEffect(() => {
-        setTitle(document.title)
+        const timeoutId = setTimeout(() => {
+            setMessage('')
+        }, 500)
+        return () => {
+            setMessage(t('accessibility.navigated'))
+            clearTimeout(timeoutId)
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location.pathname])
+    }, [location])
 
     return (
         <span className="govuk-visually-hidden" role="status" aria-live="polite" aria-atomic="true">
-            {t('accessibility.navigated', { pageTitle: title })}
+            {message}
         </span>
     )
 }

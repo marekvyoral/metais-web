@@ -117,16 +117,18 @@ const CustomToolbar: React.FC<ICustomToolBarProps> = ({ excludeOptions, id }) =>
     icons['list']['bullet'] = '<img alt="" src=' + QuillBulletListIcon + ' />'
 
     return (
-        <div id={id} className={styles.customToolbar} ref={wrapperRef}>
+        <div id={id} className={styles.customToolbar} ref={wrapperRef} role="list">
             {RichTextButtons.filter((item) => !excludeOptions?.includes(item.key)).map((item) => (
-                <Button
-                    key={item.key}
-                    label={item.label}
-                    className={classNames('idsk-button', item.className)}
-                    variant="secondary"
-                    value={item.value}
-                    aria-label={t(`quill.buttonLabels.${item.key}`)}
-                />
+                <span role="listitem" key={item.key}>
+                    <Button
+                        key={item.key}
+                        label={item.label}
+                        className={classNames('idsk-button', item.className)}
+                        variant="secondary"
+                        value={item.value}
+                        aria-label={t(`quill.buttonLabels.${item.key}`)}
+                    />
+                </span>
             ))}
         </div>
     )
@@ -179,7 +181,10 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
     }, [])
 
     return (
-        <div className={classNames('govuk-form-group', styles.fieldset, { 'govuk-form-group--error': !!error })}>
+        <div
+            className={classNames('govuk-form-group', styles.fieldset, { 'govuk-form-group--error': !!error })}
+            aria-description={`${t('quill.description')} ${label}`}
+        >
             <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
                 {error && <span className="govuk-visually-hidden">{t('error')}</span>}
                 {error}

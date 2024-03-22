@@ -7,6 +7,7 @@ import { IOption, Select } from '@isdd/idsk-ui-kit/select/Select'
 interface ISelectProps<T> {
     id?: string
     label: string
+    ariaLabel?: string
     name: string
     options: MultiValue<IOption<T>>
     option?: (props: OptionProps<IOption<T>>) => JSX.Element
@@ -35,6 +36,7 @@ interface ISelectProps<T> {
 
 export const SimpleSelect = <T,>({
     label,
+    ariaLabel,
     name,
     options,
     option,
@@ -71,6 +73,7 @@ export const SimpleSelect = <T,>({
             id={id}
             name={name}
             label={label}
+            ariaLabel={ariaLabel}
             value={value === null ? null : options.find((opt) => opt.value === value)}
             defaultValue={options.find((opt) => opt.value === defaultValue) || null}
             placeholder={placeholder || ''}

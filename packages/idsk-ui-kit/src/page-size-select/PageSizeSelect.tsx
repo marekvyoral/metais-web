@@ -33,6 +33,7 @@ export const PageSizeSelect: React.FC<Props> = ({ pagingOptions, handlePagingSel
         <SimpleSelect
             className={classNames(className)}
             label={t('actionOverTable.view')}
+            ariaLabel={t('actionOverTable.viewAriaLabel')}
             name={'page_size'}
             options={pagingOptions ? pagingOptions : defaultPagingOptions}
             onChange={(value) => handlePagingSelect && handlePagingSelect(value || '')}

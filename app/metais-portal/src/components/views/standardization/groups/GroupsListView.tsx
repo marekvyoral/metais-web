@@ -1,4 +1,4 @@
-import { Button, PaginatorWrapper, SimpleSelect, Table } from '@isdd/idsk-ui-kit/index'
+import { Button, Input, PaginatorWrapper, SimpleSelect, Table } from '@isdd/idsk-ui-kit/index'
 import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Identity } from '@isdd/metais-common/api/generated/iam-swagger'
@@ -26,6 +26,8 @@ interface IGroupsListView {
     setSelectedIdentity: React.Dispatch<SetStateAction<Identity | undefined>>
     selectedOrg: ConfigurationItemUi | undefined
     setSelectedOrg: React.Dispatch<SetStateAction<ConfigurationItemUi | undefined>>
+    groupName: string
+    setGroupName: React.Dispatch<SetStateAction<string>>
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
     isLoading: boolean
     isError: boolean
@@ -39,6 +41,8 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
     setSelectedIdentity,
     selectedOrg,
     setSelectedOrg,
+    groupName,
+    setGroupName,
     handleSubmit,
     isLoading,
     isError,
@@ -91,6 +95,7 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
                             placeholder={t('groups.select')}
                             label={t('groups.organization')}
                         />
+                        <Input label={t('groups.groupName')} name="groupName" value={groupName} onChange={(val) => setGroupName(val.target.value)} />
                         <Button label={t('groups.show')} className={'idsk-button'} type="submit" />
                     </form>
                 </div>

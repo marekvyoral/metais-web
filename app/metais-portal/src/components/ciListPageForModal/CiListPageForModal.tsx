@@ -54,7 +54,7 @@ export const CiListPageForModal: React.FC<Props> = ({ ciType, selectedItems, onS
         resetUserSelectedColumns,
         sort,
         gestorsData,
-    } = useCiListContainer<CIFilterData>({ entityName: ciType, defaultFilterValues: filterValues })
+    } = useCiListContainer<CIFilterData>({ entityName: ciType, defaultFilterValues: filterValues, onlyValidItems: true })
 
     const {
         isError: isCiTypeConstraintsError,

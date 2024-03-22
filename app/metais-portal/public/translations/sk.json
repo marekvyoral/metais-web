@@ -97,7 +97,7 @@
         "info": "Informatizácia",
         "invest": "Investície",
         "inovations": "Inovácie",
-        "newItem": "+ Nová položka",
+        "newItem": "Nová položka",
         "registration": "Registrácia",
         "login": "Prihlásiť",
         "logout": "Odhlásiť",
@@ -938,7 +938,9 @@
         "exportAria": "Export položiek alebo vzťahov {{ciTypeName}}",
         "addItem": "Vytvoriť položku {{ciTypeName}} ",
         "selectColumn": "Stĺpce",
+        "selectColumnAriaLabel": "Výber stĺpov v tabuľke",
         "view": "Zobraziť",
+        "viewAriaLabel": "Množstvo riadkov na stránku",
         "actions": "Hromadné úkony",
         "disabledTooltip": "Pre hromadné úkony zvoľte položky v tabuľke",
         "invalidateItems": "Zneplatnenie položiek",
@@ -2940,13 +2942,16 @@
         "search": "Vyhľadávanie",
         "relations": "Vzťahy",
         "filter": "Filtrovanie",
-        "bulkActions": "Hromadné akcie",
+        "bulkActions": "Hromadné úkony",
         "show": "Zobraziť wizardy",
         "success": "Nastavenie wizardov úspešne uložené",
+        "ariaDescription": "Nápoveda, krok",
         "actions": {
             "back": "Späť",
             "next": "Pokračovať",
-            "close": "Zatvoriť"
+            "close": "Zatvoriť",
+            "open": "Otvoriť",
+            "skip": "Preskočiť"
         },
         "searchContent": {
             "step1": "Na hlavné vyhľadávanie v celej aplikácii slúži hlavný vyhľadávací box, ktorý po vpísaní textu ponúkne navrhované výsledky podľa relevantnosti. Čím dlhší je vpísaný textový reťazec, tým sú výsledky presnejšie. Vyhľadávanie prebieha vo všetkých textových poliach.",
@@ -2974,6 +2979,7 @@
         "addRowErrorClose": "Zatvoriť upozornenie"
     },
     "quill": {
+        "description": "Editovateľné pole",
         "buttonLabels": {
             "HEADER_1": "Nadpis prvej úrovne",
             "HEADER_2": "Nadpis druhej úrovne",
@@ -2989,7 +2995,7 @@
         }
     },
     "accessibility": {
-        "navigated": "Zmena stránky na {{pageTitle}}"
+        "navigated": "Navigácia na novú stránku"
     },
     "error": "Chyba: ",
     "sectionErrors": " Zoznam chýb v sekcii:",

@@ -4,7 +4,6 @@ import { ApiOlaContractData } from '@isdd/metais-common/api/generated/monitoring
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -73,17 +72,11 @@ export const OlaContractDetailBasicInfo: React.FC<IOlaContractDetailBasicInfo> =
                 <InformationGridRow label={t('olaContracts.filter.contractorIsvsUuid')} value={olaContract?.contractorIsvsName} />
                 <InformationGridRow
                     label={t('olaContracts.filter.intervalStart')}
-                    value={
-                        olaContract?.validityStartDate
-                            ? formatDateForDefaultValue(olaContract?.validityStartDate)
-                            : t('olaContracts.detail.notEntered')
-                    }
+                    value={olaContract?.validityStartDate ? t('date', { date: olaContract?.validityStartDate }) : t('olaContracts.detail.notEntered')}
                 />
                 <InformationGridRow
                     label={t('olaContracts.filter.intervalEnd')}
-                    value={
-                        olaContract?.validityEndDate ? formatDateForDefaultValue(olaContract?.validityEndDate) : t('olaContracts.detail.notEntered')
-                    }
+                    value={olaContract?.validityEndDate ? t('date', { date: olaContract?.validityEndDate }) : t('olaContracts.detail.notEntered')}
                 />
                 <InformationGridRow
                     label={t('olaContracts.filter.state')}
