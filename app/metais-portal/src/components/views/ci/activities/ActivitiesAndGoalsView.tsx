@@ -3,7 +3,6 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -59,7 +58,7 @@ export const ActivitiesAndGoalsView: React.FC<IView> = ({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (ctx) => (
-                <Link to={`${NavigationSubRoutes.CIEL}/${ctx?.row.original.uuid}`} state={{ from: location }}>
+                <Link to={`/ci/${ciType}/${ctx?.row.original.uuid}`} state={{ from: location }}>
                     {ctx?.getValue?.() as string}
                 </Link>
             ),
