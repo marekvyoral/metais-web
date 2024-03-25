@@ -50,6 +50,7 @@ export interface ISelectProps<T> {
     disabled?: boolean
     required?: boolean
     tooltipPosition?: PopupPosition | PopupPosition[]
+    hint?: string
 }
 
 export const SelectLazyLoading = <T,>({
@@ -57,6 +58,7 @@ export const SelectLazyLoading = <T,>({
     onChange,
     label,
     name,
+    hint,
     info,
     getOptionValue,
     getOptionLabel,
@@ -79,6 +81,7 @@ export const SelectLazyLoading = <T,>({
     const uniqueId = useId()
     const inputId = id ?? uniqueId
     const errorId = `${id}-error`
+    const hintId = `${id}-hint`
     const localMessages = useGetLocalMessages()
     const Option = (props: OptionProps<T>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
@@ -117,7 +120,9 @@ export const SelectLazyLoading = <T,>({
                 {error && <span className="govuk-visually-hidden">{t('error')}</span>}
                 {error}
             </span>
-
+            <span id={hintId} className={classNames({ 'govuk-visually-hidden': !hint, 'govuk-hint': !!hint })}>
+                {hint}
+            </span>
             <AsyncPaginate<T, GroupBase<T>, { page: number } | undefined, boolean>
                 inputId={inputId}
                 name={name}
