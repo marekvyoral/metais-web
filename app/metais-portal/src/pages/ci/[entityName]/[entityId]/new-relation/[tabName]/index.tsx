@@ -8,9 +8,9 @@ import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { getCiHowToBreadCrumb, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { NewCiRelationContainer } from '@/components/containers/NewCiRelationContainer'
 import { RelationTypePermissionWrapper } from '@/components/permissions/CreateRelationPermissionWrapper'
 import { NewRelationView } from '@/components/views/new-relation/NewRelationView'
+import { useCiRelationHook } from '@/hooks/useCiRelation.hook'
 
 const NewCiRelationPage: React.FC = () => {
     const { tabName } = useParams()
@@ -20,41 +20,33 @@ const NewCiRelationPage: React.FC = () => {
     const { t } = useTranslation()
     const { data: ciTypeData } = useGetCiTypeWrapper(entityName)
 
-    return (
-        <NewCiRelationContainer
-            configurationItemId={entityId}
-            entityName={entityName}
-            tabName={tabName ?? ''}
-            View={(props) => {
-                document.title = `${t('breadcrumbs.newRelation', { itemName: props.ciName })} ${META_IS_TITLE}`
+    const props = useCiRelationHook({ entityName, tabName: tabName ?? '', configurationItemId: entityId })
+    document.title = `${t('breadcrumbs.newRelation', { itemName: props.ciName })} ${META_IS_TITLE}`
 
-                return (
-                    <>
-                        <BreadCrumbs
-                            withWidthContainer
-                            links={[
-                                { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                                ...getCiHowToBreadCrumb(entityName ?? '', t),
-                                { label: t('titles.ciList', { ci: ciTypeData?.name }) ?? '', href: `/ci/${entityName}` },
-                                { label: props.ciName ? props.ciName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
-                                {
-                                    label: t('breadcrumbs.newRelation', { itemName: props.ciName }),
-                                    href: `/ci/${entityName}/${entityId}/new-relation/${tabName}`,
-                                },
-                            ]}
-                        />
-                        <MainContentWrapper>
-                            <RelationTypePermissionWrapper
-                                selectedRoleName={props.groupData?.roleName ?? ''}
-                                rolesToCompareWith={props.relationData?.relationTypeData?.roleList ?? []}
-                            >
-                                <NewRelationView {...props} />
-                            </RelationTypePermissionWrapper>
-                        </MainContentWrapper>
-                    </>
-                )
-            }}
-        />
+    return (
+        <>
+            <BreadCrumbs
+                withWidthContainer
+                links={[
+                    { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(entityName ?? '', t),
+                    { label: t('titles.ciList', { ci: ciTypeData?.name }) ?? '', href: `/ci/${entityName}` },
+                    { label: props.ciName ? props.ciName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
+                    {
+                        label: t('breadcrumbs.newRelation', { itemName: props.ciName }),
+                        href: `/ci/${entityName}/${entityId}/new-relation/${tabName}`,
+                    },
+                ]}
+            />
+            <MainContentWrapper>
+                <RelationTypePermissionWrapper
+                    selectedRoleName={props.groupData?.roleName ?? ''}
+                    rolesToCompareWith={props.relationData?.relationTypeData?.roleList ?? []}
+                >
+                    <NewRelationView {...props} />
+                </RelationTypePermissionWrapper>
+            </MainContentWrapper>
+        </>
     )
 }
 
