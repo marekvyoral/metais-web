@@ -2,13 +2,14 @@ import classNames from 'classnames'
 import React, { DetailedHTMLProps, forwardRef } from 'react'
 import { decodeHtmlEntities } from '@isdd/metais-common/src/utils/utils'
 import { useTranslation } from 'react-i18next'
+import { v4 } from 'uuid'
 
 import styles from './checkbox.module.scss'
 
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 interface ICheckBoxProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-    id: string
+    id?: string
     label: string | React.ReactNode
     name: string
     value?: string
@@ -23,7 +24,21 @@ interface ICheckBoxProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTM
 
 export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
     (
-        { id, label, error, name, disabled, value, info, title, labelClassName, containerClassName, className, htmlForDisabled = false, ...rest },
+        {
+            id = v4(),
+            label,
+            error,
+            name,
+            disabled,
+            value,
+            info,
+            title,
+            labelClassName,
+            containerClassName,
+            className,
+            htmlForDisabled = false,
+            ...rest
+        },
         ref,
     ) => {
         const { t } = useTranslation()

@@ -9,6 +9,7 @@ import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
 import { AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useMemo } from 'react'
+import { AsyncUriSelect } from '@isdd/metais-common/components/async-uri-select/AsyncUriSelect'
 
 import { AddAttributeProfilesModal } from './attributes/AddAttributeProfilesModal'
 import styles from './createEntityView.module.scss'
@@ -165,7 +166,7 @@ export const CreateEntityView = ({
                 label: role?.description ?? '',
             }
         }) ?? []
-    const { handleSubmit, formState, register, watch } = formMethods
+    const { handleSubmit, formState, register, watch, control } = formMethods
 
     const onSubmit = async (formData: FieldValues) => {
         await mutate(formData)
@@ -264,11 +265,13 @@ export const CreateEntityView = ({
                                 />
                             )}
                             {!hiddenInputs?.URI_PREFIX && (
-                                <Input
-                                    label={t('egov.uriPrefix') + ' ' + t('input.requiredField')}
-                                    {...register('uriPrefix')}
-                                    error={formState?.errors?.uriPrefix?.message}
+                                <AsyncUriSelect
+                                    control={control}
                                     disabled={disabledInputsTypes?.URI_PREFIX}
+                                    label={t('egov.uriPrefix') + ' ' + t('input.requiredField')}
+                                    name="uriPrefix"
+                                    error={formState?.errors?.uriPrefix?.message}
+                                    hint={t('refIden.hint')}
                                 />
                             )}
                             {!hiddenInputs?.DESCRIPTION && (

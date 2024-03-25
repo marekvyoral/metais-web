@@ -403,6 +403,9 @@ export const OLA_CONTRACT_STATE_ACTIONS = {
     CONTRACT: 'CONTRACT',
 }
 
+export enum C_STAV_REGISTRACIE {
+    c_stav_registracie_2 = 'c_stav_registracie.2',
+}
 export enum HowTo {
     EGOV_HOWTO = 'EGOV_HOWTO',
     SPK_HOWTO = 'SPK_HOWTO',
