@@ -47,6 +47,7 @@ import Information from '@/pages/ci/[entityName]/[entityId]/information'
 import CreateCiItemAndRelation from '@/pages/ci/[entityName]/[entityId]/new-ci/[tabName]'
 import NewCiRelationPage from '@/pages/ci/[entityName]/[entityId]/new-relation/[tabName]'
 import RelationshipsAccordionPage from '@/pages/ci/[entityName]/[entityId]/relationships'
+import CreateKrisEntityPage from '@/pages/ci/KRIS/create'
 import CreateEntityPage from '@/pages/ci/[entityName]/create'
 import CiListPage from '@/pages/ci/[entityName]/entity'
 import CodeListDetailPage from '@/pages/data-objects/codelists/[id]/detail'
@@ -753,7 +754,7 @@ export const routesConfig: RouteConfig[] = [
             {
                 path: RouterRoutes.CI_KRIS_CREATE,
                 slug: RouterRoutes.CI_KRIS_CREATE,
-                component: CreateEntityPage,
+                component: CreateKrisEntityPage,
             },
             {
                 path: RouterRoutes.CI_PROJECT_DETAIL,

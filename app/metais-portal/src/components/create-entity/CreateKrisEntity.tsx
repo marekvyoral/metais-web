@@ -8,8 +8,8 @@ import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from './createEntityHelpers'
+import { CreateKrisEntityForm } from './CreateKrisEntityForm'
 
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 
@@ -34,7 +34,7 @@ interface ICreateEntity {
     defaultItemAttributeValues?: ConfigurationItemUiAttributes
 }
 
-export const CreateEntity: React.FC<ICreateEntity> = ({
+export const CreateKrisEntity: React.FC<ICreateEntity> = ({
     data,
     entityName,
     updateCiItemId,
@@ -102,7 +102,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                     />
                 )}
 
-                <CreateCiEntityForm
+                <CreateKrisEntityForm
                     entityName={entityName}
                     ciTypeData={ciTypeData}
                     generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
