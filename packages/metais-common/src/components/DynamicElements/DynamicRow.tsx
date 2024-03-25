@@ -4,7 +4,7 @@ import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import classNames from 'classnames'
 import { FieldValues, UseFormRegister } from 'react-hook-form'
 
-import style from './customElement.module.scss'
+import style from './dynamicElements.module.scss'
 
 export interface RenderableComponentProps<T> {
     data?: T
