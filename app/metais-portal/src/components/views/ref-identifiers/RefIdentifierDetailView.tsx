@@ -109,7 +109,7 @@ export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewP
 
             <MainContentWrapper>
                 <CiPermissionsWrapper entityName={ciItemData?.type ?? ''} entityId={ciItemId ?? ''}>
-                    <>
+                    <div>
                         <QueryFeedback error={isError} loading={false} />
                         <ElementToScrollTo trigger={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}>
                             <MutationFeedback
@@ -133,7 +133,7 @@ export const RefIdentifierDetailView: React.FC<RefIdentifierDetailContainerViewP
                             </div>
                             {renderInfoView()}
                         </QueryFeedback>
-                    </>
+                    </div>
                 </CiPermissionsWrapper>
             </MainContentWrapper>
         </>
