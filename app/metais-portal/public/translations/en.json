@@ -1387,7 +1387,8 @@
             "publishCodeListItems": "Codelist items were published.",
             "requestRejected": "This request was rejected on {{day}}. Reason for rejection: {{cause}}",
             "requestSentToKSISVS": "This request was sent for approval to the Committee for Standardization ISPA on {{day}}.",
-            "importDone": "Codelist import was successful"
+            "importDone": "Codelist import was successful",
+            "codeIsAvailable": "Codelist code is available."
         },
         "modal": {
             "title": {

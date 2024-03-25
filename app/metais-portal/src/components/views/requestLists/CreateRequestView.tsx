@@ -420,6 +420,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 {...register(RequestFormEnum.CODELISTNAME)}
                                 error={formState.errors[RequestFormEnum.CODELISTNAME]?.message}
                             />
+
                             <Input
                                 correct={isCodeAvailable}
                                 required
@@ -430,7 +431,18 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 {...register(RequestFormEnum.CODELISTCODE)}
                                 error={formState.errors[RequestFormEnum.CODELISTCODE]?.message}
                             />
-                            {!!canEdit && <Button label={t('codeListList.requestCreate.btnCheck')} variant="secondary" onClick={onClickCheck} />}
+                            <div className={styles.availWrapper}>
+                                {!!canEdit && <Button label={t('codeListList.requestCreate.btnCheck')} variant="secondary" onClick={onClickCheck} />}
+                                {isCodeAvailable && (
+                                    <MutationFeedback
+                                        success={isCodeAvailable}
+                                        successMessage={t('codeListDetail.feedback.codeIsAvailable')}
+                                        onMessageClose={() => {
+                                            setIsCodeAvailable(false)
+                                        }}
+                                    />
+                                )}
+                            </div>
                             <Input
                                 required
                                 disabled={!canEdit}
