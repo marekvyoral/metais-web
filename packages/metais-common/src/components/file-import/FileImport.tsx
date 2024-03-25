@@ -9,6 +9,7 @@ import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagge
 import { FileImportEditOptions } from '@isdd/metais-common/src/components/file-import/FileImportHeader'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useGetStatus } from '@/hooks/useGetRequestStatus'
 
 interface IFileImport {
     allowedFileTypes: string[]
@@ -44,6 +45,8 @@ export const FileImport: React.FC<IFileImport> = ({
 
     const [selectedRole, setSelectedRole] = useState<GidRoleData | null>(null)
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
+    const { getRequestStatus } = useGetStatus()
+
     const {
         uppy,
         addGeneralErrorMessage,
@@ -71,24 +74,27 @@ export const FileImport: React.FC<IFileImport> = ({
                 if (result.successful.length > 0) {
                     setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
                 }
-
-                result.successful.forEach((item) => updateUploadFilesStatus(item, true))
+                result.successful.forEach(async (file) => {
+                    await getRequestStatus(file.response?.body.requestId as string, () => updateUploadFilesStatus(file, true))
+                })
+                // result.successful.forEach((item) => updateUploadFilesStatus(item, true))
                 result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error))
             })
         } catch (error) {
             addGeneralErrorMessage(t('fileImport.uploadFailed'))
         }
     }, [
-        addGeneralErrorMessage,
-        updateUploadFilesStatus,
-        ciType,
-        fileImportStep,
+        uppy,
         radioButtonMetaData,
+        ciType,
         selectedOrg?.poUUID,
         selectedRole?.roleUuid,
         setFileImportStep,
+        fileImportStep,
+        getRequestStatus,
+        updateUploadFilesStatus,
+        addGeneralErrorMessage,
         t,
-        uppy,
     ])
 
     const handleCancelImport = () => {
