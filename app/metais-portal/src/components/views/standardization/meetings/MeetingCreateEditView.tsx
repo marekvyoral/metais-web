@@ -307,6 +307,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
                             refType={RefAttributesRefType.MEETING_REQUEST}
                             refId={id?.toString()}
                             onUploadSuccess={handleUploadSuccess}
+                            textSize="L"
                         />
                         {infoData?.meetingAttachments && infoData?.meetingAttachments.length > 0 && (
                             <ExistingFilesHandler

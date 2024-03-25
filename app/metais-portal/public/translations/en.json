@@ -2064,6 +2064,7 @@
         "email": "Email address",
         "linkChange": "Change entry",
         "linkSave": "Save entry",
+        "summarizeSuccess": "The recording of the meeting was successfully added",
         "participation": "Confirmation of participation",
         "participationValue": {
             "ACCEPTED": "Accepted",

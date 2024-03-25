@@ -2072,6 +2072,7 @@
         "email": "E-mailová adresa",
         "linkChange": "Zmeniť záznam",
         "linkSave": "Uložiť záznam",
+        "summarizeSuccess": "Záznam zo stretnutia bol úspešne pridaný",
         "participation": "Potvrdenie o účasti",
         "participationValue": {
             "ACCEPTED": "Potvrdil účasť",
