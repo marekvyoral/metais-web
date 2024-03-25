@@ -124,7 +124,7 @@
         "chooseValue": "Vyberte hodnotu",
         "cleared": "Kritéria filtrovania boli vyčistené",
         "publicAuthorities": {
-            "name": "Meno",
+            "name": "Názov",
             "ICO": "IČO",
             "onlyFreePO": "Iba voľné orgány riadenia",
             "state": "Stav",
