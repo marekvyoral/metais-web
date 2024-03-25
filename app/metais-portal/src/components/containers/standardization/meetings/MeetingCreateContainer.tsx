@@ -39,6 +39,7 @@ export const MeetingCreateContainer: React.FC = () => {
         mutateAsync: createMeeting,
         isLoading,
         isError,
+        error: actionError,
     } = useCreateMeeting({
         mutation: {
             onSuccess(data) {
@@ -105,7 +106,8 @@ export const MeetingCreateContainer: React.FC = () => {
             handleUploadSuccess={handleUploadSuccess}
             isEdit={false}
             isLoading={isLoading || creatingFilesLoading}
-            isError={isError}
+            isActionError={isError}
+            actionError={actionError}
             id={meetingId.toString()}
         />
     )

@@ -59,6 +59,7 @@ export const ERROR_MAPPER: { [key: string]: string } = {
 // Object key is translate key , value is regex
 const ERROR_REGEX_MAPPER = {
     'errors.test': /This is example of regex/,
+    'errors.meeting.checkDates': /\[meeting_requests_check_dates\]/,
 }
 
 export const getErrorTranslateKeys = (errors: { message: string }[]): (string | undefined)[] => {
@@ -85,7 +86,7 @@ export const getErrorTranslateKeys = (errors: { message: string }[]): (string | 
         })
 }
 
-export const getErrorTranslateKey = (error: ApiError | null): string | undefined => {
+export const getErrorTranslateKey = (error: ApiError | null | undefined): string | undefined => {
     if (!error) return undefined
     try {
         const message = JSON.parse(error.message ?? '').message

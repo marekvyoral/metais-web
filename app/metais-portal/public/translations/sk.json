@@ -415,7 +415,8 @@
         "cl.missing.item.date.validation": "Pre publikovanie položiek, musia mať všetky položky vyplnení dátum platnosti a dátum začiatku účinnosti.",
         "checkFromDateEquals": "Dva dátumy začiatku účinnosti sa rovnajú.",
         "vote.closed": "Hlasovanie sa nedá zmeniť. Hlasovanie je už ukončené",
-        "vote.progress": "Hlasovanie sa nedá zmeniť. Hlasovanie už prebieha"
+        "vote.progress": "Hlasovanie sa nedá zmeniť. Hlasovanie už prebieha",
+        "meeting.checkDates": "Koniec zasadnutia musí byť neskorší ako Začiatok zasadnutia"
     },
     "mutationFeedback": {
         "success": "Akcia bola úspešná",

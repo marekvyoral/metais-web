@@ -15,6 +15,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { formatDateTimeForAPI } from '@isdd/metais-common/index'
 import { v4 as uuidV4 } from 'uuid'
+import { ApiError } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { MeetingCreateEditView } from '@/components/views/standardization/meetings/MeetingCreateEditView'
 import { MeetingFormEnum } from '@/components/views/standardization/meetings/meetingSchema'
@@ -38,7 +39,9 @@ export interface IMeetingEditViewParams {
     isEdit?: boolean
     id?: string
     isLoading: boolean
-    isError: boolean
+    isError?: boolean
+    isActionError?: boolean
+    actionError?: ApiError | null
     fileUploadRef: React.RefObject<IFileUploadRef>
     existingFilesProcessRef?: React.RefObject<IExistingFilesHandlerRef>
     handleUploadSuccess: (data: FileUploadData[]) => void
@@ -74,6 +77,7 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
         mutate: updateMeeting,
         isLoading: updateMeetingLoading,
         isError: updateMeetingError,
+        error: actionError,
     } = useUpdateMeetingRequest({
         mutation: {
             onSuccess(data) {
@@ -101,7 +105,6 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
         },
     })
     const isLoading = meetingDetailLoading || updateMeetingLoading
-    const isError = meetingDetailError || updateMeetingError
     const onSubmit = (formData: FieldValues) => {
         const files = fileUploadRef.current?.getFilesToUpload()
         const fileIds = Object.values(fileUploadRef.current?.fileUuidsMapping().current ?? {})
@@ -163,7 +166,9 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
             infoData={infoData}
             isEdit
             isLoading={isLoading || creatingFilesLoading || deletingFilesLoading}
-            isError={isError}
+            isError={meetingDetailError}
+            isActionError={updateMeetingError}
+            actionError={actionError}
             fileUploadRef={fileUploadRef}
             existingFilesProcessRef={existingFilesProcessRef}
             handleDeleteSuccess={handleDeleteSuccess}
