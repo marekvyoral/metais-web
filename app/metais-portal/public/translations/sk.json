@@ -1393,7 +1393,8 @@
             "publishCodeListItems": "Položky číselníka boli zverejnené.",
             "requestRejected": "Táto žiadosť bola zamietnutá dňa {{day}}. Dôvod zamietnutia: {{cause}}",
             "requestSentToKSISVS": "Táto žiadosť bola dňa {{day}} odoslaná na schválenie Komisiou pre štandardizáciu ISVS.",
-            "importDone": "Import číselníka bol úspešný"
+            "importDone": "Import číselníka bol úspešný",
+            "codeIsAvailable": "Zvolený kód je dostupný."
         },
         "modal": {
             "title": {
