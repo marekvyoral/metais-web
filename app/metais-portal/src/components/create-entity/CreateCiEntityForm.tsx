@@ -14,7 +14,6 @@ import { FieldValues, FieldErrors } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import { metaisEmail } from '@isdd/metais-common/constants'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { CiEntityFormBody } from './CiEntityFormBody'
 import { CreateEntitySection } from './CreateEntitySection'
@@ -61,7 +60,6 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     selectedOrg,
 }) => {
     const { t, i18n } = useTranslation()
-    const { state } = useAuth()
     const [hasReset, setHasReset] = useState(false)
     const [sections, setSections] = useState<ISection[]>([])
 
@@ -90,28 +88,10 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
         return attributes.reduce((acc, att) => {
             if (att?.defaultValue) {
                 return { ...acc, [att?.technicalName?.toString() ?? '']: att?.defaultValue }
-            } else {
-                if (entityName === 'KRIS' && !isUpdate) {
-                    switch (att?.technicalName) {
-                        case 'Profil_KRIS_stav_kris':
-                            return { ...acc, [att?.technicalName?.toString() ?? '']: 'c_stav_kris.1' }
-                        case 'Profil_KRIS_Sprcaovatel_meno':
-                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.firstName }
-                        case 'Profil_KRIS_Spracovatel_priezvisko':
-                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.lastName }
-                        case 'Profil_KRIS_Spracovatel_funkcia':
-                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.position }
-                        case 'Profil_KRIS_Spracovatel_telefon':
-                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.phone }
-                        case 'Profil_KRIS_Spracovatel_email':
-                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.email }
-                    }
-                }
             }
-
             return acc
         }, {})
-    }, [attributes, entityName, isUpdate, state.user?.email, state.user?.firstName, state.user?.lastName, state.user?.phone, state.user?.position])
+    }, [attributes])
 
     const formDefaultValues = useMemo(
         () => formatForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
