@@ -9,7 +9,7 @@ import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagge
 import { FileImportEditOptions } from '@isdd/metais-common/src/components/file-import/FileImportHeader'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useGetStatus } from '@/hooks/useGetRequestStatus'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 interface IFileImport {
     allowedFileTypes: string[]
