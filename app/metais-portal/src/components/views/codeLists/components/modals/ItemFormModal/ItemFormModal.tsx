@@ -9,6 +9,7 @@ import {
     ApiCodelistItem,
     useCreateCodelistItem,
     useCreateNewCodelistItemLangExtended,
+    useGetNextItemCodeHook,
     useGetTemporalCodelistItemWithLockHook,
     useProcessItemAction,
     useUpdateAndUnlockTemporalCodelistItem,
@@ -27,6 +28,8 @@ import {
     mapFormToCodeListItem,
     removeOtherLanguagesFromItem,
 } from '@/componentHelpers/codeList'
+import { getItemCodelistRefId } from '@/componentHelpers/requests'
+
 export interface IItemForm {
     id?: string
     code: string
@@ -58,6 +61,10 @@ export interface ItemFormModalProps {
     attributeProfile?: AttributeProfile
     workingLanguage: string
     close: () => void
+    isCodelistAutoincrementValid: boolean
+    codelistPrefix?: string
+    codelistRefId?: string
+    codelistCharCount?: number
 }
 
 export enum CodeListItemFormEnum {
@@ -88,6 +95,10 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
     attributeProfile,
     workingLanguage,
     defaultOrderValue = 1,
+    isCodelistAutoincrementValid,
+    codelistPrefix,
+    codelistRefId,
+    codelistCharCount,
 }) => {
     const {
         t,
@@ -110,6 +121,18 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
             return getTemporalItemWithLock(variables.code, variables.itemCode)
         },
     })
+
+    const nextItemCode = useGetNextItemCodeHook()
+    const setDefaultRefId = async () => {
+        if (isCodelistAutoincrementValid) {
+            const itemCode = await nextItemCode(codeListCode, { prefix: codelistPrefix ?? '', charCount: codelistCharCount })
+            const finalRefId = getItemCodelistRefId(codelistRefId ?? '', itemCode)
+            const newDefaultValues = {
+                ...mapCodeListItemToForm({ itemUri: finalRefId, itemCode: itemCode }, workingLanguage),
+            }
+            setDefaultValues(newDefaultValues)
+        }
+    }
 
     const fetchAndSetDefaultValues = async () => {
         if (item?.codelistItemState === CodeListItemState.READY_TO_PUBLISH) {
@@ -176,6 +199,8 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
     useEffect(() => {
         if (isEdit) {
             fetchAndSetDefaultValues()
+        } else {
+            setDefaultRefId()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [item])
@@ -209,7 +234,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
                         />
                         <Input
                             required
-                            disabled={isEdit}
+                            disabled={isEdit || isCodelistAutoincrementValid}
                             label={getDescription('Gui_Profil_ZC_kod_polozky', language, attributeProfile)}
                             info={getName('Gui_Profil_ZC_kod_polozky', language, attributeProfile)}
                             id={CodeListItemFormEnum.CODE}
@@ -236,6 +261,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ({
                             id={CodeListItemFormEnum.REF_IDENT}
                             {...register(CodeListItemFormEnum.REF_IDENT)}
                             error={formState.errors?.[CodeListItemFormEnum.REF_IDENT]?.message}
+                            disabled={isCodelistAutoincrementValid}
                         />
                         <Input
                             label={getDescription('Gui_Profil_ZC_doplnujuci_obsah', language, attributeProfile)}

@@ -423,7 +423,8 @@
         "cl.missing.item.date.validation": "To publish items, you must fill field 'EffectiveFrom' and 'ValidFrom' for all items.",
         "checkFromDateEquals": "Two effective dates are equal.",
         "vote.closed": "Can't change the vote. Voting is already closed",
-        "vote.progress": "Can't change the vote. Voting is already in progress"
+        "vote.progress": "Can't change the vote. Voting is already in progress",
+        "meeting.checkDates": "End of the meeting must be later than Start of the meeting"
     },
     "mutationFeedback": {
         "success": "Success",
@@ -734,7 +735,8 @@
             "createdAt": "Created",
             "createdBy": "Created by",
             "lastModifiedAt": "Last change",
-            "lastModifiedBy": "Last change by"
+            "lastModifiedBy": "Last change by",
+            "template": "Template"
         },
         "protocols": {
             "protocol": "Protocol",
@@ -1387,7 +1389,8 @@
             "publishCodeListItems": "Codelist items were published.",
             "requestRejected": "This request was rejected on {{day}}. Reason for rejection: {{cause}}",
             "requestSentToKSISVS": "This request was sent for approval to the Committee for Standardization ISPA on {{day}}.",
-            "importDone": "Codelist import was successful"
+            "importDone": "Codelist import was successful",
+            "codeIsAvailable": "Codelist code is available."
         },
         "modal": {
             "title": {
@@ -1490,7 +1493,8 @@
             "addBtn": "Request for codelist classification",
             "addItemBtn": "Add new item",
             "saveBtn": "Save",
-            "submitBtn": "Send request"
+            "submitBtn": "Send request",
+            "hasAutoincrementButNotPrefixOrCount": "Prefix and character count are required for creating item with autoincrement"
         },
         "requestValidations": {
             "codelistName": "Codelist name is required field",
@@ -1511,7 +1515,8 @@
             "dateGreaterThan": "Date to must be greater than date from",
             "effectiveFrom": "Entry into force is required field",
             "itemCode": "Codelist ID is required field",
-            "itemName": "Codelist name is required field"
+            "itemName": "Codelist name is required field",
+            "prefix": "Prefix is required field"
         },
         "requestModal": {
             "yes": "Yes",
@@ -2062,6 +2067,7 @@
         "email": "Email address",
         "linkChange": "Change entry",
         "linkSave": "Save entry",
+        "summarizeSuccess": "The recording of the meeting was successfully added",
         "participation": "Confirmation of participation",
         "participationValue": {
             "ACCEPTED": "Accepted",
@@ -2999,6 +3005,20 @@
         "deleteRow": "Remove {{itemName}}",
         "changeRowsNumber": "Number of rows for item {{name}} changed. Number of rows is {{count}}"
     },
+    "creatableSelect": {
+        "createNew": "Create: {{input}}"
+    },
+    "autoincrement": {
+        "prefix": "Prefix",
+        "charCount": "Characters count in increment",
+        "valid": "Autoincrement",
+        "preview": "Code preview: {{autoincrement}}",
+        "legend": "Reference identifier code",
+        "type": {
+            "label": "Autoincrement type",
+            "NUMERIC": "Numeric"
+        }
+    },
     "entitySummary": {
         "operated": "(operated)",
         "ksState": "eGov services of state administration",
@@ -3011,5 +3031,8 @@
         "loading": "Loading entities count summary",
         "lastModifiedEntities": "Last modified entities:",
         "loadingLatestCi": "Loading latest modified entities"
+    },
+    "refIden": {
+        "hint": "If the referenceable identifier you want is not in the list, you can enter its value directly in the field. You will then see the option 'Create:' together with the value you entered."
     }
 }

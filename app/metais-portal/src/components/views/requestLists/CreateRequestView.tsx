@@ -32,6 +32,8 @@ import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/pe
 import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types/'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { AsyncUriSelect } from '@isdd/metais-common/components/async-uri-select/AsyncUriSelect'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
 import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
@@ -41,7 +43,8 @@ import { DateModalItem } from '@/components/views/requestLists/components/modalI
 import { useCreateRequestSchema } from '@/components/views/requestLists/useRequestSchemas'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CreateRequestViewProps } from '@/components/containers/CreateRequestContainer'
-import { IRequestForm, mapToCodeListDetail } from '@/componentHelpers/requests'
+import { IRequestForm, getItemCodelistRefId, mapToCodeListDetail } from '@/componentHelpers/requests'
+import { AutoIncrement } from '@/components/views/requestLists/components/AutoIncrement'
 
 export interface ICodeItem {
     id: string
@@ -76,6 +79,10 @@ export enum RequestFormEnum {
     CODELISTS = 'codeLists',
     VALIDDATE = 'validDate',
     STARTDATE = 'startDate',
+    PREFIX = 'prefix',
+    AUTOINCREMENT_VALID = 'valid',
+    AUTOINCREMENT_TYPE = 'type',
+    AUTOINCREMENT_CHAR_COUNT = 'charCount',
 }
 
 export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
@@ -121,10 +128,14 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     const [defaultSelectOrg, setDefaultSelectOrg] = useState<IOption>()
     const [expanded, setExpanded] = useState<ExpandedState>({})
     const [isCodeAvailable, setIsCodeAvailable] = useState<boolean>(false)
-    const { register, handleSubmit, formState, getValues, setValue, setError, trigger, control } = useForm<IRequestForm>({
+
+    const DEFAULT_CHAR_COUNT = 3
+    const { register, handleSubmit, formState, getValues, setValue, setError, trigger, control, clearErrors, watch } = useForm<IRequestForm>({
         resolver: yupResolver(schema),
         defaultValues: editData || {
             base: true,
+            charCount: DEFAULT_CHAR_COUNT,
+            type: 'NUMERIC',
         },
     })
 
@@ -334,6 +345,27 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
 
     const canUse = requestId ? ability.can(Actions.EDIT, Subjects.DETAIL) : ability.can(Actions.CREATE, Subjects.DETAIL)
 
+    const charCountInput = watch(RequestFormEnum.AUTOINCREMENT_CHAR_COUNT)
+    const prefixInput = watch(RequestFormEnum.PREFIX)
+    const isAutoincrementValid = !!watch(RequestFormEnum.AUTOINCREMENT_VALID)
+    const codelistRefId = watch(RequestFormEnum.REFINDICATOR)
+    const DEFAULT_AUTOINCREMENT_INDEX = 1
+
+    const hasAutoincrementButNotPrefixOrCount = isAutoincrementValid && (!prefixInput || !charCountInput)
+
+    const getAutoIncrement = (index: number, prefix: string, charCount: number) => {
+        if (!isAutoincrementValid) return ''
+        const charCountZeroArray = Array(charCount ? charCount - 1 : 0)
+            .fill(0)
+            .join('')
+        return `${prefix}${charCountZeroArray}${index}`
+    }
+
+    const getAutoIncrementWithCodelistRefId = (index: number, prefix: string, charCount: number) => {
+        const code = getAutoIncrement(index, prefix, charCount)
+        return code ? getItemCodelistRefId(codelistRefId ?? '', code) : ''
+    }
+
     return (
         <>
             {editData ? (
@@ -388,6 +420,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 {...register(RequestFormEnum.CODELISTNAME)}
                                 error={formState.errors[RequestFormEnum.CODELISTNAME]?.message}
                             />
+
                             <Input
                                 correct={isCodeAvailable}
                                 required
@@ -398,7 +431,18 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 {...register(RequestFormEnum.CODELISTCODE)}
                                 error={formState.errors[RequestFormEnum.CODELISTCODE]?.message}
                             />
-                            {!!canEdit && <Button label={t('codeListList.requestCreate.btnCheck')} variant="secondary" onClick={onClickCheck} />}
+                            <div className={styles.availWrapper}>
+                                {!!canEdit && <Button label={t('codeListList.requestCreate.btnCheck')} variant="secondary" onClick={onClickCheck} />}
+                                {isCodeAvailable && (
+                                    <MutationFeedback
+                                        success={isCodeAvailable}
+                                        successMessage={t('codeListDetail.feedback.codeIsAvailable')}
+                                        onMessageClose={() => {
+                                            setIsCodeAvailable(false)
+                                        }}
+                                    />
+                                )}
+                            </div>
                             <Input
                                 required
                                 disabled={!canEdit}
@@ -424,14 +468,25 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 error={formState.errors[RequestFormEnum.MAINGESTOR]?.message}
                                 defaultValue={defaultSelectOrg}
                             />
-                            <Input
+
+                            <AsyncUriSelect
+                                control={control}
                                 disabled={!canEdit}
+                                name={RequestFormEnum.REFINDICATOR}
                                 label={getDescription('Gui_Profil_ZC_uri', language, attributeProfile)}
-                                info={getName('Gui_Profil_ZC_uri', language, attributeProfile)}
-                                id={RequestFormEnum.REFINDICATOR}
-                                {...register(RequestFormEnum.REFINDICATOR)}
                                 error={formState.errors[RequestFormEnum.REFINDICATOR]?.message}
+                                info={getName('Gui_Profil_ZC_uri', language, attributeProfile)}
+                                hint={t('refIden.hint')}
                             />
+                            <AutoIncrement
+                                setValue={setValue}
+                                register={register}
+                                clearErrors={clearErrors}
+                                formState={formState}
+                                isAutoIncremenetValid={isAutoincrementValid}
+                                autoIncrement={getAutoIncrement(DEFAULT_AUTOINCREMENT_INDEX, prefixInput ?? '', charCountInput ?? 0)}
+                            />
+
                             {(editData?.codeListState === RequestListState.ACCEPTED_SZZC ||
                                 editData?.codeListState === RequestListState.KS_ISVS_ACCEPTED) && (
                                 <>
@@ -546,12 +601,21 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 createButton={
                                     canEdit && (
                                         <Can I={Actions.ADD_ITEMS} a={Subjects.DETAIL}>
-                                            <CreateEntityButton
-                                                onClick={() => {
-                                                    setCodeListItem(undefined)
-                                                    setOpen(true)
-                                                }}
-                                                label={t('codeListList.requestCreate.addItemBtn')}
+                                            <Tooltip
+                                                descriptionElement={t('codeListList.requestCreate.hasAutoincrementButNotPrefixOrCount')}
+                                                on={['click']}
+                                                disabled={!hasAutoincrementButNotPrefixOrCount}
+                                                triggerElement={
+                                                    <CreateEntityButton
+                                                        onClick={() => {
+                                                            setCodeListItem(undefined)
+                                                            if (!hasAutoincrementButNotPrefixOrCount) {
+                                                                setOpen(true)
+                                                            }
+                                                        }}
+                                                        label={t('codeListList.requestCreate.addItemBtn')}
+                                                    />
+                                                }
                                             />
                                         </Can>
                                     )
@@ -632,11 +696,16 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <ModalItem
                                 isOpen={isOpen}
                                 close={close}
-                                isCreate={!editData}
                                 onSubmit={addItem}
                                 item={codeListItem}
+                                createRefIdUri={getAutoIncrementWithCodelistRefId(codeList.length + 1, prefixInput ?? '', charCountInput ?? 0)}
+                                createItemCode={getAutoIncrement(codeList.length + 1, prefixInput ?? '', charCountInput ?? 0)}
                                 attributeProfile={attributeProfile}
                                 canEdit={!!canEdit}
+                                editData={editData}
+                                charCount={charCountInput}
+                                prefix={prefixInput}
+                                isAutoincrementValid={isAutoincrementValid}
                             />
                         )}
                         <DateModalItem

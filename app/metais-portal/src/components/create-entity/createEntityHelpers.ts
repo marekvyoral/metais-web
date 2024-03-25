@@ -14,7 +14,13 @@ import { isDate, isObjectEmpty } from '@isdd/metais-common/utils/utils'
 import { ENTITY_TRAINING, ROLES } from '@isdd/metais-common/constants'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { DateTime } from 'luxon'
-import { ConfigurationItemUiAttributes, ApiError, ConfigurationItemUi, RequestIdUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import {
+    ConfigurationItemUiAttributes,
+    ApiError,
+    ConfigurationItemUi,
+    RequestIdUi,
+    useStoreGraphHook,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useEffect, useState } from 'react'
 import {
     useInvalidateCiHistoryListCache,
@@ -29,7 +35,9 @@ import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
 
+import { EContainerType } from '@/components/containers/CiEvaluationContainer'
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
+import { PublicAuthorityState } from '@/hooks/usePublicAuthorityAndRole.hook'
 
 export const isRoundNumber = (value: number) => {
     return value === parseInt(value.toString(), 10)
@@ -246,13 +254,15 @@ type CiOnSubmitType = {
     ownerId: string | undefined
     generatedEntityId: CiCode | undefined
     updateCiItemId?: string
+    publicAuthorityState?: PublicAuthorityState
 }
 
 export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
     const [uploadError, setUploadError] = useState(false)
+    const storeGraph = useStoreGraphHook()
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
-    const onSubmit = async ({ formData, storeCiItem, ownerId, generatedEntityId, updateCiItemId }: CiOnSubmitType) => {
+    const onSubmit = async ({ formData, storeCiItem, ownerId, generatedEntityId, updateCiItemId, publicAuthorityState }: CiOnSubmitType) => {
         const isUpdate = !!updateCiItemId
         if (!isUpdate && entityName === ENTITY_TRAINING) {
             formData[ATTRIBUTE_NAME.Profil_Skolenie_pocet_volnych_miest] = formData[ATTRIBUTE_NAME.Profil_Skolenie_pocet_miest]
@@ -285,6 +295,24 @@ export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
         await storeCiItem({
             data: isUpdate ? dataToUpdate : dataToCreate,
         })
+
+        if (!isUpdate && entityName === EContainerType.KRIS) {
+            const relationshipSet = {
+                storeSet: {
+                    relationshipSet: [
+                        {
+                            type: 'PO_predklada_KRIS',
+                            uuid: uuidV4(),
+                            startUuid: publicAuthorityState?.selectedPublicAuthority?.poUUID,
+                            endUuid: uuid,
+                            owner: ownerId,
+                            attributes: [],
+                        },
+                    ],
+                },
+            }
+            storeGraph(relationshipSet)
+        }
 
         return uuid
     }

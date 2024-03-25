@@ -19,11 +19,11 @@ export const useDetailData = ({ entityStructure, isEntityStructureLoading, isEnt
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
-    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnum(MEASURE_UNIT)
+    const { isFetching: isUnitsFetching, isError: isUnitsError, data: unitsData } = useGetEnum(MEASURE_UNIT)
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
     const constraintsData = resultList.map((item) => item.data)
-    const isLoading = [isEntityStructureLoading, isConstraintLoading, isUnitsLoading].some((item) => item)
+    const isLoading = [isEntityStructureLoading, isConstraintLoading, isUnitsFetching].some((item) => item)
     const isError = [isEntityStructureError, isConstraintError, isUnitsError].some((item) => item)
     return {
         isLoading,

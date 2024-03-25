@@ -29,6 +29,10 @@ export interface CodeListDetailItemsViewProps {
     handleFilterChange: (filter: IFilter) => void
     handleMarkForPublish: (itemCodes: string[]) => void
     handleSetDates: (itemCodes: string[], validFrom: string, effectiveFrom: string) => void
+    isCodelistAutoincrementValid?: boolean
+    codelistPrefix?: string
+    codelistRefId?: string
+    codelistCharCount?: number
 }
 
 export interface CodeListDetailItemsContainerProps {

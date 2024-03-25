@@ -9,13 +9,13 @@ export const useAttributesHook = (entityName?: string, onlyValidProfiles = true)
     const { i18n } = useTranslation()
     const {
         data: ciTypeData,
-        isLoading: isCiTypeDataLoading,
+        isFetching: isCiTypeDataFetching,
         isError: isCiTypeDataError,
     } = useGetCiTypeWrapper(entityName ?? '', { query: { queryKey: [i18n.language, entityName], enabled: !!entityName } }, onlyValidProfiles)
 
     const { isLoading, isError, constraintsData, unitsData } = useDetailData({
         entityStructure: ciTypeData,
-        isEntityStructureLoading: isCiTypeDataLoading,
+        isEntityStructureLoading: isCiTypeDataFetching,
         isEntityStructureError: isCiTypeDataError,
     })
 
@@ -37,7 +37,7 @@ export const useAttributesHook = (entityName?: string, onlyValidProfiles = true)
         constraintsData,
         unitsData,
         renamedAttributes,
-        isLoading: isLoading || isCiTypeDataLoading,
+        isLoading: isLoading || isCiTypeDataFetching,
         isError: isError || isCiTypeDataError,
     }
 }

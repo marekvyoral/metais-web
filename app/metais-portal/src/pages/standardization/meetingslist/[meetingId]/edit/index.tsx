@@ -6,22 +6,6 @@ import { MeetingCreateEditView } from '@/components/views/standardization/meetin
 const MeetingEditPage = () => {
     const { meetingId } = useParams()
 
-    return (
-        <MeetingEditContainer
-            id={meetingId ?? ''}
-            View={(props) => (
-                <MeetingCreateEditView
-                    onSubmit={props.onSubmit}
-                    infoData={props.infoData}
-                    isLoading={props.isLoading}
-                    isError={props.isError}
-                    fileUploadRef={props.fileUploadRef}
-                    handleDeleteSuccess={props.handleDeleteSuccess}
-                    handleUploadSuccess={props.handleUploadSuccess}
-                    id={props.id}
-                />
-            )}
-        />
-    )
+    return <MeetingEditContainer id={meetingId ?? ''} View={(props) => <MeetingCreateEditView {...props} />} />
 }
 export default MeetingEditPage

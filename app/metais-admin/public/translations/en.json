@@ -951,7 +951,9 @@
         "noChangesDetected": "No changes were detected.",
         "noSpacesError": "Spaces can not be included in {{value}}",
         "loginFormat": "Login accepts only lowercase letters, numbers and dots.",
-        "MustBeMaximum": "can have a maximum of {{charsNumber}} characters"
+        "MustBeMaximum": "can have a maximum of {{charsNumber}} characters",
+        "poHint": "An organization will only be assigned to a user if at least one role is selected. If the organization is deleted, all roles will be automatically removed from the user.",
+        "errorSelectPo": "You must choose an organization and at least one role."
     },
     "accordion": {
         "openAll": "Open all",
@@ -1250,7 +1252,8 @@
         "deleteTemplate": "Delete template",
         "deleteTemplateText": "Are you sure you want to delete the following template?",
         "templateSuccessfullyAdded": "Template successfully added",
-        "templateSuccessfully Deleted": "Template successfully deleted"
+        "templateSuccessfully Deleted": "Template successfully deleted",
+        "template": "Template"
     },
     "homePage": {
         "placeholder": "Home - login to see navigation items",

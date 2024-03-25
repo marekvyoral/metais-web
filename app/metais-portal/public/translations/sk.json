@@ -415,7 +415,8 @@
         "cl.missing.item.date.validation": "Pre publikovanie položiek, musia mať všetky položky vyplnení dátum platnosti a dátum začiatku účinnosti.",
         "checkFromDateEquals": "Dva dátumy začiatku účinnosti sa rovnajú.",
         "vote.closed": "Hlasovanie sa nedá zmeniť. Hlasovanie je už ukončené",
-        "vote.progress": "Hlasovanie sa nedá zmeniť. Hlasovanie už prebieha"
+        "vote.progress": "Hlasovanie sa nedá zmeniť. Hlasovanie už prebieha",
+        "meeting.checkDates": "Koniec zasadnutia musí byť neskorší ako Začiatok zasadnutia"
     },
     "mutationFeedback": {
         "success": "Akcia bola úspešná",
@@ -732,7 +733,8 @@
             "createdAt": "Vytvorené",
             "createdBy": "Vytvoril",
             "lastModifiedAt": "Posledná zmena",
-            "lastModifiedBy": "Poslednú zmenu vykonal"
+            "lastModifiedBy": "Poslednú zmenu vykonal",
+            "template": "Šablóna"
         },
         "protocols": {
             "protocol": "Protokol",
@@ -1393,7 +1395,8 @@
             "publishCodeListItems": "Položky číselníka boli zverejnené.",
             "requestRejected": "Táto žiadosť bola zamietnutá dňa {{day}}. Dôvod zamietnutia: {{cause}}",
             "requestSentToKSISVS": "Táto žiadosť bola dňa {{day}} odoslaná na schválenie Komisiou pre štandardizáciu ISVS.",
-            "importDone": "Import číselníka bol úspešný"
+            "importDone": "Import číselníka bol úspešný",
+            "codeIsAvailable": "Zvolený kód je dostupný."
         },
         "modal": {
             "title": {
@@ -1496,7 +1499,8 @@
             "addBtn": "Žiadosť o vytvorenie číselníka",
             "addItemBtn": "Pridať novú položku",
             "saveBtn": "Uložiť",
-            "submitBtn": "Odoslať žiadosť"
+            "submitBtn": "Odoslať žiadosť",
+            "hasAutoincrementButNotPrefixOrCount": "Prefix a počet znakov sú povinné na vytvorenie položky s autoinkrementom"
         },
         "requestValidations": {
             "codelistName": "Názov číselníka je povinné pole.",
@@ -1517,7 +1521,8 @@
             "dateGreaterThan": "Dátum do musí byť väčší ako dátum od",
             "effectiveFrom": "Začiatok účinnosti je povinné pole.",
             "itemCode": "Kód položky je povinné pole.",
-            "itemName": "Názov položky je povinné pole."
+            "itemName": "Názov položky je povinné pole.",
+            "prefix": "Prefix je povinné pole."
         },
         "requestModal": {
             "yes": "Áno",
@@ -2070,6 +2075,7 @@
         "email": "E-mailová adresa",
         "linkChange": "Zmeniť záznam",
         "linkSave": "Uložiť záznam",
+        "summarizeSuccess": "Záznam zo stretnutia bol úspešne pridaný",
         "participation": "Potvrdenie o účasti",
         "participationValue": {
             "ACCEPTED": "Potvrdil účasť",
@@ -3005,6 +3011,20 @@
         "deleteRow": "Odstrániť {{itemName}}",
         "changeRowsNumber": "Zmenil sa počet riadkov položky: {{name}}. Počet riadkov je {{count}}"
     },
+    "creatableSelect": {
+        "createNew": "Vytvoriť: {{input}}"
+    },
+    "autoincrement": {
+        "prefix": "Prefix položky",
+        "charCount": "Počet znakov v inkremente",
+        "valid": "Autoinkrement",
+        "preview": "Náhľad kódu: {{autoincrement}}",
+        "legend": "Kód referencovateľného identifikátora",
+        "type": {
+            "label": "Typ autoinkrementu",
+            "NUMERIC": "Číselný"
+        }
+    },
     "entitySummary": {
         "operated": "(prevádzkované)",
         "ksState": "Koncové služby štátnej správy",
@@ -3017,5 +3037,8 @@
         "loading": "Načítava sa zhrnutie počtu entít",
         "lastModifiedEntities": "Posledné editované entity:",
         "loadingLatestCi": "Načítavajú sa posledné editované entity"
+    },
+    "refIden": {
+        "hint": "V prípade že sa Vami požadovaný referencovateľný identifikátor nenachádza v zozname môžete jeho hodnotu vpísať priamo do poľa. Následne sa Vám zobrazí možnosť 'Vytvoriť:' spolu s hodnotou ktorú ste zadali."
     }
 }

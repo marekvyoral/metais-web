@@ -124,7 +124,7 @@
         "chooseValue": "Vyberte hodnotu",
         "cleared": "Kritéria filtrovania boli vyčistené",
         "publicAuthorities": {
-            "name": "Meno",
+            "name": "Názov",
             "ICO": "IČO",
             "onlyFreePO": "Iba voľné orgány riadenia",
             "state": "Stav",
@@ -602,7 +602,9 @@
         "noChangesDetected": "Neboli zaznamenané žiadne zmeny.",
         "noSpacesError": "Položka {{value}} nesmie obsahovať medzery.",
         "loginFormat": "Prihlasovacie meno môže obsahovať iba malé písmená, čísla a bodky.",
-        "MustBeMaximum": "môže mať maximálne {{charsNumber}} znakov"
+        "MustBeMaximum": "môže mať maximálne {{charsNumber}} znakov",
+        "poHint": "Povinná osoba bude používateľovi priradená len v prípade ak bude zvolená aspoň jedna rola. V prípade vymazania povinnej osoby budú používateľovi automaticky odstránene všetky role.",
+        "errorSelectPo": "Musíte si vybrať povinná osobu a aspoň jednu rolu."
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
@@ -1254,7 +1256,8 @@
         "deleteTemplate": "Odstrániť šablónu",
         "deleteTemplateText": "Naozaj chcete odstrániť nasledujúcu šablónu?",
         "templateSuccessfullyAdded": "Šablóna bola úspešne pridaná",
-        "templateSuccessfullyDeleted": "Šablóna bola úspešne vymazaná"
+        "templateSuccessfullyDeleted": "Šablóna bola úspešne vymazaná",
+        "template": "Šablóna"
     },
     "homePage": {
         "placeholder": "Domov - pre zobrazenie navigácie je potrebné sa prihlásiť.",

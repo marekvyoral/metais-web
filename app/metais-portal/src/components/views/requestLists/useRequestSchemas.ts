@@ -64,6 +64,10 @@ export const useCreateRequestSchema = (canEdit: boolean): IOutput => {
         codeListState: string(),
         validDate: date(),
         startDate: date(),
+        valid: boolean(),
+        type: string(),
+        charCount: number(),
+        prefix: string().required(t('codeListList.requestValidations.prefix')),
     })
 
     if (!canEdit) {

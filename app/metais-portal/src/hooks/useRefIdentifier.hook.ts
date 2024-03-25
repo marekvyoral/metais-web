@@ -27,7 +27,7 @@ export const useRefIdentifierHook = (type?: string) => {
 
     const {
         data: generatedEntityId,
-        isLoading: isGeneratedIdLoading,
+        isFetching: isGeneratedIdFetching,
         isError: isGeneratedIdError,
     } = useGenerateCodeAndURL(type ?? '', { query: { refetchOnMount: false, cacheTime: 0, enabled: !!type } })
 
@@ -37,7 +37,7 @@ export const useRefIdentifierHook = (type?: string) => {
 
     const {
         data: ciDataByUuids,
-        isLoading: isReadCiListLoading,
+        isFetching: isReadCiListFetching,
         isError: isReadCiListError,
     } = useReadCiList1(
         {
@@ -53,7 +53,7 @@ export const useRefIdentifierHook = (type?: string) => {
 
     const {
         data: datasetData,
-        isLoading: isDatasetLoading,
+        isFetching: isDatasetFetching,
         isError: isDatasetError,
     } = useReadCiList1(
         {
@@ -80,13 +80,13 @@ export const useRefIdentifierHook = (type?: string) => {
 
     const {
         data: dataItemTypeState,
-        isLoading: isDataItemTypeStatesLoading,
+        isFetching: isDataItemTypeStatesFetching,
         isError: isDataItemTypeStatesError,
     } = useGetValidEnum(TYP_DATOVEHO_PRVKU)
 
     const {
         data: templateUriData,
-        isLoading: isTemplateUriDataLoading,
+        isFetching: isTemplateUriDataFetching,
         isError: isTemplateUriDataError,
     } = useReadCiList1(
         {
@@ -178,11 +178,11 @@ export const useRefIdentifierHook = (type?: string) => {
 
     const isLoading = [
         isAttributesLoading,
-        isGeneratedIdLoading,
-        isReadCiListLoading,
-        isDatasetLoading,
-        isTemplateUriDataLoading,
-        isDataItemTypeStatesLoading,
+        isGeneratedIdFetching,
+        isReadCiListFetching,
+        isDatasetFetching,
+        isTemplateUriDataFetching,
+        isDataItemTypeStatesFetching,
     ].some((item) => item)
     const isError = [
         isAttributesError,

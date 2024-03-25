@@ -16,7 +16,7 @@ type CiHookReturnType = {
 export const useCiHook = (configurationItemId?: string): CiHookReturnType => {
     const {
         data: ciItemData,
-        isLoading: isCiItemLoading,
+        isFetching: isCiItemFetching,
         isError: isCiItemError,
         fetchStatus: ciItemFetchStatus,
     } = useReadConfigurationItem(configurationItemId ?? '', {
@@ -28,7 +28,7 @@ export const useCiHook = (configurationItemId?: string): CiHookReturnType => {
 
     const {
         data: gestorData,
-        isLoading: isGestorLoading,
+        isFetching: isGestorFetching,
         isError: isGestorError,
         fetchStatus: gestorFetchStatus,
     } = useGetRoleParticipantBulk(
@@ -36,7 +36,7 @@ export const useCiHook = (configurationItemId?: string): CiHookReturnType => {
         { query: { enabled: !!ciItemData, queryKey: ['roleParticipant', ciItemData?.metaAttributes?.owner ?? ''] } },
     )
 
-    const isLoading = [isCiItemLoading && ciItemFetchStatus != 'idle', isGestorLoading && gestorFetchStatus != 'idle'].some((item) => item)
+    const isLoading = [isCiItemFetching && ciItemFetchStatus != 'idle', isGestorFetching && gestorFetchStatus != 'idle'].some((item) => item)
     const isError = [isCiItemError, isGestorError].some((item) => item)
     return {
         ciItemData,

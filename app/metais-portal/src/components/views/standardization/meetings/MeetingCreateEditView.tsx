@@ -6,12 +6,13 @@ import { useTranslation } from 'react-i18next'
 import { formatDateTimeForAPI, formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { FileUpload } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { formatTitleString } from '@isdd/metais-common/utils/utils'
 import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 import { DateInput, DateTypeEnum } from '@isdd/idsk-ui-kit/date-input/DateInput'
 import { useNavigate } from 'react-router-dom'
+import { getErrorTranslateKey } from '@isdd/metais-common/utils/errorMapper'
 
 import styles from './createEditView.module.scss'
 import { MeetingFormEnum, createMeetingSchema, editMeetingSchema } from './meetingSchema'
@@ -35,6 +36,8 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
     isEdit,
     isLoading,
     isError,
+    isActionError,
+    actionError,
     fileUploadRef,
     existingFilesProcessRef,
     handleDeleteSuccess,
@@ -165,6 +168,8 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
     }, [infoData, setValue])
 
     const startDate = watch(MeetingFormEnum.BEGIN_DATE)
+    const actionErrorMessageKey = getErrorTranslateKey(actionError)
+
     return (
         <>
             {!isEdit && (
@@ -202,7 +207,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
                 <TextHeading size="XL">{isEdit ? `${t('meetings.editMeeting')} - ${infoData?.name}` : t('meetings.addNewMeeting')}</TextHeading>
                 <QueryFeedback loading={isLoading} error={isError} withChildren>
                     {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
-
+                    <MutationFeedback error={isActionError} errorMessage={actionErrorMessageKey && t(actionErrorMessageKey)} />
                     <form onSubmit={handleSubmit(callSubmit)} ref={formRef} noValidate>
                         <TextHeading size="L">{t('meetings.form.heading.dateTime')}</TextHeading>
                         <Input
@@ -307,6 +312,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
                             refType={RefAttributesRefType.MEETING_REQUEST}
                             refId={id?.toString()}
                             onUploadSuccess={handleUploadSuccess}
+                            textSize="L"
                         />
                         {infoData?.meetingAttachments && infoData?.meetingAttachments.length > 0 && (
                             <ExistingFilesHandler

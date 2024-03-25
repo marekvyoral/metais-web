@@ -75,6 +75,8 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
 
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
     const [errorAddOrGetGroup, setAddOrGetGroupError] = useState<{ message: string }>()
+    const [isAddOrGetGroupLoading, setIsAddOrGetGroupLoading] = useState<boolean>(false)
+
     const implicitHierarchy = useReadCiList()
     const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave, error: errorSave } = useCreateCodelistRequest()
     const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend, error: errorSend } = useSaveAndSendCodelist()
@@ -132,8 +134,10 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
         const uuid = getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)
         const saveData = mapFormToSave(formData, workingLanguage)
         setAddOrGetGroupError(undefined)
+        setIsAddOrGetGroupLoading(true)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
+                setIsAddOrGetGroupLoading(false)
                 mutateAsync({ data: saveData }).then(() => {
                     invalidateRequests()
                     setIsActionSuccess({
@@ -145,16 +149,20 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
                 })
             })
             .catch((error) => {
+                setIsAddOrGetGroupLoading(false)
                 setAddOrGetGroupError(error)
             })
     }
 
     const onSend = async (formData: IRequestForm) => {
         const uuid = getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)
+        const saveData = mapFormToSave(formData, workingLanguage)
         setAddOrGetGroupError(undefined)
+        setIsAddOrGetGroupLoading(true)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
-                mutateSendASync({ data: mapFormToSave(formData, workingLanguage) }).then(() => {
+                setIsAddOrGetGroupLoading(false)
+                mutateSendASync({ data: saveData }).then(() => {
                     invalidateRequests()
                     setIsActionSuccess({
                         value: true,
@@ -165,12 +173,13 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
                 })
             })
             .catch((error) => {
+                setIsAddOrGetGroupLoading(false)
                 setAddOrGetGroupError(error)
             })
     }
 
     const isLoading = [isLoadingGetFirstNotUsedCode, isLoadingAttributeProfile].some((item) => item)
-    const isLoadingMutation = [isLoadingSave, isLoadingSend, isLoadingExists].some((item) => item)
+    const isLoadingMutation = [isLoadingSave, isLoadingSend, isLoadingExists, isAddOrGetGroupLoading].some((item) => item)
     const isError = [errorAddOrGetGroup, isErrorSave, isErrorSend, isErrorAttributeProfile].some((item) => item)
     const errorMessages = getErrorTranslateKeys([errorAddOrGetGroup, errorSend, errorSave].map((item) => item as { message: string }))
 

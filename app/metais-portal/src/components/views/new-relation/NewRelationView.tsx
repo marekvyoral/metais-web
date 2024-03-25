@@ -13,7 +13,7 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
 import { JOIN_OPERATOR, metaisEmail } from '@isdd/metais-common/constants'
-import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import classNames from 'classnames'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -361,17 +361,18 @@ export const NewRelationView: React.FC<Props> = ({
         setErrors(errors)
     }
 
-    const isQueryError = [isError || storeGraph.isError || isRequestStatusError || isProcessedError || isTooManyFetchesError].some((item) => item)
+    const isQueryError = [storeGraph.isError, isRequestStatusError, isProcessedError, isTooManyFetchesError].some((item) => item)
+    const isQueryLoading = [isLoading, storeGraph.isLoading, isRequestStatusLoading].some((item) => item)
 
     return (
-        <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading} error={false} withChildren>
+        <QueryFeedback loading={isQueryLoading} error={isError}>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">
                     {t('breadcrumbs.newRelation', { itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] })}
                 </TextHeading>
 
                 <ElementToScrollTo trigger={isQueryError}>
-                    <QueryFeedback loading={false} error={isQueryError} />
+                    <MutationFeedback error={isQueryError} />
                 </ElementToScrollTo>
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} ciType={ciItemData?.type ?? ''} />
