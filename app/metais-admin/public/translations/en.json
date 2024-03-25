@@ -1250,7 +1250,8 @@
         "deleteTemplate": "Delete template",
         "deleteTemplateText": "Are you sure you want to delete the following template?",
         "templateSuccessfullyAdded": "Template successfully added",
-        "templateSuccessfully Deleted": "Template successfully deleted"
+        "templateSuccessfully Deleted": "Template successfully deleted",
+        "template": "Template"
     },
     "homePage": {
         "placeholder": "Home - login to see navigation items",

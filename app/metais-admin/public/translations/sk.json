@@ -1254,7 +1254,8 @@
         "deleteTemplate": "Odstrániť šablónu",
         "deleteTemplateText": "Naozaj chcete odstrániť nasledujúcu šablónu?",
         "templateSuccessfullyAdded": "Šablóna bola úspešne pridaná",
-        "templateSuccessfullyDeleted": "Šablóna bola úspešne vymazaná"
+        "templateSuccessfullyDeleted": "Šablóna bola úspešne vymazaná",
+        "template": "Šablóna"
     },
     "homePage": {
         "placeholder": "Domov - pre zobrazenie navigácie je potrebné sa prihlásiť.",
