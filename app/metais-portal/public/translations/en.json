@@ -734,7 +734,8 @@
             "createdAt": "Created",
             "createdBy": "Created by",
             "lastModifiedAt": "Last change",
-            "lastModifiedBy": "Last change by"
+            "lastModifiedBy": "Last change by",
+            "template": "Template"
         },
         "protocols": {
             "protocol": "Protocol",

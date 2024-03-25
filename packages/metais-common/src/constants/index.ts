@@ -63,6 +63,7 @@ export const documentsManagementGroupDocumentsDefaultSelectedColumns = (t: TFunc
     { technicalName: 'required', name: t('documentsManagement.required'), selected: true },
     { technicalName: 'documentGroup', name: t('documentsManagement.documentGroup'), selected: false },
     { technicalName: 'type', name: t('documentsManagement.type'), selected: false },
+    { technicalName: 'template', name: t('documentsManagement.template'), selected: true },
 ]
 
 export const getProjectsFinanceManagementSelectedColumns = (t: TFunction<'translation', undefined, 'translation'>) => [

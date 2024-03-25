@@ -8,6 +8,7 @@ import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { BASE_PAGE_NUMBER } from '@isdd/metais-common/api/constants'
+import { Metadata, useGetMeta1Hook } from '@isdd/metais-common/api/generated/dms-swagger'
 
 export interface IDocType extends ConfigurationItemUi {
     confluence?: boolean
@@ -45,6 +46,8 @@ export interface IView {
     page?: number
     setPage?: React.Dispatch<React.SetStateAction<number>>
     totalLength?: number
+    hiddenColumnsNames?: string[]
+    templatesMetadata?: Metadata[]
 }
 
 interface IProjectDocumentsListContainer {
@@ -68,6 +71,34 @@ export const ProjectDocumentsListContainer: React.FC<IProjectDocumentsListContai
     useEffect(() => {
         setSectionsByState(requiredDocuments?.find((rd) => rd.stavId == projectData?.attributes?.EA_Profil_Projekt_status))
     }, [projectData?.attributes?.EA_Profil_Projekt_status, requiredDocuments])
+    const getMetaData = useGetMeta1Hook()
+    const templatesUuids: string[] = []
+    requiredDocuments
+        ?.find((rd) => rd?.['stavId'] == projectData?.attributes?.['EA_Profil_Projekt_status'])
+        ?.sections?.forEach((section: { docs: IDocType[]; name: string; id: number }) =>
+            section?.docs.filter((d) => !!d.templateUuid).forEach((d) => templatesUuids.push(d.templateUuid ?? '')),
+        )
+
+    const [templatesMetadata, setTemplatesMetadata] = useState<Metadata[]>()
+    const [customLoading, setCustomLoading] = useState(false)
+    const getAllMeta = async () => {
+        Promise.all(
+            templatesUuids.map(async (template) => {
+                return getMetaData(template)
+            }),
+        ).then((resp) => {
+            setTemplatesMetadata(resp)
+            setCustomLoading(false)
+        })
+    }
+
+    useEffect(() => {
+        if (templatesUuids && requiredDocuments) {
+            setCustomLoading(true)
+            getAllMeta()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [requiredDocuments])
 
     const { currentPreferences } = useUserPreferences()
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
@@ -107,12 +138,13 @@ export const ProjectDocumentsListContainer: React.FC<IProjectDocumentsListContai
     }))
     return (
         <View
+            templatesMetadata={templatesMetadata}
             projectData={projectData}
             allDocuments={documents}
             data={data}
             refetch={refetch}
             handleFilterChange={handleFilterChange}
-            isLoading={isLoading || isProjectLoading || isRequiredDocsLoading}
+            isLoading={isLoading || isProjectLoading || isRequiredDocsLoading || customLoading}
             isError={isError}
         />
     )

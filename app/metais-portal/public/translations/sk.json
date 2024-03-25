@@ -732,7 +732,8 @@
             "createdAt": "Vytvorené",
             "createdBy": "Vytvoril",
             "lastModifiedAt": "Posledná zmena",
-            "lastModifiedBy": "Poslednú zmenu vykonal"
+            "lastModifiedBy": "Poslednú zmenu vykonal",
+            "template": "Šablóna"
         },
         "protocols": {
             "protocol": "Protokol",

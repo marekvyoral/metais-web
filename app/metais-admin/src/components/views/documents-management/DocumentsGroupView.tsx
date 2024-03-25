@@ -12,14 +12,14 @@ import {
 } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { ActionsOverTable, BulkPopup, ModalButtons, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, BulkPopup, DMS_DOWNLOAD_FILE, ModalButtons, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useQueryClient } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
 
 import { IView } from '@/components/containers/documents-management/DocumentsGroupContainer'
@@ -33,6 +33,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
     filter,
     handleFilterChange,
     refetchInfoData,
+    templatesMetadata,
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
@@ -134,6 +135,17 @@ export const DocumentsGroupView: React.FC<IView> = ({
             enableSorting: true,
             id: 'required',
             cell: (ctx) => (ctx?.getValue() ? t('radioButton.yes') : t('radioButton.no')),
+        },
+        {
+            header: t('documentsManagement.template'),
+            accessorFn: (row) => row?.templateUuid,
+            enableSorting: true,
+            id: 'template',
+            cell: (ctx) => (
+                <Link to={`${DMS_DOWNLOAD_FILE}${ctx?.getValue()}`} state={{ from: location }} target="_blank" className="govuk-link">
+                    {templatesMetadata?.find((tm) => tm?.uuid == ctx?.getValue())?.filename}
+                </Link>
+            ),
         },
         {
             header: t('actionsInTable.actions'),
