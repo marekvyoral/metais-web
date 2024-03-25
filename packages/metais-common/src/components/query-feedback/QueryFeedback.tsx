@@ -40,7 +40,7 @@ export const QueryFeedback: React.FC<IQueryFeedbackProps> = ({
         setShow(false)
     }
     const errorMessage = errorProps?.errorMessage ? (
-        `${errorProps.errorMessage}${showSupportEmail && <Link to={`mailto:${metaisEmail}`}>{metaisEmail}</Link>}`
+        `${errorProps.errorMessage}${showSupportEmail ? <Link to={`mailto:${metaisEmail}`}>{metaisEmail}</Link> : ''}`
     ) : (
         <div className={styles.column}>
             {t('feedback.queryErrorMessage')}

@@ -2,8 +2,12 @@ import { AccordionContainer, CheckBox, SelectLazyLoading, Table, TextHeading } f
 import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Row } from '@tanstack/react-table'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import isEmpty from 'lodash/isEmpty'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { UserRolesEditable } from './UserRolesEditable'
 import { formatOrgData, getDefaultRolesKeys, getUniqueUserOrg, useGetLoadOptions } from './managementListHelpers'
@@ -57,11 +61,23 @@ export const UserRolesForm: React.FC<Props> = ({
 
     const roleGroupsData = managementData?.roleGroupsData
     const allRolesData = managementData?.allRolesData
-
+    const { setIsActionSuccess, isActionSuccess } = useActionSuccess()
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
     const [selectedGroups, setSelectedGroups] = useState<Record<string, boolean>>({})
     const [rowSelection, setRowSelection] = useState<Record<string, RoleTable>>({})
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
+    const validationError = useMemo(() => {
+        return isEmpty(selectedOrg) !== isEmpty(rowSelection)
+    }, [rowSelection, selectedOrg])
+
+    useEffect(() => {
+        if (validationError) {
+            scrollToMutationFeedback()
+        } else {
+            if (isActionSuccess?.scrolled) setIsActionSuccess({ value: false, path: '', scrolled: false })
+        }
+    }, [validationError, scrollToMutationFeedback, setIsActionSuccess, isActionSuccess?.scrolled])
     //add to editedUserOrgAndRoles exact roles on checkbox selection
     useEffect(() => {
         if (Object.keys(rowSelection).length > 0) {
@@ -202,7 +218,8 @@ export const UserRolesForm: React.FC<Props> = ({
             return acc
         })
         setRowSelection({})
-        if (Object.keys(editedUserOrgAndRoles[value?.poUUID ?? '']).length > 0) {
+        if (isEmpty(value)) setEditedUserOrgAndRoles({})
+        if (!isEmpty(editedUserOrgAndRoles) && !isEmpty(value) && Object.keys(editedUserOrgAndRoles[value?.poUUID ?? '']).length > 0) {
             setRowSelection(editedUserOrgAndRoles[value?.poUUID ?? ''].roles)
         }
         return
@@ -291,8 +308,11 @@ export const UserRolesForm: React.FC<Props> = ({
     return (
         <>
             <TextHeading size="L">{t('managementList.giveRolesToUserHeading')}</TextHeading>
+            <QueryFeedback loading={false} error={validationError} errorProps={{ errorMessage: t('managementList.errorSelectPo') }} />
+            <div ref={wrapperRef} />
             <SelectLazyLoading
                 option={undefined}
+                hint={t('managementList.poHint')}
                 value={selectedOrg}
                 getOptionLabel={(item) => item.poName ?? ''}
                 getOptionValue={(item) => item.poUUID ?? ''}
