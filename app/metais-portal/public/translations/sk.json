@@ -1496,7 +1496,8 @@
             "addBtn": "Žiadosť o vytvorenie číselníka",
             "addItemBtn": "Pridať novú položku",
             "saveBtn": "Uložiť",
-            "submitBtn": "Odoslať žiadosť"
+            "submitBtn": "Odoslať žiadosť",
+            "hasAutoincrementButNotPrefixOrCount": "Prefix a počet znakov sú povinné na vytvorenie položky s autoinkrementom"
         },
         "requestValidations": {
             "codelistName": "Názov číselníka je povinné pole.",
@@ -1517,7 +1518,8 @@
             "dateGreaterThan": "Dátum do musí byť väčší ako dátum od",
             "effectiveFrom": "Začiatok účinnosti je povinné pole.",
             "itemCode": "Kód položky je povinné pole.",
-            "itemName": "Názov položky je povinné pole."
+            "itemName": "Názov položky je povinné pole.",
+            "prefix": "Prefix je povinné pole."
         },
         "requestModal": {
             "yes": "Áno",
@@ -3005,6 +3007,20 @@
         "deleteRow": "Odstrániť {{itemName}}",
         "changeRowsNumber": "Zmenil sa počet riadkov položky: {{name}}. Počet riadkov je {{count}}"
     },
+    "creatableSelect": {
+        "createNew": "Vytvoriť: {{input}}"
+    },
+    "autoincrement": {
+        "prefix": "Prefix položky",
+        "charCount": "Počet znakov v inkremente",
+        "valid": "Autoinkrement",
+        "preview": "Náhľad kódu: {{autoincrement}}",
+        "legend": "Kód referencovateľného identifikátora",
+        "type": {
+            "label": "Typ autoinkrementu",
+            "NUMERIC": "Číselný"
+        }
+    },
     "entitySummary": {
         "operated": "(prevádzkované)",
         "ksState": "Koncové služby štátnej správy",
@@ -3017,5 +3033,8 @@
         "loading": "Načítava sa zhrnutie počtu entít",
         "lastModifiedEntities": "Posledné editované entity:",
         "loadingLatestCi": "Načítavajú sa posledné editované entity"
+    },
+    "refIden": {
+        "hint": "V prípade že sa Vami požadovaný referencovateľný identifikátor nenachádza v zozname môžete jeho hodnotu vpísať priamo do poľa. Následne sa Vám zobrazí možnosť 'Vytvoriť:' spolu s hodnotou ktorú ste zadali."
     }
 }

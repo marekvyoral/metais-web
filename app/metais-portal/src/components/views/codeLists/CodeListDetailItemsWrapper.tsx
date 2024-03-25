@@ -64,6 +64,10 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
     handleFilterChange,
     handleMarkForPublish,
     handleSetDates,
+    isCodelistAutoincrementValid,
+    codelistPrefix,
+    codelistRefId,
+    codelistCharCount,
 }) => {
     const { t } = useTranslation()
     const [rowSelection, setRowSelection] = useState<Record<string, TableCols>>({})
@@ -323,6 +327,10 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                     attributeProfile={attributeProfile}
                     workingLanguage={workingLanguage}
                     defaultOrderValue={items?.codelistsItemCount ?? 1}
+                    isCodelistAutoincrementValid={!!isCodelistAutoincrementValid}
+                    codelistPrefix={codelistPrefix}
+                    codelistRefId={codelistRefId}
+                    codelistCharCount={codelistCharCount}
                 />
             )}
         </QueryFeedback>

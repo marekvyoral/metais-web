@@ -1490,7 +1490,8 @@
             "addBtn": "Request for codelist classification",
             "addItemBtn": "Add new item",
             "saveBtn": "Save",
-            "submitBtn": "Send request"
+            "submitBtn": "Send request",
+            "hasAutoincrementButNotPrefixOrCount": "Prefix and character count are required for creating item with autoincrement"
         },
         "requestValidations": {
             "codelistName": "Codelist name is required field",
@@ -1511,7 +1512,8 @@
             "dateGreaterThan": "Date to must be greater than date from",
             "effectiveFrom": "Entry into force is required field",
             "itemCode": "Codelist ID is required field",
-            "itemName": "Codelist name is required field"
+            "itemName": "Codelist name is required field",
+            "prefix": "Prefix is required field"
         },
         "requestModal": {
             "yes": "Yes",
@@ -2999,6 +3001,20 @@
         "deleteRow": "Remove {{itemName}}",
         "changeRowsNumber": "Number of rows for item {{name}} changed. Number of rows is {{count}}"
     },
+    "creatableSelect": {
+        "createNew": "Create: {{input}}"
+    },
+    "autoincrement": {
+        "prefix": "Prefix",
+        "charCount": "Characters count in increment",
+        "valid": "Autoincrement",
+        "preview": "Code preview: {{autoincrement}}",
+        "legend": "Reference identifier code",
+        "type": {
+            "label": "Autoincrement type",
+            "NUMERIC": "Numeric"
+        }
+    },
     "entitySummary": {
         "operated": "(operated)",
         "ksState": "eGov services of state administration",
@@ -3011,5 +3027,8 @@
         "loading": "Loading entities count summary",
         "lastModifiedEntities": "Last modified entities:",
         "loadingLatestCi": "Loading latest modified entities"
+    },
+    "refIden": {
+        "hint": "If the referenceable identifier you want is not in the list, you can enter its value directly in the field. You will then see the option 'Create:' together with the value you entered."
     }
 }

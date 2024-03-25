@@ -1,7 +1,13 @@
-import { ApiCodelistItem, ApiCodelistItemList, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import {
+    ApiCodelistAutoincrementType,
+    ApiCodelistItem,
+    ApiCodelistItemList,
+    ApiCodelistPreview,
+} from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import { RequestListState } from '@isdd/metais-common/constants'
 import { Group } from '@isdd/metais-common/contexts/auth/authContext'
+import { ensureSlashAtEnd } from '@isdd/metais-common/utils/utils'
 
 import { INoteRow } from '@/components/views/requestLists/CreateRequestView'
 import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
@@ -25,6 +31,10 @@ export interface IRequestForm {
     startDate?: Date | null
     validDate?: Date | null
     codeListState?: RequestListState
+    valid?: boolean
+    charCount?: number
+    type?: ApiCodelistAutoincrementType
+    prefix?: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [x: string]: any
 }
@@ -158,7 +168,7 @@ export const mapFormToSave = (formData: IRequestForm, language: string, id?: num
         mainCodelistManagers: [
             {
                 value: formData?.mainGestor,
-                language: language,
+                // language: language,
                 effectiveTo: undefined,
                 effectiveFrom: formatDateTimeForDefaultValue(new Date().toISOString(), API_DATE_FORMAT),
             },
@@ -166,6 +176,12 @@ export const mapFormToSave = (formData: IRequestForm, language: string, id?: num
         uri: formData.refIndicator,
         effectiveFrom: formData.startDate ? formatDateForDefaultValue(formData.startDate.toISOString(), API_DATE_FORMAT) : undefined,
         validFrom: formData.validDate ? formatDateForDefaultValue(formData.validDate.toISOString(), API_DATE_FORMAT) : undefined,
+        prefix: formData?.prefix,
+        autoincrement: {
+            type: formData?.type,
+            charCount: formData?.charCount,
+            valid: formData?.valid,
+        },
     }
 
     return res
@@ -246,6 +262,11 @@ export const mapToForm = (language: string, itemList?: ApiCodelistItemList, data
         validDate: data?.validFrom ? formatDateForDefaultValue(data.validFrom) : undefined,
         startDate: data?.fromDate ? formatDateForDefaultValue(data.fromDate) : undefined,
         codeListState: data?.codelistState ?? '',
+        prefix: data?.prefix,
+        valid: data?.autoincrement?.valid,
+        type: data?.autoincrement?.type,
+        charCount: data?.autoincrement?.charCount,
+        refIndicator: data?.uri,
     } as IRequestForm
 }
 
@@ -256,4 +277,8 @@ export const getRoleUUID = (dataRoles: Group[], roleName: string): string => {
     }, '')
 
     return roleUuid
+}
+
+export const getItemCodelistRefId = (refId: string, code: string) => {
+    return `${ensureSlashAtEnd(refId)}${code}`
 }
