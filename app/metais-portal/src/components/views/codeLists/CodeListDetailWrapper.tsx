@@ -308,7 +308,15 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                         workingLanguage={workingLanguage}
                         code={code}
                         invalidateCodeListDetailCache={invalidateCodeListDetailCache}
-                        View={(props) => <CodeListDetailItemsWrapper {...props} />}
+                        View={(props) => (
+                            <CodeListDetailItemsWrapper
+                                {...props}
+                                isCodelistAutoincrementValid={data.codeList?.autoincrement?.valid}
+                                codelistPrefix={data.codeList?.prefix}
+                                codelistRefId={data.codeList?.uri}
+                                codelistCharCount={data.codeList?.autoincrement?.charCount}
+                            />
+                        )}
                     />
                     <ExportCodeListModal code={code} isOpen={isExportModalOpen} onClose={() => setIsExportModalOpen(false)} />
                     <ImportCodeListModal

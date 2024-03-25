@@ -27,6 +27,7 @@ import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ApiError } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Link } from 'react-router-dom'
 
 import { allChecked, checkAll, downloadFile, downloadFiles, filterAsync, isInvalid, isMeta } from './utils'
 
@@ -45,6 +46,8 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
     page,
     setPage,
     totalLength,
+    hiddenColumnsNames,
+    templatesMetadata,
 }) => {
     const { t } = useTranslation()
     const {
@@ -282,6 +285,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             header: t('documentsTab.table.evidenceStatus'),
             id: 'state',
             size: 100,
+
             meta: {
                 getCellContext: (ctx) => ctx.getValue() && t(`metaAttributes.state.${ctx.getValue()}`),
             },
@@ -315,6 +319,17 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             id: 'documentsTab.table.lastModifiedBy',
             size: 100,
         },
+        {
+            header: t('documentsTab.table.template'),
+            accessorFn: (row) => row?.templateUuid,
+            enableSorting: true,
+            id: 'template',
+            cell: (ctx) => (
+                <Link to={`${DMS_DOWNLOAD_FILE}${ctx?.getValue()}`} state={{ from: location }} target="_blank" className="govuk-link">
+                    {templatesMetadata?.find((tm) => tm?.uuid == ctx?.getValue())?.filename}
+                </Link>
+            ),
+        },
 
         {
             accessorKey: 'bulkActions',
@@ -333,12 +348,16 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rowSelection])
 
-    const filteredColumns = isUserLogged
+    let filteredColumns = isUserLogged
         ? columns
         : columns
               .filter((column) => column.id != 'documentsTab.table.lastModifiedBy')
               .filter((column) => column.id != 'documentsTab.table.createdBy')
               .filter((column) => column.id != 'bulkActions')
+
+    if (hiddenColumnsNames) {
+        filteredColumns = filteredColumns.filter((c) => !hiddenColumnsNames.includes(c.id ?? ''))
+    }
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 

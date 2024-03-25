@@ -63,6 +63,7 @@ export const documentsManagementGroupDocumentsDefaultSelectedColumns = (t: TFunc
     { technicalName: 'required', name: t('documentsManagement.required'), selected: true },
     { technicalName: 'documentGroup', name: t('documentsManagement.documentGroup'), selected: false },
     { technicalName: 'type', name: t('documentsManagement.type'), selected: false },
+    { technicalName: 'template', name: t('documentsManagement.template'), selected: true },
 ]
 
 export const getProjectsFinanceManagementSelectedColumns = (t: TFunction<'translation', undefined, 'translation'>) => [
@@ -403,6 +404,9 @@ export const OLA_CONTRACT_STATE_ACTIONS = {
     CONTRACT: 'CONTRACT',
 }
 
+export enum C_STAV_REGISTRACIE {
+    c_stav_registracie_2 = 'c_stav_registracie.2',
+}
 export enum HowTo {
     EGOV_HOWTO = 'EGOV_HOWTO',
     SPK_HOWTO = 'SPK_HOWTO',

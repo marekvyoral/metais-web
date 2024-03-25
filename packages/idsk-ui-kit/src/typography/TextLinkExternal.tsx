@@ -13,15 +13,17 @@ interface ITextLinkExternalProps extends PropsWithChildren {
     inverse?: boolean
     noUnderline?: boolean
     isInvalid?: boolean
+    textBodySize?: boolean
 }
 
 export const TextLinkExternal = forwardRef<HTMLAnchorElement, ITextLinkExternalProps>(
-    ({ title, href, textLink, linkBack, noVisitedState, newTab, inverse, noUnderline, isInvalid }, ref) => {
+    ({ title, href, textLink, linkBack, noVisitedState, newTab, inverse, noUnderline, isInvalid, textBodySize }, ref) => {
         return (
             <>
                 <Link
                     ref={ref}
                     className={classNames(
+                        { 'govuk-body': !!textBodySize },
                         'govuk-link',
                         { 'govuk-link--no-visited-state': !!noVisitedState },
                         { 'govuk-link--inverse': !!inverse },

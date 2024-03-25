@@ -40,7 +40,6 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const { setIsActionSuccess } = useActionSuccess()
     const managedUserUuid = detailData?.userData?.uuid
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
-
     const managementListPath = '/managementList'
     const detailPath = '/detail'
     const userIdPath = `/${managedUserUuid}`
@@ -107,6 +106,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                     if (errorData.type === 'UniqueConstraintException' && errorData.property === 'email') {
                         setErrorType(UNIQUE_EMAIL)
                     }
+                    scrollToMutationFeedback()
                 }
             },
         },
@@ -131,10 +131,6 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
         const gids = formatGidsData(editedUserOrgAndRoles)
         updateOrCreate.mutateAsync({ data: { identity: identity, gids: gids } })
     }
-
-    useEffect(() => {
-        scrollToMutationFeedback()
-    }, [updateOrCreate.isError, updateOrCreate.isSuccess, scrollToMutationFeedback])
 
     return (
         <FormProvider {...methods}>

@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import DatePicker from 'react-datepicker'
 import styleDateInput from '@isdd/idsk-ui-kit/date-input/dateInput.module.scss'
 
-import style from './customFilterAttribute.module.scss'
+import style from './dynamicFilterAttributeInput.module.scss'
 
 import { SelectPOForFilter } from '@isdd/metais-common/components/select-po/SelectPOForFilter'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'

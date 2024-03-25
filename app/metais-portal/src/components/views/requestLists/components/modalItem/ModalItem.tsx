@@ -1,13 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 import { BaseModal, CheckBox, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ModalButtons } from '@isdd/metais-common/index'
+import { useGetNextItemCodeHook } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 
 import { useItemSchema } from '@/components/views/requestLists/useRequestSchemas'
 import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
+import { IRequestForm, getItemCodelistRefId } from '@/componentHelpers/requests'
 
 export interface IItemForm {
     id?: string
@@ -35,11 +37,16 @@ export interface IItemForm {
 export interface ModalItemProps {
     isOpen: boolean
     canEdit: boolean
-    isCreate: boolean
     item?: IItemForm
     attributeProfile?: AttributeProfile
     close: () => void
     onSubmit: (form: IItemForm) => void
+    createRefIdUri?: string
+    createItemCode?: string
+    editData?: IRequestForm | undefined
+    charCount?: number
+    prefix?: string
+    isAutoincrementValid: boolean
 }
 
 export enum RequestItemFormEnum {
@@ -61,17 +68,44 @@ export enum RequestItemFormEnum {
     ENDDATE = 'endDate',
 }
 
-export const ModalItem: React.FC<ModalItemProps> = ({ isOpen, canEdit, close, onSubmit, item, attributeProfile }) => {
+export const ModalItem: React.FC<ModalItemProps> = ({
+    isOpen,
+    canEdit,
+    close,
+    onSubmit,
+    item,
+    attributeProfile,
+    createRefIdUri,
+    editData,
+    charCount,
+    prefix,
+    createItemCode,
+    isAutoincrementValid,
+}) => {
     const {
         t,
         i18n: { language },
     } = useTranslation()
     const { schema } = useItemSchema()
+    const isEdit = !!editData
 
-    const { register, handleSubmit, formState } = useForm<IItemForm>({
+    const { register, handleSubmit, formState, reset } = useForm<IItemForm>({
         resolver: yupResolver(schema),
-        defaultValues: { ...item },
+        defaultValues: { ...item, refident: isEdit ? undefined : createRefIdUri, codeItem: createItemCode },
     })
+
+    const nextItemCode = useGetNextItemCodeHook()
+    useEffect(() => {
+        if (isEdit) {
+            const getNextItemCode = async () => {
+                const itemCode = await nextItemCode(editData.codeListCode, { charCount, prefix })
+                const finalRefId = getItemCodelistRefId(editData.refIndicator ?? '', itemCode)
+                reset({ ...item, refident: finalRefId, codeItem: itemCode })
+            }
+
+            getNextItemCode()
+        }
+    }, [item, reset, editData, isEdit, nextItemCode, charCount, prefix])
 
     return (
         <BaseModal isOpen={isOpen} close={close}>
@@ -79,7 +113,7 @@ export const ModalItem: React.FC<ModalItemProps> = ({ isOpen, canEdit, close, on
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Input
                     required
-                    disabled={!canEdit}
+                    disabled={!canEdit || isAutoincrementValid}
                     label={getDescription('Gui_Profil_ZC_kod_polozky', language, attributeProfile)}
                     info={getName('Gui_Profil_ZC_kod_polozky', language, attributeProfile)}
                     id={RequestItemFormEnum.CODEITEM}
@@ -112,7 +146,7 @@ export const ModalItem: React.FC<ModalItemProps> = ({ isOpen, canEdit, close, on
                     error={formState.errors?.[RequestItemFormEnum.SHORTCUT]?.message}
                 />
                 <Input
-                    disabled={!canEdit}
+                    disabled={!canEdit || isAutoincrementValid}
                     label={getDescription('Gui_Profil_ZC_uri', language, attributeProfile)}
                     info={getName('Gui_Profil_ZC_uri', language, attributeProfile)}
                     id={RequestItemFormEnum.REFIDENT}

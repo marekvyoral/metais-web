@@ -59,7 +59,7 @@ export const useCreateForm = ({ data, hiddenInputs, disabledInputsTypes }: iCrea
     const formMethods = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            type: 'custom',
+            type: 'application',
             ...data?.existingEntityData,
         },
     })

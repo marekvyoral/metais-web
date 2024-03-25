@@ -5,7 +5,7 @@ import { UseFormSetValue } from 'react-hook-form'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { TextWarning } from '@isdd/idsk-ui-kit'
 
-import style from './customFilterAttribute.module.scss'
+import style from './dynamicFilterAttributes.module.scss'
 
 import { IAttributeFilters, IFilterParams, OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
 import { DynamicFilterAttributeRow } from '@isdd/metais-common/components/dynamicFilterAttributeRow/DynamicFilterAttributeRow'

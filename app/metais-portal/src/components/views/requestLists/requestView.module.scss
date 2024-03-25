@@ -16,3 +16,8 @@
     align-items: start;
     gap: govuk-spacing(2);
 }
+
+.availWrapper {
+    display: flex;
+    gap: govuk-spacing(5);
+}

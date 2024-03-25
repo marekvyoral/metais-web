@@ -2,6 +2,8 @@ import { DateTime } from 'luxon'
 import { TFunction } from 'i18next'
 
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { CreatableOptionType } from '@isdd/metais-common/components/ci-lazy-select-creatable/CiLazySelectCreatable'
 
 export const isObjectEmpty = (obj: unknown) => {
     if (obj != null && typeof obj == 'object') {
@@ -137,6 +139,21 @@ export const sanitizeFileName = (fileName: string): string => {
     return truncatedFileName
 }
 
+export const isConfigurationItemUi = (data: unknown): data is ConfigurationItemUi => {
+    return typeof data === 'object' && data !== null && 'attributes' in data
+}
+
+export const isCreatableOptionType = (data: unknown): data is CreatableOptionType => {
+    return typeof data === 'object' && data !== null && 'label' in data
+}
+
+export const ensureSlashAtEnd = (str: string) => {
+    if (str.endsWith('/')) {
+        return str
+    } else {
+        return `${str}/`
+    }
+}
 export const getHowToTranslate = (howToType: string, t: TFunction) => {
     const baseTranslate = 'breadcrumbs.wiki.'
 
