@@ -12,7 +12,7 @@ export interface IEkoEditView {
 }
 
 export interface IEkoCreateView {
-    data: EkoCodeDecorated[]
+    data: TEkoCodeDecorated[]
     editData?: TEkoCodeDecorated
     mutate: (ekoCode: EkoCode) => Promise<void>
     isLoading: boolean
@@ -25,17 +25,17 @@ export interface IForm {
 }
 
 export interface IEkoDetailView {
-    data: EkoCodeDecorated | undefined
+    data: TEkoCodeDecorated | undefined
     isLoading: boolean
     isError: boolean
 }
 
 type IListData = {
-    data: EkoCodeDecorated[]
+    data: TEkoCodeDecorated[]
     entityName?: string
 }
 
 export interface IRowSelectionState {
-    rowSelection: Record<string, EkoCodeDecorated>
-    setRowSelection: React.Dispatch<React.SetStateAction<Record<string, EkoCodeDecorated>>>
+    rowSelection: Record<string, TEkoCodeDecorated>
+    setRowSelection: React.Dispatch<React.SetStateAction<Record<string, TEkoCodeDecorated>>>
 }

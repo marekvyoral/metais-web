@@ -1061,7 +1061,8 @@
         "validateFile": "Validacia súboru zlyhalo",
         "uploadFile": "Nahrávanie súboru zlyhalo",
         "gnr403": "Na akciu nemáte dostatočné oprávnenie.",
-        "gnr412": "Podmienka nie je splnená."
+        "gnr412": "Podmienka nie je splnená.",
+        "EkoCodeUsed": "Tento EKO kód sa používa"
     },
     "todo": {
         "header": "Stránka nenájdená.",
