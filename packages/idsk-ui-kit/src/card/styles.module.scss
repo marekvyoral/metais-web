@@ -1,0 +1,24 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.headerWithTags {
+    display: flex;
+    justify-content: space-between;
+
+    @include mq($until: tablet) {
+        flex-direction: column;
+        dl dd:first-of-type {
+            margin-left: 0;
+        }
+        gap: govuk-spacing(2);
+    }
+}
+
+.fullWidth {
+    width: 100%;
+    border-bottom: 1px solid lightgray;
+}
+
+.tagWrapper {
+    display: flex;
+    margin: govuk-spacing(0);
+}

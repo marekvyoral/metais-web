@@ -55,20 +55,36 @@ export const AccordionSection = ({
                     [styles.noPaddingRight]: isSmall,
                 })}
             >
-                <TextHeading className={classNames('govuk-accordion__section-heading', styles.heading)} size={textHeadingSize ?? 'M'}>
-                    <button
-                        className={classNames('govuk-accordion__section-button', { [styles.smallHeading]: isSmall })}
-                        type="button"
-                        aria-expanded={isExpanded}
-                        aria-controls={id + index}
-                        onClick={onToggle}
-                        id={buttonId}
-                    >
-                        {section.title}
-                    </button>
+                {!isSmall && (
+                    <TextHeading className={classNames('govuk-accordion__section-heading', styles.heading)} size={textHeadingSize ?? 'M'}>
+                        <button
+                            className={classNames('govuk-accordion__section-button', { [styles.smallHeading]: isSmall })}
+                            type="button"
+                            aria-expanded={isExpanded}
+                            aria-controls={id + index}
+                            onClick={onToggle}
+                            id={buttonId}
+                        >
+                            {section.title}
+                        </button>
 
-                    {!isSmall && <span className="govuk-accordion__icon" onClick={onToggle} />}
-                </TextHeading>
+                        <span className="govuk-accordion__icon" onClick={onToggle} />
+                    </TextHeading>
+                )}
+                {isSmall && (
+                    <div className={classNames('govuk-accordion__section-heading govuk-heading-m', styles.heading)}>
+                        <button
+                            className={classNames('govuk-accordion__section-button', { [styles.smallHeading]: isSmall })}
+                            type="button"
+                            aria-expanded={isExpanded}
+                            aria-controls={id + index}
+                            onClick={onToggle}
+                            id={buttonId}
+                        >
+                            {section.title}
+                        </button>
+                    </div>
+                )}
 
                 <div className={styles.flex}>
                     <div
@@ -80,7 +96,7 @@ export const AccordionSection = ({
                     </div>
                     {section.error && <img src={AlertTriangleIcon} alt={t('accordion.sectionError')} />}
                     {isSmall && (
-                        <TransparentButtonWrapper onClick={onToggle}>
+                        <TransparentButtonWrapper onClick={onToggle} ariaHidden>
                             <img className={classNames(styles.arrowDownIcon, { [styles.rotate180]: isExpanded })} src={ArrowDownIcon} alt="" />
                         </TransparentButtonWrapper>
                     )}

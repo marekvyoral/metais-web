@@ -145,13 +145,6 @@ export type ReadCiNeighboursWithAllRelsParams = {
     'usageType.blackList[]'?: string[]
 }
 
-export type SearchAllParams = {
-    text?: string
-    page?: number
-    perPage?: number
-    state?: string[]
-}
-
 export type ReadReportsWithFilterParams = {
     fulltextSearch?: string
     reportType?: string
@@ -336,63 +329,6 @@ export interface CiWithRelsResultUi {
     pagination?: PaginationUi
     ciWithRels?: CiWithRelsUi[]
 }
-
-export type RelElasticItemAllOf = {
-    type?: string
-    typeName?: string
-    state?: string
-    startUuid?: string
-    startType?: string
-    startName?: string
-    endUuid?: string
-    endType?: string
-    endName?: string
-    PO?: string
-}
-
-export type RelElasticItem = GeneralElasticItem & RelElasticItemAllOf
-
-export interface HighlightResult {
-    field?: string
-    highlightText?: string[]
-}
-
-export interface HighLightResultHolder {
-    attributes?: HighlightResult[]
-    metaAttributes?: HighlightResult[]
-}
-
-export interface GeneralElasticItemSet {
-    pagination?: PaginationUi
-    generalElasticItemSet?: GeneralElasticItemSetGeneralElasticItemSetItem[]
-}
-
-export interface GeneralElasticItem {
-    itemType?: string
-    uuid?: string
-    highlight?: HighLightResultHolder
-}
-
-export type DMSDocElasticItemAllOf = {
-    fileName?: string
-    contentLength?: number
-    type?: string
-}
-
-export type DMSDocElasticItem = GeneralElasticItem & DMSDocElasticItemAllOf
-
-export type CiElasticItemAllOf = {
-    type?: string
-    typeName?: string
-    state?: string
-    name?: string
-    code?: string
-    PO?: string
-}
-
-export type CiElasticItem = GeneralElasticItem & CiElasticItemAllOf
-
-export type GeneralElasticItemSetGeneralElasticItemSetItem = CiElasticItem | DMSDocElasticItem | RelElasticItem
 
 export interface ReportHolderUi {
     reports?: ReportUi[]
@@ -617,6 +553,15 @@ export interface FillRefAttributesTask {
     taskBriefInfo?: string
     successCount?: number
     failedCount?: number
+}
+
+export interface ConfigurationItemInvalidateUi {
+    type?: string
+    uuid?: string
+    owner?: string
+    attributes?: AttributeUi[]
+    metaAttributes?: MetaAttributesUi
+    invalidateReason?: InvalidateReason
 }
 
 export interface RelationshipInvalidateUi {
@@ -918,6 +863,213 @@ export interface GidSetUi {
     gids?: string[]
 }
 
+export type StandardRequestElasticItemAllOf = {
+    id?: number
+    name?: string
+    standardRequestState?: string
+    createdBy?: string
+    createdAt?: string
+    lastModifiedAt?: string
+}
+
+export type StandardRequestElasticItem = ElasticItem & StandardRequestElasticItemAllOf
+
+export type RelationshipElasticItemAllOf = {
+    uuid?: string
+    type?: string
+    typeName?: string
+    state?: string
+    startUuid?: string
+    startType?: string
+    startName?: string
+    endUuid?: string
+    endType?: string
+    endName?: string
+    owner?: string
+    poUuid?: string
+    roleUuid?: string
+    lastModifiedAt?: string
+}
+
+export type RelationshipElasticItem = ElasticItem & RelationshipElasticItemAllOf
+
+export type MeetingRequestElasticItemAllOf = {
+    id?: number
+    name?: string
+    state?: string
+    beginDate?: string
+    endDate?: string
+    createdBy?: string
+    createdAt?: string
+    lastModifiedAt?: string
+}
+
+export type MeetingRequestElasticItem = ElasticItem & MeetingRequestElasticItemAllOf
+
+export interface HighlightResult {
+    field?: string
+    highlightText?: string[]
+}
+
+export interface HighLightResultHolder {
+    attributes?: HighlightResult[]
+    metaAttributes?: HighlightResult[]
+    enumAttributes?: HighlightResult[]
+    otherAttributes?: HighlightResult[]
+}
+
+export type ElasticItemHolderElasticItemsItem =
+    | ConfigurationItemElasticItem
+    | DmsDocumentElasticItem
+    | MeetingRequestElasticItem
+    | RelationshipElasticItem
+    | StandardRequestElasticItem
+
+export interface ElasticItemHolder {
+    pagination?: PaginationUi
+    elasticItems?: ElasticItemHolderElasticItemsItem[]
+}
+
+export type ElasticItemElasticItemType = (typeof ElasticItemElasticItemType)[keyof typeof ElasticItemElasticItemType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ElasticItemElasticItemType = {
+    CONFIGURATION_ITEM: 'CONFIGURATION_ITEM',
+    RELATIONSHIP: 'RELATIONSHIP',
+    DMS_DOCUMENT: 'DMS_DOCUMENT',
+    STANDARD_REQUEST: 'STANDARD_REQUEST',
+    MEETING_REQUEST: 'MEETING_REQUEST',
+} as const
+
+export interface ElasticItem {
+    elasticItemType?: ElasticItemElasticItemType
+    highlight?: HighLightResultHolder
+}
+
+export type DmsDocumentElasticItemAllOfRefType = (typeof DmsDocumentElasticItemAllOfRefType)[keyof typeof DmsDocumentElasticItemAllOfRefType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DmsDocumentElasticItemAllOfRefType = {
+    CI: 'CI',
+    STANDARD_REQUEST: 'STANDARD_REQUEST',
+    MEETING_REQUEST: 'MEETING_REQUEST',
+    VOTE: 'VOTE',
+    DOCUMENT_TEMPLATE: 'DOCUMENT_TEMPLATE',
+    UNKNOWN: 'UNKNOWN',
+} as const
+
+export type DmsDocumentElasticItemAllOf = {
+    uuid?: string
+    fileName?: string
+    contentLength?: number
+    type?: string
+    extension?: string
+    lastModifiedAt?: string
+    refType?: DmsDocumentElasticItemAllOfRefType
+    refCiTechnicalName?: string
+    refCiId?: string
+    refCiMetaisCode?: string
+    refCiOwner?: string
+    refCiPoUuid?: string
+    refCiRoleUuid?: string
+    refStandardRequestId?: number
+    refMeetingRequestId?: number
+    refVoteId?: number
+    refDocumentTemplateId?: number
+}
+
+export type DmsDocumentElasticItem = ElasticItem & DmsDocumentElasticItemAllOf
+
+export type ConfigurationItemElasticItemAllOf = {
+    uuid?: string
+    type?: string
+    typeName?: string
+    state?: string
+    name?: string
+    code?: string
+    owner?: string
+    poUuid?: string
+    roleUuid?: string
+    lastModifiedAt?: string
+}
+
+export type ConfigurationItemElasticItem = ElasticItem & ConfigurationItemElasticItemAllOf
+
+export type UsageTypeFilterBlackListItem = (typeof UsageTypeFilterBlackListItem)[keyof typeof UsageTypeFilterBlackListItem]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UsageTypeFilterBlackListItem = {
+    system: 'system',
+    application: 'application',
+} as const
+
+export type UsageTypeFilterWhiteListItem = (typeof UsageTypeFilterWhiteListItem)[keyof typeof UsageTypeFilterWhiteListItem]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UsageTypeFilterWhiteListItem = {
+    system: 'system',
+    application: 'application',
+} as const
+
+export interface UsageTypeFilter {
+    whiteList?: UsageTypeFilterWhiteListItem[]
+    blackList?: UsageTypeFilterBlackListItem[]
+    filterAsPositiveStrings?: string[]
+}
+
+export type PortalSearchDmsDocumentExtensionsItem = (typeof PortalSearchDmsDocumentExtensionsItem)[keyof typeof PortalSearchDmsDocumentExtensionsItem]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PortalSearchDmsDocumentExtensionsItem = {
+    PDF: 'PDF',
+    DOCX: 'DOCX',
+    RTF: 'RTF',
+    ODT: 'ODT',
+    XLSX: 'XLSX',
+    XML: 'XML',
+    PPTX: 'PPTX',
+    CSV: 'CSV',
+} as const
+
+export type PortalSearchSectionsItem = (typeof PortalSearchSectionsItem)[keyof typeof PortalSearchSectionsItem]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PortalSearchSectionsItem = {
+    EGOV_COMPONENT: 'EGOV_COMPONENT',
+    STANDARDIZATION: 'STANDARDIZATION',
+    DATA_OBJECTS: 'DATA_OBJECTS',
+    SLA_TCO_EKO: 'SLA_TCO_EKO',
+} as const
+
+export type PortalSearchResultTypesItem = (typeof PortalSearchResultTypesItem)[keyof typeof PortalSearchResultTypesItem]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PortalSearchResultTypesItem = {
+    ATTRIBUTE: 'ATTRIBUTE',
+    DOCUMENT: 'DOCUMENT',
+    RELATIONSHIP: 'RELATIONSHIP',
+} as const
+
+export interface Pagination {
+    page?: number
+    perPage?: number
+    totalPages?: number
+    totalItems?: number
+}
+
+export interface PortalSearch {
+    text: string
+    lastModifiedAtFrom: string
+    lastModifiedAtTo: string
+    resultTypes: PortalSearchResultTypesItem[]
+    sections: PortalSearchSectionsItem[]
+    poUuid?: string
+    dmsDocumentExtensions?: PortalSearchDmsDocumentExtensionsItem[]
+    states?: string[]
+    usageTypeFilter?: UsageTypeFilter
+    pagination: Pagination
+}
+
 export interface ConfigurationItemsListUi {
     configurationItemSet?: ConfigurationItemUi[]
 }
@@ -940,7 +1092,6 @@ export type UsageTypeFilterUiBlackListItem = (typeof UsageTypeFilterUiBlackListI
 export const UsageTypeFilterUiBlackListItem = {
     system: 'system',
     application: 'application',
-    custom: 'custom',
 } as const
 
 export type UsageTypeFilterUiWhiteListItem = (typeof UsageTypeFilterUiWhiteListItem)[keyof typeof UsageTypeFilterUiWhiteListItem]
@@ -949,7 +1100,6 @@ export type UsageTypeFilterUiWhiteListItem = (typeof UsageTypeFilterUiWhiteListI
 export const UsageTypeFilterUiWhiteListItem = {
     system: 'system',
     application: 'application',
-    custom: 'custom',
 } as const
 
 export interface UsageTypeFilterUi {
@@ -1011,13 +1161,18 @@ export interface MeetingRequestUi {
     state?: string
     beginDate?: string
     endDate?: string
+    createdBy?: string
+    createdAt?: string
+    lastModifiedAt?: string
 }
 
 export interface StandardRequestUi {
     id?: number
-    srName?: string
+    name?: string
     standardRequestState?: string
     createdBy?: string
+    createdAt?: string
+    lastModifiedAt?: string
 }
 
 export interface VoteUi {
@@ -1319,15 +1474,6 @@ export type AttributeUiValue = { [key: string]: any }
 export interface AttributeUi {
     name?: string
     value?: AttributeUiValue
-}
-
-export interface ConfigurationItemInvalidateUi {
-    type?: string
-    uuid?: string
-    owner?: string
-    attributes?: AttributeUi[]
-    metaAttributes?: MetaAttributesUi
-    invalidateReason?: InvalidateReason
 }
 
 export type NotificationUpdateHolderUiTypeOfAction =
@@ -3372,6 +3518,47 @@ export const useReadConfigurationItemsByMetaIsCodes = <TError = ApiError, TConte
     return useMutation(mutationOptions)
 }
 
+export const useSearchAllHook = () => {
+    const searchAll = useCmdbSwaggerClient<ElasticItemHolder>()
+
+    return (portalSearch: PortalSearch) => {
+        return searchAll({ url: `/read/search`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: portalSearch })
+    }
+}
+
+export const getSearchAllQueryKey = (portalSearch: PortalSearch) => [`/read/search`, portalSearch] as const
+
+export const useSearchAllQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError = ApiError>(
+    portalSearch: PortalSearch,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getSearchAllQueryKey(portalSearch)
+
+    const searchAll = useSearchAllHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>> = () => searchAll(portalSearch)
+
+    return { queryKey, queryFn, ...queryOptions }
+}
+
+export type SearchAllQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>>
+export type SearchAllQueryError = ApiError
+
+export const useSearchAll = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError = ApiError>(
+    portalSearch: PortalSearch,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useSearchAllQueryOptions(portalSearch, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
 /**
  * @summary getRoleParticipantBulk
  */
@@ -4436,6 +4623,48 @@ export const useReportError = <TError = ApiError, TContext = unknown>(options?: 
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary readQuery
+ */
+export const useReadQuery1Hook = () => {
+    const readQuery1 = useCmdbSwaggerClient<QueryResultTableUi>()
+
+    return (queryUi: QueryUi) => {
+        return readQuery1({ url: `/external/read/query`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: queryUi })
+    }
+}
+
+export const useReadQuery1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadQuery1Hook>>>, TError, { data: QueryUi }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadQuery1Hook>>>, TError, { data: QueryUi }, TContext> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const readQuery1 = useReadQuery1Hook()
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReadQuery1Hook>>>, { data: QueryUi }> = (props) => {
+        const { data } = props ?? {}
+
+        return readQuery1(data)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type ReadQuery1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadQuery1Hook>>>>
+export type ReadQuery1MutationBody = QueryUi
+export type ReadQuery1MutationError = ApiError
+
+/**
+ * @summary readQuery
+ */
+export const useReadQuery1 = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadQuery1Hook>>>, TError, { data: QueryUi }, TContext>
+}) => {
+    const mutationOptions = useReadQuery1MutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
 export const useDeleteRelationshipHook = () => {
     const deleteRelationship = useCmdbSwaggerClient<RequestIdUi>()
 
@@ -5085,47 +5314,6 @@ export const useReadConfigurationItemByMetaIsCode = <
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useReadConfigurationItemByMetaIsCodeQueryOptions(metaIsCode, options)
-
-    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
-
-    query.queryKey = queryOptions.queryKey
-
-    return query
-}
-
-export const useSearchAllHook = () => {
-    const searchAll = useCmdbSwaggerClient<GeneralElasticItemSet>()
-
-    return (params?: SearchAllParams, signal?: AbortSignal) => {
-        return searchAll({ url: `/read/search`, method: 'get', params, signal })
-    }
-}
-
-export const getSearchAllQueryKey = (params?: SearchAllParams) => [`/read/search`, ...(params ? [params] : [])] as const
-
-export const useSearchAllQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError = ApiError>(
-    params?: SearchAllParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError, TData> },
-): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError, TData> & { queryKey: QueryKey } => {
-    const { query: queryOptions } = options ?? {}
-
-    const queryKey = queryOptions?.queryKey ?? getSearchAllQueryKey(params)
-
-    const searchAll = useSearchAllHook()
-
-    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>> = ({ signal }) => searchAll(params, signal)
-
-    return { queryKey, queryFn, ...queryOptions }
-}
-
-export type SearchAllQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>>
-export type SearchAllQueryError = ApiError
-
-export const useSearchAll = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError = ApiError>(
-    params?: SearchAllParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError, TData> },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useSearchAllQueryOptions(params, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 

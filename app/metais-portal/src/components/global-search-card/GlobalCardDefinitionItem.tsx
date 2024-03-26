@@ -21,7 +21,7 @@ export const GlobalCardDefinitionItem: React.FC<Props> = ({ value, label, notBol
                 </TextBody>
             </dt>
             {Array.isArray(value) ? (
-                <dd>
+                <dd className="attr-highlight">
                     {value.map((valueItem, index) => (
                         <TextBody key={index} className={styles.noMargin}>
                             {setHtml ? <SafeHtmlComponent dirtyHtml={valueItem} /> : valueItem}
@@ -29,7 +29,7 @@ export const GlobalCardDefinitionItem: React.FC<Props> = ({ value, label, notBol
                     ))}
                 </dd>
             ) : (
-                <dd>
+                <dd className="attr-highlight">
                     <TextBody className={styles.noMargin}>{setHtml ? <SafeHtmlComponent dirtyHtml={value} /> : value}</TextBody>
                 </dd>
             )}
