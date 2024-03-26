@@ -130,7 +130,9 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     const [isCodeAvailable, setIsCodeAvailable] = useState<boolean>(false)
 
     const DEFAULT_CHAR_COUNT = 3
-    const { register, handleSubmit, formState, getValues, setValue, setError, trigger, control, clearErrors, watch } = useForm<IRequestForm>({
+    const canUse = requestId ? ability.can(Actions.EDIT, Subjects.DETAIL) : ability.can(Actions.CREATE, Subjects.DETAIL)
+
+    const { register, handleSubmit, formState, getValues, setValue, setError, trigger, control, watch } = useForm<IRequestForm>({
         resolver: yupResolver(schema),
         defaultValues: editData || {
             base: true,
@@ -138,15 +140,56 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
             type: 'NUMERIC',
         },
     })
+    const charCountInput = watch(RequestFormEnum.AUTOINCREMENT_CHAR_COUNT)
+    const prefixInput = watch(RequestFormEnum.PREFIX)
+    const isAutoincrementValid = !!watch(RequestFormEnum.AUTOINCREMENT_VALID)
+    const codelistRefId = watch(RequestFormEnum.REFINDICATOR)
+    const hasAutoincrementButNotPrefixOrCount = isAutoincrementValid && (!prefixInput || !charCountInput)
+    const DEFAULT_AUTOINCREMENT_INDEX = 1
 
     const handleDateChange = (date: Date | null, name: string) => {
         setValue(name as keyof ICodeItem, date ?? new Date())
     }
 
+    const getAutoIncrement = (index: number, prefix: string, charCount: number) => {
+        if (!isAutoincrementValid || !charCount) return ''
+        const charCountZeroLength = charCount - index.toString().length
+        const charCountZeroArray = charCountZeroLength ? Array(charCountZeroLength).fill(0).join('') : ''
+        return `${prefix}${charCountZeroArray}${index}`
+    }
+
+    const getAutoIncrementWithCodelistRefId = (index: number, prefix: string, charCount: number) => {
+        const code = getAutoIncrement(index, prefix, charCount)
+        return code ? getItemCodelistRefId(codelistRefId ?? '', code) : ''
+    }
+
     const onHandleSubmit = (formData: IRequestForm) => {
-        const res = { ...formData, codeLists: [...codeList] }
+        let res = { ...formData, codeLists: [...codeList] }
+        const formCharCount = formData.charCount
+        const formAutoincValid = formData.valid
+        const formPrefix = formData.prefix
+
+        //remap codelist with correct prefix as it could change on already created items
+        if (formAutoincValid && formPrefix && formCharCount) {
+            res = {
+                ...res,
+                codeLists: res.codeLists.map((i, index) => ({
+                    ...i,
+                    codeItem: getAutoIncrement(index + 1, formPrefix, formCharCount),
+                    refident: getAutoIncrementWithCodelistRefId(index + 1, formPrefix, formCharCount),
+                })),
+            }
+        }
         isSend ? onSend(res) : onSave(res)
     }
+
+    useEffect(() => {
+        const currentCharCount = getValues(RequestFormEnum.AUTOINCREMENT_CHAR_COUNT) ?? 1
+        const maxItems = Math.pow(10, currentCharCount)
+        if (codeList.length >= maxItems - 1) {
+            setValue(RequestFormEnum.AUTOINCREMENT_CHAR_COUNT, parseInt(currentCharCount?.toString()) + 1)
+        }
+    }, [codeList.length, setValue, getValues])
 
     const onClickCheck = async () => {
         const isValid = await trigger(RequestFormEnum.CODELISTCODE)
@@ -207,6 +250,13 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         const endOfList = pagination.pageNumber * pagination.pageSize
         return codeList?.slice(startOfList, endOfList) || []
     }, [codeList, pagination.pageNumber, pagination.pageSize])
+
+    useEffect(() => {
+        setPagination((prev) => ({
+            ...prev,
+            dataLength: codeList.length,
+        }))
+    }, [codeList.length])
 
     useEffect(() => {
         if (editData) {
@@ -343,29 +393,6 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         },
     ]
 
-    const canUse = requestId ? ability.can(Actions.EDIT, Subjects.DETAIL) : ability.can(Actions.CREATE, Subjects.DETAIL)
-
-    const charCountInput = watch(RequestFormEnum.AUTOINCREMENT_CHAR_COUNT)
-    const prefixInput = watch(RequestFormEnum.PREFIX)
-    const isAutoincrementValid = !!watch(RequestFormEnum.AUTOINCREMENT_VALID)
-    const codelistRefId = watch(RequestFormEnum.REFINDICATOR)
-    const DEFAULT_AUTOINCREMENT_INDEX = 1
-
-    const hasAutoincrementButNotPrefixOrCount = isAutoincrementValid && (!prefixInput || !charCountInput)
-
-    const getAutoIncrement = (index: number, prefix: string, charCount: number) => {
-        if (!isAutoincrementValid) return ''
-        const charCountZeroArray = Array(charCount ? charCount - 1 : 0)
-            .fill(0)
-            .join('')
-        return `${prefix}${charCountZeroArray}${index}`
-    }
-
-    const getAutoIncrementWithCodelistRefId = (index: number, prefix: string, charCount: number) => {
-        const code = getAutoIncrement(index, prefix, charCount)
-        return code ? getItemCodelistRefId(codelistRefId ?? '', code) : ''
-    }
-
     return (
         <>
             {editData ? (
@@ -479,12 +506,14 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 hint={t('refIden.hint')}
                             />
                             <AutoIncrement
-                                setValue={setValue}
                                 register={register}
-                                clearErrors={clearErrors}
                                 formState={formState}
                                 isAutoIncremenetValid={isAutoincrementValid}
-                                autoIncrement={getAutoIncrement(DEFAULT_AUTOINCREMENT_INDEX, prefixInput ?? '', charCountInput ?? 0)}
+                                autoIncrement={getAutoIncrement(
+                                    DEFAULT_AUTOINCREMENT_INDEX,
+                                    prefixInput ?? '',
+                                    charCountInput ?? DEFAULT_AUTOINCREMENT_INDEX,
+                                )}
                             />
 
                             {(editData?.codeListState === RequestListState.ACCEPTED_SZZC ||

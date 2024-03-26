@@ -1,8 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { CheckBox, GridCol, GridRow, Input, SimpleSelect, TextBody } from '@isdd/idsk-ui-kit/index'
-import { ApiAutoincrementTypeType } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { UseFormRegister, UseFormSetValue, UseFormClearErrors, FormState } from 'react-hook-form'
+import { CheckBox, GridCol, GridRow, Input, TextBody } from '@isdd/idsk-ui-kit/index'
+import { UseFormRegister, FormState } from 'react-hook-form'
 
 import styles from './requestList.module.scss'
 
@@ -11,16 +10,13 @@ import { RequestFormEnum } from '@/components/views/requestLists/CreateRequestVi
 
 type AutoIncrementProps = {
     register: UseFormRegister<IRequestForm>
-    setValue: UseFormSetValue<IRequestForm>
-    clearErrors: UseFormClearErrors<IRequestForm>
     formState: FormState<IRequestForm>
     autoIncrement: string
     isAutoIncremenetValid: boolean
 }
 
-export const AutoIncrement: React.FC<AutoIncrementProps> = ({ register, setValue, clearErrors, formState, autoIncrement, isAutoIncremenetValid }) => {
+export const AutoIncrement: React.FC<AutoIncrementProps> = ({ register, formState, autoIncrement, isAutoIncremenetValid }) => {
     const { t } = useTranslation()
-    const typeOptions = Object.keys(ApiAutoincrementTypeType).map((option) => ({ label: t(`autoincrement.type.${option}`), value: option }))
 
     return (
         <fieldset className={styles.fieldset}>
@@ -35,27 +31,24 @@ export const AutoIncrement: React.FC<AutoIncrementProps> = ({ register, setValue
                 <GridCol setWidth="one-third" className={styles.checkbox}>
                     <CheckBox {...register(RequestFormEnum.AUTOINCREMENT_VALID)} label={t('autoincrement.valid')} />
                 </GridCol>
-
-                <GridCol setWidth="one-third">
-                    <SimpleSelect
-                        setValue={setValue}
-                        options={typeOptions}
-                        clearErrors={clearErrors}
-                        name={RequestFormEnum.AUTOINCREMENT_TYPE}
-                        label={t('autoincrement.type.label')}
-                        disabled={!isAutoIncremenetValid}
-                        defaultValue={formState?.defaultValues?.type}
-                        isClearable={false}
-                    />
-                </GridCol>
-                <GridCol setWidth="one-third">
+                <GridCol setWidth="two-thirds">
                     <Input
                         {...register(RequestFormEnum.AUTOINCREMENT_CHAR_COUNT)}
                         type="number"
                         label={t('autoincrement.charCount')}
                         //maxLength or min/max does not prevent user to add numbers using keyboard
-                        onInput={(e) => (e.currentTarget.value = e.currentTarget.value.slice(0, 1))}
+                        onInput={(e) => {
+                            if (e.currentTarget.value == '0') {
+                                e.currentTarget.value = ''
+                            } else {
+                                e.currentTarget.value = e.currentTarget.value.slice(0, 1)
+                            }
+                        }}
                         disabled={!isAutoIncremenetValid}
+                        min={1}
+                        max={9}
+                        maxLength={1}
+                        hint={t('autoincrement.charCountHint')}
                     />
                 </GridCol>
             </GridRow>

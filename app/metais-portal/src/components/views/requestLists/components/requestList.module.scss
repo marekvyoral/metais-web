@@ -25,7 +25,11 @@
 
 .row {
     display: flex;
-    align-items: center;
+    align-items: end;
+}
+
+.checkbox {
+    margin-bottom: govuk-spacing(6);
 }
 
 .grey {

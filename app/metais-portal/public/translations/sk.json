@@ -3045,6 +3045,7 @@
     "autoincrement": {
         "prefix": "Prefix položky",
         "charCount": "Počet znakov v inkremente",
+        "charCountHint": "Prosím, zadajte číslo medzi 1 a 9 (vrátane). Povolené sú len čísla v tomto rozsahu.",
         "valid": "Autoinkrement",
         "preview": "Náhľad kódu: {{autoincrement}}",
         "legend": "Kód referencovateľného identifikátora",
