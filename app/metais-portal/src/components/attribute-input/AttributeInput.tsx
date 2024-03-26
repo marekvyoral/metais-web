@@ -139,12 +139,19 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     const hasStringValue = isString || isCharacter
 
     const createOptions = (constraintItem: EnumType) => {
-        const options =
-            constraintItem?.enumItems?.map((item) => ({
-                value: item.code ?? '',
-                label: `${item.value} - ${item.description}`,
-                disabled: !item.valid,
-            })) ?? []
+        const options = isUpdate
+            ? constraintItem?.enumItems?.map((item) => ({
+                  value: item.code ?? '',
+                  label: `${item.value} - ${item.description}`,
+                  disabled: !item.valid,
+              })) ?? []
+            : constraintItem?.enumItems
+                  ?.filter((item) => item.valid)
+                  .map((item) => ({
+                      value: item.code ?? '',
+                      label: `${item.value} - ${item.description}`,
+                      disabled: !item.valid,
+                  })) ?? []
         return options
     }
 
