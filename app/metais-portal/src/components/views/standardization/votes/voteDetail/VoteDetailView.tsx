@@ -173,7 +173,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     }, [voteState])
 
     const hideVoteModifyingButtons = useMemo(() => {
-        return voteState == VoteStateOptionEnum.CANCELED
+        return voteState == VoteStateOptionEnum.CANCELED || voteState == VoteStateOptionEnum.ENDED
     }, [voteState])
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
