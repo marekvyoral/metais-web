@@ -7,11 +7,13 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ENTITY_KS } from '@isdd/metais-common/constants'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from './createEntityHelpers'
 
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
+import { useKSChannel } from '@/hooks/useChannelKS'
 
 export interface AttributesData {
     ciTypeData: CiType | undefined
@@ -49,6 +51,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     const { constraintsData, ciTypeData, unitsData } = attributesData
 
     const onStatusSuccess = useCiCreateEditOnStatusSuccess()
+    const { createChannelForKS, isLoading: isSubmitLoading, isError: isSubmitError } = useKSChannel()
     const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
     const { onSubmit, uploadError, setUploadError, configurationItemId } = useCiCreateUpdateOnSubmit(entityName)
     const storeConfigurationItem = useStoreConfigurationItem({
@@ -56,9 +59,13 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             onError() {
                 setUploadError(true)
             },
-            async onSuccess(successData) {
+            async onSuccess(successData, variables) {
                 if (successData.requestId != null) {
-                    await getRequestStatus(successData.requestId, () => onStatusSuccess({ configurationItemId, isUpdate, entityName }))
+                    await getRequestStatus(successData.requestId, async () => {
+                        if (entityName === ENTITY_KS) {
+                            await createChannelForKS(variables.data, () => onStatusSuccess({ configurationItemId, isUpdate, entityName }))
+                        }
+                    })
                 } else {
                     setUploadError(true)
                 }
@@ -77,8 +84,8 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             <MutationFeedback error={storeConfigurationItem.isError} errorMessage={t('createEntity.mutationError')} />
 
             <QueryFeedback
-                loading={isRedirectLoading}
-                error={isRedirectError || isProcessedError || isTooManyFetchesError}
+                loading={isRedirectLoading || isSubmitLoading}
+                error={isRedirectError || isProcessedError || isTooManyFetchesError || isSubmitError}
                 indicatorProps={{
                     label: isUpdate ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
                 }}
