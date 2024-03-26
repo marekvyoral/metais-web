@@ -95,7 +95,7 @@ export const DraftsListCreateForm = ({
 
             <FlexColumnReverseWrapper>
                 <TextHeading size="L">{t('DraftsList.createForm.heading')}</TextHeading>
-                <MutationFeedback error={isError} />
+                <MutationFeedback error={isError} success={false} />
             </FlexColumnReverseWrapper>
 
             {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}

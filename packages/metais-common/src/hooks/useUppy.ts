@@ -12,7 +12,15 @@ import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useCountdown } from '@isdd/metais-common/hooks/useCountdown'
 import { cleanFileName } from '@isdd/metais-common/utils/utils'
-import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
+import {
+    CiRefAttributes,
+    DocumentTemplateRefAttributes,
+    MeetingRequestRefAttributes,
+    RefAttributesRefType,
+    StandardRequestRefAttributes,
+    UnknownRefAttributes,
+    VoteRefAttributes,
+} from '@isdd/metais-common/api/generated/dms-swagger'
 
 interface iUseUppy {
     allowedFileTypes?: string[] // if undefined all file types are allowed
@@ -105,6 +113,63 @@ export const useUppy = ({
         return
     }
 
+    const getRefObject = useCallback(
+        (
+            type: RefAttributesRefType | undefined,
+        ):
+            | MeetingRequestRefAttributes
+            | CiRefAttributes
+            | VoteRefAttributes
+            | DocumentTemplateRefAttributes
+            | StandardRequestRefAttributes
+            | UnknownRefAttributes => {
+            switch (type) {
+                case RefAttributesRefType.MEETING_REQUEST: {
+                    const refObject: MeetingRequestRefAttributes = {
+                        refType: type,
+                        refMeetingRequestId: Number(refId),
+                    }
+                    return refObject
+                }
+                case RefAttributesRefType.CI: {
+                    const refObject: CiRefAttributes = {
+                        refType: type,
+                        refCiId: refId,
+                    }
+                    return refObject
+                }
+                case RefAttributesRefType.VOTE: {
+                    const refObject: VoteRefAttributes = {
+                        refType: type,
+                        refVoteId: Number(refId),
+                    }
+                    return refObject
+                }
+                case RefAttributesRefType.DOCUMENT_TEMPLATE: {
+                    const refObject: DocumentTemplateRefAttributes = {
+                        refType: type,
+                        refDocumentTemplateId: Number(refId),
+                    }
+                    return refObject
+                }
+                case RefAttributesRefType.STANDARD_REQUEST: {
+                    const refObject: StandardRequestRefAttributes = {
+                        refType: type,
+                        refStandardRequestId: Number(refId),
+                    }
+                    return refObject
+                }
+                default: {
+                    const refObject: UnknownRefAttributes = {
+                        refType: type,
+                    }
+                    return refObject
+                }
+            }
+        },
+        [refId],
+    )
+
     useEffect(() => {
         const getBlob = async () => {
             const prevRefAttrs = await new Response(uppy.getState().meta['refAttributes']).text()
@@ -114,8 +179,7 @@ export const useUppy = ({
                         [
                             JSON.stringify({
                                 ...JSON.parse(prevRefAttrs),
-                                refType: refType,
-                                refCiId: refId,
+                                ...getRefObject(refType),
                             }),
                         ],
                         { type: 'application/json' },
@@ -123,20 +187,12 @@ export const useUppy = ({
                 })
             } else {
                 uppy.setMeta({
-                    refAttributes: new Blob(
-                        [
-                            JSON.stringify({
-                                refType: refType,
-                                refCiId: refId,
-                            }),
-                        ],
-                        { type: 'application/json' },
-                    ),
+                    refAttributes: new Blob([JSON.stringify(getRefObject(refType))], { type: 'application/json' }),
                 })
             }
         }
         getBlob()
-    }, [refId, refType, uppy])
+    }, [getRefObject, refId, refType, uppy])
 
     useCountdown({
         shouldCount: generalErrorMessages.length > 0,

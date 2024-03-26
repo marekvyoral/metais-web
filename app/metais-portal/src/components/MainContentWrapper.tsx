@@ -23,7 +23,7 @@ export const MainContentWrapper: React.FC<MainContentWrapperProps> = ({ children
     const isSideMenu = true
 
     return (
-        <div className={classNames({ [styles.container]: !noSideMenu })}>
+        <div className={classNames({ [styles.container]: !noSideMenu, [styles.reverse]: globalSearch })}>
             {!globalSearch && !noSideMenu && (
                 <Sidebar
                     isSidebarExpanded={isSidebarExpanded}
@@ -31,8 +31,6 @@ export const MainContentWrapper: React.FC<MainContentWrapperProps> = ({ children
                     sections={getPortalNavigationItems(t, !!user, isSideMenu)}
                 />
             )}
-
-            {globalSearch && <GlobalSearchFilter />}
 
             <main
                 id="main-content"
@@ -44,6 +42,7 @@ export const MainContentWrapper: React.FC<MainContentWrapperProps> = ({ children
             >
                 {children}
             </main>
+            {globalSearch && <GlobalSearchFilter />}
         </div>
     )
 }

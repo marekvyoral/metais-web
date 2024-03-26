@@ -2,7 +2,7 @@ import { BaseModal, Button, ButtonGroupRow, TextHeading } from '@isdd/idsk-ui-ki
 import { MutationFeedback } from '@isdd/metais-common/index'
 import React, { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
+import { CiRefAttributes, RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 import { IFileUploadRef, FileUpload } from '@isdd/metais-common/components/FileUpload/FileUpload'
 
 import styles from './integration-link/integration.module.scss'
@@ -39,19 +39,15 @@ export const ProvIntegrationUploadDocModal: React.FC<Props> = ({
         fileUploadRef.current?.startUploading()
     }, [])
 
+    const refDmsObject: CiRefAttributes = {
+        refType: RefAttributesRefType.CI,
+        refCiTechnicalName: entityName,
+        refCiId: entityId,
+        refCiMetaisCode: metaisCode,
+        refCiOwner: ownerGid,
+    }
     const fileMetaAttributes = {
-        refAttributes: new Blob(
-            [
-                JSON.stringify({
-                    refType: RefAttributesRefType.CI,
-                    refCiTechnicalName: entityName,
-                    refCiId: entityId,
-                    refCiMetaisCode: metaisCode,
-                    refCiOwner: ownerGid,
-                }),
-            ],
-            { type: 'application/json' },
-        ),
+        refAttributes: new Blob([JSON.stringify(refDmsObject)], { type: 'application/json' }),
     }
 
     const handleUploadSuccess = async () => {
