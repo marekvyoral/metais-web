@@ -1,4 +1,4 @@
-import { ExpandableRowCellWrapper, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
+import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { KrisToBeIsvs, KrisToBeRights, useGetIsvs } from '@isdd/metais-common/api/generated/kris-swagger'
 import { ActionsOverTable, BASE_PAGE_SIZE, GET_ENUM, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
@@ -58,11 +58,9 @@ export const IsvsEvaluationAccordion: React.FC<IIsvsEvaluationAccordionProps> = 
             header: t('evaluation.table.isvsCode'),
             id: 'isvsCode',
             cell: (ctx) => (
-                <ExpandableRowCellWrapper row={ctx.row}>
-                    <Link to={`/ci/ISVS/${ctx.row?.original?.uuid}`} target="_blank" className="govuk-link">
-                        {ctx.row?.original?.code}
-                    </Link>
-                </ExpandableRowCellWrapper>
+                <Link to={`/ci/ISVS/${ctx.row?.original?.uuid}`} target="_blank" className="govuk-link">
+                    {ctx.row?.original?.code}
+                </Link>
             ),
             size: 200,
         },

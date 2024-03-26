@@ -7,7 +7,7 @@ import {
     ApiCodelistItemValidity,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { ColumnDef, ExpandedState, Row } from '@tanstack/react-table'
-import { Table, CheckBox, ExpandableRowCellWrapper } from '@isdd/idsk-ui-kit/index'
+import { Table, CheckBox } from '@isdd/idsk-ui-kit/index'
 import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
@@ -130,26 +130,24 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
                     )
                 },
                 cell: ({ row }) => (
-                    <ExpandableRowCellWrapper row={row}>
-                        <div className="govuk-checkboxes govuk-checkboxes--small">
-                            <CheckBox
-                                label=""
-                                name="checkbox"
-                                id={`checkbox_${row.id}`}
-                                value="true"
-                                onClick={(event) => event.stopPropagation()}
-                                onChange={() => handleCheckboxChange(row)}
-                                checked={row.original.itemCode ? !!rowSelection[row.original.itemCode] : false}
-                                disabled={
-                                    row.original.codelistItemState === CodeListItemState.PUBLISHED ||
-                                    row.original.codelistItemState === CodeListItemState.READY_TO_PUBLISH
-                                }
-                                title={t('table.selectItem', {
-                                    itemName: selectBasedOnLanguageAndDate(row.original.codelistItemNames as ApiCodelistItemName[], workingLanguage),
-                                })}
-                            />
-                        </div>
-                    </ExpandableRowCellWrapper>
+                    <div className="govuk-checkboxes govuk-checkboxes--small">
+                        <CheckBox
+                            label=""
+                            name="checkbox"
+                            id={`checkbox_${row.id}`}
+                            value="true"
+                            onClick={(event) => event.stopPropagation()}
+                            onChange={() => handleCheckboxChange(row)}
+                            checked={row.original.itemCode ? !!rowSelection[row.original.itemCode] : false}
+                            disabled={
+                                row.original.codelistItemState === CodeListItemState.PUBLISHED ||
+                                row.original.codelistItemState === CodeListItemState.READY_TO_PUBLISH
+                            }
+                            title={t('table.selectItem', {
+                                itemName: selectBasedOnLanguageAndDate(row.original.codelistItemNames as ApiCodelistItemName[], workingLanguage),
+                            })}
+                        />
+                    </div>
                 ),
             },
             {
@@ -165,7 +163,6 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
             header: t('codeListDetail.table.code'),
             accessorFn: (row) => row.itemCode,
             enableSorting: true,
-            cell: ({ row }) => <ExpandableRowCellWrapper row={row}>{row.original.itemCode}</ExpandableRowCellWrapper>,
         })
     }
 
