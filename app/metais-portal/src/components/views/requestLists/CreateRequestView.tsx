@@ -5,7 +5,6 @@ import {
     ButtonLink,
     CheckBox,
     ErrorBlock,
-    ExpandableRowCellWrapper,
     GridCol,
     GridRow,
     HomeIcon,
@@ -343,23 +342,20 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                     )
                 )
             },
-            cell: ({ row }) => (
-                <ExpandableRowCellWrapper row={row}>
-                    {editData && (
-                        <div className="govuk-checkboxes govuk-checkboxes--small">
-                            <CheckBox
-                                label=""
-                                name="checkbox"
-                                id={`checkbox_${row.id}`}
-                                value="true"
-                                onChange={() => handleCheckboxChange(row)}
-                                checked={row.original.id ? !!rowSelection[row.original.id] : false}
-                                title={t('table.selectItem', { itemName: row.original.codeName })}
-                            />
-                        </div>
-                    )}
-                </ExpandableRowCellWrapper>
-            ),
+            cell: ({ row }) =>
+                editData && (
+                    <div className="govuk-checkboxes govuk-checkboxes--small">
+                        <CheckBox
+                            label=""
+                            name="checkbox"
+                            id={`checkbox_${row.id}`}
+                            value="true"
+                            onChange={() => handleCheckboxChange(row)}
+                            checked={row.original.id ? !!rowSelection[row.original.id] : false}
+                            title={t('table.selectItem', { itemName: row.original.codeName })}
+                        />
+                    </div>
+                ),
         },
         {
             header: t('codeListList.requestCreate.codeId'),

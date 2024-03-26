@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { useLocation, useNavigate } from 'react-router-dom'
 import React from 'react'
 
-import { CHECKBOX_CELL, TOOLTIP_TEXT_BREAKER } from './constants'
+import { CHECKBOX_CELL, EXPANDABLE_CELL, TOOLTIP_TEXT_BREAKER } from './constants'
 import styles from './table.module.scss'
 
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
@@ -33,6 +33,7 @@ export const TableRow = <T,>({
     const navigate = useNavigate()
     const location = useLocation()
     const hasCheckbox = row.getVisibleCells().find((cell) => cell.column.id === CHECKBOX_CELL)
+    const isExpandable = row.getCanExpand()
 
     let headerUsed = false
 
@@ -47,6 +48,7 @@ export const TableRow = <T,>({
                 {
                     [styles.danger]: isRowDanger && isRowDanger(row),
                     [styles.checkBoxRow]: hasCheckbox,
+                    [styles.expandableRow]: isExpandable,
                 },
             )}
             onClick={() => {
@@ -122,9 +124,13 @@ export const TableRow = <T,>({
                         style={columnDef.size ? { width: columnDef.size } : { width: 'auto' }}
                         key={cell.id}
                     >
-                        <TextBody size="S" className={'marginBottom0'}>
-                            {cellContent}
-                        </TextBody>
+                        {cell.column.id === EXPANDABLE_CELL ? (
+                            cellContent
+                        ) : (
+                            <TextBody size="S" className={'marginBottom0'}>
+                                {cellContent}
+                            </TextBody>
+                        )}
                     </td>
                 )
             })}
