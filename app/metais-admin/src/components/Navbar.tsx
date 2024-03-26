@@ -87,22 +87,9 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
         {
             title: t('navMenu.monitoring.monitoring'),
             //in admin is /list but that is not unique
-            path: AdminRouteNames.MONITORING,
+            path: AdminRouteNames.MONITORING_LIST,
             icon: InstructionsIcon,
             role: [AdminRouteRoles.ADMIN, AdminRouteRoles.HKO],
-            subItems: [
-                //did not find similar routes in admin so I made custom ones
-                {
-                    title: t('navMenu.monitoring.params'),
-                    path: AdminRouteNames.MONITORING_PARAMS,
-                    role: [AdminRouteRoles.ADMIN, AdminRouteRoles.HKO],
-                },
-                {
-                    title: t('navMenu.monitoring.list'),
-                    path: AdminRouteNames.MONITORING_LIST,
-                    role: [AdminRouteRoles.ADMIN, AdminRouteRoles.HKO],
-                },
-            ],
         },
         //predpokladam ze to je sprava zostav
         {

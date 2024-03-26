@@ -2183,6 +2183,7 @@
         "code": "Code",
         "state": "State",
         "filter": {
+            "title": "Global search filter",
             "updateDate": "Update date",
             "today": "Today",
             "thisWeek": "This week",
@@ -2205,8 +2206,35 @@
             "docx": "DOCX",
             "rtf": "RTF",
             "otd": "OTD",
-            "submitButton": "Filter results"
-        }
+            "submitButton": "Filter results",
+            "eGov": "e-Government components",
+            "standardization": "Standardization",
+            "dataObjects": "Data objects",
+            "slaTcoEko": "SLA, TCO a EKO code"
+        },
+        "name": "Name",
+        "content": "Content",
+        "CONFIGURATION_ITEM": "Configuration Item",
+        "CI": "Configuration Item",
+        "STANDARD_REQUEST": "Standard request",
+        "MEETING_REQUEST": "Meeting",
+        "RELATIONSHIP": "Relationship",
+        "DMS_DOCUMENT": "Document",
+        "standardRequestState": "Standard Request state",
+        "createdBy": "Created by",
+        "type": "Type",
+        "category": "Category",
+        "lastModifiedBy": "Last modified by",
+        "typeName": "Type Name",
+        "startCiType": "Source Type - technical name",
+        "startCiTypeName": "Source Type",
+        "startCiName": "Source Name",
+        "startCiKodMetais": "MetaIS code (source)",
+        "endCiType": "Target Type - technical name",
+        "endCiTypeName": "Target Type",
+        "endCiName": "Target Name",
+        "endCiKodMetais": "MetaIS code (target)",
+        "standardization": "Standardization"
     },
     "input": {
         "requiredField": "(required)",
@@ -3011,6 +3039,7 @@
     "autoincrement": {
         "prefix": "Prefix",
         "charCount": "Characters count in increment",
+        "charCountHint": "Please enter a number between 1 and 9 (inclusive). Only numbers in this range are allowed.",
         "valid": "Autoincrement",
         "preview": "Code preview: {{autoincrement}}",
         "legend": "Reference identifier code",

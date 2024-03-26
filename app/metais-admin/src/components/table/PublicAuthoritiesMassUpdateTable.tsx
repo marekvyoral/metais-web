@@ -1,4 +1,4 @@
-import { ButtonLink, CheckBox, ExpandableRowCellWrapper } from '@isdd/idsk-ui-kit/index'
+import { ButtonLink, CheckBox } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
@@ -169,7 +169,6 @@ export const PublicAuthoritiesMassUpdateTable = ({
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (ctx) => <ExpandableRowCellWrapper row={ctx.row}>{ctx?.getValue?.() as string}</ExpandableRowCellWrapper>,
         },
         {
             header: t('table.ico'),

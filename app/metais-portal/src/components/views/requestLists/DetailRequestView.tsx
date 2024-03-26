@@ -4,7 +4,6 @@ import {
     ButtonGroupRow,
     ButtonLink,
     ButtonPopup,
-    ExpandableRowCellWrapper,
     HomeIcon,
     InfoIconWithText,
     LoadingIndicator,
@@ -273,11 +272,6 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                     accessorFn: (row) => row?.itemCode,
                                     id: 'code',
                                     size: 80,
-                                    cell: ({ row, getValue }) => (
-                                        <ExpandableRowCellWrapper row={row}>
-                                            <span>{getValue() as string}</span>
-                                        </ExpandableRowCellWrapper>
-                                    ),
                                 },
                                 {
                                     header: t('codeListList.requestCreate.codeName'),

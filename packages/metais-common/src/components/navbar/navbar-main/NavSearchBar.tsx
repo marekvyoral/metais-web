@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
@@ -23,8 +23,10 @@ type SearchbarForm = {
 export const NavSearchBar = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-
-    const { register, handleSubmit } = useForm<SearchbarForm>()
+    const [uriParams] = useSearchParams()
+    const { register, handleSubmit } = useForm<SearchbarForm>({
+        defaultValues: { search: uriParams.get('search') ?? '' },
+    })
 
     const onSubmit = (formData: SearchbarForm) => {
         if (formData[GlobalSearchParams.SEARCH]) {
@@ -37,6 +39,7 @@ export const NavSearchBar = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={classnames('idsk-header-web__main-action-search', styles.fullWidth)} noValidate>
             <input
+                required
                 className="govuk-input govuk-!-display-inline-block"
                 id="idsk-header-web__main-action-search-input"
                 placeholder={t('navbar.searchPlaceholder') ?? ''}

@@ -82,9 +82,22 @@ export const buildColumns = (
     setMembersUpdated: React.Dispatch<React.SetStateAction<boolean>>,
     isKsisvs: boolean,
     setUpdatingMember: React.Dispatch<React.SetStateAction<boolean>>,
+    isUserLogged: boolean,
 ) => {
     const selectableColumnsSpec: ColumnDef<TableData>[] = [
         {
+            id: 'lastName_firstName',
+            header: t('groups.name'),
+            accessorKey: 'lastName_firstName',
+            enableSorting: true,
+            // sortingFn: 'myCustomSorting',
+            size: 180,
+        },
+        { id: 'orgName', header: t('groups.organization'), accessorKey: 'orgName', enableSorting: true, size: 480 },
+    ]
+
+    if (ability.can(Actions.CREATE, GroupPermissionSubject.SEND_EMAIL) || isUserLogged) {
+        selectableColumnsSpec.unshift({
             header: ({ table }) => {
                 return (
                     <div className="govuk-checkboxes govuk-checkboxes--small">
@@ -115,20 +128,12 @@ export const buildColumns = (
                 </div>
             ),
             size: 20,
-        },
-        {
-            id: 'lastName_firstName',
-            header: t('groups.name'),
-            accessorKey: 'lastName_firstName',
-            enableSorting: true,
-            // sortingFn: 'myCustomSorting',
-            size: 180,
-        },
-        { id: 'orgName', header: t('groups.organization'), accessorKey: 'orgName', enableSorting: true, size: 480 },
-    ]
+        })
+    }
     if (ability.can(Actions.READ, GroupPermissionSubject.GROUP_MEMBER_EMAIL)) {
         selectableColumnsSpec.push({ header: t('groups.email'), id: 'email', accessorKey: 'email', size: 200 })
     }
+
     selectableColumnsSpec.push({
         header: t('groups.role'),
         id: 'roleName',

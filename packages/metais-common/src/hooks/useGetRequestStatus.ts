@@ -40,7 +40,7 @@ export const useGetStatus = (awaitForStatus?: string) => {
         return done
     }
 
-    const getRequestStatus = async (requestId: string, onSuccess: () => void) => {
+    const getRequestStatus = async (requestId: string, onSuccess?: () => void) => {
         setIsSuccess(false)
         setIsError(false)
         setIsLoading(true)
@@ -52,7 +52,7 @@ export const useGetStatus = (awaitForStatus?: string) => {
             if (status) {
                 setIsSuccess(true)
                 setIsLoading(false)
-                onSuccess()
+                onSuccess?.()
                 return
             } else {
                 setIsTooManyFetchesError(true)

@@ -25,6 +25,14 @@ export type UpdateContentBody = {
     refAttributes: UpdateContentBodyRefAttributes
 }
 
+export type UpdateContent1BodyRefAttributes =
+    | CiRefAttributes
+    | DocumentTemplateRefAttributes
+    | MeetingRequestRefAttributes
+    | StandardRequestRefAttributes
+    | UnknownRefAttributes
+    | VoteRefAttributes
+
 export type UpdateContent1Body = {
     file: Blob
     refAttributes: UpdateContent1BodyRefAttributes
@@ -33,6 +41,42 @@ export type UpdateContent1Body = {
 export type GetContentParams = {
     version?: string
 }
+
+export type UpdateBatchRefAttributesBody = {
+    [key: string]:
+        | CiRefAttributes
+        | DocumentTemplateRefAttributes
+        | MeetingRequestRefAttributes
+        | StandardRequestRefAttributes
+        | UnknownRefAttributes
+        | VoteRefAttributes
+}
+
+export type UpdateBatchRefAttributes1Body = {
+    [key: string]:
+        | CiRefAttributes
+        | DocumentTemplateRefAttributes
+        | MeetingRequestRefAttributes
+        | StandardRequestRefAttributes
+        | UnknownRefAttributes
+        | VoteRefAttributes
+}
+
+export type UpdateRefAttributesBody =
+    | CiRefAttributes
+    | DocumentTemplateRefAttributes
+    | MeetingRequestRefAttributes
+    | StandardRequestRefAttributes
+    | UnknownRefAttributes
+    | VoteRefAttributes
+
+export type UpdateRefAttributes1Body =
+    | CiRefAttributes
+    | DocumentTemplateRefAttributes
+    | MeetingRequestRefAttributes
+    | StandardRequestRefAttributes
+    | UnknownRefAttributes
+    | VoteRefAttributes
 
 export interface MetaVersion {
     version?: string
@@ -85,6 +129,29 @@ export const MetadataStatus = {
     REMOVED: 'REMOVED',
 } as const
 
+export type VoteRefAttributesAllOf = {
+    /** The ID of vote to which the DMS document is bound. */
+    refVoteId?: number
+}
+
+/**
+ * Class eligible for Votes parent (in STANDARDS module).
+ */
+export type VoteRefAttributes = RefAttributes & VoteRefAttributesAllOf
+
+/**
+ * This class is be just as an return value of old DMS documents for which we were not able to find parent object (and so fill their Metadata.RefAttributes). It can not be used for creation of new DMS documents or updating of old DMS documents. If you are updating an old document then you know who the parent is, so fill RefAttributes object with proper data.
+ */
+export type UnknownRefAttributes = RefAttributes
+
+export type MetadataRefAttributes =
+    | CiRefAttributes
+    | DocumentTemplateRefAttributes
+    | MeetingRequestRefAttributes
+    | StandardRequestRefAttributes
+    | UnknownRefAttributes
+    | VoteRefAttributes
+
 export interface Metadata {
     uuid?: string
     status?: MetadataStatus
@@ -99,6 +166,11 @@ export interface Metadata {
     lastModifiedBy?: string
     refAttributes?: MetadataRefAttributes
     extension?: string
+}
+
+export type StandardRequestRefAttributesAllOf = {
+    /** The ID of standard request to which the DMS document is bound. */
+    refStandardRequestId?: number
 }
 
 export type RefAttributesRefType = (typeof RefAttributesRefType)[keyof typeof RefAttributesRefType]
@@ -118,89 +190,29 @@ export interface RefAttributes {
 }
 
 /**
- * Class eligible for Votes parent (in STANDARDS module).
- */
-export type VoteRefAttributes = RefAttributes
-
-/**
- * This class is be just as an return value of old DMS documents for which we were not able to find parent object (and so fill their Metadata.RefAttributes). It can not be used for creation of new DMS documents or updating of old DMS documents. If you are updating an old document then you know who the parent is, so fill RefAttributes object with proper data.
- */
-export type UnknownRefAttributes = RefAttributes
-
-/**
  * Class eligible for Standard parent (in STANDARDS module).
  */
-export type StandardRequestRefAttributes = RefAttributes
+export type StandardRequestRefAttributes = RefAttributes & StandardRequestRefAttributesAllOf
+
+export type MeetingRequestRefAttributesAllOf = {
+    /** The ID of meeting request to which the DMS document is bound. */
+    refMeetingRequestId?: number
+}
 
 /**
  * Class eligible for Meeting_requests parent (in STANDARDS module).
  */
-export type MeetingRequestRefAttributes = RefAttributes
+export type MeetingRequestRefAttributes = RefAttributes & MeetingRequestRefAttributesAllOf
+
+export type DocumentTemplateRefAttributesAllOf = {
+    /** The ID of document to which the DMS document is bound. */
+    refDocumentTemplateId?: number
+}
 
 /**
  * Class eligible for Document parent (in KRIS module).
  */
-export type DocumentTemplateRefAttributes = RefAttributes
-
-export type CreateContentBodyRefAttributes =
-    | CiRefAttributes
-    | DocumentTemplateRefAttributes
-    | MeetingRequestRefAttributes
-    | StandardRequestRefAttributes
-    | UnknownRefAttributes
-    | VoteRefAttributes
-
-export type UpdateContentBodyRefAttributes =
-    | CiRefAttributes
-    | DocumentTemplateRefAttributes
-    | MeetingRequestRefAttributes
-    | StandardRequestRefAttributes
-    | UnknownRefAttributes
-    | VoteRefAttributes
-
-export type UpdateContent1BodyRefAttributes =
-    | CiRefAttributes
-    | DocumentTemplateRefAttributes
-    | MeetingRequestRefAttributes
-    | StandardRequestRefAttributes
-    | UnknownRefAttributes
-    | VoteRefAttributes
-
-export type UpdateBatchRefAttributesBody = {
-    [key: string]:
-        | CiRefAttributes
-        | DocumentTemplateRefAttributes
-        | MeetingRequestRefAttributes
-        | StandardRequestRefAttributes
-        | UnknownRefAttributes
-        | VoteRefAttributes
-}
-
-export type UpdateBatchRefAttributes1Body = {
-    [key: string]:
-        | CiRefAttributes
-        | DocumentTemplateRefAttributes
-        | MeetingRequestRefAttributes
-        | StandardRequestRefAttributes
-        | UnknownRefAttributes
-        | VoteRefAttributes
-}
-
-export type UpdateRefAttributesBody =
-    | CiRefAttributes
-    | DocumentTemplateRefAttributes
-    | MeetingRequestRefAttributes
-    | StandardRequestRefAttributes
-    | UnknownRefAttributes
-    | VoteRefAttributes
-
-export type UpdateRefAttributes1Body =
-    | CiRefAttributes
-    | DocumentTemplateRefAttributes
-    | MeetingRequestRefAttributes
-    | StandardRequestRefAttributes
-    | UnknownRefAttributes
-    | VoteRefAttributes
+export type DocumentTemplateRefAttributes = RefAttributes & DocumentTemplateRefAttributesAllOf
 
 export type CiRefAttributesAllOf = {
     /** The technical name of configuration item (CI) to which the DMS document is bound. */
@@ -218,7 +230,15 @@ export type CiRefAttributesAllOf = {
  */
 export type CiRefAttributes = RefAttributes & CiRefAttributesAllOf
 
-export type MetadataRefAttributes =
+export type CreateContentBodyRefAttributes =
+    | CiRefAttributes
+    | DocumentTemplateRefAttributes
+    | MeetingRequestRefAttributes
+    | StandardRequestRefAttributes
+    | UnknownRefAttributes
+    | VoteRefAttributes
+
+export type UpdateContentBodyRefAttributes =
     | CiRefAttributes
     | DocumentTemplateRefAttributes
     | MeetingRequestRefAttributes

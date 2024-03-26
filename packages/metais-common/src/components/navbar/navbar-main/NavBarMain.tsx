@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import { NavIconGroup } from './NavIconGroup'
 import { NavLogin } from './NavLogin'
 import { NewItemButtonPopup } from './NewItemButtonPopup'
+import { NavSearchBar } from './NavSearchBar'
 
 import { LogoMirri } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
@@ -57,11 +58,7 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
 
                     <div className={classNames('govuk-grid-column-full', { [styles.center]: isAdmin })}>
                         <div className="idsk-header-web__main-action">
-                            {/* SEARCH WILL BE IMPLEMENTED IN NEXT PHASE */}
-                            {
-                                /* isAdmin ? <div className={styles.fullWidth} /> : <NavSearchBar /> REPLACED CODE => */
-                                <div className={styles.fullWidth} />
-                            }
+                            {isAdmin ? <div className={styles.fullWidth} /> : <NavSearchBar />}
                             <NavIconGroup isMobile={false} iconGroupItems={iconGroupItems} />
 
                             <div className="idsk-header-web__main--buttons">

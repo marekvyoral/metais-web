@@ -89,7 +89,6 @@ export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange
             <Table
                 columns={columns}
                 data={listIntegrationLinks?.results}
-                rowHref={(row) => `./${row?.original?.uuid}`}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                 }}

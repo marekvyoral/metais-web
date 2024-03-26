@@ -278,13 +278,13 @@ export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
 
         const type = entityName
         const uuid = isUpdate ? updateCiItemId : uuidV4()
-        const dataToUpdate = {
+        const dataToUpdate: ConfigurationItemUi = {
             uuid: uuid,
             type: type,
             attributes: formattedAttributesToSend,
         }
 
-        const dataToCreate = {
+        const dataToCreate: ConfigurationItemUi = {
             ...dataToUpdate,
             owner: ownerId,
         }

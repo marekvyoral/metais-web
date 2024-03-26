@@ -1,4 +1,4 @@
-import { ExpandableRowCellWrapper, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
+import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { KrisToBeKs, KrisToBeRights, useGetKs } from '@isdd/metais-common/api/generated/kris-swagger'
 import { ActionsOverTable, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
@@ -55,11 +55,9 @@ export const KSEvaluationAccordion: React.FC<IKSEvaluationAccordionProps> = ({ e
             header: t('evaluation.ksTable.ksCode'),
             id: 'isvsCode',
             cell: (ctx) => (
-                <ExpandableRowCellWrapper row={ctx.row}>
-                    <Link to={`/ci/ks/${ctx.row?.original?.uuid}`} target="_blank" className="govuk-link">
-                        {ctx.row?.original?.code}
-                    </Link>
-                </ExpandableRowCellWrapper>
+                <Link to={`/ci/ks/${ctx.row?.original?.uuid}`} target="_blank" className="govuk-link">
+                    {ctx.row?.original?.code}
+                </Link>
             ),
             size: 200,
         },

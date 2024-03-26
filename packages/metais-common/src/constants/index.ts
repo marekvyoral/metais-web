@@ -104,6 +104,7 @@ export enum ReponseErrorCodeEnum {
     GNR500 = 'gnr500',
     OPERATION_NOT_ALLOWED = 'OperationNotAllowed',
     WRONG_OLD_PASSWORD = 'WRONG_OLD_PASSWORD',
+    EKO_CODE_USED = 'EkoCodeUsed',
 }
 export const REPORTS = 'reports'
 export const FIRST_PAGE_NUMBER = 1

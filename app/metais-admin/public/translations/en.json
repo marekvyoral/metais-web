@@ -1058,7 +1058,8 @@
         "validateFile": "Validation failed",
         "uploadFile": "File upload failed",
         "gnr403": "You do not have permission to call this API.",
-        "gnr412": "Condition not met."
+        "gnr412": "Condition not met.",
+        "EkoCodeUsed": "This EKO code is in use"
     },
     "todo": {
         "header": "Page not found",

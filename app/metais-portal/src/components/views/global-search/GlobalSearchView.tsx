@@ -1,6 +1,6 @@
 import React from 'react'
 import { BreadCrumbs, HomeIcon, PaginatorWrapper, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { GlobalSearchParams } from '@isdd/metais-common/components/navbar/navbar-main/NavSearchBar'
 import { ActionsOverTable, QueryFeedback } from '@isdd/metais-common/index'
@@ -14,7 +14,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { GlobalSearchCard } from '@/components/global-search-card/GlobalSearchCard'
 
 //fix wrong type from orval
-type GlobalSearchViewPagination = {
+export type GlobalSearchViewPagination = {
     page?: number
     perPage?: number
     totalPages?: number
@@ -22,11 +22,11 @@ type GlobalSearchViewPagination = {
     totalItems?: number
 }
 
-export const GlobalSearchView: React.FC<GlobalSearchViewProps> = ({ data, isError, isLoading }) => {
+export const GlobalSearchView: React.FC<GlobalSearchViewProps> = ({ data, ownerItems, isError, isLoading, pagination }) => {
     const { t } = useTranslation()
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
-    const pagination = data?.pagination as GlobalSearchViewPagination
+    //const pagination = pagination as GlobalSearchViewPagination
 
     const handleUpdateSearchParams = (value: string, searchKeyName: GlobalSearchParams) => {
         setSearchParams((prevSearchParams) => {
@@ -34,10 +34,10 @@ export const GlobalSearchView: React.FC<GlobalSearchViewProps> = ({ data, isErro
 
             if (newSearchParams.has(searchKeyName)) {
                 newSearchParams.set(searchKeyName, value)
-                if (newSearchParams.has(GlobalSearchParams.TOTAL_ITEMS) && pagination.totalItems) {
-                    newSearchParams.set(GlobalSearchParams.TOTAL_ITEMS, pagination.totalItems.toString())
-                } else if (pagination.totalItems) {
-                    newSearchParams.append(GlobalSearchParams.TOTAL_ITEMS, pagination.totalItems.toString())
+                if (newSearchParams.has(GlobalSearchParams.TOTAL_ITEMS) && pagination?.totalItems) {
+                    newSearchParams.set(GlobalSearchParams.TOTAL_ITEMS, pagination?.totalItems.toString())
+                } else if (pagination?.totalItems) {
+                    newSearchParams.append(GlobalSearchParams.TOTAL_ITEMS, pagination?.totalItems.toString())
                 }
             } else {
                 newSearchParams.append(searchKeyName, value)
@@ -59,7 +59,6 @@ export const GlobalSearchView: React.FC<GlobalSearchViewProps> = ({ data, isErro
                     },
                 ]}
             />
-
             <MainContentWrapper globalSearch>
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
@@ -68,29 +67,40 @@ export const GlobalSearchView: React.FC<GlobalSearchViewProps> = ({ data, isErro
                     </FlexColumnReverseWrapper>
                     <ActionsOverTable
                         pagination={{
-                            pageNumber: pagination.page ?? BASE_PAGE_NUMBER,
-                            pageSize: pagination.perPage ?? BASE_PAGE_SIZE,
-                            dataLength: pagination.totalItems ?? 0,
+                            pageNumber: pagination?.page ?? BASE_PAGE_NUMBER,
+                            pageSize: pagination?.perPage ?? BASE_PAGE_SIZE,
+                            dataLength: pagination?.totalItems ?? 0,
                         }}
                         entityName=""
                         handlePagingSelect={(pageSize) => handleUpdateSearchParams(pageSize, GlobalSearchParams.PER_PAGE)}
                         hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: true }}
+                        pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                     >
                         <TextBody>
                             <b>{t('globalSearch.numberOfResults', { count: pagination?.totalItems })}</b>
                         </TextBody>
                     </ActionsOverTable>
                     <ul className={styles.ul}>
-                        {data?.generalElasticItemSet?.map((item) => (
-                            <li key={item.uuid}>
-                                <GlobalSearchCard cardData={item} />
-                            </li>
-                        ))}
+                        {data?.map((item) => {
+                            const id = () => {
+                                if ('uuid' in item) {
+                                    return item.uuid
+                                } else if ('id' in item) {
+                                    return item.id
+                                }
+                            }
+
+                            return (
+                                <li key={id()}>
+                                    <GlobalSearchCard cardData={item} ownerItems={ownerItems} />
+                                </li>
+                            )
+                        })}
                     </ul>
                     <PaginatorWrapper
                         pageNumber={pagination?.page ?? BASE_PAGE_NUMBER}
                         pageSize={pagination?.perPage ?? BASE_PAGE_SIZE}
-                        dataLength={pagination?.totalItems ?? data?.generalElasticItemSet?.length ?? 1}
+                        dataLength={pagination?.totalItems ?? 0}
                         handlePageChange={(page) =>
                             handleUpdateSearchParams(page.pageNumber?.toString() ?? BASE_PAGE_NUMBER.toString(), GlobalSearchParams.PAGE)
                         }
