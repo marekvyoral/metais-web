@@ -141,7 +141,6 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             <Table
                 columns={columns}
                 data={data?.results}
-                rowHref={(row) => `./${row?.original?.uuid}`}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                 }}

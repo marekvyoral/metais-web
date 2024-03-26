@@ -230,7 +230,6 @@ export const CiTable: React.FC<ICiTable> = ({
             <Table
                 columns={columns}
                 data={tableData}
-                rowHref={(row) => (baseHref ? `${baseHref}/${row?.original?.uuid}` : `./${row?.original?.uuid}`)}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                     clearSelectedRows()
