@@ -3039,6 +3039,7 @@
     "autoincrement": {
         "prefix": "Prefix",
         "charCount": "Characters count in increment",
+        "charCountHint": "Please enter a number between 1 and 9 (inclusive). Only numbers in this range are allowed.",
         "valid": "Autoincrement",
         "preview": "Code preview: {{autoincrement}}",
         "legend": "Reference identifier code",
