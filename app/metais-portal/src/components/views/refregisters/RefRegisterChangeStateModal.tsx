@@ -6,7 +6,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { DMS_DOWNLOAD_FILE, ModalButtons } from '@isdd/metais-common/index'
 import { useStateMachine } from '@isdd/metais-common/components/state-machine/hooks/useStateMachine'
 import { ApiStandardRequest, ApiStandardRequestRequestChannel, useCreateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
-import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
+import { CiRefAttributes, RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 
 import { downloadFile } from '@/components/views/documents/utils'
@@ -104,19 +104,17 @@ export const RefRegisterChangeStateModal = ({
             }
         }
     }
-    const fileMetaAttributes = {
-        refAttributes: new Blob(
-            [
-                JSON.stringify({
-                    refCiTechnicalName: 'ReferenceRegister',
-                    refCiOwner: owner,
-                    refType: RefAttributesRefType.CI,
-                    refCiId: entityId,
-                }),
-            ],
-            { type: 'application/json' },
-        ),
+
+    const refDmsObject: CiRefAttributes = {
+        refCiTechnicalName: 'ReferenceRegister',
+        refCiOwner: owner,
+        refType: RefAttributesRefType.CI,
+        refCiId: entityId,
     }
+    const fileMetaAttributes = {
+        refAttributes: new Blob([JSON.stringify(refDmsObject)], { type: 'application/json' }),
+    }
+
     return (
         <BaseModal isOpen={openChangeStateDialog} close={() => setOpenChangeStateDialog(false)}>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>

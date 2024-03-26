@@ -4,7 +4,13 @@ import { GlobalSearchContainer } from '@/components/containers/GlobalSearchConta
 import { GlobalSearchView } from '@/components/views/global-search/GlobalSearchView'
 
 const GlobalSearchPage = () => {
-    return <GlobalSearchContainer View={({ data, isError, isLoading }) => <GlobalSearchView data={data} isError={isError} isLoading={isLoading} />} />
+    return (
+        <GlobalSearchContainer
+            View={({ data, isError, isLoading, ownerItems, pagination }) => (
+                <GlobalSearchView data={data} isError={isError} isLoading={isLoading} ownerItems={ownerItems} pagination={pagination} />
+            )}
+        />
+    )
 }
 
 export default GlobalSearchPage

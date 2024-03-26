@@ -14,6 +14,7 @@ import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { useIsOwnerByGidHook } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import { useGenerateCodeAndURLHook } from '@isdd/metais-common/src/api/generated/types-repo-swagger'
+import { CiRefAttributes } from '@isdd/metais-common/src/api/generated/dms-swagger'
 
 export interface IDocType extends ConfigurationItemUi {
     confluence?: boolean
@@ -183,20 +184,17 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
         }
     }
 
+    const refDmsObject: CiRefAttributes = {
+        refCiTechnicalName: project?.type,
+        refCiId: project?.uuid,
+        refCiMetaisCode: project?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais],
+        refCiOwner: project?.metaAttributes?.owner,
+        refType: 'CI',
+    }
+
     const fileMetaAttributes = {
         'x-content-uuid': uuidV4(),
-        refAttributes: new Blob(
-            [
-                JSON.stringify({
-                    refCiTechnicalName: project?.type,
-                    refCiId: project?.uuid,
-                    refCiMetaisCode: project?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais],
-                    refCiOwner: project?.metaAttributes?.owner,
-                    refType: 'CI',
-                }),
-            ],
-            { type: 'application/json' },
-        ),
+        refAttributes: new Blob([JSON.stringify(refDmsObject)], { type: 'application/json' }),
     }
 
     return (

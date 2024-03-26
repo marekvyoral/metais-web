@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react'
-import { ColumnDef, ColumnOrderState, SortingState } from '@tanstack/react-table'
+import { ColumnDef, ColumnOrderState, Row, SortingState } from '@tanstack/react-table'
 
-import { ColumnSort, SortType } from '../types'
+import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
 
 export const resetColumnOrder = <T>(columns: Array<ColumnDef<T>>, setColumnOrder: Dispatch<SetStateAction<ColumnOrderState>>) => {
     setColumnOrder(columns.map((column) => column.id || ''))
@@ -44,4 +44,8 @@ export const hasMetaAttributesWithStateProperty = (obj: unknown): obj is HasMeta
         'state' in obj.original.metaAttributes &&
         typeof obj.original.metaAttributes.state === 'string'
     )
+}
+
+export const getExpandableRowContentId = <T>(row: Row<T>) => {
+    return `${row.id}_content`
 }

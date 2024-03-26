@@ -160,9 +160,8 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
         setMembersUpdated,
         group?.shortName === KSIVS_SHORT_NAME,
         setUpdatingMember,
+        isUserLogged,
     )
-
-    const columnsWithPermissions = isUserLogged ? selectableColumnsSpec : selectableColumnsSpec.slice(1)
 
     useEffect(() => {
         if (id) {
@@ -188,7 +187,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
             user={user}
             rowSelection={rowSelection}
             isIdentitiesLoading={[isLoading, isFetching, updatingMember].some((item) => item)}
-            selectableColumnsSpec={columnsWithPermissions}
+            selectableColumnsSpec={selectableColumnsSpec}
             tableData={tableData}
             identitiesData={identitiesData}
             identityToDelete={identityToDelete}

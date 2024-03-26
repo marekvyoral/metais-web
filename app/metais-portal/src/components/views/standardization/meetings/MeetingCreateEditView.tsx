@@ -51,10 +51,9 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
 
     const formRef = useRef<HTMLFormElement>(null)
     const formDataRef = useRef<FieldValues>([])
-    //files
 
     const [selectedProposals, setSelectedProposals] = useState(infoData?.standardRequestIds?.map((o) => o.toString()) ?? [])
-    // modals
+
     const [modalOpenProposal, setModalOpenProposal] = useState(false)
     const openModalProposal = () => {
         setModalOpenProposal(true)
@@ -70,7 +69,6 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
         setModalOpenReason(false)
     }
 
-    // forms
     const {
         register,
         handleSubmit,

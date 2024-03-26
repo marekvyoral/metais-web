@@ -43,6 +43,7 @@ export const ProjectDocumentsTab: React.FC<IView> = ({
                             isError={isError}
                             isLoading={isLoading}
                             refetch={refetch}
+                            hiddenColumnsNames={['state']}
                         />
                     </Fragment>
                 )

@@ -14,14 +14,16 @@ import {
 import { ColumnSort, Pagination } from '@isdd/idsk-ui-kit/types'
 import { Task, TaskList } from '@isdd/metais-common/api/generated/tasks-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ColumnDef } from '@tanstack/react-table'
-import React, { SetStateAction } from 'react'
+import React, { SetStateAction, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
@@ -84,6 +86,14 @@ export const TasksListView: React.FC<ITasksListView> = ({
         }
     }
 
+    const { isActionSuccess } = useActionSuccess()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        if (isActionSuccess.value) {
+            scrollToMutationFeedback()
+        }
+    }, [isActionSuccess, scrollToMutationFeedback])
+
     return (
         <>
             {!isWrapped && (
@@ -100,6 +110,8 @@ export const TasksListView: React.FC<ITasksListView> = ({
                     {!isWrapped && <TextHeading size="L">{t('tasks.tasks')}</TextHeading>}
                     <QueryFeedback loading={false} error={isError} />
                 </FlexColumnReverseWrapper>
+                <MutationFeedback success={isActionSuccess.value} />
+                <div ref={wrapperRef} />
                 <Filter<TasksFilter>
                     defaultFilterValues={defaultFilterValues}
                     form={({ register, setValue, control }) => {

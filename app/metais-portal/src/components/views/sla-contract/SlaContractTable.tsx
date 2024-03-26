@@ -113,7 +113,6 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
             <Table
                 columns={columns}
                 data={slaContractsData?.results}
-                rowHref={(row) => `./${row?.original?.uuid}`}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                 }}

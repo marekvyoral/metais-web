@@ -3,6 +3,7 @@ import {
     ApiCodelistItem,
     ApiCodelistItemList,
     ApiCodelistPreview,
+    GetAutoincrementTypesType,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import { RequestListState } from '@isdd/metais-common/constants'
@@ -264,7 +265,7 @@ export const mapToForm = (language: string, itemList?: ApiCodelistItemList, data
         codeListState: data?.codelistState ?? '',
         prefix: data?.prefix,
         valid: data?.autoincrement?.valid,
-        type: data?.autoincrement?.type,
+        type: GetAutoincrementTypesType.NUMERIC,
         charCount: data?.autoincrement?.charCount,
         refIndicator: data?.uri,
     } as IRequestForm

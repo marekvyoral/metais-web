@@ -107,6 +107,11 @@ export default defineConfig({
                             name: 'useClientForRefRegistersHistory',
                         },
                     },
+                    searchAll: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
                 },
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClient.ts',

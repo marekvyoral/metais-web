@@ -20,11 +20,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
 import { findCommonStrings } from '@isdd/metais-common/utils/utils'
 import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
+import { ENTITY_KS } from '@isdd/metais-common/constants'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { ICiCreateItemAndRelationContainerView } from '@/components/containers/CiCreateItemAndRelationContainer'
 import { CreateCiEntityForm } from '@/components/create-entity/CreateCiEntityForm'
 import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
+import { useKSChannel } from '@/hooks/useChannelKS'
 
 export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerView> = ({
     entityName,
@@ -112,10 +114,15 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
         invalidateRelationsCountCache.invalidate(entityId)
     }
 
+    const { createChannelForKS, isLoading: isSubmitLoading, isError: isSubmitError } = useKSChannel()
     const storeGraph = useStoreGraph({
         mutation: {
-            onSuccess(successData) {
-                getRequestStatus(successData.requestId ?? '', onStoreGraphSuccess)
+            async onSuccess(successData, variables) {
+                await getRequestStatus(successData?.requestId ?? '', async () => {
+                    if (variables?.data.storeSet?.configurationItemSet?.[0]?.type === ENTITY_KS) {
+                        await createChannelForKS(variables?.data.storeSet?.configurationItemSet?.[0] ?? {}, () => onStoreGraphSuccess())
+                    }
+                })
             },
             onError() {
                 setUploadError(true)
@@ -175,15 +182,15 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
     }
 
     return (
-        <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading} error={false} withChildren>
+        <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading || isSubmitLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('breadcrumbs.newCiAndRelation', { itemName: ciName })}</TextHeading>
 
                 <ElementToScrollTo trigger={isError || isProcessedError || isTooManyFetchesError || isRequestStatusError}>
                     <QueryFeedback loading={false} error />
                 </ElementToScrollTo>
-                <ElementToScrollTo trigger={storeGraph.isError}>
-                    <MutationFeedback error={storeGraph.isError} errorMessage={t('newRelation.mutationError')} />
+                <ElementToScrollTo trigger={storeGraph.isError || isSubmitError}>
+                    <MutationFeedback error={storeGraph.isError || isSubmitError} errorMessage={t('newRelation.mutationError')} />
                 </ElementToScrollTo>
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
