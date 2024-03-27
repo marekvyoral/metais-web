@@ -57,6 +57,7 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
                         <RelationAttribute
                             key={relation.title + index}
                             name={index === 0 ? t('relationCard.relations') : ''}
+                            className={index === 0 ? '' : styles.multiRelationsMargin}
                             value={
                                 <TextLinkExternal
                                     title={relation.title}

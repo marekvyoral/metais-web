@@ -7,6 +7,10 @@
     }
 }
 
+.break {
+    white-space: pre;
+}
+
 .groupRow {
     @include mq($until: tablet) {
         margin-bottom: govuk-spacing(0);
@@ -18,7 +22,7 @@
 }
 
 .diffIns {
-   color: govuk-colour('green');;
+    color: govuk-colour('green');
     background: govuk-tint(govuk-colour('green'), 90) !important;
     text-decoration-style: double;
 }

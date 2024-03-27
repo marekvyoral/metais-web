@@ -172,7 +172,8 @@
         },
         "submit": "Submit form",
         "back": "Back",
-        "waitSending": "Sending"
+        "waitSending": "Sending",
+        "cancel": "Cancel"
     },
     "languageSelector": {
         "open": "Open language menu",
@@ -1083,6 +1084,7 @@
     "userProfile": {
         "heading": "Profile and rights",
         "changeInformationsButton": "Edit information",
+        "noRights": "User have no representative entities and roles assigned.",
         "information": {
             "header": "My information",
             "name": "Name",

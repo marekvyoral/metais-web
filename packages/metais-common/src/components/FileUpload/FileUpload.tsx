@@ -235,6 +235,11 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             [cancelImport, currentFiles, getNewMeta, handleUpload, onUploadingStart, uploadFilesStatus, uppy],
         )
 
+        const handleRemoveFileAndUuid = (fileId: string) => {
+            handleRemoveFile(fileId)
+            delete fileUuidsMapping.current[fileId]
+        }
+
         return (
             <>
                 <FileImportDragDrop uppy={uppy} hideNoSelectedFileToImport={currentFiles.length > 0} />
@@ -250,7 +255,7 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
                     />
                     <FileImportList
                         textSize={textSize}
-                        handleRemoveFile={handleRemoveFile}
+                        handleRemoveFile={handleRemoveFileAndUuid}
                         removeGeneralErrorMessages={removeGeneralErrorMessages}
                         fileList={currentFiles}
                         uploadFilesStatus={uploadFilesStatus}

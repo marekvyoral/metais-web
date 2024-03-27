@@ -6,7 +6,7 @@ import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { ColumnDef, Row } from '@tanstack/react-table'
-import React, { useCallback, useState } from 'react'
+import React, { Dispatch, SetStateAction, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
@@ -28,6 +28,8 @@ interface ConfigurationItemHistoryListTable {
     basePath?: string
     filterActions?: string[]
     filterModifiedBy?: string[]
+    selectedColumns: string[]
+    setSelectedColumns: Dispatch<SetStateAction<string[]>>
 }
 
 export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistoryListTable> = ({
@@ -40,11 +42,12 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
     basePath,
     filterActions,
     filterModifiedBy,
+    selectedColumns,
+    setSelectedColumns,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
-    const [selectedColumns, setSelectedColumns] = useState<string[]>([])
     const { entityId, entityName } = useGetEntityParamsFromUrl()
     const additionalColumnsNullSafe = additionalColumns ?? []
 
@@ -60,7 +63,7 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
                 setSelectedColumns(newSelectedColumns)
             }
         },
-        [selectedColumns],
+        [selectedColumns, setSelectedColumns],
     )
 
     const path = basePath ? basePath : `/ci/${entityName}`

@@ -871,7 +871,8 @@
         "repeatPassword": "Opakované heslo musí byť rovnaké",
         "phone": "Telefón",
         "name": "Meno",
-        "surname": "Priezvisko"
+        "surname": "Priezvisko",
+        "endTimeBeforeStartTime": "'{{endTime}}' nemôže nastať pred '{{startTime}}'"
     },
     "createEntity": {
         "required": "povinné",
@@ -1149,6 +1150,10 @@
         "editGroup": "Zmena skupiny",
         "addingMember": "Pridávam nového člena.",
         "removingMember": "Odstraňujem člena",
+        "edit": "Upraviť",
+        "delete": "Zmazať",
+        "save": "Uložiť",
+        "cancel": "Zrušiť",
         "errors": {
             "groupNameRequired": "Názov skupiny je povinný údaj.",
             "groupShortNameRequired": "Skratka skupiny je povinný údaj.",
@@ -1820,6 +1825,7 @@
     "userProfile": {
         "heading": "Profil a oprávnenia",
         "changeInformationsButton": "Upraviť informácie",
+        "noRights": "Používateľ nemá priradené žiadne zastupujúce subjekty a role.",
         "information": {
             "header": "Základné informácie",
             "name": "Meno a priezvisko",
@@ -2294,6 +2300,7 @@
             "downloadingFile": "Stahujem súbor",
             "submitVote": "Hlasovať",
             "editVote": "Upraviť hlasovanie",
+            "editVoteTooltip": "Nemôžete opraviť hlasovanie, ktoré už bolo ukončené, vetované, alebo ktoré práve prebieha.",
             "newVote": "Pridať nové hlasovanie",
             "cancelVote": "Zrušiť hlasovanie",
             "cancel": "Zrušiť",
@@ -3069,5 +3076,11 @@
     },
     "refIden": {
         "hint": "V prípade že sa Vami požadovaný referencovateľný identifikátor nenachádza v zozname môžete jeho hodnotu vpísať priamo do poľa. Následne sa Vám zobrazí možnosť 'Vytvoriť:' spolu s hodnotou ktorú ste zadali."
+    },
+    "bulkList": {
+        "toCiSet": "Položka má vzťah k:",
+        "fromCiSet": "Vzťahy z položky:",
+        "title": "Zoznam položiek so vzťahmi",
+        "errorRels": "Pri načítavní vzťahou sa vyskytla chyba."
     }
 }

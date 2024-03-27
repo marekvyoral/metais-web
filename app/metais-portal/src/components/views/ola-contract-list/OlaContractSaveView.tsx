@@ -51,7 +51,28 @@ const getSchema = (t: TFunction) => {
             ['code']: string(),
             ['referencingIdentifier']: string(),
             ['contractCode']: string(),
-            ['validityEndDate']: string().nullable(),
+            ['validityEndDate']: string()
+                .nullable()
+                .when('validityStartDate', (validityStartDate, dateSchema) => {
+                    return dateSchema.test({
+                        name: 'validityEndDate',
+                        test: function (value) {
+                            const startDate = new Date(validityStartDate[0])
+                            const endDate = new Date(value ?? '')
+                            if (!value) return true
+                            if (!validityStartDate[0]) return true
+                            return (
+                                startDate <= endDate ||
+                                this.createError({
+                                    message: t('validation.endTimeBeforeStartTime', {
+                                        startTime: t('olaContracts.filter.intervalStart'),
+                                        endTime: t('olaContracts.filter.intervalEnd'),
+                                    }),
+                                })
+                            )
+                        },
+                    })
+                }),
             ['crzLink']: string(),
             ['vendorLock']: boolean(),
         })
@@ -82,6 +103,8 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
         handleSubmit,
         clearErrors,
         formState: { errors, isValid, isSubmitted },
+        watch,
+        trigger,
     } = useForm({
         resolver: yupResolver(getSchema(t)),
         defaultValues:
@@ -120,6 +143,13 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
             setValue('referencingIdentifier', ciCode.ciurl)
         }
     }, [ciCode, setValue])
+
+    const intervalEndValue = watch('validityEndDate')
+    useEffect(() => {
+        if (intervalEndValue && isSubmitted) {
+            trigger()
+        }
+    }, [intervalEndValue, isSubmitted, trigger])
 
     const handleUploadData = useCallback(() => {
         fileUploadRef.current?.startUploading()
@@ -270,6 +300,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                         name={'validityEndDate'}
                         control={control}
                         label={t('olaContracts.filter.intervalEnd')}
+                        error={errors.validityEndDate?.message}
                         setValue={setValue}
                     />
                     <Input {...register('crzLink')} label={t('olaContracts.filter.crzLink')} />
