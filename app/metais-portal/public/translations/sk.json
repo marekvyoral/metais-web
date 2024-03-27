@@ -3069,5 +3069,11 @@
     },
     "refIden": {
         "hint": "V prípade že sa Vami požadovaný referencovateľný identifikátor nenachádza v zozname môžete jeho hodnotu vpísať priamo do poľa. Následne sa Vám zobrazí možnosť 'Vytvoriť:' spolu s hodnotou ktorú ste zadali."
+    },
+    "bulkList": {
+        "toCiSet": "Položka má vzťah k:",
+        "fromCiSet": "Vzťahy z položky:",
+        "title": "Zoznam položiek so vzťahmi",
+        "errorRels": "Pri načítavní vzťahou sa vyskytla chyba."
     }
 }

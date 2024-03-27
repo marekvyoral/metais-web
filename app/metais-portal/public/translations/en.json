@@ -3063,5 +3063,11 @@
     },
     "refIden": {
         "hint": "If the referenceable identifier you want is not in the list, you can enter its value directly in the field. You will then see the option 'Create:' together with the value you entered."
+    },
+    "bulkList": {
+        "toCiSet": "Item has relations to:",
+        "fromCiSet": "Relations from item:",
+        "title": "List of items with relations",
+        "errorRels": "Error occured while loading item relations"
     }
 }
