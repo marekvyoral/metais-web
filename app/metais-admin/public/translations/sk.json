@@ -1086,6 +1086,7 @@
     "userProfile": {
         "heading": "Profil a oprávnenia",
         "changeInformationsButton": "Upraviť informácie",
+        "noRights": "Používateľ nemá priradené žiadne zastupujúce subjekty a role.",
         "information": {
             "header": "Základné informácie",
             "name": "Meno",
