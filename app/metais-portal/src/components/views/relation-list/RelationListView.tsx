@@ -1,14 +1,18 @@
-import { BreadCrumbs, Filter, HomeIcon, IOption, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
-import React from 'react'
+import { BaseModal, BreadCrumbs, Filter, HomeIcon, IOption, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import React, { useState } from 'react'
 import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { Trans, useTranslation } from 'react-i18next'
 import { RelationshipUi } from '@isdd/metais-common/api/generated/iam-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, HowTo } from '@isdd/metais-common/constants'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { ActionsOverTable, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, ModalButtons, QueryFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
-import { Link } from 'react-router-dom'
 import { getHowToTranslate } from '@isdd/metais-common/utils/utils'
+import { useGetRoleParticipant, useReadConfigurationItem, useReadRelationship } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
+import { useGetRelationshipTypeWrapper } from '@isdd/metais-common/hooks/useRelationshipType.hook'
+
+import { RelationDetailModalView } from './RelationDetailModalView'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { RelationshipsFilterData, defaultFilterValues } from '@/components/containers/relation-list/RelationListContainer'
@@ -24,9 +28,6 @@ export interface IRelationListView {
     onSourceTypeChange: (val: string | undefined) => void
     onTargetTypeChange: (val: string | undefined) => void
     seed: number
-    //onRelTypeChange: (val: string | undefined) => void
-    // relAttributes: Attribute[] | undefined
-    // relAttributeProfiles: AttributeProfile[] | undefined
 }
 
 export const RelationListView: React.FC<IRelationListView> = ({
@@ -40,12 +41,52 @@ export const RelationListView: React.FC<IRelationListView> = ({
     onSourceTypeChange,
     onTargetTypeChange,
     seed,
-
-    //onRelTypeChange,
-    // relAttributes,
-    // relAttributeProfiles,
 }) => {
     const { t } = useTranslation()
+
+    const [relationData, setRelationData] = useState<RelationshipUi | null>(null)
+
+    const {
+        data: relationshipData,
+        isLoading: isRelationshipLoading,
+        isError: isRelationshipError,
+        refetch: refetchRelationship,
+    } = useReadRelationship(relationData?.uuid ?? '')
+    const {
+        data: ciTargetData,
+        isLoading: isCiTargetDataLoading,
+        isError: isCiTargetDataError,
+    } = useReadConfigurationItem(relationData?.endUuid ?? '', { query: { enabled: !!relationData?.endUuid } })
+    const {
+        data: ciSourceData,
+        isLoading: isCiSourceDataLoading,
+        isError: isCiSourceDataError,
+    } = useReadConfigurationItem(relationData?.startUuid ?? '', { query: { enabled: !!relationData?.startUuid } })
+
+    const {
+        data: relationTypeData,
+        isLoading: isRelationTypeDataLoading,
+        isError: isRelationTypeDataError,
+    } = useGetRelationshipTypeWrapper(relationData?.type ?? '', {
+        query: { enabled: !!relationData?.uuid },
+    })
+
+    const {
+        isLoading: isDetailDataLoading,
+        isError: isDetailDataError,
+        constraintsData,
+        unitsData,
+    } = useDetailData({
+        entityStructure: relationTypeData,
+        isEntityStructureLoading: isRelationTypeDataLoading,
+        isEntityStructureError: isRelationTypeDataError,
+    })
+
+    const {
+        data: ownerData,
+        isLoading: isOwnerLoading,
+        isError: isOwnerError,
+    } = useGetRoleParticipant(relationData?.metaAttributes?.owner ?? '', { query: { enabled: !!relationData?.metaAttributes?.owner } })
 
     const columns: Array<ColumnDef<RelationshipUi>> = [
         {
@@ -53,7 +94,13 @@ export const RelationListView: React.FC<IRelationListView> = ({
             header: t('relationshipList.summary'),
             accessorFn: (row) => row,
             cell: (row) => (
-                <Link to={`/relation/${row.row.original.startType}/${row.row.original.startUuid}/${row.row.original.uuid}`}>
+                <a
+                    href="#"
+                    onClick={(event) => {
+                        event.preventDefault()
+                        setRelationData(row.row.original)
+                    }}
+                >
                     <Trans
                         i18nKey="relationshipList.summaryValue"
                         components={{
@@ -64,7 +111,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
                             endName: row.row.original.endName,
                         }}
                     />
-                </Link>
+                </a>
             ),
             size: 300,
             enableSorting: false,
@@ -137,6 +184,9 @@ export const RelationListView: React.FC<IRelationListView> = ({
         },
     ]
 
+    const isLoading = [isRelationshipLoading, isCiTargetDataLoading, isCiSourceDataLoading, isDetailDataLoading, isOwnerLoading].some((item) => item)
+    const isError = [isRelationshipError, isCiTargetDataError, isCiSourceDataError, isDetailDataError, isOwnerError].some((item) => item)
+
     return (
         <>
             <BreadCrumbs
@@ -189,26 +239,6 @@ export const RelationListView: React.FC<IRelationListView> = ({
                                 defaultValue={filter.targetType}
                                 disabled={!!watch('relType')}
                             />
-                            {/* Zistit ci chceme filter podla attrs kedze ich nezobrazujeme */}
-                            {/* {watch('relType') && (
-                                <DynamicFilterAttributes
-                                setValue={setValue}
-                                defaults={defaultFilterValues}
-                                filterData={{
-                                    attributeFilters: filter.attributeFilters ?? {},
-                                    metaAttributeFilters: filter.metaAttributeFilters ?? {},
-                                }}
-                                attributes={relAttributes}
-                                attributeProfiles={relAttributeProfiles}
-                                constraintsData={undefined}
-                                ignoreInputNames={[
-                                    MetainformationColumns.OWNER,
-                                    MetainformationColumns.CREATED_AT,
-                                    MetainformationColumns.STATE,
-                                    MetainformationColumns.LAST_MODIFIED_AT,
-                                ]}
-                                />
-                            )} */}
                         </div>
                     )}
                 />
@@ -242,6 +272,21 @@ export const RelationListView: React.FC<IRelationListView> = ({
                     />
                 </QueryFeedback>
             </MainContentWrapper>
+            <BaseModal isOpen={relationData !== null} close={() => setRelationData(null)}>
+                <div>
+                    {relationData && (
+                        <>
+                            <RelationDetailModalView
+                                data={{ relationshipData, relationTypeData, constraintsData, ciSourceData, ciTargetData, ownerData, unitsData }}
+                                isLoading={isLoading}
+                                isError={isError}
+                                refetchRelationship={refetchRelationship}
+                            />
+                        </>
+                    )}
+                </div>
+                <ModalButtons onClose={() => setRelationData(null)} />
+            </BaseModal>
         </>
     )
 }
