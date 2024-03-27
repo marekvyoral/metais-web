@@ -871,7 +871,8 @@
         "repeatPassword": "Opakované heslo musí byť rovnaké",
         "phone": "Telefón",
         "name": "Meno",
-        "surname": "Priezvisko"
+        "surname": "Priezvisko",
+        "endTimeBeforeStartTime": "'{{endTime}}' nemôže nastať pred '{{startTime}}'"
     },
     "createEntity": {
         "required": "povinné",
