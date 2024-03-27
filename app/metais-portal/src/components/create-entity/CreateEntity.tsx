@@ -64,6 +64,8 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                     await getRequestStatus(successData.requestId, async () => {
                         if (entityName === ENTITY_KS) {
                             await createChannelForKS(variables.data, () => onStatusSuccess({ configurationItemId, isUpdate, entityName }))
+                        } else {
+                            onStatusSuccess({ configurationItemId, isUpdate, entityName })
                         }
                     })
                 } else {
