@@ -53,24 +53,32 @@ export const CodelistDetailCreateForm: React.FC<Props> = ({ onSubmit, closeModal
                     {...register(CodelistDetailEnum.ORDER)}
                     disabled
                 />
-                <Input error={errors[CodelistDetailEnum.CODE]?.message} label={t('codelists.code')} {...register(CodelistDetailEnum.CODE)} />
-                <Input error={errors[CodelistDetailEnum.VALUE]?.message} label={t('codelists.value')} {...register(CodelistDetailEnum.VALUE)} />
+                <Input error={errors[CodelistDetailEnum.CODE]?.message} label={t('codelists.code')} {...register(CodelistDetailEnum.CODE)} required />
+                <Input
+                    error={errors[CodelistDetailEnum.VALUE]?.message}
+                    label={t('codelists.value')}
+                    {...register(CodelistDetailEnum.VALUE)}
+                    required
+                />
                 <Input
                     error={errors[CodelistDetailEnum.ENG_VALUE]?.message}
                     label={t('codelists.engValue')}
                     {...register(CodelistDetailEnum.ENG_VALUE)}
+                    required
                 />
                 <TextArea
                     error={errors[CodelistDetailEnum.DESCRIPTION]?.message}
                     rows={3}
                     label={t('codelists.description')}
                     {...register(CodelistDetailEnum.DESCRIPTION)}
+                    required
                 />
                 <TextArea
                     error={errors[CodelistDetailEnum.ENG_DESCRIPTION]?.message}
                     rows={3}
                     label={t('codelists.engDescription')}
                     {...register(CodelistDetailEnum.ENG_DESCRIPTION)}
+                    required
                 />
 
                 <ModalButtons
