@@ -205,7 +205,8 @@
         },
         "submit": "Odoslať formulár",
         "back": "Späť",
-        "waitSending": "Odosielanie"
+        "waitSending": "Odosielanie",
+        "cancel": "Zrušiť"
     },
     "languageSelector": {
         "open": "Rozbaliť jazykové menu",
@@ -1086,6 +1087,7 @@
     "userProfile": {
         "heading": "Profil a oprávnenia",
         "changeInformationsButton": "Upraviť informácie",
+        "noRights": "Používateľ nemá priradené žiadne zastupujúce subjekty a role.",
         "information": {
             "header": "Základné informácie",
             "name": "Meno",

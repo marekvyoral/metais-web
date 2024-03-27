@@ -13,6 +13,7 @@ import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { MutationFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { useNavigate } from 'react-router-dom'
 
 import styles from './reportsDetail.module.scss'
 import { IReportCardFormData, ReportsParameterCard } from './ReportsParameterCard'
@@ -85,6 +86,7 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
 }) => {
     const { t } = useTranslation()
     const [reportResult, setReportResult] = useState<ReportResultObject>()
+    const navigate = useNavigate()
 
     const { register, handleSubmit, setValue, getValues, clearErrors, formState, watch } = useForm({
         resolver: yupResolver(reportCreateSchema(t)),
@@ -198,7 +200,11 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
                     />
                 ))}
                 <Button label={t('report.detail.addParameter')} onClick={addNewParameter} className={styles.addConnection} />
-                <SubmitWithFeedback submitButtonLabel={t('report.detail.save')} loading={saveIsLoading} />
+                <SubmitWithFeedback
+                    submitButtonLabel={t('report.detail.save')}
+                    loading={saveIsLoading}
+                    additionalButtons={[<Button label={t('form.cancel')} variant="secondary" onClick={() => navigate(-1)} key="cancel" />]}
+                />
                 <MutationFeedback error={isSaveError} />
                 {saveIsLoading && <LoadingIndicator label={t('feedback.saving')} />}
             </div>

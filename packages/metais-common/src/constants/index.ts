@@ -416,3 +416,6 @@ export enum HowTo {
     REF_REG_HOWTO = 'REF_REG_HOWTO',
     MONITORING_HOWTO = 'MONITORING_HOWTO',
 }
+
+export const BULK_ACTION_ITEM_SEPARATOR = ','
+export const BULK_ACTION_ITEM_SEARCH_KEY = 'list'

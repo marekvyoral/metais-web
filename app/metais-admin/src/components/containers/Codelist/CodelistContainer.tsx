@@ -1,4 +1,4 @@
-import { ColumnSort } from '@isdd/idsk-ui-kit/types'
+import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 import {
     EnumType,
     EnumTypePreview,
@@ -10,7 +10,7 @@ import {
     useValidEnumType,
 } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'
-import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { UseMutationResult, useQueryClient } from '@tanstack/react-query'
 import React, { SetStateAction, useState } from 'react'
 
@@ -63,7 +63,11 @@ export interface ICodelistPagination {
     currentPage: number
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>
 }
-
+export interface CodelistFilter extends IFilterParams, IFilter {
+    [CodelistFilterInputs.NAME]: string
+    [CodelistFilterInputs.VALUE]: string
+    [CodelistFilterInputs.VALUE_DESCRIPTION]: string
+}
 export interface ICodelistContainerView {
     filteredData: EnumTypePreviewList
     mutations: CodeListsMutations
@@ -71,10 +75,12 @@ export interface ICodelistContainerView {
     isError: boolean
     sort: ColumnSort[]
     setSort: React.Dispatch<SetStateAction<ColumnSort[]>>
+    handleFilterChange: (changedFilter: IFilter) => void
+    filter: CodelistFilter
 }
 
 interface ICodelistContainer {
-    defaults: { [key: string]: string }
+    defaults: CodelistFilter
     View: React.FC<ICodelistContainerView>
 }
 
@@ -93,7 +99,7 @@ export const CodelistContainer: React.FC<ICodelistContainer> = ({ View, defaults
 
     const queryClient = useQueryClient()
 
-    const { filter } = useFilterParams(defaults)
+    const { filter, handleFilterChange } = useFilterParams(defaults)
     const [sort, setSort] = useState<ColumnSort[]>([])
 
     const filterFunction = (item: EnumTypePreview) => {
@@ -185,6 +191,8 @@ export const CodelistContainer: React.FC<ICodelistContainer> = ({ View, defaults
             isError={isError}
             setSort={setSort}
             sort={sort}
+            handleFilterChange={handleFilterChange}
+            filter={filter}
         />
     )
 }

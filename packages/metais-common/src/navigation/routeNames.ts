@@ -158,6 +158,7 @@ export enum RouterRoutes {
     OLA_CONTRACT_ADD = '/ola-contract-add',
     OLA_CONTRACT_DETAIL = '/ola-contract-list/:entityId',
     OLA_CONTRACT_EDIT = '/ola-contract-list/:entityId/edit',
+    BULK_ACTION_ITEM_LIST = '/bulk-list',
 }
 
 export enum AdminRouteNames {

@@ -9,12 +9,17 @@ import {
     IdentitiesInGroupAndCount,
     IdentityInGroupData,
     OperationResult,
+    Role,
+    useFindAll11Hook,
     useFindByUuid3,
     useFindRelatedIdentitiesAndCount,
+    useUpdateRoleOnGroupOrgForIdentityHook,
 } from '@isdd/metais-common/src/api/generated/iam-swagger'
-import { ColumnDef } from '@tanstack/react-table'
+import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { buildColumns } from '@/components/views/standardization/groups/groupMembersTableUtils'
 
@@ -146,6 +151,33 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
 
     const [identityToDelete, setIdentityToDelete] = useState<string>()
     const [membersUpdated, setMembersUpdated] = useState(false)
+    const [selectedRows, setSelectedRows] = useState<Array<number>>([])
+    const [updatedMembers, setUpdatedMembers] = useState<Array<{ uuid: string; oldRole: string; newRole: string }>>([])
+    const updateGroupRequest = useUpdateRoleOnGroupOrgForIdentityHook()
+    const findRoleRequest = useFindAll11Hook()
+    const { setIsActionSuccess, clearAction } = useActionSuccess()
+
+    const handleSaveMemberRole = async (row: Row<TableData>) => {
+        clearAction()
+        const updatedMember = updatedMembers.find((o) => o.uuid === row.original.uuid)
+
+        if (!updatedMember) {
+            return
+        }
+        setUpdatingMember(true)
+
+        const orgIds = row.original.orgId.split(',')
+        const oldRole: Role = (await findRoleRequest({ name: updatedMember.oldRole })) as Role
+        const newRole: Role = (await findRoleRequest({ name: updatedMember.newRole })) as Role
+
+        await updateGroupRequest(row.original.uuid, id ?? '', oldRole.uuid ?? '', newRole.uuid ?? '', orgIds[orgIds.length - 1])
+
+        setMembersUpdated(true)
+        setUpdatingMember(false)
+        const refetchData = await refetch()
+        setIdentities(refetchData.data?.list)
+        setIsActionSuccess({ value: true, path: `${NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL}/itvs`, additionalInfo: { type: 'memberUpdate' } })
+    }
 
     const selectableColumnsSpec: ColumnDef<TableData>[] = buildColumns(
         rowSelection,
@@ -160,6 +192,11 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
         setMembersUpdated,
         group?.shortName === KSIVS_SHORT_NAME,
         setUpdatingMember,
+        selectedRows,
+        setSelectedRows,
+        setUpdatedMembers,
+        updatedMembers,
+        handleSaveMemberRole,
         isUserLogged,
     )
 

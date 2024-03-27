@@ -146,6 +146,7 @@ import GroupItvsDetailPage from '@/pages/standardization/groupslist/itvs'
 import GroupEditItvsPage from '@/pages/standardization/groupslist/itvs/edit'
 import ReferenceRegisterDetail from '@/pages/ci/ReferenceRegister'
 import WebPortalInformation from '@/pages/ci/WeboveSidlo/[entityId]/information'
+import { BulkListPage } from '@/pages/bulk-list/BulkList'
 import MiestoPrevadzkyEntityDetailPage from '@/pages/ci/MiestoPrevadzky'
 
 export interface RouteConfig {
@@ -971,6 +972,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.RELATION_LIST,
                 slug: RouterRoutes.RELATION_LIST,
                 component: RelationListPage,
+            },
+            {
+                path: RouterRoutes.BULK_ACTION_ITEM_LIST,
+                slug: RouterRoutes.BULK_ACTION_ITEM_LIST,
+                component: BulkListPage,
             },
             {
                 path: '*',

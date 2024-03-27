@@ -15,21 +15,21 @@ import { EnumTypePreview, EnumTypePreviewList } from '@isdd/metais-common/api/ge
 import { ApiError } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ListIcon } from '@isdd/metais-common/assets/images'
 import { BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { ActionsOverTable, CreateEntityButton, isRowSelected } from '@isdd/metais-common/index'
+import { ActionsOverTable, BASE_PAGE_NUMBER, CreateEntityButton, isRowSelected } from '@isdd/metais-common/index'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React, { SetStateAction, useCallback, useEffect, useState } from 'react'
+import React, { SetStateAction, useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string, lazy, ObjectSchema } from 'yup'
 import { TFunction } from 'i18next'
-import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
+import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 
 import styles from './codelistsTable.module.scss'
 
 import { CodelistsCreateForm } from '@/components/codelists/codelistsCreateForm/CodelistsCreateForm'
-import { CodeListsMutations } from '@/components/containers/Codelist/CodelistContainer'
+import { CodeListsMutations, CodelistFilter } from '@/components/containers/Codelist/CodelistContainer'
 
 export interface CodelistsRefs {
     codeRefInput: React.MutableRefObject<HTMLInputElement[]>
@@ -45,8 +45,14 @@ interface ICodelistsTable {
     isError: boolean
     sort: ColumnSort[]
     setSort: React.Dispatch<SetStateAction<ColumnSort[]>>
+    handleFilterChange: (changedFilter: IFilter) => void
+    filter: CodelistFilter
 }
-
+const defaultPagination: Pagination = {
+    pageNumber: BASE_PAGE_NUMBER,
+    pageSize: BASE_PAGE_SIZE,
+    dataLength: 0,
+}
 export interface IErrorsState {
     id: number
     code?: string
@@ -88,7 +94,16 @@ const getCodelistSchema = (t: TFunction) => {
     })
 }
 
-export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutations, isLoading, isError, sort, setSort }) => {
+export const CodelistsTable: React.FC<ICodelistsTable> = ({
+    filteredData,
+    mutations,
+    isLoading,
+    isError,
+    sort,
+    setSort,
+    handleFilterChange,
+    filter,
+}) => {
     const { t } = useTranslation()
     const { createEnum, validateEnum, updateEnum, deleteEnum } = mutations
     const location = useLocation()
@@ -118,9 +133,6 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         defaultValues: { defaultData },
     })
 
-    const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
-    const [currentPage, setCurrentPage] = useState(1)
-
     const [selectedRows, setSelectedRows] = useState<Array<number>>([])
     const [updatingEnum, setUpdatingEnum] = useState(false)
 
@@ -133,17 +145,26 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
     const handleValidate = (enumCode: string) => {
         validateEnum.mutate({ code: enumCode })
     }
-    const handlePageChange = (filter: IFilter) => {
-        setCurrentPage(filter?.pageNumber ?? 0)
+
+    const myHandleFilterChange = (myFilter: IFilter) => {
+        const newFilter = {
+            ...myFilter,
+            pageNumber:
+                (myFilter.pageNumber ?? defaultPagination.pageNumber) * (myFilter.pageSize ?? defaultPagination.pageSize) + 1 >
+                (filteredData?.results?.length ?? 0)
+                    ? defaultPagination.pageNumber
+                    : myFilter.pageNumber,
+        }
+        handleFilterChange(newFilter)
     }
 
-    const handlePerPageChange = (filter: IFilter | undefined) => {
-        if (currentPage * pageSize > (filteredData?.results?.length ?? 0)) {
-            setCurrentPage(1)
-        }
-        const newPageSize = Number(filter?.pageSize)
-        setPageSize(newPageSize)
-    }
+    const filteredTableData = useMemo(() => {
+        const pageNumber = filter.pageNumber ?? 0
+        const pageSize = filter.pageSize ?? 0
+        const startOfList = pageNumber * pageSize - pageSize
+        const endOfList = pageNumber * pageSize
+        return filteredData?.results?.slice(startOfList, endOfList) || []
+    }, [filteredData?.results, filter.pageNumber, filter.pageSize])
 
     const editRow = useCallback(
         (enumId: number) => {
@@ -409,15 +430,19 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                 />
             </BaseModal>
             <ActionsOverTable
-                pagination={{ pageSize, pageNumber: currentPage, dataLength: filteredData?.results?.length ?? 0 }}
+                pagination={{
+                    pageNumber: filter.pageNumber ?? defaultPagination.pageNumber,
+                    pageSize: filter.pageSize ?? defaultPagination.pageSize,
+                    dataLength: filteredData?.results?.length ?? 0,
+                }}
                 createButton={<CreateEntityButton label={t('codelists.createNew')} onClick={() => setIsCreateModalOpen(true)} />}
-                handleFilterChange={handlePerPageChange}
+                handleFilterChange={myHandleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
                 entityName=""
             />
             <Table
-                data={filteredData?.results}
+                data={filteredTableData}
                 columns={columns}
                 isLoading={isLoading || updatingEnum}
                 error={isError}
@@ -425,13 +450,12 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                 manualSorting={false}
                 sort={sort}
                 onSortingChange={setSort}
-                pagination={{ pageIndex: currentPage - 1, pageSize: pageSize }}
             />
             <PaginatorWrapper
-                pageSize={pageSize}
-                pageNumber={currentPage}
+                pageSize={filter.pageSize ?? defaultPagination.pageSize}
+                pageNumber={filter.pageNumber ?? defaultPagination.pageNumber}
                 dataLength={filteredData?.results?.length ?? 0}
-                handlePageChange={handlePageChange}
+                handlePageChange={(page) => handleFilterChange({ ...filter, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })}
             />
         </>
     )

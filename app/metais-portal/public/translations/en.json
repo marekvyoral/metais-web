@@ -870,7 +870,8 @@
         "repeatPassword": "Repeated password must be same ",
         "phone": "Phone",
         "name": "Name",
-        "surname": "Surname"
+        "surname": "Surname",
+        "endTimeBeforeStartTime": "'{{endTime}}' can not occur before '{{startTime}}'"
     },
     "createEntity": {
         "required": "required",
@@ -1144,6 +1145,10 @@
         "editGroup": "Edit group",
         "addingMember": "Adding member",
         "removingMember": "Removing member",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
         "errors": {
             "groupNameRequired": "Group name is required",
             "groupShortNameRequired": "Abbreviation of group is required",
@@ -1814,6 +1819,7 @@
     "userProfile": {
         "heading": "Profile and rights",
         "changeInformationsButton": "Edit information",
+        "noRights": "User have no representative entities and roles assigned.",
         "information": {
             "header": "My information",
             "name": "Name",
@@ -2286,6 +2292,7 @@
             "downloadingFile": "Downloading File",
             "submitVote": "Submit",
             "editVote": "Edit vote",
+            "editVoteTooltip": "You cannot update a vote that has already been completed, vetoed or is in progress.",
             "newVote": "New vote",
             "cancelVote": "Cancel vote",
             "cancel": "Cancel",
@@ -3063,5 +3070,11 @@
     },
     "refIden": {
         "hint": "If the referenceable identifier you want is not in the list, you can enter its value directly in the field. You will then see the option 'Create:' together with the value you entered."
+    },
+    "bulkList": {
+        "toCiSet": "Item has relations to:",
+        "fromCiSet": "Relations from item:",
+        "title": "List of items with relations",
+        "errorRels": "Error occured while loading item relations"
     }
 }
