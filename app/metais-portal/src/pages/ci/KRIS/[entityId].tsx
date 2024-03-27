@@ -24,6 +24,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { KrisRelatedContainer } from '@/components/containers/KrisRelatedContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { KrisEntityIdHeader } from '@/components/views/ci/kris/KrisEntityIdHeader'
+import { useCiCheckEntityTypeRedirectHook } from '@/hooks/useCiCheckEntityTypeRedirect.hook'
 
 export interface OutletContextProps {
     updateButton: boolean
@@ -82,6 +83,7 @@ const KrisEntityDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+    useCiCheckEntityTypeRedirectHook(ciItemData, ENTITY_KRIS)
 
     const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
     const { getTitle } = useCiDetailPageTitle(ciTypeData?.name ?? '', ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov], t)
