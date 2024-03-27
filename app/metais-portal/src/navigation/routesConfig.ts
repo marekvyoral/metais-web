@@ -146,6 +146,7 @@ import GroupItvsDetailPage from '@/pages/standardization/groupslist/itvs'
 import GroupEditItvsPage from '@/pages/standardization/groupslist/itvs/edit'
 import ReferenceRegisterDetail from '@/pages/ci/ReferenceRegister'
 import WebPortalInformation from '@/pages/ci/WeboveSidlo/[entityId]/information'
+import MiestoPrevadzkyEntityDetailPage from '@/pages/ci/MiestoPrevadzky'
 
 export interface RouteConfig {
     path?: string
@@ -602,6 +603,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.CI_REFERENCE_REGISTER,
                 slug: RouterRoutes.CI_REFERENCE_REGISTER,
                 component: ReferenceRegisterDetail,
+            },
+            {
+                path: RouterRoutes.CI_MIESTO_PREVADZKY,
+                slug: RouterRoutes.CI_MIESTO_PREVADZKY,
+                component: MiestoPrevadzkyEntityDetailPage,
             },
             {
                 path: RouterRoutes.REF_REGISTERS_DETAIL,

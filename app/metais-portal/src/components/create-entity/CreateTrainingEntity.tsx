@@ -176,7 +176,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
 
     return (
         <>
-            <MutationFeedback error={storeConfigurationItem.isError} errorMessage={t('createEntity.mutationError')} />
+            <MutationFeedback error={storeConfigurationItem.isError} />
 
             <QueryFeedback
                 loading={isRedirectLoading}

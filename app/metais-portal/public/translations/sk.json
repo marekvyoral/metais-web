@@ -158,7 +158,7 @@
             "registers": "Referenčné registre",
             "codelists": "Číselníky",
             "refIdentifiers": "Referencovateľné identifikátory",
-            "refIdentifierList": "Zoznam žiadostí",
+            "refIdentifierList": "Zoznam žiadostí URI",
             "publicCodelists": "Publikované číselníky",
             "centralModel": "Centrálny dátový model",
             "licenses": "Licencie",
@@ -1170,7 +1170,7 @@
             "validSelectedList": "Niektoré z Vami vybraných položiek sú platné, nie je možné nad nimi vykonať vybranú operáciu.",
             "invalidItem": "Položka je zneplatnená, nie je možné nad ňou vykonať vybranú operáciu.",
             "validItem": "Položka je platná, nie je možné nad ňou vykonať vybranú operáciu.",
-            "notFoundPO": "Nastala chyba pri získavaní informácií o právach - pre dané položke nebola nájdená povinná osoba.",
+            "notFoundPO": "Nastala chyba pri získavaní informácií o právach - pre dané položke nebol nájdený žiadny orgán riadenia.",
             "notToClone": "Z tejto položky nie je možné vytvoriť inštanciu keďže táto položka je inštanciou a nie je možné vytvárať inštancie z inštancií."
         },
         "iconAltText": "Popis položky {{text}}"
@@ -2526,7 +2526,7 @@
         "Error": "Pred používaním Centrálneho metainformačného systému verejnej správy musíte súhlasiť s podmienkami",
         "Detail": {
             "Title": "Podmienky používania Centrálneho metainformačného systému verejnej správy",
-            "TitleText": "Ďakujeme Vám za používanie produktov a služieb Centrálneho metainformačného systému verejnej správy („Služby MetaIS”), ktorý sa skladá z webového portálu na adrese metais.mirri.gov.sk, nástroja na modelovanie architektúry a pluginu na synchronizáciu údajov medzi samotným nástrojom a portálom. Webový portál predstavuje používateľské rozhranie k systému a spôsob zadávania a prezentácie údajov. Je hlavným kanálom používateľa. Nástroj BizzDesign Enterprise Studio (ďalej aj ako „BES“) je komponentom MetaIS, ktorý slúži na zadávanie údajov o architektúre v grafickej forme. Tieto údaje sú synchronizované s webovým portálom, kde môžu byť následne používateľom doplnené. Synchronizáciu zabezpečuje tzv. plugin na synchronizáciu (ďalej aj ako „plugin“). Plugin umožňuje jednoduché hromadné zmeny prostredníctvom nástroja BES a je teda na poverenom zamestnancovi povinnej osoby (ďalej aj ako “používateľ”), aby plugin používal výhradne v súlade s manuálom a inštrukciami, keďže nesprávnym používaním je možné sposobiť nekonzistenciu a chyby, ktoré je následne časovo náročné odstrániť. Poverený zamestnanec povinnej osoby je zodpovedný za konzistenciu, úplnosť a presnosť informácií predkladaných do MetaIS za orgán riadenia a jej podriadené organizácie. Použitím služieb MetaIS vyjadrujete svoj súhlas s týmito zmluvnými podmienkami.",
+            "TitleText": "Ďakujeme Vám za používanie produktov a služieb Centrálneho metainformačného systému verejnej správy („Služby MetaIS”), ktorý sa skladá z webového portálu na adrese metais.mirri.gov.sk, nástroja na modelovanie architektúry a pluginu na synchronizáciu údajov medzi samotným nástrojom a portálom. Webový portál predstavuje používateľské rozhranie k systému a spôsob zadávania a prezentácie údajov. Je hlavným kanálom používateľa. Nástroj BizzDesign Enterprise Studio (ďalej aj ako „BES“) je komponentom MetaIS, ktorý slúži na zadávanie údajov o architektúre v grafickej forme. Tieto údaje sú synchronizované s webovým portálom, kde môžu byť následne používateľom doplnené. Synchronizáciu zabezpečuje tzv. plugin na synchronizáciu (ďalej aj ako „plugin“). Plugin umožňuje jednoduché hromadné zmeny prostredníctvom nástroja BES a je teda na poverenom zamestnancovi orgánu riadenia (ďalej aj ako “používateľ”), aby plugin používal výhradne v súlade s manuálom a inštrukciami, keďže nesprávnym používaním je možné sposobiť nekonzistenciu a chyby, ktoré je následne časovo náročné odstrániť. Poverený zamestnanec orgánu riadenia je zodpovedný za konzistenciu, úplnosť a presnosť informácií predkladaných do MetaIS za orgán riadenia a jej podriadené organizácie. Použitím služieb MetaIS vyjadrujete svoj súhlas s týmito zmluvnými podmienkami.",
             "Usage": "Používanie služieb",
             "UsageText": "Služby MetaIS nesmiete zneužívať. Môžeme Vám pozastaviť alebo zastaviť poskytovanie našich Služieb, ak porušíte naše zmluvné podmienky alebo pravidlá, alebo keď budeme prešetrovať podozrenie z nevhodného používania.Veríme, že transparentná komunikácia, aká je bežná pri otvorených softvérových projektoch, je dobrou cestou vpred a že otvorenosť vytvára príležitosti: publikované dáta a publikovaný obsah sa môžu využiť novým a nečakaným spôsobom. Preto aj materiály, z ktorých niektoré sú určené pre konkrétne orgány štátnej správy, dávame k dispozícii online, všetkým. Na údaje získané používaním služieb MetaIS sa vzťahuje licencia / vyhlásenie o zrieknutí sa práv Creative Commons Zero, ak nie je uvedené inak, nakoľko sa jedná o otvorené údaje.",
             "Range": "Rozsah a obmedzenia",
@@ -2547,7 +2547,7 @@
                 "Surname": "priezvisko,",
                 "Email": "pracovná e-mailová adresa",
                 "Phone": "pracovné telefónne číslo,",
-                "PO": "povinná osoba (zamestnávateľ)"
+                "PO": "orgán riadenia (zamestnávateľ)"
             }
         },
         "Confirm": "Potvrdiť"
@@ -2624,7 +2624,7 @@
         },
         "personalDataProtection": {
             "heading1": "Ochrana osobných údajov",
-            "description1": "Ministerstvo investícií, regionálneho rozvoja a informatizácie SR (ďalej len “ministerstvo”) pre zabezpečenie komunikácie s povinnými osobami využíva Centrálny metainformačný systém verejnej správy SR. Centrálny metainformačný systém verejnej správy SR je najmä evidenčným portálom, ktorý obsahuje údaje a správu životného cyklu údajov o službách, informačných systémoch, číselníkoch, referenčných registroch a referencovateľných identifikátoroch, ako aj ďalších komponentoch eGovernmentu na Slovensku. Účelom systému je správnosť, kompletnosť a dostupnosť aktuálnych informácií. <br /> <br /> Ministerstvo je správcom Centrálneho metainformačného systému verejnej správy SR (ďalej len „MetaIS“). Ministerstvo spracúva informácie len v rozsahu nevyhnutnom na naplnenie účelu vzťahujúceho sa k činnostiam ministerstva ako orgánu verejnej moci, ktoré sú určené v § 81 Zákona č. 18/2018 Z. z. o ochrane osobných údajov a o zmene a doplnení niektorých zákonov (ďalej len „zákon o ochrane osobných údajov“) a podľa Nariadenia Európskeho Parlamentu a Rady (EÚ) 2016/679 z 27. apríla 2016 o ochrane fyzických osôb pri spracúvaní osobných údajov a o voľnom pohybe takýchto údajov, ktorým sa zrušuje smernica 95/46/ES (ďalej len „GDPR“).",
+            "description1": "Ministerstvo investícií, regionálneho rozvoja a informatizácie SR (ďalej len “ministerstvo”) pre zabezpečenie komunikácie s orgánmi riadenia využíva Centrálny metainformačný systém verejnej správy SR. Centrálny metainformačný systém verejnej správy SR je najmä evidenčným portálom, ktorý obsahuje údaje a správu životného cyklu údajov o službách, informačných systémoch, číselníkoch, referenčných registroch a referencovateľných identifikátoroch, ako aj ďalších komponentoch eGovernmentu na Slovensku. Účelom systému je správnosť, kompletnosť a dostupnosť aktuálnych informácií. <br /> <br /> Ministerstvo je správcom Centrálneho metainformačného systému verejnej správy SR (ďalej len „MetaIS“). Ministerstvo spracúva informácie len v rozsahu nevyhnutnom na naplnenie účelu vzťahujúceho sa k činnostiam ministerstva ako orgánu verejnej moci, ktoré sú určené v § 81 Zákona č. 18/2018 Z. z. o ochrane osobných údajov a o zmene a doplnení niektorých zákonov (ďalej len „zákon o ochrane osobných údajov“) a podľa Nariadenia Európskeho Parlamentu a Rady (EÚ) 2016/679 z 27. apríla 2016 o ochrane fyzických osôb pri spracúvaní osobných údajov a o voľnom pohybe takýchto údajov, ktorým sa zrušuje smernica 95/46/ES (ďalej len „GDPR“).",
             "heading2": "Kto je zodpovedný za spracúvanie Vašich osobných údajov na tomto webovom sídle?",
             "description2": "Ministerstvo investícií, regionálneho rozvoja a informatizácie Slovenskej republiky <br /> Pribinova 25 <br /> 811 09 Bratislava <br /> <a href=\"mailto:metais@mirri.gov.sk\"> metais@mirri.gov.sk</a> <br /> <a href=\"mailto:zodpovedna.osoba@mirri.gov.sk.\"> zodpovedna.osoba@mirri.gov.sk",
             "heading3": "Kontaktné údaje zodpovednej osoby",

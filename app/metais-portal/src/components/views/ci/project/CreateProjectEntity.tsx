@@ -165,7 +165,7 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
     return (
         <>
             <div ref={wrapperRef}>
-                <MutationFeedback error={storeConfigurationItem.isError} errorMessage={t('createEntity.mutationError')} />
+                <MutationFeedback error={storeConfigurationItem.isError} />
             </div>
             <QueryFeedback
                 loading={isRedirectLoading}
