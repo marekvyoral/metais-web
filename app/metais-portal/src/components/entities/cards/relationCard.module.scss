@@ -1,4 +1,6 @@
+@use "sass:math";
 @import '../../../utils.scss';
+
 
 .itemText {
     font-size: 16px;
@@ -45,6 +47,7 @@
 
 .heading {
     margin-bottom: govuk-spacing(4);
+
     @include mq($until: tablet) {
         gap: govuk-spacing(4);
     }
@@ -64,5 +67,5 @@
 }
 
 .multiRelationsMargin {
-    margin-left: (100/3)*1%;
+    margin-left: math.percentage(math.div(1, 3))
 }
