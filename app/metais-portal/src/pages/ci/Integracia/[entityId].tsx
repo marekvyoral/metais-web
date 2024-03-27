@@ -12,6 +12,7 @@ import { getIntegrationLinkTabList, useGetEntityParamsFromUrl } from '@/componen
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { IntegrationPermissionsWrapper } from '@/components/permissions/IntegrationPermissionsWrapper'
 import { IntegrationLinkDetail } from '@/components/views/prov-integration/IntegrationLinkDetail'
+import { useCiCheckEntityTypeRedirectHook } from '@/hooks/useCiCheckEntityTypeRedirect.hook'
 
 export const IntegrationLinkDetailPage: React.FC = () => {
     const { t, i18n } = useTranslation()
@@ -30,6 +31,8 @@ export const IntegrationLinkDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+    useCiCheckEntityTypeRedirectHook(ciItemData, entityName)
+
     document.title = `${t('titles.ciDetail', {
         ci: ciTypeName,
         itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
