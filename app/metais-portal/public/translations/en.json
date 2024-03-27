@@ -1145,6 +1145,10 @@
         "editGroup": "Edit group",
         "addingMember": "Adding member",
         "removingMember": "Removing member",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
         "errors": {
             "groupNameRequired": "Group name is required",
             "groupShortNameRequired": "Abbreviation of group is required",
@@ -2288,6 +2292,7 @@
             "downloadingFile": "Downloading File",
             "submitVote": "Submit",
             "editVote": "Edit vote",
+            "editVoteTooltip": "You cannot update a vote that has already been completed, vetoed or is in progress.",
             "newVote": "New vote",
             "cancelVote": "Cancel vote",
             "cancel": "Cancel",

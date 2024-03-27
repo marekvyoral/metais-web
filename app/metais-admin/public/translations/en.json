@@ -172,7 +172,8 @@
         },
         "submit": "Submit form",
         "back": "Back",
-        "waitSending": "Sending"
+        "waitSending": "Sending",
+        "cancel": "Cancel"
     },
     "languageSelector": {
         "open": "Open language menu",

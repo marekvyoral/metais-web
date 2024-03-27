@@ -1150,6 +1150,10 @@
         "editGroup": "Zmena skupiny",
         "addingMember": "Pridávam nového člena.",
         "removingMember": "Odstraňujem člena",
+        "edit": "Upraviť",
+        "delete": "Zmazať",
+        "save": "Uložiť",
+        "cancel": "Zrušiť",
         "errors": {
             "groupNameRequired": "Názov skupiny je povinný údaj.",
             "groupShortNameRequired": "Skratka skupiny je povinný údaj.",
@@ -2296,6 +2300,7 @@
             "downloadingFile": "Stahujem súbor",
             "submitVote": "Hlasovať",
             "editVote": "Upraviť hlasovanie",
+            "editVoteTooltip": "Nemôžete opraviť hlasovanie, ktoré už bolo ukončené, vetované, alebo ktoré práve prebieha.",
             "newVote": "Pridať nové hlasovanie",
             "cancelVote": "Zrušiť hlasovanie",
             "cancel": "Zrušiť",

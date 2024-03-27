@@ -73,3 +73,17 @@
         margin-left: govuk-spacing(2);
     }
 }
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: govuk-spacing(4);
+}
+
+.redText {
+    color: govuk-colour('red') !important;
+}
+
+.marginBottom0 {
+    margin-bottom: 0 !important;
+}
