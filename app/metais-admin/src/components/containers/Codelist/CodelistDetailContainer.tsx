@@ -1,5 +1,6 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import {
+    EnumItem,
     EnumType,
     useDeleteEnumItem,
     useGetEnum,
@@ -10,8 +11,7 @@ import {
 import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters, UseMutationResult } from '@tanstack/react-query'
-import React, { useMemo } from 'react'
-import sift from 'sift'
+import React, { useCallback, useMemo } from 'react'
 
 export enum CodelistDetailFilterInputs {
     CODE = 'CODE',
@@ -93,60 +93,48 @@ export const CodelistDetailContainer: React.FC<ICodelistDetailContainer> = ({ Vi
 
     const { filter } = useFilterParams(defaults)
 
-    const detailFilter = sift({
-        code: function (value: string) {
-            return (
-                latiniseString(value).includes(
-                    filter[CodelistDetailFilterInputs.CODE] ? latiniseString(filter[CodelistDetailFilterInputs.CODE]) : '',
-                ) &&
-                latiniseString(value).includes(
-                    filter[FilterPropertiesEnum.FULLTEXT_SEARCH] ? latiniseString(filter[FilterPropertiesEnum.FULLTEXT_SEARCH]) : '',
-                )
-            )
-        },
-        value: function (value: string) {
-            return (
-                latiniseString(value).includes(
-                    filter[CodelistDetailFilterInputs.VALUE] ? latiniseString(filter[CodelistDetailFilterInputs.VALUE]) : '',
-                ) &&
-                latiniseString(value).includes(
-                    filter[FilterPropertiesEnum.FULLTEXT_SEARCH] ? latiniseString(filter[FilterPropertiesEnum.FULLTEXT_SEARCH]) : '',
-                )
-            )
-        },
-        engValue: function (value: string) {
-            return (
-                latiniseString(value).includes(
-                    filter[CodelistDetailFilterInputs.ENG_VALUE] ? latiniseString(filter[CodelistDetailFilterInputs.ENG_VALUE]) : '',
-                ) &&
-                latiniseString(value).includes(
-                    filter[FilterPropertiesEnum.FULLTEXT_SEARCH] ? latiniseString(filter[FilterPropertiesEnum.FULLTEXT_SEARCH]) : '',
-                )
-            )
-        },
-        description: function (value: string) {
-            return (
-                latiniseString(value).includes(
-                    filter[CodelistDetailFilterInputs.DESCRIPTION] ? latiniseString(filter[CodelistDetailFilterInputs.DESCRIPTION]) : '',
-                ) &&
-                latiniseString(value).includes(
-                    filter[FilterPropertiesEnum.FULLTEXT_SEARCH] ? latiniseString(filter[FilterPropertiesEnum.FULLTEXT_SEARCH]) : '',
-                )
-            )
-        },
-        engDescription: function (value: string) {
-            return (
-                latiniseString(value).includes(
-                    filter[CodelistDetailFilterInputs.ENG_DESCRIPTION] ? latiniseString(filter[CodelistDetailFilterInputs.ENG_DESCRIPTION]) : '',
-                ) &&
-                latiniseString(value).includes(
-                    filter[FilterPropertiesEnum.FULLTEXT_SEARCH] ? latiniseString(filter[FilterPropertiesEnum.FULLTEXT_SEARCH]) : '',
-                )
-            )
-        },
-    })
+    const filterFunction = useCallback(
+        (item: EnumItem) => {
+            const itemCode = latiniseString(item.code || '')
+            const itemDescription = latiniseString(item.description || '')
+            const itemEngDescription = latiniseString(item.engDescription || '')
+            const itemEngValue = latiniseString(item.engValue || '')
+            const itemValue = latiniseString(item.value || '')
 
-    const filteredSiftData = useMemo(() => codelistDetailData?.enumItems?.filter(detailFilter), [codelistDetailData?.enumItems, detailFilter])
+            const filterCode = latiniseString(filter[CodelistDetailFilterInputs.CODE] || '')
+            const filterValue = latiniseString(filter[CodelistDetailFilterInputs.VALUE] || '')
+            const filterEngValue = latiniseString(filter[CodelistDetailFilterInputs.ENG_VALUE] || '')
+            const filterDescription = latiniseString(filter[CodelistDetailFilterInputs.DESCRIPTION] || '')
+            const filterEngDescription = latiniseString(filter[CodelistDetailFilterInputs.ENG_DESCRIPTION] || '')
+            const filterSearch = latiniseString(filter[FilterPropertiesEnum.FULLTEXT_SEARCH] || '')
+
+            let matchCode = true,
+                matchValue = true,
+                matchEngValue = true,
+                matchDescription = true,
+                matchEngDescription = true,
+                matchSearch = true
+
+            if (filterCode) matchCode = itemCode.includes(filterCode)
+            if (filterValue) matchValue = itemValue.includes(filterValue)
+            if (filterEngValue) matchEngValue = itemEngValue.includes(filterEngValue)
+            if (filterDescription) matchDescription = itemDescription.includes(filterDescription)
+            if (filterEngDescription) matchEngDescription = itemEngDescription.includes(filterEngDescription)
+            if (filterSearch) {
+                matchSearch =
+                    itemCode.includes(filterSearch) ||
+                    itemValue.includes(filterSearch) ||
+                    itemEngValue.includes(filterSearch) ||
+                    itemDescription.includes(filterSearch) ||
+                    itemEngDescription.includes(filterSearch)
+            }
+
+            return matchCode && matchValue && matchEngValue && matchDescription && matchEngDescription && matchSearch
+        },
+        [filter],
+    )
+
+    const filteredData = useMemo(() => codelistDetailData?.enumItems?.filter(filterFunction), [codelistDetailData?.enumItems, filterFunction])
 
     const updateEnumItem = useUpdateEnumItem({
         mutation: {
@@ -182,7 +170,7 @@ export const CodelistDetailContainer: React.FC<ICodelistDetailContainer> = ({ Vi
 
     return (
         <View
-            filteredData={{ enumItems: filteredSiftData }}
+            filteredData={{ enumItems: filteredData }}
             mutations={{ updateEnumItem, deleteEnumItem, createEnumItem, validateEnumItem }}
             isLoading={isLoading}
             isError={isError}
