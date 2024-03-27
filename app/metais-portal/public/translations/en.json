@@ -160,7 +160,7 @@
             "registers": "Reference registers",
             "codelists": "Codelists",
             "refIdentifiers": "Reference identifiers",
-            "refIdentifierList": "List of request",
+            "refIdentifierList": "List of URI requests",
             "publicCodelists": "Public codelists",
             "centralModel": "Central data model",
             "licenses": "Licenses",
