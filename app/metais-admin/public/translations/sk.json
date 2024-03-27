@@ -205,7 +205,8 @@
         },
         "submit": "Odoslať formulár",
         "back": "Späť",
-        "waitSending": "Odosielanie"
+        "waitSending": "Odosielanie",
+        "cancel": "Zrušiť"
     },
     "languageSelector": {
         "open": "Rozbaliť jazykové menu",
