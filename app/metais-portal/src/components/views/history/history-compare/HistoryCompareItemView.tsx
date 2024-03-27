@@ -2,11 +2,13 @@ import React from 'react'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { InfoIconWithText } from '@isdd/idsk-ui-kit/typography/InfoIconWithText'
 import classNames from 'classnames'
-import { diff_match_patch } from 'diff-match-patch'
+import diff_match_patch from 'diff-match-patch'
 import sanitizeHtml from 'sanitize-html'
 import { DefinitionListItem } from '@isdd/metais-common/components/definition-list/DefinitionListItem'
 
 import styles from './historyCompare.module.scss'
+
+import { customPrettyDiff } from '@/componentHelpers/ci/historyCompare'
 
 interface IHistoryCompareItemViewProps {
     label: string
@@ -71,14 +73,14 @@ export const HistoryCompareItemView: React.FC<IHistoryCompareItemViewProps> = ({
 
         const diff = dmp.diff_main(resultFirst, resultSec)
         dmp.diff_cleanupSemantic(diff)
-        const html = dmp.diff_prettyHtml(diff)
+        const html = customPrettyDiff(diff, dmp)
 
         return sanitizeHtml(
             html
                 .replaceAll('style="background:#e6ffe6;"', `class='${styles.diffIns}'`)
                 .replaceAll('style="background:#ffe6e6;', `class='${styles.diffDel}'`),
             {
-                allowedTags: ['ins', 'del'],
+                allowedTags: ['ins', 'del', 'br'],
                 allowedAttributes: {
                     ins: ['class'],
                     del: ['class'],
@@ -103,11 +105,15 @@ export const HistoryCompareItemView: React.FC<IHistoryCompareItemViewProps> = ({
                     </TextBody>
                 )
             }
-            value={<span className={classNames(styles.textRow, 'govuk-body-s')}>{valueFirst} &nbsp;</span>}
+            value={<span className={classNames(styles.textRow, styles.break, 'govuk-body-s')}>{valueFirst} &nbsp;</span>}
             secColValue={
                 !isSimple && (
                     <span className={classNames(styles.textRow, 'govuk-body-s')}>
-                        {withoutCompare ? valueSec : <span dangerouslySetInnerHTML={{ __html: makeDiffHtml() }} />}
+                        {withoutCompare ? (
+                            <span className={styles.break}>{valueSec}</span>
+                        ) : (
+                            <span dangerouslySetInnerHTML={{ __html: makeDiffHtml() }} />
+                        )}
                     </span>
                 )
             }
