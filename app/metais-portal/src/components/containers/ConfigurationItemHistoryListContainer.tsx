@@ -8,7 +8,7 @@ import {
 import { mapFilterToHistoryVersionsApi } from '@isdd/metais-common/componentHelpers'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import React from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 
 import { mapConfigurationItemHistoryListToPagination } from '@/componentHelpers/pagination'
 
@@ -20,6 +20,8 @@ export interface IView {
     isError: boolean
     filterActions?: string[]
     filterModifiedBy?: string[]
+    selectedColumns: string[]
+    setSelectedColumns: Dispatch<SetStateAction<string[]>>
 }
 
 export interface HistoryFilter extends IFilter {
@@ -57,6 +59,7 @@ export const ConfigurationItemHistoryListContainer: React.FC<IDocumentsListConta
     const { data: filterModifiedBy, isLoading: isModifiedByLoading } = useReadCiHistoryModifiedByList(configurationItemId)
 
     const pagination = mapConfigurationItemHistoryListToPagination(filter, historyList)
+    const [selectedColumns, setSelectedColumns] = useState<string[]>([])
 
     return (
         <View
@@ -67,6 +70,8 @@ export const ConfigurationItemHistoryListContainer: React.FC<IDocumentsListConta
             handleFilterChange={handleFilterChange}
             isLoading={isLoading || isFetching || isActionsLoading || isModifiedByLoading}
             isError={isError}
+            selectedColumns={selectedColumns}
+            setSelectedColumns={setSelectedColumns}
         />
     )
 }
