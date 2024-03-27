@@ -74,7 +74,7 @@ export const CreateKrisEntity: React.FC<ICreateEntity> = ({
 
     return (
         <>
-            <MutationFeedback error={storeConfigurationItem.isError} errorMessage={t('createEntity.mutationError')} />
+            <MutationFeedback error={storeConfigurationItem.isError} />
 
             <QueryFeedback
                 loading={isRedirectLoading}
