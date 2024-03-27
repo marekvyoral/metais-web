@@ -26,6 +26,7 @@ import { RelationsListContainer } from '@/components/containers/RelationsListCon
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { ProjectEntityIdHeader } from '@/components/views/ci/project/ProjectEntityIdHeader'
 import { ProjectStateView } from '@/components/views/ci/project/ProjectStateView'
+import { useCiCheckEntityTypeRedirectHook } from '@/hooks/useCiCheckEntityTypeRedirect.hook'
 
 const ProjectEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -61,6 +62,7 @@ const ProjectEntityDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+    useCiCheckEntityTypeRedirectHook(ciItemData, ENTITY_PROJECT)
 
     const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
     const { getTitle } = useCiDetailPageTitle(ciTypeData?.name ?? '', ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov], t)

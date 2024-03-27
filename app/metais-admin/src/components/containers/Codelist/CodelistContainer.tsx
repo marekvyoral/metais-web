@@ -1,6 +1,7 @@
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 import {
     EnumType,
+    EnumTypePreview,
     EnumTypePreviewList,
     useDeleteEnumType,
     useInsertEnumType,
@@ -8,10 +9,10 @@ import {
     useUpdateEnumType,
     useValidEnumType,
 } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { UseMutationResult, useQueryClient } from '@tanstack/react-query'
 import React, { SetStateAction, useState } from 'react'
-import sift from 'sift'
 
 export enum CodelistFilterInputs {
     NAME = 'NAME',
@@ -94,40 +95,33 @@ export const CodelistContainer: React.FC<ICodelistContainer> = ({ View, defaults
 
     const { filter } = useFilterParams(defaults)
     const [sort, setSort] = useState<ColumnSort[]>([])
-    const testFilter = sift({
-        code: function (value: string) {
-            return (
-                value
-                    .toLocaleLowerCase()
-                    .includes(filter[CodelistFilterInputs.VALUE] ? filter[CodelistFilterInputs.VALUE].toLocaleLowerCase() : '') &&
-                value
-                    .toLocaleLowerCase()
-                    .includes(filter[FilterPropertiesEnum.FULLTEXT_SEARCH] ? filter[FilterPropertiesEnum.FULLTEXT_SEARCH].toLocaleLowerCase() : '')
-            )
-        },
-        name: function (value: string) {
-            return (
-                value.toLocaleLowerCase().includes(filter[CodelistFilterInputs.NAME] ? filter[CodelistFilterInputs.NAME].toLocaleLowerCase() : '') &&
-                value
-                    .toLocaleLowerCase()
-                    .includes(filter[FilterPropertiesEnum.FULLTEXT_SEARCH] ? filter[FilterPropertiesEnum.FULLTEXT_SEARCH].toLocaleLowerCase() : '')
-            )
-        },
-        description: function (value: string) {
-            return (
-                value
-                    .toLocaleLowerCase()
-                    .includes(
-                        filter[CodelistFilterInputs.VALUE_DESCRIPTION] ? filter[CodelistFilterInputs.VALUE_DESCRIPTION].toLocaleLowerCase() : '',
-                    ) &&
-                value
-                    .toLocaleLowerCase()
-                    .includes(filter[FilterPropertiesEnum.FULLTEXT_SEARCH] ? filter[FilterPropertiesEnum.FULLTEXT_SEARCH].toLocaleLowerCase() : '')
-            )
-        },
-    })
 
-    const filteredSiftData = codelistData?.results?.filter(testFilter)
+    const filterFunction = (item: EnumTypePreview) => {
+        const itemCode = latiniseString(item.code || '')
+        const itemName = latiniseString(item.name || '')
+        const itemDescription = latiniseString(item.description || '')
+
+        const filterValue = latiniseString(filter[CodelistFilterInputs.VALUE] || '')
+        const filterName = latiniseString(filter[CodelistFilterInputs.NAME] || '')
+        const filterDescription = latiniseString(filter[CodelistFilterInputs.VALUE_DESCRIPTION] || '')
+        const filterSearch = latiniseString(filter[FilterPropertiesEnum.FULLTEXT_SEARCH] || '')
+
+        let matchValue = true,
+            matchName = true,
+            matchDescription = true,
+            matchSearch = true
+
+        if (filterValue) matchValue = itemCode.includes(filterValue)
+        if (filterName) matchName = itemName.includes(filterName)
+        if (filterDescription) matchDescription = itemDescription.includes(filterDescription)
+        if (filterSearch) {
+            matchSearch = itemCode.includes(filterSearch) || itemName.includes(filterSearch) || itemDescription.includes(filterSearch)
+        }
+
+        return matchValue && matchName && matchDescription && matchSearch
+    }
+
+    const filteredData = codelistData?.results?.filter(filterFunction)
 
     const updateEnum = useUpdateEnumType({
         mutation: {
@@ -185,7 +179,7 @@ export const CodelistContainer: React.FC<ICodelistContainer> = ({ View, defaults
 
     return (
         <View
-            filteredData={{ results: filteredSiftData }}
+            filteredData={{ results: filteredData }}
             mutations={{ updateEnum, deleteEnum, createEnum, validateEnum }}
             isLoading={isLoading || isFetching}
             isError={isError}

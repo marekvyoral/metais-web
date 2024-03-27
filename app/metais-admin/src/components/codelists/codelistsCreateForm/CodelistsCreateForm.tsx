@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { CheckBox, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { CheckBox, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ModalButtons, MutationFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -20,8 +20,6 @@ export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, clos
     const {
         register,
         handleSubmit,
-        setValue,
-        clearErrors,
         formState: { errors },
         setError,
     } = useForm({ resolver: yupResolver(codeListCreateSchema(t)) })
@@ -47,16 +45,6 @@ export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, clos
                 rows={3}
                 label={t('codelists.description')}
                 {...register(CodelistEnum.DESCRIPTION)}
-            />
-            <SimpleSelect
-                label={t('codelists.category')}
-                name={CodelistEnum.CATEGORY}
-                options={[
-                    { label: '-', value: '' },
-                    { label: 'LICENSE', value: 'LICENSE' },
-                ]}
-                setValue={setValue}
-                clearErrors={clearErrors}
             />
             <div className={styles.marginBottom}>
                 <CheckBox label={t('codelists.valid')} id="valid" {...register(CodelistEnum.VALIDITY)} />

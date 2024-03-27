@@ -262,7 +262,7 @@
         "maxValue": "Maximálna hodnota",
         "units": "Merná jednotka",
         "edit": "Upraviť",
-        "assigned": "Priradené povinné osoby",
+        "assigned": "Priradené orgány riadenia",
         "ciTypeSelect": "Vyberte typ entity",
         "detail": {
             "profileAttributesHeading": "Detail profilu atribútov",
@@ -603,8 +603,8 @@
         "noSpacesError": "Položka {{value}} nesmie obsahovať medzery.",
         "loginFormat": "Prihlasovacie meno môže obsahovať iba malé písmená, čísla a bodky.",
         "MustBeMaximum": "môže mať maximálne {{charsNumber}} znakov",
-        "poHint": "Povinná osoba bude používateľovi priradená len v prípade ak bude zvolená aspoň jedna rola. V prípade vymazania povinnej osoby budú používateľovi automaticky odstránene všetky role.",
-        "errorSelectPo": "Musíte si vybrať povinná osobu a aspoň jednu rolu."
+        "poHint": "Povinná osoba bude používateľovi priradená len v prípade ak bude zvolená aspoň jedna rola. V prípade vymazania orgánu riadenia budú používateľovi automaticky odstránene všetky role.",
+        "errorSelectPo": "Musíte si vybrať orgán riadenia a aspoň jednu rolu."
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
@@ -895,7 +895,7 @@
             "savingPO": "Ukladám orgán riadenia"
         },
         "assigned": {
-            "heading": "Priradenie povinnej osoby nadradenej povinnej osobe",
+            "heading": "Priradenie orgánu riadenia nadradenému orgánu riadenia",
             "save": "Uložiť",
             "isAssigned": "Orgán riadenia môže figurovať ako podriadený iba pre jeden nadriadený orgán riadenia.",
             "isCycleInHierarchy": "V hierarchii orgánovu riadenia nesmie vzniknúť cirkulárna referencia v rámci orgánu riadenia, teda orgán riadenia nesmie byť nadradeným a zároveň podradeným pre ten istý orgán riadenia.",
@@ -905,7 +905,7 @@
             "unsuccessFeedback": "Vzťahy sa nepodarilo aktualizovať"
         },
         "massUpdate": {
-            "title": "Hromadná aktualizácia povinných osôb",
+            "title": "Hromadná aktualizácia orgánov riadenia",
             "state": "Stav",
             "stateEnum": {
                 "NEW": "Vytvorená",
