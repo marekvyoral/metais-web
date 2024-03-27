@@ -870,7 +870,8 @@
         "repeatPassword": "Repeated password must be same ",
         "phone": "Phone",
         "name": "Name",
-        "surname": "Surname"
+        "surname": "Surname",
+        "endTimeBeforeStartTime": "'{{endTime}}' can not occur before '{{startTime}}'"
     },
     "createEntity": {
         "required": "required",
