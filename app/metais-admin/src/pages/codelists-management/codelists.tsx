@@ -1,5 +1,5 @@
 import { BreadCrumbs, Filter, HomeIcon, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
 
@@ -14,6 +14,9 @@ const Codelists = () => {
         [CodelistFilterInputs.NAME]: '',
         [CodelistFilterInputs.VALUE]: '',
         [CodelistFilterInputs.VALUE_DESCRIPTION]: '',
+        pageNumber: BASE_PAGE_NUMBER,
+        pageSize: BASE_PAGE_SIZE,
+        dataLength: 0,
     }
     return (
         <>
@@ -26,7 +29,7 @@ const Codelists = () => {
             />
             <CodelistContainer
                 defaults={defaultFilterValues}
-                View={({ filteredData, mutations, isError, isLoading, setSort, sort }) => {
+                View={({ filteredData, mutations, isError, isLoading, setSort, sort, handleFilterChange, filter }) => {
                     return (
                         <MainContentWrapper>
                             <QueryFeedback loading={isLoading} error={false} withChildren>
@@ -62,6 +65,8 @@ const Codelists = () => {
                                         isError={isError}
                                         setSort={setSort}
                                         sort={sort}
+                                        handleFilterChange={handleFilterChange}
+                                        filter={filter}
                                     />
                                 )}
                             </QueryFeedback>
