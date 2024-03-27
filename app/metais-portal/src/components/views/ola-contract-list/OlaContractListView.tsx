@@ -23,6 +23,7 @@ export const OlaContractListView: React.FC<IOlaContractListView> = ({
     sort,
     ownerGid,
     statesEnum,
+    refetch,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -31,8 +32,9 @@ export const OlaContractListView: React.FC<IOlaContractListView> = ({
     const { isActionSuccess } = useActionSuccess()
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
     useEffect(() => {
+        refetch()
         scrollToMutationFeedback()
-    }, [isActionSuccess, scrollToMutationFeedback])
+    }, [isActionSuccess, refetch, scrollToMutationFeedback])
 
     return (
         <>

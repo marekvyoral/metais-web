@@ -1,7 +1,8 @@
 import { ColumnSort, IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
-import { Role, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
+import { ApiError, Role, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
 import {
+    ApiOlaContractDataList,
     ApiSlaContractReadList,
     ListOlaContractListParams,
     ListSlaContractsParams,
@@ -14,6 +15,7 @@ import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { removeNullPropertiesFromRecord } from '@isdd/metais-common/utils/utils'
 import React, { useEffect, useState } from 'react'
 import { EnumItem, useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { getGId } from '@/components/views/ola-contract-list/helper'
@@ -27,6 +29,7 @@ export interface IOlaContractListView {
     sort: ColumnSort[]
     ownerGid?: string
     statesEnum?: EnumItem[]
+    refetch: <TPageData>(options?: RefetchOptions & RefetchQueryFilters<TPageData>) => Promise<QueryObserverResult<ApiOlaContractDataList, ApiError>>
 }
 
 interface IOlaContractListContainer {
@@ -71,7 +74,7 @@ export const OlaContractListContainer: React.FC<IOlaContractListContainer> = ({ 
     const {
         state: { user },
     } = useAuth()
-    const { data: slaContractsData, isError, isLoading, isFetching } = useListOlaContractList(removeNullPropertiesFromRecord(filterForApi))
+    const { data: slaContractsData, isError, isLoading, isFetching, refetch } = useListOlaContractList(removeNullPropertiesFromRecord(filterForApi))
     const { data: roleData } = useFindAll11({ name: SLA_SPRAVA })
     const {
         data: statesEnum,
@@ -86,6 +89,7 @@ export const OlaContractListContainer: React.FC<IOlaContractListContainer> = ({ 
     return (
         <MainContentWrapper>
             <View
+                refetch={refetch}
                 ownerGid={ownerGid}
                 data={slaContractsData}
                 isError={isError || isStatesError}
