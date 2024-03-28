@@ -17,6 +17,7 @@ export const useAttributesHook = (entityName?: string, onlyValidProfiles = true)
         entityStructure: ciTypeData,
         isEntityStructureLoading: isCiTypeDataFetching,
         isEntityStructureError: isCiTypeDataError,
+        onlyValidAttributes: true,
     })
 
     const attributeProfiles = ciTypeData?.attributeProfiles
