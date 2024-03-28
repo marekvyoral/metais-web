@@ -46,7 +46,6 @@ export const FileImport: React.FC<IFileImport> = ({
     const [selectedRole, setSelectedRole] = useState<GidRoleData | null>(null)
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
     const { getRequestStatus, isTooManyFetchesError, isError, isLoading } = useGetStatus()
-    console.log(isTooManyFetchesError, isError, isLoading)
     const {
         uppy,
         addGeneralErrorMessage,
