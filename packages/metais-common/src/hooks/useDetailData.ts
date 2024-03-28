@@ -10,12 +10,13 @@ interface IDetailData {
     entityStructure: CiType | undefined
     isEntityStructureLoading: boolean
     isEntityStructureError: boolean
+    onlyValidAttributes?: boolean
 }
 
-export const useDetailData = ({ entityStructure, isEntityStructureLoading, isEntityStructureError }: IDetailData) => {
+export const useDetailData = ({ entityStructure, isEntityStructureLoading, isEntityStructureError, onlyValidAttributes = false }: IDetailData) => {
     const constraintsAttributes = calculateConstraintFromAttributes(entityStructure?.attributes)
 
-    const constraintsAttributesProfiles = calculateConstraintFromAttributeProfiles(entityStructure?.attributeProfiles ?? [])
+    const constraintsAttributesProfiles = calculateConstraintFromAttributeProfiles(entityStructure?.attributeProfiles ?? [], onlyValidAttributes)
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
