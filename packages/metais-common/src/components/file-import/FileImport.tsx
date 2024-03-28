@@ -45,7 +45,7 @@ export const FileImport: React.FC<IFileImport> = ({
 
     const [selectedRole, setSelectedRole] = useState<GidRoleData | null>(null)
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
-    const { getRequestStatus } = useGetStatus()
+    const { getRequestStatus, isTooManyFetchesError, isError } = useGetStatus()
 
     const {
         uppy,
@@ -110,6 +110,7 @@ export const FileImport: React.FC<IFileImport> = ({
     return (
         <BaseModal isOpen={isOpen} close={handleCancelImport}>
             <FileImportView
+                isError={isTooManyFetchesError || isError}
                 uppy={uppy}
                 currentFiles={currentFiles}
                 handleImport={handleImport()}
