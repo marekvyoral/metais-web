@@ -66,6 +66,7 @@
     "aboutApp.version": "Version {{apiModul}}",
     "aboutApp.undefinedVersion": "Module version unavailable",
     "navbar.skip": "Skip to main content",
+    "navbar.admin": "Admin",
     "navbar.official": "Official Website",
     "navbar.publicAdministration": "Public Administration",
     "navbar.sk": "SK",
