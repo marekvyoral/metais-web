@@ -18,7 +18,7 @@ import { ImportButton } from '@isdd/metais-common/components/actions-over-table/
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { DynamicFilterAttributes, ExtendedAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_PROJECT, ENTITY_TRAINING, ROLES } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_PROJECT, ENTITY_TRAINING, ENTITY_ZC, ROLES } from '@isdd/metais-common/constants'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
@@ -39,6 +39,7 @@ import { useCiListPageHeading } from '@/componentHelpers/ci'
 
 interface IListWrapper extends ICiListContainerView<CIFilterData> {
     isNewRelationModal?: boolean
+    hideRowSelection?: boolean
 }
 
 export const ListWrapper: React.FC<IListWrapper> = ({
@@ -63,6 +64,8 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     isNewRelationModal,
     rowSelection,
     setRowSelection,
+    hiddenButtons,
+    hideRowSelection,
 }) => {
     const { t, i18n } = useTranslation()
 
@@ -91,6 +94,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     const queryClient = useQueryClient()
     const typeTraining = entityName === ENTITY_TRAINING
     const typeProject = entityName === ENTITY_PROJECT
+    const typeZC = entityName === ENTITY_ZC
     const isUserTrainer = user?.roles?.includes(ROLES.SKOLITEL)
     const isUserAdminEgov = user?.roles?.includes(ROLES.R_EGOV)
     const isUserAdmin = user?.roles?.includes(ROLES.R_ADMIN)
@@ -101,13 +105,14 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         setBulkActionResult(actionResult)
     }
     const showCreateEntityButton = useMemo(() => {
+        if (typeZC) return false
         if (typeTraining) {
             return isUserTrainer ? true : false
         }
         if (typeProject) {
             return isUserAdminEgov || isUserAdmin ? true : false
         } else return true
-    }, [isUserAdmin, isUserAdminEgov, isUserTrainer, typeProject, typeTraining])
+    }, [isUserAdmin, isUserAdminEgov, isUserTrainer, typeProject, typeTraining, typeZC])
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
@@ -181,6 +186,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     attributes={attributes ?? []}
                     columnListData={columnListData}
                     ciTypeData={ciTypeData}
+                    hiddenButtons={hiddenButtons}
                     createButton={
                         showCreateEntityButton && (
                             <CreateEntityButton
@@ -293,7 +299,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 handleFilterChange={handleFilterChange}
                 pagination={pagination}
                 sort={sort}
-                rowSelectionState={{ rowSelection, setRowSelection }}
+                rowSelectionState={hideRowSelection ? undefined : { rowSelection, setRowSelection }}
                 storeUserSelectedColumns={storeUserSelectedColumns}
                 isLoading={isLoading || isCiTypeConstraintsLoading}
                 isError={isError || isCiTypeConstraintsError}

@@ -19,6 +19,8 @@ export enum ActionNames {
     SELECT_COLUMNS = 'SELECT_COLUMNS',
     PAGING = 'PAGING',
     BULK_ACTIONS = 'BULK_ACTIONS',
+    IMPORT = 'IMPORT',
+    EXPORT = 'EXPORT',
 }
 
 export interface ISimpleTableSelectParams {
@@ -134,12 +136,12 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                     </Can>
                 )}
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>
-                    {importButton && (
+                    {!hiddenButtons?.IMPORT && importButton && (
                         <Can I={Actions.IMPORT} a={entityName} ability={ability}>
                             <>{importButton}</>
                         </Can>
                     )}
-                    {exportButton && <>{exportButton}</>}
+                    {!hiddenButtons?.EXPORT && exportButton && <>{exportButton}</>}
                 </div>
                 {createButton && (
                     <Can I={Actions.CREATE} a={entityName} ability={ability}>
