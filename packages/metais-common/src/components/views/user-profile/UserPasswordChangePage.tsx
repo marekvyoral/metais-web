@@ -12,7 +12,8 @@ import styles from './user-informations/userInformation.module.scss'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 import { useChangePassword1Hook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
-
+import { IconLabel } from '@isdd/metais-common/components/actions-over-table'
+import { EyeIcon, GreyEyeIcon } from '@isdd/metais-common/assets/images'
 interface FormData {
     oldPassword: string
     newPassword: string
@@ -49,6 +50,8 @@ export const UserPasswordChangePage = () => {
     const [error, setError] = useState<string>()
     const [isLoading, setIsLoading] = useState(false)
     const { t } = useTranslation()
+    const [showPass, setShowPass] = useState<Set<string>>(new Set())
+
     const changePassword = useChangePassword1Hook()
     const { register, formState, handleSubmit } = useForm<FormData>({
         resolver: yupResolver(yupSchema(t)),
@@ -66,6 +69,18 @@ export const UserPasswordChangePage = () => {
             .finally(() => setIsLoading(false))
     }
 
+    const changeVisibility = (field: string) => {
+        const updatedSet = new Set(showPass)
+
+        if (updatedSet.has(field)) {
+            updatedSet.delete(field)
+        } else {
+            updatedSet.add(field)
+        }
+
+        setShowPass(updatedSet)
+    }
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={classNames({ [styles.positionRelative]: isLoading })} noValidate>
             {isLoading && <LoadingIndicator />}
@@ -81,22 +96,39 @@ export const UserPasswordChangePage = () => {
                 required
                 label={t('userProfile.oldPassword')}
                 error={formState.errors.oldPassword?.message}
-                type="password"
+                type={showPass.has('oldPassword') ? 'text' : 'password'}
+                suffixElement={
+                    <div style={{ position: 'absolute', right: '10px', top: '6px' }} onClick={() => changeVisibility('oldPassword')}>
+                        <IconLabel key={showPass + ''} label="" icon={showPass.has('oldPassword') ? EyeIcon : GreyEyeIcon} />
+                    </div>
+                }
             />
+
             <Input
                 {...register('newPassword')}
                 required
                 hint={t('validation.password')}
                 label={t('userProfile.newPassword')}
                 error={formState.errors.newPassword?.message}
-                type="password"
+                type={showPass.has('newPassword') ? 'text' : 'password'}
+                suffixElement={
+                    <div style={{ position: 'absolute', right: '10px', top: '6px' }} onClick={() => changeVisibility('newPassword')}>
+                        <IconLabel key={showPass + ''} label="" icon={showPass.has('newPassword') ? EyeIcon : GreyEyeIcon} />
+                    </div>
+                }
             />
+
             <Input
                 {...register('newPasswordRepeat')}
                 label={t('userProfile.repeatPassword')}
                 error={formState.errors.newPasswordRepeat?.message}
-                type="password"
+                type={showPass.has('newPasswordRepeat') ? 'text' : 'password'}
                 required
+                suffixElement={
+                    <div style={{ position: 'absolute', right: '10px', top: '6px' }} onClick={() => changeVisibility('newPasswordRepeat')}>
+                        <IconLabel key={showPass + ''} label="" icon={showPass.has('newPasswordRepeat') ? EyeIcon : GreyEyeIcon} />
+                    </div>
+                }
             />
             <Button label={t('userProfile.save')} type="submit" />
         </form>

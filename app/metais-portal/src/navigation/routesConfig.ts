@@ -148,6 +148,8 @@ import ReferenceRegisterDetail from '@/pages/ci/ReferenceRegister'
 import WebPortalInformation from '@/pages/ci/WeboveSidlo/[entityId]/information'
 import { BulkListPage } from '@/pages/bulk-list/BulkList'
 import MiestoPrevadzkyEntityDetailPage from '@/pages/ci/MiestoPrevadzky'
+import ZCListPage from '@/pages/ci/ZC/entity'
+import ZCEntityDetailPage from '@/pages/ci/ZC/[entityId]'
 
 export interface RouteConfig {
     path?: string
@@ -722,6 +724,17 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.CI_TRAINING_INVITE,
                 slug: RouterRoutes.CI_TRAINING_INVITE,
                 component: TrainingInvitePage,
+            },
+            {
+                path: RouterRoutes.CI_ZC,
+                slug: RouterRoutes.CI_ZC,
+                component: ZCListPage,
+            },
+            {
+                path: RouterRoutes.CI_ZC_DETAIL,
+                slug: RouterRoutes.CI_ZC_DETAIL,
+                component: ZCEntityDetailPage,
+                subRoutes: generalCiDetailOutlets,
             },
             {
                 path: RouterRoutes.CI_KRIS_LIST,

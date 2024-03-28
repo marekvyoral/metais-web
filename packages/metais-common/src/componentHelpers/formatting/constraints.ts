@@ -14,17 +14,19 @@ export const calculateConstraintFromAttributes = (entityAttributes: Attribute[] 
     )
 }
 
-export const calculateConstraintFromAttributeProfiles = (entityAttributeProfiles: AttributeProfile[] | undefined) => {
+export const calculateConstraintFromAttributeProfiles = (entityAttributeProfiles: AttributeProfile[] | undefined, onlyValidAttributes = false) => {
     return (
         entityAttributeProfiles
             ?.map((profile: AttributeProfile) =>
-                profile?.attributes?.map((attribute) =>
-                    attribute?.constraints
-                        ?.filter((item) => item.type === 'enum')
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        //@ts-ignore
-                        .map((constraint: AttributeConstraintEnumAllOf) => constraint?.enumCode),
-                ),
+                profile?.attributes
+                    ?.filter((a) => (onlyValidAttributes === true ? a.valid === true : true))
+                    .map((attribute) =>
+                        attribute?.constraints
+                            ?.filter((item) => item.type === 'enum')
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            //@ts-ignore
+                            .map((constraint: AttributeConstraintEnumAllOf) => constraint?.enumCode),
+                    ),
             )
             .flat(2) ?? []
     )
