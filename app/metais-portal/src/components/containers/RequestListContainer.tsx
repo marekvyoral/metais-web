@@ -52,7 +52,7 @@ export const RequestListContainer: React.FC<RequestListContainerProps> = ({ View
         sort: [
             {
                 orderBy: 'id',
-                sortDirection: SortType.ASC,
+                sortDirection: SortType.DESC,
             },
         ],
         ...defaultFilterValues,

@@ -78,6 +78,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         { title: t('navMenu.lists.training'), path: NavigationSubRoutes.TRAINING },
         { title: t('navMenu.lists.personalProcedures'), path: NavigationSubRoutes.OSOBITNY_POSTUP },
         { title: t('navMenu.lists.relationsSearch'), path: NavigationSubRoutes.RELATIONS_LIST },
+        { title: t('navMenu.lists.zc'), path: NavigationSubRoutes.ZC },
         //{ title: t('navMenu.lists.educationalCourses'), path: NavigationSubRoutes.EDUCATIONAL_COURSES },
         //{ title: t('navMenu.lists.evidenceObjects'), path: NavigationSubRoutes.OBJEKTY_EVIDENCIE },
         //{ title: t('navMenu.lists.attributesEvidenceObjects'), path: NavigationSubRoutes.ATRIBUTY_OBJEKTY_EVIDENCIE },
@@ -184,7 +185,7 @@ export const getPortalNavigationItems = (t: TFunction, isAuthorized = false, isS
             subItems: [
                 { title: t('navMenu.reports'), path: RouteNames.REPORTS },
                 { title: t('navMenu.lists.monitoringServices'), path: RouterRoutes.MONITORING_SERVICES },
-                { title: t('navMenu.lists.monitoringImport'), path: RouterRoutes.IMPORT_MONITORING_PARAMETERS },
+                { title: t('navMenu.lists.monitoringImport'), path: RouterRoutes.IMPORT_MONITORING_PARAMETERS, isLoginRequired: true },
                 //{ title: t('navMenu.lists.monitoringEnd'), path: NavigationSubRoutes.MONITORING_KS },
                 //{ title: t('navMenu.lists.monitoringApp'), path: NavigationSubRoutes.MONITORING_AS },
                 //{ title: t('navMenu.lists.monitoringImport'), path: NavigationSubRoutes.MONITORING_IMPORT },

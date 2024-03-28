@@ -468,6 +468,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             </div>
                             <Input
                                 required
+                                maxLength={10}
                                 disabled={!canEdit}
                                 label={getDescription('Gui_Profil_ZC_rezort', language, attributeProfile)}
                                 info={getName('Gui_Profil_ZC_rezort', language, attributeProfile)}

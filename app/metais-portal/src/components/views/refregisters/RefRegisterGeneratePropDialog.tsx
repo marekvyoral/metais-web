@@ -19,7 +19,7 @@ export const RefRegisterGeneratePropDialog = ({ openGeneratePropDialog, setOpenG
 
     const onSubmit = useCallback(async () => {
         const generatedDocs = await generateDoc(entityId)
-        downloadFile(`${DMS_DOWNLOAD_FILE}/${generatedDocs?.uuid}`, generatedDocs?.filename ?? '')
+        downloadFile(`${DMS_DOWNLOAD_FILE}${generatedDocs?.uuid}`, generatedDocs?.filename ?? '')
         setOpenGeneratePropDialog(false)
     }, [entityId, generateDoc, setOpenGeneratePropDialog])
 
