@@ -65,6 +65,7 @@
     "aboutApp.version": "Verzia {{apiModul}}",
     "aboutApp.undefinedVersion": "Verzia modulu nedostupná",
     "navbar.skip": "Preskočiť na hlavný obsah",
+    "navbar.admin": "Admin",
     "navbar.official": "Oficiálna stránka",
     "navbar.publicAdministration": "verejnej správy SR",
     "navbar.sk": "SK",
