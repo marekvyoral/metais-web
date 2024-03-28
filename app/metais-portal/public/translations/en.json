@@ -336,6 +336,7 @@
     "errors.cl.missing.item.date.validation": "To publish items, you must fill field 'EffectiveFrom' and 'ValidFrom' for all items.",
     "errors.checkFromDateEquals": "Two effective dates are equal.",
     "errors.vote.closed": "Can't change the vote. Voting is already closed",
+    "errors.vote.inappropriate.choice": "The selected option does not exist",
     "errors.vote.progress": "Can't change the vote. Voting is already in progress",
     "errors.meeting.checkDates": "End of the meeting must be later than Start of the meeting",
     "mutationFeedback.success": "Success",

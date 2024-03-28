@@ -13,20 +13,7 @@ const VoteDetailPage: React.FC = () => {
             <VoteDetailContainer
                 View={(props) => {
                     document.title = formatTitleString(t('votes.voteDetail.detail', { name: props.voteData?.name ?? '' }))
-                    return (
-                        <VoteDetailView
-                            voteResultData={props.voteResultData}
-                            voteData={props.voteData}
-                            srData={props.srData}
-                            canCastVote={props.canCastVote}
-                            castedVoteId={props.castedVoteId}
-                            castVote={props.castVote}
-                            vetoVote={props.vetoVote}
-                            cancelVote={props.cancelVote}
-                            votesProcessing={props.votesProcessing}
-                            isUserLoggedIn={props.isUserLoggedIn}
-                        />
-                    )
+                    return <VoteDetailView {...props} />
                 }}
             />
         </VotesListPermissionsWrapper>

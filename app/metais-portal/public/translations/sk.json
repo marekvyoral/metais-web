@@ -330,6 +330,7 @@
     "errors.cl.missing.item.date.validation": "Pre publikovanie položiek, musia mať všetky položky vyplnení dátum platnosti a dátum začiatku účinnosti.",
     "errors.checkFromDateEquals": "Dva dátumy začiatku účinnosti sa rovnajú.",
     "errors.vote.closed": "Hlasovanie sa nedá zmeniť. Hlasovanie je už ukončené",
+    "errors.vote.inappropriate.choice": "Zvolená možnosť neexistuje",
     "errors.vote.progress": "Hlasovanie sa nedá zmeniť. Hlasovanie už prebieha",
     "errors.meeting.checkDates": "Koniec zasadnutia musí byť neskorší ako Začiatok zasadnutia",
     "mutationFeedback.success": "Akcia bola úspešná",
