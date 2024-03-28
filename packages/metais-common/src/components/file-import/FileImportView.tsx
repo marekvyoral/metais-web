@@ -35,6 +35,7 @@ interface IFileImportView {
     selectedOrg: HierarchyRightsUi | null
     selectedRole: GidRoleData
     isError: boolean
+    isGettingStatus: boolean
 }
 
 export const FileImportView: React.FC<IFileImportView> = ({
@@ -55,17 +56,18 @@ export const FileImportView: React.FC<IFileImportView> = ({
     selectedRole,
     ciType,
     isError,
+    isGettingStatus,
 }) => {
     const { t } = useTranslation()
     const isSubmitDisabled = currentFiles.length === 0 || (radioButtonMetaData === FileImportEditOptions.EXISTING_AND_NEW && !selectedRole.roleUuid)
-
+    console.log(isError)
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(ciType)
 
     return (
         <>
             <FileImportHeader setRadioButtonMetaData={setRadioButtonMetaData} />
             {radioButtonMetaData === FileImportEditOptions.EXISTING_AND_NEW && (
-                <QueryFeedback loading={isCiTypeDataLoading} error={isCiTypeDataError || isError}>
+                <QueryFeedback key={isGettingStatus + ''} loading={isCiTypeDataLoading || isGettingStatus} error={isCiTypeDataError || isError}>
                     <SelectPublicAuthorityAndRole
                         onChangeAuthority={setSelectedOrg}
                         onChangeRole={setSelectedRole}
