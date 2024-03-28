@@ -1012,7 +1012,7 @@
         "filter": {
             "category": "Kategória"
         },
-        "newReport": "Nový report"
+        "newReport": "Nová zostava"
     },
     "requestList": {
         "title": "Zoznam žiadostí",
@@ -1079,7 +1079,7 @@
         "newRelation": "Pridanie nového vzťahu k {{itemName}}",
         "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}",
         "reports-management": "Správa zostáv",
-        "reportsCreate": "Nový report",
+        "reportsCreate": "Nová zostava",
         "reportsEdit": "Upraviť report",
         "ciEditEntity": "Editácia položky",
         "templates-management": "Správa šablón"
