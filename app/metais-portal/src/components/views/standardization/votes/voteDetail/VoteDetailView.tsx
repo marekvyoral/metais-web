@@ -12,6 +12,7 @@ import { MutationFeedback } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { useQueryClient } from '@tanstack/react-query'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
 import { voteActorResultsColumns } from './voteActorResultsColumns'
@@ -168,12 +169,15 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     const canModifyVote = useMemo(() => {
         return (
             voteState == VoteStateOptionEnum.PLANNED ||
-            (voteState !== VoteStateOptionEnum.SUMMARIZED && voteState !== VoteStateOptionEnum.VETOED && voteState !== VoteStateOptionEnum.UPCOMING)
+            (voteState !== VoteStateOptionEnum.SUMMARIZED &&
+                voteState !== VoteStateOptionEnum.VETOED &&
+                voteState !== VoteStateOptionEnum.UPCOMING &&
+                voteState !== VoteStateOptionEnum.ENDED)
         )
     }, [voteState])
 
     const hideVoteModifyingButtons = useMemo(() => {
-        return voteState == VoteStateOptionEnum.CANCELED
+        return voteState == VoteStateOptionEnum.CANCELED || voteState == VoteStateOptionEnum.ENDED
     }, [voteState])
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
@@ -201,15 +205,33 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
             <div className={styles.inlineSpaceBetween}>
                 <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
 
-                {isUserLoggedIn && !hideVoteModifyingButtons && (
+                {isUserLoggedIn && (
                     <div className={styles.inlineSpaceBetween}>
                         <Can I={Actions.EDIT} a={Subject.VOTE}>
-                            <Button
-                                type="submit"
-                                label={t('votes.voteDetail.editVote')}
-                                onClick={() => editVoteHandler()}
-                                disabled={!canModifyVote}
-                            />
+                            {canModifyVote ? (
+                                <Button
+                                    type="submit"
+                                    label={t('votes.voteDetail.editVote')}
+                                    onClick={() => editVoteHandler()}
+                                    disabled={!canModifyVote}
+                                />
+                            ) : (
+                                <Tooltip
+                                    on={'hover' || 'focus'}
+                                    descriptionElement={t('votes.voteDetail.editVoteTooltip')}
+                                    tooltipContent={() => (
+                                        <Button
+                                            type="submit"
+                                            label={t('votes.voteDetail.editVote')}
+                                            onClick={() => editVoteHandler()}
+                                            disabled={!canModifyVote}
+                                        />
+                                    )}
+                                    position={'bottom center'}
+                                    arrow={false}
+                                />
+                            )}
+
                             <Spacer horizontal />
                             <CancelVoteButton disabled={!canCancelVote || !canModifyVote} cancelVote={cancelVote} />
                         </Can>

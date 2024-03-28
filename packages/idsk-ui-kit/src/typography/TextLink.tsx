@@ -10,16 +10,18 @@ interface ITextLinkProps extends PropsWithChildren {
     to: string
     className?: string
     newTab?: boolean
+    textBodySize?: boolean
 }
 
 export const TextLink = forwardRef<HTMLAnchorElement, ITextLinkProps>(
-    ({ children, className, linkBack, noVisitedState, inverse, noUnderline, to, newTab }, ref) => {
+    ({ children, className, linkBack, noVisitedState, inverse, noUnderline, to, newTab, textBodySize }, ref) => {
         const location = useLocation()
         return (
             <Link
                 state={{ from: location }}
                 ref={ref}
                 className={classNames(
+                    { 'govuk-body': !!textBodySize },
                     'govuk-link',
                     { 'govuk-link--no-visited-state': !!noVisitedState },
                     { 'govuk-link--inverse': !!inverse },

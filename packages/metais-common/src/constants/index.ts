@@ -63,6 +63,7 @@ export const documentsManagementGroupDocumentsDefaultSelectedColumns = (t: TFunc
     { technicalName: 'required', name: t('documentsManagement.required'), selected: true },
     { technicalName: 'documentGroup', name: t('documentsManagement.documentGroup'), selected: false },
     { technicalName: 'type', name: t('documentsManagement.type'), selected: false },
+    { technicalName: 'template', name: t('documentsManagement.template'), selected: true },
 ]
 
 export const getProjectsFinanceManagementSelectedColumns = (t: TFunction<'translation', undefined, 'translation'>) => [
@@ -103,6 +104,7 @@ export enum ReponseErrorCodeEnum {
     GNR500 = 'gnr500',
     OPERATION_NOT_ALLOWED = 'OperationNotAllowed',
     WRONG_OLD_PASSWORD = 'WRONG_OLD_PASSWORD',
+    EKO_CODE_USED = 'EkoCodeUsed',
 }
 export const REPORTS = 'reports'
 export const FIRST_PAGE_NUMBER = 1
@@ -414,3 +416,6 @@ export enum HowTo {
     REF_REG_HOWTO = 'REF_REG_HOWTO',
     MONITORING_HOWTO = 'MONITORING_HOWTO',
 }
+
+export const BULK_ACTION_ITEM_SEPARATOR = ','
+export const BULK_ACTION_ITEM_SEARCH_KEY = 'list'

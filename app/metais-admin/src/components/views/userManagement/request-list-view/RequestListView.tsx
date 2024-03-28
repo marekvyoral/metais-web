@@ -179,7 +179,6 @@ export const RequestListView: React.FC<IRequestListView> = ({
                 />
                 <Table
                     key={'requestListTable'}
-                    rowHref={(row) => `./detail/${listType.toLowerCase()}/${row?.original?.uuid}`}
                     data={data?.claimSet || []}
                     columns={columns.map((item) => ({ ...item, size: 150 }))}
                     sort={defaultFilterParams.sort}

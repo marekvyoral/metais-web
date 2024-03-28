@@ -1,4 +1,4 @@
-import { BaseModal, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { StandardDraftsDraftStates } from '@isdd/metais-common/types/api'
 import React, { useContext } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -38,13 +38,13 @@ export const DraftsListChangeStateModal = ({
     return (
         <BaseModal isOpen={openChangeStateDialog} close={() => setOpenChangeStateDialog(false)}>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                <div className={styles.modalContainer}>
-                    <div className={styles.content}>
+                <div>
+                    <div>
                         <TextHeading size={'L'} className={styles.heading}>
                             {targetState && t(`DraftsList.header.${targetState}`)}
                         </TextHeading>
 
-                        <Input {...register('description')} label={t('DraftsList.header.changeState.description')} />
+                        <TextArea rows={4} {...register('description')} label={t('DraftsList.header.changeState.description')} autoFocus />
 
                         <ModalButtons submitButtonLabel={t('DraftsList.header.changeState.submit')} onClose={() => setOpenChangeStateDialog(false)} />
                     </div>

@@ -39,6 +39,8 @@ export const HistoryAccordion: React.FC<RelationshipsAccordion> = ({ entityId, b
                                         isError={props.isError}
                                         pagination={props.pagination}
                                         basePath={basePath}
+                                        selectedColumns={props.selectedColumns}
+                                        setSelectedColumns={props.setSelectedColumns}
                                     />
                                 )
                             }}

@@ -1,5 +1,5 @@
 import { MongoAbility } from '@casl/ability'
-import { CheckBox, DeleteForeverRed, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
+import { ButtonLink, ButtonPopup, CheckBox } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL, DELETE_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { IdentitiesInGroupAndCount, IdentityInGroupData, OperationResult } from '@isdd/metais-common/api/generated/iam-swagger'
 import { GROUP_ROLES, KSISVS_ROLES } from '@isdd/metais-common/constants'
@@ -8,13 +8,110 @@ import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 import { ColumnDef, Row, Table } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { GroupPermissionSubject } from '@isdd/metais-common/hooks/permissions/useGroupsPermissions'
+import { useTranslation } from 'react-i18next'
+import { isRowSelected } from '@isdd/metais-common/index'
 
 import GroupMemberTableRoleSelector from './components/TableRoleSelector'
+import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from './defaultRoles'
+import styles from './styles.module.scss'
 
 import { TableData } from '@/components/containers/standardization/groups/GroupDetailContainer'
 
+export interface IActionButtonPopup {
+    row: Row<TableData>
+    setIdentityToDelete: React.Dispatch<React.SetStateAction<string | undefined>>
+    selectedRows: number[]
+    setSelectedRows: React.Dispatch<React.SetStateAction<number[]>>
+    handleSaveMemberRole: (row: Row<TableData>) => Promise<void>
+}
+
+export const ActionButtonPopup: React.FC<IActionButtonPopup> = ({
+    row,
+    setIdentityToDelete,
+    selectedRows,
+    setSelectedRows,
+    handleSaveMemberRole,
+}) => {
+    const { t } = useTranslation()
+
+    const editRow = useCallback(
+        (rowIndex: number) => {
+            setSelectedRows([...selectedRows, rowIndex])
+        },
+        [selectedRows, setSelectedRows],
+    )
+
+    const cancelEditing = useCallback(
+        (rowIndex: number) => {
+            setSelectedRows([...(selectedRows?.filter((index) => index !== rowIndex) ?? [])])
+        },
+        [selectedRows, setSelectedRows],
+    )
+
+    return (
+        <>
+            {isRowSelected(row?.index, selectedRows) ? (
+                <ButtonPopup
+                    key={row?.index}
+                    buttonLabel={t('groups.action')}
+                    popupPosition="right"
+                    buttonClassName={styles.marginBottom0}
+                    popupContent={(closePopup) => (
+                        <div className={styles.actions}>
+                            <ButtonLink
+                                type="button"
+                                onClick={() => {
+                                    row?.original.uuid && handleSaveMemberRole(row)
+                                    closePopup()
+                                    cancelEditing(row?.index)
+                                }}
+                                label={t('groups.save')}
+                            />
+                            <ButtonLink
+                                type="button"
+                                onClick={() => {
+                                    row?.original.uuid && cancelEditing(row?.index)
+                                    closePopup()
+                                }}
+                                label={t('groups.cancel')}
+                            />
+                        </div>
+                    )}
+                />
+            ) : (
+                <ButtonPopup
+                    key={row?.index}
+                    buttonLabel={t('groups.action')}
+                    popupPosition="right"
+                    buttonClassName={styles.marginBottom0}
+                    popupContent={(closePopup) => (
+                        <div className={styles.actions}>
+                            <ButtonLink
+                                type="button"
+                                onClick={() => {
+                                    row?.original.uuid && editRow(row.index)
+                                    closePopup()
+                                }}
+                                label={t('groups.edit')}
+                            />
+                            <ButtonLink
+                                className={styles.redText}
+                                type="button"
+                                onClick={() => {
+                                    setIdentityToDelete(row.original.uuid)
+                                    closePopup()
+                                }}
+                                label={t('groups.delete')}
+                            />
+                        </div>
+                    )}
+                />
+            )}
+        </>
+    )
+}
 const reduceTableDataToObjectWithUuid = <T extends { uuid?: string }>(array: T[]): Record<string, T> => {
     return array.reduce<Record<string, T>>((result, item) => {
         if (item.uuid) {
@@ -82,9 +179,39 @@ export const buildColumns = (
     setMembersUpdated: React.Dispatch<React.SetStateAction<boolean>>,
     isKsisvs: boolean,
     setUpdatingMember: React.Dispatch<React.SetStateAction<boolean>>,
+    selectedRows: number[],
+    setSelectedRows: React.Dispatch<React.SetStateAction<number[]>>,
+    setUpdatedMembers: React.Dispatch<
+        React.SetStateAction<
+            {
+                uuid: string
+                oldRole: string
+                newRole: string
+            }[]
+        >
+    >,
+    updatedMembers: {
+        uuid: string
+        oldRole: string
+        newRole: string
+    }[],
+    handleSaveMemberRole: (row: Row<TableData>) => Promise<void>,
+    isUserLogged: boolean,
 ) => {
     const selectableColumnsSpec: ColumnDef<TableData>[] = [
         {
+            id: 'lastName_firstName',
+            header: t('groups.name'),
+            accessorKey: 'lastName_firstName',
+            enableSorting: true,
+            // sortingFn: 'myCustomSorting',
+            size: 180,
+        },
+        { id: 'orgName', header: t('groups.organization'), accessorKey: 'orgName', enableSorting: true, size: 480 },
+    ]
+
+    if (ability.can(Actions.CREATE, GroupPermissionSubject.SEND_EMAIL) || isUserLogged) {
+        selectableColumnsSpec.unshift({
             header: ({ table }) => {
                 return (
                     <div className="govuk-checkboxes govuk-checkboxes--small">
@@ -115,37 +242,40 @@ export const buildColumns = (
                 </div>
             ),
             size: 20,
-        },
-        {
-            id: 'lastName_firstName',
-            header: t('groups.name'),
-            accessorKey: 'lastName_firstName',
-            enableSorting: true,
-            // sortingFn: 'myCustomSorting',
-            size: 180,
-        },
-        { id: 'orgName', header: t('groups.organization'), accessorKey: 'orgName', enableSorting: true, size: 480 },
-    ]
+        })
+    }
     if (ability.can(Actions.READ, GroupPermissionSubject.GROUP_MEMBER_EMAIL)) {
         selectableColumnsSpec.push({ header: t('groups.email'), id: 'email', accessorKey: 'email', size: 200 })
     }
+
     selectableColumnsSpec.push({
         header: t('groups.role'),
         id: 'roleName',
         accessorKey: 'roleName',
         enableSorting: true,
-        cell: ({ row }) => (
-            <GroupMemberTableRoleSelector
-                row={row}
-                id={id}
-                refetch={refetch}
-                setIdentities={setIdentities}
-                ability={ability}
-                setMembersUpdated={setMembersUpdated}
-                isKsisvs={isKsisvs}
-                setUpdatingMember={setUpdatingMember}
-            />
-        ),
+        cell: ({ row }) =>
+            row?.original.uuid && isRowSelected(row?.index, selectedRows) ? (
+                <GroupMemberTableRoleSelector
+                    row={row}
+                    id={id}
+                    refetch={refetch}
+                    setIdentities={setIdentities}
+                    ability={ability}
+                    setMembersUpdated={setMembersUpdated}
+                    isKsisvs={isKsisvs}
+                    setUpdatingMember={setUpdatingMember}
+                    setUpdatedMembers={setUpdatedMembers}
+                    updatedMembers={updatedMembers}
+                />
+            ) : (
+                <span>
+                    {
+                        [...DEFAULT_KSISVS_ROLES, ...DEFAULT_ROLES].find((role) => {
+                            return role.code == row.original.roleName
+                        })?.value
+                    }
+                </span>
+            ),
     })
 
     if (ability.can(Actions.EDIT, GroupPermissionSubject.GROUPS)) {
@@ -156,20 +286,22 @@ export const buildColumns = (
             cell: ({ row }) =>
                 row.original.roleName !== KSISVS_ROLES.STD_KSPRE &&
                 (row.original.roleName !== GROUP_ROLES.STD_PSPRE ? (
-                    <TransparentButtonWrapper
-                        onClick={() => setIdentityToDelete(row.original.uuid)}
-                        aria-label={t('delete', { subject: row.original.lastName_firstName })}
-                    >
-                        <img src={DeleteForeverRed} height={24} alt="" />
-                    </TransparentButtonWrapper>
+                    <ActionButtonPopup
+                        row={row}
+                        setIdentityToDelete={setIdentityToDelete}
+                        selectedRows={selectedRows}
+                        setSelectedRows={setSelectedRows}
+                        handleSaveMemberRole={handleSaveMemberRole}
+                    />
                 ) : (
                     <Can I={Actions.EDIT} a={GroupPermissionSubject.GROUP_MASTER}>
-                        <TransparentButtonWrapper
-                            onClick={() => setIdentityToDelete(row.original.uuid)}
-                            aria-label={t('delete', { subject: row.original.lastName_firstName })}
-                        >
-                            <img src={DeleteForeverRed} height={24} alt="" />
-                        </TransparentButtonWrapper>
+                        <ActionButtonPopup
+                            row={row}
+                            setIdentityToDelete={setIdentityToDelete}
+                            selectedRows={selectedRows}
+                            setSelectedRows={setSelectedRows}
+                            handleSaveMemberRole={handleSaveMemberRole}
+                        />
                     </Can>
                 )),
         })

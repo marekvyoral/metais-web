@@ -53,9 +53,9 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
             .map((attributesProfile) => {
                 return {
                     title:
-                        (i18n.language === Languages.SLOVAK ? attributesProfile.description : attributesProfile.engDescription) ??
-                        attributesProfile.name ??
-                        '',
+                        (i18n.language === Languages.SLOVAK
+                            ? attributesProfile.description || attributesProfile.name
+                            : attributesProfile.engDescription || attributesProfile.name) || '',
                     content: (
                         <DefinitionList>
                             {attributesProfile?.attributes

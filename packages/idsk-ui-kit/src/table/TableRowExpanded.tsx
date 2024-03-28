@@ -1,17 +1,18 @@
 import { Row } from '@tanstack/react-table'
 import React from 'react'
 
+import styles from './table.module.scss'
+
 interface ITableRowProps<T> {
     getExpandedRow?: (row: Row<T>) => JSX.Element | null
     row: Row<T>
+    id: string
 }
 
-export const TableRowExpanded = <T,>({ row, getExpandedRow: getExpandedRow }: ITableRowProps<T>): JSX.Element => {
+export const TableRowExpanded = <T,>({ row, id, getExpandedRow: getExpandedRow }: ITableRowProps<T>): JSX.Element => {
     return (
-        <tr className="idsk-table__row">
-            <td colSpan={row.getVisibleCells().length} className="idsk-table__cell">
-                {getExpandedRow?.(row)}
-            </td>
-        </tr>
+        <div id={id} className={styles.expandableRowContent}>
+            {getExpandedRow?.(row)}
+        </div>
     )
 }

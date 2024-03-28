@@ -6,8 +6,14 @@ import { useTranslation } from 'react-i18next'
 import { BulkList } from '@isdd/metais-common/components/actions-over-table/bulk-actions-popup/BulkList'
 import { ChangeOwnerDataUi, ChangeOwnerDataUiChangeType, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ISelectPublicAuthorityAndRole, SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
-import { CHANGE_OWNER_CHANGE_REASON, CHANGE_OWNER_CHANGE_TYPE } from '@isdd/metais-common/constants'
+import {
+    BULK_ACTION_ITEM_SEARCH_KEY,
+    BULK_ACTION_ITEM_SEPARATOR,
+    CHANGE_OWNER_CHANGE_REASON,
+    CHANGE_OWNER_CHANGE_TYPE,
+} from '@isdd/metais-common/constants'
 import { ModalButtons } from '@isdd/metais-common/components/modal-buttons/ModalButtons'
+import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 interface IChangeOwnerBulkView extends ISelectPublicAuthorityAndRole {
     items: ConfigurationItemUi[]
@@ -73,7 +79,9 @@ export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
 
             <TextLinkExternal
                 title={t('bulkActions.changeOwner.newWindowText')}
-                href={'#'}
+                href={`${RouterRoutes.BULK_ACTION_ITEM_LIST}?${BULK_ACTION_ITEM_SEARCH_KEY}=${items
+                    .map((i) => i.uuid)
+                    .join(BULK_ACTION_ITEM_SEPARATOR)}`}
                 newTab
                 textLink={t('bulkActions.changeOwner.newWindowText')}
             />

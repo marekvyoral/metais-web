@@ -90,11 +90,14 @@ export const CiTable: React.FC<ICiTable> = ({
                 if (rowSelection[row.original.uuid]) {
                     delete newRowSelection[row.original.uuid]
                 } else {
-                    newRowSelection[row.original.uuid] = row.original
+                    newRowSelection[row.original.uuid] = data?.tableData?.configurationItemSet?.find(
+                        (i: ConfigurationItemUi) => i.uuid === row.original.uuid,
+                    )
                 }
                 setRowSelection(newRowSelection)
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [rowSelectionState],
     )
 
@@ -227,7 +230,6 @@ export const CiTable: React.FC<ICiTable> = ({
             <Table
                 columns={columns}
                 data={tableData}
-                rowHref={(row) => (baseHref ? `${baseHref}/${row?.original?.uuid}` : `./${row?.original?.uuid}`)}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                     clearSelectedRows()

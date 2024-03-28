@@ -1,4 +1,5 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { Metadata, useGetMeta1Hook } from '@isdd/metais-common/api/generated/dms-swagger'
 import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import {
     ApiError,
@@ -40,6 +41,7 @@ export interface IView {
     isLoading: boolean
     filter: DocumentFilter
     handleFilterChange: (changedFilter: IFilter) => void
+    templatesMetadata?: Metadata[]
 }
 
 export interface IDocumentsGroupContainerProps {
@@ -60,6 +62,28 @@ export const DocumentsGroupContainer: React.FC<IDocumentsGroupContainerProps> = 
     const saveDocumentGroup = useSaveDocumentGroupHook()
     const deleteDocumentGroup = useDeleteDocumentGroupHook()
     const deleteDocument = useDeleteDocumentHook()
+    const getMetaData = useGetMeta1Hook()
+    const templatesUuids: string[] = documentsData?.filter((d) => !!d.templateUuid).map((d) => d.templateUuid ?? '') ?? []
+    const [templatesMetadata, setTemplatesMetadata] = useState<Metadata[]>()
+    const [customLoading, setCustomLoading] = useState(false)
+    const getAllMeta = async () => {
+        Promise.all(
+            templatesUuids.map(async (template) => {
+                return getMetaData(template)
+            }),
+        ).then((resp) => {
+            setTemplatesMetadata(resp)
+            setCustomLoading(false)
+        })
+    }
+
+    useEffect(() => {
+        if (templatesUuids && documentsData) {
+            setCustomLoading(true)
+            getAllMeta()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [documentsData])
 
     const { filter, handleFilterChange } = useFilterParams<DocumentFilter>(defaultFilter)
 
@@ -72,7 +96,7 @@ export const DocumentsGroupContainer: React.FC<IDocumentsGroupContainerProps> = 
 
     return (
         <View
-            isLoading={isDocumentsLoading || isInfoLoading || isStatusesLoading}
+            isLoading={isDocumentsLoading || isInfoLoading || isStatusesLoading || customLoading}
             infoData={infoData ?? {}}
             documentsData={dataRows ?? []}
             projectStatus={projectStatus ?? {}}
@@ -83,6 +107,7 @@ export const DocumentsGroupContainer: React.FC<IDocumentsGroupContainerProps> = 
             filter={filter}
             handleFilterChange={handleFilterChange}
             refetchInfoData={refetchInfoData}
+            templatesMetadata={templatesMetadata}
         />
     )
 }

@@ -20,16 +20,17 @@ const DeleteGroupMemberModal: React.FC<DeleteGroupMemberModalProps> = ({ isOpen,
     const [deletingMember, setDeletingMember] = useState(false)
     const deleteRelationHook = useDeleteGroupRelationHook()
     const invalidateGroupMembersCache = useInvalidateGroupMembersCache(groupUuid ?? '')
-    const { setIsActionSuccess } = useActionSuccess()
+    const { setIsActionSuccess, clearAction } = useActionSuccess()
 
     const handleOnDeleteClick = async () => {
+        clearAction()
         setDeletingMember(true)
         await deleteRelationHook(uuid ?? '', groupUuid ?? '')
         setDeletingMember(false)
         invalidateGroupMembersCache.invalidate()
         setIsActionSuccess({
             value: true,
-            path: `${NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL}/${groupUuid}`,
+            path: `${NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL}/itvs`,
             additionalInfo: { entity: 'member', type: 'delete' },
         })
         onClose()

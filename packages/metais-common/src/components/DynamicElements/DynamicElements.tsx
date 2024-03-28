@@ -4,7 +4,7 @@ import React, { MouseEvent, useId, useState } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-import style from './customElement.module.scss'
+import style from './dynamicElements.module.scss'
 import { DynamicRow, RenderableComponentProps } from './DynamicRow'
 
 import { MAX_DYNAMIC_ATTRIBUTES_LENGHT } from '@isdd/metais-common/constants/index'

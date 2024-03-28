@@ -106,6 +106,8 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
         switch (isActionSuccess.additionalInfo?.type) {
             case 'update':
                 return t('groups.successfulMemberUpdated')
+            case 'memberUpdate':
+                return t('groups.successfulMemberUpdated')
             case 'add':
                 return t('groups.successfulMemberAdded')
             case 'delete':
@@ -195,7 +197,10 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                     <div ref={wrapperRef}>
                         <MutationFeedback
                             successMessage={getSuccessMsg()}
-                            success={isActionSuccess.value && isActionSuccess.additionalInfo?.entity === 'member'}
+                            success={
+                                isActionSuccess.value &&
+                                (isActionSuccess.additionalInfo?.entity === 'member' || isActionSuccess.additionalInfo?.type === 'memberUpdate')
+                            }
                         />
                     </div>
                     <QueryFeedback

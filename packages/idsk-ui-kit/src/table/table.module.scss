@@ -138,6 +138,13 @@
         }
     }
 
+    thead .expandableHeaderRow {
+        th:last-child {
+            position: sticky;
+            right: 0;
+        }
+    }
+
     tbody .tableRow {
         th:first-child {
             left: 0;
@@ -172,6 +179,14 @@
             @include mq($from: desktop) {
                 position: sticky;
             }
+        }
+    }
+
+    tbody .expandableRow {
+        td:last-child {
+            position: sticky;
+            right: 0;
+            background: govuk-colour('white');
         }
     }
 }
@@ -223,4 +238,16 @@ tr:hover th {
 .flexCenter {
     display: flex;
     align-items: center;
+}
+
+.expandableRowWrapper {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.expandableRowContent {
+    padding: govuk-spacing(2);
+    position: sticky;
+    left: 0;
+    border-bottom: 1px solid $govuk-border-colour
 }

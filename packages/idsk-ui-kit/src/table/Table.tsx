@@ -21,10 +21,16 @@ import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableInfoMessage } from './TableInfoMessage'
 import { TableRow } from './TableRow'
 import { TableRowExpanded } from './TableRowExpanded'
-import { CHECKBOX_CELL } from './constants'
+import { CHECKBOX_CELL, EXPANDABLE_CELL } from './constants'
 import styles from './table.module.scss'
-import { hasMetaAttributesWithStateProperty, transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
+import {
+    hasMetaAttributesWithStateProperty,
+    transformColumnSortToSortingState,
+    transformSortingStateToColumnSort,
+    getExpandableRowContentId,
+} from './tableUtils'
 import { TableDragRow } from './TableDragRow'
+import { ExpandableRowCellWrapper } from './ExpandableRowCellWrapper'
 
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 
@@ -104,7 +110,18 @@ export const Table = <T,>({
     const transformedSort = transformColumnSortToSortingState(sort)
     const table = useReactTable({
         data: data ?? [],
-        columns,
+        columns: [
+            ...columns,
+            ...(getExpandedRow
+                ? [
+                      {
+                          id: EXPANDABLE_CELL,
+                          size: 20,
+                          cell: ({ row }: { row: Row<T> }) => <ExpandableRowCellWrapper row={row} ariaControlsId={getExpandableRowContentId(row)} />,
+                      },
+                  ]
+                : []),
+        ],
         sortDescFirst: false,
         state: {
             ...(pagination && { pagination }),
@@ -159,10 +176,12 @@ export const Table = <T,>({
                 <thead className={classNames('idsk-table__head', [styles.head])} onScroll={handleWrapper2Scroll} ref={wrapper2Ref}>
                     {table.getHeaderGroups().map((headerGroup) => {
                         const hasCheckbox = headerGroup.headers.find((cell) => cell.id === CHECKBOX_CELL)
+                        const isExpandable = headerGroup.headers.find((cell) => cell.id === EXPANDABLE_CELL)
                         return (
                             <tr
                                 className={classNames('idsk-table__row', styles.headerRow, {
                                     [styles.checkBoxHeaderRow]: hasCheckbox,
+                                    [styles.expandableHeaderRow]: isExpandable,
                                 })}
                                 key={headerGroup.id}
                             >
@@ -231,7 +250,9 @@ export const Table = <T,>({
                                     linkToNewTab={linkToNewTab}
                                 />
                             )}
-                            {row.getIsExpanded() && getExpandedRow && <TableRowExpanded row={row} getExpandedRow={getExpandedRow} />}
+                            {row.getIsExpanded() && getExpandedRow && (
+                                <TableRowExpanded row={row} id={getExpandableRowContentId(row)} getExpandedRow={getExpandedRow} />
+                            )}
                         </React.Fragment>
                     )
                 })}

@@ -3,7 +3,7 @@ import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import React, { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import style from './customFilterAttribute.module.scss'
+import style from './dynamicFilterAttributeInput.module.scss'
 import { DynamicFilterAttributeInput } from './DynamicFilterAttributeInput'
 
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
@@ -108,53 +108,54 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
 
     return (
         <div className={style.customFilterWrapper}>
-            <SelectWithGroupedOptions
-                focus={focus}
-                id={`attribute-name-${index}`}
-                name={`attributeName`}
-                className={style.rowItem}
-                label={t('customAttributeFilter.attribute.label')}
-                defaultValue={defaultValue}
-                options={options}
-                placeholder={t('customAttributeFilter.attribute.placeholder')}
-                onChange={(val) => {
-                    onChange(
-                        {
-                            ...attribute,
-                            name: val?.value,
-                            operator: availableOperators.at(0)?.value,
-                            value: undefined,
-                        },
-                        attribute,
-                        true,
-                    )
-                    setSeed(Math.random())
-                }}
-                tabIndex={isFocusable ? undefined : -1}
-            />
-            <SimpleSelect
-                key={seed}
-                isClearable={false}
-                className={style.rowItem}
-                id={`attribute-operator-${index}`}
-                name={`attribute-operator-${index}`}
-                label={t('customAttributeFilter.operator.label')}
-                placeholder={t('customAttributeFilter.operator.placeholder')}
-                options={availableOperators}
-                defaultValue={availableOperators.at(0)?.value}
-                value={attribute.operator}
-                onChange={(val) => onChange({ ...attribute, operator: val }, attribute)}
-                tabIndex={isFocusable ? undefined : -1}
-            />
-            <DynamicFilterAttributeInput
-                constraints={attributeConstraints}
-                attributeType={attributeType}
-                value={attribute}
-                index={index}
-                onChange={onChange}
-                customComponent={attributeType.customComponent}
-            />
-
+            <fieldset className={style.customFilterInputWrapper}>
+                <SelectWithGroupedOptions
+                    focus={focus}
+                    id={`attribute-name-${index}`}
+                    name={`attributeName`}
+                    className={style.rowItem}
+                    label={t('customAttributeFilter.attribute.label')}
+                    defaultValue={defaultValue}
+                    options={options}
+                    placeholder={t('customAttributeFilter.attribute.placeholder')}
+                    onChange={(val) => {
+                        onChange(
+                            {
+                                ...attribute,
+                                name: val?.value,
+                                operator: availableOperators.at(0)?.value,
+                                value: undefined,
+                            },
+                            attribute,
+                            true,
+                        )
+                        setSeed(Math.random())
+                    }}
+                    tabIndex={isFocusable ? undefined : -1}
+                />
+                <SimpleSelect
+                    key={seed}
+                    isClearable={false}
+                    className={style.rowItem}
+                    id={`attribute-operator-${index}`}
+                    name={`attribute-operator-${index}`}
+                    label={t('customAttributeFilter.operator.label')}
+                    placeholder={t('customAttributeFilter.operator.placeholder')}
+                    options={availableOperators}
+                    defaultValue={availableOperators.at(0)?.value}
+                    value={attribute.operator}
+                    onChange={(val) => onChange({ ...attribute, operator: val }, attribute)}
+                    tabIndex={isFocusable ? undefined : -1}
+                />
+                <DynamicFilterAttributeInput
+                    constraints={attributeConstraints}
+                    attributeType={attributeType}
+                    value={attribute}
+                    index={index}
+                    onChange={onChange}
+                    customComponent={attributeType.customComponent}
+                />
+            </fieldset>
             <ButtonLink
                 onClick={(e) => {
                     e.preventDefault()

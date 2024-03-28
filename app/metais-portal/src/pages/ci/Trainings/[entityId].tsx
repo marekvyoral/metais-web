@@ -32,6 +32,7 @@ import { RelationsListContainer } from '@/components/containers/RelationsListCon
 import { TrainingContainer } from '@/components/containers/TrainingContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { TrainingEntityIdHeader } from '@/components/views/ci/trainings/TrainingEntityIdHeader'
+import { useCiCheckEntityTypeRedirectHook } from '@/hooks/useCiCheckEntityTypeRedirect.hook'
 
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -81,6 +82,7 @@ const EntityDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+    useCiCheckEntityTypeRedirectHook(ciItemData, entityName)
 
     const isRegisteredOnTraining = useMemo(() => {
         return trainingData?.configurationItemSet?.some((training) => training.uuid === ciItemData?.uuid)

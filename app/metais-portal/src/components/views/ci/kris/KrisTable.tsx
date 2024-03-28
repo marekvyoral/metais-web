@@ -86,7 +86,6 @@ export const KrisTable: React.FC<ICiTable> = ({
             <Table
                 columns={columns}
                 data={tableData}
-                rowHref={(row) => `./${row?.original?.uuid}`}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                 }}

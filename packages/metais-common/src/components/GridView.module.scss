@@ -16,6 +16,10 @@
     @include mq($until: desktop) {
         padding-left: govuk-spacing(4);
     }
+    @include mq($until: tablet) {
+        display: block;
+        grid-row: 4 / 13;
+    }
 }
 
 .closedContent {
@@ -163,4 +167,21 @@
 
 .govukBottomTop {
     margin-top: govuk-spacing(3);
+}
+
+.reverse {
+    grid-auto-flow: column;
+    @include mq($until: tablet) {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(125px, 1fr) minmax(90px, 1fr) repeat(10, minmax(0, auto));
+        grid-auto-flow: row;
+    }
+}
+
+.globalSearchFilter {
+    @include mq($until: tablet) {
+        position: relative !important;
+        display: block;
+        grid-row: 1 / 4;
+    }
 }

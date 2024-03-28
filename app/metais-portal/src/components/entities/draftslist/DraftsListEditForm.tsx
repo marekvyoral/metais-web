@@ -100,6 +100,7 @@ export const DraftsListEditForm = ({
                         onUploadSuccess={handleUploadSuccess}
                         onFileUploadFailed={onFileUploadFailed}
                         refId={defaultData?.id?.toString()}
+                        textSize="L"
                     />
                 )}
                 <Spacer vertical />

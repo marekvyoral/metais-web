@@ -133,6 +133,7 @@ export enum RouterRoutes {
     CI_AS_DETAIL = 'ci/AS/:entityId',
     CI_AS_CREATE = 'ci/AS/create',
     CI_REFERENCE_REGISTER = 'ci/ReferenceRegister/:entityId',
+    CI_MIESTO_PREVADZKY = 'ci/MiestoPrevadzky',
     ITVS_EXCEPTIONS_CREATE = 'ci/OsobitnyPostup/create',
     ITVS_EXCEPTIONS_DETAIL = 'ci/OsobitnyPostup/:entityId',
     ITVS_EXCEPTIONS_EDIT = 'ci/OsobitnyPostup/:entityId/edit',
@@ -157,6 +158,7 @@ export enum RouterRoutes {
     OLA_CONTRACT_ADD = '/ola-contract-add',
     OLA_CONTRACT_DETAIL = '/ola-contract-list/:entityId',
     OLA_CONTRACT_EDIT = '/ola-contract-list/:entityId/edit',
+    BULK_ACTION_ITEM_LIST = '/bulk-list',
 }
 
 export enum AdminRouteNames {
@@ -255,7 +257,6 @@ export enum NavigationSubRoutes {
     SERVERY = '/servers',
     WEBOVE_SIDLO = '/ci/WeboveSidlo',
     VIRTUALNE_STROJE = '/virtual-machines',
-    MIESTO_PREVADZKY = '/ci/MiestoPrevadzky',
     PUBLIC_AUTHORITY_HIERARCHY = '/public-authorities-hierarchy',
     REFERENCE_REGISTERS_REQUESTS = '/refregisters/requests',
     IDENTIFIERS_REQUESTS = '/uri/list/sent',

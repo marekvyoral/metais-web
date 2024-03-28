@@ -12,9 +12,11 @@ import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedba
 import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ColumnDef, Row } from '@tanstack/react-table'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { EkoTableModals } from './EkoTablesModals'
 
@@ -56,6 +58,7 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
         isSuccess: false,
         message: undefined,
     })
+
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const handleCheckboxChange = useCallback(
         (row: Row<TEkoCodeDecorated>) => {
@@ -116,8 +119,48 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
         return d.slice(pageSize * (pageNumber ?? 0) - (pageSize ?? 0), pageSize * (pageNumber ?? 0)) ?? []
     }, [])
 
+    const getMessage = (response: string) => {
+        switch (response) {
+            case 'create':
+                return t('mutationFeedback.successfulCreated')
+            case 'delete':
+                return t('mutationFeedback.successfulDeleted')
+            case 'invalidate':
+                return t('mutationFeedback.successfulInvalidated')
+            case 'update':
+                return t('mutationFeedback.successfulUpdated')
+            default:
+                return t('mutationFeedback.successfulUpdated')
+        }
+    }
+
+    const { isActionSuccess } = useActionSuccess()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        if (isActionSuccess.value) {
+            scrollToMutationFeedback()
+        }
+    }, [isActionSuccess, scrollToMutationFeedback])
+
     return (
         <>
+            <MutationFeedback
+                error={resultApiCall.isError}
+                errorMessage={resultApiCall.message}
+                success={resultApiCall.isSuccess || isActionSuccess.value}
+                successMessage={
+                    (!resultApiCall.isError && resultApiCall.message) ||
+                    (isActionSuccess.value ? getMessage(isActionSuccess.additionalInfo?.type ?? '') : undefined)
+                }
+                onMessageClose={() =>
+                    setResultApiCall({
+                        isError: false,
+                        isSuccess: false,
+                        message: undefined,
+                    })
+                }
+            />
+            <div ref={wrapperRef} />
             {isLoading && <LoadingIndicator fullscreen />}
             <ActionsOverTable
                 pagination={{
@@ -159,18 +202,6 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                     />
                 )}
             />
-            <MutationFeedback
-                error={resultApiCall.isError}
-                errorMessage={resultApiCall.message}
-                success={resultApiCall.isSuccess}
-                onMessageClose={() =>
-                    setResultApiCall({
-                        isError: false,
-                        isSuccess: false,
-                        message: undefined,
-                    })
-                }
-            />
 
             <Table
                 key={'ekoTable'}
@@ -197,6 +228,7 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                 handlePageChange={handleFilterChange}
             />
             <EkoTableModals
+                setRowSelection={setRowSelection}
                 checkedToInvalidate={checkedToInvalidate}
                 checkedToDelete={checkedToDelete}
                 closeConfirmationModal={handlerSetCloseConfirmationModal}

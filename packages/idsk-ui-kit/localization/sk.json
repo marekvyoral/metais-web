@@ -1,45 +1,33 @@
 {
-    "languageSelector": {
-        "open": "Rozbaliť jazykové menu",
-        "close": "Skryť jazykové menu"
-    },
-    "searchInput": {
-        "search": "Hľadať"
-    },
-    "language": {
-        "sk": "Slovenský jazyk",
-        "en": "English",
-        "cimode": "Preklady"
-    },
-    "tab": {
-        "contents": "Obsah",
-        "moreTabs": "Dalsie zalozky"
-    },
-    "loading": {
-        "loadingSubPage": "Načítavám podstránku"
-    },
-    "table": {
-        "title": "Mestá",
-        "heading": "Filtrovať obsah",
-        "unpack": "Rozbaliť obsah filtra",
-        "pack": "Zbaliť obsah filtra",
-        "city": "Mesto",
-        "region": "Kraj",
-        "district": "Okres",
-        "area": "Rozloha",
-        "density": "Hustota",
-        "source": "Zdroj:",
-        "sourceUrl": "sk.wikipedia.org",
-        "filter": "Filtrovať",
-        "chooseDistrict": "Vybrať okres",
-        "activeFilter": "Aktívny filter",
-        "wrapActiveFilter": "Zbaliť aktívny filter",
-        "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie.",
-        "resetOrder": "Resetovať poradie",
-        "pagination": "Tabuľková navigácia",
-        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
-        "paginationSummaryEmpty": "Zobrazených 0 z celkových 0 záznamov",
-        "noRowsFound": "Nenašli sa žiadne záznamy",
-        "noDataLoaded": "Nenačítali sa žiadne záznamy"
-    }
+    "languageSelector.open": "Rozbaliť jazykové menu",
+    "languageSelector.close": "Skryť jazykové menu",
+    "searchInput.search": "Hľadať",
+    "language.sk": "Slovenský jazyk",
+    "language.en": "English",
+    "language.cimode": "Preklady",
+    "tab.contents": "Obsah",
+    "tab.moreTabs": "Dalsie zalozky",
+    "loading.loadingSubPage": "Načítavám podstránku",
+    "table.title": "Mestá",
+    "table.heading": "Filtrovať obsah",
+    "table.unpack": "Rozbaliť obsah filtra",
+    "table.pack": "Zbaliť obsah filtra",
+    "table.city": "Mesto",
+    "table.region": "Kraj",
+    "table.district": "Okres",
+    "table.area": "Rozloha",
+    "table.density": "Hustota",
+    "table.source": "Zdroj:",
+    "table.sourceUrl": "sk.wikipedia.org",
+    "table.filter": "Filtrovať",
+    "table.chooseDistrict": "Vybrať okres",
+    "table.activeFilter": "Aktívny filter",
+    "table.wrapActiveFilter": "Zbaliť aktívny filter",
+    "table.unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie.",
+    "table.resetOrder": "Resetovať poradie",
+    "table.pagination": "Tabuľková navigácia",
+    "table.paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
+    "table.paginationSummaryEmpty": "Zobrazených 0 z celkových 0 záznamov",
+    "table.noRowsFound": "Nenašli sa žiadne záznamy",
+    "table.noDataLoaded": "Nenačítali sa žiadne záznamy"
 }

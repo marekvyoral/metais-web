@@ -13,9 +13,19 @@ interface IDefinitionListItemProps extends PropsWithChildren {
     href?: string
     tooltip?: string
     hideIcon?: boolean
+    className?: string
 }
 
-export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, value, secColValue, valueWarning, lang, tooltip, hideIcon }) => {
+export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({
+    label,
+    value,
+    secColValue,
+    valueWarning,
+    lang,
+    tooltip,
+    hideIcon,
+    className,
+}) => {
     return (
         <GridRow className={styles.groupRow}>
             {(label || tooltip || hideIcon) && (
@@ -27,7 +37,7 @@ export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, 
                 </GridCol>
             )}
 
-            <GridCol setWidth={secColValue ? (label ? 'one-third' : 'one-half') : 'two-thirds'}>
+            <GridCol setWidth={secColValue ? (label ? 'one-third' : 'one-half') : 'two-thirds'} className={classNames(className)}>
                 <dd className={styles.dd}>
                     <TextBody className={classNames({ [styles.valueRed]: valueWarning })} lang={lang}>
                         {value}

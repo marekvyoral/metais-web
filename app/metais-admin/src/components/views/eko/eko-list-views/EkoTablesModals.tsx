@@ -3,6 +3,8 @@ import { EkoCode, EkoCodeList } from '@isdd/metais-common/api/generated/tco-swag
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { TEkoCodeDecorated } from '@/components/views/eko/ekoCodes'
 import { IResultApiCall } from '@/components/views/eko/ekoHelpers'
@@ -18,6 +20,7 @@ export interface IEkoTableModalsProps {
     checkedToDelete: TEkoCodeDecorated[]
     isOpenConfirmationModal: boolean
     isOpenDeleteConfirmationModal: boolean
+    setRowSelection: React.Dispatch<React.SetStateAction<Record<string, TEkoCodeDecorated>>>
 }
 
 export const EkoTableModals = ({
@@ -31,6 +34,7 @@ export const EkoTableModals = ({
     closeDeleteModal,
     checkedToInvalidate,
     checkedToDelete,
+    setRowSelection,
 }: IEkoTableModalsProps) => {
     const { t } = useTranslation()
 
@@ -39,52 +43,66 @@ export const EkoTableModals = ({
         return { ekoCodes: ekoCodes, ekoCodesCount: ekoCodes.length }
     }, [])
 
+    const { setIsActionSuccess, clearAction } = useActionSuccess()
+
+    const getErrorMessage = useCallback(
+        (type: string) => {
+            switch (type) {
+                case ReponseErrorCodeEnum.GNR403:
+                    return t(`errors.${ReponseErrorCodeEnum.GNR403}`)
+                case ReponseErrorCodeEnum.EKO_CODE_USED:
+                    return t(`errors.${ReponseErrorCodeEnum.EKO_CODE_USED}`)
+                default:
+                    return t(`errors.${ReponseErrorCodeEnum.DEFAULT}`)
+            }
+        },
+        [t],
+    )
+
     const handlerInvalidateCodes = useCallback(
         async (codes: TEkoCodeDecorated[]) => {
             await invalidateCodes(getPayloadForHandler(codes))
                 .then(() => {
-                    setResultApiCall({ isError: false, isSuccess: true, message: undefined })
+                    setIsActionSuccess({ value: true, path: AdminRouteNames.EKO, additionalInfo: { type: 'invalidate' } })
+                    setRowSelection([])
                 })
                 .catch((mutationError) => {
+                    clearAction()
                     const errorResponse = JSON.parse(mutationError.message)
                     setResultApiCall({
                         isError: true,
                         isSuccess: false,
-                        message:
-                            errorResponse?.type === ReponseErrorCodeEnum.GNR403
-                                ? t(`errors.${ReponseErrorCodeEnum.GNR403}`)
-                                : t(`errors.${ReponseErrorCodeEnum.DEFAULT}`),
+                        message: getErrorMessage(errorResponse.type),
                     })
                 })
                 .finally(() => {
                     setLoading(false)
                 })
         },
-        [getPayloadForHandler, invalidateCodes, setLoading, setResultApiCall, t],
+        [clearAction, getErrorMessage, getPayloadForHandler, invalidateCodes, setIsActionSuccess, setLoading, setResultApiCall, setRowSelection],
     )
 
     const handlerDeleteCodes = useCallback(
         async (codes: TEkoCodeDecorated[]) => {
             await deleteCodes(getPayloadForHandler(codes))
                 .then(() => {
-                    setResultApiCall({ isError: false, isSuccess: true, message: undefined })
+                    setIsActionSuccess({ value: true, path: AdminRouteNames.EKO, additionalInfo: { type: 'delete' } })
+                    setRowSelection([])
                 })
                 .catch((mutationError) => {
+                    clearAction()
                     const errorResponse = JSON.parse(mutationError.message)
                     setResultApiCall({
                         isError: true,
                         isSuccess: false,
-                        message:
-                            errorResponse?.type === ReponseErrorCodeEnum.GNR403
-                                ? t(`errors.${ReponseErrorCodeEnum.GNR403}`)
-                                : t(`errors.${ReponseErrorCodeEnum.DEFAULT}`),
+                        message: getErrorMessage(errorResponse.type),
                     })
                 })
                 .finally(() => {
                     setLoading(false)
                 })
         },
-        [deleteCodes, getPayloadForHandler, setLoading, setResultApiCall, t],
+        [clearAction, deleteCodes, getErrorMessage, getPayloadForHandler, setIsActionSuccess, setLoading, setResultApiCall, setRowSelection],
     )
 
     const handleCancelConfirmationModal = () => {
@@ -102,7 +120,7 @@ export const EkoTableModals = ({
     const handleOkDeleteConfirmationModal = () => {
         setLoading(true)
         closeDeleteModal()
-        handlerDeleteCodes(checkedToInvalidate)
+        handlerDeleteCodes(checkedToDelete)
     }
     return (
         <>

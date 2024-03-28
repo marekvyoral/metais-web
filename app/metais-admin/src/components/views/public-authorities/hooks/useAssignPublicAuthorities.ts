@@ -114,7 +114,7 @@ export const useAssignPublicAuthorities = <T extends FieldValues & IFilterParams
         ...filterToNeighborsApi,
         filter: {
             ...filterToNeighborsApi.filter,
-            poUuid: filterParams.onlyFreePO ? entityId : undefined,
+            poUuid: filterParams.onlyFreePO ? undefined : entityId,
             fullTextSearch: filterParams.fullTextSearch || '',
             attributes: mapFilterParamsToApi(filterParams, defaultFilterOperators),
         },
