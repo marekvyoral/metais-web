@@ -76,7 +76,6 @@ export const FileImport: React.FC<IFileImport> = ({
                 result.successful.forEach(async (file) => {
                     await getRequestStatus(file.response?.body.requestId as string, () => updateUploadFilesStatus(file, true))
                 })
-                // result.successful.forEach((item) => updateUploadFilesStatus(item, true))
                 result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error))
             })
         } catch (error) {

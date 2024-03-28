@@ -14,7 +14,7 @@ export const useGetStatus = (awaitForStatus?: string) => {
 
     const callStatusInCycles = async (requestId: string) => {
         let done = false
-        for (let index = 0; index < 5; index++) {
+        for (let index = 0; index < API_CALL_RETRY_COUNT; index++) {
             const result = await requestStatus(requestId)
             if (
                 (result.processed && result.status === 'READY') ||
