@@ -184,6 +184,7 @@
     "navMenu.lists.integrationAgreementsOnServiceLevel": "Integration agreements on the level of service provided (ISLA)",
     "navMenu.lists.training": "Trainings",
     "navMenu.lists.relationsSearch": "Relationships search",
+    "navMenu.lists.zc": "Base codelist",
     "navMenu.sla.slaAndIntegrations": "SLA",
     "navMenu.sla.integrationLinks": "Integration links",
     "navMenu.sla.isla": "Integration SLA",
