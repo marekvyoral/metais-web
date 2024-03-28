@@ -1,45 +1,33 @@
 {
-    "languageSelector": {
-        "open": "Open language menu",
-        "close": "Close language menu"
-    },
-    "searchInput": {
-        "search": "Search"
-    },
-    "language": {
-        "sk": "Slovenský jazyk",
-        "en": "English",
-        "cimode": "Translations"
-    },
-    "tab": {
-        "contents": "Contents",
-        "moreTabs": "More tabs"
-    },
-    "loading": {
-        "loadingSubPage": "Loading sub-page"
-    },
-    "table": {
-        "title": "Cities",
-        "heading": "Filter Content",
-        "unpack": "Unpack Filter Content",
-        "pack": "Pack Filter Content",
-        "city": "City",
-        "region": "Region",
-        "district": "District",
-        "area": "Area",
-        "density": "Density",
-        "source": "Source:",
-        "sourceUrl": "sk.wikipedia.org",
-        "filter": "Filter",
-        "chooseDistrict": "Choose district",
-        "activeFilter": "Active filter",
-        "wrapActiveFilter": "Pack active filter",
-        "unorderedColumn": "Unsorted column - will use ascending sorting.",
-        "resetOrder": "Reset order",
-        "pagination": "Page navigation",
-        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
-        "paginationSummaryEmpty": "Viewed 0 from total 0 records",
-        "noRowsFound": "No rows found",
-        "noDataLoaded": "No data loaded"
-    }
+    "languageSelector.open": "Open language menu",
+    "languageSelector.close": "Close language menu",
+    "searchInput.search": "Search",
+    "language.sk": "Slovenský jazyk",
+    "language.en": "English",
+    "language.cimode": "Translations",
+    "tab.contents": "Contents",
+    "tab.moreTabs": "More tabs",
+    "loading.loadingSubPage": "Loading sub-page",
+    "table.title": "Cities",
+    "table.heading": "Filter Content",
+    "table.unpack": "Unpack Filter Content",
+    "table.pack": "Pack Filter Content",
+    "table.city": "City",
+    "table.region": "Region",
+    "table.district": "District",
+    "table.area": "Area",
+    "table.density": "Density",
+    "table.source": "Source:",
+    "table.sourceUrl": "sk.wikipedia.org",
+    "table.filter": "Filter",
+    "table.chooseDistrict": "Choose district",
+    "table.activeFilter": "Active filter",
+    "table.wrapActiveFilter": "Pack active filter",
+    "table.unorderedColumn": "Unsorted column - will use ascending sorting.",
+    "table.resetOrder": "Reset order",
+    "table.pagination": "Page navigation",
+    "table.paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
+    "table.paginationSummaryEmpty": "Viewed 0 from total 0 records",
+    "table.noRowsFound": "No rows found",
+    "table.noDataLoaded": "No data loaded"
 }
