@@ -5,7 +5,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { AttributeAttributeTypeEnum, AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
-import { Filter } from './Filter'
+import { Filter } from '.'
 
 import { SearchInput } from '@isdd/idsk-ui-kit/searchInput/SearchInput'
 import { Input } from '@/input/Input'

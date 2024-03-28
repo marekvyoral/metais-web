@@ -1,112 +1,129 @@
 import { FooterRouteNames, LoginRouteNames, RouterRoutes, SLARouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { lazy } from 'react'
 
 import { RootRouteContainer } from './route-containers/RootRouteContainer'
 
-import { TodoPage } from '@/components/views/todo-page/TodoPage'
-import { DevTestScreen } from '@/pages/DevTestScreen'
-import { ForgottenPasswordPage } from '@/pages/ForgottenPasswordPage'
-import { Home } from '@/pages/Home'
-import { IdentityTermsPage } from '@/pages/IdentityTermsPage'
-import { LoginProblemsPage } from '@/pages/LoginProblemsPage'
-import AsEntityDetailPage from '@/pages/ci/AS/[entityId]'
-import CloneASPage from '@/pages/ci/AS/[entityId]/clone'
-import { IntegrationLinkDetailPage } from '@/pages/ci/Integracia/[entityId]'
-import { IntegrationHarmonogram } from '@/pages/ci/Integracia/[entityId]/harmonogram'
-import { IntegrationLinkHistory } from '@/pages/ci/Integracia/[entityId]/history'
-import { IntegrationLinkInformation } from '@/pages/ci/Integracia/[entityId]/information'
-import { IntegrationKsAsList } from '@/pages/ci/Integracia/[entityId]/ksAsList'
-import { IntegrationSubjectsList } from '@/pages/ci/Integracia/[entityId]/subjectsList'
-import { ProvIntegrationList } from '@/pages/ci/Integracia/list'
-import KRISListPage from '@/pages/ci/KRIS'
-import KrisEntityDetailPage from '@/pages/ci/KRIS/[entityId]'
-import KRISDocumentsListPage from '@/pages/ci/KRIS/[entityId]/documents'
-import Evaluation from '@/pages/ci/KRIS/[entityId]/evaluation'
-import Goals from '@/pages/ci/KRIS/[entityId]/goals'
-import Tasks from '@/pages/ci/KRIS/[entityId]/tasks'
-import KsEntityDetailPage from '@/pages/ci/KS/[entityId]'
-import { SlaContractDetailPage } from '@/pages/ci/Kontrakt/[entityId]'
-import { SlaContractHistory } from '@/pages/ci/Kontrakt/[entityId]/history'
-import { SlaContractInformation } from '@/pages/ci/Kontrakt/[entityId]/information'
-import { SlaContractSupportContact } from '@/pages/ci/Kontrakt/[entityId]/supportContact'
-import POIsListPage from '@/pages/ci/PO_IS'
-import POIsPOListPage from '@/pages/ci/PO_IS_PO'
-import POPOListPage from '@/pages/ci/PO_PO'
-import PrincipleEntityDetailPage from '@/pages/ci/Princip/[entityId]'
-import ProjectEntityDetailPage from '@/pages/ci/Projekt/[entityId]'
-import ActivitiesListPage from '@/pages/ci/Projekt/[entityId]/activities'
-import ProjectDocumentsListPage from '@/pages/ci/Projekt/[entityId]/documents'
-import TrainingEntityDetailPage from '@/pages/ci/Trainings/[entityId]'
-import TrainingInvitePage from '@/pages/ci/Trainings/[entityId]/invite'
-import EntityDetailPage from '@/pages/ci/[entityName]/[entityId]'
-import DocumentsListPage from '@/pages/ci/[entityName]/[entityId]/documents'
-import EditEntityPage from '@/pages/ci/[entityName]/[entityId]/edit'
-import History from '@/pages/ci/[entityName]/[entityId]/history'
-import CompareSinglePage from '@/pages/ci/[entityName]/[entityId]/history/[firstId]'
-import ComparePage from '@/pages/ci/[entityName]/[entityId]/history/[firstId]/[secondId]'
-import Information from '@/pages/ci/[entityName]/[entityId]/information'
-import CreateCiItemAndRelation from '@/pages/ci/[entityName]/[entityId]/new-ci/[tabName]'
-import NewCiRelationPage from '@/pages/ci/[entityName]/[entityId]/new-relation/[tabName]'
-import RelationshipsAccordionPage from '@/pages/ci/[entityName]/[entityId]/relationships'
-import CreateKrisEntityPage from '@/pages/ci/KRIS/create'
-import CreateEntityPage from '@/pages/ci/[entityName]/create'
-import CiListPage from '@/pages/ci/[entityName]/entity'
-import CodeListDetailPage from '@/pages/data-objects/codelists/[id]/detail'
-import EditCodeListPage from '@/pages/data-objects/codelists/[id]/edit'
-import CodeListPage from '@/pages/data-objects/codelists/list'
-import RefIdentifiersPage from '@/pages/data-objects/ref-identifiers'
-import RequestListDetailPage from '@/pages/data-objects/requestlist/[requestId]/detail'
-import RequestListEditPage from '@/pages/data-objects/requestlist/[requestId]/edit'
-import RequestListCreatePage from '@/pages/data-objects/requestlist/create'
-import RequestListPage from '@/pages/data-objects/requestlist/requestList'
-import GlobalSearchPage from '@/pages/global/search/search'
-import TutorialPage from '@/pages/help'
-import GeneralHowTo from '@/pages/howto'
-import NotificationsPage from '@/pages/notifications'
-import NotificationsDetailPage from '@/pages/notifications/[id]'
-import { OlaContractList } from '@/pages/ola-contract-list'
-import PublicAuthoritiesHierarchyPage from '@/pages/public-authorities-hierarchy'
-import ITVSStandards from '@/pages/publicspace'
-import RefRegistersDetail from '@/pages/refregisters/[entityId]'
-import RefRegistersEdit from '@/pages/refregisters/[entityId]/edit'
-import RefRegistersHistory from '@/pages/refregisters/[entityId]/history'
-import RefRegistersCompareSinglePage from '@/pages/refregisters/[entityId]/history/[firstId]'
-import RefRegistersComparePage from '@/pages/refregisters/[entityId]/history/[firstId]/[secondId]'
-import RefRegistersHistoryChanges from '@/pages/refregisters/[entityId]/historyChanges'
-import RefRegistersInformation from '@/pages/refregisters/[entityId]/information'
-import RefRegistersCreate from '@/pages/refregisters/create'
-import ReferenceRegisters from '@/pages/refregisters/refRegisterList'
-import Failed from '@/pages/registration/failed'
-import Registration from '@/pages/registration/registration'
-import Success from '@/pages/registration/success'
-import RelationDetailPage from '@/pages/relation/[entityName]/[entityId]/[relationshipId]'
-import ReportsListPage from '@/pages/reports/reports'
-import SLADetailPage from '@/pages/sla-detail'
-import DraftsListEditPage from '@/pages/standardization/draftslist/[entityId]/edit'
-import DraftDetail from '@/pages/standardization/draftslist/[entityId]/form'
-import DraftsListCreatePage from '@/pages/standardization/draftslist/create'
-import DraftsListListPage from '@/pages/standardization/draftslist/list'
-import GroupsListPage from '@/pages/standardization/groupslist'
-import GroupDetailPage from '@/pages/standardization/groupslist/[groupId]'
-import GroupEditPage from '@/pages/standardization/groupslist/[groupId]/edit'
-import CreateGroupPage from '@/pages/standardization/groupslist/create'
-import MeetingsListPage from '@/pages/standardization/meetingslist'
-import MeetingDetailPage from '@/pages/standardization/meetingslist/[meetingId]'
-import MeetingEditPage from '@/pages/standardization/meetingslist/[meetingId]/edit'
-import CreateMeetingPage from '@/pages/standardization/meetingslist/create'
-import VotesListPage from '@/pages/standardization/voteslist'
-import VoteDetailPage from '@/pages/standardization/voteslist/[voteIdParam]'
-import VoteEditPage from '@/pages/standardization/voteslist/[voteIdParam]/edit'
-import VoteCreatePage from '@/pages/standardization/voteslist/create'
-import TasksPage from '@/pages/ulohy'
-import TaskDetailPage from '@/pages/ulohy/[taskId]'
-import UserProfilePage from '@/pages/userprofile/profile'
-import ImportParametersPage from '@/pages/monitoring/import'
-import DetailServicePage from '@/pages/monitoring/services/monitoras/[serviceUuid]'
-import InsertServicePage from '@/pages/monitoring/services/monitoras/insert/[serviceUuid]'
-import CreateITVSExceptionsPage from '@/pages/ci/OsobitnyPostup/create'
-import ITVSExceptionsEditPage from '@/pages/ci/OsobitnyPostup/[entityId]/edit'
-import CreateProjectPage from '@/pages/ci/Projekt/create'
-import EditProjectPage from '@/pages/ci/Projekt/[entityId]/edit'
+const TodoPage = lazy(() => import('@/components/views/todo-page/TodoPage').then((module) => ({ default: module.TodoPage })))
+const DevTestScreen = lazy(() => import('@/pages/DevTestScreen').then((module) => ({ default: module.DevTestScreen })))
+const ForgottenPasswordPage = lazy(() => import('@/pages/ForgottenPasswordPage').then((module) => ({ default: module.ForgottenPasswordPage })))
+const Home = lazy(() => import('@/pages/Home').then((module) => ({ default: module.Home })))
+const IdentityTermsPage = lazy(() => import('@/pages/IdentityTermsPage').then((module) => ({ default: module.IdentityTermsPage })))
+const LoginProblemsPage = lazy(() => import('@/pages/LoginProblemsPage').then((module) => ({ default: module.LoginProblemsPage })))
+const AsEntityDetailPage = lazy(() => import('@/pages/ci/AS/[entityId]'))
+const CloneASPage = lazy(() => import('@/pages/ci/AS/[entityId]/clone'))
+const IntegrationLinkDetailPage = lazy(() =>
+    import('@/pages/ci/Integracia/[entityId]').then((module) => ({ default: module.IntegrationLinkDetailPage })),
+)
+const IntegrationHarmonogram = lazy(() =>
+    import('@/pages/ci/Integracia/[entityId]/harmonogram').then((module) => ({ default: module.IntegrationHarmonogram })),
+)
+const IntegrationLinkHistory = lazy(() =>
+    import('@/pages/ci/Integracia/[entityId]/history').then((module) => ({ default: module.IntegrationLinkHistory })),
+)
+const IntegrationLinkInformation = lazy(() =>
+    import('@/pages/ci/Integracia/[entityId]/information').then((module) => ({ default: module.IntegrationLinkInformation })),
+)
+const IntegrationKsAsList = lazy(() =>
+    import('@/pages/ci/Integracia/[entityId]/ksAsList').then((module) => ({ default: module.IntegrationKsAsList })),
+)
+const IntegrationSubjectsList = lazy(() =>
+    import('@/pages/ci/Integracia/[entityId]/subjectsList').then((module) => ({ default: module.IntegrationSubjectsList })),
+)
+const ProvIntegrationList = lazy(() => import('@/pages/ci/Integracia/list').then((module) => ({ default: module.ProvIntegrationList })))
+const KRISListPage = lazy(() => import('@/pages/ci/KRIS'))
+const KrisEntityDetailPage = lazy(() => import('@/pages/ci/KRIS/[entityId]'))
+const KRISDocumentsListPage = lazy(() => import('@/pages/ci/KRIS/[entityId]/documents'))
+const Evaluation = lazy(() => import('@/pages/ci/KRIS/[entityId]/evaluation'))
+const Goals = lazy(() => import('@/pages/ci/KRIS/[entityId]/goals'))
+const Tasks = lazy(() => import('@/pages/ci/KRIS/[entityId]/tasks'))
+const KsEntityDetailPage = lazy(() => import('@/pages/ci/KS/[entityId]'))
+const SlaContractDetailPage = lazy(() => import('@/pages/ci/Kontrakt/[entityId]').then((module) => ({ default: module.SlaContractDetailPage })))
+const SlaContractHistory = lazy(() => import('@/pages/ci/Kontrakt/[entityId]/history').then((module) => ({ default: module.SlaContractHistory })))
+const SlaContractInformation = lazy(() =>
+    import('@/pages/ci/Kontrakt/[entityId]/information').then((module) => ({ default: module.SlaContractInformation })),
+)
+const SlaContractSupportContact = lazy(() =>
+    import('@/pages/ci/Kontrakt/[entityId]/supportContact').then((module) => ({ default: module.SlaContractSupportContact })),
+)
+const POIsListPage = lazy(() => import('@/pages/ci/PO_IS'))
+const POIsPOListPage = lazy(() => import('@/pages/ci/PO_IS_PO'))
+const POPOListPage = lazy(() => import('@/pages/ci/PO_PO'))
+const PrincipleEntityDetailPage = lazy(() => import('@/pages/ci/Princip/[entityId]'))
+const ProjectEntityDetailPage = lazy(() => import('@/pages/ci/Projekt/[entityId]'))
+const ActivitiesListPage = lazy(() => import('@/pages/ci/Projekt/[entityId]/activities'))
+const ProjectDocumentsListPage = lazy(() => import('@/pages/ci/Projekt/[entityId]/documents'))
+const TrainingEntityDetailPage = lazy(() => import('@/pages/ci/Trainings/[entityId]'))
+const TrainingInvitePage = lazy(() => import('@/pages/ci/Trainings/[entityId]/invite'))
+const EntityDetailPage = lazy(() => import('@/pages/ci/[entityName]/[entityId]'))
+const DocumentsListPage = lazy(() => import('@/pages/ci/[entityName]/[entityId]/documents'))
+const EditEntityPage = lazy(() => import('@/pages/ci/[entityName]/[entityId]/edit'))
+const History = lazy(() => import('@/pages/ci/[entityName]/[entityId]/history'))
+const CompareSinglePage = lazy(() => import('@/pages/ci/[entityName]/[entityId]/history/[firstId]'))
+const ComparePage = lazy(() => import('@/pages/ci/[entityName]/[entityId]/history/[firstId]/[secondId]'))
+const Information = lazy(() => import('@/pages/ci/[entityName]/[entityId]/information'))
+const CreateCiItemAndRelation = lazy(() => import('@/pages/ci/[entityName]/[entityId]/new-ci/[tabName]'))
+const NewCiRelationPage = lazy(() => import('@/pages/ci/[entityName]/[entityId]/new-relation/[tabName]'))
+const RelationshipsAccordionPage = lazy(() => import('@/pages/ci/[entityName]/[entityId]/relationships'))
+const CreateKrisEntityPage = lazy(() => import('@/pages/ci/KRIS/create'))
+const CreateEntityPage = lazy(() => import('@/pages/ci/[entityName]/create'))
+const CiListPage = lazy(() => import('@/pages/ci/[entityName]/entity'))
+const CodeListDetailPage = lazy(() => import('@/pages/data-objects/codelists/[id]/detail'))
+const EditCodeListPage = lazy(() => import('@/pages/data-objects/codelists/[id]/edit'))
+const CodeListPage = lazy(() => import('@/pages/data-objects/codelists/list'))
+const RefIdentifiersPage = lazy(() => import('@/pages/data-objects/ref-identifiers'))
+const RequestListDetailPage = lazy(() => import('@/pages/data-objects/requestlist/[requestId]/detail'))
+const RequestListEditPage = lazy(() => import('@/pages/data-objects/requestlist/[requestId]/edit'))
+const RequestListCreatePage = lazy(() => import('@/pages/data-objects/requestlist/create'))
+const RequestListPage = lazy(() => import('@/pages/data-objects/requestlist/requestList'))
+const GlobalSearchPage = lazy(() => import('@/pages/global/search/search'))
+const TutorialPage = lazy(() => import('@/pages/help'))
+const GeneralHowTo = lazy(() => import('@/pages/howto'))
+const NotificationsPage = lazy(() => import('@/pages/notifications'))
+const NotificationsDetailPage = lazy(() => import('@/pages/notifications/[id]'))
+const OlaContractList = lazy(() => import('@/pages/ola-contract-list').then((module) => ({ default: module.OlaContractList })))
+const PublicAuthoritiesHierarchyPage = lazy(() => import('@/pages/public-authorities-hierarchy'))
+const ITVSStandards = lazy(() => import('@/pages/publicspace'))
+const RefRegistersDetail = lazy(() => import('@/pages/refregisters/[entityId]'))
+const RefRegistersEdit = lazy(() => import('@/pages/refregisters/[entityId]/edit'))
+const RefRegistersHistory = lazy(() => import('@/pages/refregisters/[entityId]/history'))
+const RefRegistersCompareSinglePage = lazy(() => import('@/pages/refregisters/[entityId]/history/[firstId]'))
+const RefRegistersComparePage = lazy(() => import('@/pages/refregisters/[entityId]/history/[firstId]/[secondId]'))
+const RefRegistersHistoryChanges = lazy(() => import('@/pages/refregisters/[entityId]/historyChanges'))
+const RefRegistersInformation = lazy(() => import('@/pages/refregisters/[entityId]/information'))
+const RefRegistersCreate = lazy(() => import('@/pages/refregisters/create'))
+const ReferenceRegisters = lazy(() => import('@/pages/refregisters/refRegisterList'))
+const Failed = lazy(() => import('@/pages/registration/failed'))
+const Registration = lazy(() => import('@/pages/registration/registration'))
+const Success = lazy(() => import('@/pages/registration/success'))
+const RelationDetailPage = lazy(() => import('@/pages/relation/[entityName]/[entityId]/[relationshipId]'))
+const ReportsListPage = lazy(() => import('@/pages/reports/reports'))
+const SLADetailPage = lazy(() => import('@/pages/sla-detail'))
+const DraftsListEditPage = lazy(() => import('@/pages/standardization/draftslist/[entityId]/edit'))
+const DraftDetail = lazy(() => import('@/pages/standardization/draftslist/[entityId]/form'))
+const DraftsListCreatePage = lazy(() => import('@/pages/standardization/draftslist/create'))
+const DraftsListListPage = lazy(() => import('@/pages/standardization/draftslist/list'))
+const GroupsListPage = lazy(() => import('@/pages/standardization/groupslist'))
+const GroupDetailPage = lazy(() => import('@/pages/standardization/groupslist/[groupId]'))
+const GroupEditPage = lazy(() => import('@/pages/standardization/groupslist/[groupId]/edit'))
+const CreateGroupPage = lazy(() => import('@/pages/standardization/groupslist/create'))
+const MeetingsListPage = lazy(() => import('@/pages/standardization/meetingslist'))
+const MeetingDetailPage = lazy(() => import('@/pages/standardization/meetingslist/[meetingId]'))
+const MeetingEditPage = lazy(() => import('@/pages/standardization/meetingslist/[meetingId]/edit'))
+const CreateMeetingPage = lazy(() => import('@/pages/standardization/meetingslist/create'))
+const VotesListPage = lazy(() => import('@/pages/standardization/voteslist'))
+const VoteDetailPage = lazy(() => import('@/pages/standardization/voteslist/[voteIdParam]'))
+const VoteEditPage = lazy(() => import('@/pages/standardization/voteslist/[voteIdParam]/edit'))
+const VoteCreatePage = lazy(() => import('@/pages/standardization/voteslist/create'))
+const TasksPage = lazy(() => import('@/pages/ulohy'))
+const TaskDetailPage = lazy(() => import('@/pages/ulohy/[taskId]'))
+const UserProfilePage = lazy(() => import('@/pages/userprofile/profile'))
+const ImportParametersPage = lazy(() => import('@/pages/monitoring/import'))
+const DetailServicePage = lazy(() => import('@/pages/monitoring/services/monitoras/[serviceUuid]'))
+const InsertServicePage = lazy(() => import('@/pages/monitoring/services/monitoras/insert/[serviceUuid]'))
+const CreateITVSExceptionsPage = lazy(() => import('@/pages/ci/OsobitnyPostup/create'))
+const ITVSExceptionsEditPage = lazy(() => import('@/pages/ci/OsobitnyPostup/[entityId]/edit'))
+const CreateProjectPage = lazy(() => import('@/pages/ci/Projekt/create'))
+const EditProjectPage = lazy(() => import('@/pages/ci/Projekt/[entityId]/edit'))
 import PO_POEntityDetailPage from '@/pages/ci/PO_PO/[entityId]'
 import PO_ISEntityDetailPage from '@/pages/ci/PO_IS/[entityId]'
 import PO_IS_POEntityDetailPage from '@/pages/ci/PO_IS_PO/[entityId]'
@@ -116,38 +133,41 @@ import PO_PORelationshipOutlet from '@/pages/ci/PO_PO/[entityId]/relationships'
 import PO_POHistoryOutlet from '@/pages/ci/PO_PO/[entityId]/history'
 import PO_ISInformationOutlet from '@/pages/ci/PO_IS/[entityId]/information'
 import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/information'
-import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
-import HowToGenericPage from '@/pages/howto/[howToEnumType]'
-import ServicesListPage from '@/pages/monitoring/services/services'
-import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
-import RelationListPage from '@/pages/relations'
-import { SlaContractList } from '@/pages/ci/Kontrakt/list'
-import { OlaContractAdd } from '@/pages/ola-contract-list/add'
-import { OlaContractDetail } from '@/pages/ola-contract-list/detail'
-import { OlaContractEdit } from '@/pages/ola-contract-list/edit'
-import { IntegrationLinkCreate } from '@/pages/ci/Integracia/create'
-import { EditIntegrationLinkPage } from '@/pages/ci/Integracia/[entityId]/edit'
-import RefIdentifierDetailPage from '@/pages/data-objects/ref-identifiers/[id]/detail'
-import RefIdentifierCreatePage from '@/pages/data-objects/ref-identifiers/create'
-import RefIdentifierEditPage from '@/pages/data-objects/ref-identifiers/[id]/edit'
-import CloneKSPage from '@/pages/ci/KS/[entityId]/clone'
-import PersonalDataInfoPage from '@/pages/cookies/personalDataProtection'
-import TermsOfUse from '@/pages/cookies/termsOfUse'
-import CookiesSettings from '@/pages/cookies/settings'
-import { ReportsDetailPage } from '@/pages/reports/[entityId]/report'
-import CookiesInfoPage from '@/pages/cookies/info'
-import DeclarationPage from '@/pages/technical/declaration'
-import CreateTrainingEntityPage from '@/pages/ci/Trainings/create'
-import EditTrainingEntityPage from '@/pages/ci/Trainings/[entityId]/edit'
-import AboutApplicationPage from '@/pages/about-application/aboutApp'
-import TrainingInformation from '@/pages/ci/Trainings/[entityId]/information'
-import ITVSExceptionsInformation from '@/pages/ci/OsobitnyPostup/[entityId]/information'
-import GroupItvsDetailPage from '@/pages/standardization/groupslist/itvs'
-import GroupEditItvsPage from '@/pages/standardization/groupslist/itvs/edit'
-import ReferenceRegisterDetail from '@/pages/ci/ReferenceRegister'
-import WebPortalInformation from '@/pages/ci/WeboveSidlo/[entityId]/information'
-import { BulkListPage } from '@/pages/bulk-list/BulkList'
-import MiestoPrevadzkyEntityDetailPage from '@/pages/ci/MiestoPrevadzky'
+
+const HowToMonitoringPage = lazy(() => import('@/pages/howto/monitoringHowTo'))
+const HowToGenericPage = lazy(() => import('@/pages/howto/[howToEnumType]'))
+const ServicesListPage = lazy(() => import('@/pages/monitoring/services/services'))
+const SLAParamsListPage = lazy(() => import('@/pages/sla-params-list/[entityName]'))
+const RelationListPage = lazy(() => import('@/pages/relations'))
+const SlaContractList = lazy(() => import('@/pages/ci/Kontrakt/list').then((module) => ({ default: module.SlaContractList })))
+const OlaContractAdd = lazy(() => import('@/pages/ola-contract-list/add').then((module) => ({ default: module.OlaContractAdd })))
+const OlaContractDetail = lazy(() => import('@/pages/ola-contract-list/detail').then((module) => ({ default: module.OlaContractDetail })))
+const OlaContractEdit = lazy(() => import('@/pages/ola-contract-list/edit').then((module) => ({ default: module.OlaContractEdit })))
+const IntegrationLinkCreate = lazy(() => import('@/pages/ci/Integracia/create').then((module) => ({ default: module.IntegrationLinkCreate })))
+const EditIntegrationLinkPage = lazy(() =>
+    import('@/pages/ci/Integracia/[entityId]/edit').then((module) => ({ default: module.EditIntegrationLinkPage })),
+)
+const RefIdentifierDetailPage = lazy(() => import('@/pages/data-objects/ref-identifiers/[id]/detail'))
+const RefIdentifierCreatePage = lazy(() => import('@/pages/data-objects/ref-identifiers/create'))
+const RefIdentifierEditPage = lazy(() => import('@/pages/data-objects/ref-identifiers/[id]/edit'))
+const CloneKSPage = lazy(() => import('@/pages/ci/KS/[entityId]/clone'))
+const PersonalDataInfoPage = lazy(() => import('@/pages/cookies/personalDataProtection'))
+const TermsOfUse = lazy(() => import('@/pages/cookies/termsOfUse'))
+const CookiesSettings = lazy(() => import('@/pages/cookies/settings'))
+const ReportsDetailPage = lazy(() => import('@/pages/reports/[entityId]/report').then((module) => ({ default: module.ReportsDetailPage })))
+const CookiesInfoPage = lazy(() => import('@/pages/cookies/info'))
+const DeclarationPage = lazy(() => import('@/pages/technical/declaration'))
+const CreateTrainingEntityPage = lazy(() => import('@/pages/ci/Trainings/create'))
+const EditTrainingEntityPage = lazy(() => import('@/pages/ci/Trainings/[entityId]/edit'))
+const AboutApplicationPage = lazy(() => import('@/pages/about-application/aboutApp'))
+const TrainingInformation = lazy(() => import('@/pages/ci/Trainings/[entityId]/information'))
+const ITVSExceptionsInformation = lazy(() => import('@/pages/ci/OsobitnyPostup/[entityId]/information'))
+const GroupItvsDetailPage = lazy(() => import('@/pages/standardization/groupslist/itvs'))
+const GroupEditItvsPage = lazy(() => import('@/pages/standardization/groupslist/itvs/edit'))
+const ReferenceRegisterDetail = lazy(() => import('@/pages/ci/ReferenceRegister'))
+const WebPortalInformation = lazy(() => import('@/pages/ci/WeboveSidlo/[entityId]/information'))
+const BulkListPage = lazy(() => import('@/pages/bulk-list/BulkList').then((module) => ({ default: module.BulkListPage })))
+const MiestoPrevadzkyEntityDetailPage = lazy(() => import('@/pages/ci/MiestoPrevadzky'))
 
 export interface RouteConfig {
     path?: string

@@ -14,7 +14,7 @@ import {
     formatDateTimeForDefaultValue,
 } from '@isdd/metais-common/index'
 import { ApiStandardRequestPreview, useGetAllStandardRequests } from '@isdd/metais-common/api/generated/standards-swagger'
-import { Filter } from '@isdd/idsk-ui-kit/filter/Filter'
+import { Filter } from '@isdd/idsk-ui-kit/src/filter'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { CheckBox, TextLinkExternal } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'

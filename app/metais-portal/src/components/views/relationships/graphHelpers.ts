@@ -1,7 +1,6 @@
 import * as d3 from 'd3'
 import React, { MouseEvent, RefObject } from 'react'
 import Canvg from 'canvg'
-import { jsPDF } from 'jspdf'
 import { CiWithRelsResultUi, CiWithRelsUi, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import { CiItem, RelsItem, TypeFilter } from './RelationshipGraph'
@@ -156,7 +155,8 @@ export const exportGraph = async (type: 'pdf' | 'png', graphRef: HTMLDivElement,
     const canvasdata = await canvas.toDataURL('image/png')
 
     if (type == 'pdf') {
-        const doc = new jsPDF('landscape', 'pt', 'a4')
+        const lib = await import('jspdf')
+        const doc = new lib.jsPDF('landscape', 'pt', 'a4')
         const size = adjustPdfImageSize(pageW, pageH)
 
         doc.addImage(canvasdata, 'PNG', 0, 20, size.w, size.h, undefined, 'NONE')

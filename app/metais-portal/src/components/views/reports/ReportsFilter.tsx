@@ -3,7 +3,7 @@ import { Parameter, ParameterType } from '@isdd/metais-common/api/generated/repo
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import React from 'react'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { FormProps } from '@isdd/idsk-ui-kit/filter/Filter'
+import { FormProps } from '@isdd/idsk-ui-kit/src/filter'
 import { SelectFilterCMDBParams } from '@isdd/metais-common/src/components/select-cmdb-params/SelectFilterCMDBParams'
 
 import { loadEnumerateOptions, loadEnumsRepoOptions } from '@/componentHelpers'
