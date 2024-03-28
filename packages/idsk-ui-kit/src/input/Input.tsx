@@ -23,6 +23,7 @@ interface IInputProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLIn
     isUpload?: boolean
     hasInputIcon?: boolean
     maxLength?: number
+    suffixElement?: React.ReactNode
 }
 export const Input = forwardRef<HTMLInputElement, IInputProps>(
     (
@@ -42,6 +43,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
             hasInputIcon = false,
             inputClassName,
             maxLength = 255,
+            suffixElement,
             ...rest
         },
         ref,
@@ -74,7 +76,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                     {error}
                 </span>
 
-                <div className={classNames(styles.inputWrapper, inputClassName)} style={{ position: 'relative' }}>
+                <div className={classNames(styles.inputWrapper, inputClassName)} style={{ position: 'relative', display: 'flex' }}>
                     <input
                         className={classNames({ 'govuk-input--error': !!error, 'govuk-input': !isUpload, 'govuk-file-upload': isUpload })}
                         id={id}
@@ -90,6 +92,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                         maxLength={maxLength}
                         required={required}
                     />
+                    {suffixElement}
                     {correct && (
                         <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />
                     )}
