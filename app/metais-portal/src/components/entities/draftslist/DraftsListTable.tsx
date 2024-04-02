@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit'
 import { ColumnDef } from '@tanstack/react-table'
@@ -10,6 +10,7 @@ import { IDraftsListTable } from '@/types/views'
 export const DraftsListTable: React.FC<IDraftsListTable> = ({ data, handleFilterChange, pagination, sort }) => {
     const { t } = useTranslation()
     const location = useLocation()
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const columns: Array<ColumnDef<ApiStandardRequestPreview>> = [
         {
@@ -59,6 +60,7 @@ export const DraftsListTable: React.FC<IDraftsListTable> = ({ data, handleFilter
     return (
         <>
             <Table
+                tableRef={tableRef}
                 data={data?.draftsList ?? []}
                 columns={columns}
                 sort={sort}
@@ -66,7 +68,13 @@ export const DraftsListTable: React.FC<IDraftsListTable> = ({ data, handleFilter
                     handleFilterChange({ sort: newSort })
                 }}
             />
-            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+            <PaginatorWrapper
+                {...pagination}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </>
     )
 }

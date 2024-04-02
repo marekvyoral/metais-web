@@ -8,7 +8,7 @@ import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
-import React, { SetStateAction, useState } from 'react'
+import React, { SetStateAction, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
@@ -57,7 +57,7 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
     const isUserLogged = !!user
 
     const label = <span>+ {t('groups.addNewGroup')}</span>
-
+    const tableRef = useRef<HTMLTableElement>(null)
     const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
     const [pageNumber, setPageNumber] = useState<number>(BASE_PAGE_NUMBER)
 
@@ -121,8 +121,8 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
                         isClearable={false}
                     />
                 </div>
-
                 <Table<GroupWithMeetings>
+                    tableRef={tableRef}
                     columns={columns}
                     data={groups}
                     sort={sort}
@@ -132,7 +132,15 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
                     pagination={{ pageIndex: pageNumber - 1, pageSize: pageSize }}
                 />
             </QueryFeedback>
-            <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={groups?.length ?? 0} handlePageChange={handlePageChange} />
+            <PaginatorWrapper
+                pageNumber={pageNumber}
+                pageSize={pageSize}
+                dataLength={groups?.length ?? 0}
+                handlePageChange={(filter) => {
+                    handlePageChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </>
     )
 }
