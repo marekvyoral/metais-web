@@ -94,6 +94,7 @@
     "navbar.login": "Login",
     "navbar.logout": "Logout",
     "navbar.profile": "Profile",
+    "navbar.admin": "Admin",
     "navbar.main": "Hlavná",
     "sidebar.hide": "HIDE",
     "sidebar.unhide": "SHOW",
