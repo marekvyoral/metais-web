@@ -84,6 +84,7 @@
     "navbar.login": "Prihlásiť",
     "navbar.logout": "Odhlásiť",
     "navbar.profile": "Profil",
+    "navbar.admin": "Admin",
     "navbar.profileImage": "Profilový obrázok",
     "navbar.showInformationAboutSite": "Rozbaľ informácie o stránke",
     "navbar.hideInformationAboutSite": "Skryť informácie o stránke",
