@@ -9,6 +9,7 @@ import {
     ApiError,
     ConfigurationItemUi,
     getReadConfigurationItemQueryKey,
+    RelationshipUi,
     useReadCiNeighboursHook,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Confirm200, ReturnProject200, useConfirm, useReturnProject } from '@isdd/metais-common/api/generated/kris-swagger'
@@ -120,9 +121,14 @@ export const useBulkAction = (isRelation?: boolean) => {
         }
     }
 
-    const handleReInvalidate = async (items: ConfigurationItemUi[], onSuccess: () => void, onError: () => void) => {
+    const handleReInvalidate = async (items: ConfigurationItemUi[], onSuccess: () => void, onError: () => void, relations?: RelationshipUi[]) => {
         setBulkLoading(true)
-        const isValid = items.every((item) => ciInvalidFilter(item))
+        const isValid = items.every((item) =>
+            ciInvalidFilter(
+                item,
+                relations?.find((rel) => rel.endUuid == item.uuid),
+            ),
+        )
         if (!isValid) {
             setErrorMessage(t('tooltip.rights.validSelectedList'))
             setBulkLoading(false)

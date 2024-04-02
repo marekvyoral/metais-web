@@ -365,6 +365,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                                 Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
                                                 () => setShowReInvalidate(true),
                                                 open,
+                                                Object.values(selectedItems).flatMap((item) => item.map((i) => i.relationship ?? {})),
                                             )
                                             closePopup()
                                         }}
@@ -404,22 +405,26 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                 )}
             />
             <InvalidateBulkModal
-                items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {}))}
+                items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.relationship ?? {}))}
                 open={showInvalidate}
                 multiple
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setShowInvalidate(false))}
                 onClose={() => setShowInvalidate(false)}
+                isRelation
+                isRelationList
             />
             <ReInvalidateBulkModal
-                items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {}))}
+                items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.relationship ?? {}))}
                 open={showReInvalidate}
                 multiple
-                onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setShowInvalidate(false))}
+                onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setShowReInvalidate(false))}
                 onClose={() => setShowReInvalidate(false)}
+                isRelation
             />
 
             <DeleteFileBulkModal
-                items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {}))}
+                items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.relationship ?? {}))}
+                isRelation
                 open={showDeleteFile}
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setShowDeleteFile(false))}
                 onClose={() => setShowDeleteFile(false)}

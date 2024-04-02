@@ -1,5 +1,5 @@
 import { BaseModal, LoadingIndicator } from '@isdd/idsk-ui-kit'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ReInvalidateView } from './ReInvalidateBulkView'
@@ -27,7 +27,7 @@ export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ i
     const { t } = useTranslation()
     const { getRequestStatus, isError, isProcessedError, isTooManyFetchesError } = useGetStatus()
     const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
-
+    const [isProcessing, setIsProcessing] = useState(false)
     const successMessage = multiple ? t('mutationFeedback.successfulUpdatedList') : t('mutationFeedback.successfulUpdated')
 
     const recycleRelation = useRecycleInvalidatedRels({
@@ -37,9 +37,11 @@ export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ i
                     onSubmit({ isSuccess: true, isError: false, successMessage })
                     items.forEach((item) => invalidateHistoryListCache(item.uuid ?? ''))
                 })
+                setIsProcessing(false)
             },
             onError() {
                 onSubmit({ isSuccess: false, isError: true })
+                setIsProcessing(false)
             },
         },
     })
@@ -66,6 +68,7 @@ export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ i
 
     const handleReInvalidate = async () => {
         if (isRelation) {
+            setIsProcessing(true)
             await recycleRelation.mutateAsync({ data: { relIdList: items.map((item) => item.uuid || '') } })
         } else {
             await reInvalidate({ data: { ciIdList: items.map((item) => item.uuid || '') } })
@@ -74,7 +77,7 @@ export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ i
 
     return (
         <BaseModal isOpen={open} close={onClose}>
-            {isLoading && <LoadingIndicator label={t('form.waitSending')} />}
+            {(isLoading || isProcessing) && <LoadingIndicator label={t('form.waitSending')} />}
             <ReInvalidateView items={items} onClose={onClose} onSubmit={() => handleReInvalidate()} />
         </BaseModal>
     )

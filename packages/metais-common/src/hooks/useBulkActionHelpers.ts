@@ -3,7 +3,7 @@ import uniq from 'lodash/uniq'
 import { useGetCiTypeHookWrapper } from './useCiType.hook'
 import { useGetRelationshipTypeHookWrapper } from './useRelationshipType.hook'
 
-import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemUi, RelationshipUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetRightsForPOBulkHook, useIsInPoByGid1Hook, useIsOwnerByGidHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { CiType, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -161,8 +161,12 @@ export const useBulkActionHelpers = () => {
         return {}
     }
 
-    const ciInvalidFilter = (ci: ConfigurationItemUi) => {
-        return !!(ci && ci.metaAttributes && ci.metaAttributes.state === 'INVALIDATED')
+    const ciInvalidFilter = (ci: ConfigurationItemUi, relation?: RelationshipUi) => {
+        if (relation) {
+            return !!(relation.metaAttributes && relation.metaAttributes.state === 'INVALIDATED')
+        } else {
+            return !!(ci && ci.metaAttributes && ci.metaAttributes.state === 'INVALIDATED')
+        }
     }
 
     return { bulkCheck, bulkRelationCheck, ciInvalidFilter, checkChangeOfOwner, hasOwnerRights }

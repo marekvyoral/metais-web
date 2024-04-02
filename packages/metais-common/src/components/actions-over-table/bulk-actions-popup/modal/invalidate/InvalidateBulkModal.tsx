@@ -1,5 +1,5 @@
 import { BaseModal, LoadingIndicator } from '@isdd/idsk-ui-kit'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -44,6 +44,7 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
     const successMessage = multiple ? t('mutationFeedback.successfulUpdatedList') : t('mutationFeedback.successfulUpdated')
     const { getRequestStatus, isError, isProcessedError, isTooManyFetchesError } = useGetStatus()
     const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
+    const [isProcessing, setIsProcessing] = useState(false)
 
     useEffect(() => {
         if (isError || isProcessedError || isTooManyFetchesError) {
@@ -67,11 +68,13 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
                     mappedItems.forEach((item) => {
                         invalidateHistoryListCache(item?.uuid ?? '')
                     })
+                    setIsProcessing(false)
                 })
             },
             onError() {
                 onSubmit({ isSuccess: false, isError: true, successMessage })
                 reset()
+                setIsProcessing(false)
             },
         },
     })
@@ -99,6 +102,7 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
         }
         if (isRelation) {
             const relationData: RelationshipInvalidateUi = { ...mappedItems[0], invalidateReason: { comment: formValues.reason } }
+            setIsProcessing(true)
             await invalidateRelation.mutateAsync({ data: relationData, params: { newState: ['INVALIDATED'] } })
         } else {
             if (isRelationList) {
@@ -111,7 +115,7 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
 
     return (
         <BaseModal isOpen={open} close={onClose}>
-            {isLoading && <LoadingIndicator label={t('form.waitSending')} />}
+            {(isLoading || isProcessing) && <LoadingIndicator label={t('form.waitSending')} />}
             <InvalidateBulkView
                 items={items}
                 register={register}
