@@ -2369,6 +2369,7 @@
     "autoincrement.type.label": "Typ autoinkrementu",
     "autoincrement.type.NUMERIC": "Číselný",
     "entitySummary.operated": "(prevádzkované)",
+    "entitySummary.moreThan": "viac ako",
     "entitySummary.ksState": "Koncové služby štátnej správy",
     "entitySummary.ksSelf": "Koncové služby samosprávy",
     "entitySummary.kris": "Koncepcie rozvoja ISVS",
