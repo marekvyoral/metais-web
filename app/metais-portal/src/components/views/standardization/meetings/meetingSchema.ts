@@ -1,5 +1,6 @@
 import { ApiAttachment, ApiLink, ApiMeetingActor } from '@isdd/metais-common/api/generated/standards-swagger'
 import { TFunction } from 'i18next'
+import { DateTime } from 'luxon'
 import { object, string, array, mixed } from 'yup'
 
 export enum MeetingFormEnum {
@@ -32,7 +33,11 @@ export const createMeetingSchema = (t: TFunction<'translation', undefined, 'tran
             .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
         [MeetingFormEnum.END_DATE]: string()
             .required(t('meetings.errors.meetingDateRequired'))
-            .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
+            .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime')
+            .test('isLaterThanBegin', `${t('validation.timeMustBeGreaterThen')} ${t('meetings.start')}`, (value, schema) => {
+                const { beginDate } = schema.parent
+                return DateTime.fromJSDate(new Date(value)) > DateTime.fromJSDate(new Date(beginDate))
+            }),
 
         [MeetingFormEnum.PLACE]: string().required(t('meetings.errors.meetingPlaceRequired')),
         [MeetingFormEnum.GROUP]: array().of(string()),
@@ -62,7 +67,11 @@ export const editMeetingSchema = (t: TFunction<'translation', undefined, 'transl
             .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
         [MeetingFormEnum.END_DATE]: string()
             .required(t('meetings.errors.meetingDateRequired'))
-            .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
+            .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime')
+            .test('isLaterThanBegin', `${t('validation.timeMustBeGreaterThen')} ${t('meetings.start')}`, (value, schema) => {
+                const { beginDate } = schema.parent
+                return DateTime.fromJSDate(new Date(value)) > DateTime.fromJSDate(new Date(beginDate))
+            }),
 
         [MeetingFormEnum.PLACE]: string().required(t('meetings.errors.meetingPlaceRequired')),
         [MeetingFormEnum.GROUP]: array().of(string()),

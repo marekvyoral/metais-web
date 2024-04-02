@@ -680,6 +680,7 @@
     "validation.name": "Meno",
     "validation.surname": "Priezvisko",
     "validation.endTimeBeforeStartTime": "'{{endTime}}' nemôže nastať pred '{{startTime}}'",
+    "validation.timeMustBeGreaterThen": "Čas musí byť neskorší ako",
     "createEntity.required": "povinné",
     "createEntity.errorTitle": "Nastala chyba.",
     "createEntity.errorMessage": "Ospravedlňujeme sa, ale pri úprave položky nastala technická chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, prosím, kontaktujte administrátora MetaIS e-mailom na adrese:",
