@@ -1011,7 +1011,7 @@
     "documentsManagement.deleteTemplate": "Delete template",
     "documentsManagement.deleteTemplateText": "Are you sure you want to delete the following template?",
     "documentsManagement.templateSuccessfullyAdded": "Template successfully added",
-    "documentsManagement.templateSuccessfully Deleted": "Template successfully deleted",
+    "documentsManagement.templateSuccessfullyDeleted": "Template successfully deleted",
     "documentsManagement.template": "Template",
     "homePage.placeholder": "Home - login to see navigation items",
     "homePage.loggedInPlaceholder": "Welcome.",
