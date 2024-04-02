@@ -1,7 +1,7 @@
 import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 import { ColumnDef } from '@tanstack/react-table'
-import React, { SetStateAction, useState } from 'react'
+import React, { SetStateAction, useRef, useState } from 'react'
 
 import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, HiddenButtons, QueryFeedback } from '@isdd/metais-common/index'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
@@ -35,6 +35,7 @@ export const TableWithPagination: <T>({
     const dataStart = pageNumber * pageSize - pageSize
     const dataEnd = pageNumber * pageSize
     const data = tableData.slice(dataStart, dataEnd)
+    const tableRef = useRef<HTMLTableElement>(null)
 
     return (
         <div>
@@ -50,13 +51,16 @@ export const TableWithPagination: <T>({
                 }}
             />
             <QueryFeedback loading={!!isLoading} error={!!isError}>
-                <Table columns={tableColumns} data={data} sort={sort ?? []} onSortingChange={setSort} />
+                <Table tableRef={tableRef} columns={tableColumns} data={data} sort={sort ?? []} onSortingChange={setSort} />
             </QueryFeedback>
             <PaginatorWrapper
                 pageNumber={pageNumber}
                 pageSize={pageSize}
                 dataLength={tableData?.length ?? 0}
-                handlePageChange={(filter) => setPageNumber(filter?.pageNumber ?? BASE_PAGE_NUMBER)}
+                handlePageChange={(filter) => {
+                    setPageNumber(filter?.pageNumber ?? BASE_PAGE_NUMBER)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </div>
     )

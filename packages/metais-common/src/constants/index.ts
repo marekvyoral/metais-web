@@ -366,6 +366,7 @@ export const categoryParameterMap = new Map<string, string>([
 ])
 export const INTEGRACIA_KONZUMUJE_PROJEKT = 'Integracia_konzumuje_Projekt'
 export const INTEGRACIA_VYSTAVUJE_PROJEKT = 'Integracia_vystavuje_Projekt'
+export const KS_MA_FAZU_ZIVOTNEHO_CYKLU = 'KS_ma_FazaZivotnehoCyklu'
 export const INTEGRATION_HARMONOGRAM_EDIT_SEARCH_PARAM = 'edit'
 export const FAZA_INTEGRACNEHO_MILNIKA = 'FAZA_INTEGRACNEHO_MILNIKA'
 export const GUI_PROFILE_DIZ = 'Gui_Profil_DIZ'
@@ -420,3 +421,4 @@ export enum HowTo {
 
 export const BULK_ACTION_ITEM_SEPARATOR = ','
 export const BULK_ACTION_ITEM_SEARCH_KEY = 'list'
+export const ELASTIC_MAX_RECORDS = 10000

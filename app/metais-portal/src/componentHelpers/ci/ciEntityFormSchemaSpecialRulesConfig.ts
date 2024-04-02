@@ -1,5 +1,5 @@
 import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
-import { ENTITY_KRIS, ENTITY_OSOBITNY_POSTUP, ENTITY_PROJECT, ENTITY_TRAINING } from '@isdd/metais-common/constants'
+import { ENTITY_KRIS, ENTITY_OSOBITNY_POSTUP, ENTITY_PROJECT, ENTITY_TRAINING, KS_MA_FAZU_ZIVOTNEHO_CYKLU } from '@isdd/metais-common/constants'
 import { TFunction } from 'i18next'
 import { DateTime } from 'luxon'
 import * as yup from 'yup'
@@ -24,6 +24,7 @@ export const specialRulesConfig = ({ required, t, currentValue }: IRulesProps): 
         currentValue && DateTime.fromJSDate(new Date(currentValue)).isValid && new Date(currentValue).getTime() < new Date().getTime() ? true : false
     const currentDateValueToCompare = isCurrentValueSmallerThanActualDate ? currentValue ?? new Date() : new Date()
     const midnightValueToCompare = isCurrentValueSmallerThanActualDate ? currentValue ?? midNight : midNight
+
     return {
         Profil_KRIS_datum_vypracovania: {
             entityName: ENTITY_KRIS,
@@ -119,6 +120,21 @@ export const specialRulesConfig = ({ required, t, currentValue }: IRulesProps): 
                 .when('Profil_Osobitny_Postup_datum_ucinnosti_od', (osobitnyPostupOd, yupSchema) => {
                     return DateTime.fromJSDate(new Date(`${osobitnyPostupOd}`)).isValid
                         ? yupSchema.min(osobitnyPostupOd, `${t('validation.dateMustBeGreaterThen')} ${t('form.specialRule.osobitnyPostupDateFrom')}`)
+                        : yupSchema
+                }),
+        },
+        Profil_Rel_FazaZivotnehoCyklu_datum_ukoncenia: {
+            entityName: KS_MA_FAZU_ZIVOTNEHO_CYKLU,
+            rule: yup
+                .date()
+                .nullable()
+                .transform((curr, orig) => (orig === '' ? null : curr))
+                .when('Profil_Rel_FazaZivotnehoCyklu_datum_zacatia', (FazaZivotnehoCykluOd, yupSchema) => {
+                    return DateTime.fromJSDate(new Date(`${FazaZivotnehoCykluOd}`)).isValid
+                        ? yupSchema.min(
+                              FazaZivotnehoCykluOd,
+                              `${t('validation.dateMustBeGreaterThen')} ${t('form.specialRule.osobitnyPostupDateFrom')}`,
+                          )
                         : yupSchema
                 }),
         },

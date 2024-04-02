@@ -11,7 +11,7 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ActionsOverTable, BulkPopup, CreateEntityButton, MutationFeedback, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { Row } from '@tanstack/react-table'
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
@@ -37,6 +37,7 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
     const { t, i18n } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
+    const tableRef = useRef<HTMLTableElement>(null)
     const {
         isActionSuccess: { value: isExternalSuccess },
     } = useActionSuccess()
@@ -205,6 +206,7 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                 hiddenButtons={{ SELECT_COLUMNS: true }}
             />
             <Table
+                tableRef={tableRef}
                 data={data?.configurationItemSet as ColumnsOutputDefinition[]}
                 columns={refIdentifierColumns(t, i18n.language, registrationState, rowSelection, handleCheckboxChange, handleAllCheckboxChange)}
                 sort={filter.sort ?? []}
@@ -214,7 +216,13 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                 }}
                 isRowSelected={isRowSelected}
             />
-            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+            <PaginatorWrapper
+                {...pagination}
+                handlePageChange={(filterValues) => {
+                    handleFilterChange(filterValues)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </QueryFeedback>
     )
 }

@@ -11,7 +11,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ActionsOverTable, CreateEntityButton, MutationFeedback, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 export enum SortType {
@@ -65,6 +65,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
     const [meetingOption, setMeetingOption] = useState(defaultFilterValues.meetingOption)
     const [group, setGroup] = useState<string | null | undefined>(defaultFilterValues.group)
     const [state, setState] = useState<string | null | undefined>(defaultFilterValues.state)
+    const tableRef = useRef<HTMLTableElement>(null)
 
     useEffect(() => {
         setMeetingOption(filter.meetingOption)
@@ -235,6 +236,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
             </ActionsOverTable>
 
             <Table
+                tableRef={tableRef}
                 columns={columns}
                 data={meetings}
                 sort={filter.sort}
@@ -246,7 +248,10 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({
                 pageSize={filter.pageSize ?? BASE_PAGE_SIZE}
                 pageNumber={filter.pageNumber ?? BASE_PAGE_NUMBER}
                 dataLength={meetingsCount}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filterValues) => {
+                    handleFilterChange(filterValues)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </>
     )
