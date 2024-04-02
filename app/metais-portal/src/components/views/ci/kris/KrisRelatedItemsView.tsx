@@ -1,6 +1,6 @@
 import { PaginatorWrapper, Table, Tabs } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
@@ -37,6 +37,7 @@ export const KrisRelatedItemsView: React.FC<Props> = ({
     const { zsData, agendaData, ciListData } = data
     const startOfList = pagination.pageNumber * pagination.pageSize - pagination.pageSize
     const endOfList = pagination.pageNumber * pagination.pageSize
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const columns: Array<ColumnDef<ConfigurationItemUi>> = [
         {
@@ -119,14 +120,14 @@ export const KrisRelatedItemsView: React.FC<Props> = ({
                                         handleFilterChange(pageNumber ?? pagination.pageNumber, pageSize ?? pagination.pageSize, key.technicalName)
                                     }}
                                 />
-                                <Table isLoading={isListLoading} error={isError} columns={columns} data={dataForTable} />
-
+                                <Table tableRef={tableRef} isLoading={isListLoading} error={isError} columns={columns} data={dataForTable} />
                                 <PaginatorWrapper
                                     pageNumber={pagination.pageNumber}
                                     pageSize={pagination.pageSize}
                                     dataLength={totalItems}
                                     handlePageChange={({ pageNumber }) => {
                                         handleFilterChange(pageNumber ?? BASE_PAGE_NUMBER, pagination.pageSize, key.technicalName)
+                                        tableRef.current?.scrollIntoView({ behavior: 'smooth' })
                                     }}
                                 />
                             </QueryFeedback>

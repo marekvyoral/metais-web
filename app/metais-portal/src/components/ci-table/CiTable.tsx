@@ -7,7 +7,7 @@ import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swag
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IListData } from '@isdd/metais-common/types/list'
 import { CellContext, ColumnDef, ColumnOrderState, Table as ITable, Row, Updater } from '@tanstack/react-table'
-import React, { useCallback } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
@@ -69,6 +69,7 @@ export const CiTable: React.FC<ICiTable> = ({
         state: { user },
     } = useAuth()
     const isUserLogged = !!user
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
     const tableData = mapTableData(
@@ -227,7 +228,8 @@ export const CiTable: React.FC<ICiTable> = ({
 
     return (
         <>
-            <Table
+            <Table<ColumnsOutputDefinition>
+                tableRef={tableRef}
                 columns={columns}
                 data={tableData}
                 onSortingChange={(newSort) => {
@@ -244,7 +246,13 @@ export const CiTable: React.FC<ICiTable> = ({
                 error={isError}
                 linkToNewTab={linkToNewTab}
             />
-            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+            <PaginatorWrapper
+                {...pagination}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </>
     )
 }

@@ -5,7 +5,7 @@ import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ApiOlaContractData, ApiSlaContractReadList } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
@@ -29,6 +29,7 @@ enum ColumnNames {
 
 export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, sort, statesEnum }) => {
     const { t, i18n } = useTranslation()
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const columns: Array<ColumnDef<ApiOlaContractData>> = [
         {
@@ -139,6 +140,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
     return (
         <>
             <Table
+                tableRef={tableRef}
                 columns={columns}
                 data={data?.results}
                 onSortingChange={(newSort) => {
@@ -151,7 +153,10 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
                 pageNumber={data?.pagination?.page ?? BASE_PAGE_NUMBER}
                 pageSize={data?.pagination?.perPage ?? BASE_PAGE_SIZE}
                 dataLength={data?.pagination?.totalItems ?? 0}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </>
     )
