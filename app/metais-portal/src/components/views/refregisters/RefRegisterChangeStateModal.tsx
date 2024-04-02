@@ -76,6 +76,12 @@ export const RefRegisterChangeStateModal = ({
         setOpenChangeStateDialog(false)
     }
 
+    const updateStateAndReset = () => {
+        targetState && machine.changeState(targetState)
+        reset()
+        setOpenChangeStateDialog(false)
+    }
+
     const onSubmit = async (formValues: FieldValues) => {
         if (targetState) {
             setDesc(formValues.description)
@@ -83,7 +89,9 @@ export const RefRegisterChangeStateModal = ({
                 const metadata = await generate(entityId)
 
                 downloadFile(`${DMS_DOWNLOAD_FILE}${metadata?.uuid}`, metadata?.uuid ?? '')
-            } else if (targetState === ApiReferenceRegisterState.APPROVAL_IN_PROGRESS) {
+                updateStateAndReset()
+            }
+            if (targetState === ApiReferenceRegisterState.APPROVAL_IN_PROGRESS) {
                 const metadata = await generate(entityId)
                 standardRequest.mutateAsync(
                     {
@@ -99,8 +107,19 @@ export const RefRegisterChangeStateModal = ({
                     },
                     { onSuccess: onStandardRequestSuccess, onError: onStandardRequestSuccess },
                 )
+                if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                    handleUploadData()
+                } else {
+                    handleChangeState([], desc)
+                    updateStateAndReset()
+                }
             } else {
-                handleUploadData()
+                if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                    handleUploadData()
+                } else {
+                    handleChangeState([], desc)
+                    updateStateAndReset()
+                }
             }
         }
     }

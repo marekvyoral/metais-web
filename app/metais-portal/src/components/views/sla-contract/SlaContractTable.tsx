@@ -1,7 +1,7 @@
 import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useRef } from 'react'
 import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 import { useTranslation } from 'react-i18next'
 import { Languages } from '@isdd/metais-common/localization/languages'
@@ -28,6 +28,7 @@ enum ColumnNames {
 export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, sort }) => {
     const { t, i18n } = useTranslation()
     const { slaContractsData, contractPhaseData } = data
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const columns: Array<ColumnDef<ApiSlaContractRead>> = [
         {
@@ -111,6 +112,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
     return (
         <>
             <Table
+                tableRef={tableRef}
                 columns={columns}
                 data={slaContractsData?.results}
                 onSortingChange={(newSort) => {
@@ -123,7 +125,10 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
                 pageNumber={slaContractsData?.pagination?.page ?? BASE_PAGE_NUMBER}
                 pageSize={slaContractsData?.pagination?.perPage ?? BASE_PAGE_SIZE}
                 dataLength={slaContractsData?.pagination?.totalItems ?? 0}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </>
     )

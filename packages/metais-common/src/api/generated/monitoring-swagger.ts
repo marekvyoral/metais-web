@@ -70,6 +70,7 @@ export type ListParameterValuesParams = {
 }
 
 export type ListMonitoringOverviewParams = {
+    entityRef?: string
     serviceTypes?: string[]
     intervalStart?: string
     intervalEnd?: string
