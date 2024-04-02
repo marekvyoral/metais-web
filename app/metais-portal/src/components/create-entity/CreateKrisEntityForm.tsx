@@ -100,9 +100,9 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
                         case 'Profil_KRIS_Spracovatel_priezvisko':
                             return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.lastName }
                         case 'Profil_KRIS_Spracovatel_funkcia':
-                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.position }
+                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.position === 'null' ? '' : state.user?.position }
                         case 'Profil_KRIS_Spracovatel_telefon':
-                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.phone }
+                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.mobile }
                         case 'Profil_KRIS_Spracovatel_email':
                             return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.email }
                     }
@@ -111,7 +111,7 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
 
             return acc
         }, {})
-    }, [attributes, isUpdate, state.user?.email, state.user?.firstName, state.user?.lastName, state.user?.phone, state.user?.position])
+    }, [attributes, isUpdate, state.user?.email, state.user?.firstName, state.user?.lastName, state.user?.mobile, state.user?.position])
 
     const formDefaultValues = useMemo(
         () => formatForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
