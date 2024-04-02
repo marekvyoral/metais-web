@@ -13,6 +13,7 @@ import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swag
 import { DateInput, DateTypeEnum } from '@isdd/idsk-ui-kit/date-input/DateInput'
 import { useNavigate } from 'react-router-dom'
 import { getErrorTranslateKey } from '@isdd/metais-common/utils/errorMapper'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import styles from './createEditView.module.scss'
 import { MeetingFormEnum, createMeetingSchema, editMeetingSchema } from './meetingSchema'
@@ -168,6 +169,17 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
     const startDate = watch(MeetingFormEnum.BEGIN_DATE)
     const actionErrorMessageKey = getErrorTranslateKey(actionError)
 
+    useEffect(() => {
+        if (!watch(MeetingFormEnum.END_DATE)) setValue(MeetingFormEnum.END_DATE, startDate)
+    }, [setValue, startDate, watch])
+
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        if (isActionError) {
+            scrollToMutationFeedback()
+        }
+    }, [isActionError, scrollToMutationFeedback])
+
     return (
         <>
             {!isEdit && (
@@ -204,6 +216,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
             <MainContentWrapper>
                 <TextHeading size="XL">{isEdit ? `${t('meetings.editMeeting')} - ${infoData?.name}` : t('meetings.addNewMeeting')}</TextHeading>
                 <QueryFeedback loading={isLoading} error={isError} withChildren>
+                    <div ref={wrapperRef} />
                     {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
                     <MutationFeedback error={isActionError} errorMessage={actionErrorMessageKey && t(actionErrorMessageKey)} />
                     <form onSubmit={handleSubmit(callSubmit)} ref={formRef} noValidate>

@@ -681,6 +681,7 @@
     "validation.name": "Name",
     "validation.surname": "Surname",
     "validation.endTimeBeforeStartTime": "'{{endTime}}' can not occur before '{{startTime}}'",
+    "validation.timeMustBeGreaterThen": "Time must be greater then",
     "createEntity.required": "required",
     "createEntity.errorTitle": "Error occured",
     "createEntity.errorMessage": "We apologize, but a technical error occurred while editing the item. Try submitting the form again. If the error occurs repeatedly, contact the administrator at:",
