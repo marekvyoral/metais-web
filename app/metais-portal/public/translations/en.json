@@ -2367,6 +2367,7 @@
     "autoincrement.type.label": "Autoincrement type",
     "autoincrement.type.NUMERIC": "Numeric",
     "entitySummary.operated": "(operated)",
+    "entitySummary.moreThan": "more than",
     "entitySummary.ksState": "eGov services of state administration",
     "entitySummary.ksSelf": "eGov services of self-government",
     "entitySummary.kris": "eGov municipal services",
