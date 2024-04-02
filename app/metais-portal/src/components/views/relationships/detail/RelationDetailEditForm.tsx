@@ -75,7 +75,13 @@ export const RelationDetailEditForm: React.FC<Props> = ({
         }, {}),
 
         resolver: yupResolver(
-            generateFormSchema([relationTypeData as AttributeProfile, ...(relationTypeData?.attributeProfiles ?? [])], t, i18n.language),
+            generateFormSchema(
+                [relationTypeData as AttributeProfile, ...(relationTypeData?.attributeProfiles ?? [])],
+                t,
+                i18n.language,
+                null,
+                relationTypeData?.technicalName,
+            ),
         ),
     })
 
