@@ -276,7 +276,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 return (
                                     <CheckBox
                                         name={name}
-                                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
+                                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}`}
                                         error={error?.message?.toString()}
                                         id={attribute.technicalName ?? ''}
                                         info={attribute.description}
