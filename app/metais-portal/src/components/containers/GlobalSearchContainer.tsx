@@ -95,10 +95,10 @@ export const GlobalSearchContainer: React.FC<GlobalSearch> = ({ View }) => {
                 : {
                       lastModifiedAtFrom: filter?.fromUpdate
                           ? new Date(filter?.fromUpdate).toISOString()
-                          : DateTime.utc().startOf('week').toISO()?.toString() ?? '',
+                          : DateTime.utc(1900).startOf('day').toISO() ?? '',
                       lastModifiedAtTo: filter?.toUpdate
                           ? DateTime.fromJSDate(new Date(filter?.toUpdate)).toUTC().endOf('day').toISO() ?? ''
-                          : DateTime.utc().endOf('week').toISO()?.toString() ?? '',
+                          : DateTime.utc().endOf('day').toISO() ?? '',
                   }
 
         return {

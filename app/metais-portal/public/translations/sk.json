@@ -1719,6 +1719,7 @@
     "globalSearch.state": "Stav",
     "globalSearch.filter.title": "Filter globálneho vyhľadávania",
     "globalSearch.filter.updateDate": "Dátum aktualizácie",
+    "globalSearch.filter.none": "Bez obmedzenia",
     "globalSearch.filter.today": "Dnes",
     "globalSearch.filter.thisWeek": "Tento týždeň",
     "globalSearch.filter.thisMonth": "Tento mesiac",

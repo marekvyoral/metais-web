@@ -163,6 +163,15 @@ export const GlobalSearchCard: React.FC<GlobalSearchCardProps> = ({ cardData, ow
                         />
                     </React.Fragment>
                 ))}
+                {cardData.highlight?.enumAttributes?.map((item, index) => (
+                    <React.Fragment key={index}>
+                        <GlobalCardDefinitionItem
+                            label={t(`globalSearch.${item.field}`, item.field ?? '')}
+                            value={item.highlightText ?? []}
+                            setHtml
+                        />
+                    </React.Fragment>
+                ))}
             </dl>
         </Card>
     )
