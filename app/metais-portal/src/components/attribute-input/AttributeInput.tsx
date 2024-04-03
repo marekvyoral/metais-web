@@ -303,6 +303,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         error={error?.message?.toString()}
                         disabled={attribute.readOnly || disabled}
                         info={attribute.description}
+                        placeholder={t('createEntity.select')}
                         defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                         metaAttributes={{ state: ['DRAFT'] }}
                     />
