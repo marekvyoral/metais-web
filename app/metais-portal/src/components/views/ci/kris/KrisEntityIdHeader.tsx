@@ -1,4 +1,4 @@
-import { ButtonGroupRow, ButtonPopup, LoadingIndicator, TextHeading, TextWarning } from '@isdd/idsk-ui-kit'
+import { ButtonGroupRow, ButtonPopup, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import {
@@ -471,7 +471,12 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                 error={isError || isErrorNeighbours}
                 onMessageClose={() => setSuccesMessage(undefined)}
             />
-            {showWarning && <TextWarning>{t('modalKris.generatePdf.docGenStart')}</TextWarning>}
+            <MutationFeedback
+                success={showWarning}
+                successMessage={t('modalKris.generatePdf.docGenStart')}
+                error={false}
+                onMessageClose={() => setShowWarning(false)}
+            />
             <div className={styles.headerDiv}>
                 {isLoading && <LoadingIndicator fullscreen />}
                 <TextHeading size="XL" className={classNames({ [styles.invalidated]: isInvalidated })}>
