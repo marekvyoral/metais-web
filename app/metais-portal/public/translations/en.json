@@ -1715,6 +1715,7 @@
     "globalSearch.state": "State",
     "globalSearch.filter.title": "Global search filter",
     "globalSearch.filter.updateDate": "Update date",
+    "globalSearch.filter.none": "Without range",
     "globalSearch.filter.today": "Today",
     "globalSearch.filter.thisWeek": "This week",
     "globalSearch.filter.thisMonth": "This month",

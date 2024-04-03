@@ -5,6 +5,8 @@ import { GroupBase, MenuPosition, MultiValue, OptionProps, OptionsOrGroups, Prop
 import { AsyncPaginate } from 'react-select-async-paginate'
 import { useTranslation } from 'react-i18next'
 import { PopupPosition } from 'reactjs-popup/dist/types'
+import sanitizeHtml from 'sanitize-html'
+import { decodeHtmlEntities } from '@isdd/metais-common/src/utils/utils'
 
 import styles from './selectLazyLoading.module.scss'
 
@@ -114,7 +116,23 @@ export const SelectLazyLoading = <T,>({
                 <label className="govuk-label" htmlFor={inputId}>
                     {label} {required && t('input.requiredField')}
                 </label>
-                {info && <Tooltip descriptionElement={info} position={tooltipPosition} altText={`Tooltip ${label}`} />}
+                {info && (
+                    <Tooltip
+                        descriptionElement={
+                            <div className="tooltipWidth500">
+                                {
+                                    <span
+                                        dangerouslySetInnerHTML={{
+                                            __html: sanitizeHtml(decodeHtmlEntities(info)),
+                                        }}
+                                    />
+                                }
+                            </div>
+                        }
+                        position={tooltipPosition}
+                        altText={`Tooltip ${label}`}
+                    />
+                )}
             </div>
             <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
                 {error && <span className="govuk-visually-hidden">{t('error')}</span>}
