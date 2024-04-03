@@ -34,16 +34,18 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
     ]
 
     const svg = d3.select(svgRef.current).append('svg')
+    const width = widthDiv
+    const height = 600
     const margin = 50
-    const width = widthDiv - margin
-    const height = 400
-    const duration = 250
+    const duration = 150
 
     const lineOpacity = '1'
 
     const circleOpacity = '0.85'
-    const circleRadius = 6
-    const circleRadiusHover = 8
+    const circleRadius = 4
+
+    const topOffset = 100
+    const topOffsetMargin = 30
 
     /* Scale */
     const extentX = d3.extent(wrappedData[0].values, (d) => d.date)
@@ -62,7 +64,7 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
     const yScale = d3
         .scaleLinear()
         .domain([minY, maxY])
-        .range([height - margin, 0])
+        .range([height - margin, topOffset])
 
     svg.attr('width', width + margin + 'px')
         .attr('height', height + margin + 'px')
@@ -154,24 +156,47 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
             // display amount on hovering of points
             d3.select<SVGGElement, Data>(this)
                 .append('rect')
-                .attr('class', 'text')
+                .attr('class', 'rect1')
                 .style('fill', 'white')
-                .attr('x', (d) => xScale(d.date ?? new Date()))
-                .attr('y', (d) => yScale(d.value) - 25)
-            const text = d3
-                .select<SVGGElement, Data>(this)
+                .style('stroke', 'black')
+                .attr('x', (d) => xScale(d.date ?? new Date()) - topOffset / 2)
+                .attr('y', topOffsetMargin)
+                .attr('width', 100)
+                .attr('height', 50)
+
+            d3.select<SVGGElement, Data>(this)
+                .append('text')
+                .style('cursor', 'pointer')
+                .attr('class', 'text')
+                .attr('font-family', '"Source Sans Pro", "Arial", sans-serif')
+                .attr('fill', 'black')
+                .text((d) => `(${d.value})`)
+                .attr('x', (d) => xScale(d.date ?? new Date()) - topOffset / 2 + 7)
+                .attr('y', topOffsetMargin + 20)
+
+            d3.select<SVGGElement, Data>(this)
                 .style('cursor', 'pointer')
                 .append('text')
                 .attr('class', 'text')
-                .text((d) => `(${d.value}) ${formatDateForDefaultValue(d.date?.toISOString() ?? '', 'dd. MM. yyyy')}`)
-                .attr('x', (d) => xScale(d.date ?? new Date()) + 5)
-                .attr('y', (d) => yScale(d.value) - 10)
-            d3.select('rect')
-                .attr('width', text.text().length * 7.1)
-                .attr('height', 20)
+                .attr('fill', 'black')
+                .attr('font-family', '"Source Sans Pro", "Arial", sans-serif')
+                .attr('stroke', 'black')
+                .text((d) => `${formatDateForDefaultValue(d.date?.toISOString() ?? '', 'dd. MM. yyyy')}`)
+                .attr('x', (d) => xScale(d.date ?? new Date()) - topOffset / 2 + 7)
+                .attr('y', topOffsetMargin + 40)
+
+            d3.select<SVGGElement, Data>(this)
+                .append('line')
+                .attr('class', 'line1')
+                .style('stroke', 'black')
+                .style('stroke-width', 1)
+                .attr('x1', (d) => xScale(d.date ?? new Date()))
+                .attr('y1', topOffsetMargin + 51)
+                .attr('x2', (d) => xScale(d.date ?? new Date()))
+                .attr('y2', (d) => yScale(d.value ?? 0) - 2)
         })
         .on('mouseout', function () {
-            d3.select(this).style('cursor', 'none').transition().duration(duration).selectAll('.text').remove()
+            d3.select(this).style('cursor', 'none').transition().duration(duration).selectAll('.line1, .rect1, .text').remove()
         })
         .append('circle')
         .attr('cx', (d: unknown) => {
@@ -189,7 +214,7 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
         .attr('r', circleRadius)
         .style('opacity', circleOpacity)
         .on('mouseover', function () {
-            d3.select(this).transition().duration(duration).attr('r', circleRadiusHover)
+            d3.select(this).transition().duration(duration).attr('r', circleRadius)
         })
         .on('mouseout', function () {
             d3.select(this).transition().duration(duration).attr('r', circleRadius)
