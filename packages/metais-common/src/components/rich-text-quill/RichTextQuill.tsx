@@ -7,10 +7,12 @@ import { UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import sanitizeHtml from 'sanitize-html'
 
 import styles from './styles.module.scss'
 
 import { QuillBulletListIcon, QuillLinkIcon, QuillOrderedListIcon } from '@isdd/metais-common/assets/images'
+import { decodeHtmlEntities } from '@isdd/metais-common/utils/utils'
 
 export enum RichQuillButtons {
     HEADER_1 = 'HEADER_1',
@@ -191,7 +193,23 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
             </span>
             <div className={styles.header}>
                 {label && <div className="govuk-label">{label + requiredLabel}</div>}
-                <div className={styles.infoDiv}>{info && <Tooltip descriptionElement={info} />}</div>
+                <div className={styles.infoDiv}>
+                    {info && (
+                        <Tooltip
+                            descriptionElement={
+                                <div className="tooltipWidth500">
+                                    {
+                                        <span
+                                            dangerouslySetInnerHTML={{
+                                                __html: sanitizeHtml(decodeHtmlEntities(info)),
+                                            }}
+                                        />
+                                    }
+                                </div>
+                            }
+                        />
+                    )}
+                </div>
             </div>
             <div className={classNames({ 'govuk-input--error': !!error })}>
                 <CustomToolbar excludeOptions={excludeOptions} id={id} />
