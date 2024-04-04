@@ -30,7 +30,10 @@ export const createMeetingSchema = (t: TFunction<'translation', undefined, 'tran
         [MeetingFormEnum.NAME]: string().required(t('meetings.errors.meetingNameRequired')),
         [MeetingFormEnum.BEGIN_DATE]: string()
             .required(t('meetings.errors.meetingDateRequired'))
-            .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime'),
+            .test('timeValid', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime')
+            .test('timeStartValidation', t('validation.dateMustBeInFuture'), (value) => {
+                return DateTime.fromJSDate(new Date(value)) > DateTime.fromJSDate(new Date())
+            }),
         [MeetingFormEnum.END_DATE]: string()
             .required(t('meetings.errors.meetingDateRequired'))
             .test('timeStartValidation', t('meetings.errors.meetingDateRequired'), (value) => value.length > 0 && value != 'Invalid DateTime')
