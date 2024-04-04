@@ -82,7 +82,7 @@ body {
 }
 
 .attr-highlight {
-    b {
-        background-color: govuk-colour('yellow') !important;
+    mark {
+        font-weight: bold !important;
     }
 }

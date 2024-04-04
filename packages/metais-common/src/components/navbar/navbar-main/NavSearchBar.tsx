@@ -32,7 +32,9 @@ export const NavSearchBar = () => {
         if (formData[GlobalSearchParams.SEARCH]) {
             const searchUrlParams = new URLSearchParams(formData)
             const paginationUrlString = `&${GlobalSearchParams.PAGE}=${BASE_PAGE_NUMBER}&${GlobalSearchParams.PER_PAGE}=${BASE_PAGE_SIZE}`
-            navigate(RouteNames.GLOBAL_SEARCH + `?${searchUrlParams}` + paginationUrlString)
+            const filter = uriParams.get('filter')
+            const filterParams = filter ? `&filter=${new URLSearchParams(filter ?? '').toString().slice(0, -1)}` : ''
+            navigate(RouteNames.GLOBAL_SEARCH + `?${searchUrlParams}` + paginationUrlString + filterParams)
         }
     }
 

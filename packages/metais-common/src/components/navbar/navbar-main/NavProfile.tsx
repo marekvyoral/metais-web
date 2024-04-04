@@ -9,7 +9,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useHandleLogout } from '@isdd/metais-common/hooks/useHandleLogout'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
-const ADMIN_URL = import.meta.env.VITE_PORTAL_URL + import.meta.env.VITE_ADMIN_URL
+const ADMIN_URL = import.meta.env.VITE_PORTAL_URL + import.meta.env.VITE_ADMIN_URL + '/'
 
 export const NavProfile: React.FC = () => {
     const { t } = useTranslation()
@@ -51,7 +51,7 @@ export const NavProfile: React.FC = () => {
                     </Link>
                     <span aria-hidden> | </span>
                     {user?.roles?.includes('R_ADMIN') && (
-                        <Link to={ADMIN_URL} state={{ from: location }} className={'govuk-link'}>
+                        <Link to={ADMIN_URL} state={{ from: location }} className={'govuk-link'} target="_blank">
                             {t('navbar.admin')}
                         </Link>
                     )}

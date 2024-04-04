@@ -6,6 +6,7 @@ import {
 import { DateTime } from 'luxon'
 
 export enum DateRanges {
+    NONE = 'none',
     TODAY = 'today',
     THIS_WEEK = 'thisWeek',
     THIS_MONTH = 'thisMonth',
@@ -52,6 +53,11 @@ export interface IGlobalSearchForm {
 
 export const getDateRange = (range: DateRanges): { lastModifiedAtFrom: string; lastModifiedAtTo: string } => {
     switch (range) {
+        case DateRanges.NONE:
+            return {
+                lastModifiedAtFrom: DateTime.utc(1900).startOf('day').toISO() ?? '',
+                lastModifiedAtTo: DateTime.utc().endOf('day').toISO() ?? '',
+            }
         case DateRanges.TODAY:
             return {
                 lastModifiedAtFrom: DateTime.utc().startOf('day').toISO() ?? '',

@@ -148,6 +148,10 @@ export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> =
                         <GridRow>
                             <GridCol setWidth="one-half">
                                 <div className={styles.labelDiv}>
+                                    <label className="govuk-label">
+                                        <TextHeading size="M">{item.name}</TextHeading>
+                                    </label>
+                                    <Tooltip descriptionElement={item.description} altText={`Tooltip ${item.name}`} />
                                     <Button
                                         variant="secondary"
                                         onClick={() => setToggleTable(!toggleTable)}
@@ -156,20 +160,16 @@ export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> =
                                         }
                                         label={<IconLabel icon={ChangeIcon} />}
                                     />
-                                    <label className="govuk-label">
-                                        <TextHeading size="M">{item.name} </TextHeading>
-                                    </label>
-                                    <Tooltip descriptionElement={item.description} altText={`Tooltip ${item.name}`} />
                                 </div>
                             </GridCol>
                             <GridCol setWidth="one-half">
                                 <div className={styles.actionRow}>
-                                    <TextHeading size="S">
+                                    <span className="govuk-accordion__section-heading govuk-heading-s">
                                         {isAverage(item.unit ?? '')
                                             ? `${t('monitoringServices.detail.avarageInPeriod')}`
                                             : `${t('monitoringServices.detail.totalInPeriod')}`}
                                         {` ${setTotalCount(tableData?.results ?? [], item.unit ?? '')} ${enumItem}`}
-                                    </TextHeading>
+                                    </span>
                                 </div>
                             </GridCol>
                         </GridRow>

@@ -19,7 +19,7 @@ import styles from './globalSearchFilter.module.scss'
 import { CustomDateRange, DateRanges, GlobalSearchSubSections, IGlobalSearchForm, deserializeParams } from '@/componentHelpers/global-search'
 
 const defaultFormValue = {
-    [GlobalSearchSubSections.DATE_RANGE]: DateRanges.THIS_YEAR,
+    [GlobalSearchSubSections.DATE_RANGE]: DateRanges.NONE,
 }
 
 export const GlobalSearchFilter = () => {
@@ -52,6 +52,12 @@ export const GlobalSearchFilter = () => {
             content: (
                 <>
                     <RadioGroup className="govuk-radios--small">
+                        <RadioButton
+                            label={t('globalSearch.filter.none')}
+                            id={DateRanges.NONE}
+                            value={DateRanges.NONE}
+                            {...register(GlobalSearchSubSections.DATE_RANGE)}
+                        />
                         <RadioButton
                             label={t('globalSearch.filter.today')}
                             id={DateRanges.TODAY}
@@ -100,6 +106,7 @@ export const GlobalSearchFilter = () => {
                     />
                 </>
             ),
+            summary: t(`globalSearch.filter.${watch(GlobalSearchSubSections.DATE_RANGE)}`),
         },
         {
             title: t('globalSearch.filter.resultType'),

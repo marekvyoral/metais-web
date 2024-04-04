@@ -3,6 +3,8 @@ import React, { ReactElement, useId } from 'react'
 import ReactSelect, { GroupBase, MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
 import { useTranslation } from 'react-i18next'
 import { Controller, Control as ControlReactForm } from 'react-hook-form'
+import sanitizeHtml from 'sanitize-html'
+import { decodeHtmlEntities } from '@isdd/metais-common/src/utils/utils'
 
 import styles from './select.module.scss'
 import { useGetLocalMessages } from './useGetLocalMessages'
@@ -84,7 +86,22 @@ export const Select = <T,>({
                 <label className="govuk-label" htmlFor={inputId}>
                     {label} {required && t('input.requiredField')}
                 </label>
-                {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
+                {info && (
+                    <Tooltip
+                        descriptionElement={
+                            <div className="tooltipWidth500">
+                                {
+                                    <span
+                                        dangerouslySetInnerHTML={{
+                                            __html: sanitizeHtml(decodeHtmlEntities(info)),
+                                        }}
+                                    />
+                                }
+                            </div>
+                        }
+                        altText={`Tooltip ${label}`}
+                    />
+                )}
             </div>
             <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
                 {error && <span className="govuk-visually-hidden">{t('error')}</span>}

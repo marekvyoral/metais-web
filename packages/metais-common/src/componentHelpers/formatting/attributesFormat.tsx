@@ -25,6 +25,14 @@ type FormatRowValueByRowArgs = {
 const formatRowValueByRowType = ({ attribute, rowValue, t, unitsData }: FormatRowValueByRowArgs) => {
     if (attribute?.units && attribute?.type && rowValue) {
         const unitValue = findUnitValue(attribute, unitsData)
+        const PERCENT_SIGN = '%'
+        const GB_PER_HOUR = 'GB/h'
+        if (unitValue === PERCENT_SIGN) {
+            return t(`units.percent`, { val: rowValue })
+        }
+        if (unitValue === GB_PER_HOUR) {
+            return t(`units.GBperHour`, { val: rowValue })
+        }
         return t(`units.${unitValue}`, { val: rowValue })
     }
     switch (attribute?.type) {
