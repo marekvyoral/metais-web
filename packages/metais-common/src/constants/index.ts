@@ -232,6 +232,7 @@ export const PO_predklada_KRIS = 'PO_predklada_KRIS'
 export const ENTITY_ZS = 'ZS'
 export const ENTITY_AGENDA = 'Agenda'
 export const ENTITY_INTEGRATION = 'Integracia'
+export const ENTITY_MIESTO_PREVADZKY = 'MiestoPrevadzky'
 
 export const INACTIVE_LOGOUT_TIME = import.meta.env.VITE_INACTIVE_LOGOUT_TIME
 export const INACTIVE_WARNING_TIME = import.meta.env.VITE_INACTIVE_WARNING_TIME
