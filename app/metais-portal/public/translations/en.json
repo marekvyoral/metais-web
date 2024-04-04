@@ -669,6 +669,7 @@
     "validation.character": "Only one character can be inserted",
     "validation.canNotBeDecimal": "This number can not be decimal",
     "validation.mustBeChecked": "This must be checked if you want to proceed",
+    "validation.dateMustBeInFuture": "The date must be in the future",
     "validation.dateMustBeGreaterThen": "Date must be greater then",
     "validation.dateMustBeEqualOrGreaterThen": "Date must be equal or greater then",
     "validation.dateMustBeLessOrEqualThen": "Date must be less or equal then",

@@ -668,6 +668,7 @@
     "validation.character": "Zadaný môže byť len jeden znak.",
     "validation.canNotBeDecimal": "Číslo musí byť celým číslom.",
     "validation.mustBeChecked": "Toto musí byť zaškrtnuté, ak chcete pokračovať",
+    "validation.dateMustBeInFuture": "Dátum musí byť v budúcnosti",
     "validation.dateMustBeGreaterThen": "Dátum musí byť neskorší ako",
     "validation.dateMustBeEqualOrGreaterThen": "Dátum musí byť rovnaký alebo neskorší ako",
     "validation.dateMustBeLessOrEqualThen": "Dátum musí byť skorší alebo rovnaký ako",
