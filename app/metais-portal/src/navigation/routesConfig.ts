@@ -147,7 +147,8 @@ import GroupEditItvsPage from '@/pages/standardization/groupslist/itvs/edit'
 import ReferenceRegisterDetail from '@/pages/ci/ReferenceRegister'
 import WebPortalInformation from '@/pages/ci/WeboveSidlo/[entityId]/information'
 import { BulkListPage } from '@/pages/bulk-list/BulkList'
-import MiestoPrevadzkyEntityDetailPage from '@/pages/ci/MiestoPrevadzky'
+import PlaceOfOperationEntityListPage from '@/pages/ci/MiestoPrevadzky'
+import PlaceOfOperationEntityDetailPage from '@/pages/ci/MiestoPrevadzky/[entityId].tsx/[entityId]'
 import ZCListPage from '@/pages/ci/ZC/entity'
 import ZCEntityDetailPage from '@/pages/ci/ZC/[entityId]'
 
@@ -608,9 +609,15 @@ export const routesConfig: RouteConfig[] = [
                 component: ReferenceRegisterDetail,
             },
             {
-                path: RouterRoutes.CI_MIESTO_PREVADZKY,
-                slug: RouterRoutes.CI_MIESTO_PREVADZKY,
-                component: MiestoPrevadzkyEntityDetailPage,
+                path: RouterRoutes.CI_PLACE_OF_OPERATION,
+                slug: RouterRoutes.CI_PLACE_OF_OPERATION,
+                component: PlaceOfOperationEntityListPage,
+            },
+            {
+                path: RouterRoutes.CI_PLACE_OF_OPERATION_DETAIL,
+                slug: RouterRoutes.CI_PLACE_OF_OPERATION_DETAIL,
+                component: PlaceOfOperationEntityDetailPage,
+                subRoutes: [generalCiDetailInformationOutlet],
             },
             {
                 path: RouterRoutes.REF_REGISTERS_DETAIL,
