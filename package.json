@@ -1,6 +1,6 @@
 {
     "name": "metais",
-    "version": "0.1.141",
+    "version": "0.1.142",
     "private": true,
     "workspaces": [
         "app/*",
