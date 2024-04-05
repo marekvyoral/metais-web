@@ -8,6 +8,10 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useTypesRepoSwaggerClient } from '../hooks/useTypesRepoSwaggerClient'
+export type ListGenericAttrProfileParams = {
+    filter: AttributeProfileFilter
+}
+
 export type GenerateCodeAndURL1Params = {
     count: number
 }
@@ -16,8 +20,8 @@ export type ListRelationshipTypes2Params = {
     roles: string[]
 }
 
-export type ListAttrProfileParams = {
-    filter: AttributeProfileFilter
+export type StoreAdminEntity1Params = {
+    isFromZC?: boolean
 }
 
 export type ListCiTypesParams = {
@@ -28,6 +32,16 @@ export type ListRelationshipTypesParams = {
     filter: RelationshipTypeFilter
 }
 
+export interface AttributeTranslateMap {
+    sourceAttributeTN?: string
+    targetAttributeTN?: string
+    targetLocale?: string
+}
+
+export interface AttributeTranslateMapList {
+    mapList?: AttributeTranslateMap[]
+}
+
 export type RelatedCiTypePreviewRelationshipTypeUsageType =
     (typeof RelatedCiTypePreviewRelationshipTypeUsageType)[keyof typeof RelatedCiTypePreviewRelationshipTypeUsageType]
 
@@ -35,7 +49,6 @@ export type RelatedCiTypePreviewRelationshipTypeUsageType =
 export const RelatedCiTypePreviewRelationshipTypeUsageType = {
     system: 'system',
     application: 'application',
-    custom: 'custom',
 } as const
 
 export type RelatedCiTypePreviewCiTypeUsageType = (typeof RelatedCiTypePreviewCiTypeUsageType)[keyof typeof RelatedCiTypePreviewCiTypeUsageType]
@@ -44,7 +57,6 @@ export type RelatedCiTypePreviewCiTypeUsageType = (typeof RelatedCiTypePreviewCi
 export const RelatedCiTypePreviewCiTypeUsageType = {
     system: 'system',
     application: 'application',
-    custom: 'custom',
 } as const
 
 export interface RelatedCiTypePreview {
@@ -145,7 +157,6 @@ export type CiTypeType = (typeof CiTypeType)[keyof typeof CiTypeType]
 export const CiTypeType = {
     system: 'system',
     application: 'application',
-    custom: 'custom',
 } as const
 
 export interface CiType {
@@ -186,7 +197,6 @@ export type RelationshipTypeType = (typeof RelationshipTypeType)[keyof typeof Re
 export const RelationshipTypeType = {
     system: 'system',
     application: 'application',
-    custom: 'custom',
 } as const
 
 export interface Cardinality {
@@ -222,7 +232,7 @@ export interface AttributeProfileFilter {
     role?: string
 }
 
-export type ListGenericAttrProfileParams = {
+export type ListAttrProfileParams = {
     filter: AttributeProfileFilter
 }
 
@@ -242,7 +252,6 @@ export type CiTypePreviewType = (typeof CiTypePreviewType)[keyof typeof CiTypePr
 export const CiTypePreviewType = {
     system: 'system',
     application: 'application',
-    custom: 'custom',
 } as const
 
 export type AttributeProfileType = (typeof AttributeProfileType)[keyof typeof AttributeProfileType]
@@ -251,7 +260,6 @@ export type AttributeProfileType = (typeof AttributeProfileType)[keyof typeof At
 export const AttributeProfileType = {
     system: 'system',
     application: 'application',
-    custom: 'custom',
 } as const
 
 export interface AttributeProfile {
@@ -330,10 +338,10 @@ export const AttributeAttributeTypeEnum = {
     CHARACTER: 'CHARACTER',
     STRING: 'STRING',
     DATE: 'DATE',
-    DATETIME: 'DATETIME',
     STRING_PAIR: 'STRING_PAIR',
     IMAGE: 'IMAGE',
     HTML: 'HTML',
+    DATETIME: 'DATETIME',
     URL: 'URL',
 } as const
 
@@ -357,6 +365,7 @@ export interface Attribute {
     attributeTypeEnum?: AttributeAttributeTypeEnum
     engName?: string
     engDescription?: string
+    opendata?: boolean
     array?: boolean
     isArray?: boolean
 }
@@ -372,7 +381,6 @@ export type RelationshipTypePreviewType = (typeof RelationshipTypePreviewType)[k
 export const RelationshipTypePreviewType = {
     system: 'system',
     application: 'application',
-    custom: 'custom',
 } as const
 
 export interface RelationshipTypePreview {
@@ -2072,22 +2080,41 @@ export const useListTypes = <TError = ApiError, TContext = unknown>(options?: {
 export const useStoreAdminEntity1Hook = () => {
     const storeAdminEntity1 = useTypesRepoSwaggerClient<void>()
 
-    return (ciType: CiType) => {
-        return storeAdminEntity1({ url: `/citypes/adminentity/store`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: ciType })
+    return (ciType: CiType, params?: StoreAdminEntity1Params) => {
+        return storeAdminEntity1({
+            url: `/citypes/adminentity/store`,
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            data: ciType,
+            params,
+        })
     }
 }
 
 export const useStoreAdminEntity1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>, TError, { data: CiType }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>, TError, { data: CiType }, TContext> => {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>,
+        TError,
+        { data: CiType; params?: StoreAdminEntity1Params },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>,
+    TError,
+    { data: CiType; params?: StoreAdminEntity1Params },
+    TContext
+> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeAdminEntity1 = useStoreAdminEntity1Hook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>, { data: CiType }> = (props) => {
-        const { data } = props ?? {}
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>,
+        { data: CiType; params?: StoreAdminEntity1Params }
+    > = (props) => {
+        const { data, params } = props ?? {}
 
-        return storeAdminEntity1(data)
+        return storeAdminEntity1(data, params)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -2098,7 +2125,12 @@ export type StoreAdminEntity1MutationBody = CiType
 export type StoreAdminEntity1MutationError = ApiError
 
 export const useStoreAdminEntity1 = <TError = ApiError, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>, TError, { data: CiType }, TContext>
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>,
+        TError,
+        { data: CiType; params?: StoreAdminEntity1Params },
+        TContext
+    >
 }) => {
     const mutationOptions = useStoreAdminEntity1MutationOptions(options)
 
@@ -2260,9 +2292,6 @@ export const useFindDerivedByDerivedTechnicalName = <
     return query
 }
 
-/**
- * @deprecated useGetRelationshipType instead
- */
 export const useGetRelationshipTypeHook = () => {
     const getRelationshipType = useTypesRepoSwaggerClient<RelationshipType>()
 
@@ -2292,9 +2321,6 @@ export const useGetRelationshipTypeQueryOptions = <TData = Awaited<ReturnType<Re
 export type GetRelationshipTypeQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>>
 export type GetRelationshipTypeQueryError = ApiError
 
-/**
- * @deprecated useGetRelationshipType instead
- */
 export const useGetRelationshipType = <TData = Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>, TError, TData> },
@@ -2524,9 +2550,6 @@ export const useGenerateCodeAndURL1 = <TData = Awaited<ReturnType<ReturnType<typ
     return query
 }
 
-/**
- * @deprecated useGetCiTypeWrapper instead
- */
 export const useGetCiTypeHook = () => {
     const getCiType = useTypesRepoSwaggerClient<CiType>()
 
@@ -2555,9 +2578,6 @@ export const useGetCiTypeQueryOptions = <TData = Awaited<ReturnType<ReturnType<t
 export type GetCiTypeQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>>
 export type GetCiTypeQueryError = ApiError
 
-/**
- * @deprecated useGetCiTypeWrapper instead
- */
 export const useGetCiType = <TData = Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>, TError, TData> },
@@ -2600,9 +2620,6 @@ export const useListRelatedCiTypesQueryOptions = <TData = Awaited<ReturnType<Ret
 export type ListRelatedCiTypesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>>
 export type ListRelatedCiTypesQueryError = ApiError
 
-/**
- * @deprecated useListRelatedCiTypesWrapper instead
- */
 export const useListRelatedCiTypes = <TData = Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>, TError, TData> },
