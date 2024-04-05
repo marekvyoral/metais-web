@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
-interface IScrollParams {
+export interface IScrollParams {
     behavior?: 'auto' | 'smooth'
     block?: 'center' | 'end' | 'nearest' | 'start'
     inline?: 'center' | 'end' | 'nearest' | 'start'

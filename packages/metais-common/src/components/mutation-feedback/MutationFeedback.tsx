@@ -16,7 +16,7 @@ import { CloseIcon } from '@isdd/metais-common/assets/images'
 
 export interface MutationFeedbackError {
     errorTitle: string
-    errorMessage: string
+    errorMessage?: string
     buttons?: { label: string; onClick: () => void }[]
 }
 

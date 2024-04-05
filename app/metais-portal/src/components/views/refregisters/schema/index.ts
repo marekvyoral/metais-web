@@ -11,6 +11,7 @@ export interface IRefRegisterCreateFormData {
         creator?: string
         sourceRegister?: string
         name?: string
+        name_en?: string
         refId?: string
         effectiveFrom?: string
         effectiveTo?: string
@@ -59,7 +60,6 @@ export const createRefRegisterSchema = (
                 then: () => string().test('largerThan', t('codeListList.requestValidations.dateGreaterThan'), effectiveToGreaterThanEffectiveFrom),
             }),
             manager: object().shape({
-                PO: string().required(t('validation.required')),
                 lastName: string().required(t('validation.required')),
                 firstName: string().required(t('validation.required')),
                 phoneNumber: string().matches(REGEX_TEL, t('validation.invalidPhone')).required(t('validation.required')),

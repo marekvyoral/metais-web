@@ -7,10 +7,12 @@ import { createContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useParams } from 'react-router-dom'
 import { InterpreterFrom } from 'xstate'
-import { QueryKeysByEntity } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryKeysByEntity } from '@isdd/metais-common/index'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ciInformationTab } from '@isdd/metais-common/constants'
 import { formatTitleString } from '@isdd/metais-common/utils/utils'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { RefRegisterItemsContainer } from '@/components/containers/refregisters/RefRegisterItemsContainer'
 import { RefRegisterIdHeader } from '@/components/views/refregisters/RefRegisterIdHeader'
@@ -40,6 +42,14 @@ const RefRegistersDetail = () => {
         title: t('refRegisters.detail.informations'),
         content: <Outlet />,
     }
+
+    const { isActionSuccess } = useActionSuccess()
+
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        scrollToMutationFeedback()
+    }, [isActionSuccess, scrollToMutationFeedback])
 
     const tabList: Tab[] = user
         ? [
@@ -78,7 +88,7 @@ const RefRegistersDetail = () => {
     }, [referenceRegisterData, isLoading, currentState, stateMachineService])
     const refRegisterIdHeaderIsLoading = isLoading && currentState !== StateMachineStatesExtension.FETCHING
 
-    document.title = formatTitleString(t('refRegisters.detail.title', { name: referenceRegisterData?.isvsName ?? '' }))
+    document.title = formatTitleString(t('refRegisters.detail.title', { name: referenceRegisterData?.name ?? '' }))
     return (
         <>
             <BreadCrumbs
@@ -88,12 +98,16 @@ const RefRegistersDetail = () => {
                     { label: t('breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
                     { label: t('breadcrumbs.refRegisters'), href: RouteNames.REFERENCE_REGISTERS },
                     {
-                        label: referenceRegisterData?.isvsName ?? t('breadcrumbs.noName'),
+                        label: referenceRegisterData?.name ?? t('breadcrumbs.noName'),
                         href: `${RouteNames.REFERENCE_REGISTERS}/${entityId}`,
                     },
                 ]}
             />
+
             <MainContentWrapper>
+                <div ref={wrapperRef}>
+                    <MutationFeedback success={isActionSuccess.value} />
+                </div>
                 <RefRegisterStateMachine.Provider value={{ stateMachineService }}>
                     <RefRegisterPermissionsWrapper
                         state={referenceRegisterData?.state}
@@ -104,7 +118,7 @@ const RefRegistersDetail = () => {
                             {!isLoading && (
                                 <RefRegisterIdHeader
                                     entityId={entityId ?? ''}
-                                    entityItemName={referenceRegisterData?.isvsName ?? 'Detail'}
+                                    entityItemName={referenceRegisterData?.name ?? 'Detail'}
                                     isLoading={refRegisterIdHeaderIsLoading}
                                     isError={isError}
                                     owner={referenceRegisterData?.owner ?? ''}

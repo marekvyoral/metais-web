@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useId, useRef, useState } from 'react'
 import { Popup } from 'reactjs-popup'
 import { EventType, PopupActions, PopupPosition } from 'reactjs-popup/dist/types'
-import { v4 as uuidV4 } from 'uuid'
 import { useTranslation } from 'react-i18next'
 
 import styles from './Tooltip.module.scss'
@@ -34,7 +33,8 @@ interface ITooltip {
 export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, triggerElement, tooltipContent, closeButton = false, tabIndex, id, ...props }) => {
     const popupRef = useRef<PopupActions>(null)
     const { t } = useTranslation()
-    const descriptionId = id ? `${id}-description` : `${uuidV4()}-description`
+    const uId = useId()
+    const descriptionId = id ?? uId
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
     useEffect(() => {

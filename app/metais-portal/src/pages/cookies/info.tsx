@@ -24,25 +24,25 @@ const CookiesInfoPage = () => {
                 <TextBody size="L">
                     <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(t('cookies.info.description1')) }} />
                 </TextBody>
-                <TextHeading size="M">
+                <TextHeading size="L">
                     <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(t('cookies.info.heading2')) }} />
                 </TextHeading>
                 <TextBody size="L">
                     <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(t('cookies.info.description2')) }} />
                 </TextBody>
-                <TextHeading size="M">
+                <TextHeading size="L">
                     <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(t('cookies.info.heading3')) }} />
                 </TextHeading>
                 <TextBody size="L">
                     <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(t('cookies.info.description3')) }} />
                 </TextBody>
-                <TextHeading size="M">
+                <TextHeading size="L">
                     <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(t('cookies.info.heading4')) }} />
                 </TextHeading>
                 <TextBody size="L">
                     <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(t('cookies.info.description4')) }} />
                 </TextBody>
-                <TextHeading size="M">
+                <TextHeading size="L">
                     <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(t('cookies.info.heading5')) }} />
                 </TextHeading>
                 <TextBody size="L">

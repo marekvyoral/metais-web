@@ -187,9 +187,9 @@ export const Table = <T,>({
                                 })}
                                 key={headerGroup.id}
                             >
-                                {headerGroup.headers.map((header) => {
-                                    return <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
-                                })}
+                                {headerGroup.headers.map((header) => (
+                                    <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
+                                ))}
                             </tr>
                         )
                     })}

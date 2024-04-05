@@ -4,7 +4,7 @@ import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { FieldValues, UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { OptionProps } from 'react-select'
+import { MultiValue, OptionProps } from 'react-select'
 
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -18,13 +18,14 @@ export type SelectFilterOrganizationOptionType = {
 }
 
 interface SelectFilterOrganizationProps<T extends FieldValues & IFilterParams> {
-    filter: T
-    setValue: UseFormSetValue<T>
+    filter?: T
+    setValue?: UseFormSetValue<T>
     additionalData?: IFilter
     name: string
     label: string
     isMulti?: boolean
     option?: (row: OptionProps<SelectFilterOrganizationOptionType>) => JSX.Element
+    onChange?: (val: MultiValue<SelectFilterOrganizationOptionType> | null) => void
 }
 
 const formatOption = (optionProps: OptionProps<SelectFilterOrganizationOptionType>) => {
@@ -57,6 +58,7 @@ export const SelectFilterOrganization = <T extends FieldValues & IFilterParams>(
     setValue,
     additionalData,
     option,
+    onChange,
 }: SelectFilterOrganizationProps<T>) => {
     const { t } = useTranslation()
 
@@ -92,7 +94,7 @@ export const SelectFilterOrganization = <T extends FieldValues & IFilterParams>(
     )
 
     useEffect(() => {
-        if (!defaultValue && filter?.[name]?.length > 0) {
+        if (!defaultValue && filter && filter?.[name]?.length > 0) {
             readCiListHook({
                 filter: {
                     uuid: isMulti ? [...filter[name]] : [filter?.[name]],
@@ -122,6 +124,7 @@ export const SelectFilterOrganization = <T extends FieldValues & IFilterParams>(
                 isMulti={isMulti}
                 option={(ctx) => (option ? option?.(ctx) : formatOption(ctx))}
                 setValue={setValue}
+                onChange={(value) => onChange?.(Array.isArray(value) ? value : [value])}
                 defaultValue={defaultValue}
             />
             <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />

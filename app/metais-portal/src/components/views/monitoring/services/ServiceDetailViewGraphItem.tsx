@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, IconLabel, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
-import { Button, GridCol, GridRow, PaginatorWrapper, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { GridCol, GridRow, PaginatorWrapper, RadioButton, RadioGroup, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import {
     ApiParameterType,
     MonitoredValue,
     MonitoredValuesList,
     useListParameterValuesHook,
 } from '@isdd/metais-common/api/generated/monitoring-swagger'
-import { ChangeIcon } from '@isdd/metais-common/assets/images'
 import { ColumnDef } from '@tanstack/react-table'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
@@ -148,18 +147,8 @@ export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> =
                         <GridRow>
                             <GridCol setWidth="one-half">
                                 <div className={styles.labelDiv}>
-                                    <label className="govuk-label">
-                                        <TextHeading size="M">{item.name}</TextHeading>
-                                    </label>
+                                    <TextHeading size="L">{item.name}</TextHeading>
                                     <Tooltip descriptionElement={item.description} altText={`Tooltip ${item.name}`} />
-                                    <Button
-                                        variant="secondary"
-                                        onClick={() => setToggleTable(!toggleTable)}
-                                        aria-label={
-                                            toggleTable ? t('monitoringServices.detail.changeToGraph') : t('monitoringServices.detail.changeToTable')
-                                        }
-                                        label={<IconLabel icon={ChangeIcon} />}
-                                    />
                                 </div>
                             </GridCol>
                             <GridCol setWidth="one-half">
@@ -173,6 +162,24 @@ export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> =
                                 </div>
                             </GridCol>
                         </GridRow>
+                        <RadioGroup inline>
+                            <RadioButton
+                                id={'graphRadio'}
+                                name="graphRadio"
+                                value={'graph'}
+                                checked={!toggleTable}
+                                onClick={() => setToggleTable(false)}
+                                label={t('monitoringServices.detail.graphView')}
+                            />
+                            <RadioButton
+                                id={'tableRadio'}
+                                name="tableRadio"
+                                value={'table'}
+                                checked={toggleTable}
+                                onClick={() => setToggleTable(true)}
+                                label={t('monitoringServices.detail.tableView')}
+                            />
+                        </RadioGroup>
                         <GridRow>
                             <GridCol>
                                 {toggleTable ? (

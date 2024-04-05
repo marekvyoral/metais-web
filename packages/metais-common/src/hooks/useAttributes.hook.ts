@@ -1,9 +1,7 @@
 import { useTranslation } from 'react-i18next'
 
-import { useDetailData } from './useDetailData'
 import { useGetCiTypeWrapper } from './useCiType.hook'
-
-import { transformColumnsMap, transformNameColumnsMap } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
+import { useDetailData } from './useDetailData'
 
 export const useAttributesHook = (entityName?: string, onlyValidProfiles = true) => {
     const { i18n } = useTranslation()
@@ -22,14 +20,6 @@ export const useAttributesHook = (entityName?: string, onlyValidProfiles = true)
 
     const attributeProfiles = ciTypeData?.attributeProfiles
     const attributes = ciTypeData?.attributes
-    const renamedAttributes =
-        ciTypeData?.attributes?.map((attr) => {
-            return {
-                ...attr,
-                name: transformNameColumnsMap.get(attr?.technicalName ?? '') ?? attr?.name,
-                technicalName: transformColumnsMap.get(attr?.technicalName ?? '') ?? attr?.technicalName,
-            }
-        }) ?? []
 
     return {
         attributeProfiles,
@@ -37,7 +27,6 @@ export const useAttributesHook = (entityName?: string, onlyValidProfiles = true)
         ciTypeData,
         constraintsData,
         unitsData,
-        renamedAttributes,
         isLoading: isLoading || isCiTypeDataFetching,
         isError: isError || isCiTypeDataError,
     }

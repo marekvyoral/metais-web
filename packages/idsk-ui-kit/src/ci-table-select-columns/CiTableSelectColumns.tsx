@@ -66,7 +66,7 @@ const ColumnSection: React.FC<IColumnSectionProps> = ({ sectionName, columns, up
                         value={column.technicalName}
                         checked={getIsColumnChecked(column.technicalName)}
                         onChange={(e) => updateSelectedValue(e.target.value, e.target.checked)}
-                        disabled={column.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov || column.technicalName === ATTRIBUTE_NAME.ISVS_Name}
+                        disabled={column.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov}
                     />
                 )
             })}
