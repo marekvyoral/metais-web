@@ -165,7 +165,7 @@
     "table.sortButtonLabel": "Zoradiť {{sortDirection}} podľa {{item}}",
     "table.asc": "vzostupne",
     "table.desc": "zostupne",
-    "table.unsort": "Zrušit zoradenie podľa {{item}}",
+    "table.unsort": "Zrušiť zoradenie podľa {{item}}",
     "form.userFirstName": "Meno použivateľa",
     "form.userSurName": "Priezvisko použivateľa",
     "form.select.country": "Výber krajiny",

@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
 import './header.scss'
 import { useTranslation } from 'react-i18next'
+import { TFunction } from 'i18next'
 
 import styles from './table.module.scss'
 import { CHECKBOX_CELL } from './constants'
@@ -12,7 +13,6 @@ import { CHECKBOX_CELL } from './constants'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 
 const reorderColumn = (draggedColumnId: string, targetColumnId: string, columnOrder: string[]): ColumnOrderState => {
-    if (draggedColumnId === ATTRIBUTE_NAME.Gen_Profil_nazov || targetColumnId === ATTRIBUTE_NAME.Gen_Profil_nazov) return columnOrder
     const newColumnOrder = columnOrder
     const startSplicing = newColumnOrder.indexOf(targetColumnId)
     if (startSplicing === 0) return columnOrder
@@ -34,7 +34,18 @@ const getAriaSort = (sort: SortDirection | false) => {
         case 'desc':
             return 'descending'
         default:
-            return undefined
+            return 'none'
+    }
+}
+
+const getSortButtonLabel = (sort: SortDirection | false, t: TFunction<'translation', undefined, 'translation'>) => {
+    switch (sort) {
+        case 'asc':
+            return t('table.desc')
+        case 'desc':
+            return ''
+        default:
+            return t('table.asc')
     }
 }
 
@@ -46,17 +57,21 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
     const columnHeader = column.columnDef.header
     const headerString = typeof columnHeader == 'string' ? columnHeader : columnHeader?.(getContext())
     const columnEnabledSorting = header.column.columnDef.enableSorting
+    const canDragAndDrop = canDrag && header.id !== ATTRIBUTE_NAME.Gen_Profil_nazov
 
     const [, dropRef] = useDrop({
         accept: 'column',
         drop: (draggedColumn: Column<T>) => {
-            const newColumnOrder = reorderColumn(draggedColumn.id, column.id, columnOrder)
-            setColumnOrder(newColumnOrder)
+            if (draggedColumn.id !== column.id) {
+                const newColumnOrder = reorderColumn(draggedColumn.id, column.id, columnOrder)
+                setColumnOrder(newColumnOrder)
+            }
         },
+        canDrop: () => canDragAndDrop,
     })
 
     const [{ isDragging }, dragRef, previewRef] = useDrag({
-        canDrag,
+        canDrag: canDragAndDrop,
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -64,35 +79,34 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
         type: 'column',
     })
 
-    const isNotSorted = column.getIsSorted() != 'asc' && column.getIsSorted() != 'desc'
-    const sortedAsc = column.getIsSorted() == 'asc'
     const sortDesc = column.getIsSorted() == 'desc'
-    const ariaSort = getAriaSort(column.getIsSorted())
     const ariaLabelForSortButton = sortDesc
         ? t('table.unsort', { item: headerString })
         : t('table.sortButtonLabel', {
               item: headerString,
-              sortDirection: sortedAsc ? t('table.desc') : isNotSorted ? t('table.asc') : '',
+              sortDirection: getSortButtonLabel(column.getIsSorted(), t),
           })
 
     return id === CHECKBOX_CELL ? (
         <td className={classNames('idsk-table__header', styles.header, styles.checkBoxCell)}>{flexRender(columnHeader, getContext())}</td>
     ) : (
         <th
-            scope="col"
             id={header.id}
             ref={dropRef}
             className={classNames('idsk-table__header', styles.header, {
                 [styles.checkBoxCell]: id === CHECKBOX_CELL,
+                [styles.widthAuto]: !header.column.columnDef.size,
+                [styles.dragged]: isDragging,
             })}
             colSpan={colSpan}
-            aria-sort={ariaSort}
-            aria-label={headerString}
-            style={{ opacity: isDragging ? 0.5 : 1, ...(header.column.columnDef.size ? { width: header.column.columnDef.size } : { width: 'auto' }) }}
+            aria-sort={getAriaSort(column.getIsSorted())}
+            style={{
+                ...(header.column.columnDef.size ? { width: header.column.columnDef.size } : { width: 'auto' }),
+            }}
         >
             <div ref={previewRef}>
-                <div ref={dragRef} className="th-span">
-                    <TextBody size="S" className={'marginBottom0'}>
+                <div ref={dragRef}>
+                    <TextBody size="S" className="marginBottom0 th-span">
                         <strong className={styles.columnHeaderStrong}>
                             {isPlaceholder ? null : flexRender(columnHeader, getContext())}
                             {column.getCanSort() && columnEnabledSorting && (
@@ -103,9 +117,10 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
                                         { arrowBtnAsc: column.getIsSorted() === 'asc' },
                                     )}
                                     onClick={column.getToggleSortingHandler()}
-                                    aria-label={ariaLabelForSortButton}
                                     lang={i18n.language}
-                                />
+                                >
+                                    <span className="sr-only">&nbsp;{ariaLabelForSortButton}</span>
+                                </button>
                             )}
                         </strong>
                     </TextBody>

@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { LANGUAGE_STORE_KEY } from '@isdd/metais-common/src/localization/i18next'
+
+import { ButtonPopup } from '@isdd/idsk-ui-kit'
+
 interface ILanguageItem {
-    handleClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, lng: Languages) => void
+    handleClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, lng: Languages, closeHandler: () => void) => void
     value: Languages
+    closeHandler: () => void
 }
 
-export const LanguageItem: React.FC<ILanguageItem> = ({ handleClick, value }) => {
+export const LanguageItem: React.FC<ILanguageItem> = ({ handleClick, value, closeHandler }) => {
     const { t, i18n } = useTranslation()
     return (
         <li className="idsk-header-web__brand-language-list-item">
@@ -19,7 +23,7 @@ export const LanguageItem: React.FC<ILanguageItem> = ({ handleClick, value }) =>
                 })}
                 title={t(`language.${value}`) ?? ''}
                 href="#"
-                onClick={(event) => handleClick(event, value)}
+                onClick={(event) => handleClick(event, value, closeHandler)}
             >
                 {t(`language.${value}`)}
             </a>
@@ -30,58 +34,41 @@ export const LanguageItem: React.FC<ILanguageItem> = ({ handleClick, value }) =>
 export const LanguageSelector: React.FC = () => {
     const { i18n, t } = useTranslation()
 
-    const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
-
-    const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, lng: Languages) => {
+    const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, lng: Languages, closeHandler: () => void) => {
         document.documentElement.setAttribute('lang', lng)
         localStorage.setItem(LANGUAGE_STORE_KEY, lng)
         event.preventDefault()
-        setIsMenuExpanded(false)
         i18n.changeLanguage(lng)
-    }
-
-    const handleWrapperBlur = (event: React.FocusEvent<HTMLDivElement, Element>) => {
-        /*
-        https://developer.mozilla.org/en-US/docs/Web/API/Event/Comparison_of_Event_Targets
-        `target` is the element that lost focus,
-        `relatedTarget` is the element that gained focus (if applicable),
-        `currentTarget` is the element to which the event listener is attached.
-        */
-        if (!event.currentTarget.contains(event.relatedTarget)) {
-            setIsMenuExpanded(false)
-        }
-    }
-
-    const handleWrapperKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        if (event.code == 'Escape') {
-            setIsMenuExpanded(false)
-        }
+        closeHandler()
     }
 
     return (
-        <div
-            className={classnames({ 'idsk-header-web__brand-language': true, 'idsk-header-web__brand-language--active': isMenuExpanded })}
-            onBlur={handleWrapperBlur}
-            onKeyDown={handleWrapperKeyDown}
-        >
-            <button
-                className="idsk-header-web__brand-language-button"
-                aria-label={isMenuExpanded ? t('languageSelector.close') ?? '' : t('languageSelector.open') ?? ''}
-                aria-expanded={isMenuExpanded}
-                data-text-for-hide={t('languageSelector.close') ?? ''}
-                data-text-for-show={t('languageSelector.open') ?? ''}
-                onClick={() => setIsMenuExpanded((x) => !x)}
-            >
-                {t(`language.${i18n.language}`)}
-                <span className="idsk-header-web__link-arrow" />
-            </button>
-            {isMenuExpanded && (
-                <ul className="idsk-header-web__brand-language-list">
-                    <LanguageItem handleClick={handleClick} value={Languages.ENGLISH} />
-                    <LanguageItem handleClick={handleClick} value={Languages.SLOVAK} />
-                    {import.meta.env.VITE_LOCALES_SHOW_KEYS == 'true' && <LanguageItem handleClick={handleClick} value={Languages.CI_MODE} />}
-                </ul>
-            )}
+        <div className={classnames({ 'idsk-header-web__brand-language': true })}>
+            <ButtonPopup
+                customTrigger={({ isExpanded }) => (
+                    <button
+                        className={classnames({
+                            'idsk-header-web__brand-language-button': true,
+                            'idsk-header-web__brand-language--active': isExpanded,
+                        })}
+                        aria-label={isExpanded ? t('languageSelector.close') ?? '' : t('languageSelector.open') ?? ''}
+                        aria-expanded={isExpanded}
+                    >
+                        {t(`language.${i18n.language}`)}
+                        <span className={classnames('idsk-header-web__link-arrow')} />
+                    </button>
+                )}
+                contentClassNameReplacement="idsk-header-web__brand-language--active"
+                popupContent={(closePopup) => (
+                    <ul className="idsk-header-web__brand-language-list">
+                        <LanguageItem handleClick={handleClick} value={Languages.ENGLISH} closeHandler={closePopup} />
+                        <LanguageItem handleClick={handleClick} value={Languages.SLOVAK} closeHandler={closePopup} />
+                        {import.meta.env.VITE_LOCALES_SHOW_KEYS == 'true' && (
+                            <LanguageItem handleClick={handleClick} value={Languages.CI_MODE} closeHandler={closePopup} />
+                        )}
+                    </ul>
+                )}
+            />
         </div>
     )
 }

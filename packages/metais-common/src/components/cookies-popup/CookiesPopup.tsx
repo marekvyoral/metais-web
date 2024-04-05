@@ -1,16 +1,11 @@
-import { Button, NavigationCloseIcon, TextBody, TextHeading } from '@isdd/idsk-ui-kit'
-import React, { useEffect, useId, useState } from 'react'
+import { Button, ButtonGroupRow, GridRow, TextBody, TextHeading, GridCol } from '@isdd/idsk-ui-kit'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import StickyBox from 'react-sticky-box'
 import Cookies from 'universal-cookie'
-import { useTranslation } from 'react-i18next'
-import classNames from 'classnames'
-
-import styles from './styles.module.scss'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { FooterRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { COOKIES_TYPES } from '@isdd/metais-common/src/api/constants'
-import { useWindowWidthBreakpoints } from '@isdd/metais-common/src/hooks/window-size/useWindowWidthBreakpoints'
 
 export const setCookiesConsent = (cookies: Cookies, values: { [key in COOKIES_TYPES]: boolean }, onCookiesSet?: () => void) => {
     const date = new Date()
@@ -21,88 +16,87 @@ export const setCookiesConsent = (cookies: Cookies, values: { [key in COOKIES_TY
     onCookiesSet && onCookiesSet()
 }
 
+enum States {
+    'DEFAULT',
+    'ACCEPT',
+    'DECLINE',
+}
+
 export const CookiesPopup: React.FC = () => {
     const { t } = useTranslation()
     const cookies = new Cookies()
-    const windowWidth = useWindowWidthBreakpoints()
-    const headerId = useId()
     const getIsShownCookies = () => {
-        if (
-            cookies.get(COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT) == undefined &&
-            cookies.get(COOKIES_TYPES.ANALYTICALLY_COOKIES_CONSENT) == undefined &&
-            cookies.get(COOKIES_TYPES.PREFERENTIAL_COOKIES_CONSENT) == undefined
-        ) {
-            return true
-        }
-        return false
+        return (
+            cookies.get(COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT) === undefined &&
+            cookies.get(COOKIES_TYPES.ANALYTICALLY_COOKIES_CONSENT) === undefined &&
+            cookies.get(COOKIES_TYPES.PREFERENTIAL_COOKIES_CONSENT) === undefined
+        )
     }
     const [isShown, setIsShown] = useState(getIsShownCookies())
-
-    useEffect(() => {
-        const cookieChangeListener = () => {
-            setIsShown(getIsShownCookies())
-        }
-
-        cookies.addChangeListener(cookieChangeListener)
-
-        return () => {
-            cookies.removeChangeListener(cookieChangeListener)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    const [bannerState, setBannerState] = useState<States>(States.DEFAULT)
 
     return isShown ? (
-        <StickyBox bottom offsetBottom={0} className={styles.stickyStyles}>
-            <div className={styles.popupBoxStyle} tabIndex={1} role="region" aria-labelledby={headerId}>
-                <div className={styles.flexMobileClose} id={headerId}>
-                    <TextHeading className={classNames(styles.marginBottom0)} size={'S'}>
-                        {t('cookies.thisPageUsesCookies1')}
-                        <Link to={FooterRouteNames.COOKIES}>
-                            <TextBody className={styles.marginBottom0}>{t('cookies.thisPageUsesCookies2')} </TextBody>
+        <div className="idsk-cookie-banner govuk-!-padding-top-4" role="region" aria-label={t('cookies.heading')}>
+            {bannerState === States.DEFAULT && (
+                <div className="idsk-cookie-banner__message govuk-width-container">
+                    <GridRow>
+                        <GridCol setWidth="two-thirds">
+                            <TextHeading size="L">{t('cookies.heading')}</TextHeading>
+                            <div className="idsk-cookie-banner__content">
+                                <TextBody>{t('cookies.thisPageUsesCookies1')}</TextBody>
+                                <TextBody>{t('cookies.thisPageUsesCookies2')}</TextBody>
+                            </div>
+                        </GridCol>
+                    </GridRow>
+                    <ButtonGroupRow className="idsk-button-group">
+                        <Button
+                            label={t('cookies.settings.acceptAll')}
+                            onClick={() => {
+                                setCookiesConsent(cookies, {
+                                    [COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT]: true,
+                                    [COOKIES_TYPES.ANALYTICALLY_COOKIES_CONSENT]: true,
+                                    [COOKIES_TYPES.PREFERENTIAL_COOKIES_CONSENT]: true,
+                                })
+                                setBannerState(States.ACCEPT)
+                            }}
+                        />
+                        <Button
+                            label={t('cookies.settings.refuseAll')}
+                            onClick={() => {
+                                setCookiesConsent(cookies, {
+                                    [COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT]: false,
+                                    [COOKIES_TYPES.ANALYTICALLY_COOKIES_CONSENT]: false,
+                                    [COOKIES_TYPES.PREFERENTIAL_COOKIES_CONSENT]: false,
+                                })
+                                setBannerState(States.DECLINE)
+                            }}
+                        />
+                        <Link className="govuk-link" to={FooterRouteNames.COOKIES_SETTINGS}>
+                            {t('cookies.settings.heading')}
                         </Link>
-                    </TextHeading>
-                    {windowWidth && !windowWidth.desktop && (
-                        <button className={styles.closeButton} onClick={() => setIsShown(false)} aria-label={t('close')}>
-                            <img src={NavigationCloseIcon} alt="" />
-                        </button>
-                    )}
+                    </ButtonGroupRow>
                 </div>
-                <Button
-                    label={t('cookies.settings.refuseAll')}
-                    bottomMargin={false}
-                    onClick={() =>
-                        setCookiesConsent(cookies, {
-                            [COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT]: false,
-                            [COOKIES_TYPES.ANALYTICALLY_COOKIES_CONSENT]: false,
-                            [COOKIES_TYPES.PREFERENTIAL_COOKIES_CONSENT]: false,
-                        })
-                    }
-                    autoFocus
-                />
-                <Button
-                    label={t('cookies.settings.acceptAll')}
-                    bottomMargin={false}
-                    onClick={() =>
-                        setCookiesConsent(
-                            cookies,
-                            {
-                                [COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT]: true,
-                                [COOKIES_TYPES.ANALYTICALLY_COOKIES_CONSENT]: true,
-                                [COOKIES_TYPES.PREFERENTIAL_COOKIES_CONSENT]: true,
-                            },
-                            () => setIsShown(false),
-                        )
-                    }
-                />
-                <Link to={FooterRouteNames.COOKIES_SETTINGS}>
-                    <TextBody className={styles.marginBottom0}>{t('cookies.settings.heading')} </TextBody>
-                </Link>
-                {windowWidth && windowWidth.desktop && (
-                    <button className={styles.closeButton} onClick={() => setIsShown(false)} aria-label={t('close')}>
-                        <img src={NavigationCloseIcon} />
-                    </button>
-                )}
-            </div>
-        </StickyBox>
+            )}
+
+            {(bannerState === States.ACCEPT || bannerState === States.DECLINE) && (
+                <div className="idsk-cookie-banner__message idsk-cookie-banner__example govuk-width-container" role="alert">
+                    <GridRow>
+                        <GridCol setWidth="two-thirds">
+                            <div className="idsk-cookie-banner__content">
+                                <TextBody>
+                                    <Trans
+                                        i18nKey={`cookies.settings.${bannerState === States.ACCEPT ? 'accepted' : 'declined'}`}
+                                        components={[<Link key="link" to={FooterRouteNames.COOKIES_SETTINGS} className="govuk-link" />]}
+                                    />
+                                </TextBody>
+                            </div>
+                        </GridCol>
+                    </GridRow>
+                    <ButtonGroupRow>
+                        <Button onClick={() => setIsShown(false)} label={t('cookies.settings.dismiss')} />
+                    </ButtonGroupRow>
+                </div>
+            )}
+        </div>
     ) : null
 }
