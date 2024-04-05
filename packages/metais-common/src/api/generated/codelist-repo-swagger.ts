@@ -74,6 +74,7 @@ export type GetCodelistHeadersParams = {
     code?: string
     nameFilter?: string
     name?: string
+    ciTypeTN?: string
 }
 
 export type GetCodelistRequestDetailStateISVSProcessingParams = {
@@ -150,6 +151,8 @@ export type GetCodelistItemsParams = {
     toDate?: string
     ascending?: boolean
 }
+
+export type ConnectCodelistWithEntity200 = { [key: string]: any }
 
 export type CreateCodelistRequest200 = { [key: string]: any }
 
@@ -2003,6 +2006,59 @@ export const useCreateCodelistRequest = <TError = ApiError, TContext = unknown>(
     >
 }) => {
     const mutationOptions = useCreateCodelistRequestMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useConnectCodelistWithEntityHook = () => {
+    const connectCodelistWithEntity = useCodeListRepoSwaggerClient<ConnectCodelistWithEntity200>()
+
+    return (code: string, entity: string) => {
+        return connectCodelistWithEntity({ url: `/codelists/codelistheaders/${code}/connect/${entity}`, method: 'post' })
+    }
+}
+
+export const useConnectCodelistWithEntityMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useConnectCodelistWithEntityHook>>>,
+        TError,
+        { code: string; entity: string },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useConnectCodelistWithEntityHook>>>,
+    TError,
+    { code: string; entity: string },
+    TContext
+> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const connectCodelistWithEntity = useConnectCodelistWithEntityHook()
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useConnectCodelistWithEntityHook>>>, { code: string; entity: string }> = (
+        props,
+    ) => {
+        const { code, entity } = props ?? {}
+
+        return connectCodelistWithEntity(code, entity)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type ConnectCodelistWithEntityMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useConnectCodelistWithEntityHook>>>>
+
+export type ConnectCodelistWithEntityMutationError = ApiError
+
+export const useConnectCodelistWithEntity = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useConnectCodelistWithEntityHook>>>,
+        TError,
+        { code: string; entity: string },
+        TContext
+    >
+}) => {
+    const mutationOptions = useConnectCodelistWithEntityMutationOptions(options)
 
     return useMutation(mutationOptions)
 }

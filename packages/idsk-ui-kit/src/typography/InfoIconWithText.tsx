@@ -26,7 +26,7 @@ export const InfoIconWithText = forwardRef<HTMLDivElement, IInfoIconWithTextProp
                     />
                 </span>
             )}
-            <span className={classNames(styles.infoText)}>{children}</span>
+            {children}
         </span>
     )
 })

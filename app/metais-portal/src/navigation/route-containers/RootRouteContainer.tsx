@@ -12,11 +12,11 @@ export const RootRouteContainer: React.FC = () => {
     const { t } = useTranslation()
     return (
         <>
+            <CookiesPopup />
             <NavAnnouncer />
             <Navbar />
             <Outlet />
             <Footer metaList={getPortalFooterMetaList(t)} sections={getPortalFooterSection(t)} />
-            <CookiesPopup />
         </>
     )
 }

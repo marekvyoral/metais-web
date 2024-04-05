@@ -50,6 +50,7 @@ export interface IRefRegisterItemsView {
 }
 
 export enum RefRegisterViewItems {
+    NAME_EN = 'name_en',
     ISVS_NAME = 'isvsName',
     ISVS_CODE = 'isvsCode',
     ISVS_REF_ID = 'isvsRefId',

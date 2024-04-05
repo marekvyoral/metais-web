@@ -21,6 +21,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './egovTable.module.scss'
 
+import { EntityType } from '@/components/views/egov/entity-detail-views/CreateEntityView'
+
 type IListData = {
     data?: AttributeProfile[] | undefined
     entityName?: string
@@ -262,10 +264,18 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={entityName ?? ''}
                 createButton={
-                    <CreateEntityButton
-                        label={t(`egov.addNew.${entityName}`)}
-                        onClick={() => navigate(`/egov/${entityName}/create`, { state: { from: location } })}
-                    />
+                    <>
+                        <CreateEntityButton
+                            label={t(`egov.addNew.${entityName}`)}
+                            onClick={() => navigate(`/egov/${entityName}/create`, { state: { from: location } })}
+                        />
+                        {entityName === EntityType.ENTITY && (
+                            <CreateEntityButton
+                                label={t('egov.addNew.entityFromZc')}
+                                onClick={() => navigate(`/egov/entity/createZc`, { state: { from: location } })}
+                            />
+                        )}
+                    </>
                 }
                 hiddenButtons={{ SELECT_COLUMNS: true }}
                 selectedRowsCount={Object.keys(rowSelection).length}

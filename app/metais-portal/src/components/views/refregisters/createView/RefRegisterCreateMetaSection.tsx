@@ -2,10 +2,11 @@ import { Input, SimpleSelect } from '@isdd/idsk-ui-kit/index'
 import { ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React from 'react'
 import { Control, FormState, UseFormClearErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { ApiReferenceRegister } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { useTranslation } from 'react-i18next'
 
 import { IRefRegisterCreateFormData } from '@/components/views/refregisters/schema'
 import { RefRegisterSourceRegisterSection } from '@/components/views/refregisters/createView/RefRegisterSourceRegisterSection'
@@ -42,17 +43,16 @@ export const RefRegisterCreateMetaSection: React.FC<IProps> = ({
     creatorNotSet,
     control,
 }) => {
-    const { t } = useTranslation()
     const userGroupOptions = getUserGroupOptions(userGroupData)
     const defaultUserGroup = userGroupOptions?.length === 1 ? userGroupOptions[0] : undefined
-
+    const { t } = useTranslation()
     return (
         <>
             {showCreatorForm(defaultUserGroup, defaultData) && (
                 <SimpleSelect
                     id={'refRegisters.creator'}
                     name={'refRegisters.creator'}
-                    label={getLabelRR(RefRegisterViewItems.CREATOR, renamedAttributes) ?? ''}
+                    label={t('refRegisters.creator')}
                     options={userGroupOptions ?? []}
                     defaultValue={defaultData?.creatorUuid}
                     onChange={(value?: string) => {
@@ -66,13 +66,21 @@ export const RefRegisterCreateMetaSection: React.FC<IProps> = ({
                 />
             )}
             <Input
-                label={t('refRegisters.create.name')}
+                label={getLabelRR(ATTRIBUTE_NAME.Gen_Profil_nazov, renamedAttributes) ?? ''}
                 {...register('refRegisters.name')}
+                info={getInfoRR(ATTRIBUTE_NAME.Gen_Profil_nazov, renamedAttributes)}
                 error={formState.errors?.refRegisters?.name?.message}
                 required
                 disabled={!isRRFieldEditable(defaultData?.state) || isContact || creatorNotSet}
             />
-
+            <Input
+                label={getLabelRR(RefRegisterViewItems.NAME_EN, renamedAttributes) ?? ''}
+                {...register('refRegisters.name_en')}
+                info={getInfoRR(RefRegisterViewItems.NAME_EN, renamedAttributes)}
+                error={formState.errors?.refRegisters?.name_en?.message}
+                required
+                disabled={!isRRFieldEditable(defaultData?.state) || isContact || creatorNotSet}
+            />
             <RefRegisterSourceRegisterSection
                 defaultData={defaultData}
                 userGroupId={userGroupId}
@@ -83,7 +91,6 @@ export const RefRegisterCreateMetaSection: React.FC<IProps> = ({
                 register={register}
                 creatorNotSet={creatorNotSet}
             />
-
             <DateInput
                 label={getLabelRR(RefRegisterViewItems.EFFECTIVE_FROM, renamedAttributes) ?? ''}
                 info={getInfoRR(RefRegisterViewItems.EFFECTIVE_FROM, renamedAttributes)}
@@ -94,7 +101,6 @@ export const RefRegisterCreateMetaSection: React.FC<IProps> = ({
                 control={control}
                 setValue={setValue}
             />
-
             <DateInput
                 label={getLabelRR(RefRegisterViewItems.EFFECTIVE_TO, renamedAttributes) ?? ''}
                 info={getInfoRR(RefRegisterViewItems.EFFECTIVE_TO, renamedAttributes)}

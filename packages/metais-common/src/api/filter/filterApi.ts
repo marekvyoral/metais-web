@@ -162,6 +162,9 @@ export const mapFilterToRefRegisters = (filterParams: FieldValues & IFilterParam
     if (filterParams?.managerUuid) {
         mappedFilter.managerUuid = filterParams?.managerUuid
     }
+    if (filterParams?.name) {
+        mappedFilter.name = filterParams?.name
+    }
     if (filterParams?.isvsUuid) {
         mappedFilter.isvsUuid = filterParams?.isvsUuid
     }
@@ -183,7 +186,6 @@ export const mapFilterToRefRegistersFilter = (
     user?: User | null,
 ): GetFOPReferenceRegisters1Params => {
     const { pageNumber, pageSize, sort } = filterParams
-
     const mappedFilter: GetFOPReferenceRegisters1Params = {
         pageNumber: pageNumber ?? BASE_PAGE_NUMBER,
         perPage: pageSize ?? BASE_PAGE_SIZE,
@@ -197,8 +199,11 @@ export const mapFilterToRefRegistersFilter = (
     if (filterParams?.attributeFilters?.managerUuid) {
         mappedFilter.managerUuid = filterParams?.attributeFilters?.managerUuid?.[0]?.value ?? filterParams.managerUuid
     }
-    if (filterParams?.isvsUuid) {
-        mappedFilter.isvsUuid = filterParams?.isvsUuid
+    if (filterParams?.attributeFilters?.isvsUuid) {
+        mappedFilter.isvsUuid = filterParams?.attributeFilters?.isvsUuid?.[0]?.value ?? filterParams.isvsUuid
+    }
+    if (filterParams?.name) {
+        mappedFilter.name = filterParams?.name
     }
     if (filterParams?.attributeFilters?.stateCustom) {
         mappedFilter.state =

@@ -28,7 +28,7 @@ const getDataObjectSubItems = (t: TFunction, isSideMenu?: boolean) => {
     const dataObjectSubItemsTopMenu = [
         {
             title: t('navMenu.lists.registers'),
-            path: NavigationSubRoutes.REFERENCE_REGISTRE,
+            path: NavigationSubRoutes.REFERENCE_REGISTER,
         },
         {
             title: t('navMenu.lists.codelists'),
@@ -44,7 +44,7 @@ const getDataObjectSubItems = (t: TFunction, isSideMenu?: boolean) => {
         {
             title: t('navMenu.lists.registers'),
             path: NavigationSubRoutes.HOW_TO_REFERENCE_REGISTERS,
-            subItems: [{ title: t('navMenu.lists.registersList'), path: NavigationSubRoutes.REFERENCE_REGISTRE }],
+            subItems: [{ title: t('navMenu.lists.registersList'), path: NavigationSubRoutes.REFERENCE_REGISTER }],
         },
         {
             title: t('navMenu.lists.codelists'),
