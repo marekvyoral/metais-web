@@ -95,7 +95,7 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
     const handleAddToFavorite = () => {
         addFavorite(
             selectedUuids.map((item) => String(item)),
-            FollowedItemItemType.CODELIST,
+            FollowedItemItemType.REFID,
         )
     }
 

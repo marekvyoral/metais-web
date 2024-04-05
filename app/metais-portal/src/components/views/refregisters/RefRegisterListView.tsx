@@ -7,9 +7,9 @@ import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scr
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
+import { useAddFavorite } from '@isdd/metais-common/hooks/useAddFavorite'
 import { ActionsOverTable, BulkPopup, CreateEntityButton, MutationFeedback, QueryFeedback, Reference_Registers } from '@isdd/metais-common/index'
-import { useState } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -34,27 +34,45 @@ export const RefRegisterListView = ({
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
-    const { handleAddToFavorite, isBulkLoading } = useBulkAction()
-    const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
     const { isActionSuccess } = useActionSuccess()
+    const {
+        addFavorite,
+        error: errorAddToFavorite,
+        isLoading: isLoadingAddToFavorite,
+        isSuccess: isSuccessAddToFavorite,
+        resetState,
+        successMessage,
+    } = useAddFavorite()
+
+    const selectedUuids = useMemo(() => {
+        return Object.values(rowSelection).map((i) => i.uuid)
+    }, [rowSelection])
+
+    const handleAddToFavorite = () => {
+        addFavorite(
+            selectedUuids.map((item) => String(item)),
+            FollowedItemItemType.REF_REGISTER,
+        )
+    }
+
     return (
-        <QueryFeedback loading={isLoading || isBulkLoading} error={isError} withChildren>
+        <QueryFeedback loading={isLoading || isLoadingAddToFavorite} error={isError} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('refRegisters.title')}</TextHeading>
-                <ElementToScrollTo trigger={isActionSuccess.value || !!bulkActionResult?.isSuccess}>
+                <ElementToScrollTo trigger={isActionSuccess.value || !!isSuccessAddToFavorite}>
                     <MutationFeedback
-                        success={isActionSuccess.value || bulkActionResult?.isSuccess}
+                        success={isActionSuccess.value || isSuccessAddToFavorite}
                         successMessage={((): string | undefined => {
-                            if (bulkActionResult?.isSuccess) {
-                                return bulkActionResult?.successMessage
+                            if (isSuccessAddToFavorite) {
+                                return successMessage
                             }
                             return isActionSuccess.additionalInfo?.type === 'create'
                                 ? t('mutationFeedback.successfulCreated')
                                 : t('mutationFeedback.successfulRemoved')
                         })()}
-                        error={bulkActionResult?.isError}
-                        errorMessage={bulkActionResult?.errorMessage}
-                        onMessageClose={() => setBulkActionResult(undefined)}
+                        error={!!errorAddToFavorite}
+                        errorMessage={t('userProfile.notifications.feedback.error')}
+                        onMessageClose={() => resetState()}
                     />
                 </ElementToScrollTo>
             </FlexColumnReverseWrapper>
@@ -75,8 +93,7 @@ export const RefRegisterListView = ({
                                 label={t('codeListList.buttons.addToFavorites')}
                                 icon={NotificationBlackIcon}
                                 onClick={() => {
-                                    const ids = Object.values(rowSelection).map((row) => row.uuid ?? '')
-                                    handleAddToFavorite(ids, FollowedItemItemType.REF_REGISTER, (actionResult) => setBulkActionResult(actionResult))
+                                    handleAddToFavorite()
                                     setRowSelection({})
                                     closePopup()
                                 }}
