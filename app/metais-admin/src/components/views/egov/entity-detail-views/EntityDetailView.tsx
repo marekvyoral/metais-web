@@ -72,6 +72,19 @@ export const EntityDetailView = ({
         ...tabsFromApi,
     ]
 
+    const getSuccessMessage = (type: string | undefined) => {
+        switch (type) {
+            case 'create':
+                return t('mutationFeedback.successfulCreated')
+            case 'edit':
+                return t('mutationFeedback.successfulUpdated')
+            case 'createZc':
+                return t('mutationFeedback.successfulEntityZcCreated')
+            default:
+                return t('mutationFeedback.successfulUpdated')
+        }
+    }
+
     useEffect(() => {
         scrollToMutationFeedback()
     }, [isActionSuccess, scrollToMutationFeedback])
@@ -107,13 +120,11 @@ export const EntityDetailView = ({
                         <MutationFeedback
                             success={
                                 isActionSuccess.value &&
-                                (isActionSuccess.additionalInfo?.type === 'edit' || isActionSuccess.additionalInfo?.type === 'create')
+                                (isActionSuccess.additionalInfo?.type === 'edit' ||
+                                    isActionSuccess.additionalInfo?.type === 'create' ||
+                                    isActionSuccess.additionalInfo?.type === 'createZc')
                             }
-                            successMessage={
-                                isActionSuccess.additionalInfo?.type === 'edit'
-                                    ? t('mutationFeedback.successfulUpdated')
-                                    : t('mutationFeedback.successfulCreated')
-                            }
+                            successMessage={getSuccessMessage(isActionSuccess.additionalInfo?.type)}
                         />
                     </div>
                 </FlexColumnReverseWrapper>
