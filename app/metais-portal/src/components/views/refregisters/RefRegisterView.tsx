@@ -1,6 +1,6 @@
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, QueryFeedback } from '@isdd/metais-common/index'
 import { useStateMachine } from '@isdd/metais-common/components/state-machine/hooks/useStateMachine'
 import { useContext, useMemo } from 'react'
 
@@ -60,6 +60,12 @@ export const RefRegisterView = ({ data: { referenceRegisterData, renamedAttribut
         <QueryFeedback loading={isLoading} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }}>
             <div className={styles.attributeGridRowBox}>
                 <InformationGridRow
+                    key={ATTRIBUTE_NAME.Gen_Profil_nazov}
+                    label={getLabelOfRow(ATTRIBUTE_NAME.Gen_Profil_nazov)}
+                    value={referenceRegisterData?.name}
+                    tooltip={getTooltipOfRow(ATTRIBUTE_NAME.Gen_Profil_nazov)}
+                />
+                <InformationGridRow
                     key={RefRegisterViewItems.ISVS_NAME}
                     label={getLabelOfRow(RefRegisterViewItems.ISVS_NAME)}
                     value={referenceRegisterData?.isvsName}
@@ -67,9 +73,9 @@ export const RefRegisterView = ({ data: { referenceRegisterData, renamedAttribut
                 />
                 <InformationGridRow
                     key={RefRegisterViewItems.ISVS_CODE}
-                    label={getLabelOfRow(RefRegisterViewItems.ISVS_CODE)}
+                    label={getLabelOfRow(ATTRIBUTE_NAME.Gen_Profil_kod_metais)}
                     value={referenceRegisterData?.isvsCode}
-                    tooltip={getTooltipOfRow(RefRegisterViewItems.ISVS_CODE)}
+                    tooltip={getTooltipOfRow(ATTRIBUTE_NAME.Gen_Profil_kod_metais)}
                 />
                 <InformationGridRow
                     key={RefRegisterViewItems.ISVS_REF_ID}

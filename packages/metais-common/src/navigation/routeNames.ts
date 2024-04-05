@@ -244,7 +244,7 @@ export enum NavigationSubRoutes {
     ZOZNAM_ZASADNUTI_CREATE = '/standardization/meetingslist/create',
     ZOZNAM_ZASADNUTI_DETAIL = '/standardization/meetingslist',
     TVORBA_NAVRHU = '/standardization/newdraft',
-    REFERENCE_REGISTRE = '/refregisters',
+    REFERENCE_REGISTER = '/refregisters',
     CODELIST = '/data-objects/codelists',
     REF_URI_HOWTO = '/howto/URI_HOWTO',
     REF_IDENTIFIERS = '/data-objects/ref-identifiers',
