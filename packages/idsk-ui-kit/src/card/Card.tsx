@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 
 import styles from './styles.module.scss'
@@ -20,7 +20,7 @@ interface ICardProps extends PropsWithChildren {
     headerTag2?: { label: string; value: string }
     title: string
     description?: string
-    date?: string
+    date?: string | ReactElement
     img?: Image
     cardHref: string
 }
@@ -48,13 +48,7 @@ export const Card: React.FC<ICardProps> = ({
 
             <div className={`idsk-card-content idsk-card-content-${variant}`}>
                 <div className="idsk-card-meta-container">
-                    {date && (
-                        <span className="idsk-card-meta idsk-card-meta-date">
-                            <Link to={cardHref} className="govuk-link" title={`Pridané dňa: ${date}`}>
-                                {date}
-                            </Link>
-                        </span>
-                    )}
+                    {date && <span className="idsk-card-meta idsk-card-meta-date">{date}</span>}
                     {tag1?.title && (
                         <span className="idsk-card-meta idsk-card-meta-tag">
                             <Link to={tag1.href} className="govuk-link" title={tag1.title}>

@@ -1,4 +1,4 @@
-import { TextHeading, Button, ButtonGroupRow } from '@isdd/idsk-ui-kit/index'
+import { TextHeading, Button, ButtonGroupRow, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
 import React, { useId } from 'react'
 import { TooltipRenderProps } from 'react-joyride'
 import { useTranslation } from 'react-i18next'
@@ -28,7 +28,9 @@ export const WizardTooltip: React.FC<TooltipRenderProps> = ({
                     <span className="govuk-visually-hidden">{t('wizard.ariaDescription')}</span>
                     {index + 1}/{size} {step.title}
                 </TextHeading>
-                <img src={CloseIcon} {...closeProps} className={styles.pointer} aria-hidden />
+                <TransparentButtonWrapper {...closeProps} onClick={closeProps.onClick as () => void}>
+                    <img src={CloseIcon} alt="" />
+                </TransparentButtonWrapper>
             </div>
             <div id={contentId}>{step.content}</div>
             <ButtonGroupRow className="">

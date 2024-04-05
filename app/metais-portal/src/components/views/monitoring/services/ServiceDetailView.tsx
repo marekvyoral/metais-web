@@ -59,7 +59,7 @@ export const ServiceDetailView: React.FC<IServiceDetailView> = ({
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
-                        <TextHeading size="L">{detailData?.name}</TextHeading>
+                        <TextHeading size="XL">{detailData?.name}</TextHeading>
                         <QueryFeedback loading={false} error={isError} />
                     </FlexColumnReverseWrapper>
                     <Filter<MonitoringDetailFilterData>

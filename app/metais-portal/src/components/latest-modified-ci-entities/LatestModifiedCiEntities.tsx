@@ -35,7 +35,16 @@ export const LatestModifiedCiEntities = () => {
                                     title={item?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
                                     cardHref={`/ci/${item?.type}/${item?.uuid}`}
                                     description={truncateWithEllipsis(item?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_popis] ?? '', 100)}
-                                    date={t('dateTime', { date: item?.metaAttributes?.lastModifiedAt })}
+                                    date={
+                                        <>
+                                            <span className="sr-only">
+                                                {t('entitySummary.dateAddedAria', {
+                                                    date: t('dateTime'),
+                                                })}
+                                            </span>
+                                            {t('dateTime', { date: item?.metaAttributes?.lastModifiedAt })}
+                                        </>
+                                    }
                                     tag1={{
                                         title: language == Languages.SLOVAK ? matchedCiType?.name ?? '' : matchedCiType?.engName ?? '',
                                         href: `ci/${item?.type}`,

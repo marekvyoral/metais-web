@@ -34,9 +34,9 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
     ]
 
     const svg = d3.select(svgRef.current).append('svg')
-    const width = widthDiv
-    const height = 600
     const margin = 50
+    const width = widthDiv - margin
+    const height = 600
     const duration = 150
 
     const lineOpacity = '1'

@@ -190,6 +190,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                                                     onClick={() => {
                                                         setWorkingLanguage(language)
                                                     }}
+                                                    aria-current={language === workingLanguage}
                                                 />
                                             ))}
                                         </div>
