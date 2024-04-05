@@ -1,6 +1,6 @@
 import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { IOption, SimpleSelect } from '@isdd/idsk-ui-kit/index'
+import { IOption, Input, SimpleSelect } from '@isdd/idsk-ui-kit/index'
 import style from '@isdd/idsk-ui-kit/select-lazy-loading/selectLazyLoading.module.scss'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { GetFOPReferenceRegisters1Muk, GetFOPReferenceRegisters1State } from '@isdd/metais-common/api/generated/reference-registers-swagger'
@@ -55,11 +55,38 @@ export const RefRegistersFilter = ({ defaultFilterValues }: IRefRegistersFilter)
             </Option>
         )
     }
-
     const filterAttributes = (): ExtendedAttribute[] | undefined => {
         return [
             {
+                name: t('refRegisters.table.isvsName'),
+                engName: t('refRegisters.table.isvsName'),
+                attributeTypeEnum: AttributeAttributeTypeEnum.STRING,
+                technicalName: RefRegisterFilterItems.ISVS_UUID,
+                invisible: !user,
+                valid: true,
+                customComponent: (value, onChange) => {
+                    return (
+                        <SelectFilterOrganization<RefRegisterFilter>
+                            onChange={(val) => {
+                                val && val[0]?.uuid != '' && onChange({ ...value, value: val[0].uuid })
+                            }}
+                            filter={{ [RefRegisterFilterItems.ISVS_UUID]: '82f730eb-4c5b-447f-9314-4464843f38bd' }}
+                            option={(row) => registryNameOption(row)}
+                            name={RefRegisterFilterItems.ISVS_UUID}
+                            label={t('refRegisters.table.isvsName')}
+                            additionalData={{
+                                metaAttributes: { state: ['DRAFT', 'APPROVED_BY_OWNER', 'AWAITING_APPROVAL'] },
+                                type: ['ISVS'],
+                                searchFields: [ATTRIBUTE_NAME.Gen_Profil_nazov, ATTRIBUTE_NAME.Gen_Profil_kod_metais],
+                            }}
+                        />
+                    )
+                },
+                customOperators: [OPERATOR_OPTIONS_URL.EQUAL],
+            },
+            {
                 name: t('refRegisters.table.state.heading'),
+                engName: t('refRegisters.table.state.heading'),
                 attributeTypeEnum: AttributeAttributeTypeEnum.STRING,
                 technicalName: RefRegisterFilterItems.STATE_CUSTOM,
                 invisible: !user,
@@ -81,6 +108,7 @@ export const RefRegistersFilter = ({ defaultFilterValues }: IRefRegistersFilter)
             },
             {
                 name: t('refRegisters.table.muk.heading'),
+                engName: t('refRegisters.table.muk.heading'),
                 attributeTypeEnum: AttributeAttributeTypeEnum.STRING,
                 technicalName: RefRegisterFilterItems.MUK,
                 invisible: false,
@@ -102,6 +130,7 @@ export const RefRegistersFilter = ({ defaultFilterValues }: IRefRegistersFilter)
             },
             {
                 name: t('refRegisters.table.manager'),
+                engName: t('refRegisters.table.manager'),
                 attributeTypeEnum: AttributeAttributeTypeEnum.STRING,
                 technicalName: RefRegisterFilterItems.MANAGER_UUID,
                 invisible: false,
@@ -126,6 +155,7 @@ export const RefRegistersFilter = ({ defaultFilterValues }: IRefRegistersFilter)
             },
             {
                 name: t('refRegisters.table.registrator'),
+                engName: t('refRegisters.table.registrator'),
                 attributeTypeEnum: AttributeAttributeTypeEnum.STRING,
                 technicalName: RefRegisterFilterItems.REGISTRATOR_UUID,
                 invisible: false,
@@ -170,20 +200,9 @@ export const RefRegistersFilter = ({ defaultFilterValues }: IRefRegistersFilter)
         <Filter<RefRegisterFilter>
             defaultFilterValues={defaultFilterValues}
             heading={<React.Fragment />}
-            form={({ filter, setValue }) => (
+            form={({ filter, setValue, register }) => (
                 <div>
-                    <SelectFilterOrganization<RefRegisterFilter>
-                        filter={filter}
-                        setValue={setValue}
-                        option={(row) => registryNameOption(row)}
-                        name={RefRegisterFilterItems.ISVS_UUID}
-                        label={t('refRegisters.table.name')}
-                        additionalData={{
-                            metaAttributes: { state: ['DRAFT', 'APPROVED_BY_OWNER', 'AWAITING_APPROVAL'] },
-                            type: ['ISVS'],
-                            searchFields: [ATTRIBUTE_NAME.Gen_Profil_nazov, ATTRIBUTE_NAME.Gen_Profil_kod_metais],
-                        }}
-                    />
+                    <Input {...register(RefRegisterFilterItems.NAME)} type="text" label={t('refRegisters.table.name')} />
                     <DynamicFilterAttributes
                         setValue={setValue}
                         defaults={defaultFilterValues}

@@ -16,10 +16,13 @@ export interface RefRegisterFilter extends IFilterParams {
     managerUuid?: string
     registratorUuid?: string
     state?: GetFOPReferenceRegisters1State
+    name?: string
+    name_en?: string
     muk?: GetFOPReferenceRegisters1Muk
 }
 
 export enum RefRegisterFilterItems {
+    NAME = 'name',
     ISVS_UUID = 'isvsUuid',
     MANAGER_UUID = 'managerUuid',
     REGISTRATOR_UUID = 'registratorUuid',

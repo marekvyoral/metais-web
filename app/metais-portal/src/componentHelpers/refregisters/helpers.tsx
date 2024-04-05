@@ -48,12 +48,19 @@ export const getInfoRR = (refRegisterAttribute: string, renamedAttributes?: Attr
     return renamedAttributes?.find((val) => val?.technicalName === refRegisterAttribute)?.description
 }
 
-export const mapFormDataToApiReferenceRegister = (formData: IRefRegisterCreateFormData, entityId?: string): ApiReferenceRegister => {
+interface ImapFormDataToApiReferenceRegister {
+    formData: IRefRegisterCreateFormData
+    entityId?: string
+    managerUuid?: string
+}
+
+export const mapFormDataToApiReferenceRegister = ({ formData, entityId, managerUuid }: ImapFormDataToApiReferenceRegister): ApiReferenceRegister => {
     return {
         uuid: entityId ?? undefined,
         creatorUuid: formData.refRegisters.creator,
         isvsUuid: formData.refRegisters.sourceRegister,
-        isvsName: formData.refRegisters.name,
+        name: formData.refRegisters.name,
+        name_en: formData.refRegisters.name_en,
         isvsCode: formData.refRegisters.codeMetaIS,
         isvsRefId: formData.refRegisters.refId,
         effectiveFrom: formData.refRegisters.effectiveFrom ? new Date(formData.refRegisters.effectiveFrom).toISOString() : ' ',
@@ -61,7 +68,7 @@ export const mapFormDataToApiReferenceRegister = (formData: IRefRegisterCreateFo
         additionalData: formData.refRegisters.additionalData,
         state: ApiReferenceRegisterState.IN_CONSTRUCTION,
         muk: ApiReferenceRegisterMuk.NONE,
-        managerUuid: formData.refRegisters.manager.PO,
+        managerUuid: formData.refRegisters.creator ?? managerUuid,
         contactFirstName: formData.refRegisters.manager.firstName,
         contactLastName: formData.refRegisters.manager.lastName,
         contactEmail: formData.refRegisters.manager.email,
@@ -80,7 +87,8 @@ export const mapDefaultDataToFormDataRR = (defaultData?: ApiReferenceRegister): 
             codeMetaIS: defaultData?.isvsCode,
             creator: defaultData?.creatorUuid,
             sourceRegister: defaultData?.isvsUuid,
-            name: defaultData?.isvsName,
+            name: defaultData?.name,
+            name_en: defaultData?.name_en,
             refId: defaultData?.isvsRefId,
             effectiveFrom: getDefaultDateRR(defaultData?.effectiveFrom),
             effectiveTo: getDefaultDateRR(defaultData?.effectiveTo),

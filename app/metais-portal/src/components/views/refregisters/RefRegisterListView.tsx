@@ -1,24 +1,17 @@
 import { ButtonLink, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
+import { NotificationBlackIcon } from '@isdd/metais-common/assets/images'
 import { getRefRegsDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
+import actionsOverTableStyles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
+import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import {
-    ActionsOverTable,
-    BulkPopup,
-    CreateEntityButton,
-    MutationFeedback,
-    QueryFeedback,
-    Reference_Registers,
-    distinctAttributesMetaAttributes,
-} from '@isdd/metais-common/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
+import { ActionsOverTable, BulkPopup, CreateEntityButton, MutationFeedback, QueryFeedback, Reference_Registers } from '@isdd/metais-common/index'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
-import { useEffect, useState } from 'react'
-import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { NotificationBlackIcon } from '@isdd/metais-common/assets/images'
-import actionsOverTableStyles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 
 import { RefRegistersFilter } from './RefRegistersFilter'
 
@@ -26,7 +19,7 @@ import { CiTable } from '@/components/ci-table/CiTable'
 import { RefRegisterListContainerView } from '@/components/containers/refregisters/RefRegisterListContainer'
 
 export const RefRegisterListView = ({
-    data: { referenceRegisters, columnListData, guiAttributes, unitsData, ciTypeData, constraintsData, attributeProfiles, renamedAttributes },
+    data: { referenceRegisters, columnListData, guiAttributes, unitsData, ciTypeData, constraintsData, attributeProfiles },
     defaultFilterValues,
     pagination,
     saveColumnSelection,
@@ -42,27 +35,28 @@ export const RefRegisterListView = ({
     const navigate = useNavigate()
     const location = useLocation()
     const { handleAddToFavorite, isBulkLoading } = useBulkAction()
-    const { wrapperRef, scrollToMutationFeedback } = useScroll()
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
-
-    useEffect(() => {
-        scrollToMutationFeedback()
-    }, [bulkActionResult, scrollToMutationFeedback])
-
+    const { isActionSuccess } = useActionSuccess()
     return (
         <QueryFeedback loading={isLoading || isBulkLoading} error={isError} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('refRegisters.title')}</TextHeading>
-
-                <div ref={wrapperRef}>
+                <ElementToScrollTo trigger={isActionSuccess.value || !!bulkActionResult?.isSuccess}>
                     <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage}
+                        success={isActionSuccess.value || bulkActionResult?.isSuccess}
+                        successMessage={((): string | undefined => {
+                            if (bulkActionResult?.isSuccess) {
+                                return bulkActionResult?.successMessage
+                            }
+                            return isActionSuccess.additionalInfo?.type === 'create'
+                                ? t('mutationFeedback.successfulCreated')
+                                : t('mutationFeedback.successfulRemoved')
+                        })()}
                         error={bulkActionResult?.isError}
                         errorMessage={bulkActionResult?.errorMessage}
                         onMessageClose={() => setBulkActionResult(undefined)}
                     />
-                </div>
+                </ElementToScrollTo>
             </FlexColumnReverseWrapper>
             <RefRegistersFilter defaultFilterValues={defaultFilterValues} />
             <ActionsOverTable
@@ -97,7 +91,7 @@ export const RefRegisterListView = ({
                     />
                 }
                 attributeProfiles={attributeProfiles}
-                attributes={[...distinctAttributesMetaAttributes(renamedAttributes ?? [], getRefRegsDefaultMetaAttributes(t)), ...guiAttributes]}
+                attributes={guiAttributes}
                 columnListData={columnListData}
                 metaAttributesColumnSection={getRefRegsDefaultMetaAttributes(t)}
                 storeUserSelectedColumns={saveColumnSelection}
@@ -114,7 +108,7 @@ export const RefRegisterListView = ({
                     },
                     constraintsData,
                     unitsData,
-                    entityStructure: { ...ciTypeData, attributes: [...(renamedAttributes ?? []), ...guiAttributes] },
+                    entityStructure: { ...ciTypeData, attributes: guiAttributes },
                     gestorsData: undefined,
                 }}
                 rowSelectionState={{ rowSelection, setRowSelection }}
