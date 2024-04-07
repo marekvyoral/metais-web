@@ -1,15 +1,15 @@
+import { BaseModal } from '@isdd/idsk-ui-kit/index'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { BaseModal } from '@isdd/idsk-ui-kit/index'
 
 import { FileImportView } from './FileImportView'
 
-import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
+import { useGetProgress } from '@/hooks/useGetRequestProgress'
 import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { FileImportEditOptions } from '@isdd/metais-common/src/components/file-import/FileImportHeader'
-import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
+import { useUppy } from '@isdd/metais-common/hooks/useUppy'
+import { FileImportEditOptions } from '@isdd/metais-common/src/components/file-import/FileImportHeader'
 
 interface IFileImport {
     allowedFileTypes: string[]
@@ -45,7 +45,7 @@ export const FileImport: React.FC<IFileImport> = ({
 
     const [selectedRole, setSelectedRole] = useState<GidRoleData | null>(null)
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
-    const { getRequestStatus, isTooManyFetchesError, isError, isLoading } = useGetStatus()
+    const { getRequestStatus, isTooManyFetchesError, isError, isLoading, errorMessages } = useGetProgress()
     const {
         uppy,
         addGeneralErrorMessage,
@@ -74,7 +74,16 @@ export const FileImport: React.FC<IFileImport> = ({
                     setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
                 }
                 result.successful.forEach(async (file) => {
-                    await getRequestStatus(file.response?.body.requestId as string, () => updateUploadFilesStatus(file, true))
+                    await getRequestStatus(
+                        file.response?.body.requestId as string,
+                        () => updateUploadFilesStatus(file, true),
+                        () =>
+                            updateUploadFilesStatus(
+                                file,
+                                false,
+                                errorMessages?.at(result.successful.findIndex((f) => f.id == file.id))?.errorDetail?.description,
+                            ),
+                    )
                 })
                 result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error))
             })
