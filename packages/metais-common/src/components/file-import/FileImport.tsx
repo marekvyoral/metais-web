@@ -100,6 +100,7 @@ export const FileImport: React.FC<IFileImport> = ({
         fileImportStep,
         getRequestStatus,
         updateUploadFilesStatus,
+        errorMessages,
         addGeneralErrorMessage,
         t,
     ])

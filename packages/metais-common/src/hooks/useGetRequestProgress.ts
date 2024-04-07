@@ -18,11 +18,9 @@ export const useGetProgress = (awaitForStatus?: string) => {
         for (let index = 0; index < API_CALL_RETRY_COUNT; index++) {
             const result = await requestStatus(requestId)
             if (result.importState == 'DONE' || (awaitForStatus && result.importState == awaitForStatus)) {
-                console.log('done')
                 done = true
                 break
             } else if (result.importState === 'DONE_WITH_ERRORS' || (result.errorMessage?.length ?? 0) > 0) {
-                console.log('error')
                 setIsProcessedError(true)
                 setIsLoading(false)
                 setErrorMessages(result.errorMessage)
