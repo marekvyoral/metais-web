@@ -1,7 +1,6 @@
-import React, { DetailedHTMLProps, forwardRef } from 'react'
+import React, { DetailedHTMLProps, forwardRef, useId } from 'react'
 import { FieldError } from 'react-hook-form'
 import classNames from 'classnames'
-import { v4 as uuidV4 } from 'uuid'
 import { useTranslation } from 'react-i18next'
 
 import styles from './radioGroup.module.scss'
@@ -18,7 +17,8 @@ interface IRadioWithLabelProps extends DetailedHTMLProps<React.InputHTMLAttribut
 export const RadioGroup = forwardRef<HTMLDivElement, IRadioWithLabelProps>(
     ({ children, id, label, hint, error, disabled, className, inline, small, ...rest }, ref) => {
         const { t } = useTranslation()
-        const aID = id ? id : uuidV4()
+        const uId = useId()
+        const aID = id ?? uId
         const hintId = `${aID}-hint`
         const errorId = `${aID}-error`
         return (

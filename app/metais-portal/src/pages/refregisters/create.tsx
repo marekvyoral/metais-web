@@ -3,6 +3,7 @@ import { REFERENCE_REGISTER } from '@isdd/metais-common/constants'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
+import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CreateRefRegisterContainer } from '@/components/containers/refregisters/CreateRefRegisterContainer'
@@ -44,21 +45,19 @@ const RefRegistersCreate = () => {
                     }) => (
                         <>
                             <TextHeading size="XL">{t('refRegisters.create.title')}</TextHeading>
-                            <QueryFeedback
-                                loading={userGroupDataIsLoading}
-                                error={userGroupDataIsError}
-                                errorProps={{ errorMessage: t('feedback.failedFetch') }}
-                            >
-                                <RefRegisterCreateView
-                                    userGroupData={userGroupData}
-                                    POData={POData}
-                                    saveRefRegister={saveRefRegister}
-                                    updateContact={updateContact}
-                                    updateAccessData={updateAccessData}
-                                    updateRefRegister={updateRefRegister}
-                                    renamedAttributes={[...(renamedAttributes ?? []), ...(guiAttributes ?? [])]}
-                                />
-                            </QueryFeedback>
+                            <ElementToScrollTo trigger={userGroupDataIsError} manualScroll scrollOptions={{ block: 'start' }}>
+                                <QueryFeedback loading={userGroupDataIsLoading} error={userGroupDataIsError} withChildren>
+                                    <RefRegisterCreateView
+                                        userGroupData={userGroupData}
+                                        POData={POData}
+                                        saveRefRegister={saveRefRegister}
+                                        updateContact={updateContact}
+                                        updateAccessData={updateAccessData}
+                                        updateRefRegister={updateRefRegister}
+                                        renamedAttributes={[...(renamedAttributes ?? []), ...(guiAttributes ?? [])]}
+                                    />
+                                </QueryFeedback>
+                            </ElementToScrollTo>
                         </>
                     )}
                 />

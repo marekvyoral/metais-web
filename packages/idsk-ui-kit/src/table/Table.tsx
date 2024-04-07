@@ -65,6 +65,7 @@ export interface ITableProps<T> {
     hideHeaders?: boolean
     manualSorting?: boolean
     manualPagination?: boolean
+    tableRef?: React.RefObject<HTMLTableElement>
 }
 
 export const Table = <T,>({
@@ -96,6 +97,7 @@ export const Table = <T,>({
     hideHeaders,
     manualSorting = true,
     manualPagination = true,
+    tableRef,
 }: ITableProps<T>): JSX.Element => {
     const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
     const wrapper2Ref = useRef<HTMLTableSectionElement>(null)
@@ -171,7 +173,7 @@ export const Table = <T,>({
     }
 
     return (
-        <table className={classNames('idsk-table', [styles.displayBlock, styles.tableSticky, styles.initialOverflow])}>
+        <table ref={tableRef} className={classNames('idsk-table', [styles.displayBlock, styles.tableSticky, styles.initialOverflow])}>
             {!hideHeaders && (
                 <thead className={classNames('idsk-table__head', [styles.head])} onScroll={handleWrapper2Scroll} ref={wrapper2Ref}>
                     {table.getHeaderGroups().map((headerGroup) => {
@@ -185,9 +187,9 @@ export const Table = <T,>({
                                 })}
                                 key={headerGroup.id}
                             >
-                                {headerGroup.headers.map((header) => {
-                                    return <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
-                                })}
+                                {headerGroup.headers.map((header) => (
+                                    <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
+                                ))}
                             </tr>
                         )
                     })}

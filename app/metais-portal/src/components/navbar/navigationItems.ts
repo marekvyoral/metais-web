@@ -28,7 +28,7 @@ const getDataObjectSubItems = (t: TFunction, isSideMenu?: boolean) => {
     const dataObjectSubItemsTopMenu = [
         {
             title: t('navMenu.lists.registers'),
-            path: NavigationSubRoutes.REFERENCE_REGISTRE,
+            path: NavigationSubRoutes.REFERENCE_REGISTER,
         },
         {
             title: t('navMenu.lists.codelists'),
@@ -44,7 +44,7 @@ const getDataObjectSubItems = (t: TFunction, isSideMenu?: boolean) => {
         {
             title: t('navMenu.lists.registers'),
             path: NavigationSubRoutes.HOW_TO_REFERENCE_REGISTERS,
-            subItems: [{ title: t('navMenu.lists.registersList'), path: NavigationSubRoutes.REFERENCE_REGISTRE }],
+            subItems: [{ title: t('navMenu.lists.registersList'), path: NavigationSubRoutes.REFERENCE_REGISTER }],
         },
         {
             title: t('navMenu.lists.codelists'),
@@ -78,6 +78,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         { title: t('navMenu.lists.training'), path: NavigationSubRoutes.TRAINING },
         { title: t('navMenu.lists.personalProcedures'), path: NavigationSubRoutes.OSOBITNY_POSTUP },
         { title: t('navMenu.lists.relationsSearch'), path: NavigationSubRoutes.RELATIONS_LIST },
+        { title: t('navMenu.lists.zc'), path: NavigationSubRoutes.ZC },
         //{ title: t('navMenu.lists.educationalCourses'), path: NavigationSubRoutes.EDUCATIONAL_COURSES },
         //{ title: t('navMenu.lists.evidenceObjects'), path: NavigationSubRoutes.OBJEKTY_EVIDENCIE },
         //{ title: t('navMenu.lists.attributesEvidenceObjects'), path: NavigationSubRoutes.ATRIBUTY_OBJEKTY_EVIDENCIE },

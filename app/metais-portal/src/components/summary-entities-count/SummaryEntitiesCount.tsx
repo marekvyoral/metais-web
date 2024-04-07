@@ -1,5 +1,5 @@
 import { TextBody } from '@isdd/idsk-ui-kit/index'
-import { ENTITY_KS, ENTITY_AS, ENTITY_ISVS, ENTITY_PROJECT } from '@isdd/metais-common/constants'
+import { ENTITY_KS, ENTITY_AS, ENTITY_ISVS, ENTITY_PROJECT, ELASTIC_MAX_RECORDS } from '@isdd/metais-common/constants'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React from 'react'
@@ -24,7 +24,16 @@ export const EntityCount: React.FC<EntityCountProps> = ({ label, count, href, is
     return (
         <div>
             <TextBody size="L" className={styles.h1}>
-                {count}
+                {count === ELASTIC_MAX_RECORDS ? (
+                    <>
+                        <TextBody className="marginBottom0" size="S">
+                            {t('entitySummary.moreThan')}
+                        </TextBody>
+                        {count}
+                    </>
+                ) : (
+                    count
+                )}
             </TextBody>
             <Link to={href} className={styles.link}>
                 <TextBody size="S" className={classNames({ [styles.noMargin]: isOperated })}>

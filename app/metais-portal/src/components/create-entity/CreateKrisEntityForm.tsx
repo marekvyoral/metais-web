@@ -85,7 +85,6 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
     )
 
     const attributes = useMemo(() => getValidAndVisibleAttributes(ciTypeData), [ciTypeData])
-
     const defaultValuesFromSchema = useMemo(() => {
         return attributes.reduce((acc, att) => {
             if (att?.defaultValue) {
@@ -93,16 +92,18 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
             } else {
                 if (!isUpdate) {
                     switch (att?.technicalName) {
+                        case 'Gen_Profil_nazov':
+                            return { ...acc, [att?.technicalName?.toString() ?? '']: `Koncepcia rozvoja IT ${selectedOrg?.poName}` }
                         case 'Profil_KRIS_stav_kris':
                             return { ...acc, [att?.technicalName?.toString() ?? '']: 'c_stav_kris.1' }
-                        case 'Profil_KRIS_Sprcaovatel_meno':
+                        case 'Profil_KRIS_Spracovatel_meno':
                             return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.firstName }
                         case 'Profil_KRIS_Spracovatel_priezvisko':
                             return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.lastName }
                         case 'Profil_KRIS_Spracovatel_funkcia':
-                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.position }
+                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.position === 'null' ? '' : state.user?.position }
                         case 'Profil_KRIS_Spracovatel_telefon':
-                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.phone }
+                            return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.mobile }
                         case 'Profil_KRIS_Spracovatel_email':
                             return { ...acc, [att?.technicalName?.toString() ?? '']: state.user?.email }
                     }
@@ -111,7 +112,16 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
 
             return acc
         }, {})
-    }, [attributes, isUpdate, state.user?.email, state.user?.firstName, state.user?.lastName, state.user?.phone, state.user?.position])
+    }, [
+        attributes,
+        isUpdate,
+        selectedOrg?.poName,
+        state.user?.email,
+        state.user?.firstName,
+        state.user?.lastName,
+        state.user?.mobile,
+        state.user?.position,
+    ])
 
     const formDefaultValues = useMemo(
         () => formatForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
@@ -202,6 +212,7 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
         attProfiles,
         ciTypeData?.attributes,
         ciTypeData?.roleList,
+        selectedOrg?.poName,
         constraintsData,
         defaultItemAttributeValues,
         generatedEntityId,

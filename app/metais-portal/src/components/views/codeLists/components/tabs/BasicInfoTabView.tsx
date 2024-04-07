@@ -119,17 +119,11 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({
                 value={
                     !!codeList?.codelistManagers?.length &&
                     (() => {
-                        const value = codeList?.codelistManagers?.map((gestor) => <p key={gestor.id}>{getGestorName(gestorList, gestor.value)}</p>)
-                        return showDateIntervals ? (
-                            <InfoIconWithText
-                                tooltip={codeList?.codelistManagers?.map((item) => getDateIntervalString(item, t)).join('<br />')}
-                                label={value}
-                            >
-                                {value}
+                        return codeList?.codelistManagers?.map((gestor, index) => (
+                            <InfoIconWithText key={index} tooltip={getDateIntervalString(gestor, t)} label={getGestorName(gestorList, gestor.value)}>
+                                {getGestorName(gestorList, gestor.value)}
                             </InfoIconWithText>
-                        ) : (
-                            value
-                        )
+                        ))
                     })()
                 }
             />

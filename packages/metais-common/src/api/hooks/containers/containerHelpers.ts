@@ -2,8 +2,10 @@ import { IFilter, SortType } from '@isdd/idsk-ui-kit/src/types'
 import { useEffect, useMemo, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 
+import { ApiReferenceRegisterList } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 import { ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import {
     FavoriteCiType,
     useGetDefaultColumns,
@@ -12,46 +14,36 @@ import {
     useResetUserColumns,
 } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { mapConfigurationItemSetToPagination } from '@isdd/metais-common/componentHelpers/pagination'
+import { NO_USER_COLUMNS_LS_KEY } from '@isdd/metais-common/constants'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
-import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { NO_USER_COLUMNS_LS_KEY } from '@isdd/metais-common/constants'
 
 export const transformColumnsMap = new Map<string, string>([
-    ['Gen_Profil_nazov', 'isvsName'],
-    ['Gen_Profil_kod_metais', 'isvsCode'],
-    ['Gui_Profil_RR_rr_register_kod', 'isvsCode'],
-    ['Gui_Profil_RR_rr_register_nazov', 'isvsName'],
-    ['Gui_Profil_RR_rr_source_register', 'isvsSource'],
-    ['Gui_Profil_RR_rr_register_registrator', 'registratorName'],
-    ['ReferenceRegister_Profile_contactRegistratorEmail', 'contactRegistratorEmail'],
-    ['ReferenceRegister_Profile_contactEmail', 'contactEmail'],
-    ['ReferenceRegister_Profile_contactRegistratorFirstName', 'contactRegistratorFirstName'],
-    ['ReferenceRegister_Profile_contactFirstName', 'contactFirstName'],
-    ['ReferenceRegister_Profile_contactRegistratorLastName', 'contactRegistratorLastName'],
-    ['ReferenceRegister_Profile_contactLastName', 'contactLastName'],
-    ['ReferenceRegister_Profile_contactPhone', 'contactPhone'],
-    ['ReferenceRegister_Profile_contactRegistratorPhone', 'contactRegistratorPhone'],
-    // ['Gui_Profil_RR_rr_evidencia_po', 'managerName'],
-    ['Gui_Profil_RR_rr_creator', 'creator'],
-    ['Gui_Profil_RR_rr_ref_id', 'isvsRefId'],
-    ['Gui_Profil_RR_rr_manager', 'managerName'],
-    ['ReferenceRegister_Profile_MUK', 'muk'],
-    ['ReferenceRegister_Profile_effectiveTo', 'effectiveTo'],
-    ['ReferenceRegister_Profile_effectiveFrom', 'effectiveFrom'],
+    ['ReferenceRegister_Profile_name', 'Gen_Profil_nazov'], // Názov
+    ['ReferenceRegister_Profile_name_en', 'name_en'], // Anglický názov
+    ['ReferenceRegister_Profile_effectiveFrom', 'effectiveFrom'], // Dátum účinnosti od
+    ['ReferenceRegister_Profile_contactRegistratorEmail', 'contactRegistratorEmail'], // Emailová adresa
+    ['ReferenceRegister_Profile_contactEmail', 'contactEmail'], // Emailová adresa
+    ['ReferenceRegister_Profile_contactRegistrator', 'contactRegistrator'], // Kontakt na registrátora referenčného registra
+    ['ReferenceRegister_Profile_contactRegistratorFirstName', 'contactRegistratorFirstName'], // Meno
+    ['ReferenceRegister_Profile_contactFirstName', 'contactFirstName'], // Meno
+    ['ReferenceRegister_Profile_MUK', 'muk'], // MUK
+    ['ReferenceRegister_Profile_validFrom', 'validFrom'], // Platnosť od
+    ['ReferenceRegister_Profile_note', 'note'], // Poznámka
+    ['ReferenceRegister_Profile_contactRegistratorLastName', 'contactRegistratorLastName'], // Priezvisko
+    ['ReferenceRegister_Profile_contactLastName', 'contactLastName'], // Priezvisko
+    ['ReferenceRegister_Profile_state', 'state'], // Stav
+    ['ReferenceRegister_Profile_contactRegistratorPhone', 'contactRegistratorPhone'], // Telefónne číslo
+    ['ReferenceRegister_Profile_contactPhone', 'contactPhone'], // Telefónne číslo
+    ['ReferenceRegister_Profile_accessDataDescription', 'additionalData'], // Údaje o oprávnení
+    ['ReferenceRegister_Profile_effectiveTo', 'effectiveTo'], // Dátum platnosti do
+    ['Gui_Profil_RR_rr_register_kod', 'Gen_Profil_kod_metais'], // Kód MetaIS
+    ['Gui_Profil_RR_rr_register_nazov', 'isvsName'], // Názov referenčného registra
+    ['Gui_Profil_RR_rr_ref_id', 'isvsRefId'], // Referenčný identifikátor
+    ['Gui_Profil_RR_rr_manager', 'managerName'], // Správca referenčného registra
+    ['Gui_Profil_RR_rr_register_registrator', 'registratorName'], //Registrátor referenčného registra
     ['ReferenceRegister_Profile_contact', 'contact'],
-    ['ReferenceRegister_Profile_validFrom', 'validFrom'],
-    ['ReferenceRegister_Profile_contactRegistrator', 'contactRegistrator'],
-    ['ReferenceRegister_Profile_note', 'note'],
-    ['ReferenceRegister_Profile_state', 'state'],
-    ['ReferenceRegister_Profile_accessDataDescription', 'additionalData'],
-    ['ReferenceRegisterItem_Profile_subjectIdentifications', 'subjectIdentifications'],
-    ['ReferenceRegisterItem_Profile_order', 'order'],
-    ['ReferenceRegisterItem_Profile_name', 'name'],
-    ['ReferenceRegisterItem_Profile_refID', 'refID'],
-    ['ReferenceRegisterItem_Profile_note', 'note'],
-    ['ReferenceRegisterItem_Profile_dataElementRefID', 'dataElementRefID'],
 ])
 
 export const transformNameColumnsMap = new Map<string, string>([
@@ -64,6 +56,29 @@ export const transformNameColumnsMap = new Map<string, string>([
     ['ReferenceRegister_Profile_contactPhone', 'Telefón správcu'],
     ['ReferenceRegister_Profile_contactRegistratorPhone', 'Telefón registrátora'],
 ])
+
+export const transformAttributes = (attributes?: Attribute[]) => {
+    const transformedAttributes: Attribute[] = []
+    attributes?.forEach((attr) => {
+        const newTechnicalName = transformColumnsMap.get(attr?.technicalName ?? '')
+        if (newTechnicalName) {
+            transformedAttributes.push({
+                ...attr,
+                name: transformNameColumnsMap.get(attr?.technicalName ?? '') ?? attr?.name,
+                technicalName: newTechnicalName,
+            })
+        }
+    })
+    return transformedAttributes
+}
+
+export const transformRefRegisters = (data?: ApiReferenceRegisterList): ApiReferenceRegisterList => {
+    const referenceRegistersList = data?.referenceRegistersList?.map((obj) => {
+        const { name, isvsCode, ...otherProps } = obj
+        return { Gen_Profil_nazov: name, Gen_Profil_kod_metais: isvsCode, ...otherProps }
+    })
+    return { referenceRegistersCount: data?.referenceRegistersCount, referenceRegistersList }
+}
 
 export const columnsToIgnore = [
     'Gui_Profil_RR_Gui_Profil_RR_rr_creator',
@@ -147,10 +162,6 @@ export const useGetColumnData = (entityName: string, renameColumns?: boolean) =>
         return getMergedColumnListData(columnListData)
     }, [columnListData, columnsFromLocalStorage, hasColumnsInLocalStorage, isUserLogged])
 
-    const getKey = (value: string) => {
-        return [...transformColumnsMap].find(([, val]) => val == value)?.[0]
-    }
-
     const transformedColumnsListData = useMemo(() => {
         if (renameColumns) {
             return {
@@ -169,7 +180,7 @@ export const useGetColumnData = (entityName: string, renameColumns?: boolean) =>
     const saveColumnSelection = async (columnSelection: FavoriteCiType) => {
         const dataToSave = {
             attributes: transformColumnsMap
-                ? columnSelection?.attributes?.map((attr) => ({ ...attr, name: getKey(attr?.name ?? '') ?? attr?.name }))
+                ? columnSelection?.attributes?.map((attr) => ({ ...attr, name: attr?.name }))
                 : columnSelection.attributes,
             ciType: entityName ?? '',
             metaAttributes: columnSelection.metaAttributes,

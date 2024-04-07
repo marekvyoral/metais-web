@@ -123,6 +123,7 @@ export const CreateKrisEntity: React.FC<ICreateEntity> = ({
                     updateCiItemId={updateCiItemId}
                     isProcessing={storeConfigurationItem.isLoading}
                     selectedRole={roleState?.selectedRole ?? null}
+                    selectedOrg={publicAuthorityState?.selectedPublicAuthority ?? null}
                 />
             </QueryFeedback>
         </>

@@ -215,6 +215,7 @@ export const ENTITY_KONTRAKT = 'Kontrakt'
 export const ENTITY_MIGRATION = 'Migracia'
 export const ENTITY_INFRA_SLUZBA = 'InfraSluzba'
 export const ENTITY_TRAINING = 'Training'
+export const ENTITY_ZC = 'ZC'
 export const ENTITY_OSOBITNY_POSTUP = 'OsobitnyPostup'
 export const STANDARDIZATION_DRAFTS_LIST = 'draftsList'
 export const REFERENCE_REGISTER = 'ReferenceRegister'
@@ -231,6 +232,7 @@ export const PO_predklada_KRIS = 'PO_predklada_KRIS'
 export const ENTITY_ZS = 'ZS'
 export const ENTITY_AGENDA = 'Agenda'
 export const ENTITY_INTEGRATION = 'Integracia'
+export const ENTITY_MIESTO_PREVADZKY = 'MiestoPrevadzky'
 
 export const INACTIVE_LOGOUT_TIME = import.meta.env.VITE_INACTIVE_LOGOUT_TIME
 export const INACTIVE_WARNING_TIME = import.meta.env.VITE_INACTIVE_WARNING_TIME
@@ -365,6 +367,7 @@ export const categoryParameterMap = new Map<string, string>([
 ])
 export const INTEGRACIA_KONZUMUJE_PROJEKT = 'Integracia_konzumuje_Projekt'
 export const INTEGRACIA_VYSTAVUJE_PROJEKT = 'Integracia_vystavuje_Projekt'
+export const KS_MA_FAZU_ZIVOTNEHO_CYKLU = 'KS_ma_FazaZivotnehoCyklu'
 export const INTEGRATION_HARMONOGRAM_EDIT_SEARCH_PARAM = 'edit'
 export const FAZA_INTEGRACNEHO_MILNIKA = 'FAZA_INTEGRACNEHO_MILNIKA'
 export const GUI_PROFILE_DIZ = 'Gui_Profil_DIZ'
@@ -419,3 +422,4 @@ export enum HowTo {
 
 export const BULK_ACTION_ITEM_SEPARATOR = ','
 export const BULK_ACTION_ITEM_SEARCH_KEY = 'list'
+export const ELASTIC_MAX_RECORDS = 10000

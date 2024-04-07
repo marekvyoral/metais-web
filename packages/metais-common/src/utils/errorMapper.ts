@@ -27,7 +27,7 @@ export const ERROR_MAPPER: { [key: string]: string } = {
     'cl.item.inappropriate.wfstate': 'errors.cl.item.inappropriate.wfstate',
     'cl.request.not.reject.wsstate': 'errors.cl.request.not.reject.wsstate',
     'cl.request.notexists': 'errors.cl.request.notexists',
-    'cl.header.`': 'errors.cl.header.`',
+    'cl.header.`': 'errors.cl.header.backtick',
     'cl.item.notexists': 'errors.cl.item.notexists',
     'cl.header.locked': 'errors.cl.header.locked',
     'cl.header.not.locked': 'errors.cl.header.not.locked',

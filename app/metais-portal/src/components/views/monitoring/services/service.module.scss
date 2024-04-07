@@ -2,13 +2,22 @@
 
 .actionRow {
     text-align: right;
+    @include mq($until: tablet) {
+        text-align: left;
+    }
 }
 
 .labelDiv {
     display: flex;
     position: relative;
-    align-items: flex-start;
+    align-items: center;
     gap: govuk-spacing(2);
+    align-items: center;
+    margin-bottom: govuk-spacing(5);
+
+    h2 {
+        margin-bottom: govuk-spacing(0);
+    }
 }
 
 .textHover {
@@ -48,4 +57,8 @@
 
 .clickable:hover {
     cursor: pointer;
+}
+
+.graph {
+    margin: auto;
 }

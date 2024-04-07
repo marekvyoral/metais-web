@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button } from '@isdd/idsk-ui-kit/index'
 import { Stepper } from '@isdd/idsk-ui-kit/stepper/Stepper'
-import { SubmitWithFeedback } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, SubmitWithFeedback } from '@isdd/metais-common/index'
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
 import { FieldValues, FieldErrors, FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -107,6 +107,7 @@ export const CiEntityFormBody: React.FC<Props> = ({
     }, [formState.defaultValues, formDefaultValues, setValue, generatedEntityId?.ciurl, generatedEntityId?.cicode])
 
     useEffect(() => {
+        setValue(ATTRIBUTE_NAME.Gen_Profil_nazov, `Koncepcia rozvoja IT ${selectedOrg?.poName}`)
         if (entityName === ENTITY_PROJECT) setValue(AttributesConfigTechNames.EA_Profil_Projekt_prijimatel, selectedOrg?.poName)
     }, [selectedOrg, setValue, entityName])
 

@@ -195,6 +195,7 @@ export const connectedCiTabsToRemove = [
 
 export enum QueryKeysByEntity {
     REFERENCE_REGISTER = 'referenceRegisterData',
+    REFERENCE_REGISTERS = 'referenceRegistersList',
 }
 
 export enum Roles {

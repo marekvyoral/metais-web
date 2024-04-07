@@ -55,7 +55,7 @@ const getLink = (item: FollowedItem, location: Location, ciList: ConfigurationIt
         to = `${NavigationSubRoutes.REF_IDENTIFIERS}/${item.itemId}`
     }
     if (item.itemType === FollowedItemItemType.REF_REGISTER) {
-        to = `${NavigationSubRoutes.REFERENCE_REGISTRE}/${item.itemId}`
+        to = `${NavigationSubRoutes.REFERENCE_REGISTER}/${item.itemId}`
     }
 
     return (

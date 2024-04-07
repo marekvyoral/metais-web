@@ -1,4 +1,4 @@
-import React, { ReactNode, RefObject, useEffect, useRef, useState, useId } from 'react'
+import React, { ReactNode, RefObject, useEffect, useRef, useState, useId, cloneElement, ReactElement } from 'react'
 import { Popup } from 'reactjs-popup'
 import { PopupActions } from 'reactjs-popup/dist/types'
 import classNames from 'classnames'
@@ -11,12 +11,14 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 
 interface IButtonPopupProps {
     popupPosition?: 'left' | 'right'
-    buttonLabel: string
+    buttonLabel?: string
     buttonAriaLabel?: string
     popupContent: (closePopup: () => void) => ReactNode
     buttonClassName?: string
+    contentClassNameReplacement?: string
     disabled?: boolean
     disabledTooltip?: ReactNode
+    customTrigger?: ({ isExpanded }: { isExpanded: boolean }) => ReactElement
 }
 
 export const useTabbing = (contentRef: RefObject<HTMLElement>, active = true) => {
@@ -67,6 +69,8 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({
     disabledTooltip,
     popupPosition = 'left',
     buttonClassName,
+    contentClassNameReplacement,
+    customTrigger,
 }) => {
     const popupRef = useRef<PopupActions>(null)
     const contentRef = useRef(null)
@@ -81,7 +85,11 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({
 
     useTabbing(contentRef, isExpanded)
 
-    const trigger = (
+    const trigger = customTrigger ? (
+        cloneElement(customTrigger({ isExpanded }), {
+            id: triggerId,
+        })
+    ) : (
         <Button
             id={triggerId}
             label={label}
@@ -121,8 +129,8 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({
                 document.getElementById(triggerId)?.focus()
             }}
         >
-            <div ref={contentRef}>
-                <div className={styles.whiteBackground}>{popupContent(() => popupRef.current?.close())}</div>
+            <div ref={contentRef} className={contentClassNameReplacement ?? styles.whiteBackground}>
+                {popupContent(() => popupRef.current?.close())}
             </div>
         </Popup>
     )

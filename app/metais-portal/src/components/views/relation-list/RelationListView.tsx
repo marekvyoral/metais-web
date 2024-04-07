@@ -1,5 +1,5 @@
 import { BaseModal, BreadCrumbs, Filter, HomeIcon, IOption, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { Trans, useTranslation } from 'react-i18next'
 import { RelationshipUi } from '@isdd/metais-common/api/generated/iam-swagger'
@@ -43,7 +43,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
     seed,
 }) => {
     const { t } = useTranslation()
-
+    const tableRef = useRef<HTMLTableElement>(null)
     const [relationData, setRelationData] = useState<RelationshipUi | null>(null)
 
     const {
@@ -255,7 +255,9 @@ export const RelationListView: React.FC<IRelationListView> = ({
                         pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                         hiddenButtons={{ SELECT_COLUMNS: true }}
                     />
+
                     <Table
+                        tableRef={tableRef}
                         data={relations}
                         columns={columns}
                         isLoading={isLoadingRelations}
@@ -268,7 +270,10 @@ export const RelationListView: React.FC<IRelationListView> = ({
                         pageNumber={defFilter.pageNumber || BASE_PAGE_NUMBER}
                         pageSize={defFilter.pageSize || BASE_PAGE_SIZE}
                         dataLength={totalItems || 0}
-                        handlePageChange={handleFilterChange}
+                        handlePageChange={(filter) => {
+                            handleFilterChange(filter)
+                            tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                        }}
                     />
                 </QueryFeedback>
             </MainContentWrapper>

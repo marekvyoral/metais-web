@@ -35,6 +35,7 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { isObjectEmpty } from '@isdd/metais-common/utils/utils'
 
 import styles from './newRelationView.module.scss'
 import { RelationStepperWrapper } from './RelationStepperWrapper'
@@ -188,7 +189,6 @@ export const NewRelationView: React.FC<Props> = ({
 
     const handleSubmit = (formData: FieldValues) => {
         setHasMutationError(false)
-
         const splittedFormData = Object.keys(formData)
             .map((key) => key.split(JOIN_OPERATOR))
             .map((item) => ({ name: item[0], id: item[1] }))
@@ -222,8 +222,8 @@ export const NewRelationView: React.FC<Props> = ({
                           attributes: [
                               ...splittedFormData
                                   .filter((key) => key.id == item.uuid)
-                                  .map((key) => ({ name: key.name, value: formData[key.name + JOIN_OPERATOR + key.id + JOIN_OPERATOR + item.uuid] })),
-                              ...profileAtt,
+                                  .map((key) => ({ name: key.name, value: formData[key.name + JOIN_OPERATOR + key.id] })),
+                              ...profileAtt.filter((profAtt) => !isObjectEmpty(profAtt)),
                           ],
                           //uuid of picked entities
                           startUuid: isRelatedEntityAsTarget ? entityId : item.uuid,

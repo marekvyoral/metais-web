@@ -1,8 +1,8 @@
 import classNames from 'classnames'
-import React, { forwardRef, DetailedHTMLProps } from 'react'
-import { v4 as uuidV4 } from 'uuid'
+import React, { forwardRef, DetailedHTMLProps, useId } from 'react'
 import { useTranslation } from 'react-i18next'
 import { decodeHtmlEntities } from '@isdd/metais-common/src/utils/utils'
+import sanitizeHtml from 'sanitize-html'
 
 import styles from './input.module.scss'
 
@@ -23,11 +23,12 @@ interface IInputProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLIn
     isUpload?: boolean
     hasInputIcon?: boolean
     maxLength?: number
+    suffixElement?: React.ReactNode
 }
 export const Input = forwardRef<HTMLInputElement, IInputProps>(
     (
         {
-            id = `input_${uuidV4()}`,
+            id,
             label,
             name,
             hint,
@@ -42,25 +43,38 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
             hasInputIcon = false,
             inputClassName,
             maxLength = 255,
+            suffixElement,
             ...rest
         },
         ref,
     ) => {
         const { t } = useTranslation()
-        const hintId = `${id}-hint`
-        const errorId = `${id}-error`
+        const uId = useId()
+        const inputId = id ?? `input_${uId}`
+        const hintId = `${inputId}-hint`
+        const errorId = `${inputId}-error`
         const dateProps = type == 'date' ? { max: '9999-12-31' } : {}
         return (
             <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
                 <div className={styles.labelDiv}>
-                    <label className="govuk-label" htmlFor={id} lang="sk">
+                    <label className="govuk-label" htmlFor={inputId} lang="sk">
                         {label} {required && t('input.requiredField')}
                     </label>
                     {info && (
                         <Tooltip
-                            id={id}
+                            id={inputId}
                             altText={`Tooltip ${label}`}
-                            descriptionElement={<div className="tooltipWidth500">{decodeHtmlEntities(info)}</div>}
+                            descriptionElement={
+                                <div className="tooltipWidth500">
+                                    {
+                                        <span
+                                            dangerouslySetInnerHTML={{
+                                                __html: sanitizeHtml(decodeHtmlEntities(info)),
+                                            }}
+                                        />
+                                    }
+                                </div>
+                            }
                         />
                     )}
                 </div>
@@ -74,10 +88,10 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                     {error}
                 </span>
 
-                <div className={classNames(styles.inputWrapper, inputClassName)} style={{ position: 'relative' }}>
+                <div className={classNames(styles.inputWrapper, inputClassName)} style={{ position: 'relative', display: 'flex' }}>
                     <input
                         className={classNames({ 'govuk-input--error': !!error, 'govuk-input': !isUpload, 'govuk-file-upload': isUpload })}
-                        id={id}
+                        id={inputId}
                         name={name}
                         type={type}
                         ref={ref}
@@ -90,6 +104,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                         maxLength={maxLength}
                         required={required}
                     />
+                    {suffixElement}
                     {correct && (
                         <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />
                     )}

@@ -224,7 +224,17 @@ export const DynamicFilterAttributes: FC<Props> = ({
                     />
                 </div>
             )}
-            <ButtonLink label={t('customAttributeFilter.add')} className={style.addButton} type="button" onClick={addRow} />
+            <ButtonLink
+                label={
+                    <>
+                        <span aria-hidden>+ </span>
+                        {t('customAttributeFilter.add')}
+                    </>
+                }
+                className={style.addButton}
+                type="button"
+                onClick={addRow}
+            />
         </div>
     )
 }

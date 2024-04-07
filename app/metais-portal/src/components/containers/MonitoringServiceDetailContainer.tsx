@@ -1,6 +1,11 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { ApiParameterTypesList, useListParameterTypes1 } from '@isdd/metais-common/api/generated/monitoring-swagger'
+import {
+    ApiMonitoringOverviewService,
+    ApiParameterTypesList,
+    useListMonitoringOverview,
+    useListParameterTypes1,
+} from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
@@ -20,6 +25,7 @@ export interface MonitoringDetailFilterData extends IFilterParams, FieldValues, 
 
 export interface IView {
     data?: ApiParameterTypesList
+    detailData?: ApiMonitoringOverviewService
     filterParams: MonitoringDetailFilterData
     defaultFilterValues: MonitoringDetailFilterData
     handleFilterChange: (filter: IFilter) => void
@@ -45,6 +51,8 @@ export const MonitoringServiceDetailContainer: React.FC<IMonitoringServiceDetail
         serviceUuid: queryParams?.serviceUuid ?? '',
     })
 
+    const { data: list } = useListMonitoringOverview({ entityRef: queryParams?.serviceUuid })
+
     const {
         data: chartData,
         isLoading: isLoadingPar,
@@ -66,6 +74,7 @@ export const MonitoringServiceDetailContainer: React.FC<IMonitoringServiceDetail
             isLoading={isLoading}
             isError={isError}
             data={chartData}
+            detailData={list?.results?.[0]}
             queryParams={queryParams}
             tableDataParam={tableDataParam}
         />

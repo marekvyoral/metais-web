@@ -1,9 +1,10 @@
 import classNames from 'classnames'
 import React, { forwardRef, DetailedHTMLProps } from 'react'
 import { useTranslation } from 'react-i18next'
+import sanitizeHtml from 'sanitize-html'
+import { decodeHtmlEntities } from '@isdd/metais-common/src/utils/utils'
 
-import styles from '../styles/InfoAndCheckInput.module.scss'
-
+import styles from '@isdd/idsk-ui-kit/styles/InfoAndCheckInput.module.scss'
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
@@ -33,7 +34,22 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label} {required && t('input.requiredField')}
                     </label>
-                    {info && <Tooltip altText={`Tooltip ${label}`} descriptionElement={<div className="tooltipWidth500">{info}</div>} />}
+                    {info && (
+                        <Tooltip
+                            altText={`Tooltip ${label}`}
+                            descriptionElement={
+                                <div className="tooltipWidth500">
+                                    {
+                                        <span
+                                            dangerouslySetInnerHTML={{
+                                                __html: sanitizeHtml(decodeHtmlEntities(info)),
+                                            }}
+                                        />
+                                    }
+                                </div>
+                            }
+                        />
+                    )}
                 </div>
                 <span id={hintId} className={classNames({ 'govuk-visually-hidden': !hint, 'govuk-hint': !!hint })}>
                     {hint}

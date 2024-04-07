@@ -36,6 +36,9 @@ export interface IVoteDetailView {
     castVote: ({ choiceId, token, description }: { choiceId: number; token?: string; description?: string }) => Promise<void>
     vetoVote: ({ token, description }: { token?: string; description?: string }) => Promise<void>
     cancelVote: (description: string) => Promise<void>
+    votesProcessingError?: string
+    setVotesProcessingError: React.Dispatch<React.SetStateAction<string | undefined>>
+    voted: boolean
 }
 
 export const VoteDetailView: React.FC<IVoteDetailView> = ({
@@ -49,11 +52,13 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     vetoVote,
     cancelVote,
     votesProcessing,
+    votesProcessingError,
+    setVotesProcessingError,
+    voted,
 }) => {
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
-
     const { isActionSuccess } = useActionSuccess()
 
     const getTabTitle = (textValue: string | undefined, numberValue: number | undefined): string => {
@@ -192,6 +197,14 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isActionSuccess.value])
 
+    const votesSum = useMemo(
+        () =>
+            voteResultData?.choiceResults
+                ?.map((result) => result.votedActorsCount)
+                .reduce((accumulator, currentValue) => (accumulator ?? 0) + (currentValue ?? 0), 0),
+        [voteResultData?.choiceResults],
+    )
+
     return (
         <>
             <div ref={wrapperRef}>
@@ -255,6 +268,9 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
                 }}
             />
             <VotesHandler
+                voted={voted}
+                setVotesProcessingError={setVotesProcessingError}
+                votesProcessingError={votesProcessingError}
                 voteData={voteData}
                 handleCastVote={handleCastVote}
                 handleVetoVote={handleVetoVote}
@@ -282,6 +298,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
             <VoteOverViewItems voteData={voteData} voteResultData={voteResultData} />
             <Spacer vertical />
             <Tabs
+                key={votesSum}
                 tabList={tabList}
                 onSelect={(selected) => {
                     setSelectedTab(selected.id)

@@ -1,24 +1,17 @@
 import { ButtonLink, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
+import { NotificationBlackIcon } from '@isdd/metais-common/assets/images'
 import { getRefRegsDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
+import actionsOverTableStyles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
+import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import {
-    ActionsOverTable,
-    BulkPopup,
-    CreateEntityButton,
-    MutationFeedback,
-    QueryFeedback,
-    Reference_Registers,
-    distinctAttributesMetaAttributes,
-} from '@isdd/metais-common/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useAddFavorite } from '@isdd/metais-common/hooks/useAddFavorite'
+import { ActionsOverTable, BulkPopup, CreateEntityButton, MutationFeedback, QueryFeedback, Reference_Registers } from '@isdd/metais-common/index'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
-import { useEffect, useState } from 'react'
-import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { FollowedItemItemType } from '@isdd/metais-common/api/generated/user-config-swagger'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { NotificationBlackIcon } from '@isdd/metais-common/assets/images'
-import actionsOverTableStyles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 
 import { RefRegistersFilter } from './RefRegistersFilter'
 
@@ -26,7 +19,7 @@ import { CiTable } from '@/components/ci-table/CiTable'
 import { RefRegisterListContainerView } from '@/components/containers/refregisters/RefRegisterListContainer'
 
 export const RefRegisterListView = ({
-    data: { referenceRegisters, columnListData, guiAttributes, unitsData, ciTypeData, constraintsData, attributeProfiles, renamedAttributes },
+    data: { referenceRegisters, columnListData, guiAttributes, unitsData, ciTypeData, constraintsData, attributeProfiles },
     defaultFilterValues,
     pagination,
     saveColumnSelection,
@@ -41,28 +34,47 @@ export const RefRegisterListView = ({
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
-    const { handleAddToFavorite, isBulkLoading } = useBulkAction()
-    const { wrapperRef, scrollToMutationFeedback } = useScroll()
-    const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
+    const { isActionSuccess } = useActionSuccess()
+    const {
+        addFavorite,
+        error: errorAddToFavorite,
+        isLoading: isLoadingAddToFavorite,
+        isSuccess: isSuccessAddToFavorite,
+        resetState,
+        successMessage,
+    } = useAddFavorite()
 
-    useEffect(() => {
-        scrollToMutationFeedback()
-    }, [bulkActionResult, scrollToMutationFeedback])
+    const selectedUuids = useMemo(() => {
+        return Object.values(rowSelection).map((i) => i.uuid)
+    }, [rowSelection])
+
+    const handleAddToFavorite = () => {
+        addFavorite(
+            selectedUuids.map((item) => String(item)),
+            FollowedItemItemType.REF_REGISTER,
+        )
+    }
 
     return (
-        <QueryFeedback loading={isLoading || isBulkLoading} error={isError} withChildren>
+        <QueryFeedback loading={isLoading || isLoadingAddToFavorite} error={isError} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('refRegisters.title')}</TextHeading>
-
-                <div ref={wrapperRef}>
+                <ElementToScrollTo trigger={isActionSuccess.value || !!isSuccessAddToFavorite}>
                     <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage}
-                        error={bulkActionResult?.isError}
-                        errorMessage={bulkActionResult?.errorMessage}
-                        onMessageClose={() => setBulkActionResult(undefined)}
+                        success={isActionSuccess.value || isSuccessAddToFavorite}
+                        successMessage={((): string | undefined => {
+                            if (isSuccessAddToFavorite) {
+                                return successMessage
+                            }
+                            return isActionSuccess.additionalInfo?.type === 'create'
+                                ? t('mutationFeedback.successfulCreated')
+                                : t('mutationFeedback.successfulRemoved')
+                        })()}
+                        error={!!errorAddToFavorite}
+                        errorMessage={t('userProfile.notifications.feedback.error')}
+                        onMessageClose={() => resetState()}
                     />
-                </div>
+                </ElementToScrollTo>
             </FlexColumnReverseWrapper>
             <RefRegistersFilter defaultFilterValues={defaultFilterValues} />
             <ActionsOverTable
@@ -81,8 +93,7 @@ export const RefRegisterListView = ({
                                 label={t('codeListList.buttons.addToFavorites')}
                                 icon={NotificationBlackIcon}
                                 onClick={() => {
-                                    const ids = Object.values(rowSelection).map((row) => row.uuid ?? '')
-                                    handleAddToFavorite(ids, FollowedItemItemType.REF_REGISTER, (actionResult) => setBulkActionResult(actionResult))
+                                    handleAddToFavorite()
                                     setRowSelection({})
                                     closePopup()
                                 }}
@@ -97,7 +108,7 @@ export const RefRegisterListView = ({
                     />
                 }
                 attributeProfiles={attributeProfiles}
-                attributes={[...distinctAttributesMetaAttributes(renamedAttributes ?? [], getRefRegsDefaultMetaAttributes(t)), ...guiAttributes]}
+                attributes={guiAttributes}
                 columnListData={columnListData}
                 metaAttributesColumnSection={getRefRegsDefaultMetaAttributes(t)}
                 storeUserSelectedColumns={saveColumnSelection}
@@ -114,7 +125,7 @@ export const RefRegisterListView = ({
                     },
                     constraintsData,
                     unitsData,
-                    entityStructure: { ...ciTypeData, attributes: [...(renamedAttributes ?? []), ...guiAttributes] },
+                    entityStructure: { ...ciTypeData, attributes: guiAttributes },
                     gestorsData: undefined,
                 }}
                 rowSelectionState={{ rowSelection, setRowSelection }}
