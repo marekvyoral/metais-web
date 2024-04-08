@@ -22,12 +22,14 @@ export const ReportsFilterParameterWrapper: React.FC<IReportsFilterParameterWrap
         ...defaultFilterValues,
         ...Object.fromEntries(parameterKeys?.map((key) => [key, getDefaultValueForKey(key, parameters)]) ?? []),
     }
+    if (parameters && parameters.length > 0)
+        return (
+            <Filter<IFilterParams & { [key: string]: string }>
+                defaultFilterValues={dynamicFilterValues}
+                onlyForm
+                form={(formProps) => <ReportsFilter parameters={parameters} formProps={formProps} filterEnumData={filterEnumData} />}
+            />
+        )
 
-    return (
-        <Filter<IFilterParams & { [key: string]: string }>
-            defaultFilterValues={dynamicFilterValues}
-            schema={getReportsFilterParameterYupSchema(t, parameterKeys, parameters)}
-            form={(formProps) => <ReportsFilter parameters={parameters} formProps={formProps} filterEnumData={filterEnumData} />}
-        />
-    )
+    return <></>
 }

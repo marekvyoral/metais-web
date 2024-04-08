@@ -251,7 +251,6 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
 
     const methods = useForm<T & IFilterParams>({ defaultValues: filter as DeepPartial<T>, resolver: schema ? yupResolver(schema) : undefined })
     const { reset, handleSubmit } = methods
-
     const clearData = useCallback((obj: T): T => {
         return Object.fromEntries<T>(
             Object.entries<T>(obj).filter(([key, v]) => !!v && key !== 'attributeFilters' && key !== 'metaAttributeFilters'),
@@ -268,6 +267,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
     }, [defaults, searchParams.size, setSearchParams])
 
     const onSubmit = handleSubmit((data: T) => {
+        console.log('data', 'dd', data)
         const filterData = clearData(data)
 
         const convertedArrayFilterData = convertFilterArrayData(filterData)

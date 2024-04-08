@@ -39,7 +39,7 @@ const TYP = 'typ'
 export const ReportsDetailContainer: React.FC<IReportsDetailContainer> = ({ View, defaultFilterValues }) => {
     const { t } = useTranslation()
     const { entityId } = useParams()
-    const { isLoading, isError, data: reportMetaData } = useGetReport1(entityId ?? '')
+    const { isFetching: isReportFetching, isError, data: reportMetaData } = useGetReport1(entityId ?? '')
 
     const enumCodes =
         reportMetaData?.parameters?.filter((parameter) => parameter.type === ParameterType.ENUMS_REPO).map((parameter) => parameter.metaData) ?? []
@@ -57,7 +57,7 @@ export const ReportsDetailContainer: React.FC<IReportsDetailContainer> = ({ View
     const { data: filterEnumData } = useGetEnumBulk(enumCodes)
 
     const {
-        isLoading: isLoadingReport,
+        isFetching: isExecuteFetching,
         isError: isErrorReport,
         data: reportData,
     } = useExecute(reportMetaData?.id ?? 0, TYP, mapFilterToExecuteParams(filterParams, reportMetaData?.parameters, filterEnumData))
@@ -72,7 +72,7 @@ export const ReportsDetailContainer: React.FC<IReportsDetailContainer> = ({ View
             reportResult={reportData?.result}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
-            isLoading={isLoading || isLoadingReport}
+            isLoading={isReportFetching || isExecuteFetching}
             isError={isError || isErrorReport}
         />
     )
