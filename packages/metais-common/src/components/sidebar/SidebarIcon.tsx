@@ -24,11 +24,12 @@ export const SidebarIcon = ({ section, onToggle, setIsSidebarExpanded, isExpande
                 onToggle(true)
                 setIsSidebarExpanded(true)
             }}
+            aria-haspopup={section.subItems ? 'menu' : undefined}
         >
             <img src={section.icon} className={styles.img} alt="" />
             <span
                 className={classNames(styles.sectionHeaderButton, styles.smallSidebarText, isExpanded && styles.expanded)}
-                aria-expanded={isExpanded}
+                aria-expanded={section.subItems ? isExpanded : undefined}
                 id={buttonId}
             >
                 {section.title}
