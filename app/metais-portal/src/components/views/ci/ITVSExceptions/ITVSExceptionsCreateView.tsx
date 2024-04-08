@@ -22,6 +22,7 @@ import { CreateEntitySection } from '@/components/create-entity/CreateEntitySect
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
 import { INewCiRelationData } from '@/hooks/useNewCiRelation.hook'
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
+import { useRolesForPO } from '@/hooks/useRolesForPO'
 
 export interface IRelationshipSetState {
     relationshipSet: RelationshipWithCiType[]
@@ -67,6 +68,11 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
     const { readRelationShipsData: existingRelations, relationTypeData: relationSchema } = relationData
+
+    const { rolesForPO } = useRolesForPO(
+        updateCiItemId ? data.ownerId ?? '' : publicAuthorityState?.selectedPublicAuthority?.poUUID ?? '',
+        ciTypeData?.roleList ?? [],
+    )
 
     const ciTypeModified = useMemo(() => {
         return getModifiedCiTypeData(ciTypeData, CI_TYPE_DATA_ITVS_EXCEPTIONS_BLACK_LIST)
@@ -160,6 +166,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             updateCiItemId={updateCiItemId}
                             sectionRoles={ciTypeModified?.roleList ?? []}
                             selectedRole={roleState?.selectedRole ?? null}
+                            rolesForPO={rolesForPO ?? []}
                         />
 
                         {uploadError && (
@@ -216,6 +223,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             updateCiItemId={updateCiItemId}
                             sectionRoles={ciTypeModified?.roleList ?? []}
                             selectedRole={roleState?.selectedRole ?? null}
+                            rolesForPO={rolesForPO ?? []}
                         />
 
                         <ButtonGroupRow>

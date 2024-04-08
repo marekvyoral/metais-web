@@ -41,6 +41,7 @@ interface ICreateCiEntityForm {
     withRelation?: boolean
     selectedRole?: GidRoleData | null
     selectedOrg?: HierarchyRightsUi | null
+    rolesForPO: GidRoleData[]
 }
 
 export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
@@ -58,6 +59,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     withRelation,
     selectedRole,
     selectedOrg,
+    rolesForPO,
 }) => {
     const { t, i18n } = useTranslation()
     const [hasReset, setHasReset] = useState(false)
@@ -130,6 +132,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                             setSectionError={setSectionError}
                             sectionRoles={ciTypeData?.roleList ?? []}
                             selectedRole={selectedRole}
+                            rolesForPO={rolesForPO}
                         />
                     ),
                 },
@@ -154,6 +157,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                                 updateCiItemId={updateCiItemId}
                                 sectionRoles={profile.roleList ?? []}
                                 selectedRole={selectedRole}
+                                rolesForPO={rolesForPO}
                             />
                         ),
                     }
