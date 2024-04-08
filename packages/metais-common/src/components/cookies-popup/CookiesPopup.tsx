@@ -10,9 +10,9 @@ import { COOKIES_TYPES } from '@isdd/metais-common/src/api/constants'
 export const setCookiesConsent = (cookies: Cookies, values: { [key in COOKIES_TYPES]: boolean }, onCookiesSet?: () => void) => {
     const date = new Date()
     date.setMonth(date.getMonth() + 1)
-    cookies.set(COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT, values[COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT], { expires: date })
-    cookies.set(COOKIES_TYPES.ANALYTICALLY_COOKIES_CONSENT, values[COOKIES_TYPES.ANALYTICALLY_COOKIES_CONSENT], { expires: date })
-    cookies.set(COOKIES_TYPES.PREFERENTIAL_COOKIES_CONSENT, values[COOKIES_TYPES.PREFERENTIAL_COOKIES_CONSENT], { expires: date })
+    cookies.set(COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT, values[COOKIES_TYPES.NECESSARILY_COOKIES_CONSENT], { expires: date, path: '/' })
+    cookies.set(COOKIES_TYPES.ANALYTICALLY_COOKIES_CONSENT, values[COOKIES_TYPES.ANALYTICALLY_COOKIES_CONSENT], { expires: date, path: '/' })
+    cookies.set(COOKIES_TYPES.PREFERENTIAL_COOKIES_CONSENT, values[COOKIES_TYPES.PREFERENTIAL_COOKIES_CONSENT], { expires: date, path: '/' })
     onCookiesSet && onCookiesSet()
 }
 
