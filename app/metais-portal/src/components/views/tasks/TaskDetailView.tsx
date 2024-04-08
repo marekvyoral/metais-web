@@ -5,12 +5,14 @@ import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { DefinitionListItem } from '@isdd/metais-common/components/definition-list/DefinitionListItem'
 import { ColumnDef } from '@tanstack/react-table'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import React, { SetStateAction } from 'react'
+import React, { SetStateAction, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/src/save-html-component/SafeHtmlComponent'
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { AssignToGroupSelect } from './AssignToGroupSelect'
 import styles from './tasks.module.scss'
@@ -43,6 +45,14 @@ export const TaskDetailView: React.FC<ITaskDetailView> = ({
     const { t } = useTranslation()
     document.title = `${t('titles.taskDetail')} ${task?.name ?? ''} ${META_IS_TITLE}`
 
+    const { isActionSuccess } = useActionSuccess()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        if (isActionSuccess.value) {
+            scrollToMutationFeedback()
+        }
+    }, [isActionSuccess, scrollToMutationFeedback])
+
     return (
         <>
             <BreadCrumbs
@@ -59,6 +69,16 @@ export const TaskDetailView: React.FC<ITaskDetailView> = ({
                         <TextHeading size="L">{task?.name}</TextHeading>
                         <QueryFeedback loading={false} error={isError} />
                     </FlexColumnReverseWrapper>
+                    <MutationFeedback
+                        success={isActionSuccess.value}
+                        successMessage={
+                            isActionSuccess.additionalInfo?.type == 'toUser'
+                                ? t('tasks.reassignedToUser', { name: isActionSuccess.additionalInfo?.userName })
+                                : t('tasks.reassignedToGroup', { name: isActionSuccess.additionalInfo?.groupName })
+                        }
+                    />
+                    <div ref={wrapperRef} />
+
                     {task?.state !== TaskState.DONE ? (
                         <>
                             <Button onClick={closeTask} label={t('tasks.finish')} className="idsk-button" />
