@@ -29,11 +29,11 @@ export const SidebarSectionsContainer = ({ isSidebarExpanded, setIsSidebarExpand
 
     useEffect(() => {
         if (defaultOpenedMenuItems != null) {
-            setExpandedSectionIndexes((prev) => [
-                ...prev.slice(0, defaultOpenedMenuItems[0].index),
-                true,
-                ...prev.slice(defaultOpenedMenuItems[0].index + 1),
-            ])
+            setExpandedSectionIndexes(() => {
+                const indexes = Array<boolean>(sections.length)
+                indexes.splice(defaultOpenedMenuItems[0].index, 1, true)
+                return indexes
+            })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -46,11 +46,10 @@ export const SidebarSectionsContainer = ({ isSidebarExpanded, setIsSidebarExpand
             {sections.map((menuItem, index) => {
                 const isExpanded = expandedSectionIndexes[index]
                 const onToggle = (toggle?: boolean) => {
-                    setExpandedSectionIndexes((prev) => {
-                        const newArr = [...prev]
-                        if (toggle) newArr[index] = toggle
-                        else newArr[index] = !isExpanded
-                        return newArr
+                    setExpandedSectionIndexes(() => {
+                        const indexes = Array<boolean>(sections.length)
+                        indexes.splice(index, 1, toggle ?? !isExpanded)
+                        return indexes
                     })
                 }
 
