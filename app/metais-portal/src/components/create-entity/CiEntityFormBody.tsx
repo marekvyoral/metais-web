@@ -10,7 +10,7 @@ import { AttributeProfile, CiCode, CiType } from '@isdd/metais-common/api/genera
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { ConfigurationItemUiAttributes, HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { ENTITY_PROJECT } from '@isdd/metais-common/constants'
+import { ENTITY_KRIS, ENTITY_PROJECT, KRIS_Profil_nazov } from '@isdd/metais-common/constants'
 
 import { getFilteredAttributeProfilesBasedOnRole, getValidAndVisibleAttributes } from './createEntityHelpers'
 import { generateFormSchema } from './createCiEntityFormSchema'
@@ -107,7 +107,7 @@ export const CiEntityFormBody: React.FC<Props> = ({
     }, [formState.defaultValues, formDefaultValues, setValue, generatedEntityId?.ciurl, generatedEntityId?.cicode])
 
     useEffect(() => {
-        setValue(ATTRIBUTE_NAME.Gen_Profil_nazov, `Koncepcia rozvoja IT ${selectedOrg?.poName}`)
+        if (entityName === ENTITY_KRIS) setValue(ATTRIBUTE_NAME.Gen_Profil_nazov, `${KRIS_Profil_nazov} ${selectedOrg?.poName}`)
         if (entityName === ENTITY_PROJECT) setValue(AttributesConfigTechNames.EA_Profil_Projekt_prijimatel, selectedOrg?.poName)
     }, [selectedOrg, setValue, entityName])
 
