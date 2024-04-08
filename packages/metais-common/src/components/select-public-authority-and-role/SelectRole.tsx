@@ -31,11 +31,9 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
     } = useGetRightsForPO({ identityUuid: user?.uuid ?? '', cmdbId: selectedOrg?.poUUID ?? '' }, { query: { enabled: !!selectedOrg?.poUUID } })
 
     const roleSelectOptions = useMemo(() => {
-        return (
-            rightsForPOData
-                ?.filter((role) => ciRoles?.find((currentRole) => currentRole === role.roleName))
-                .map((role: GidRoleData) => ({ value: role, label: role.roleDescription ?? '' })) ?? []
-        )
+        const rolesForPO = rightsForPOData?.filter((role) => ciRoles?.find((currentRole) => currentRole === role.roleName))
+
+        return rolesForPO?.map((role: GidRoleData) => ({ value: role, label: role.roleDescription ?? '' })) ?? []
     }, [ciRoles, rightsForPOData])
 
     useEffect(() => {

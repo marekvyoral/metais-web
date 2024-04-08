@@ -25,6 +25,7 @@ import {
     useCiCreateUpdateOnSubmit,
 } from '@/components/create-entity/createEntityHelpers'
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
+import { useRolesForPO } from '@/hooks/useRolesForPO'
 
 interface AttributesData {
     ciTypeData: CiType | undefined
@@ -70,6 +71,11 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
 
     const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
     const { onSubmit, uploadError, setUploadError, configurationItemId } = useCiCreateUpdateOnSubmit(entityName)
+
+    const { rolesForPO, isRightsForPOError } = useRolesForPO(
+        updateCiItemId ? data.ownerId ?? '' : publicAuthorityState?.selectedPublicAuthority?.poUUID ?? '',
+        ciTypeData?.roleList ?? [],
+    )
 
     const storeConfigurationItem = useStoreConfigurationItem({
         mutation: {
@@ -180,7 +186,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
 
             <QueryFeedback
                 loading={isRedirectLoading}
-                error={isRedirectError || isProcessedError || isTooManyFetchesError}
+                error={isRedirectError || isProcessedError || isTooManyFetchesError || isRightsForPOError}
                 indicatorProps={{
                     label: isUpdate ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
                 }}
@@ -239,6 +245,7 @@ export const CreateTrainingEntity: React.FC<ICreateTrainingEntity> = ({
                                 updateCiItemId={updateCiItemId}
                                 sectionRoles={modifiedCiTypeData?.roleList ?? []}
                                 selectedRole={roleState?.selectedRole}
+                                rolesForPO={rolesForPO ?? []}
                             />
                             <SubmitWithFeedback
                                 additionalButtons={[

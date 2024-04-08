@@ -28,6 +28,7 @@ import { ICiCreateItemAndRelationContainerView } from '@/components/containers/C
 import { CreateCiEntityForm } from '@/components/create-entity/CreateCiEntityForm'
 import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
 import { useKSChannel } from '@/hooks/useChannelKS'
+import { useRolesForPO } from '@/hooks/useRolesForPO'
 
 export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerView> = ({
     entityName,
@@ -54,6 +55,8 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
         publicAuthorityState: { selectedPublicAuthority, setSelectedPublicAuthority },
         roleState: { selectedRole, setSelectedRole },
     } = states
+
+    const { rolesForPO, isRightsForPOError } = useRolesForPO(selectedPublicAuthority?.poUUID ?? '', attributesData.ciTypeData?.roleList ?? [])
 
     const relatedListAsSources = relationData?.relatedListAsSources
     const relatedListAsTargets = relationData?.relatedListAsTargets
@@ -200,7 +203,14 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
 
                 <div ref={wrapperRef}>
                     <MutationFeedback
-                        error={storeGraph.isError || isProcessedError || isTooManyFetchesError || isRequestStatusError || isSubmitError}
+                        error={
+                            storeGraph.isError ||
+                            isProcessedError ||
+                            isTooManyFetchesError ||
+                            isRequestStatusError ||
+                            isSubmitError ||
+                            isRightsForPOError
+                        }
                     />
                 </div>
             </FlexColumnReverseWrapper>
@@ -236,6 +246,7 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
                 isProcessing={storeGraph.isLoading}
                 selectedRole={selectedRole}
                 withRelation
+                rolesForPO={rolesForPO ?? []}
             />
         </QueryFeedback>
     )

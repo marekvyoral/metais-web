@@ -22,6 +22,7 @@ import { getValidAndVisibleAttributes } from './createEntityHelpers'
 
 import { formatForFormDefaultValues } from '@/componentHelpers/ci'
 import { RelationAttributeForm } from '@/components/relations-attribute-form/RelationAttributeForm'
+import { useRolesForPO } from '@/hooks/useRolesForPO'
 
 export interface HasResetState {
     hasReset: boolean
@@ -42,6 +43,7 @@ interface ICreateCiEntityForm {
     withRelation?: boolean
     selectedRole?: GidRoleData | null
     selectedOrg?: HierarchyRightsUi | null
+    ownerId?: string
 }
 
 export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
@@ -59,6 +61,7 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
     withRelation,
     selectedRole,
     selectedOrg,
+    ownerId,
 }) => {
     const { t, i18n } = useTranslation()
     const { state } = useAuth()
@@ -69,6 +72,8 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
     const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
     const isUpdate = !!updateCiItemId
     const isSubmitDisabled = (!selectedRole?.roleUuid && !updateCiItemId) || (withRelation ? !canCreateRelationType : false)
+
+    const { rolesForPO } = useRolesForPO(updateCiItemId ? ownerId ?? '' : selectedOrg?.poUUID ?? '', ciTypeData?.roleList ?? [])
 
     const location = useLocation()
     const attProfiles = useMemo(() => ciTypeData?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeData?.attributeProfiles])
@@ -163,6 +168,7 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
                             setSectionError={setSectionError}
                             sectionRoles={ciTypeData?.roleList ?? []}
                             selectedRole={selectedRole}
+                            rolesForPO={rolesForPO ?? []}
                         />
                     ),
                 },
@@ -187,6 +193,7 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
                                 updateCiItemId={updateCiItemId}
                                 sectionRoles={profile.roleList ?? []}
                                 selectedRole={selectedRole}
+                                rolesForPO={rolesForPO ?? []}
                             />
                         ),
                     }
