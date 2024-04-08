@@ -1,7 +1,7 @@
 import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, Input, PaginatorWrapper, Table, TextArea } from '@isdd/idsk-ui-kit/index'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
 import { ActionsOverTable, CreateEntityButton, isRowSelected, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FieldValues, useForm } from 'react-hook-form'
 import { ColumnDef } from '@tanstack/react-table'
@@ -79,6 +79,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
     const indexModificator = pagination.pageNumber * pagination.pageSize - pagination.pageSize
     const [isTableDataLoading, setIsTableDataLoading] = useState(false)
     const [dataRows, setDataRows] = useState(filteredData?.enumItems?.sort((a, b) => (a.orderList || 0) - (b.orderList || 0)) || [])
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const { register, getValues, setValue, reset } = useForm({
         defaultValues: {
@@ -428,13 +429,16 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
             />
             <QueryFeedback loading={isLoading || updateEnumItem.isLoading || isTableDataLoading} error={isError} withChildren>
-                <Table<EnumItem> data={filteredTableData} columns={columns} canDragRow={isUserLogged} reorderRow={reorderRow} />
+                <Table<EnumItem> data={filteredTableData} columns={columns} canDragRow={isUserLogged} reorderRow={reorderRow} tableRef={tableRef} />
             </QueryFeedback>
             <PaginatorWrapper
                 pageSize={pagination.pageSize}
                 pageNumber={pagination.pageNumber}
                 dataLength={filteredData?.enumItems?.length ?? 0}
-                handlePageChange={(page) => setPagination({ ...pagination, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })}
+                handlePageChange={(page) => {
+                    setPagination({ ...pagination, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </>
     )

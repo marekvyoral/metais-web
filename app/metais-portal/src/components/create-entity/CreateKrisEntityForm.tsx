@@ -13,7 +13,7 @@ import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'r
 import { FieldValues, FieldErrors } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
-import { metaisEmail } from '@isdd/metais-common/constants'
+import { KRIS_Profil_nazov, metaisEmail } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { CiEntityFormBody } from './CiEntityFormBody'
@@ -93,7 +93,10 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
                 if (!isUpdate) {
                     switch (att?.technicalName) {
                         case 'Gen_Profil_nazov':
-                            return { ...acc, [att?.technicalName?.toString() ?? '']: `Koncepcia rozvoja IT ${selectedOrg?.poName}` }
+                            return {
+                                ...acc,
+                                [att?.technicalName?.toString() ?? '']: `${KRIS_Profil_nazov} ${selectedOrg?.poName ? selectedOrg?.poName : ''}`,
+                            }
                         case 'Profil_KRIS_stav_kris':
                             return { ...acc, [att?.technicalName?.toString() ?? '']: 'c_stav_kris.1' }
                         case 'Profil_KRIS_Spracovatel_meno':

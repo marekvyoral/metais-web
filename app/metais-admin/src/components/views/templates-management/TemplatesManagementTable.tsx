@@ -7,7 +7,7 @@ import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/Ri
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import sanitizeHtml from 'sanitize-html'
 
@@ -20,6 +20,7 @@ export const TemplatesManagementTable: React.FC<ITemplatesTable> = ({ data, edit
     const { t } = useTranslation()
     const [selectedRow, setSelectedRow] = useState<number>()
     const [templates, setTemplates] = useState(data)
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const sortedData = useMemo(() => data?.sort((a, b) => (a.id || 0) - (b.id || 0)) || [], [data])
     const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
@@ -134,12 +135,21 @@ export const TemplatesManagementTable: React.FC<ITemplatesTable> = ({ data, edit
                 pagination={{ pageSize, pageNumber: currentPage, dataLength: sortedData?.length ?? 0 }}
             />
             <Table
+                tableRef={tableRef}
                 columns={columns.map((item) => ({ ...item, size: 150 }))}
                 data={sortedData}
                 manualPagination={false}
                 pagination={{ pageIndex: currentPage - 1, pageSize: pageSize }}
             />
-            <PaginatorWrapper dataLength={sortedData?.length ?? 0} pageNumber={currentPage} pageSize={pageSize} handlePageChange={handlePageChange} />
+            <PaginatorWrapper
+                dataLength={sortedData?.length ?? 0}
+                pageNumber={currentPage}
+                pageSize={pageSize}
+                handlePageChange={(filter) => {
+                    handlePageChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </>
     )
 }

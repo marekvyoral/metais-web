@@ -12,7 +12,7 @@ import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-ta
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { BulkPopup } from '@isdd/metais-common/index'
 import { ColumnDef, ExpandedState, Table as ITable, Row } from '@tanstack/react-table'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
@@ -74,6 +74,8 @@ export const PublicAuthoritiesMassUpdateTable = ({
     const [expanded, setExpanded] = useState<ExpandedState>({})
 
     const { filter } = useFilterParams<PublicAuthoritiesMassUpdateFilterData>(defaultFilterValues)
+
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const selectedUuids = useMemo(() => {
         return Object.values(rowSelection).map((i) => i.metaAttributes?.owner || '')
@@ -261,6 +263,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
                 )}
             />
             <Table
+                tableRef={tableRef}
                 data={data?.configurationItemSet}
                 columns={columns}
                 sort={sort}
@@ -286,7 +289,13 @@ export const PublicAuthoritiesMassUpdateTable = ({
                     )
                 }}
             />
-            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+            <PaginatorWrapper
+                {...pagination}
+                handlePageChange={(filterValues) => {
+                    handleFilterChange(filterValues)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </div>
     )
 }
