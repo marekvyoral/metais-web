@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ReportsFilter } from './ReportsFilter'
 
-import { getDefaultValueForKey, getReportsFilterParameterYupSchema } from '@/componentHelpers'
+import { getDefaultValueForKey } from '@/componentHelpers'
 
 interface IReportsFilterParameterWrapperProps {
     defaultFilterValues: IFilterParams & { [key: string]: string }
@@ -22,14 +22,10 @@ export const ReportsFilterParameterWrapper: React.FC<IReportsFilterParameterWrap
         ...defaultFilterValues,
         ...Object.fromEntries(parameterKeys?.map((key) => [key, getDefaultValueForKey(key, parameters)]) ?? []),
     }
-    if (parameters && parameters.length > 0)
-        return (
-            <Filter<IFilterParams & { [key: string]: string }>
-                defaultFilterValues={dynamicFilterValues}
-                onlyForm
-                form={(formProps) => <ReportsFilter parameters={parameters} formProps={formProps} filterEnumData={filterEnumData} />}
-            />
-        )
-
-    return <></>
+    return (
+        <Filter<IFilterParams & { [key: string]: string }>
+            defaultFilterValues={dynamicFilterValues}
+            form={(formProps) => <ReportsFilter parameters={parameters} formProps={formProps} filterEnumData={filterEnumData} />}
+        />
+    )
 }
