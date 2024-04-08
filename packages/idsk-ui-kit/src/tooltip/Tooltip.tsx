@@ -50,10 +50,9 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, triggerElement
         <Popup
             mouseLeaveDelay={200}
             ref={popupRef}
-            disabled={!descriptionElement}
             arrow={props.position != 'center center'}
             className="tooltip"
-            on={['click', 'hover']}
+            on={['click']}
             onOpen={() => setIsOpen(true)}
             onClose={() => setIsOpen(false)}
             keepTooltipInside
