@@ -5,7 +5,6 @@ import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import classNames from 'classnames'
 
 import styles from './styles.module.scss'
 
@@ -35,13 +34,10 @@ export const EntityCount: React.FC<EntityCountProps> = ({ label, count, href, is
                     count
                 )}
             </TextBody>
-            <Link to={href} className={styles.link}>
-                <TextBody size="S" className={classNames({ [styles.noMargin]: isOperated })}>
-                    {label}
-                </TextBody>
-                <TextBody size="S" className={styles.noMargin}>
-                    {isOperated && t('entitySummary.operated')}
-                </TextBody>
+            <Link to={href}>
+                {label}
+                <br />
+                {isOperated && t('entitySummary.operated')}
             </Link>
         </div>
     )

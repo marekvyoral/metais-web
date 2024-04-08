@@ -228,7 +228,6 @@ export const EntityDetailViewAttributes = ({
                     )}{' '}
                 </DefinitionList>
             </div>
-
             <TextHeading size="M">{t('egov.detail.profileAttributes')}</TextHeading>
             <Table columns={columns} data={data?.attributes} manualSorting={false} sort={sort} onSortingChange={setSort} />
         </>

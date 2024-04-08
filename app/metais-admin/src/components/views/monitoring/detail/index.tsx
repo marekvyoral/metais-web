@@ -13,7 +13,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 import styles from '../monitoring.module.scss'
@@ -51,6 +51,7 @@ export const MonitoringDetailView: React.FC<IMonitoringDetailView> = ({
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const [callEndpointResult, setCallEndpointResult] = useState<ApiActiveMonitoringResult | undefined>(undefined)
 
@@ -118,6 +119,7 @@ export const MonitoringDetailView: React.FC<IMonitoringDetailView> = ({
             />
             <QueryFeedback loading={isLoadingLog} withChildren indicatorProps={{ layer: 'parent', transparentMask: false }}>
                 <Table<ApiActiveMonitoringLog>
+                    tableRef={tableRef}
                     data={monitoringLogData?.results}
                     columns={monitoringDetailLogColumns(t)}
                     sort={filter.sort ?? []}
@@ -130,7 +132,10 @@ export const MonitoringDetailView: React.FC<IMonitoringDetailView> = ({
                 pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
                 pageSize={filter.pageSize || BASE_PAGE_SIZE}
                 dataLength={monitoringLogData?.pagination?.totalItems || 0}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filterValues) => {
+                    handleFilterChange(filterValues)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </>
     )

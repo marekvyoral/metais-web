@@ -15,7 +15,7 @@ const EditEntityPage = () => {
     const { t, i18n } = useTranslation()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
 
-    const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(entityId)
+    const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError, gestorData } = useCiHook(entityId)
     const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(entityName)
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
     document.title = `${t('titles.ciEdit', {
@@ -52,6 +52,7 @@ const EditEntityPage = () => {
                             entityName={entityName ?? ''}
                             isError={[isAttError, isCiItemError].some((item) => item)}
                             isLoading={[isAttLoading, isCiItemLoading].some((item) => item)}
+                            ownerId={gestorData?.[0].owner ?? ''}
                         />
                     </CiPermissionsWrapper>
                 </MainContentWrapper>

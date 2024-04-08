@@ -26,6 +26,7 @@ interface ISection {
     sectionRoles: string[]
     selectedRole?: GidRoleData | null
     hideErrorBlock?: boolean
+    rolesForPO: GidRoleData[]
 }
 
 export const CreateEntitySection: React.FC<ISection> = ({
@@ -39,8 +40,8 @@ export const CreateEntitySection: React.FC<ISection> = ({
     updateCiItemId,
     setSectionError,
     sectionRoles,
-    selectedRole,
     hideErrorBlock,
+    rolesForPO,
 }) => {
     const ability = useAbilityContext()
 
@@ -49,7 +50,9 @@ export const CreateEntitySection: React.FC<ISection> = ({
 
     const thisSectionErrorList = getSectionErrorList(attributes, formState?.errors, sectionId)
 
-    const canEditSection = useMemo(() => (selectedRole ? sectionRoles.includes(selectedRole?.roleName ?? '') : true), [sectionRoles, selectedRole])
+    const canEditSection = useMemo(() => {
+        return sectionRoles.some((sectionRole) => rolesForPO?.map((role) => role.roleName).includes(sectionRole))
+    }, [sectionRoles, rolesForPO])
     const isUpdateSectionDisabled = !!updateCiItemId && !ability?.can(Actions.EDIT, `ci.${updateCiItemId}.attributeProfile.${sectionId}`)
 
     const isSectionError = Object.keys(errors)

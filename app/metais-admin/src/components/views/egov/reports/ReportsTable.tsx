@@ -4,7 +4,7 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ReportHeader } from '@isdd/metais-common/api/generated/report-swagger'
 import { ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
@@ -22,6 +22,7 @@ interface IReportsTable {
 
 export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handleFilterChange, handleRowAction }) => {
     const { t } = useTranslation()
+    const tableRef = useRef<HTMLTableElement>(null)
     const columns: Array<ColumnDef<TableCols>> = [
         {
             accessorFn: (row) => row?.lookupKey,
@@ -98,8 +99,14 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handle
 
     return (
         <>
-            <Table columns={columns} data={data} />
-            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+            <Table columns={columns} data={data} tableRef={tableRef} />
+            <PaginatorWrapper
+                {...pagination}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </>
     )
 }

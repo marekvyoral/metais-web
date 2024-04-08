@@ -7,8 +7,10 @@ import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { DMS_DOWNLOAD_FILE } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUi, getReadCiNeighboursQueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import {
     ActionsOverTable,
     BulkPopup,
@@ -21,16 +23,14 @@ import {
     ReInvalidateBulkModal,
     UpdateFileModal,
 } from '@isdd/metais-common/index'
+import styles from '@isdd/metais-common/src/components/actions-over-table/single-actions-popup/file-history/styles.module.scss'
+import { useQueryClient } from '@tanstack/react-query'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styles from '@isdd/metais-common/src/components/actions-over-table/single-actions-popup/file-history/styles.module.scss'
-import { INVALIDATED } from '@isdd/metais-common/constants'
-import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { useQueryClient } from '@tanstack/react-query'
 
-import { downloadFile, isDocumentUpdatable, isDocumentsUpdatable, listToMap } from '@/components/views/documents/utils'
 import { TableCols, defaultFilter } from '@/components/containers/DocumentListContainer'
+import { downloadFile, isDocumentUpdatable, isDocumentsUpdatable, listToMap } from '@/components/views/documents/utils'
 
 interface DocumentsTable {
     ciData?: ConfigurationItemUi
@@ -75,7 +75,6 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     const additionalColumnsNullsafe = additionalColumns ?? []
 
     const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleDeleteFile, handleUpdateFile } = useBulkAction()
-
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
     const [showDeleteFile, setShowDeleteFile] = useState<boolean>(false)
@@ -351,7 +350,8 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                 bulkPopup={({ selectedRowsCount }) => (
                     <Tooltip
                         descriptionElement={errorMessage}
-                        position={'center center'}
+                        position={'top center'}
+                        on={['click']}
                         tooltipContent={(open) => (
                             <BulkPopup
                                 checkedRowItems={selectedRowsCount}

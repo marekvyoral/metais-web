@@ -787,6 +787,8 @@
     "tasks.type_app_id.kris": "KRIS",
     "tasks.type_app_id.standards": "Standards",
     "tasks.type_app_id.statistics": "Statistics",
+    "tasks.reassignedToUser": "The task in question was assigned to the user {{name}} and will be processed it further.",
+    "tasks.reassignedToGroup": "The task in question was assigned to the group {{name}} and will be processed it further.",
     "fileHistory.documentHistory": "Document history",
     "fileHistory.filename": "File name",
     "fileHistory.version": "Version",

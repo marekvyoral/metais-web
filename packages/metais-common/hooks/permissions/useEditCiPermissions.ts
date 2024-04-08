@@ -28,13 +28,15 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
         const myRoles = user?.roles ?? []
         const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
 
+        const isOwnerOfCi = isOwnerByGid?.isOwner?.[0]?.owner
+
         // CAN EDIT ENTITY
-        const canEditCi = rightsData?.find((val) => myRoles?.indexOf(val?.roleName ?? '') > -1)
+        const canEditCi = rightsData?.find((val) => ciTypeData?.roleList?.includes(val?.roleName ?? ''))
         const allProfileAttributes = ciTypeData?.attributeProfiles
 
         // CAN GENERIC ATT PROFILE
-        const canEditGenAttrProfile = ciTypeData?.roleList?.find((role) => myRoles?.indexOf(role) > -1)
-        if (canEditGenAttrProfile && !isInvalidated) can(Actions.EDIT, `ci.${ciData?.uuid}.attributeProfile.${Gen_Profil}`)
+        //const canEditGenAttrProfile = ciTypeData?.roleList?.find((role) => myRoles?.indexOf(role) > -1)
+        if ((canEditCi || isOwnerOfCi) && !isInvalidated) can(Actions.EDIT, `ci.${ciData?.uuid}.attributeProfile.${Gen_Profil}`)
 
         const canApprove = user?.roles.some((role: string) => role === 'KRIS_SCHVAL') ?? false
         if (canApprove) can(Actions.APPROVE_KRIS, `ci.${ciData?.uuid}`)
@@ -53,7 +55,6 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
                 can(Actions.EDIT, `ci.${ciData?.uuid}.attributeProfile.${profileAttr?.technicalName}`)
         })
 
-        const isOwnerOfCi = isOwnerByGid?.isOwner?.[0]?.owner
         if (isOwnerOfCi && !isInvalidated) can(Actions.CHANGE_OWNER, `ci.${ciData?.uuid}`)
 
         if (!!canEditCi && !isInvalidated) can(Actions.EDIT, `ci.${ciData?.uuid}`)

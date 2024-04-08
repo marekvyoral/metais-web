@@ -789,6 +789,8 @@
     "tasks.type_app_id.kris": "KRIS",
     "tasks.type_app_id.standards": "Štandardy",
     "tasks.type_app_id.statistics": "Štatistika",
+    "tasks.reassignedToUser": "Predmetná úloha bola priradená používateľovi {{name}} a bude sa ďalej spracovávať.",
+    "tasks.reassignedToGroup": "Predmetná úloha bola priradená skupine {{name}} a bude sa ďalej spracovávať.",
     "fileHistory.documentHistory": "História dokumentu",
     "fileHistory.filename": "Názov súboru",
     "fileHistory.version": "Verzia",

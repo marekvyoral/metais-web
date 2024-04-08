@@ -14,6 +14,7 @@ import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from './cre
 
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 import { useKSChannel } from '@/hooks/useChannelKS'
+import { useRolesForPO } from '@/hooks/useRolesForPO'
 
 export interface AttributesData {
     ciTypeData: CiType | undefined
@@ -52,6 +53,11 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
 
     const onStatusSuccess = useCiCreateEditOnStatusSuccess()
     const { createChannelForKS, isLoading: isSubmitLoading, isError: isSubmitError } = useKSChannel()
+
+    const { rolesForPO, isRightsForPOError } = useRolesForPO(
+        updateCiItemId ? data.ownerId ?? '' : publicAuthorityState?.selectedPublicAuthority?.poUUID ?? '',
+        ciTypeData?.roleList ?? [],
+    )
     const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
     const { onSubmit, uploadError, setUploadError, configurationItemId } = useCiCreateUpdateOnSubmit(entityName)
     const storeConfigurationItem = useStoreConfigurationItem({
@@ -79,7 +85,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         if (!(isRedirectError || isProcessedError || isRedirectLoading) || isTooManyFetchesError) {
             scrollToMutationFeedback()
         }
-    }, [isProcessedError, isRedirectError, isRedirectLoading, isTooManyFetchesError, scrollToMutationFeedback])
+    }, [isProcessedError, isRedirectError, isRedirectLoading, isTooManyFetchesError, isRightsForPOError, scrollToMutationFeedback])
 
     return (
         <>
@@ -87,7 +93,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
 
             <QueryFeedback
                 loading={isRedirectLoading || isSubmitLoading}
-                error={isRedirectError || isProcessedError || isTooManyFetchesError || isSubmitError}
+                error={isRedirectError || isProcessedError || isTooManyFetchesError || isSubmitError || isRightsForPOError}
                 indicatorProps={{
                     label: isUpdate ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
                 }}
@@ -131,7 +137,9 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                     defaultItemAttributeValues={defaultItemAttributeValues}
                     updateCiItemId={updateCiItemId}
                     isProcessing={storeConfigurationItem.isLoading}
+                    selectedOrg={publicAuthorityState?.selectedPublicAuthority}
                     selectedRole={roleState?.selectedRole ?? null}
+                    rolesForPO={rolesForPO ?? []}
                 />
             </QueryFeedback>
         </>

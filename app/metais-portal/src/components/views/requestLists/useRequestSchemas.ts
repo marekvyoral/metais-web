@@ -51,7 +51,7 @@ export const useCreateRequestSchema = (canEdit: boolean): IOutput => {
         resortCode: string().required(t('codeListList.requestValidations.resortCode')),
         mainGestor: string().required(t('codeListList.requestValidations.mainGestor')),
         gid: string(),
-        refIndicator: string(),
+        refIndicator: string().transform((curr, orig) => (orig === null ? undefined : curr)),
         notes: array().of(
             object().shape({
                 text: string(),

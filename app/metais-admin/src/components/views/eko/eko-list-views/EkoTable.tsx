@@ -12,7 +12,7 @@ import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedba
 import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ColumnDef, Row } from '@tanstack/react-table'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
@@ -43,6 +43,7 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const tableRef = useRef<HTMLTableElement>(null)
     const {
         state: { user },
     } = useAuth()
@@ -202,8 +203,8 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                     />
                 )}
             />
-
             <Table
+                tableRef={tableRef}
                 key={'ekoTable'}
                 data={getSlicedData(data, defaultFilterParams?.pageSize ?? 0, defaultFilterParams?.pageNumber ?? 0) ?? []}
                 sort={defaultFilterParams.sort}
@@ -225,7 +226,10 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                 pageNumber={defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER}
                 pageSize={defaultFilterParams.pageSize ?? BASE_PAGE_SIZE}
                 dataLength={dataLength}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
             <EkoTableModals
                 setRowSelection={setRowSelection}
