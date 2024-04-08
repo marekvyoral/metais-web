@@ -102,6 +102,17 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
             },
             {
                 onSuccess: async () => {
+                    setIsActionSuccess({
+                        value: true,
+                        path: `${RouterRoutes.TASKS}/${taskId}`,
+                        additionalInfo: {
+                            type: assignToUser ? 'toUser' : 'toGroup',
+                            userName:
+                                (selectedLogin ? selectedLogin?.firstName + ' ' + selectedLogin?.lastName : user?.firstName + ' ' + user?.lastName) ??
+                                '',
+                            groupName: selectedGroup?.orgName ?? '',
+                        },
+                    })
                     await refetchTask()
                 },
             },
