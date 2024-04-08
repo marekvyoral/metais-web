@@ -17,7 +17,7 @@ import { ListIcon } from '@isdd/metais-common/assets/images'
 import { BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ActionsOverTable, BASE_PAGE_NUMBER, CreateEntityButton, isRowSelected } from '@isdd/metais-common/index'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React, { SetStateAction, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -108,6 +108,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({
     const { createEnum, validateEnum, updateEnum, deleteEnum } = mutations
     const location = useLocation()
     const navigate = useNavigate()
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const createDefaultData = (): {
         [x: string]: EnumTypePreview
@@ -442,11 +443,12 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({
                 entityName=""
             />
             <Table
+                tableRef={tableRef}
                 data={filteredTableData}
                 columns={columns}
                 isLoading={isLoading || updatingEnum}
                 error={isError}
-                manualPagination={false}
+                manualPagination
                 manualSorting={false}
                 sort={sort}
                 onSortingChange={setSort}
@@ -455,7 +457,10 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({
                 pageSize={filter.pageSize ?? defaultPagination.pageSize}
                 pageNumber={filter.pageNumber ?? defaultPagination.pageNumber}
                 dataLength={filteredData?.results?.length ?? 0}
-                handlePageChange={(page) => handleFilterChange({ ...filter, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })}
+                handlePageChange={(page) => {
+                    handleFilterChange({ ...filter, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </>
     )

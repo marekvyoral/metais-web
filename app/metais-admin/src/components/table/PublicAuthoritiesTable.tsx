@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
@@ -48,6 +48,8 @@ export const PublicAuthoritiesTable = ({
     const location = useLocation()
     const navigate = useNavigate()
     const eGovGarant = useGetTopLevelPoUuid()
+    const tableRef = useRef<HTMLTableElement>(null)
+
     const columns: Array<ColumnDef<ConfigurationItemUi>> = [
         {
             header: t('table.name'),
@@ -113,6 +115,7 @@ export const PublicAuthoritiesTable = ({
                 hiddenButtons={{ SELECT_COLUMNS: true }}
             />
             <Table
+                tableRef={tableRef}
                 data={data?.configurationItemSet}
                 columns={columns}
                 onSortingChange={(columnSort) => {
@@ -122,7 +125,13 @@ export const PublicAuthoritiesTable = ({
                 isLoading={isLoading}
                 error={error}
             />
-            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+            <PaginatorWrapper
+                {...pagination}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </QueryFeedback>
     )
 }
