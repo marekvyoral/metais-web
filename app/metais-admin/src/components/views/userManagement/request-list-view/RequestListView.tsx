@@ -12,7 +12,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, EClaimState
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
@@ -39,6 +39,8 @@ export const RequestListView: React.FC<IRequestListView> = ({
 }) => {
     const { t, i18n } = useTranslation()
     const { isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
+    const tableRef = useRef<HTMLTableElement>(null)
+
     const entityName = 'requestList'
     const columns: Array<ColumnDef<ClaimUi>> = [
         {
@@ -178,6 +180,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
                     hiddenButtons={{ SELECT_COLUMNS: true }}
                 />
                 <Table
+                    tableRef={tableRef}
                     key={'requestListTable'}
                     data={data?.claimSet || []}
                     columns={columns.map((item) => ({ ...item, size: 150 }))}
@@ -194,7 +197,10 @@ export const RequestListView: React.FC<IRequestListView> = ({
                     pageNumber={defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER}
                     pageSize={defaultFilterParams.pageSize ?? BASE_PAGE_SIZE}
                     dataLength={data?.pagination?.totalItems ?? 0}
-                    handlePageChange={handleFilterChange}
+                    handlePageChange={(filter) => {
+                        handleFilterChange(filter)
+                        tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                    }}
                 />
             </QueryFeedback>
         </>

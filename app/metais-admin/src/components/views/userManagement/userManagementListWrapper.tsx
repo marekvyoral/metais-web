@@ -11,7 +11,7 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { UseMutateFunction, UseMutationResult } from '@tanstack/react-query'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -98,6 +98,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     const {
         isActionSuccess: { value: isSuccess },
     } = useActionSuccess()
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const [isChangeRolesModalOpen, setChangeRolesModalOpen] = useState<boolean>(false)
 
@@ -227,6 +228,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 entityName={''}
             />
             <UserManagementListTable
+                tableRef={tableRef}
                 data={data}
                 filter={userManagementFilter}
                 rowSelection={rowSelection}
@@ -238,7 +240,10 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 dataLength={data.dataLength}
                 pageNumber={userManagementFilter.pageNumber ?? BASE_PAGE_NUMBER}
                 pageSize={userManagementFilter.pageSize ?? BASE_PAGE_SIZE}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
             <ChangeRoleModal
                 isOpen={isChangeRolesModalOpen}

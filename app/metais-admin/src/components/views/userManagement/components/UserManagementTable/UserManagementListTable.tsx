@@ -30,6 +30,7 @@ interface UserManagementTableProps {
     setRowSelection: (item: Record<string, UserManagementListItem>) => void
     handleFilterChange: (filter: IFilter) => void
     mutations: UserStateBatchMutation
+    tableRef: React.RefObject<HTMLTableElement>
 }
 
 export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
@@ -39,6 +40,7 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
     setRowSelection,
     handleFilterChange,
     mutations,
+    tableRef,
 }) => {
     const { t } = useTranslation()
     const { pageNumber, pageSize } = filter
@@ -186,6 +188,7 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
 
     return (
         <Table
+            tableRef={tableRef}
             data={data.list}
             columns={columns.map((item) => ({ ...item, size: 150 }))}
             pagination={{ pageIndex: pageNumber ?? BASE_PAGE_NUMBER, pageSize: pageSize ?? BASE_PAGE_SIZE }}

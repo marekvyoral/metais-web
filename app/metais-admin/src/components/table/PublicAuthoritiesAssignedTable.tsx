@@ -7,7 +7,7 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { createFullAdressFromAttributes } from '@isdd/metais-common/componentHelpers/formatting/attributesCombinations'
 import { ColumnDef, Row } from '@tanstack/react-table'
-import { Dispatch, FormEvent, SetStateAction, useCallback } from 'react'
+import { Dispatch, FormEvent, SetStateAction, useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -48,6 +48,7 @@ export const PublicAuthoritiesAssignedTable = ({
         e?.preventDefault()
         onSubmit(selectedRows)
     }
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const handleSelectRows = useCallback(
         (row: ConfItemWithBlockedAndMessage, isDefaultChecked?: boolean, isChecked?: boolean) => {
@@ -144,6 +145,7 @@ export const PublicAuthoritiesAssignedTable = ({
         <div>
             <form onSubmit={handleSubmit} noValidate>
                 <Table
+                    tableRef={tableRef}
                     data={data ?? []}
                     columns={columns}
                     sort={sort}
@@ -154,7 +156,13 @@ export const PublicAuthoritiesAssignedTable = ({
                         handleFilterChange({ sort: columnSort })
                     }}
                 />
-                <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+                <PaginatorWrapper
+                    {...pagination}
+                    handlePageChange={(filter) => {
+                        handleFilterChange(filter)
+                        tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                    }}
+                />
                 <div className={styles.submitButtonPadding}>
                     <Button label={t('publicAuthorities.assigned.save')} type="submit" disabled={!selectedRows?.length} />
                 </div>

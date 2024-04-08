@@ -7,7 +7,7 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ActionsOverTable, MutationFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
@@ -43,6 +43,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
     const [editingRowsPositions, setEditingRowsPositions] = useState(false)
     const { isActionSuccess, setIsActionSuccess } = useActionSuccess()
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    const tableRef = useRef<HTMLTableElement>(null)
 
     useEffect(() => {
         if (isActionSuccess.value) {
@@ -254,6 +255,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
             <div className={classNames({ [styles.positionRelative]: isFetching })}>
                 {isFetching && <LoadingIndicator />}
                 <Table
+                    tableRef={tableRef}
                     isLoading={isFetching}
                     columns={columns.filter((c) =>
                         selectedColumns
@@ -273,7 +275,10 @@ export const DocumentsManagementView: React.FC<IView> = ({
                     pageSize={filter.pageSize ?? defaultPagination.pageSize}
                     pageNumber={filter.pageNumber ?? defaultPagination.pageNumber}
                     dataLength={data?.length ?? 0}
-                    handlePageChange={(page) => handleFilterChange({ ...filter, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })}
+                    handlePageChange={(page) => {
+                        handleFilterChange({ ...filter, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })
+                        tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                    }}
                 />
             </div>
         </>
