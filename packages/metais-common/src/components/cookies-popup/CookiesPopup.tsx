@@ -1,5 +1,5 @@
 import { Button, ButtonGroupRow, GridRow, TextBody, TextHeading, GridCol } from '@isdd/idsk-ui-kit'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 import { Trans, useTranslation } from 'react-i18next'
@@ -34,6 +34,19 @@ export const CookiesPopup: React.FC = () => {
     }
     const [isShown, setIsShown] = useState(getIsShownCookies())
     const [bannerState, setBannerState] = useState<States>(States.DEFAULT)
+
+    useEffect(() => {
+        const cookieChangeListener = () => {
+            setIsShown(getIsShownCookies())
+        }
+
+        cookies.addChangeListener(cookieChangeListener)
+
+        return () => {
+            cookies.removeChangeListener(cookieChangeListener)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return isShown ? (
         <div className="idsk-cookie-banner govuk-!-padding-top-4" role="region" aria-label={t('cookies.heading')}>
