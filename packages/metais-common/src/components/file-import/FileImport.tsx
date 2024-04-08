@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { FileImportView } from './FileImportView'
 
-import { useGetProgress } from '@/hooks/useGetRequestProgress'
+import { useGetProgress } from '@isdd/metais-common/hooks/useGetRequestProgress'
 import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
@@ -77,12 +77,13 @@ export const FileImport: React.FC<IFileImport> = ({
                     await getRequestStatus(
                         file.response?.body.requestId as string,
                         () => updateUploadFilesStatus(file, true),
-                        () =>
+                        () => {
                             updateUploadFilesStatus(
                                 file,
                                 false,
                                 errorMessages?.at(result.successful.findIndex((f) => f.id == file.id))?.errorDetail?.description,
-                            ),
+                            )
+                        },
                     )
                 })
                 result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error))

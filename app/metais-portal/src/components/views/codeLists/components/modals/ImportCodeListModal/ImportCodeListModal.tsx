@@ -2,7 +2,7 @@ import { BaseModal, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
-import { FileImportStepEnum, ModalButtons } from '@isdd/metais-common/index'
+import { FileImportStepEnum, ModalButtons, QueryFeedback } from '@isdd/metais-common/index'
 import { ExportIcon } from '@isdd/metais-common/assets/images'
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
 import { StatusBar } from '@uppy/react'
@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useGetProgress } from '@isdd/metais-common/hooks/useGetRequestProgress'
 
 import styles from './importCodeListModal.module.scss'
 
@@ -38,6 +39,7 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
     const navigate = useNavigate()
     const { invalidateCodelists, invalidateRequests } = useInvalidateCodeListCache()
     const { setIsActionSuccess } = useActionSuccess()
+    const { getRequestStatus, isTooManyFetchesError, isError, isLoading, errorMessages } = useGetProgress()
 
     const baseURL = import.meta.env.VITE_REST_CLIENT_CODELIST_REPO_TARGET_URL
     const endpointUrl = `${baseURL}${getEndpointPath(fileImportStep === FileImportStepEnum.VALIDATE, isRequest)}`
@@ -76,7 +78,19 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
                     setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
                 }
 
-                result.successful.forEach((item) => updateUploadFilesStatus(item, true))
+                result.successful.forEach(async (file) => {
+                    await getRequestStatus(
+                        file.response?.body.requestId as string,
+                        () => updateUploadFilesStatus(file, true),
+                        () => {
+                            updateUploadFilesStatus(
+                                file,
+                                false,
+                                errorMessages?.at(result.successful.findIndex((f) => f.id == file.id))?.errorDetail?.description,
+                            )
+                        },
+                    )
+                })
                 result.failed.forEach((item) => {
                     const errorMessage = `${item.name}: ${t([
                         `errors.codeList.${item.response?.body.message}`,
@@ -123,47 +137,49 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
 
     return (
         <BaseModal isOpen={isOpen} close={onClose}>
-            <div className={styles.headerWrapper}>
-                <img src={ExportIcon} alt="" />
-                <TextHeading size="L">{t('codeListDetail.modal.title.import')}</TextHeading>
-            </div>
+            <QueryFeedback key={isLoading + ''} loading={isLoading} error={isTooManyFetchesError || isError}>
+                <div className={styles.headerWrapper}>
+                    <img src={ExportIcon} alt="" />
+                    <TextHeading size="L">{t('codeListDetail.modal.title.import')}</TextHeading>
+                </div>
 
-            <FileImportDragDrop uppy={uppy} hideNoSelectedFileToImport={currentFiles.length > 0} />
+                <FileImportDragDrop uppy={uppy} hideNoSelectedFileToImport={currentFiles.length > 0} />
 
-            <div>
-                {fileImportStep === FileImportStepEnum.DONE && (
-                    <div className={styles.centeredButtons}>
-                        <TextBody size="L" className={styles.greenBoldText}>
-                            {t('fileImport.done')}
-                        </TextBody>
-                    </div>
-                )}
-                <StatusBar
-                    className={styles.statusBar}
-                    uppy={uppy}
-                    hideAfterFinish={false}
-                    hideCancelButton
-                    hidePauseResumeButton
-                    hideRetryButton
-                    hideUploadButton
+                <div>
+                    {fileImportStep === FileImportStepEnum.DONE && (
+                        <div className={styles.centeredButtons}>
+                            <TextBody size="L" className={styles.greenBoldText}>
+                                {t('fileImport.done')}
+                            </TextBody>
+                        </div>
+                    )}
+                    <StatusBar
+                        className={styles.statusBar}
+                        uppy={uppy}
+                        hideAfterFinish={false}
+                        hideCancelButton
+                        hidePauseResumeButton
+                        hideRetryButton
+                        hideUploadButton
+                    />
+                    <FileImportList
+                        handleRemoveFile={handleRemoveFile}
+                        fileList={currentFiles}
+                        uploadFilesStatus={uploadFilesStatus}
+                        generalErrorMessages={generalErrorMessages}
+                        removeGeneralErrorMessages={removeGeneralErrorMessages}
+                    />
+                </div>
+
+                <ModalButtons
+                    isLoading={false}
+                    submitButtonLabel={fileImportStep === FileImportStepEnum.VALIDATE ? t('fileImport.validate') : t('fileImport.import')}
+                    onSubmit={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : processUpload}
+                    closeButtonLabel={t('fileImport.cancel')}
+                    onClose={handleCancelImport}
+                    disabled={currentFiles.length === 0}
                 />
-                <FileImportList
-                    handleRemoveFile={handleRemoveFile}
-                    fileList={currentFiles}
-                    uploadFilesStatus={uploadFilesStatus}
-                    generalErrorMessages={generalErrorMessages}
-                    removeGeneralErrorMessages={removeGeneralErrorMessages}
-                />
-            </div>
-
-            <ModalButtons
-                isLoading={false}
-                submitButtonLabel={fileImportStep === FileImportStepEnum.VALIDATE ? t('fileImport.validate') : t('fileImport.import')}
-                onSubmit={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : processUpload}
-                closeButtonLabel={t('fileImport.cancel')}
-                onClose={handleCancelImport}
-                disabled={currentFiles.length === 0}
-            />
+            </QueryFeedback>
         </BaseModal>
     )
 }
