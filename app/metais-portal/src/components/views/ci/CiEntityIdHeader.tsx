@@ -98,6 +98,7 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                                             key={'invalidateItem'}
                                             descriptionElement={errorMessage}
                                             position={'top center'}
+                                            on={'click'}
                                             tooltipContent={(open) => (
                                                 <ButtonLink
                                                     disabled={isInvalidated}

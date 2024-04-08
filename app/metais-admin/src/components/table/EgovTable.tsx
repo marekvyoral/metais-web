@@ -15,7 +15,7 @@ import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, BulkPopup, CreateEn
 import { QueryObserverResult, UseMutateAsyncFunction } from '@tanstack/react-query'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import classNames from 'classnames'
-import { SetStateAction, useCallback, useState } from 'react'
+import { SetStateAction, useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
@@ -83,6 +83,7 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
         [rowSelection, setRowSelection],
     )
 
+    const tableRef = useRef<HTMLTableElement>(null)
     const [pageNumber, setPageNumber] = useState<number>(BASE_PAGE_NUMBER)
     const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
     const handleAllCheckboxChange = () => {
@@ -312,6 +313,7 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                 }
             />
             <Table<IEgovTable>
+                tableRef={tableRef}
                 data={data}
                 columns={columnsWithPermissions}
                 sort={sort}
@@ -320,7 +322,15 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                 manualPagination={false}
                 pagination={{ pageIndex: pageNumber - 1, pageSize: pageSize }}
             />
-            <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={data?.length || 0} handlePageChange={handlePageChange} />
+            <PaginatorWrapper
+                pageNumber={pageNumber}
+                pageSize={pageSize}
+                dataLength={data?.length || 0}
+                handlePageChange={(filter) => {
+                    handlePageChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </div>
     )
 }

@@ -31,7 +31,6 @@ export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, sele
         perpage: 20,
         sortBy: SortBy.HIERARCHY_FROM_ROOT,
         sortType: SortType.ASC,
-        //why is BE not filtering this based on rights?
         rights: filteredUserGroupDataBasedOnRole?.map((group) => ({
             poUUID: group.orgId,
             roles: group.roles.filter((role) => ciRoles.includes(role.roleName)).map((role) => role.roleUuid),

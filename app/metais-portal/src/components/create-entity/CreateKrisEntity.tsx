@@ -45,7 +45,7 @@ export const CreateKrisEntity: React.FC<ICreateEntity> = ({
     const { t } = useTranslation()
     const isUpdate = !!updateCiItemId
 
-    const { attributesData, generatedEntityId } = data
+    const { attributesData, generatedEntityId, ownerId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
 
     const onStatusSuccess = useCiCreateEditOnStatusSuccess()
@@ -123,6 +123,7 @@ export const CreateKrisEntity: React.FC<ICreateEntity> = ({
                     updateCiItemId={updateCiItemId}
                     isProcessing={storeConfigurationItem.isLoading}
                     selectedRole={roleState?.selectedRole ?? null}
+                    ownerId={ownerId}
                     selectedOrg={publicAuthorityState?.selectedPublicAuthority ?? null}
                 />
             </QueryFeedback>

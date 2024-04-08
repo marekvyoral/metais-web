@@ -21,6 +21,7 @@ export const InfoIconWithText = forwardRef<HTMLDivElement, IInfoIconWithTextProp
             {!hideIcon && (
                 <span className={classNames(styles.infoIcon)}>
                     <Tooltip
+                        on={['click', 'hover']}
                         altText={label && typeof label === 'string' ? t('tooltip.iconAltText', { text: label }) : ''}
                         descriptionElement={<div className="tooltipWidth500" dangerouslySetInnerHTML={{ __html: sanitizeHtml(tooltip ?? '') }} />}
                     />
