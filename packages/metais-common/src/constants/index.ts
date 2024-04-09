@@ -241,7 +241,7 @@ export const IAM_OIDC_BASE_URL = import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_
 
 export const ciInformationTab = 'information'
 export const integrationHarmonogramTab = 'harmonogram'
-
+export const LIFE_CYCLE_PHASE = 'FazaZivotnehoCyklu'
 export const KRIScolumnsTechNames = [
     ATTRIBUTE_NAME.Gen_Profil_nazov,
     ATTRIBUTE_NAME.Gen_Profil_kod_metais,

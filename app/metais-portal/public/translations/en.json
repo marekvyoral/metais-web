@@ -2397,6 +2397,8 @@
     "bulkList.fromCiSet": "Relations from item:",
     "bulkList.title": "List of items with relations",
     "bulkList.errorRels": "Error occured while loading item relations",
+    "relAttributes.Profil_Rel_FazaZivotnehoCyklu_datum_zacatia": "Start date",
+    "relAttributes.Profil_Rel_FazaZivotnehoCyklu_datum_ukoncenia": "End date",
     "a": "@@@",
     "b": "###",
     "c": "$$$",
