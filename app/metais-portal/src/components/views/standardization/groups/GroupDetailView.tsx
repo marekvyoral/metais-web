@@ -160,7 +160,11 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                             error={isDeleteGroupError}
                         />
                     </div>
-                    <GroupDetailBaseInfo infoData={group} openDeleteModal={() => setIsDeleteModalOpen(true)} />
+                    <GroupDetailBaseInfo
+                        infoData={group}
+                        openDeleteModal={() => setIsDeleteModalOpen(true)}
+                        canDelete={(group?.shortName ?? '') != KSIVS_SHORT_NAME}
+                    />
                     <TextHeading size="L">{t('groups.listOfMembers')}</TextHeading>
                     <GroupMembersFilter defaultFilterValues={identitiesFilter} isKsisvs={group?.shortName === KSIVS_SHORT_NAME} filter={filter} />
                     <ActionsOverTable

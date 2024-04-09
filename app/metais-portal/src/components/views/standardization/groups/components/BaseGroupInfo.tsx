@@ -14,9 +14,10 @@ import styles from '@/components/views/standardization/groups/styles.module.scss
 interface GroupDetailBaseInfoProps {
     infoData: Group | undefined
     openDeleteModal: () => void
+    canDelete?: boolean
 }
 
-const GroupDetailBaseInfo: React.FC<GroupDetailBaseInfoProps> = ({ infoData, openDeleteModal }) => {
+const GroupDetailBaseInfo: React.FC<GroupDetailBaseInfoProps> = ({ infoData, openDeleteModal, canDelete = true }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
 
@@ -25,9 +26,11 @@ const GroupDetailBaseInfo: React.FC<GroupDetailBaseInfoProps> = ({ infoData, ope
             <div className={headerStyles.headerDiv}>
                 <TextHeading size="XL">{infoData?.name}</TextHeading>
                 <div className={styles.buttonDiv}>
-                    <Can I={Actions.DELETE} a={GroupPermissionSubject.GROUPS}>
-                        <Button variant="warning" label={t('groups.deleteItem')} onClick={openDeleteModal} />
-                    </Can>
+                    {canDelete && (
+                        <Can I={Actions.DELETE} a={GroupPermissionSubject.GROUPS}>
+                            <Button variant="warning" label={t('groups.deleteItem')} onClick={openDeleteModal} />
+                        </Can>
+                    )}
                     <Can I={Actions.EDIT} a={GroupPermissionSubject.GROUPS}>
                         <Button label={t('groups.editItem')} onClick={() => navigate('./edit', { relative: 'path' })} />
                     </Can>
