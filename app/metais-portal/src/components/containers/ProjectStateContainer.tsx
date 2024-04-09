@@ -9,6 +9,7 @@ import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enu
 import {
     ACTION_CREATE,
     ACTION_UPDATE,
+    CANCELED_STATE,
     FINISHED_STATE,
     NOT_APPROVED_STATE,
     PROJECT_STATUS,
@@ -69,26 +70,31 @@ export const ProjectStateContainer: React.FC<IProjectStateContainer> = ({ config
     const mappedHistory = mapHistory(historyData, projectsStates)
 
     const fullSteps: IStep[] =
-        projectsStates?.map((ps) => {
-            if (ps.code == FINISHED_STATE && ciData?.attributes?.EA_Profil_Projekt_termin_ukoncenia) {
-                return { name: ps.value ?? '', date: formatDateForDefaultValue(ciData?.attributes?.EA_Profil_Projekt_termin_ukoncenia, 'dd.MM.yyyy') }
-            }
-            if (ps.code == RATED_STATE && ciData?.attributes?.EA_Profil_Projekt_status == RE_RATED_STATE) {
-                return {
-                    name: ps.value ?? '',
-                    date: mappedHistory?.find((mp) => mp.state == ps.value)?.date,
-                    description: projectsStates?.find((ps1) => ps1.code == RE_RATED_STATE)?.value,
+        projectsStates
+            ?.filter((ps) => !(ps.code === CANCELED_STATE && ciData?.attributes?.EA_Profil_Projekt_status !== CANCELED_STATE))
+            .map((ps) => {
+                if (ps.code == FINISHED_STATE && ciData?.attributes?.EA_Profil_Projekt_termin_ukoncenia) {
+                    return {
+                        name: ps.value ?? '',
+                        date: formatDateForDefaultValue(ciData?.attributes?.EA_Profil_Projekt_termin_ukoncenia, 'dd.MM.yyyy'),
+                    }
                 }
-            }
-            if (ps.code == RATED_STATE && ciData?.attributes?.EA_Profil_Projekt_status == RETURNED_STATE) {
-                return {
-                    name: ps.value ?? '',
-                    date: mappedHistory?.find((mp) => mp.state == ps.value)?.date,
-                    description: projectsStates?.find((ps2) => ps2.code == RETURNED_STATE)?.value,
+                if (ps.code == RATED_STATE && ciData?.attributes?.EA_Profil_Projekt_status == RE_RATED_STATE) {
+                    return {
+                        name: ps.value ?? '',
+                        date: mappedHistory?.find((mp) => mp.state == ps.value)?.date,
+                        description: projectsStates?.find((ps1) => ps1.code == RE_RATED_STATE)?.value,
+                    }
                 }
-            }
-            return { name: ps.value ?? '', date: mappedHistory?.find((mp) => mp.state == ps.value)?.date }
-        }) ?? []
+                if (ps.code == RATED_STATE && ciData?.attributes?.EA_Profil_Projekt_status == RETURNED_STATE) {
+                    return {
+                        name: ps.value ?? '',
+                        date: mappedHistory?.find((mp) => mp.state == ps.value)?.date,
+                        description: projectsStates?.find((ps2) => ps2.code == RETURNED_STATE)?.value,
+                    }
+                }
+                return { name: ps.value ?? '', date: mappedHistory?.find((mp) => mp.state == ps.value)?.date }
+            }) ?? []
     const steps = fullSteps.filter((fs) => fs.name != defaultProjectStates?.enumItems?.find((e) => e.code == RETURNED_STATE)?.value)
 
     let currentStep = steps.indexOf(
@@ -109,5 +115,6 @@ export const ProjectStateContainer: React.FC<IProjectStateContainer> = ({ config
         removedSteps[removedSteps.length - 1] && steps.push({ ...removedSteps[removedSteps.length - 1], isRed: true })
         currentStep = steps.length
     }
+
     return <View steps={steps ?? []} currentStep={currentStep ?? 0} isLoading={isDefaultStatesLoading || isActionsLoading || isHistoryLoading} />
 }
