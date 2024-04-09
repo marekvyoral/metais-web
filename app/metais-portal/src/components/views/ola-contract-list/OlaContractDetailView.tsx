@@ -13,6 +13,7 @@ import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { getGetHistoryQueryKey, getGetMeta1QueryKey } from '@isdd/metais-common/api/generated/dms-swagger'
 
 import styles from './olaContract.module.scss'
 import { OlaContractDetailBasicInfo } from './OlaContractDetailBasicInfo'
@@ -44,6 +45,9 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
     const name = olaContract?.name
     const isInvalid = olaContract?.state == 'INVALIDATED'
     const queryClient = useQueryClient()
+    const dmsKey = getGetMeta1QueryKey(olaContract?.uuid ?? '')
+    const fileHistoryKey = getGetHistoryQueryKey(olaContract?.uuid ?? '')
+
     const key = getReadCiNeighboursWithAllRelsQueryKey(olaContract?.uuid ?? '')
     const {
         state: { user },
@@ -53,9 +57,11 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
     useEffect(() => {
         if (isActionSuccess.value) {
+            queryClient.invalidateQueries(dmsKey)
+            queryClient.invalidateQueries(fileHistoryKey)
             scrollToMutationFeedback()
         }
-    }, [isActionSuccess, scrollToMutationFeedback])
+    }, [dmsKey, fileHistoryKey, isActionSuccess, queryClient, scrollToMutationFeedback])
 
     const getDefaultActions = (closePopup: () => void) => [
         <ButtonLink
