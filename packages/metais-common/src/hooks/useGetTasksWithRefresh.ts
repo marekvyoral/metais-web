@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { TaskState, useGetTasks } from '@isdd/metais-common/api/generated/tasks-swagger'
+import { TASKS_QUERY_KEY } from '@isdd/metais-common/constants'
 
 interface useGetTasksWithRefreshProps {
     assignedTo: string[]
@@ -9,7 +10,7 @@ interface useGetTasksWithRefreshProps {
 export const useGetTasksWithRefresh = ({ assignedTo }: useGetTasksWithRefreshProps) => {
     const getTaskMutation = useGetTasks()
     const { data } = useQuery({
-        queryKey: [getTaskMutation],
+        queryKey: [TASKS_QUERY_KEY],
         queryFn: async () => {
             return await getTaskMutation.mutateAsync({
                 data: {
