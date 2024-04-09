@@ -38,13 +38,14 @@ export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, clos
                 <TextHeading size="L">{t('codelists.createNewCodelist')}</TextHeading>
             </div>
             <MutationFeedback error={!!mutationError} errorMessage={mutationError} onMessageClose={() => setMutationError('')} />
-            <Input error={errors[CodelistEnum.CODE]?.message} label={t('codelists.code')} {...register(CodelistEnum.CODE)} />
-            <Input error={errors[CodelistEnum.NAME]?.message} label={t('codelists.name')} {...register(CodelistEnum.NAME)} />
+            <Input error={errors[CodelistEnum.CODE]?.message} label={t('codelists.code')} {...register(CodelistEnum.CODE)} required />
+            <Input error={errors[CodelistEnum.NAME]?.message} label={t('codelists.name')} {...register(CodelistEnum.NAME)} required />
             <TextArea
                 error={errors[CodelistEnum.DESCRIPTION]?.message}
                 rows={3}
                 label={t('codelists.description')}
                 {...register(CodelistEnum.DESCRIPTION)}
+                required
             />
             <div className={styles.marginBottom}>
                 <CheckBox label={t('codelists.valid')} id="valid" {...register(CodelistEnum.VALIDITY)} />
