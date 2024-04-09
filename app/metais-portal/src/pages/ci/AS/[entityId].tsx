@@ -2,7 +2,7 @@ import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { CI_ITEM_QUERY_KEY, ENTITY_AS, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
+import { CI_ITEM_QUERY_KEY, ENTITY_AS, INVALIDATED, LIFE_CYCLE_PHASE, ciInformationTab } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
@@ -103,7 +103,13 @@ const AsEntityDetailPage: React.FC = () => {
                             />
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
-                        {selectedTab === ciInformationTab && <RelationsListContainer entityId={entityId ?? ''} technicalName={ENTITY_AS} />}
+                        {selectedTab === ciInformationTab && (
+                            <RelationsListContainer
+                                entityId={entityId ?? ''}
+                                technicalName={ENTITY_AS}
+                                tabsToShowRelAttributes={[LIFE_CYCLE_PHASE]}
+                            />
+                        )}
                     </QueryFeedback>
                 </CiPermissionsWrapper>
             </MainContentWrapper>

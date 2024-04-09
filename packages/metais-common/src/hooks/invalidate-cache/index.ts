@@ -28,7 +28,7 @@ import {
 import { getFind2111QueryKey, getFindByUuid3QueryKey, getFindRelatedIdentitiesAndCountQueryKey } from '@isdd/metais-common/api/generated/iam-swagger'
 import { getGetTraineesQueryKey, getGetTrainingsForUserQueryKey } from '@isdd/metais-common/api/generated/trainings-swagger'
 import { getGetAttributeProfileQueryKey } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
+import { CI_ITEM_QUERY_KEY, TASKS_QUERY_KEY } from '@isdd/metais-common/constants'
 import { getGetVoteDetailQueryKey } from '@isdd/metais-common/api/generated/standards-swagger'
 import { getGetMeta1QueryKey } from '@isdd/metais-common/api/generated/dms-swagger'
 
@@ -269,6 +269,16 @@ export const useInvalidateVoteCache = () => {
     const invalidate = (id: number) => {
         const ciQueryKey = getGetVoteDetailQueryKey(id)
         queryClient.invalidateQueries(ciQueryKey)
+    }
+    return { invalidate }
+}
+
+export const useInvalidateTasksCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = () => {
+        const tasksQueryKey = [TASKS_QUERY_KEY]
+        queryClient.invalidateQueries(tasksQueryKey)
     }
     return { invalidate }
 }

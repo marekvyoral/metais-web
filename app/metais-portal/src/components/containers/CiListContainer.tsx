@@ -80,6 +80,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
         defaultFilterValues,
         defaultRequestApi,
     )
+
     useEffect(() => {
         reset()
         // eslint-disable-next-line react-hooks/exhaustive-deps

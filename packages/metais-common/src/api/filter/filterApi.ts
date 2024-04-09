@@ -53,6 +53,7 @@ export interface INeighboursFilter extends IFilter {
 
 export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: { [filterName: string]: T } | T): CiListFilterContainerUi => {
     const { pageNumber, pageSize, sort } = filter
+
     return {
         ...defaultApiFilter,
         page: pageNumber ? pageNumber : FIRST_PAGE_NUMBER,

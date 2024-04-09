@@ -32,6 +32,7 @@ export const formatRelationAttributes = ({ ciWithRel, relationTypes, owners, t, 
             )}`,
             href: `/relation/${ci?.type}/${ci?.uuid}/${rel?.uuid}`,
             isValid: rel.metaAttributes?.state == 'DRAFT',
+            attributes: rel.attributes,
         }
     })
 

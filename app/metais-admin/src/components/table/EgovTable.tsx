@@ -18,6 +18,7 @@ import classNames from 'classnames'
 import { SetStateAction, useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import styles from './egovTable.module.scss'
 
@@ -63,6 +64,7 @@ interface IEgovTable {
 
 export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInvalidateFunc, mutateValidateFunc }: IListData) => {
     const { t } = useTranslation()
+    const { currentPreferences } = useUserPreferences()
     const {
         state: { user },
     } = useAuth()
@@ -85,7 +87,7 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
 
     const tableRef = useRef<HTMLTableElement>(null)
     const [pageNumber, setPageNumber] = useState<number>(BASE_PAGE_NUMBER)
-    const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
+    const [pageSize, setPageSize] = useState<number>(Number(currentPreferences.defaultPerPage) || BASE_PAGE_SIZE)
     const handleAllCheckboxChange = () => {
         if (!data) return
 

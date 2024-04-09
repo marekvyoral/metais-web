@@ -173,7 +173,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
         sort: defaults?.sort ?? [],
         pageNumber: defaults?.pageNumber ?? BASE_PAGE_NUMBER,
-        pageSize: defaults?.pageSize ?? BASE_PAGE_SIZE,
+        pageSize: Number(currentPreferences.defaultPerPage) || defaults?.pageSize || BASE_PAGE_SIZE,
     })
 
     const handleFilterChange = (changedFilter: IFilter) => {
@@ -191,7 +191,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
         setUiFilterState({
             sort: defaults.sort ?? [],
             pageNumber: defaults.pageNumber ?? BASE_PAGE_NUMBER,
-            pageSize: defaults.pageSize ?? BASE_PAGE_SIZE,
+            pageSize: Number(currentPreferences.defaultPerPage) || defaults.pageSize || BASE_PAGE_SIZE,
         })
     }
 

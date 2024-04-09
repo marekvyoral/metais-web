@@ -1,4 +1,4 @@
-import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { IFilter, Pagination, SortType } from '@isdd/idsk-ui-kit/types'
 import { ReadCiNeighboursWithAllRelsParams, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useEntityRelationsDataList } from '@isdd/metais-common/hooks/useEntityRelationsDataList'
 import { IKeyToDisplay, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelationsTypesCount'
@@ -9,6 +9,7 @@ import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences
 import { RelationshipTypePreview, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 import { useTranslation } from 'react-i18next'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 import { NeighboursCardList } from '@/components/entities/NeighboursCardList'
 import { getRelationsSorter } from '@/componentHelpers/ci/ciRelationsSortConfig'
@@ -33,6 +34,7 @@ interface IRelationsListContainer {
     hideButtons?: boolean
     hidePageSizeSelect?: boolean
     includeDeleted?: boolean
+    tabsToShowRelAttributes?: string[]
 }
 
 export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
@@ -42,6 +44,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
     hideButtons = false,
     hidePageSizeSelect = false,
     includeDeleted = false,
+    tabsToShowRelAttributes = [],
 }) => {
     const { i18n } = useTranslation()
     const { data: ciTypeData } = useGetCiTypeWrapper(technicalName)
@@ -71,6 +74,8 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
                 ciTypes: defaultCiTypes,
                 page: BASE_PAGE_NUMBER,
                 perPage: BASE_PAGE_SIZE,
+                sortBy: ATTRIBUTE_NAME.Gen_Profil_nazov,
+                sortType: SortType.ASC,
                 state,
             }
         } else {
@@ -78,6 +83,8 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
                 relTypes: defaultCiTypes,
                 page: BASE_PAGE_NUMBER,
                 perPage: BASE_PAGE_SIZE,
+                sortBy: ATTRIBUTE_NAME.Gen_Profil_nazov,
+                sortType: SortType.ASC,
                 state,
             }
         }
@@ -117,6 +124,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
 
     return (
         <NeighboursCardList
+            tabsToShowRelAttributes={tabsToShowRelAttributes}
             areTypesLoading={areTypesLoading}
             isLoading={areRelationsLoading}
             isDerivedLoading={areDerivedLoading}
