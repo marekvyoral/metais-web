@@ -34,6 +34,7 @@ interface IRelationsListContainer {
     hideButtons?: boolean
     hidePageSizeSelect?: boolean
     includeDeleted?: boolean
+    tabsToShowRelAttributes?: string[]
 }
 
 export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
@@ -43,6 +44,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
     hideButtons = false,
     hidePageSizeSelect = false,
     includeDeleted = false,
+    tabsToShowRelAttributes = [],
 }) => {
     const { i18n } = useTranslation()
     const { data: ciTypeData } = useGetCiTypeWrapper(technicalName)
@@ -122,6 +124,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({
 
     return (
         <NeighboursCardList
+            tabsToShowRelAttributes={tabsToShowRelAttributes}
             areTypesLoading={areTypesLoading}
             isLoading={areRelationsLoading}
             isDerivedLoading={areDerivedLoading}

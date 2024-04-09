@@ -2399,6 +2399,8 @@
     "bulkList.fromCiSet": "Vzťahy z položky:",
     "bulkList.title": "Zoznam položiek so vzťahmi",
     "bulkList.errorRels": "Pri načítavní vzťahou sa vyskytla chyba.",
+    "relAttributes.Profil_Rel_FazaZivotnehoCyklu_datum_zacatia": "Dátum začatia",
+    "relAttributes.Profil_Rel_FazaZivotnehoCyklu_datum_ukoncenia": "Dátum ukončenia",
     "a": "@@@",
     "b": "###",
     "c": "$$$",
