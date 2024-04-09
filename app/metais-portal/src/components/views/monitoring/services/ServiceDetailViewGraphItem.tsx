@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
-import { GridCol, GridRow, PaginatorWrapper, RadioButton, RadioGroup, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { GridCol, GridRow, PaginatorWrapper, RadioGroup, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
 import {
     ApiParameterType,
     MonitoredValue,
@@ -24,9 +25,10 @@ interface IServiceDetailViewGraphItem {
     item: ApiParameterType
     tableDataParam?: EnumType
     queryParams?: IQueryParamsDetail
+    onIsEmpty: (isEmpty: boolean) => void
 }
 
-export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> = ({ item, tableDataParam, queryParams }) => {
+export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> = ({ item, tableDataParam, queryParams, onIsEmpty }) => {
     const { t, i18n } = useTranslation()
     const [isLoadingBlock, setIsLoadingBlock] = useState<boolean>(false)
     const [isErrorBlock, setIsErrorBlock] = useState<boolean>(false)
@@ -52,6 +54,7 @@ export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> =
                 sortAsc: true,
             })
                 .then((res) => {
+                    onIsEmpty(res.results?.length === 0)
                     setTableData(res)
                 })
                 .catch(() => {
@@ -150,6 +153,27 @@ export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> =
                                     <TextHeading size="L">{item.name}</TextHeading>
                                     <Tooltip descriptionElement={item.description} altText={`Tooltip ${item.name}`} />
                                 </div>
+                                <RadioGroup inline small>
+                                    <RadioButton
+                                        id={'graph-radio' + item.id}
+                                        key={'graph-radio' + item.id}
+                                        label={t('monitoringServices.detail.graph')}
+                                        name={'graph-radio' + item.id}
+                                        value={'graf'}
+                                        defaultChecked
+                                        aria-label={t('monitoringServices.detail.changeToTable')}
+                                        onClick={() => setToggleTable(false)}
+                                    />
+                                    <RadioButton
+                                        id={'table-radio' + item.id}
+                                        key={'table-radio' + item.id}
+                                        label={t('monitoringServices.detail.table')}
+                                        name={'graph-radio' + item.id}
+                                        value={'tabulka'}
+                                        aria-label={t('monitoringServices.detail.changeToGraph')}
+                                        onClick={() => setToggleTable(true)}
+                                    />
+                                </RadioGroup>
                             </GridCol>
                             <GridCol setWidth="one-half">
                                 <div className={styles.actionRow}>
@@ -162,24 +186,6 @@ export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> =
                                 </div>
                             </GridCol>
                         </GridRow>
-                        <RadioGroup inline>
-                            <RadioButton
-                                id={'graphRadio'}
-                                name="graphRadio"
-                                value={'graph'}
-                                checked={!toggleTable}
-                                onClick={() => setToggleTable(false)}
-                                label={t('monitoringServices.detail.graphView')}
-                            />
-                            <RadioButton
-                                id={'tableRadio'}
-                                name="tableRadio"
-                                value={'table'}
-                                checked={toggleTable}
-                                onClick={() => setToggleTable(true)}
-                                label={t('monitoringServices.detail.tableView')}
-                            />
-                        </RadioGroup>
                         <GridRow>
                             <GridCol>
                                 {toggleTable ? (

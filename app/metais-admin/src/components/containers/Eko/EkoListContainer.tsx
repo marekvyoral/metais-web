@@ -1,6 +1,7 @@
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import { EkoCodeList, useDeleteHrEkoCode, useGetEkoCodes, useUpdateHrEkoCode } from '@isdd/metais-common/api/generated/tco-swagger'
 import { ADMIN_EKO_LIST_QKEY, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useQueryClient } from '@tanstack/react-query'
 import React from 'react'
@@ -23,6 +24,7 @@ export interface IEkoListContainerProps {
 }
 
 export const EkoListContainer: React.FC<IEkoListContainerProps> = ({ View }) => {
+    const { currentPreferences } = useUserPreferences()
     const queryClient = useQueryClient()
     const defaultSort = [
         {
@@ -33,7 +35,7 @@ export const EkoListContainer: React.FC<IEkoListContainerProps> = ({ View }) => 
     const { filter, handleFilterChange } = useFilterParams<IFilterData>({
         sort: defaultSort,
         pageNumber: BASE_PAGE_NUMBER,
-        pageSize: BASE_PAGE_SIZE,
+        pageSize: Number(currentPreferences.defaultPerPage) || BASE_PAGE_SIZE,
     })
 
     const { mutateAsync } = useDeleteHrEkoCode({

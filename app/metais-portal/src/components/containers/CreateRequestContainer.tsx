@@ -78,8 +78,8 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     const [isAddOrGetGroupLoading, setIsAddOrGetGroupLoading] = useState<boolean>(false)
 
     const implicitHierarchy = useReadCiList()
-    const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave, error: errorSave } = useCreateCodelistRequest()
-    const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend, error: errorSend } = useSaveAndSendCodelist()
+    const { mutateAsync, isLoading: isLoadingSave, error: errorSave } = useCreateCodelistRequest()
+    const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, error: errorSend } = useSaveAndSendCodelist()
     const { data: firstNotUsedCode, isLoading: isLoadingGetFirstNotUsedCode } = useGetFirstNotUsedCode({ query: { cacheTime: 0 } })
     const { data: attributeProfile, isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
     const { mutateAsync: mutateExists, isLoading: isLoadingExists } = useExistsCodelist()
@@ -180,7 +180,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
 
     const isLoading = [isLoadingGetFirstNotUsedCode, isLoadingAttributeProfile].some((item) => item)
     const isLoadingMutation = [isLoadingSave, isLoadingSend, isLoadingExists, isAddOrGetGroupLoading].some((item) => item)
-    const isError = [errorAddOrGetGroup, isErrorSave, isErrorSend, isErrorAttributeProfile].some((item) => item)
+    const isError = [isErrorAttributeProfile].some((item) => item)
     const errorMessages = getErrorTranslateKeys([errorAddOrGetGroup, errorSend, errorSave].map((item) => item as { message: string }))
 
     return (

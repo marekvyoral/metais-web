@@ -27,7 +27,7 @@ const DetailServicePage: React.FC = () => {
         isvs: urlParams.get('isvs') ?? '',
     }
 
-    const defaultFilterValues: MonitoringDetailFilterData = {
+    const queryFilterValues: MonitoringDetailFilterData = {
         serviceType: urlParams.get('serviceType') ?? '',
         serviceUuid: urlParams.get('serviceUuid') ?? '',
         dateFrom: queryParams.dateFrom,
@@ -40,7 +40,7 @@ const DetailServicePage: React.FC = () => {
 
     return (
         <MonitoringServiceDetailContainer
-            defaultFilterValues={defaultFilterValues}
+            queryFilterValues={queryFilterValues}
             queryParams={queryParams}
             View={(props) => <ServiceDetailView {...props} />}
         />

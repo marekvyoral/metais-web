@@ -33,19 +33,41 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
         },
     ]
 
-    const svg = d3.select(svgRef.current).append('svg')
     const margin = 50
     const width = widthDiv - margin
     const height = 600
     const duration = 150
+    let clickCount = 0
 
     const lineOpacity = '1'
 
     const circleOpacity = '0.85'
-    const circleRadius = 4
+    const circleRadius = 6
 
     const topOffset = 100
     const topOffsetMargin = 30
+
+    const svg = d3
+        .select(svgRef.current)
+        .append('svg')
+        .attr('focusable', false)
+        .on('focus', function () {
+            return
+        })
+        .on('keydown', function (e) {
+            //ESC
+            if (e.keyCode === 27) {
+                d3.select(this)
+                    .selectAll(`.line${clickCount - 1}, .rect${clickCount - 1}, .text${clickCount - 1}`)
+                    .remove()
+            }
+        })
+        .on('click', function () {
+            if (clickCount > 1)
+                d3.select(this)
+                    .selectAll(`.line${clickCount - 2}, .rect${clickCount - 2}, .text${clickCount - 2}`)
+                    .remove()
+        })
 
     /* Scale */
     const extentX = d3.extent(wrappedData[0].values, (d) => d.date)
@@ -136,7 +158,7 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
         // line color that connects dots
         .attr('class', 'line')
         .attr('fill', 'none')
-        .attr('stroke', 'steelblue')
+        .attr('stroke', 'blue')
         .attr('stroke-width', 2)
         .style('opacity', lineOpacity)
 
@@ -146,17 +168,19 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
         .data(wrappedData)
         .enter()
         .append('g')
-        .style('fill', '#33BBFF')
+        .style('fill', 'blue')
         .selectAll('circle')
         .data((d: Line) => d.values)
         .enter()
         .append('g')
         .attr('class', 'circle')
-        .on('mouseover', function () {
+        .style('cursor', 'pointer')
+        .on('click', function () {
             // display amount on hovering of points
             d3.select<SVGGElement, Data>(this)
                 .append('rect')
-                .attr('class', 'rect1')
+                .style('cursor', 'pointer')
+                .attr('class', 'rect' + clickCount)
                 .style('fill', 'white')
                 .style('stroke', 'black')
                 .attr('x', (d) => xScale(d.date ?? new Date()) - topOffset / 2)
@@ -167,7 +191,7 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
             d3.select<SVGGElement, Data>(this)
                 .append('text')
                 .style('cursor', 'pointer')
-                .attr('class', 'text')
+                .attr('class', 'text' + clickCount)
                 .attr('font-family', '"Source Sans Pro", "Arial", sans-serif')
                 .attr('fill', 'black')
                 .text((d) => `(${d.value})`)
@@ -177,7 +201,7 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
             d3.select<SVGGElement, Data>(this)
                 .style('cursor', 'pointer')
                 .append('text')
-                .attr('class', 'text')
+                .attr('class', 'text' + clickCount)
                 .attr('fill', 'black')
                 .attr('font-family', '"Source Sans Pro", "Arial", sans-serif')
                 .attr('stroke', 'black')
@@ -187,17 +211,17 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
 
             d3.select<SVGGElement, Data>(this)
                 .append('line')
-                .attr('class', 'line1')
+                .attr('class', 'line' + clickCount)
                 .style('stroke', 'black')
                 .style('stroke-width', 1)
                 .attr('x1', (d) => xScale(d.date ?? new Date()))
                 .attr('y1', topOffsetMargin + 51)
                 .attr('x2', (d) => xScale(d.date ?? new Date()))
                 .attr('y2', (d) => yScale(d.value ?? 0) - 2)
+
+            clickCount = clickCount + 1
         })
-        .on('mouseout', function () {
-            d3.select(this).style('cursor', 'none').transition().duration(duration).selectAll('.line1, .rect1, .text').remove()
-        })
+
         .append('circle')
         .attr('cx', (d: unknown) => {
             if (typeof d === 'object' && d !== null && 'date' in d) {

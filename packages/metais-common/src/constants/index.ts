@@ -193,6 +193,7 @@ export const RATED_STATE = 'c_stav_projektu_4'
 export const NOT_APPROVED_STATE = 'c_stav_projektu_12'
 export const RE_RATED_STATE = 'c_stav_projektu_11'
 export const RETURNED_STATE = 'c_stav_projektu_5'
+export const CANCELED_STATE = 'c_stav_projektu_7'
 
 export const PROJECT_STATUS = 'EA_Profil_Projekt_status'
 
@@ -241,7 +242,7 @@ export const IAM_OIDC_BASE_URL = import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_
 
 export const ciInformationTab = 'information'
 export const integrationHarmonogramTab = 'harmonogram'
-
+export const LIFE_CYCLE_PHASE = 'FazaZivotnehoCyklu'
 export const KRIScolumnsTechNames = [
     ATTRIBUTE_NAME.Gen_Profil_nazov,
     ATTRIBUTE_NAME.Gen_Profil_kod_metais,
@@ -424,3 +425,5 @@ export enum HowTo {
 export const BULK_ACTION_ITEM_SEPARATOR = ','
 export const BULK_ACTION_ITEM_SEARCH_KEY = 'list'
 export const ELASTIC_MAX_RECORDS = 10000
+
+export const TASKS_QUERY_KEY = 'tasksQueryKey'

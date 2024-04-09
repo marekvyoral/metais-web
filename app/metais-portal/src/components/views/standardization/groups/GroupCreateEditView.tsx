@@ -1,5 +1,5 @@
 import { BreadCrumbs, Button, ButtonGroupRow, ErrorBlock, HomeIcon, IOption, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { useFindRelatedOrganizationsHook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Identity, useFindRelatedOrganizationsHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -58,6 +58,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
     }, [infoData?.description, infoData?.name, infoData?.shortName, reset])
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    const [seed, setSeed] = useState(0)
 
     const orgOptionsHook = useFindRelatedOrganizationsHook()
 
@@ -177,17 +178,24 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
                                 <IdentitySelect
                                     label={`${t('groups.master')} (${t('groups.mandatory')})`}
                                     name={GroupFormEnum.USER}
-                                    setValue={setValue}
                                     clearErrors={clearErrors}
                                     error={errors[GroupFormEnum.USER]?.message}
+                                    onChange={(val) => {
+                                        setValue(GroupFormEnum.USER, (val as Identity)?.uuid)
+                                        setValue(GroupFormEnum.ORGANIZATION, undefined)
+                                        setSeed(Math.random())
+                                    }}
                                 />
                                 <SimpleSelect
+                                    key={seed}
                                     label={`${t('groups.organization')} (${t('groups.mandatory')}):`}
                                     id={GroupFormEnum.ORGANIZATION}
                                     name={GroupFormEnum.ORGANIZATION}
                                     options={organizationOptions ?? []}
-                                    setValue={setValue}
                                     error={errors[GroupFormEnum.ORGANIZATION]?.message}
+                                    onChange={(val) => {
+                                        setValue(GroupFormEnum.ORGANIZATION, val)
+                                    }}
                                 />
                             </>
                         )}

@@ -1,7 +1,7 @@
-import React from 'react'
-import { CreateEntityButton, QueryFeedback } from '@isdd/metais-common/index'
+import React, { useEffect, useState } from 'react'
+import { CreateEntityButton, QueryFeedback, formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
-import { BreadCrumbs, Filter, GridCol, GridRow, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Filter, GridRow, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { ApiMonitoringOverviewService, ApiParameterTypesList } from '@isdd/metais-common/api/generated/monitoring-swagger'
@@ -27,6 +27,7 @@ interface IServiceDetailView {
     detailData?: ApiMonitoringOverviewService
     queryParams?: IQueryParamsDetail
     defaultFilterValues: MonitoringDetailFilterData
+    setDefaultFilterValues: React.Dispatch<React.SetStateAction<MonitoringDetailFilterData>>
     tableDataParam?: EnumType
     handleFilterChange: (filter: IFilter) => void
 }
@@ -37,14 +38,25 @@ export const ServiceDetailView: React.FC<IServiceDetailView> = ({
     isError,
     isLoading,
     defaultFilterValues,
+    setDefaultFilterValues,
     queryParams,
     tableDataParam,
+    handleFilterChange,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const [showEmptyMesage, setEmptyMesage] = useState<boolean>(false)
 
+    const [emptyItems, setEmptyItems] = useState<boolean[]>([])
     document.title = `${t('titles.monitoringServicesDetail', { name: detailData?.name })} ${META_IS_TITLE}`
 
+    useEffect(() => {
+        if (emptyItems.find((item) => item === true)) {
+            setEmptyMesage(true)
+        } else {
+            setEmptyMesage(false)
+        }
+    }, [emptyItems])
     return (
         <>
             <BreadCrumbs
@@ -65,26 +77,42 @@ export const ServiceDetailView: React.FC<IServiceDetailView> = ({
                     <Filter<MonitoringDetailFilterData>
                         onlyForm
                         defaultFilterValues={defaultFilterValues}
-                        form={({ register, control, setValue }) => {
+                        customReset={(reset) => {
+                            setDefaultFilterValues({
+                                ...defaultFilterValues,
+                                dateFrom: defaultFilterValues?.dateFrom,
+                                dateTo: defaultFilterValues?.dateTo,
+                            })
+                            reset()
+                        }}
+                        handleOnSubmit={(filter) => {
+                            handleFilterChange({
+                                ...defaultFilterValues,
+                                dateFrom: formatDateForDefaultValue(filter?.dateFrom ?? '', 'yyyy-MM-dd'),
+                                dateTo: formatDateForDefaultValue(filter?.dateTo ?? '', 'yyyy-MM-dd'),
+                            })
+                        }}
+                        form={({ register, setValue, control, watch }) => {
+                            const start = watch('dateFrom')
+                            const end = watch('dateTo')
+                            const endIsLowerThanStart = start && end && new Date(start) > new Date(end)
+
                             return (
                                 <div>
                                     <GridRow>
-                                        <GridCol setWidth="one-half">
-                                            <DateInput
-                                                label={t('monitoringServices.table.from')}
-                                                {...register('dateFrom')}
-                                                control={control}
-                                                setValue={setValue}
-                                            />
-                                        </GridCol>
-                                        <GridCol setWidth="one-half">
-                                            <DateInput
-                                                label={t('monitoringServices.table.from')}
-                                                {...register('dateFrom')}
-                                                control={control}
-                                                setValue={setValue}
-                                            />
-                                        </GridCol>
+                                        <DateInput
+                                            label={t('monitoringServices.table.from')}
+                                            {...register('dateFrom')}
+                                            control={control}
+                                            setValue={setValue}
+                                        />
+                                        <DateInput
+                                            label={t('monitoringServices.table.to')}
+                                            {...register('dateTo')}
+                                            control={control}
+                                            setValue={setValue}
+                                            error={endIsLowerThanStart ? t('codeListList.requestValidations.dateGreaterThan') : undefined}
+                                        />
                                     </GridRow>
                                 </div>
                             )
@@ -102,9 +130,20 @@ export const ServiceDetailView: React.FC<IServiceDetailView> = ({
                 <div className={styles.topSpace}>
                     {data?.results?.map((item) => {
                         if (item.code !== 'HeartbeatAS') {
-                            return <ServiceDetailViewGraphItem key={item.id} item={item} tableDataParam={tableDataParam} queryParams={queryParams} />
+                            return (
+                                <ServiceDetailViewGraphItem
+                                    key={item.id}
+                                    item={item}
+                                    tableDataParam={tableDataParam}
+                                    queryParams={queryParams}
+                                    onIsEmpty={(isEmpty) => {
+                                        setEmptyItems((prevItems) => [...prevItems, isEmpty])
+                                    }}
+                                />
+                            )
                         }
                     })}
+                    {showEmptyMesage && <p>{t('monitoring.noDataFind')}</p>}
                 </div>
             </MainContentWrapper>
         </>
