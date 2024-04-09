@@ -117,7 +117,6 @@ export const Select = <T,>({
                                 ref={ref}
                                 inputId={inputId}
                                 name={name}
-                                value={value}
                                 defaultValue={defaultValue}
                                 placeholder={placeholder || ''}
                                 className={classNames('govuk-select', styles.reactSelect)}
