@@ -145,6 +145,42 @@ export const ProfileDetailView = <T,>({
             }
         }
     }
+    const getNumericColumns = (): Array<ColumnDef<Attribute>> => {
+        return [
+            {
+                header: t('egov.measureUnit'),
+                accessorFn: (row) => row?.units,
+                id: 'measureUnit',
+                cell: (row) => unitsData?.enumItems?.find((item) => item.code === row.getValue())?.value,
+            },
+            {
+                header: t('egov.constraintType'),
+                accessorFn: (row) => row.constraints?.[0].type,
+                id: 'constraintType',
+                cell: (ctx) => ctx.row.original.constraints?.[0]?.type,
+            },
+            {
+                header: t('egov.constraint'),
+                accessorFn: (row) => row.constraints?.[0].type,
+                id: 'constraint',
+                cell: (ctx) => {
+                    const constraint = ctx.row.original.constraints?.[0]
+                    const type = constraint?.type
+
+                    if (type === 'interval') {
+                        return `${constraint?.minValue} - ${constraint?.maxValue}`
+                    } else if (type === 'regex') {
+                        return constraint?.regex
+                    } else if (type === 'enum') {
+                        return constraintsData.find((item) => item?.code === constraint?.enumCode)?.name
+                    } else if (type === 'ciType') {
+                        return constraint?.ciType
+                    }
+                    return ''
+                },
+            },
+        ]
+    }
 
     const columns: Array<ColumnDef<Attribute>> = [
         {
@@ -282,6 +318,7 @@ export const ProfileDetailView = <T,>({
                 </div>
             ),
         },
+        ...getNumericColumns(),
         {
             header: t('egov.defaultValue'),
             accessorFn: (row) => row?.defaultValue,

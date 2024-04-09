@@ -61,7 +61,7 @@ export const ProfileDetailContainer: React.FC<IProfileDetailContainer<CiType>> =
         isActionSuccess.value && isActionSuccess.additionalInfo?.type === 'edit' && refetch()
     }, [isActionSuccess, refetch])
 
-    const { isLoading, isError, constraintsData } = useDetailData({
+    const { isLoading, isError, constraintsData, unitsData } = useDetailData({
         entityStructure: profileData,
         isEntityStructureLoading: isProfileLoading,
         isEntityStructureError: isProfileError,
@@ -136,7 +136,7 @@ export const ProfileDetailContainer: React.FC<IProfileDetailContainer<CiType>> =
 
     return (
         <View
-            data={{ profileData, constraintsData, unitsData: undefined }}
+            data={{ profileData, constraintsData, unitsData: unitsData }}
             setValidityOfProfile={setValidityOfProfile}
             setValidityOfAttributeProfile={setValidityOfAttributeProfile}
             setVisibilityOfAttributeProfile={setVisibilityOfAttributeProfile}
