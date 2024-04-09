@@ -1,3 +1,5 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 import {
     BreadCrumbs,
     Button,
@@ -16,34 +18,33 @@ import {
     TextArea,
     TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { ActionsOverTable, BulkPopup, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types/'
 import { useGetRoleParticipantHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { AsyncUriSelect } from '@isdd/metais-common/components/async-uri-select/AsyncUriSelect'
+import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
+import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
+import { ActionsOverTable, BulkPopup, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { CellContext, ColumnDef, ExpandedState, Row } from '@tanstack/react-table'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
-import { CellContext, ColumnDef, ExpandedState, Row } from '@tanstack/react-table'
-import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
-import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types/'
-import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
-import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
-import { AsyncUriSelect } from '@isdd/metais-common/components/async-uri-select/AsyncUriSelect'
-import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
-import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
-import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
-import { IItemForm, ModalItem } from '@/components/views/requestLists/components/modalItem/ModalItem'
-import styles from '@/components/views/requestLists/requestView.module.scss'
-import { DateModalItem } from '@/components/views/requestLists/components/modalItem/DateModalItem'
-import { useCreateRequestSchema } from '@/components/views/requestLists/useRequestSchemas'
+import { IRequestForm, getItemCodelistRefId, mapToCodeListDetail } from '@/componentHelpers/requests'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CreateRequestViewProps } from '@/components/containers/CreateRequestContainer'
-import { IRequestForm, getItemCodelistRefId, mapToCodeListDetail } from '@/componentHelpers/requests'
+import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
 import { AutoIncrement } from '@/components/views/requestLists/components/AutoIncrement'
+import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
+import { DateModalItem } from '@/components/views/requestLists/components/modalItem/DateModalItem'
+import { IItemForm, ModalItem } from '@/components/views/requestLists/components/modalItem/ModalItem'
+import styles from '@/components/views/requestLists/requestView.module.scss'
+import { useCreateRequestSchema } from '@/components/views/requestLists/useRequestSchemas'
 
 export interface ICodeItem {
     id: string
@@ -418,6 +419,11 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
             {canUse && (
                 <MainContentWrapper>
                     <QueryFeedback loading={isLoading || !!isAbilityLoading} error={isError || isAbilityError} withChildren>
+                        <ElementToScrollTo trigger={errorMessages.length > 0} manualScroll>
+                            {errorMessages.map((errorMessage, index) => (
+                                <MutationFeedback key={index} error errorMessage={errorMessage && t(errorMessage)} />
+                            ))}
+                        </ElementToScrollTo>
                         {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                         <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
 
@@ -690,9 +696,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 {...pagination}
                                 handlePageChange={(filter) => setPagination({ ...pagination, pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER })}
                             />
-                            {errorMessages.map((errorMessage, index) => (
-                                <MutationFeedback key={index} error errorMessage={errorMessage && t(errorMessage)} />
-                            ))}
+
                             <ButtonGroupRow>
                                 <Button
                                     label={t('form.cancel')}
