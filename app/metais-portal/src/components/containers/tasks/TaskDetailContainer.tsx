@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useInvalidateTasksCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { getGidsForUserOrgRoles, getGidsForUserRoles } from '@/componentHelpers/tasks/tasks.helpers'
 import { TaskDetailView } from '@/components/views/tasks/TaskDetailView'
@@ -70,6 +71,8 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
     const closeTaskCall = useCloseTask()
     const reassignTaskCall = useReassignTask()
 
+    const invalidateTasks = useInvalidateTasksCache()
+
     const closeTask = () => {
         closeTaskCall.mutate(
             {
@@ -81,6 +84,7 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
             },
             {
                 onSuccess: async () => {
+                    invalidateTasks.invalidate()
                     setIsActionSuccess({ value: true, path: `${RouterRoutes.TASKS}`, additionalInfo: { type: 'edit' } })
                     navigate(`${RouterRoutes.TASKS}`, { state: { from: location } })
                     await refetchTask()

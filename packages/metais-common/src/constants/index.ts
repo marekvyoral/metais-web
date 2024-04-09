@@ -424,3 +424,5 @@ export enum HowTo {
 export const BULK_ACTION_ITEM_SEPARATOR = ','
 export const BULK_ACTION_ITEM_SEARCH_KEY = 'list'
 export const ELASTIC_MAX_RECORDS = 10000
+
+export const TASKS_QUERY_KEY = 'tasksQueryKey'
