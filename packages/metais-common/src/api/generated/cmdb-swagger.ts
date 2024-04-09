@@ -143,6 +143,8 @@ export type ReadCiNeighboursWithAllRelsParams = {
     state?: string[]
     'usageType.whiteList[]'?: string[]
     'usageType.blackList[]'?: string[]
+    sortBy?: string
+    sortType?: string
 }
 
 export type ReadReportsWithFilterParams = {
