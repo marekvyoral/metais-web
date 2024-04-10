@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@isdd/idsk-ui-kit/src/button/Button'
 
@@ -16,6 +16,7 @@ export const ImportButton: React.FC<IImportButtonProps> = ({ ciType, ciTypeName 
     const { t } = useTranslation()
     const [modalImportOpen, setModalImportOpen] = useState(false)
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
+    const modalId = useId()
 
     const baseURL = import.meta.env.VITE_REST_CLIENT_IMPEXP_CMDB_TARGET_URL
     const fileImportURL = `${baseURL}${fileImportStep === FileImportStepEnum.VALIDATE ? '/import/validate' : '/import'}`
@@ -36,6 +37,8 @@ export const ImportButton: React.FC<IImportButtonProps> = ({ ciType, ciTypeName 
                 className="marginBottom0"
                 aria-label={t('actionOverTable.importAria', { ciTypeName })}
                 label={<IconLabel label={t('actionOverTable.import')} icon={ImportIcon} />}
+                aria-controls={modalId}
+                aria-haspopup={'dialog'}
             />
             <FileImport
                 allowedFileTypes={['.xml', '.csv', '.xlsx']}

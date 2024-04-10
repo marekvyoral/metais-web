@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, { useId } from 'react'
 
 import { ISection, StepperSection } from './StepperSection'
 import { StepperSubtitle } from './StepperSubtitle'
@@ -29,11 +29,18 @@ export const Stepper: React.FC<IStepper> = ({
     subtitleTitle,
     openOrCloseAllSections,
 }) => {
+    const wrapperId = useId()
+
     return (
         <>
             {description && <p className="idsk-stepper__caption govuk-caption-m">{description}</p>}
-            <div className={classNames('idsk-stepper', styles.marginBottom)} data-module="idsk-stepper" data-attribute="value">
-                <StepperSubtitle title={subtitleTitle} stepperList={stepperList} openOrCloseAllSections={openOrCloseAllSections} />
+            <div id={wrapperId} className={classNames('idsk-stepper', styles.marginBottom)} data-module="idsk-stepper" data-attribute="value">
+                <StepperSubtitle
+                    title={subtitleTitle}
+                    contentId={wrapperId}
+                    stepperList={stepperList}
+                    openOrCloseAllSections={openOrCloseAllSections}
+                />
                 {stepperList.map((item, index) => (
                     <React.Fragment key={index}>
                         {item.isTitle ? (

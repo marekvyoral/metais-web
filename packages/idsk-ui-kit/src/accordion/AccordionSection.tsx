@@ -58,7 +58,7 @@ export const AccordionSection = ({
                 {!isSmall && (
                     <TextHeading className={classNames('govuk-accordion__section-heading', styles.heading)} size={textHeadingSize ?? 'M'}>
                         <button
-                            className={classNames('govuk-accordion__section-button', { [styles.smallHeading]: isSmall })}
+                            className={classNames('govuk-accordion__section-button')}
                             type="button"
                             aria-expanded={isExpanded}
                             aria-controls={id + index}
@@ -66,15 +66,14 @@ export const AccordionSection = ({
                             id={buttonId}
                         >
                             {section.title}
+                            <span className="govuk-accordion__icon" />
                         </button>
-
-                        <span className="govuk-accordion__icon" onClick={onToggle} />
                     </TextHeading>
                 )}
                 {isSmall && (
                     <div className={classNames('govuk-accordion__section-heading govuk-heading-m', styles.heading)}>
                         <button
-                            className={classNames('govuk-accordion__section-button', { [styles.smallHeading]: isSmall })}
+                            className={classNames('govuk-accordion__section-button', styles.smallHeading)}
                             type="button"
                             aria-expanded={isExpanded}
                             aria-controls={id + index}
@@ -96,7 +95,7 @@ export const AccordionSection = ({
                     </div>
                     {section.error && <img src={AlertTriangleIcon} alt={t('accordion.sectionError')} />}
                     {isSmall && (
-                        <TransparentButtonWrapper onClick={onToggle} ariaHidden>
+                        <TransparentButtonWrapper onClick={onToggle} type="button" ariaHidden>
                             <img className={classNames(styles.arrowDownIcon, { [styles.rotate180]: isExpanded })} src={ArrowDownIcon} alt="" />
                         </TransparentButtonWrapper>
                     )}

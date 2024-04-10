@@ -34,7 +34,7 @@ import {
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
-import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Attribute, AttributeProfile, useGenerateCodeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { isObjectEmpty } from '@isdd/metais-common/utils/utils'
 
 import styles from './newRelationView.module.scss'
@@ -105,7 +105,7 @@ export const NewRelationView: React.FC<Props> = ({
 
     const unitsData = relationData?.unitsData
 
-    const { register, handleSubmit: handleFormSubmit, formState, setValue, clearErrors, trigger, control } = useForm()
+    const { register, handleSubmit: handleFormSubmit, formState, setValue, clearErrors, trigger, control, getValues } = useForm()
     const relationSchema = relationData?.relationTypeData
 
     const relationSchemaCombinedAttributes = [...(relationSchema?.attributes ?? [])]
@@ -347,6 +347,7 @@ export const NewRelationView: React.FC<Props> = ({
                                               )}
                                               unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
                                               control={control}
+                                              disabled={attribute.technicalName == ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais}
                                           />
                                       ),
                               )}
@@ -363,6 +364,22 @@ export const NewRelationView: React.FC<Props> = ({
 
     const isQueryError = [storeGraph.isError, isRequestStatusError, isProcessedError, isTooManyFetchesError].some((item) => item)
     const isQueryLoading = [isLoading, storeGraph.isLoading, isRequestStatusLoading].some((item) => item)
+
+    const generateRelCode = useGenerateCodeHook()
+    const setRelMetaisCode = async (val: ConfigurationItemUi[]) => {
+        const relTechName = relationData?.relationTypeData?.technicalName
+        const hasGenRelCodeAttribute = relationSchema?.attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais)
+        if (!relTechName || !hasGenRelCodeAttribute) return
+
+        const formValues = getValues()
+        val.forEach(async (item) => {
+            const itemRelCodeInForm = `${ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais}${JOIN_OPERATOR}${item.uuid}`
+            if (!formValues[itemRelCodeInForm]) {
+                const code = await generateRelCode(relTechName)
+                setValue(itemRelCodeInForm, code.code)
+            }
+        })
+    }
 
     return (
         <QueryFeedback loading={isQueryLoading} error={isError}>
@@ -396,7 +413,10 @@ export const NewRelationView: React.FC<Props> = ({
                 ciType={tabName}
                 isOpen={isOpen}
                 selectedItems={selectedItems}
-                onChangeSelectedCiItem={(val) => setSelectedItems(val)}
+                onChangeSelectedCiItem={(val) => {
+                    setSelectedItems(val)
+                    setRelMetaisCode(Array.isArray(val) ? val : [val])
+                }}
                 onCloseModal={() => setIsOpen(false)}
                 onOpenModal={() => setIsOpen(true)}
                 perPage={200}

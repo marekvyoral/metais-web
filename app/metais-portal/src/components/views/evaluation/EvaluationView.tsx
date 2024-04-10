@@ -231,6 +231,7 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                                                     setOpenExport({ isOpen: true, type: EContainerType.KRIS })
                                                 }}
                                                 label={t('evaluation.exportKris')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </div>
                                         <div className={styles.buttonPopupItem}>
@@ -239,6 +240,7 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                                                     setOpenExport({ isOpen: true, type: EContainerType.ISVS })
                                                 }}
                                                 label={t('evaluation.exportIsvs')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </div>
                                         <div>
@@ -247,6 +249,7 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                                                     setOpenExport({ isOpen: true, type: EContainerType.KS })
                                                 }}
                                                 label={t('evaluation.exportKs')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </div>
                                     </div>

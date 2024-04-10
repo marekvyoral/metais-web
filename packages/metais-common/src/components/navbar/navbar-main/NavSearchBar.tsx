@@ -27,6 +27,7 @@ export const NavSearchBar = () => {
     const { register, handleSubmit } = useForm<SearchbarForm>({
         defaultValues: { search: uriParams.get('search') ?? '' },
     })
+    const inputId = 'idsk-header-web__main-action-search-input'
 
     const onSubmit = (formData: SearchbarForm) => {
         if (formData[GlobalSearchParams.SEARCH]) {
@@ -43,7 +44,7 @@ export const NavSearchBar = () => {
             <input
                 required
                 className="govuk-input govuk-!-display-inline-block"
-                id="idsk-header-web__main-action-search-input"
+                id={inputId}
                 placeholder={t('navbar.searchPlaceholder') ?? ''}
                 title={t('navbar.searchPlaceholder') ?? ''}
                 type="search"
@@ -51,7 +52,9 @@ export const NavSearchBar = () => {
                 {...register('search')}
             />
             <button type="submit" className="govuk-button" data-module="govuk-button">
-                <span className="govuk-visually-hidden">{t('navbar.search')}</span>
+                <label htmlFor={inputId} className="govuk-visually-hidden">
+                    {t('navbar.search')}
+                </label>
                 <i aria-hidden="true" className="fas fa-search" />
             </button>
         </form>

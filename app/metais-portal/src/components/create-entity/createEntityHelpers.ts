@@ -5,13 +5,14 @@ import {
     AttributeProfile,
     CiCode,
     CiType,
+    useGenerateCodeHook,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 import { FieldErrors, FieldValues, UseFormSetValue } from 'react-hook-form'
 import { AnyObject, NumberSchema } from 'yup'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { isDate, isObjectEmpty } from '@isdd/metais-common/utils/utils'
-import { ENTITY_TRAINING, ROLES } from '@isdd/metais-common/constants'
+import { ENTITY_TRAINING, PO_predklada_KRIS, ROLES } from '@isdd/metais-common/constants'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { DateTime } from 'luxon'
 import {
@@ -20,6 +21,7 @@ import {
     ConfigurationItemUi,
     RequestIdUi,
     useStoreGraphHook,
+    AttributeUiValue,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useEffect, useState } from 'react'
 import {
@@ -260,6 +262,7 @@ type CiOnSubmitType = {
 export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
     const [uploadError, setUploadError] = useState(false)
     const storeGraph = useStoreGraphHook()
+    const generateRelCode = useGenerateCodeHook()
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
     const onSubmit = async ({ formData, storeCiItem, ownerId, generatedEntityId, updateCiItemId, publicAuthorityState }: CiOnSubmitType) => {
@@ -297,21 +300,26 @@ export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
         })
 
         if (!isUpdate && entityName === EContainerType.KRIS) {
-            const relationshipSet = {
-                storeSet: {
-                    relationshipSet: [
-                        {
-                            type: 'PO_predklada_KRIS',
-                            uuid: uuidV4(),
-                            startUuid: publicAuthorityState?.selectedPublicAuthority?.poUUID,
-                            endUuid: uuid,
-                            owner: ownerId,
-                            attributes: [],
-                        },
-                    ],
-                },
+            try {
+                const relCode = await generateRelCode(PO_predklada_KRIS)
+                const relationshipSet = {
+                    storeSet: {
+                        relationshipSet: [
+                            {
+                                type: PO_predklada_KRIS,
+                                uuid: uuidV4(),
+                                startUuid: publicAuthorityState?.selectedPublicAuthority?.poUUID,
+                                endUuid: uuid,
+                                owner: ownerId,
+                                attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: relCode?.code as unknown as AttributeUiValue }],
+                            },
+                        ],
+                    },
+                }
+                storeGraph(relationshipSet)
+            } catch {
+                setUploadError(true)
             }
-            storeGraph(relationshipSet)
         }
 
         return uuid

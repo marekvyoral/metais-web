@@ -1,6 +1,8 @@
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useFormContext } from 'react-hook-form'
-import { RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { RelationshipCode, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useEffect } from 'react'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 import { HasResetState } from '@/components/create-entity/CreateCiEntityForm'
@@ -11,14 +13,23 @@ interface Props {
     hasResetState: HasResetState
     constraintsData: (EnumType | undefined)[]
     unitsData: EnumType | undefined
+    generatedRelCode: RelationshipCode | undefined
 }
 
-export const RelationAttributeForm: React.FC<Props> = ({ relationSchema, hasResetState, constraintsData, unitsData }) => {
+export const RelationAttributeForm: React.FC<Props> = ({ relationSchema, hasResetState, constraintsData, unitsData, generatedRelCode }) => {
     const { register, formState, trigger, setValue, clearErrors, control } = useFormContext()
     const attributes = [
         ...(relationSchema?.attributes ?? []),
         ...(relationSchema?.attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? []),
     ]
+    const hasGenRelCodeAttribute = relationSchema?.attributes?.find((item) => item.technicalName === ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais)
+
+    useEffect(() => {
+        if (generatedRelCode?.code && hasGenRelCodeAttribute) {
+            setValue(ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, generatedRelCode.code)
+        }
+    }, [generatedRelCode?.code, hasGenRelCodeAttribute, setValue])
+
     return (
         <>
             {attributes.map(
@@ -44,6 +55,7 @@ export const RelationAttributeForm: React.FC<Props> = ({ relationSchema, hasRese
                             )}
                             unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
                             control={control}
+                            disabled={attribute.technicalName == ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais}
                         />
                     ),
             )}

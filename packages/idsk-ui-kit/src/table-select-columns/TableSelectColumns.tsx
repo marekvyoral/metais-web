@@ -1,6 +1,6 @@
 import { latiniseString } from '@isdd/metais-common/src/componentHelpers/filter/feFilters'
 import classNames from 'classnames'
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './tableSelectColumns.module.scss'
@@ -77,6 +77,7 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({ onClose
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value)
     }
+    const listId = useId()
 
     const updateSelectedValue = (key: string, checked: boolean) => {
         const selectedColumnsCount = selectedColumns.filter((column) => column.selected).length
@@ -96,11 +97,18 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({ onClose
     return (
         <>
             <div>
-                <SearchInput id="search" name="search" className={styles.searchbar} onChange={handleChange} />
+                <SearchInput
+                    id="search"
+                    name="search"
+                    className={styles.searchbar}
+                    onChange={handleChange}
+                    aria-autocomplete="list"
+                    aria-controls={listId}
+                />
                 <TextBody size="S" className={classNames('govuk-!-font-weight-bold', styles.textHeader)}>
                     {header}
                 </TextBody>
-                <div className={classNames('govuk-checkboxes govuk-checkboxes--small', styles.scroll)}>
+                <div className={classNames('govuk-checkboxes govuk-checkboxes--small', styles.scroll)} id={listId} role="listbox">
                     {sections
                         ? sections.map((section) => (
                               <ColumnSection
