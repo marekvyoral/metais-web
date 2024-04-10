@@ -1,9 +1,10 @@
-import { AccordionContainer, Button, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { AccordionContainer, Button, ButtonGroupRow, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { OrgData } from './UserRolesForm'
+import { DeletePoModal } from './DeletePoModal'
 
 interface RoleTableSummary {
     roleId: string
@@ -14,7 +15,8 @@ interface RoleTableSummary {
 
 interface IUserRoles {
     editedUserOrgAndRoles: Record<string, OrgData>
-    handleDeleteRole: (roleId: string, orgId: string) => void
+    handleDeleteOrg: (id: string) => void
+    openModal: (id: string) => void
 }
 
 enum RoleTableSummaryEnum {
@@ -23,10 +25,19 @@ enum RoleTableSummaryEnum {
     DELETE = 'delete',
 }
 
-export const UserRolesEditable: React.FC<IUserRoles> = ({ editedUserOrgAndRoles, handleDeleteRole }) => {
+export const UserRolesEditable: React.FC<IUserRoles> = ({ editedUserOrgAndRoles, handleDeleteOrg, openModal }) => {
     const { t } = useTranslation()
 
     const editedKeys = Object.keys(editedUserOrgAndRoles)
+    const [modalDeleteOpen, setModalDeleteOpen] = useState<OrgData>()
+
+    const openDeleteModal = (key: string) => {
+        setModalDeleteOpen(editedUserOrgAndRoles[key])
+    }
+
+    const onDeleteClose = () => {
+        setModalDeleteOpen(undefined)
+    }
 
     const roleColumns: ColumnDef<RoleTableSummary>[] = [
         {
@@ -46,22 +57,6 @@ export const UserRolesEditable: React.FC<IUserRoles> = ({ editedUserOrgAndRoles,
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
         },
-        {
-            id: RoleTableSummaryEnum.DELETE,
-            accessorFn: (row) => row,
-            size: 50,
-            header: '',
-            cell: (row) => {
-                const rowObject = row.getValue() as RoleTableSummary
-                return (
-                    <Button
-                        variant="secondary"
-                        label={t('managementList.delete')}
-                        onClick={() => handleDeleteRole(rowObject.roleId, rowObject.orgId)}
-                    />
-                )
-            },
-        },
     ]
 
     const sections =
@@ -77,15 +72,33 @@ export const UserRolesEditable: React.FC<IUserRoles> = ({ editedUserOrgAndRoles,
                 title: title,
                 summary: null,
                 content: (
-                    <Table<RoleTableSummary>
-                        data={roleKeys.map((role) => ({
-                            roleId: editedUserOrgAndRoles[key].roles[role].uuid,
-                            role: editedUserOrgAndRoles[key].roles[role].name,
-                            description: editedUserOrgAndRoles[key].roles[role].description,
-                            orgId: editedUserOrgAndRoles[key].orgId,
-                        }))}
-                        columns={roleColumns}
-                    />
+                    <>
+                        <ButtonGroupRow>
+                            <Button
+                                label={t('managementList.updatePo')}
+                                variant="secondary"
+                                onClick={() => {
+                                    openModal(editedUserOrgAndRoles[key].orgId)
+                                }}
+                            />
+                            <Button
+                                label={t('managementList.deletePo')}
+                                variant="warning"
+                                onClick={() => {
+                                    openDeleteModal(key)
+                                }}
+                            />
+                        </ButtonGroupRow>
+                        <Table<RoleTableSummary>
+                            data={roleKeys.map((role) => ({
+                                roleId: editedUserOrgAndRoles[key].roles[role].uuid,
+                                role: editedUserOrgAndRoles[key].roles[role].name,
+                                description: editedUserOrgAndRoles[key].roles[role].description,
+                                orgId: editedUserOrgAndRoles[key].orgId,
+                            }))}
+                            columns={roleColumns}
+                        />
+                    </>
                 ),
             }
         }) ?? []
@@ -94,6 +107,7 @@ export const UserRolesEditable: React.FC<IUserRoles> = ({ editedUserOrgAndRoles,
         <>
             <TextHeading size="L">{t('managementList.userRolesHeading')}</TextHeading>
             <AccordionContainer sections={sections} />
+            <DeletePoModal deletedPo={modalDeleteOpen} close={onDeleteClose} handleDeleteOrg={handleDeleteOrg} />
         </>
     )
 }

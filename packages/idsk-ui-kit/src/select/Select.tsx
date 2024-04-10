@@ -44,6 +44,7 @@ interface ISelectProps<T> {
     tabIndex?: number
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control?: ControlReactForm<any>
+    hint?: string
 }
 
 export const Select = <T,>({
@@ -70,6 +71,7 @@ export const Select = <T,>({
     required,
     tabIndex,
     control,
+    hint,
 }: ISelectProps<T>) => {
     const Option = (props: OptionProps<IOption<T>>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
@@ -80,6 +82,7 @@ export const Select = <T,>({
     const uniqueId = useId()
     const inputId = id ?? uniqueId
     const errorId = `${id}-error`
+    const hintId = `${id}-hint`
     return (
         <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
             <div className={styles.labelDiv}>
@@ -106,6 +109,9 @@ export const Select = <T,>({
             <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
                 {error && <span className="govuk-visually-hidden">{t('error')}</span>}
                 {error}
+            </span>
+            <span id={hintId} className={classNames({ 'govuk-visually-hidden': !hint, 'govuk-hint': !!hint })}>
+                {hint}
             </span>
             <div className={styles.inputWrapper}>
                 {control ? (

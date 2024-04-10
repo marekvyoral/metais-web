@@ -1,0 +1,11 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.heading {
+    text-align: center;
+}
+.attributeGridRowBox {
+    display: flex;
+    gap: govuk-spacing(4);
+    flex-direction: column;
+    margin-bottom: govuk-spacing(8);
+}
