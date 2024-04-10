@@ -34,26 +34,25 @@ export const RefRegisterButtonPopupContent = ({
     return (
         <>
             <Can I={Actions.DELETE} a={'refRegisters'}>
-                <ButtonLink label={t('refRegisters.header.delete')} withoutFocus onClick={handleDeleteRefRegister} />
+                <ButtonLink label={t('refRegisters.header.delete')} onClick={handleDeleteRefRegister} />
             </Can>
             {getPopupContent(allPosibleSteps, t, onClick)}
 
             <Can I={Actions.CREATE} a={'refRegisters.changeManagerInfo'}>
-                <ButtonLink
-                    label={t('refRegisters.header.changeManagerInfo')}
-                    onClick={() => navigate(`/refRegisters/${entityId}/edit`)}
-                    withoutFocus
-                />
+                <ButtonLink label={t('refRegisters.header.changeManagerInfo')} onClick={() => navigate(`/refRegisters/${entityId}/edit`)} />
             </Can>
             <Can I={Actions.CREATE} a={'refRegisters.changeContact'}>
                 <ButtonLink
                     label={t('refRegisters.header.changeContact')}
                     onClick={() => navigate({ pathname: `/refRegisters/${entityId}/edit`, search: `?${EDIT_CONTACT}=true` })}
-                    withoutFocus
                 />
             </Can>
             <Can I={Actions.CREATE} a={'refRegisters.generateProposition'}>
-                <ButtonLink label={t('refRegisters.header.generateProposition')} onClick={() => setOpenGeneratePropDialog(true)} withoutFocus />
+                <ButtonLink
+                    label={t('refRegisters.header.generateProposition')}
+                    onClick={() => setOpenGeneratePropDialog(true)}
+                    aria={{ 'aria-haspopup': 'dialog' }}
+                />
             </Can>
         </>
     )

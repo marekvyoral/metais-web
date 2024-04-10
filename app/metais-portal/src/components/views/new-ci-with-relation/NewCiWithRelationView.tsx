@@ -61,7 +61,7 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
     const relatedListAsSources = relationData?.relatedListAsSources
     const relatedListAsTargets = relationData?.relatedListAsTargets
     const relationConstraintsData = relationData?.constraintsData
-
+    const relCode = relationData?.generatedRelCode
     const relationSchema = relationData?.relationTypeData
 
     const relationAttributesKeys = [
@@ -245,6 +245,7 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
                 relationSchema={relationSchema}
                 isProcessing={storeGraph.isLoading}
                 selectedRole={selectedRole}
+                generatedRelCode={relCode}
                 withRelation
                 rolesForPO={rolesForPO ?? []}
             />

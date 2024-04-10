@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { SetStateAction, useEffect, useRef, useState } from 'react'
+import React, { SetStateAction, useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useMatch } from 'react-router-dom'
 
@@ -26,6 +26,7 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
     const { t } = useTranslation()
     const [expanded, setExpanded] = useState(false)
     const ref = useRef<HTMLLIElement>(null)
+    const itemsWrapperId = useId()
 
     const showMenu = `${t('navMenu.show')} ${title} menu`
     const hideMenu = `${t('navMenu.hide')} ${title} menu`
@@ -82,6 +83,7 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
                 to={path}
                 aria-label={list.length ? (expanded ? hideMenu : showMenu) : undefined}
                 aria-expanded={list.length ? expanded : undefined}
+                aria-controls={list.length ? itemsWrapperId : undefined}
                 aria-haspopup={list.length ? 'menu' : undefined}
                 aria-current={isUrlMatched ? 'page' : undefined}
             >
@@ -108,7 +110,7 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
             <div className="idsk-header-web__nav-submenu">
                 <div className="govuk-width-container">
                     <div className="govuk-grid-row">
-                        <ul className="idsk-header-web__nav-submenu-list" aria-label={t('navMenu.innerNav') ?? ''}>
+                        <ul id={itemsWrapperId} className="idsk-header-web__nav-submenu-list" aria-label={t('navMenu.innerNav') ?? ''}>
                             {list.map((item) => (
                                 <NavMenuSubItem key={item.title} {...item} />
                             ))}

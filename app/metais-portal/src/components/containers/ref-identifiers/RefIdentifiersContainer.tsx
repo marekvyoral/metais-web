@@ -55,7 +55,7 @@ export const RefIdentifiersContainer: React.FC<RefIdentifiersContainerProps> = (
     const { currentPreferences } = useUserPreferences()
     const defaultFilter: RefIdentifierListFilterData = {
         pageNumber: BASE_PAGE_NUMBER,
-        pageSize: Number(currentPreferences.defaultPerPage) ?? BASE_PAGE_SIZE,
+        pageSize: Number(currentPreferences.defaultPerPage) || BASE_PAGE_SIZE,
         type: [] as RefIdentifierTypeEnum[],
         state: '',
         createdAtFrom: '',

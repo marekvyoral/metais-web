@@ -1,6 +1,7 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { ATTRIBUTE_NAME, RELATION_TYPE, RefIdentifierTypeEnum } from '@isdd/metais-common/api'
 import {
+    AttributeUiValue,
     NeighbourPairUi,
     useInvalidateConfigurationItem,
     useInvalidateRelationship,
@@ -21,6 +22,7 @@ import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
+import { useGenerateCodeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from '@/components/create-entity/createEntityHelpers'
 import { RefIdentifierCreateView } from '@/components/views/ref-identifiers/RefIdentifierCreateView'
@@ -60,6 +62,7 @@ export const RefIdentifierEditContainer: React.FC = () => {
 
     const type = ciItemData?.type as RefIdentifierTypeEnum
 
+    const generateRelCode = useGenerateCodeHook()
     const {
         ciTypeData,
         attributes,
@@ -231,6 +234,7 @@ export const RefIdentifierEditContainer: React.FC = () => {
                 },
             })
 
+        const relCode = await generateRelCode(relationType)
         await createRelations({
             data: {
                 type: relationType,
@@ -238,7 +242,7 @@ export const RefIdentifierEditContainer: React.FC = () => {
                 uuid: uuidV4(),
                 endUuid: endUuid,
                 owner: ownerGid,
-                attributes: [],
+                attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: relCode.code as unknown as AttributeUiValue }],
             },
         })
     }
@@ -253,7 +257,8 @@ export const RefIdentifierEditContainer: React.FC = () => {
         const defaultListUuids = defaultList?.map((item) => item.configurationItem?.uuid ?? '') || []
         const { notInList1, notInList2 } = splitList(defaultListUuids, currentList)
 
-        notInList1.forEach((itemId) => {
+        notInList1.forEach(async (itemId) => {
+            const relCode = await generateRelCode(relationType)
             createRelations({
                 data: {
                     type: relationType,
@@ -261,7 +266,7 @@ export const RefIdentifierEditContainer: React.FC = () => {
                     uuid: uuidV4(),
                     endUuid: from ? updateCiItemId : itemId,
                     owner: ownerGid,
-                    attributes: [],
+                    attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: relCode.code as unknown as AttributeUiValue }],
                 },
             })
         })

@@ -1,6 +1,6 @@
 import { ArrowDownIcon } from '@isdd/idsk-ui-kit'
 import classNames from 'classnames'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useId, useState } from 'react'
 import { Link, useLocation, useMatch } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
@@ -34,6 +34,7 @@ export const SidebarItem = ({
     hasSamePathAsParent,
 }: SidebarItemProps) => {
     const [expandedSubItemIndexes, setExpandedSubItemIndexes] = useState<boolean[]>(() => Array(item.subItems?.length).fill(false))
+    const contentId = useId()
 
     const isDefaultOpened = defaultOpenedMenuItemsPaths.some((opened) => opened === item.path)
     const isUrlMatched = !!useMatch(item.path)
@@ -70,6 +71,7 @@ export const SidebarItem = ({
                             ((item.subItems?.length && isExpanded) || isDefaultOpened || isUrlMatched) && !shouldNotBeBold && styles.expanded,
                         )}
                         aria-expanded={item.subItems ? isExpanded : undefined}
+                        aria-controls={item.subItems ? contentId : undefined}
                         aria-haspopup={item.subItems ? 'menu' : undefined}
                         aria-current={isUrlMatched ? 'page' : undefined}
                         to={item.path}
@@ -83,6 +85,7 @@ export const SidebarItem = ({
                 </div>
                 {item.subItems && isExpanded && isSidebarExpanded && (
                     <div
+                        id={contentId}
                         className={classNames(styles.hide, isExpanded && styles.unhide)}
                         aria-label={t('sidebar.groupLabel', { title: item.title })}
                         role="group"

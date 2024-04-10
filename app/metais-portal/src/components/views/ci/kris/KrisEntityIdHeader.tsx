@@ -506,6 +506,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                         setGeneratePdf(true)
                                                     }}
                                                     label={t('ciType.pdfGenerateFuture')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -520,6 +521,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                     disabled={isInvalidated}
                                                     onClick={() => handleInvalidate(entityListData, () => setShowInvalidate(true), open)}
                                                     label={t('ciType.invalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -534,6 +536,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                     disabled={!isInvalidated}
                                                     onClick={() => setRevalidate(true)}
                                                     label={t('ciType.reInvalidateCi')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -549,6 +552,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                         disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
                                                         onClick={() => setShowApprove(true)}
                                                         label={t('ciType.approve')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
                                                 )}
                                             />
@@ -565,6 +569,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                     disabled={!isEvaluation}
                                                     onClick={() => setShowReturnToWorkout(true)}
                                                     label={t('ciType.return_to_workout')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -596,6 +601,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                         disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
                                                         onClick={handleSignDoc}
                                                         label={t('ciType.signDocument')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
                                                 )}
                                             />
@@ -612,6 +618,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                         disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
                                                         onClick={handleSignDocFuture}
                                                         label={t('ciType.signDocumentFuture')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
                                                 )}
                                             />

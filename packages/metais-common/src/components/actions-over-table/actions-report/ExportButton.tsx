@@ -34,6 +34,7 @@ export const ReportExportButton: React.FC<IExportButtonProps> = ({ entityId, fil
                 className="marginBottom0"
                 variant="secondary"
                 label={<IconLabel label={t('actionOverTable.export')} icon={ExportIcon} />}
+                aria-haspopup={'dialog'}
             />
             <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart(entityId, filter)} />
         </>

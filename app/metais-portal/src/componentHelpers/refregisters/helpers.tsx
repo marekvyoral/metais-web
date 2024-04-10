@@ -28,7 +28,7 @@ export const getPopupContent = (
                 <ButtonLink
                     label={t(translatePrefix, { itemName: t(`refRegisters.table.state.${option}`) })}
                     onClick={() => onClick(option)}
-                    withoutFocus
+                    aria={{ 'aria-haspopup': 'dialog' }}
                 />
             </Can>
         )

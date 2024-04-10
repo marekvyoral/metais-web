@@ -8,9 +8,10 @@ interface IInfoDropDown {
     isMobile: boolean
     title: string
     label: string
+    controlsId: string
 }
 
-export const InfoDropDown: React.FC<IInfoDropDown> = ({ setShowDropDown, showDropDown, isMobile, title, label }) => {
+export const InfoDropDown: React.FC<IInfoDropDown> = ({ setShowDropDown, showDropDown, isMobile, title, label, controlsId }) => {
     const { t } = useTranslation()
 
     return (
@@ -29,8 +30,7 @@ export const InfoDropDown: React.FC<IInfoDropDown> = ({ setShowDropDown, showDro
                 })}
                 aria-label={showDropDown ? t('navbar.hideInformationAboutSite') ?? '' : t('navbar.showInformationAboutSite') ?? ''}
                 aria-expanded={showDropDown}
-                data-text-for-hide={t('navbar.hideInformationAboutSite')}
-                data-text-for-show={t('navbar.showInformationAboutSite')}
+                aria-controls={controlsId}
             >
                 {label}
                 <span className="idsk-header-web__link-arrow" />

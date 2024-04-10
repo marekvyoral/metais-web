@@ -5,11 +5,12 @@ import { ISection } from './StepperSection'
 
 interface IStepperSubtitle {
     title: string
+    contentId: string
     stepperList: ISection[]
     openOrCloseAllSections: () => void
 }
 
-export const StepperSubtitle: React.FC<IStepperSubtitle> = ({ title, stepperList, openOrCloseAllSections }) => {
+export const StepperSubtitle: React.FC<IStepperSubtitle> = ({ title, contentId, stepperList, openOrCloseAllSections }) => {
     const { t } = useTranslation()
     const isWholeArrayExpanded = stepperList.every((item) => item.isOpen)
 
@@ -24,7 +25,13 @@ export const StepperSubtitle: React.FC<IStepperSubtitle> = ({ title, stepperList
                 data-line1={t('stepper.openAll')}
                 data-line2={t('stepper.closeAll')}
             >
-                <button onClick={openOrCloseAllSections} type="button" className="idsk-stepper__open-all" aria-expanded={isWholeArrayExpanded}>
+                <button
+                    onClick={openOrCloseAllSections}
+                    type="button"
+                    className="idsk-stepper__open-all"
+                    aria-expanded={isWholeArrayExpanded}
+                    aria-controls={contentId}
+                >
                     {isWholeArrayExpanded ? t('stepper.closeAll') : t('stepper.openAll')}
                     <span className="govuk-visually-hidden">{t('stepper.sections')}</span>
                 </button>
