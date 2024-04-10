@@ -15,6 +15,7 @@ import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLa
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import classNames from 'classnames'
 import { GroupPermissionSubject } from '@isdd/metais-common/hooks/permissions/useGroupsPermissions'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import styles from '@/components/views/standardization/groups/groupslist.module.scss'
 import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect'
@@ -50,6 +51,7 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
     setSort,
 }) => {
     const { t } = useTranslation()
+    const { currentPreferences } = useUserPreferences()
     const navigate = useNavigate()
     const {
         state: { user },
@@ -58,7 +60,7 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
 
     const label = <span>+ {t('groups.addNewGroup')}</span>
     const tableRef = useRef<HTMLTableElement>(null)
-    const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
+    const [pageSize, setPageSize] = useState<number>(Number(currentPreferences.defaultPerPage) || BASE_PAGE_SIZE)
     const [pageNumber, setPageNumber] = useState<number>(BASE_PAGE_NUMBER)
 
     const handlePageChange = (filter: IFilter) => {

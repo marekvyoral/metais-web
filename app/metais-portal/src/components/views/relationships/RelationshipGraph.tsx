@@ -193,7 +193,12 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
                             popupContent={(closePopup) => (
                                 <div>
                                     <div>
-                                        <Button label={t('graph.exportPNG')} variant="secondary" onClick={() => onExport('png', closePopup)} />
+                                        <Button
+                                            label={t('graph.exportPNG')}
+                                            variant="secondary"
+                                            onClick={() => onExport('png', closePopup)}
+                                            aria-haspopup="dialog"
+                                        />
                                     </div>
                                     <div>
                                         <Button
@@ -201,6 +206,7 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
                                             variant="secondary"
                                             className="govuk-!-margin-bottom-1"
                                             onClick={() => onExport('pdf', closePopup)}
+                                            aria-haspopup="dialog"
                                         />
                                     </div>
                                 </div>

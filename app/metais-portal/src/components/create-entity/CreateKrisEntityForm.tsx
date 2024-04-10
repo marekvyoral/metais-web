@@ -4,7 +4,7 @@ import { Gen_Profil } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUiAttributes, HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
-import { CiCode, CiType, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CiCode, CiType, RelationshipCode, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
@@ -43,6 +43,7 @@ interface ICreateCiEntityForm {
     withRelation?: boolean
     selectedRole?: GidRoleData | null
     selectedOrg?: HierarchyRightsUi | null
+    generatedRelCode?: RelationshipCode
     ownerId?: string
 }
 
@@ -61,6 +62,7 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
     withRelation,
     selectedRole,
     selectedOrg,
+    generatedRelCode,
     ownerId,
 }) => {
     const { t, i18n } = useTranslation()
@@ -212,6 +214,7 @@ export const CreateKrisEntityForm: React.FC<ICreateCiEntityForm> = ({
                         hasResetState={{ hasReset, setHasReset }}
                         constraintsData={constraintsData}
                         unitsData={unitsData}
+                        generatedRelCode={generatedRelCode}
                     />
                 ),
             })

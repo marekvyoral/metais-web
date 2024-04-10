@@ -42,10 +42,12 @@ const queryClient = new QueryClient({
     },
 })
 
+const BASEPATH = import.meta.env.VITE_API_BASE_URL
+
 root.render(
     <React.StrictMode>
         <BrowserRouter>
-            <I18nextProvider i18n={initializeI18nInstance()}>
+            <I18nextProvider i18n={initializeI18nInstance({ basePath: BASEPATH, userInterface: 'PORTAL' })}>
                 <QueryClientProvider client={queryClient}>
                     <AuthProvider authConfig={authConfig({ clientId: CLIENT_ID, scope: SCOPE })}>
                         <AuthContextProvider>

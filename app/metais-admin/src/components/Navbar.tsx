@@ -5,7 +5,7 @@ import { NavMenu } from '@isdd/metais-common/components/navbar/navmenu/NavMenu'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { AdminRouteNames, AdminRouteRoles, NavigationItem } from '@isdd/metais-common/navigation/routeNames'
 import { TFunction } from 'i18next'
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { getPermittedRoutesForUser } from '@/componentHelpers/navigation'
@@ -133,6 +133,11 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
             path: AdminRouteNames.SYSTEM_STATUS_SETTINGS,
             role: [AdminRouteRoles.ADMIN],
         },
+        {
+            title: t('localization.heading'),
+            path: AdminRouteNames.LOCALIZATION,
+            role: [AdminRouteRoles.ADMIN],
+        },
     ]
 
     if (userRoles == null || userRoles.length == 0) return []
@@ -151,6 +156,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
     } = useAuth()
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
     const [showDropDown, setShowDropDown] = useState<boolean>(false)
+    const menuId = useId()
 
     const adminRoutes = getAdminNavItems(t, user?.roles ?? null)
     useAdminProtectedRoutes(adminRoutes)
@@ -165,8 +171,14 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                     <div className="idsk-header-web__tricolor" />
 
                     <NavBarHeader setShowDropDown={setShowDropDown} showDropDown={showDropDown} />
-                    <NavBarMain isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} isAdmin={isAdmin} />
-                    <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={adminRoutes} isAdmin={isAdmin} />
+                    <NavBarMain menuId={menuId} isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} isAdmin={isAdmin} />
+                    <NavMenu
+                        id={menuId}
+                        isMenuExpanded={isMenuExpanded}
+                        setIsMenuExpanded={setIsMenuExpanded}
+                        navItems={adminRoutes}
+                        isAdmin={isAdmin}
+                    />
                 </div>
             </header>
         </>

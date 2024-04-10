@@ -222,31 +222,37 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                             buttonClassName={styles.noWrap}
                             buttonLabel={t('evaluation.exportBtn')}
                             popupPosition="right"
-                            popupContent={() => {
+                            popupContent={(closePopup) => {
                                 return (
                                     <div className={styles.buttonLinksDiv}>
                                         <div className={styles.buttonPopupItem}>
                                             <ButtonLink
                                                 onClick={() => {
+                                                    closePopup()
                                                     setOpenExport({ isOpen: true, type: EContainerType.KRIS })
                                                 }}
                                                 label={t('evaluation.exportKris')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </div>
                                         <div className={styles.buttonPopupItem}>
                                             <ButtonLink
                                                 onClick={() => {
+                                                    closePopup()
                                                     setOpenExport({ isOpen: true, type: EContainerType.ISVS })
                                                 }}
                                                 label={t('evaluation.exportIsvs')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </div>
                                         <div>
                                             <ButtonLink
                                                 onClick={() => {
+                                                    closePopup()
                                                     setOpenExport({ isOpen: true, type: EContainerType.KS })
                                                 }}
                                                 label={t('evaluation.exportKs')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </div>
                                     </div>

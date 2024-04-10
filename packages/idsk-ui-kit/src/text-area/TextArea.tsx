@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { forwardRef, DetailedHTMLProps } from 'react'
+import React, { forwardRef, DetailedHTMLProps, useId } from 'react'
 import { useTranslation } from 'react-i18next'
 import sanitizeHtml from 'sanitize-html'
 import { decodeHtmlEntities } from '@isdd/metais-common/src/utils/utils'
@@ -25,13 +25,15 @@ interface IInputProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLTe
 
 export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
     ({ id, label, name, rows, hint, info, error, disabled, correct, wrapperClassname, hasInputIcon = false, required, ...rest }, ref) => {
-        const hintId = `${id}-hint`
-        const errorId = `${id}-error`
+        const uniqueId = useId()
+        const inputId = id ?? uniqueId
+        const hintId = `${inputId}-hint`
+        const errorId = `${inputId}-error`
         const { t } = useTranslation()
         return (
             <div className={classNames('govuk-form-group', wrapperClassname, { 'govuk-form-group--error': !!error })}>
                 <div className={styles.labelDiv}>
-                    <label className="govuk-label" htmlFor={id}>
+                    <label className={classNames('govuk-label', styles.wrap)} htmlFor={inputId}>
                         {label} {required && t('input.requiredField')}
                     </label>
                     {info && (
@@ -62,7 +64,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
                 <div className={styles.inputWrapper}>
                     <textarea
                         className={classNames('govuk-textarea', { ' govuk-textarea--error': !!error })}
-                        id={id}
+                        id={inputId}
                         name={name}
                         rows={rows}
                         ref={ref}

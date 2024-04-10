@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 
 interface IHeaderDropDown {
+    id: string
     showDropDown: boolean
 }
 
-export const HeaderDropDown: React.FC<IHeaderDropDown> = ({ showDropDown }) => {
+export const HeaderDropDown: React.FC<IHeaderDropDown> = ({ id, showDropDown }) => {
     const { t } = useTranslation()
     const location = useLocation()
     return (
@@ -17,7 +18,7 @@ export const HeaderDropDown: React.FC<IHeaderDropDown> = ({ showDropDown }) => {
                 'idsk-header-web__brand-dropdown--active': showDropDown,
             })}
         >
-            <div className="govuk-width-container">
+            <div id={id} className="govuk-width-container">
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-half">
                         <h3 className="govuk-body-s">{t('navbar.domain')}</h3>

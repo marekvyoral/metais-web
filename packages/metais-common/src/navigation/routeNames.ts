@@ -203,6 +203,7 @@ export enum AdminRouteNames {
     DOCUMENTS_MANAGEMENT = '/projects/documents',
     TEMPLATES_MANAGEMENT = '/templates-management',
     SYSTEM_STATUS_SETTINGS = '/system-status-settings',
+    LOCALIZATION = '/localization',
 }
 
 export enum NavigationSubRoutes {

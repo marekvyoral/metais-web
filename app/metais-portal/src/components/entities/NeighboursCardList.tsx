@@ -38,6 +38,7 @@ interface NeighboursCardListProps {
     ciTypeData: CiType | undefined
     hideButtons: boolean
     hidePageSizeSelect: boolean
+    tabsToShowRelAttributes?: string[]
 }
 
 export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
@@ -54,6 +55,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     ciTypeData,
     hideButtons,
     hidePageSizeSelect,
+    tabsToShowRelAttributes = [],
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
@@ -79,7 +81,6 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     const disabledCreateCI = useMemo(() => {
         return CAN_NOT_MANAGE_CI.includes(selectedTab.id)
     }, [selectedTab.id])
-
     return (
         <>
             <TextHeading size="L">{t('neighboursCardList.heading')}</TextHeading>
@@ -152,7 +153,13 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                                                     t,
                                                     lng: i18n,
                                                 })
-                                                return <RelationCard {...formatedCiWithRel} key={formatedCiWithRel?.codeMetaIS} />
+                                                return (
+                                                    <RelationCard
+                                                        {...formatedCiWithRel}
+                                                        key={formatedCiWithRel?.codeMetaIS}
+                                                        showRelAttributes={tabsToShowRelAttributes.includes(key.technicalName)}
+                                                    />
+                                                )
                                             })}
                                         </CardColumnList>
                                         <PaginatorWrapper

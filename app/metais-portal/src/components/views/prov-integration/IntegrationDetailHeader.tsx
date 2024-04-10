@@ -142,6 +142,7 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
                                                         close()
                                                     }}
                                                     label={t('ciType.invalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -157,6 +158,7 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
                                                         close()
                                                     }}
                                                     label={t('ciType.revalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -167,6 +169,7 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
                                                     close()
                                                 }}
                                                 label={t('ciType.changeOfOwner')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </Can>
 
@@ -177,6 +180,7 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
                                                     close()
                                                 }}
                                                 label={t('integrationLinks.uploadDoc')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </Can>
 
@@ -187,6 +191,7 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
                                                     close()
                                                 }}
                                                 label={t('integrationLinks.manualSign')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </Can>
 

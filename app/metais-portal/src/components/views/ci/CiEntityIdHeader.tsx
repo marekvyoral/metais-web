@@ -91,21 +91,30 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                             buttonClassName={styles.noWrap}
                             buttonLabel={t('ciType.moreButton')}
                             popupPosition="right"
-                            popupContent={() => {
+                            popupContent={(closePopup) => {
                                 return (
                                     <div className={styles.buttonLinksDiv}>
                                         <Tooltip
                                             key={'invalidateItem'}
                                             descriptionElement={errorMessage}
+                                            disabled={!errorMessage}
                                             position={'top center'}
-                                            on={'click'}
+                                            on={['click']}
                                             tooltipContent={(open) => (
                                                 <ButtonLink
                                                     disabled={isInvalidated}
                                                     onClick={() => {
-                                                        handleInvalidate(entityListData, () => setShowInvalidate(true), open)
+                                                        handleInvalidate(
+                                                            entityListData,
+                                                            () => {
+                                                                closePopup()
+                                                                setShowInvalidate(true)
+                                                            },
+                                                            open,
+                                                        )
                                                     }}
                                                     label={t('ciType.invalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -113,18 +122,34 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                                             key={'revalidateItem'}
                                             descriptionElement={errorMessage}
                                             position={'top center'}
+                                            on={['click']}
                                             tooltipContent={(open) => (
                                                 <ButtonLink
                                                     disabled={!isInvalidated}
                                                     onClick={() => {
-                                                        handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)
+                                                        handleReInvalidate(
+                                                            entityListData,
+                                                            () => {
+                                                                closePopup()
+                                                                setShowReInvalidate(true)
+                                                            },
+                                                            open,
+                                                        )
                                                     }}
                                                     label={t('ciType.revalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
                                         <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
-                                            <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
+                                            <ButtonLink
+                                                onClick={() => {
+                                                    closePopup()
+                                                    setShowChangeOwner(true)
+                                                }}
+                                                label={t('ciType.changeOfOwner')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
+                                            />
                                         </Can>
                                     </div>
                                 )

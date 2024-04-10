@@ -74,6 +74,7 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
                 setInvalidateShow(true)
                 closePopup()
             }}
+            aria={{ 'aria-haspopup': 'dialog' }}
         />,
         <ButtonLink
             disabled={!isInvalid}
@@ -85,6 +86,7 @@ export const OlaContractDetailView: React.FC<IOlaContractDetailView> = ({
                 setRevalidateShow(true)
                 closePopup()
             }}
+            aria={{ 'aria-haspopup': 'dialog' }}
         />,
     ]
 

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
+import React, { AriaAttributes, PropsWithChildren, ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 
 import styles from './styles.module.scss'
@@ -10,6 +10,7 @@ export interface Tag {
 interface Image {
     src: string
     alt: string
+    aria?: AriaAttributes
 }
 
 interface ICardProps extends PropsWithChildren {
@@ -42,46 +43,48 @@ export const Card: React.FC<ICardProps> = ({
         <div className={`idsk-card idsk-card-${variant} ${styles.fullWidth}`}>
             {img && (
                 <a href={cardHref} title={title}>
-                    <img className={`idsk-card-img idsk-card-img-${variant}`} src={img.src} alt={img.alt} aria-hidden="true" />
+                    <img className={`idsk-card-img idsk-card-img-${variant}`} src={img.src} alt={img.alt} {...img.aria} />
                 </a>
             )}
 
             <div className={`idsk-card-content idsk-card-content-${variant}`}>
                 <div className="idsk-card-meta-container">
                     {date && <span className="idsk-card-meta idsk-card-meta-date">{date}</span>}
-                    {tag1?.title && (
+                    {tag1 && (
                         <span className="idsk-card-meta idsk-card-meta-tag">
-                            <Link to={tag1.href} className="govuk-link" title={tag1.title}>
+                            <Link to={tag1.href} className="govuk-link">
                                 {tag1.title}
                             </Link>
                         </span>
                     )}
-                    {tag2?.title && (
+                    {tag2 && (
                         <span className="idsk-card-meta idsk-card-meta-tag">
-                            <Link to={tag2.href} className="govuk-link" title={tag2.title}>
+                            <Link to={tag2.href} className="govuk-link">
                                 {tag2.title}
                             </Link>
                         </span>
                     )}
                 </div>
                 <div className={`idsk-heading idsk-heading-${variant} ${styles.headerWithTags}`}>
-                    <Link to={cardHref} className="idsk-card-title govuk-link" title={title}>
+                    <Link to={cardHref} className="idsk-card-title govuk-link">
                         {title}
                     </Link>
-                    <dl className={styles.tagWrapper}>
-                        {headerTag1?.value && (
-                            <>
-                                <dt className="govuk-visually-hidden">{headerTag1.label}</dt>
-                                <dd className="govuk-tag govuk-tag--inactive">{headerTag1.value}</dd>
-                            </>
-                        )}
-                        {headerTag2?.value && (
-                            <>
-                                <dt className="govuk-visually-hidden">{headerTag2.label}</dt>
-                                <dd className="govuk-tag">{headerTag2.value}</dd>
-                            </>
-                        )}
-                    </dl>
+                    {(headerTag1 || headerTag2) && (
+                        <dl className={styles.tagWrapper}>
+                            {headerTag1?.value && (
+                                <>
+                                    <dt className="govuk-visually-hidden">{headerTag1.label}</dt>
+                                    <dd className="govuk-tag govuk-tag--inactive">{headerTag1.value}</dd>
+                                </>
+                            )}
+                            {headerTag2?.value && (
+                                <>
+                                    <dt className="govuk-visually-hidden">{headerTag2.label}</dt>
+                                    <dd className="govuk-tag">{headerTag2.value}</dd>
+                                </>
+                            )}
+                        </dl>
+                    )}
                 </div>
                 {description &&
                     (variant.includes('profile') ? (

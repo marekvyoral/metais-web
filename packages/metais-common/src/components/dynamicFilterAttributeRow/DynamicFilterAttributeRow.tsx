@@ -110,6 +110,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
         <div className={style.customFilterWrapper}>
             <fieldset className={style.customFilterInputWrapper}>
                 <SelectWithGroupedOptions
+                    key={attribute.name}
                     focus={focus}
                     id={`attribute-name-${index}`}
                     name={`attributeName`}

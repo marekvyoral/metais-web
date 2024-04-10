@@ -32,6 +32,7 @@ export const AccordionContainer: React.FC<IAccordionContainerProps> = ({
 }) => {
     const { t } = useTranslation()
     const id = useId()
+    const wrapperId = useId()
 
     const [expandedSectionIndexes, setExpandedSectionIndexes] = useState<boolean[]>(Array(sections.length).fill(false))
 
@@ -49,12 +50,13 @@ export const AccordionContainer: React.FC<IAccordionContainerProps> = ({
     }
 
     return (
-        <div className={classNames('govuk-accordion', { [styles.noBorder]: isSmall, [styles.smallMarginBottom]: isSmall })}>
+        <div id={wrapperId} className={classNames('govuk-accordion', { [styles.noBorder]: isSmall, [styles.smallMarginBottom]: isSmall })}>
             {!isSmall && (
                 <div className="govuk-accordion__controls">
                     <Button
                         variant="secondary"
                         aria-expanded={isAllExpanded}
+                        aria-controls={wrapperId}
                         label={isAllExpanded ? t('accordion.closeAll') : t('accordion.openAll')}
                         onClick={toggleAllExpanded}
                     />

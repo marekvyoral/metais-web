@@ -15,13 +15,14 @@ import { RegistrationRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 interface INavBarMain {
+    menuId: string
     isMenuExpanded: boolean
     setIsMenuExpanded: React.Dispatch<SetStateAction<boolean>>
     iconGroupItems?: React.FC[]
     isAdmin?: boolean
 }
 
-export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExpanded, iconGroupItems, isAdmin }) => {
+export const NavBarMain: React.FC<INavBarMain> = ({ menuId, setIsMenuExpanded, isMenuExpanded, iconGroupItems, isAdmin }) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -45,8 +46,7 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
                                 className="idsk-button idsk-header-web__main-headline-menu-button"
                                 aria-label={isMenuExpanded ? t('navbar.closeMenu') : t('navbar.openMenu')}
                                 aria-expanded={isMenuExpanded}
-                                data-text-for-show={t('navbar.openMenu')}
-                                data-text-for-hide={t('navbar.closeMenu')}
+                                aria-controls={menuId}
                             >
                                 {t('navbar.menu')}
                                 <span className="idsk-header-web__menu-open" />

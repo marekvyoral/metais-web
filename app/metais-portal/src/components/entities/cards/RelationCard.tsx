@@ -6,6 +6,7 @@ import { GridRow } from '@isdd/idsk-ui-kit/grid/GridRow'
 import { GridCol } from '@isdd/idsk-ui-kit/grid/GridCol'
 import { TextLinkExternal } from '@isdd/idsk-ui-kit/typography/TextLinkExternal'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
+import { AttributeUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import styles from './relationCard.module.scss'
 import { RelationAttribute } from './RelationAttribute'
@@ -18,10 +19,20 @@ interface IRelationCardProps extends PropsWithChildren {
 
     name: string
     admin: React.ReactNode
-    relations?: { title: string; href: string; isValid?: boolean }[]
+    relations?: { title: string; href: string; isValid?: boolean; attributes?: AttributeUi[] }[]
+    showRelAttributes?: boolean
 }
 
-export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status, label, labelHref, name, admin, relations }) => {
+export const RelationCard: React.FC<IRelationCardProps> = ({
+    codeMetaIS,
+    status,
+    label,
+    labelHref,
+    name,
+    admin,
+    relations,
+    showRelAttributes = false,
+}) => {
     const { t } = useTranslation()
     return (
         <>
@@ -69,6 +80,16 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
                             }
                         />
                     ))}
+                    {showRelAttributes &&
+                        relations?.map((rel) =>
+                            rel.attributes?.map((attr) => (
+                                <RelationAttribute
+                                    key={attr.name}
+                                    name={t(`relAttributes.${attr.name}`)}
+                                    value={t('date', { date: attr.value as unknown as string })}
+                                />
+                            )),
+                        )}
                 </DefinitionList>
             </div>
         </>

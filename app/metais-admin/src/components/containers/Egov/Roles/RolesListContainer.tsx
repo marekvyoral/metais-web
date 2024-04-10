@@ -1,7 +1,8 @@
 import { ColumnSort, Pagination, SortType } from '@isdd/idsk-ui-kit/types'
 import { EnumItem, EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Role, useFindByNameWithParams, useFindByNameWithParamsCount } from '@isdd/metais-common/api/generated/iam-swagger'
-import { ALL_EVENT_TYPES, ROLES_GROUP } from '@isdd/metais-common/constants'
+import { ALL_EVENT_TYPES, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, ROLES_GROUP } from '@isdd/metais-common/constants'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -17,13 +18,6 @@ export const defaultFilterValues: FilterData = {
     name: '',
     system: ALL_EVENT_TYPES,
     group: ALL_EVENT_TYPES,
-}
-
-//Pagination
-const defaultPagination: Pagination = {
-    pageNumber: 1,
-    pageSize: 10,
-    dataLength: 0,
 }
 
 //Sorting
@@ -58,10 +52,23 @@ interface IRolesList {
 
 const RoleListContainer: React.FC<IRolesList> = ({ View }) => {
     const { t } = useTranslation()
-
+    const { currentPreferences } = useUserPreferences()
     const { filter } = useFilterParams<FilterData>(defaultFilterValues)
 
+    //Pagination
+    const defaultPagination: Pagination = {
+        pageNumber: BASE_PAGE_NUMBER,
+        pageSize: Number(currentPreferences.defaultPerPage) || BASE_PAGE_SIZE,
+        dataLength: 0,
+    }
+
     const [pagination, setPagination] = useState(defaultPagination)
+
+    useEffect(() => {
+        if (currentPreferences.defaultPerPage && currentPreferences.defaultPerPage.length > 0)
+            setPagination((prevPagination) => ({ ...prevPagination, pageSize: Number(currentPreferences.defaultPerPage) }))
+    }, [currentPreferences.defaultPerPage])
+
     const [roleToDelete, setRoleToDelete] = useState<Role>()
 
     const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { isEqual } from 'lodash'
 
 import { useAuth } from '../auth/authContext'
 
@@ -41,6 +42,7 @@ export enum UpdatePreferencesReturnEnum {
 interface UserPreferencesContextValue {
     currentPreferences: IUserPreferences & WizardSettings
     updateUserPreferences: (preferencesData: IUserPreferences & WizardSettings) => UpdatePreferencesReturnEnum
+    isLoadingUserPreferences: boolean
 }
 
 const DEFAULT_PREFERENCES: IUserPreferences & WizardSettings = {
@@ -57,17 +59,27 @@ const DEFAULT_PREFERENCES: IUserPreferences & WizardSettings = {
 const UserPreferences = createContext<UserPreferencesContextValue>({
     currentPreferences: DEFAULT_PREFERENCES,
     updateUserPreferences: () => UpdatePreferencesReturnEnum.SUCCESS,
+    isLoadingUserPreferences: true,
 })
 
 const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { i18n } = useTranslation()
     const {
-        state: { user },
+        state: { user, token },
     } = useAuth()
     const localStorageKey = META_PREFERENCES_KEY + (user?.login ?? UNAUTHORIZED)
     const storedPreferences = localStorage.getItem(localStorageKey)
+    const [isPrefsLoading, setIsPrefsLoading] = useState(true)
 
     const [currentPreferences, setCurrentPreferences] = useState<IUserPreferences & WizardSettings>(DEFAULT_PREFERENCES)
+
+    useEffect(() => {
+        if (token && user && isEqual(storedPreferences ? JSON.parse(storedPreferences) : DEFAULT_PREFERENCES, currentPreferences)) {
+            setIsPrefsLoading(false)
+        }
+        if (!token) setIsPrefsLoading(false)
+    }, [token, user, currentPreferences, storedPreferences])
+
     useEffect(() => {
         if (storedPreferences) setCurrentPreferences(JSON.parse(storedPreferences))
     }, [storedPreferences])
@@ -88,7 +100,11 @@ const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }
         }
     }
 
-    return <UserPreferences.Provider value={{ currentPreferences, updateUserPreferences }}>{children}</UserPreferences.Provider>
+    return (
+        <UserPreferences.Provider value={{ currentPreferences, updateUserPreferences, isLoadingUserPreferences: isPrefsLoading }}>
+            {children}
+        </UserPreferences.Provider>
+    )
 }
 
 const useUserPreferences = () => useContext(UserPreferences)

@@ -1,6 +1,6 @@
 import { LanguageSelector } from '@isdd/idsk-ui-kit/language-selector/LanguageSelector'
 import classnames from 'classnames'
-import React, { SetStateAction } from 'react'
+import React, { SetStateAction, useId } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { InfoDropDown } from './InfoDropDown'
@@ -13,6 +13,7 @@ interface INavBarHeader {
 
 export const NavBarHeader: React.FC<INavBarHeader> = ({ setShowDropDown, showDropDown }) => {
     const { t } = useTranslation()
+    const wrapperId = useId()
 
     return (
         <div className="idsk-header-web__brand ">
@@ -26,6 +27,7 @@ export const NavBarHeader: React.FC<INavBarHeader> = ({ setShowDropDown, showDro
                                 setShowDropDown={setShowDropDown}
                                 showDropDown={showDropDown}
                                 isMobile={false}
+                                controlsId={wrapperId}
                             />
                             <InfoDropDown
                                 title={`${t('navbar.sk')} `}
@@ -33,9 +35,9 @@ export const NavBarHeader: React.FC<INavBarHeader> = ({ setShowDropDown, showDro
                                 setShowDropDown={setShowDropDown}
                                 showDropDown={showDropDown}
                                 isMobile
+                                controlsId={wrapperId}
                             />
-
-                            <HeaderDropDown showDropDown={showDropDown} />
+                            <HeaderDropDown id={wrapperId} showDropDown={showDropDown} />
                         </div>
                         <div
                             className={classnames({

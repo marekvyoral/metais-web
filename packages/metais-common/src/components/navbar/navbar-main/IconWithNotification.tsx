@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { AriaAttributes, forwardRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Button } from '@isdd/idsk-ui-kit'
 
@@ -10,30 +10,19 @@ interface IIconWithNotification {
     count: number
     iconActive: string
     iconInactive: string
-    title: string
     path: string
     showAsLink: boolean
-    altText: string
-    ariaLabel: string
+    aria?: AriaAttributes
     className?: string
 }
 
 export const IconWithNotification: React.FC<IIconWithNotification> = forwardRef<HTMLAnchorElement & HTMLButtonElement, IIconWithNotification>(
-    ({ id, onClick, count, iconActive, iconInactive, title, path, showAsLink, altText, ariaLabel, className }, ref) => {
+    ({ id, onClick, count, iconActive, iconInactive, path, showAsLink, className, aria }, ref) => {
         const location = useLocation()
         return showAsLink ? (
-            <Link ref={ref} to={path} title={title} state={{ from: location }} onClick={onClick} className={className} id={id}>
+            <Link ref={ref} to={path} state={{ from: location }} onClick={onClick} className={className} id={id} {...aria}>
                 <img src={count > 0 ? iconActive : iconInactive} alt="" />
-                {count > 0 && (
-                    <>
-                        <div aria-hidden className={styles.notificationIcon}>
-                            {count}
-                        </div>
-                        <span className="govuk-visually-hidden">
-                            {title} {ariaLabel}
-                        </span>
-                    </>
-                )}
+                {count > 0 && <div className={styles.notificationIcon}>{count}</div>}
             </Link>
         ) : (
             <Button
@@ -43,20 +32,15 @@ export const IconWithNotification: React.FC<IIconWithNotification> = forwardRef<
                 id={id}
                 label={
                     <>
-                        <span className="govuk-visually-hidden" aria-label={altText}>
-                            {title}
-                        </span>
                         <img src={count > 0 ? iconActive : iconInactive} alt="" />
                         {count > 0 && (
                             <>
-                                <div className={styles.notificationIcon} aria-hidden>
-                                    {count}
-                                </div>
-                                <span className="govuk-visually-hidden">{ariaLabel}</span>
+                                <div className={styles.notificationIcon}>{count}</div>
                             </>
                         )}
                     </>
                 }
+                {...aria}
             />
         )
     },
