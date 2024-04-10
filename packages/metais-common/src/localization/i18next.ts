@@ -5,19 +5,37 @@ import { initReactI18next } from 'react-i18next'
 
 import { Languages } from './languages'
 
+import { GetAllUserInterface } from '@isdd/metais-common/api/generated/globalConfig-manager-swagger'
+
 export const LANGUAGE_STORE_KEY = 'i18nLang'
 
-export const initializeI18nInstance = (basePath = '') => {
+type InitializeI18NProps = {
+    basePath: string
+    userInterface: GetAllUserInterface
+}
+
+export const initializeI18nInstance = ({ basePath, userInterface }: InitializeI18NProps) => {
     const i18nInstance = createInstance()
+    const FALLBACK_LNG = localStorage.getItem(LANGUAGE_STORE_KEY) || Languages.SLOVAK
+
+    const isDev = import.meta.env.VITE_ENVIRONMENT === 'DEV'
 
     i18nInstance
         .use(Backend)
         .use(initReactI18next)
         .init({
             backend: {
-                loadPath: basePath + '/translations/{{lng}}.json',
+                loadPath: (lng: string[]) => {
+                    if (isDev) {
+                        return '/translations/{{lng}}.json'
+                    } else {
+                        const UPPER_CASE_LNG = lng[0].toUpperCase()
+                        const GET_ALL_URL = '/global-config/textConf/getAll'
+                        return basePath + GET_ALL_URL + `?locale=${UPPER_CASE_LNG}&userInterface=${userInterface}`
+                    }
+                },
             },
-            fallbackLng: localStorage.getItem(LANGUAGE_STORE_KEY) || Languages.SLOVAK,
+            fallbackLng: FALLBACK_LNG,
             debug: true,
             keySeparator: '.',
             ns: ['translations'],

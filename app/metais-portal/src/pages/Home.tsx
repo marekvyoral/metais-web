@@ -7,7 +7,6 @@ import HowToContent from './howto/howToContent'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { SummaryEntitiesCounts } from '@/components/summary-entities-count/SummaryEntitiesCount'
 import { LatestModifiedCiEntities } from '@/components/latest-modified-ci-entities/LatestModifiedCiEntities'
-
 export const Home: React.FC = () => {
     const { t } = useTranslation()
     return (

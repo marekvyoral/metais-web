@@ -57,7 +57,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
         return (
             <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
                 <div className={styles.labelDiv}>
-                    <label className="govuk-label" htmlFor={inputId} lang="sk">
+                    <label className={classNames('govuk-label', styles.wrap)} htmlFor={inputId} lang="sk">
                         {label} {required && t('input.requiredField')}
                     </label>
                     {info && (

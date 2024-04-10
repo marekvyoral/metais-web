@@ -40,13 +40,14 @@ const queryClient = new QueryClient({
 })
 
 const BASENAME = import.meta.env.VITE_ADMIN_URL
+const BASEPATH = import.meta.env.VITE_API_BASE_URL
 const CLIENT_ID = import.meta.env.VITE_ADMIN_AUTH_CLIENT_ID
 const SCOPE = import.meta.env.VITE_ADMIN_AUTH_SCOPE
 
 root.render(
     <React.StrictMode>
         <BrowserRouter basename={BASENAME}>
-            <I18nextProvider i18n={initializeI18nInstance(BASENAME)}>
+            <I18nextProvider i18n={initializeI18nInstance({ basePath: BASEPATH, userInterface: 'ADMIN' })}>
                 <QueryClientProvider client={queryClient}>
                     <AuthProvider authConfig={authConfig({ clientId: CLIENT_ID, redirectUri: BASENAME + '/', scope: SCOPE })}>
                         <AuthContextProvider>
