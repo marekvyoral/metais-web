@@ -48,15 +48,10 @@ interface IDocumentsListContainer {
 export const ConfigurationItemHistoryListContainer: React.FC<IDocumentsListContainer> = ({ configurationItemId, View }) => {
     const { filter, handleFilterChange } = useFilterParams<HistoryFilter>(defaultHistoryFilter)
 
-    const {
-        isLoading,
-        isError,
-        isFetching,
-        data: historyList,
-    } = useReadCiHistoryVersions(configurationItemId ?? '', mapFilterToHistoryVersionsApi(filter))
+    const { isError, isFetching, data: historyList } = useReadCiHistoryVersions(configurationItemId ?? '', mapFilterToHistoryVersionsApi(filter))
 
-    const { data: filterActions, isLoading: isActionsLoading } = useReadCiHistoryVersionsActionsList(configurationItemId)
-    const { data: filterModifiedBy, isLoading: isModifiedByLoading } = useReadCiHistoryModifiedByList(configurationItemId)
+    const { data: filterActions, isFetching: isActionsLoading } = useReadCiHistoryVersionsActionsList(configurationItemId)
+    const { data: filterModifiedBy, isFetching: isModifiedByLoading } = useReadCiHistoryModifiedByList(configurationItemId)
 
     const pagination = mapConfigurationItemHistoryListToPagination(filter, historyList)
     const [selectedColumns, setSelectedColumns] = useState<string[]>([])
@@ -68,7 +63,7 @@ export const ConfigurationItemHistoryListContainer: React.FC<IDocumentsListConta
             data={historyList}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
-            isLoading={isLoading || isFetching || isActionsLoading || isModifiedByLoading}
+            isLoading={isFetching || isActionsLoading || isModifiedByLoading}
             isError={isError}
             selectedColumns={selectedColumns}
             setSelectedColumns={setSelectedColumns}
