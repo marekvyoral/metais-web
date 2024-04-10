@@ -13,7 +13,7 @@ interface Props {
     buttonId: string
 }
 
-export const SidebarIcon = ({ section, onToggle, setIsSidebarExpanded, isExpanded, buttonId }: Props) => {
+export const SidebarIcon = ({ section, onToggle, setIsSidebarExpanded, isExpanded }: Props) => {
     const location = useLocation()
     return (
         <Link
@@ -30,7 +30,6 @@ export const SidebarIcon = ({ section, onToggle, setIsSidebarExpanded, isExpande
             <span
                 className={classNames(styles.sectionHeaderButton, styles.smallSidebarText, isExpanded && styles.expanded)}
                 aria-expanded={section.subItems ? isExpanded : undefined}
-                id={buttonId}
             >
                 {section.title}
             </span>

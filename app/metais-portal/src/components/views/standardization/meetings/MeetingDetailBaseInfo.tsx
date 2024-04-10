@@ -320,6 +320,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                                         openModal()
                                         closePopup()
                                     }}
+                                    aria-haspopup="dialog"
                                 />
                             </div>
                         )}

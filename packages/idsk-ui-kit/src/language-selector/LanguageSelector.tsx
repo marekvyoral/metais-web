@@ -52,7 +52,6 @@ export const LanguageSelector: React.FC = () => {
                             'idsk-header-web__brand-language--active': isExpanded,
                         })}
                         aria-label={isExpanded ? t('languageSelector.close') ?? '' : t('languageSelector.open') ?? ''}
-                        aria-expanded={isExpanded}
                     >
                         {t(`language.${i18n.language}`)}
                         <span className={classnames('idsk-header-web__link-arrow')} />

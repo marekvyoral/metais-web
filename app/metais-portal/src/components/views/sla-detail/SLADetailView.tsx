@@ -294,6 +294,7 @@ export const SlaDetailView: React.FC<IView> = ({
                                                             closePopup()
                                                         }}
                                                         label={t('sla-detail.edit')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
                                                     <ButtonLink
                                                         type="button"
@@ -302,6 +303,7 @@ export const SlaDetailView: React.FC<IView> = ({
                                                             closePopup()
                                                         }}
                                                         label={t('sla-detail.invalidate')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
                                                 </>
                                             )}
