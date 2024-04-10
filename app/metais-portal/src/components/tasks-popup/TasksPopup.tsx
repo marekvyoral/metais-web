@@ -34,14 +34,12 @@ export const TasksPopup: React.FC = () => {
     const popupTrigger = (
         <IconWithNotification
             id={triggerId}
-            title={t('tasks.tasks')}
             iconActive={FactCheckBlackIcon}
             iconInactive={FactCheckIcon}
             count={(tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0)}
             path=""
             showAsLink={false}
-            altText={t('tasks.tasks')}
-            ariaLabel={youHaveCountTitle}
+            aria={{ 'aria-label': `${t('tasks.tasks')}: ${youHaveCountTitle}` }}
             className={styles.tasksPopupBtn}
         />
     )

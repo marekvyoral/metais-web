@@ -1,6 +1,6 @@
 import { IFilterParams, useFilter } from '@isdd/metais-common/hooks/useFilter'
 import classNames from 'classnames'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useId, useState } from 'react'
 import { Control, FieldValues, SubmitHandler, UseFormClearErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ObjectSchema } from 'yup'
@@ -49,6 +49,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
     const [isOpen, setOpen] = useState(shouldBeFilterOpen || !!onlyForm)
     const [showScrollbar, setShowscrollbar] = useState(isOpen)
     const [showCleared, setShowCleared] = useState(false)
+    const contentId = useId()
 
     if (!heading) {
         heading = (
@@ -116,6 +117,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                                     tabIndex={0}
                                     data-category-name=""
                                     aria-label={isOpen ? t('filter.collapse').toString() : t('filter.expand').toString()}
+                                    aria-controls={contentId}
                                     type="button"
                                 >
                                     {isOpen ? t('filter.collapse') : t('filter.expand')}
@@ -125,7 +127,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                     </div>
                 )}
                 {!onlySearch && (
-                    <div aria-hidden={!isOpen} className={classNames({ [styles.hidden]: !isOpen })}>
+                    <div id={contentId} aria-hidden={!isOpen} className={classNames({ [styles.hidden]: !isOpen })}>
                         <form
                             className={classNames(styles.animate, isOpen && styles.grow, showScrollbar && styles.form)}
                             action="#"

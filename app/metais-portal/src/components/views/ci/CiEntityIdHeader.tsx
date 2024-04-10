@@ -106,6 +106,7 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                                                         handleInvalidate(entityListData, () => setShowInvalidate(true), open)
                                                     }}
                                                     label={t('ciType.invalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -120,11 +121,16 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                                                         handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)
                                                     }}
                                                     label={t('ciType.revalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
                                         <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
-                                            <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
+                                            <ButtonLink
+                                                onClick={() => setShowChangeOwner(true)}
+                                                label={t('ciType.changeOfOwner')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
+                                            />
                                         </Can>
                                     </div>
                                 )

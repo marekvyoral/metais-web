@@ -5,7 +5,7 @@ import { NavBarMain } from '@isdd/metais-common/components/navbar/navbar-main/Na
 import { NavMenu } from '@isdd/metais-common/components/navbar/navmenu/NavMenu'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGetNotificationsWithRefresh } from '@isdd/metais-common/hooks/useGetNotificationsWithRefresh'
 import { useGetCurrentSystemState } from '@isdd/metais-common/api/generated/monitoring-swagger'
@@ -25,19 +25,22 @@ export const Navbar: React.FC = () => {
     const isUserLogged = !!user
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
     const [showDropDown, setShowDropDown] = useState<boolean>(false)
+    const menuId = useId()
 
     const { data: notificationsData } = useGetNotificationsWithRefresh({ filter: { perPage: 1, pageNumber: 1 }, enabled: isUserLogged })
 
     const Notifications = () => (
         <IconWithNotification
-            title={t('navbar.notifications')}
             iconActive={NotificationBlackIcon}
             iconInactive={NotificationIcon}
             count={notificationsData?.pagination?.totalUnreadedItems ?? 0}
             path={NavigationSubRoutes.NOTIFICATIONS}
             showAsLink
-            altText={t('navbar.notifications')}
-            ariaLabel={t('notifications.youHave', { count: notificationsData?.pagination?.totalUnreadedItems ?? 0 })}
+            aria={{
+                'aria-label': `${t('navbar.notifications')}: ${t('notifications.youHave', {
+                    count: notificationsData?.pagination?.totalUnreadedItems ?? 0,
+                })}`,
+            }}
         />
     )
 
@@ -62,10 +65,20 @@ export const Navbar: React.FC = () => {
 
                     <NavBarHeader setShowDropDown={setShowDropDown} showDropDown={showDropDown} />
 
-                    <NavBarMain isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} iconGroupItems={iconGroupItems} />
+                    <NavBarMain
+                        menuId={menuId}
+                        isMenuExpanded={isMenuExpanded}
+                        setIsMenuExpanded={setIsMenuExpanded}
+                        iconGroupItems={iconGroupItems}
+                    />
 
                     <div className="idsk-header-web__nav--divider" />
-                    <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={topMenuWithoutPOAndMonitoring} />
+                    <NavMenu
+                        id={menuId}
+                        isMenuExpanded={isMenuExpanded}
+                        setIsMenuExpanded={setIsMenuExpanded}
+                        navItems={topMenuWithoutPOAndMonitoring}
+                    />
                     {!!currentSystemState?.text && showInfoBar && (
                         <div className={styles.modalContent}>
                             <button className={styles.closeButton} onClick={() => closeInfoBar()} aria-label={t('close')}>

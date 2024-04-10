@@ -1,4 +1,4 @@
-import React, { ReactNode, RefObject, useEffect, useRef, useState, useId, cloneElement, ReactElement } from 'react'
+import React, { ReactNode, RefObject, useEffect, useRef, useState, useId, cloneElement, ReactElement, AriaAttributes } from 'react'
 import { Popup } from 'reactjs-popup'
 import { PopupActions } from 'reactjs-popup/dist/types'
 import classNames from 'classnames'
@@ -12,13 +12,13 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 interface IButtonPopupProps {
     popupPosition?: 'left' | 'right'
     buttonLabel?: string
-    buttonAriaLabel?: string
     popupContent: (closePopup: () => void) => ReactNode
     buttonClassName?: string
     contentClassNameReplacement?: string
     disabled?: boolean
     disabledTooltip?: ReactNode
     customTrigger?: ({ isExpanded }: { isExpanded: boolean }) => ReactElement
+    triggerAria?: AriaAttributes
 }
 
 export const useTabbing = (contentRef: RefObject<HTMLElement>, active = true) => {
@@ -63,7 +63,6 @@ export const useTabbing = (contentRef: RefObject<HTMLElement>, active = true) =>
 
 export const ButtonPopup: React.FC<IButtonPopupProps> = ({
     buttonLabel,
-    buttonAriaLabel,
     popupContent,
     disabled,
     disabledTooltip,
@@ -71,10 +70,12 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({
     buttonClassName,
     contentClassNameReplacement,
     customTrigger,
+    triggerAria,
 }) => {
     const popupRef = useRef<PopupActions>(null)
     const contentRef = useRef(null)
     const triggerId = useId()
+    const contentId = useId()
     const [isExpanded, setIsExpanded] = useState<boolean>(false)
     const label = (
         <div className={styles.buttonLabel}>
@@ -88,6 +89,8 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({
     const trigger = customTrigger ? (
         cloneElement(customTrigger({ isExpanded }), {
             id: triggerId,
+            'aria-expanded': isExpanded,
+            'aria-controls': contentId,
         })
     ) : (
         <Button
@@ -95,8 +98,10 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({
             label={label}
             variant="secondary"
             className={classNames(buttonClassName, styles.button)}
-            aria-label={buttonAriaLabel}
             aria-expanded={isExpanded}
+            aria-haspopup
+            aria-controls={contentId}
+            {...triggerAria}
         />
     )
 
@@ -129,7 +134,7 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({
                 document.getElementById(triggerId)?.focus()
             }}
         >
-            <div ref={contentRef} className={contentClassNameReplacement ?? styles.whiteBackground}>
+            <div ref={contentRef} id={contentId} className={contentClassNameReplacement ?? styles.whiteBackground}>
                 {popupContent(() => popupRef.current?.close())}
             </div>
         </Popup>
