@@ -222,12 +222,13 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                             buttonClassName={styles.noWrap}
                             buttonLabel={t('evaluation.exportBtn')}
                             popupPosition="right"
-                            popupContent={() => {
+                            popupContent={(closePopup) => {
                                 return (
                                     <div className={styles.buttonLinksDiv}>
                                         <div className={styles.buttonPopupItem}>
                                             <ButtonLink
                                                 onClick={() => {
+                                                    closePopup()
                                                     setOpenExport({ isOpen: true, type: EContainerType.KRIS })
                                                 }}
                                                 label={t('evaluation.exportKris')}
@@ -237,6 +238,7 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                                         <div className={styles.buttonPopupItem}>
                                             <ButtonLink
                                                 onClick={() => {
+                                                    closePopup()
                                                     setOpenExport({ isOpen: true, type: EContainerType.ISVS })
                                                 }}
                                                 label={t('evaluation.exportIsvs')}
@@ -246,6 +248,7 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                                         <div>
                                             <ButtonLink
                                                 onClick={() => {
+                                                    closePopup()
                                                     setOpenExport({ isOpen: true, type: EContainerType.KS })
                                                 }}
                                                 label={t('evaluation.exportKs')}

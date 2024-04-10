@@ -126,7 +126,7 @@ export const ProjectEntityIdHeader: React.FC<Props> = ({
                             buttonClassName={styles.noWrap}
                             buttonLabel={t('ciType.moreButton')}
                             popupPosition="right"
-                            popupContent={() => {
+                            popupContent={(closePopup) => {
                                 return (
                                     <div className={styles.buttonLinksDiv}>
                                         <Tooltip
@@ -136,7 +136,16 @@ export const ProjectEntityIdHeader: React.FC<Props> = ({
                                             tooltipContent={(open) => (
                                                 <ButtonLink
                                                     disabled={isInvalidated}
-                                                    onClick={() => handleInvalidate(entityListData, () => setShowInvalidate(true), open)}
+                                                    onClick={() =>
+                                                        handleInvalidate(
+                                                            entityListData,
+                                                            () => {
+                                                                closePopup()
+                                                                setShowInvalidate(true)
+                                                            },
+                                                            open,
+                                                        )
+                                                    }
                                                     label={t('ciType.invalidateItem')}
                                                     aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
@@ -150,7 +159,16 @@ export const ProjectEntityIdHeader: React.FC<Props> = ({
                                             tooltipContent={(open) => (
                                                 <ButtonLink
                                                     disabled={!isInvalidated}
-                                                    onClick={() => handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)}
+                                                    onClick={() =>
+                                                        handleReInvalidate(
+                                                            entityListData,
+                                                            () => {
+                                                                closePopup()
+                                                                setShowReInvalidate(true)
+                                                            },
+                                                            open,
+                                                        )
+                                                    }
                                                     label={t('ciType.revalidateItem')}
                                                     aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
@@ -159,7 +177,10 @@ export const ProjectEntityIdHeader: React.FC<Props> = ({
 
                                         <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
                                             <ButtonLink
-                                                onClick={() => setShowChangeOwner(true)}
+                                                onClick={() => {
+                                                    closePopup()
+                                                    setShowChangeOwner(true)
+                                                }}
                                                 label={t('ciType.changeOfOwner')}
                                                 aria={{ 'aria-haspopup': 'dialog' }}
                                             />
