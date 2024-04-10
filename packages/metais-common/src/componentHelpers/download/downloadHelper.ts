@@ -20,7 +20,7 @@ export const downloadBlobAsFile = (blob: Blob, filename: string, inNewWindow: bo
     }
 }
 
-export const generateExportFileName = (entityName: string, extension: FileExtensionEnum) => {
+export const generateExportFileName = (entityName: string, extension: FileExtensionEnum, isCi = true) => {
     const date = new Date().toISOString()
-    return `CI-${entityName}-${date}.${extension.toLocaleLowerCase()}`
+    return `${isCi ? 'CI-' : ''}${entityName}-${date}.${extension.toLocaleLowerCase()}`
 }
