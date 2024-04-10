@@ -490,7 +490,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                         buttonClassName={styles.noWrap}
                         buttonLabel={t('ciType.moreButton')}
                         popupPosition="right"
-                        popupContent={() => {
+                        popupContent={(closePopup) => {
                             return (
                                 <div className={styles.buttonLinksDiv}>
                                     {canShowGeneratePdf() && (
@@ -503,6 +503,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                 <ButtonLink
                                                     disabled={isPdfDisabled}
                                                     onClick={() => {
+                                                        closePopup()
                                                         setGeneratePdf(true)
                                                     }}
                                                     label={t('ciType.pdfGenerateFuture')}
@@ -519,7 +520,16 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                             tooltipContent={(open) => (
                                                 <ButtonLink
                                                     disabled={isInvalidated}
-                                                    onClick={() => handleInvalidate(entityListData, () => setShowInvalidate(true), open)}
+                                                    onClick={() =>
+                                                        handleInvalidate(
+                                                            entityListData,
+                                                            () => {
+                                                                closePopup()
+                                                                setShowInvalidate(true)
+                                                            },
+                                                            open,
+                                                        )
+                                                    }
                                                     label={t('ciType.invalidateItem')}
                                                     aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
@@ -534,7 +544,10 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                             tooltipContent={() => (
                                                 <ButtonLink
                                                     disabled={!isInvalidated}
-                                                    onClick={() => setRevalidate(true)}
+                                                    onClick={() => {
+                                                        closePopup()
+                                                        setRevalidate(true)
+                                                    }}
                                                     label={t('ciType.reInvalidateCi')}
                                                     aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
@@ -550,7 +563,10 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                 tooltipContent={() => (
                                                     <ButtonLink
                                                         disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
-                                                        onClick={() => setShowApprove(true)}
+                                                        onClick={() => {
+                                                            closePopup()
+                                                            setShowApprove(true)
+                                                        }}
                                                         label={t('ciType.approve')}
                                                         aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
@@ -567,7 +583,10 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                             tooltipContent={() => (
                                                 <ButtonLink
                                                     disabled={!isEvaluation}
-                                                    onClick={() => setShowReturnToWorkout(true)}
+                                                    onClick={() => {
+                                                        closePopup()
+                                                        setShowReturnToWorkout(true)
+                                                    }}
                                                     label={t('ciType.return_to_workout')}
                                                     aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
@@ -599,7 +618,10 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                 tooltipContent={() => (
                                                     <ButtonLink
                                                         disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
-                                                        onClick={handleSignDoc}
+                                                        onClick={() => {
+                                                            closePopup()
+                                                            handleSignDoc()
+                                                        }}
                                                         label={t('ciType.signDocument')}
                                                         aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
@@ -616,7 +638,10 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                 tooltipContent={() => (
                                                     <ButtonLink
                                                         disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
-                                                        onClick={handleSignDocFuture}
+                                                        onClick={() => {
+                                                            closePopup()
+                                                            handleSignDocFuture()
+                                                        }}
                                                         label={t('ciType.signDocumentFuture')}
                                                         aria={{ 'aria-haspopup': 'dialog' }}
                                                     />

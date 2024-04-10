@@ -139,12 +139,13 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                     <ButtonPopup
                                         buttonLabel={t('codeListDetail.button.more')}
                                         popupPosition="right"
-                                        popupContent={() => {
+                                        popupContent={(closePopup) => {
                                             return (
                                                 <div className={headerStyles.buttonLinksDiv}>
                                                     <Can I={Actions.ACCEPT} a={Subjects.DETAIL}>
                                                         <ButtonLink
                                                             onClick={() => {
+                                                                closePopup()
                                                                 setConfirmationModal({
                                                                     action: ApiRequestAction.ACCEPT,
                                                                     isOpen: true,
@@ -159,6 +160,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                     <Can I={Actions.ACCEPT_SZZC} a={Subjects.DETAIL}>
                                                         <ButtonLink
                                                             onClick={() => {
+                                                                closePopup()
                                                                 setConfirmationModal({
                                                                     action: ApiRequestAction.ACCEPTSZZC,
                                                                     isOpen: true,
@@ -173,6 +175,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                     <Can I={Actions.CANCEL_REQUEST} a={Subjects.DETAIL}>
                                                         <ButtonLink
                                                             onClick={() => {
+                                                                closePopup()
                                                                 setConfirmationModal({
                                                                     action: ApiRequestAction.CANCEL,
                                                                     isOpen: true,
@@ -187,6 +190,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                     <Can I={Actions.REJECT} a={Subjects.DETAIL}>
                                                         <ButtonLink
                                                             onClick={() => {
+                                                                closePopup()
                                                                 setConfirmationModal({
                                                                     action: ApiRequestAction.REJECT,
                                                                     isOpen: true,
@@ -201,6 +205,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                     <Can I={Actions.MOVE_TO_KSISVS} a={Subjects.DETAIL}>
                                                         <ButtonLink
                                                             onClick={() => {
+                                                                closePopup()
                                                                 setConfirmationModal({
                                                                     action: ApiRequestAction.ACCEPTKSISVS,
                                                                     isOpen: true,
@@ -215,6 +220,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                     <Can I={Actions.SEND} a={Subjects.DETAIL}>
                                                         <ButtonLink
                                                             onClick={() => {
+                                                                closePopup()
                                                                 setConfirmationModal({
                                                                     action: ApiRequestAction.SEND,
                                                                     isOpen: true,
@@ -227,12 +233,18 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                         />
                                                     </Can>
                                                     <ButtonLink
-                                                        onClick={() => setIsExportModalOpen(true)}
+                                                        onClick={() => {
+                                                            closePopup()
+                                                            setIsExportModalOpen(true)
+                                                        }}
                                                         label={t('codeListList.buttons.EXPORT')}
                                                         aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
                                                     <ButtonLink
-                                                        onClick={() => setIsImportModalOpen(true)}
+                                                        onClick={() => {
+                                                            closePopup()
+                                                            setIsImportModalOpen(true)
+                                                        }}
                                                         label={t('codeListList.buttons.IMPORT')}
                                                         aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
