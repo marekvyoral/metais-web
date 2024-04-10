@@ -8,26 +8,12 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useStandardsSwaggerClient } from '../hooks/useStandardsSwaggerClient'
-export type AcceptMeetingRequestInternalActorParams = {
-    meetingRequestId: number
-    token: string
-    redirectUrl: string
-}
-
-export type RejectMeetingRequestInternalActorParams = {
-    meetingRequestId: number
-    token: string
-    redirectUrl: string
-}
-
 export type AcceptMeetingRequestParams = {
     token: string
-    redirectUrl: string
 }
 
 export type RejectMeetingRequestParams = {
     token: string
-    redirectUrl: string
 }
 
 export type CancelMeetingRequest200 = { [key: string]: any }
@@ -2470,112 +2456,6 @@ export const useAcceptMeetingRequest = <TData = Awaited<ReturnType<ReturnType<ty
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useAcceptMeetingRequestQueryOptions(id, params, options)
-
-    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
-
-    query.queryKey = queryOptions.queryKey
-
-    return query
-}
-
-export const useRejectMeetingRequestInternalActorHook = () => {
-    const rejectMeetingRequestInternalActor = useStandardsSwaggerClient<void>()
-
-    return (userId: string, params: RejectMeetingRequestInternalActorParams, signal?: AbortSignal) => {
-        return rejectMeetingRequestInternalActor({ url: `/meetings/participate/internalActor/${userId}/reject`, method: 'get', params, signal })
-    }
-}
-
-export const getRejectMeetingRequestInternalActorQueryKey = (userId: string, params: RejectMeetingRequestInternalActorParams) =>
-    [`/meetings/participate/internalActor/${userId}/reject`, ...(params ? [params] : [])] as const
-
-export const useRejectMeetingRequestInternalActorQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestInternalActorHook>>>,
-    TError = ApiError,
->(
-    userId: string,
-    params: RejectMeetingRequestInternalActorParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestInternalActorHook>>>, TError, TData> },
-): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestInternalActorHook>>>, TError, TData> & { queryKey: QueryKey } => {
-    const { query: queryOptions } = options ?? {}
-
-    const queryKey = queryOptions?.queryKey ?? getRejectMeetingRequestInternalActorQueryKey(userId, params)
-
-    const rejectMeetingRequestInternalActor = useRejectMeetingRequestInternalActorHook()
-
-    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestInternalActorHook>>>> = ({ signal }) =>
-        rejectMeetingRequestInternalActor(userId, params, signal)
-
-    return { queryKey, queryFn, enabled: !!userId, ...queryOptions }
-}
-
-export type RejectMeetingRequestInternalActorQueryResult = NonNullable<
-    Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestInternalActorHook>>>
->
-export type RejectMeetingRequestInternalActorQueryError = ApiError
-
-export const useRejectMeetingRequestInternalActor = <
-    TData = Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestInternalActorHook>>>,
-    TError = ApiError,
->(
-    userId: string,
-    params: RejectMeetingRequestInternalActorParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestInternalActorHook>>>, TError, TData> },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useRejectMeetingRequestInternalActorQueryOptions(userId, params, options)
-
-    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
-
-    query.queryKey = queryOptions.queryKey
-
-    return query
-}
-
-export const useAcceptMeetingRequestInternalActorHook = () => {
-    const acceptMeetingRequestInternalActor = useStandardsSwaggerClient<void>()
-
-    return (userId: string, params: AcceptMeetingRequestInternalActorParams, signal?: AbortSignal) => {
-        return acceptMeetingRequestInternalActor({ url: `/meetings/participate/internalActor/${userId}/accept`, method: 'get', params, signal })
-    }
-}
-
-export const getAcceptMeetingRequestInternalActorQueryKey = (userId: string, params: AcceptMeetingRequestInternalActorParams) =>
-    [`/meetings/participate/internalActor/${userId}/accept`, ...(params ? [params] : [])] as const
-
-export const useAcceptMeetingRequestInternalActorQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestInternalActorHook>>>,
-    TError = ApiError,
->(
-    userId: string,
-    params: AcceptMeetingRequestInternalActorParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestInternalActorHook>>>, TError, TData> },
-): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestInternalActorHook>>>, TError, TData> & { queryKey: QueryKey } => {
-    const { query: queryOptions } = options ?? {}
-
-    const queryKey = queryOptions?.queryKey ?? getAcceptMeetingRequestInternalActorQueryKey(userId, params)
-
-    const acceptMeetingRequestInternalActor = useAcceptMeetingRequestInternalActorHook()
-
-    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestInternalActorHook>>>> = ({ signal }) =>
-        acceptMeetingRequestInternalActor(userId, params, signal)
-
-    return { queryKey, queryFn, enabled: !!userId, ...queryOptions }
-}
-
-export type AcceptMeetingRequestInternalActorQueryResult = NonNullable<
-    Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestInternalActorHook>>>
->
-export type AcceptMeetingRequestInternalActorQueryError = ApiError
-
-export const useAcceptMeetingRequestInternalActor = <
-    TData = Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestInternalActorHook>>>,
-    TError = ApiError,
->(
-    userId: string,
-    params: AcceptMeetingRequestInternalActorParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestInternalActorHook>>>, TError, TData> },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useAcceptMeetingRequestInternalActorQueryOptions(userId, params, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
