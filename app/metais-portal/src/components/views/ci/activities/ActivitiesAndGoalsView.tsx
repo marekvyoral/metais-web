@@ -4,10 +4,11 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/consta
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_CIEL } from '@isdd/metais-common/constants'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { IView, TableCols, defaultFilter } from '@/components/containers/ActivitiesAndGoalsListContainer'
 import { CommitmentToComplyingWithGoals } from '@/components/commitment-to-complying-with-goals/CommitmentToComplyingWithGoals'
@@ -36,6 +37,16 @@ export const ActivitiesAndGoalsView: React.FC<IView> = ({
     const location = useLocation()
 
     const hasSomeCheckedTableItem = !!tableData?.some((item) => item.checked)
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    const [success, setSuccess] = useState<boolean>()
+    const [error, setError] = useState<boolean>()
+
+    useEffect(() => {
+        if (success || error || isMutateSuccess || isMutateError) {
+            scrollToMutationFeedback()
+        }
+    }, [error, isMutateError, isMutateSuccess, scrollToMutationFeedback, success])
 
     const columns: Array<ColumnDef<TableCols>> = [
         {
@@ -104,14 +115,6 @@ export const ActivitiesAndGoalsView: React.FC<IView> = ({
 
     return (
         <QueryFeedback loading={isLoading || isMutateLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
-            <MutationFeedback
-                success={isMutateSuccess}
-                error={isMutateError}
-                onMessageClose={() => {
-                    resetSuccess()
-                    resetError()
-                }}
-            />
             <ActionsOverTable
                 pagination={{ pageNumber: filter.pageNumber, pageSize: filter.pageSize, dataLength: totaltems ?? 0 }}
                 handleFilterChange={handleFilterChange}
@@ -121,9 +124,21 @@ export const ActivitiesAndGoalsView: React.FC<IView> = ({
             />
 
             <Filter form={() => <></>} defaultFilterValues={defaultFilter} onlySearch />
-
+            <div ref={wrapperRef} />
+            <MutationFeedback
+                success={success || isMutateSuccess}
+                error={error || isMutateError}
+                onMessageClose={() => {
+                    setSuccess(undefined)
+                    setError(undefined)
+                    resetSuccess()
+                    resetError()
+                }}
+            />
             {ciType == ENTITY_CIEL && (
                 <CommitmentToComplyingWithGoals
+                    setError={setError}
+                    setSuccess={setSuccess}
                     isOwner={!!isOwnerOfCi}
                     ciItemData={ciItemData}
                     isCiItemInvalidated={isInvalidated}
