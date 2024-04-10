@@ -1,32 +1,34 @@
 import classNames from 'classnames'
-import React, { PropsWithChildren, forwardRef } from 'react'
+import React, { AriaAttributes, PropsWithChildren, forwardRef } from 'react'
 
 import styles from './styles.module.scss'
 
 interface ITextBodyProps extends PropsWithChildren {
+    id?: string
     size?: 'S' | 'L'
     className?: string
     lang?: string | undefined
+    aria?: AriaAttributes
 }
 
-export const TextBody = forwardRef<HTMLParagraphElement, ITextBodyProps>(({ children, size, className, lang }, ref) => {
+export const TextBody = forwardRef<HTMLParagraphElement, ITextBodyProps>(({ id, children, size, className, lang, aria }, ref) => {
     return (
-        <>
-            {!size && (
-                <p lang={lang} ref={ref} className={classNames('govuk-body', styles.lineMaxWidth, className)}>
-                    {children}
-                </p>
+        <p
+            id={id}
+            lang={lang}
+            ref={ref}
+            className={classNames(
+                {
+                    'govuk-body': !size,
+                    'govuk-body-s': size === 'S',
+                    'govuk-body-l': size === 'L',
+                },
+                styles.lineMaxWidth,
+                className,
             )}
-            {size === 'S' && (
-                <p lang={lang} ref={ref} className={classNames('govuk-body-s', styles.lineMaxWidth, className)}>
-                    {children}
-                </p>
-            )}
-            {size === 'L' && (
-                <p lang={lang} ref={ref} className={classNames('govuk-body-l', styles.lineMaxWidth, className)}>
-                    {children}
-                </p>
-            )}
-        </>
+            {...aria}
+        >
+            {children}
+        </p>
     )
 })
