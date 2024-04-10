@@ -1,11 +1,18 @@
 import { IncidentRelationshipSetUi, useReadRelationships } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { CiType, RelatedCiTypePreview, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import {
+    CiType,
+    RelatedCiTypePreview,
+    RelationshipCode,
+    RelationshipType,
+    useGenerateCode,
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 import { useGetRelationshipTypeWrapper } from '@isdd/metais-common/hooks/useRelationshipType.hook'
 import { useListRelatedCiTypesWrapper } from '@isdd/metais-common/hooks/useListRelatedCiTypes.hook'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 import { filterRelatedList } from '@/componentHelpers/new-relation'
 
@@ -17,6 +24,7 @@ export interface INewCiRelationData {
     constraintsData: (EnumType | undefined)[]
     unitsData: EnumType | undefined
     ciTypeData: CiType | undefined
+    generatedRelCode?: RelationshipCode | undefined
 }
 
 export interface ISelectedRelationTypeState {
@@ -70,6 +78,20 @@ export const useNewCiRelationHook = ({ configurationItemId, entityName, tabName 
         query: { enabled: !!firstRelatedItemTechName },
     })
 
+    const hasRelCodeAttribute = relationTypeData?.attributes?.find((item) => item.technicalName == ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais)
+    const {
+        data: generatedRelCode,
+        isLoading: generatedRelCodeLoading,
+        isError: generatedRelCodeError,
+        fetchStatus: generatedRelCodeFetchStatus,
+    } = useGenerateCode(selectedRelationTypeTechnicalName, {
+        query: {
+            refetchOnMount: false,
+            enabled: !!selectedRelationTypeTechnicalName && !!hasRelCodeAttribute,
+            cacheTime: 0,
+        },
+    })
+
     const {
         isLoading: isDetailDataLoading,
         isError: isDetailDataError,
@@ -81,13 +103,34 @@ export const useNewCiRelationHook = ({ configurationItemId, entityName, tabName 
         isEntityStructureError: isRelationTypeDataError,
     })
 
-    const isLoading = [isReadRelationshipsLoading, isRelatedListLoading, isRelationTypeDataLoading, isDetailDataLoading, isCiTypeLoading].some(
-        (item) => item,
-    )
-    const isError = [isReadRelationshipsError, isRelatedListError, isRelationTypeDataError, isDetailDataError, isCiTypeError].some((item) => item)
+    const isLoading = [
+        isReadRelationshipsLoading,
+        isRelatedListLoading,
+        isRelationTypeDataLoading,
+        isDetailDataLoading,
+        isCiTypeLoading,
+        generatedRelCodeLoading && generatedRelCodeFetchStatus != 'idle',
+    ].some((item) => item)
+    const isError = [
+        isReadRelationshipsError,
+        isRelatedListError,
+        isRelationTypeDataError,
+        isDetailDataError,
+        isCiTypeError,
+        generatedRelCodeError,
+    ].some((item) => item)
 
     return {
-        data: { relatedListAsSources, relatedListAsTargets, readRelationShipsData, relationTypeData, constraintsData, unitsData, ciTypeData },
+        data: {
+            relatedListAsSources,
+            relatedListAsTargets,
+            readRelationShipsData,
+            relationTypeData,
+            constraintsData,
+            unitsData,
+            ciTypeData,
+            generatedRelCode,
+        },
         selectedRelationTypeState: { selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName },
         isLoading: isLoading,
         isError: isError,

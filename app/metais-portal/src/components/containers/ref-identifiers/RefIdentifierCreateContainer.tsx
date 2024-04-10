@@ -1,6 +1,6 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { ATTRIBUTE_NAME, RELATION_TYPE, RefIdentifierTypeEnum } from '@isdd/metais-common/api'
-import { useStoreConfigurationItem, useStoreRelationship } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { AttributeUiValue, useStoreConfigurationItem, useStoreRelationship } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { v4 as uuidV4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
+import { useGenerateCodeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from '@/components/create-entity/createEntityHelpers'
 import { RefIdentifierCreateView } from '@/components/views/ref-identifiers/RefIdentifierCreateView'
@@ -105,6 +106,7 @@ export const RefIdentifierCreateContainer: React.FC = () => {
         return { ownerRoleGid, uuid }
     }
 
+    const generateRelCode = useGenerateCodeHook()
     const handleTemplateUriSubmit = async (formData: RefTemplateUriFormType, isSend: boolean) => {
         const isExisting = await checkUriIfExist(
             ATTRIBUTE_NAME.Profil_Individuum_zaklad_uri,
@@ -114,6 +116,7 @@ export const RefIdentifierCreateContainer: React.FC = () => {
             return setIsUriExist(true)
         }
         const { ownerRoleGid, uuid } = await createCiItem(formData, isSend)
+        const relCode = await generateRelCode(RELATION_TYPE.Individuum_je_typu_DatovyPrvok)
         await createRelations({
             data: {
                 type: RELATION_TYPE.Individuum_je_typu_DatovyPrvok,
@@ -121,7 +124,7 @@ export const RefIdentifierCreateContainer: React.FC = () => {
                 uuid: uuidV4(),
                 endUuid: formData[RefTemplateUriFormTypeEnum.TEMPLATE_URI],
                 owner: ownerRoleGid,
-                attributes: [],
+                attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: relCode.code as unknown as AttributeUiValue }],
             },
         })
     }
@@ -136,6 +139,7 @@ export const RefIdentifierCreateContainer: React.FC = () => {
         }
         const { ownerRoleGid, uuid } = await createCiItem(formData, isSend)
 
+        const relCodeZC = await generateRelCode(RELATION_TYPE.URIDataset_definuje_uri_ZC)
         await createRelations({
             data: {
                 type: RELATION_TYPE.URIDataset_definuje_uri_ZC,
@@ -143,9 +147,10 @@ export const RefIdentifierCreateContainer: React.FC = () => {
                 uuid: uuidV4(),
                 endUuid: formData[RefDatasetFormTypeEnum.DATA_CODE],
                 owner: ownerRoleGid,
-                attributes: [],
+                attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: relCodeZC.code as unknown as AttributeUiValue }],
             },
         })
+        const relCodeDataPrvok = await generateRelCode(RELATION_TYPE.URIDataset_obsahuje_DatovyPrvok)
         await createRelations({
             data: {
                 type: RELATION_TYPE.URIDataset_obsahuje_DatovyPrvok,
@@ -153,12 +158,13 @@ export const RefIdentifierCreateContainer: React.FC = () => {
                 uuid: uuidV4(),
                 endUuid: formData[RefDatasetFormTypeEnum.DATA_ITEM],
                 owner: ownerRoleGid,
-                attributes: [],
+                attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: relCodeDataPrvok.code as unknown as AttributeUiValue }],
             },
         })
     }
     const handleDataItemSubmit = async (formData: RefDataItemFormType, isSend: boolean) => {
         const { ownerRoleGid, uuid } = await createCiItem(formData, isSend)
+        const relCodeGestor = await generateRelCode(RELATION_TYPE.PO_je_gestor_DatovyPrvok)
         await createRelations({
             data: {
                 type: RELATION_TYPE.PO_je_gestor_DatovyPrvok,
@@ -166,11 +172,12 @@ export const RefIdentifierCreateContainer: React.FC = () => {
                 uuid: uuidV4(),
                 endUuid: uuid,
                 owner: ownerRoleGid,
-                attributes: [],
+                attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: relCodeGestor.code as unknown as AttributeUiValue }],
             },
         })
 
-        formData[RefDataItemFormTypeEnum.DATA_ITEM].forEach((itemId) => {
+        formData[RefDataItemFormTypeEnum.DATA_ITEM].forEach(async (itemId) => {
+            const relCodeSklada = await generateRelCode(RELATION_TYPE.DatovyPrvok_sa_sklada_DatovyPrvok)
             createRelations({
                 data: {
                     type: RELATION_TYPE.DatovyPrvok_sa_sklada_DatovyPrvok,
@@ -178,7 +185,7 @@ export const RefIdentifierCreateContainer: React.FC = () => {
                     uuid: uuidV4(),
                     endUuid: itemId,
                     owner: ownerRoleGid,
-                    attributes: [],
+                    attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: relCodeSklada.code as unknown as AttributeUiValue }],
                 },
             })
         })
@@ -192,7 +199,7 @@ export const RefIdentifierCreateContainer: React.FC = () => {
         }
 
         const { ownerRoleGid, uuid } = await createCiItem(formData, isSend)
-
+        const relCodeKatalogGestor = await generateRelCode(RELATION_TYPE.PO_je_gestor_URIKatalog)
         await createRelations({
             data: {
                 type: RELATION_TYPE.PO_je_gestor_URIKatalog,
@@ -200,10 +207,11 @@ export const RefIdentifierCreateContainer: React.FC = () => {
                 uuid: uuidV4(),
                 endUuid: uuid,
                 owner: ownerRoleGid,
-                attributes: [],
+                attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: relCodeKatalogGestor.code as unknown as AttributeUiValue }],
             },
         })
         formData[RefCatalogFormTypeEnum.DATASET].forEach(async (itemId) => {
+            const relCodeKatalogPatri = await generateRelCode(RELATION_TYPE.URIDataset_patri_URIKatalog)
             await createRelations({
                 data: {
                     type: RELATION_TYPE.URIDataset_patri_URIKatalog,
@@ -211,7 +219,7 @@ export const RefIdentifierCreateContainer: React.FC = () => {
                     uuid: uuidV4(),
                     endUuid: uuid,
                     owner: ownerRoleGid,
-                    attributes: [],
+                    attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: relCodeKatalogPatri.code as unknown as AttributeUiValue }],
                 },
             })
         })

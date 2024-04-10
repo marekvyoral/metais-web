@@ -104,6 +104,7 @@ export enum ATTRIBUTE_NAME {
     Profil_Skolenie_pocet_volnych_miest = 'Profil_Skolenie_pocet_volnych_miest',
     Profil_Skolenie_pocet_miest = 'Profil_Skolenie_pocet_miest',
     Profil_Skolenie_zaciatok = 'Profil_Skolenie_zaciatok',
+    Gen_Profil_Rel_kod_metais = 'Gen_Profil_Rel_kod_metais',
 }
 
 export enum ATTRIBUTE_PROFILE_NAME {
