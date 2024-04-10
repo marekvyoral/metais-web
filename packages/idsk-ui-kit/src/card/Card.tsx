@@ -1,64 +1,90 @@
-import React, { PropsWithChildren } from 'react'
+import React, { AriaAttributes, PropsWithChildren, ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 
-interface Tag {
+import styles from './styles.module.scss'
+
+export interface Tag {
     title: string
     href: string
 }
 interface Image {
     src: string
     alt: string
+    aria?: AriaAttributes
 }
 
 interface ICardProps extends PropsWithChildren {
     variant?: 'basic' | 'secondary' | 'secondary-horizontal' | 'simple' | 'hero' | 'basic-variant' | 'profile-vertical' | 'profile-horizontal'
     tag1?: Tag
     tag2?: Tag
+    headerTag1?: { label: string; value: string }
+    headerTag2?: { label: string; value: string }
     title: string
     description?: string
-    date?: string
+    date?: string | ReactElement
     img?: Image
     cardHref: string
 }
 
-export const Card: React.FC<ICardProps> = ({ variant = 'basic', tag1, tag2, title, description, date, img, cardHref, children }) => {
+export const Card: React.FC<ICardProps> = ({
+    variant = 'basic',
+    tag1,
+    tag2,
+    title,
+    description,
+    date,
+    img,
+    cardHref,
+    children,
+    headerTag1,
+    headerTag2,
+}) => {
     return (
-        <div className={`idsk-card idsk-card-${variant}`}>
+        <div className={`idsk-card idsk-card-${variant} ${styles.fullWidth}`}>
             {img && (
                 <a href={cardHref} title={title}>
-                    <img className={`idsk-card-img idsk-card-img-${variant}`} src={img.src} alt={img.alt} aria-hidden="true" />
+                    <img className={`idsk-card-img idsk-card-img-${variant}`} src={img.src} alt={img.alt} {...img.aria} />
                 </a>
             )}
 
             <div className={`idsk-card-content idsk-card-content-${variant}`}>
                 <div className="idsk-card-meta-container">
-                    {date && (
-                        <span className="idsk-card-meta idsk-card-meta-date">
-                            <Link to={cardHref} className="govuk-link" title={`Pridané dňa: ${date}`}>
-                                {date}
-                            </Link>
-                        </span>
-                    )}
-                    {tag1?.title && (
+                    {date && <span className="idsk-card-meta idsk-card-meta-date">{date}</span>}
+                    {tag1 && (
                         <span className="idsk-card-meta idsk-card-meta-tag">
-                            <Link to={tag1.href} className="govuk-link" title={tag1.title}>
+                            <Link to={tag1.href} className="govuk-link">
                                 {tag1.title}
                             </Link>
                         </span>
                     )}
-                    {tag2?.title && (
+                    {tag2 && (
                         <span className="idsk-card-meta idsk-card-meta-tag">
-                            <Link to={tag2.href} className="govuk-link" title={tag2.title}>
+                            <Link to={tag2.href} className="govuk-link">
                                 {tag2.title}
                             </Link>
                         </span>
                     )}
                 </div>
-
-                <div className={`idsk-heading idsk-heading-${variant}`}>
-                    <Link to={cardHref} className="idsk-card-title govuk-link" title={title}>
+                <div className={`idsk-heading idsk-heading-${variant} ${styles.headerWithTags}`}>
+                    <Link to={cardHref} className="idsk-card-title govuk-link">
                         {title}
                     </Link>
+                    {(headerTag1 || headerTag2) && (
+                        <dl className={styles.tagWrapper}>
+                            {headerTag1?.value && (
+                                <>
+                                    <dt className="govuk-visually-hidden">{headerTag1.label}</dt>
+                                    <dd className="govuk-tag govuk-tag--inactive">{headerTag1.value}</dd>
+                                </>
+                            )}
+                            {headerTag2?.value && (
+                                <>
+                                    <dt className="govuk-visually-hidden">{headerTag2.label}</dt>
+                                    <dd className="govuk-tag">{headerTag2.value}</dd>
+                                </>
+                            )}
+                        </dl>
+                    )}
                 </div>
                 {description &&
                     (variant.includes('profile') ? (

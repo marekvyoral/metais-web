@@ -12,10 +12,11 @@ interface Props {
     selectedOrg: HierarchyRightsUi | null
     selectedRole: GidRoleData
     ciRoles: string[]
+    hideRoleSelect?: boolean
     disabled?: boolean
 }
 
-export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selectedRole, ciRoles, disabled }) => {
+export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selectedRole, ciRoles, disabled, hideRoleSelect }) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -30,11 +31,9 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
     } = useGetRightsForPO({ identityUuid: user?.uuid ?? '', cmdbId: selectedOrg?.poUUID ?? '' }, { query: { enabled: !!selectedOrg?.poUUID } })
 
     const roleSelectOptions = useMemo(() => {
-        return (
-            rightsForPOData
-                ?.filter((role) => ciRoles?.find((currentRole) => currentRole === role.roleName))
-                .map((role: GidRoleData) => ({ value: role, label: role.roleDescription ?? '' })) ?? []
-        )
+        const rolesForPO = rightsForPOData?.filter((role) => ciRoles?.find((currentRole) => currentRole === role.roleName))
+
+        return rolesForPO?.map((role: GidRoleData) => ({ value: role, label: role.roleDescription ?? '' })) ?? []
     }, [ciRoles, rightsForPOData])
 
     useEffect(() => {
@@ -56,11 +55,17 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
         // Change of key forces the component to render changed default value.
         setSeed(Math.random())
     }, [defaultValue])
+
+    if (hideRoleSelect) return <></>
+
     return (
         <>
-            {isRightsForPOLoading && !rightsForPOData && selectedOrg?.poUUID && (
-                <QueryFeedback loading={isRightsForPOLoading} error={false} indicatorProps={{ label: t('selectRole.loading') }} withChildren />
-            )}
+            <QueryFeedback
+                loading={isRightsForPOLoading && !rightsForPOData && !!selectedOrg?.poUUID}
+                error={false}
+                indicatorProps={{ label: t('selectRole.loading') }}
+                withChildren
+            />
             <SimpleSelect
                 key={seed}
                 error={!selectedRole ? t('selectRole.required') : isRightsForPOError ? t('selectRole.error') : ''}

@@ -123,6 +123,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     const isDateTime = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.DATETIME
     const isBoolean = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.BOOLEAN
     const isFile = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.IMAGE
+    const isUrl = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.URL
 
     const isArray = attribute.array
     const isHTML = attribute.type === HTML_TYPE
@@ -138,12 +139,19 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     const hasStringValue = isString || isCharacter
 
     const createOptions = (constraintItem: EnumType) => {
-        const options =
-            constraintItem?.enumItems?.map((item) => ({
-                value: item.code ?? '',
-                label: `${item.value} - ${item.description}`,
-                disabled: !item.valid,
-            })) ?? []
+        const options = isUpdate
+            ? constraintItem?.enumItems?.map((item) => ({
+                  value: item.code ?? '',
+                  label: `${item.value} - ${item.description}`,
+                  disabled: !item.valid,
+              })) ?? []
+            : constraintItem?.enumItems
+                  ?.filter((item) => item.valid)
+                  .map((item) => ({
+                      value: item.code ?? '',
+                      label: `${item.value} - ${item.description}`,
+                      disabled: !item.valid,
+                  })) ?? []
         return options
     }
 
@@ -243,6 +251,21 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                     />
                 )
             }
+            case isUrl: {
+                return (
+                    <Input
+                        correct={isCorrect}
+                        type="url"
+                        info={attribute.description}
+                        id={attribute.technicalName}
+                        disabled={attribute.readOnly || disabled}
+                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
+                        error={error?.message?.toString()}
+                        {...register(attribute.technicalName + nameSufix)}
+                        hint={defaultValueFromCiItem?.toString()}
+                    />
+                )
+            }
             case isBoolean: {
                 return (
                     <div className="govuk-form-group">
@@ -253,7 +276,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 return (
                                     <CheckBox
                                         name={name}
-                                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
+                                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}`}
                                         error={error?.message?.toString()}
                                         id={attribute.technicalName ?? ''}
                                         info={attribute.description}
@@ -280,6 +303,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         error={error?.message?.toString()}
                         disabled={attribute.readOnly || disabled}
                         info={attribute.description}
+                        placeholder={t('createEntity.select')}
                         defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                         metaAttributes={{ state: ['DRAFT'] }}
                     />
@@ -299,6 +323,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 error={error?.message?.toString()}
                                 clearErrors={clearErrors}
                                 disabled={disabled}
+                                control={control}
                                 placeholder={t('createEntity.select')}
                                 defaultValue={createDefaultValuesForMulti(
                                     constraints,
@@ -317,6 +342,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 correct={isCorrect}
                                 options={createOptions(constraints)}
                                 disabled={attribute.readOnly || disabled}
+                                control={control}
                                 defaultValue={getDefaultValueForSimple(
                                     constraints,
                                     getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate),

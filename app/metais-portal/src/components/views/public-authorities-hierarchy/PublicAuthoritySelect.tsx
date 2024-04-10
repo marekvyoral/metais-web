@@ -52,9 +52,7 @@ export const PublicAuthoritySelect: React.FC<Props> = ({ onChangeAuthority, sele
     }
     return (
         <>
-            {isLoading && (
-                <QueryFeedback loading={isLoading} error={false} indicatorProps={{ label: t('selectPublicAuthority.loading') }} withChildren />
-            )}
+            <QueryFeedback loading={isLoading} error={false} indicatorProps={{ label: t('selectPublicAuthority.loading') }} withChildren />
             <SelectLazyLoading
                 isClearable={isClearable}
                 value={selectedOrg}

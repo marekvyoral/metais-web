@@ -1,6 +1,7 @@
 import React, { SetStateAction, useEffect, useMemo, useState } from 'react'
 import classNames from 'classnames'
 import { useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { SidebarIcon } from './SidebarIcon'
 import { NavigationItem, SidebarItem } from './SidebarItem'
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export const SidebarSectionsContainer = ({ isSidebarExpanded, setIsSidebarExpanded, sections }: Props) => {
+    const { t } = useTranslation()
     const [expandedSectionIndexes, setExpandedSectionIndexes] = useState<boolean[]>(() => Array(sections.length).fill(false))
 
     const location = useLocation()
@@ -27,25 +29,27 @@ export const SidebarSectionsContainer = ({ isSidebarExpanded, setIsSidebarExpand
 
     useEffect(() => {
         if (defaultOpenedMenuItems != null) {
-            setExpandedSectionIndexes((prev) => [
-                ...prev.slice(0, defaultOpenedMenuItems[0].index),
-                true,
-                ...prev.slice(defaultOpenedMenuItems[0].index + 1),
-            ])
+            setExpandedSectionIndexes(() => {
+                const indexes = Array<boolean>(sections.length)
+                indexes.splice(defaultOpenedMenuItems[0].index, 1, true)
+                return indexes
+            })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
-        <div className={classNames('govuk-!-font-size-19', styles.sectionsContainer, !isSidebarExpanded && styles.closesSectionsContainer)}>
+        <nav
+            className={classNames('govuk-!-font-size-19', styles.sectionsContainer, !isSidebarExpanded && styles.closesSectionsContainer)}
+            aria-label={t('navbar.main')}
+        >
             {sections.map((menuItem, index) => {
                 const isExpanded = expandedSectionIndexes[index]
                 const onToggle = (toggle?: boolean) => {
-                    setExpandedSectionIndexes((prev) => {
-                        const newArr = [...prev]
-                        if (toggle) newArr[index] = toggle
-                        else newArr[index] = !isExpanded
-                        return newArr
+                    setExpandedSectionIndexes(() => {
+                        const indexes = Array<boolean>(sections.length)
+                        indexes.splice(index, 1, toggle ?? !isExpanded)
+                        return indexes
                     })
                 }
 
@@ -75,6 +79,6 @@ export const SidebarSectionsContainer = ({ isSidebarExpanded, setIsSidebarExpand
                     </div>
                 )
             })}
-        </div>
+        </nav>
     )
 }

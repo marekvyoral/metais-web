@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { AccordionContainer, Button, Input, LoadingIndicator, SimpleSelect, TextArea, TextBody } from '@isdd/idsk-ui-kit/index'
+import { AccordionContainer, Button, ErrorBlock, Input, LoadingIndicator, SimpleSelect, TextArea, TextBody } from '@isdd/idsk-ui-kit/index'
 import {
     CategoryHeaderList,
     Parameter,
@@ -13,6 +13,7 @@ import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { MutationFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { useNavigate } from 'react-router-dom'
 
 import styles from './reportsDetail.module.scss'
 import { IReportCardFormData, ReportsParameterCard } from './ReportsParameterCard'
@@ -28,8 +29,8 @@ interface IReportsDetail {
     saveIsLoading: boolean
     isSaveError?: boolean
     mutationIsLoading: boolean
+    isMutationError?: boolean
     runMutationIsSuccess: boolean
-    mutationError: { message: string }
 }
 
 export interface IReportFormData {
@@ -78,13 +79,14 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
     runReport,
     saveIsLoading,
     mutationIsLoading,
-    mutationError,
+    isMutationError,
     isSaveError,
     runMutationIsSuccess,
     categories,
 }) => {
     const { t } = useTranslation()
     const [reportResult, setReportResult] = useState<ReportResultObject>()
+    const navigate = useNavigate()
 
     const { register, handleSubmit, setValue, getValues, clearErrors, formState, watch } = useForm({
         resolver: yupResolver(reportCreateSchema(t)),
@@ -116,7 +118,9 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
             <div className={styles.submitArea}>
                 <Input label={t('report.detail.name')} {...register('report.name')} error={formState.errors?.report?.name?.message} required />
                 <Input
@@ -157,7 +161,8 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
                 <MutationFeedback
                     success={runMutationIsSuccess}
                     successMessage={t('mutationFeedback.runMutationSuccess')}
-                    error={mutationError ? <>{t('mutationFeedback.runMutationError')}</> : undefined}
+                    error={isMutationError}
+                    errorMessage={t('mutationFeedback.runMutationError')}
                 />
                 <div className={styles.submitArea}>
                     {mutationIsLoading && <LoadingIndicator label={t('feedback.executingScript')} />}
@@ -195,8 +200,12 @@ export const ReportsDetail: React.FC<IReportsDetail> = ({
                     />
                 ))}
                 <Button label={t('report.detail.addParameter')} onClick={addNewParameter} className={styles.addConnection} />
-                <SubmitWithFeedback submitButtonLabel={t('report.detail.save')} loading={saveIsLoading} />
-                <MutationFeedback error={isSaveError ? <>{t('feedback.mutationErrorMessage')}</> : undefined} success={false} showSupportEmail />
+                <SubmitWithFeedback
+                    submitButtonLabel={t('report.detail.save')}
+                    loading={saveIsLoading}
+                    additionalButtons={[<Button label={t('form.cancel')} variant="secondary" onClick={() => navigate(-1)} key="cancel" />]}
+                />
+                <MutationFeedback error={isSaveError} />
                 {saveIsLoading && <LoadingIndicator label={t('feedback.saving')} />}
             </div>
         </form>

@@ -29,9 +29,9 @@ type Props = {
 
 type UserInformationForm = {
     name?: string
-    email?: string
     mobile?: string
     position?: string
+    email?: string
 }
 
 export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsChangeSuccess }) => {
@@ -44,9 +44,9 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
 
     const userInformationsSchema: ObjectSchema<UserInformationForm> = object().shape({
         [UserInformationFormKeysEnum.NAME]: string().required(t('validation.required')),
-        [UserInformationFormKeysEnum.EMAIL]: string().email(t('validation.invalidEmail')).required(t('validation.required')),
         [UserInformationFormKeysEnum.MOBILE]: string().matches(REGEX_TEL, t('validation.invalidPhone')).required(t('validation.required')),
         [UserInformationFormKeysEnum.POSITION]: string(),
+        [UserInformationFormKeysEnum.EMAIL]: string().required(t('validation.required')),
     })
 
     const {
@@ -59,7 +59,7 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
             [UserInformationFormKeysEnum.NAME]: user?.displayName,
             [UserInformationFormKeysEnum.POSITION]: user?.position != NULL ? user?.position ?? '' : '',
             [UserInformationFormKeysEnum.MOBILE]: user?.mobile,
-            [UserInformationFormKeysEnum.EMAIL]: user?.email,
+            [UserInformationFormKeysEnum.EMAIL]: user?.login,
         },
         resolver: yupResolver(userInformationsSchema),
     })
@@ -79,10 +79,8 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
                     return { data: { ...oldData.data, ...context.data }, statusCode: oldData.statusCode }
                 })
             },
-            onError(error) {
-                if (JSON.parse(error.message as string).message == 'email not unique') {
-                    setErrorMessage(t('userProfile.uniqueEmail'))
-                } else setErrorMessage(t('userProfile.changedUserInformationError'))
+            onError() {
+                setErrorMessage(t('userProfile.changedUserInformationError'))
             },
         },
     })
@@ -93,20 +91,29 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
 
     const onSubmit = (formData: UserInformationForm) => {
         setIsChangeSuccess(false)
-        changeUserInformation({ data: { email: formData.email, mobile: formData.mobile, disabledNotifications: false } })
+        changeUserInformation({ data: { mobile: formData.mobile, disabledNotifications: false, email: formData.email } })
     }
 
     return (
         <>
-            <MutationFeedback success={false} error={isError ? errorMessage : ''} />
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <MutationFeedback error={isError} errorMessage={errorMessage} />
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className={styles.justifyEndDiv}>
                     <SubmitWithFeedback submitButtonLabel={t('userProfile.save')} loading={isLoading || isSubmitting || isValidating} />
                 </div>
                 <DefinitionList className={styles.dl}>
                     <InformationGridRow
                         label={t('userProfile.information.name') + ':'}
-                        value={<Input error={errors.name?.message} label="" type="text" disabled {...register(UserInformationFormKeysEnum.NAME)} />}
+                        value={
+                            <Input
+                                error={errors.name?.message}
+                                label=""
+                                type="text"
+                                disabled
+                                {...register(UserInformationFormKeysEnum.NAME)}
+                                autoComplete="name"
+                            />
+                        }
                         hideIcon
                     />
                     <InformationGridRow
@@ -124,12 +131,29 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
                     />
                     <InformationGridRow
                         label={t('userProfile.information.phoneNumber') + ':'}
-                        value={<Input error={errors.mobile?.message} label="" type="tel" {...register(UserInformationFormKeysEnum.MOBILE)} />}
+                        value={
+                            <Input
+                                error={errors.mobile?.message}
+                                label=""
+                                type="tel"
+                                {...register(UserInformationFormKeysEnum.MOBILE)}
+                                autoComplete="tel"
+                            />
+                        }
                         hideIcon
                     />
                     <InformationGridRow
-                        label={t('userProfile.information.email') + ':'}
-                        value={<Input error={errors.email?.message} label="" type="email" {...register(UserInformationFormKeysEnum.EMAIL)} />}
+                        label={`${t('userProfile.information.loginEmail')}:`}
+                        value={
+                            <Input
+                                error={errors.email?.message}
+                                label=""
+                                type="text"
+                                disabled
+                                {...register(UserInformationFormKeysEnum.EMAIL)}
+                                autoComplete="email"
+                            />
+                        }
                         hideIcon
                     />
                 </DefinitionList>

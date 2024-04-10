@@ -1,6 +1,6 @@
 {
     "name": "metais",
-    "version": "0.1.123",
+    "version": "0.1.146",
     "private": true,
     "workspaces": [
         "app/*",
@@ -68,7 +68,6 @@
         "react-tooltip": "^5.14.0",
         "reactjs-popup": "^2.0.5",
         "sanitize-html": "^2.11.0",
-        "sift": "^17.0.1",
         "typescript": "^4.4.2",
         "universal-cookie": "^6.1.1",
         "uuid": "^9.0.0",
@@ -122,8 +121,7 @@
         "postinstall": "patch-package",
         "generate-api-development": "yarn build:script:transform && cross-env DOTENV_CONFIG_PATH=./.env.development orval --config ./orval.config.ts",
         "generate-api-production": "yarn build:script:transform && cross-env DOTENV_CONFIG_PATH=./.env.production orval --config ./orval.config.ts",
-        "export-locale": "tsx export-locale.ts",
-        "import-locale": "tsx import-locale.ts"
+        "flatten-locale": "tsx flatten-locale.ts"
     },
     "eslintConfig": {
         "extends": [

@@ -12,9 +12,11 @@ import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedba
 import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ColumnDef, Row } from '@tanstack/react-table'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { EkoTableModals } from './EkoTablesModals'
 
@@ -41,13 +43,13 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const tableRef = useRef<HTMLTableElement>(null)
     const {
         state: { user },
     } = useAuth()
     const isUserLogged = !!user
     const dataLength = data?.length ?? 0
     const { rowSelection, setRowSelection } = rowSelectionState
-    const checkedRowItems = Object.keys(rowSelection).length
     const checkedToInvalidate = Object.values(rowSelection)?.filter((row) => row.ekoCodeState === EkoCodeEkoCodeState.ACTIVE)
     const checkedToDelete = Object.values(rowSelection)?.filter((row) => row.ekoCodeState === EkoCodeEkoCodeState.INVALIDATED)
     const [isOpenConfirmationModal, setIsOpenConfirmationModal] = useState<boolean>(false)
@@ -57,6 +59,7 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
         isSuccess: false,
         message: undefined,
     })
+
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const handleCheckboxChange = useCallback(
         (row: Row<TEkoCodeDecorated>) => {
@@ -117,8 +120,48 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
         return d.slice(pageSize * (pageNumber ?? 0) - (pageSize ?? 0), pageSize * (pageNumber ?? 0)) ?? []
     }, [])
 
+    const getMessage = (response: string) => {
+        switch (response) {
+            case 'create':
+                return t('mutationFeedback.successfulCreated')
+            case 'delete':
+                return t('mutationFeedback.successfulDeleted')
+            case 'invalidate':
+                return t('mutationFeedback.successfulInvalidated')
+            case 'update':
+                return t('mutationFeedback.successfulUpdated')
+            default:
+                return t('mutationFeedback.successfulUpdated')
+        }
+    }
+
+    const { isActionSuccess } = useActionSuccess()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        if (isActionSuccess.value) {
+            scrollToMutationFeedback()
+        }
+    }, [isActionSuccess, scrollToMutationFeedback])
+
     return (
         <>
+            <MutationFeedback
+                error={resultApiCall.isError}
+                errorMessage={resultApiCall.message}
+                success={resultApiCall.isSuccess || isActionSuccess.value}
+                successMessage={
+                    (!resultApiCall.isError && resultApiCall.message) ||
+                    (isActionSuccess.value ? getMessage(isActionSuccess.additionalInfo?.type ?? '') : undefined)
+                }
+                onMessageClose={() =>
+                    setResultApiCall({
+                        isError: false,
+                        isSuccess: false,
+                        message: undefined,
+                    })
+                }
+            />
+            <div ref={wrapperRef} />
             {isLoading && <LoadingIndicator fullscreen />}
             <ActionsOverTable
                 pagination={{
@@ -131,9 +174,10 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                 entityName={entityName ?? ''}
                 createButton={<CreateEntityButton onClick={() => navigate(`/${entityName}/create`)} label={t('eko.createdCode')} />}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={checkedRowItems}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'invalidateCodes'}
@@ -157,23 +201,10 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                             />,
                         ]}
                     />
-                }
+                )}
             />
-            {(resultApiCall.isError || resultApiCall.isSuccess) && (
-                <MutationFeedback
-                    error={resultApiCall.message}
-                    success={resultApiCall.isSuccess}
-                    onMessageClose={() =>
-                        setResultApiCall({
-                            isError: false,
-                            isSuccess: false,
-                            message: undefined,
-                        })
-                    }
-                />
-            )}
-
             <Table
+                tableRef={tableRef}
                 key={'ekoTable'}
                 data={getSlicedData(data, defaultFilterParams?.pageSize ?? 0, defaultFilterParams?.pageNumber ?? 0) ?? []}
                 sort={defaultFilterParams.sort}
@@ -195,9 +226,13 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                 pageNumber={defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER}
                 pageSize={defaultFilterParams.pageSize ?? BASE_PAGE_SIZE}
                 dataLength={dataLength}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
             <EkoTableModals
+                setRowSelection={setRowSelection}
                 checkedToInvalidate={checkedToInvalidate}
                 checkedToDelete={checkedToDelete}
                 closeConfirmationModal={handlerSetCloseConfirmationModal}

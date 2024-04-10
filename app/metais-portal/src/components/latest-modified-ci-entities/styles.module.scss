@@ -1,0 +1,10 @@
+@import '@isdd/metais-common/src/utils.scss';
+
+.wrapDiv {
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+    padding: govuk-spacing(3);
+}
+
+.marginBottom8 {
+    margin-bottom: govuk-spacing(8);
+}

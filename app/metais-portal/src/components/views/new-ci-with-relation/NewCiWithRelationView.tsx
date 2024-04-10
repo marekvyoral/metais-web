@@ -2,29 +2,33 @@ import { SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
+import { ENTITY_KS } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import {
     useInvalidateCiHistoryListCache,
-    useInvalidateCiNeighboursWithAllRelsCache,
+    useInvalidateCiNeighboursWithAllRelsCacheByUuid,
     useInvalidateRelationsCountCache,
 } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/src/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { findCommonStrings } from '@isdd/metais-common/utils/utils'
 import { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
-import { findCommonStrings } from '@isdd/metais-common/utils/utils'
-import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { ICiCreateItemAndRelationContainerView } from '@/components/containers/CiCreateItemAndRelationContainer'
 import { CreateCiEntityForm } from '@/components/create-entity/CreateCiEntityForm'
 import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
+import { useKSChannel } from '@/hooks/useChannelKS'
+import { useRolesForPO } from '@/hooks/useRolesForPO'
 
 export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerView> = ({
     entityName,
@@ -39,7 +43,8 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
-
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    const { clearAction } = useActionSuccess()
     const ability = useAbilityContext()
     const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
 
@@ -51,10 +56,12 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
         roleState: { selectedRole, setSelectedRole },
     } = states
 
+    const { rolesForPO, isRightsForPOError } = useRolesForPO(selectedPublicAuthority?.poUUID ?? '', attributesData.ciTypeData?.roleList ?? [])
+
     const relatedListAsSources = relationData?.relatedListAsSources
     const relatedListAsTargets = relationData?.relatedListAsTargets
     const relationConstraintsData = relationData?.constraintsData
-
+    const relCode = relationData?.generatedRelCode
     const relationSchema = relationData?.relationTypeData
 
     const relationAttributesKeys = [
@@ -101,7 +108,7 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
         isProcessedError,
         isTooManyFetchesError,
     } = useGetStatus()
-    const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCache(entityId)
+    const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCacheByUuid(entityId)
     const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
     const invalidateRelationsCountCache = useInvalidateRelationsCountCache()
 
@@ -112,20 +119,35 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
         invalidateRelationsCountCache.invalidate(entityId)
     }
 
+    const { createChannelForKS, isLoading: isSubmitLoading, isError: isSubmitError } = useKSChannel()
     const storeGraph = useStoreGraph({
         mutation: {
-            onSuccess(successData) {
-                getRequestStatus(successData.requestId ?? '', onStoreGraphSuccess)
+            async onSuccess(successData, variables) {
+                await getRequestStatus(
+                    successData?.requestId ?? '',
+                    async () => {
+                        if (variables?.data.storeSet?.configurationItemSet?.[0]?.type === ENTITY_KS) {
+                            await createChannelForKS(variables?.data.storeSet?.configurationItemSet?.[0] ?? {}, () => onStoreGraphSuccess())
+                        } else {
+                            onStoreGraphSuccess()
+                        }
+                    },
+                    () => {
+                        scrollToMutationFeedback()
+                        clearAction()
+                    },
+                )
             },
             onError() {
                 setUploadError(true)
+                scrollToMutationFeedback()
+                clearAction()
             },
         },
     })
 
     const onSubmit = async (formAttributes: FieldValues) => {
         setUploadError(false)
-
         const formAttributesKeys = Object.keys(formAttributes)
 
         const formattedRelationAttributes = formAttributesKeys
@@ -175,16 +197,22 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
     }
 
     return (
-        <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading} error={false} withChildren>
+        <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading || isSubmitLoading} error={isError} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('breadcrumbs.newCiAndRelation', { itemName: ciName })}</TextHeading>
 
-                <ElementToScrollTo isVisible={isError || isProcessedError || isTooManyFetchesError || isRequestStatusError}>
-                    <QueryFeedback loading={false} error />
-                </ElementToScrollTo>
-                <ElementToScrollTo isVisible={storeGraph.isError}>
-                    <MutationFeedback success={false} error={t('newRelation.mutationError')} />
-                </ElementToScrollTo>
+                <div ref={wrapperRef}>
+                    <MutationFeedback
+                        error={
+                            storeGraph.isError ||
+                            isProcessedError ||
+                            isTooManyFetchesError ||
+                            isRequestStatusError ||
+                            isSubmitError ||
+                            isRightsForPOError
+                        }
+                    />
+                </div>
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
 
@@ -217,7 +245,9 @@ export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerVi
                 relationSchema={relationSchema}
                 isProcessing={storeGraph.isLoading}
                 selectedRole={selectedRole}
+                generatedRelCode={relCode}
                 withRelation
+                rolesForPO={rolesForPO ?? []}
             />
         </QueryFeedback>
     )

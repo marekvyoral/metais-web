@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RelatedRoleType } from '@isdd/metais-common/api/generated/iam-swagger'
-import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, ButtonGroupRow, ErrorBlock, HomeIcon, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -53,10 +53,12 @@ export const RoleEditView: React.FC<IRoleEditViewParams> = ({ currentRole, roleI
                 <QueryFeedback loading={isLoading} error={false}>
                     <FlexColumnReverseWrapper>
                         <TextHeading size="L">{t('adminRolesPage.editRole')}</TextHeading>
-                        {isError && <QueryFeedback error loading={false} />}
+                        <QueryFeedback error={isError} loading={false} />
                     </FlexColumnReverseWrapper>
 
-                    <form onSubmit={onSubmit}>
+                    {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                    <form onSubmit={onSubmit} noValidate>
                         <Input
                             label={t('adminRolesPage.name')}
                             {...register('name', { required: { value: true, message: t('adminRolesPage.requiredName') } })}

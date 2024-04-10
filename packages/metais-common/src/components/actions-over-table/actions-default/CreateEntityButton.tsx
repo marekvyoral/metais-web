@@ -10,21 +10,17 @@ export interface ICreateEntityButtonProps {
     icon?: string
     label?: string
     ciTypeName?: string
+    disabled?: boolean
 }
 
-export const CreateEntityButton: React.FC<ICreateEntityButtonProps> = ({ onClick, label, icon = PlusIcon, ciTypeName = '' }) => {
+export const CreateEntityButton: React.FC<ICreateEntityButtonProps> = ({ onClick, label, icon = PlusIcon, ciTypeName = '', disabled }) => {
     const { t } = useTranslation()
     return (
         <Button
             className={(styles.mobileOrder1, 'marginBottom0')}
             onClick={onClick}
-            label={
-                <IconLabel
-                    label={label ?? t('actionOverTable.addItem', { ciTypeName })}
-                    icon={icon}
-                    alt={label ?? t('actionOverTable.addItem', { ciTypeName })}
-                />
-            }
+            label={<IconLabel icon={icon} label={label ?? t('actionOverTable.addItem', { ciTypeName })} />}
+            disabled={disabled}
         />
     )
 }

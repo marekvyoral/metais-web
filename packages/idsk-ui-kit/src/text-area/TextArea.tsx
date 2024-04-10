@@ -1,9 +1,10 @@
 import classNames from 'classnames'
-import React, { forwardRef, DetailedHTMLProps } from 'react'
+import React, { forwardRef, DetailedHTMLProps, useId } from 'react'
 import { useTranslation } from 'react-i18next'
+import sanitizeHtml from 'sanitize-html'
+import { decodeHtmlEntities } from '@isdd/metais-common/src/utils/utils'
 
-import styles from '../styles/InfoAndCheckInput.module.scss'
-
+import styles from '@isdd/idsk-ui-kit/styles/InfoAndCheckInput.module.scss'
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
@@ -24,40 +25,55 @@ interface IInputProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLTe
 
 export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
     ({ id, label, name, rows, hint, info, error, disabled, correct, wrapperClassname, hasInputIcon = false, required, ...rest }, ref) => {
-        const hintId = `${id}-hint`
-        const errorId = `${id}-error`
+        const uniqueId = useId()
+        const inputId = id ?? uniqueId
+        const hintId = `${inputId}-hint`
+        const errorId = `${inputId}-error`
         const { t } = useTranslation()
         return (
             <div className={classNames('govuk-form-group', wrapperClassname, { 'govuk-form-group--error': !!error })}>
                 <div className={styles.labelDiv}>
-                    <label className="govuk-label" htmlFor={id}>
+                    <label className="govuk-label" htmlFor={inputId}>
                         {label} {required && t('input.requiredField')}
                     </label>
-                    {info && <Tooltip altText={`Tooltip ${label}`} descriptionElement={<div className="tooltipWidth500">{info}</div>} />}
+                    {info && (
+                        <Tooltip
+                            altText={`Tooltip ${label}`}
+                            descriptionElement={
+                                <div className="tooltipWidth500">
+                                    {
+                                        <span
+                                            dangerouslySetInnerHTML={{
+                                                __html: sanitizeHtml(decodeHtmlEntities(info)),
+                                            }}
+                                        />
+                                    }
+                                </div>
+                            }
+                        />
+                    )}
                 </div>
+                <span id={hintId} className={classNames({ 'govuk-visually-hidden': !hint, 'govuk-hint': !!hint })}>
+                    {hint}
+                </span>
 
-                {hint && (
-                    <span className="govuk-hint" id={hintId}>
-                        {hint}
-                    </span>
-                )}
-
-                {error && (
-                    <span id={errorId} className="govuk-error-message">
-                        {error}
-                    </span>
-                )}
+                <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
+                    {error && <span className="govuk-visually-hidden">{t('error')}</span>}
+                    {error}
+                </span>
                 <div className={styles.inputWrapper}>
                     <textarea
                         className={classNames('govuk-textarea', { ' govuk-textarea--error': !!error })}
-                        id={id}
+                        id={inputId}
                         name={name}
                         rows={rows}
                         ref={ref}
                         {...rest}
                         disabled={disabled}
-                        aria-describedby={hint ? hintId : undefined}
+                        aria-invalid={!!error}
+                        aria-describedby={`${hintId} ${errorId}`}
                         aria-errormessage={errorId}
+                        required={required}
                     />
                     {correct && (
                         <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} alt={t('valid')} />

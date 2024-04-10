@@ -96,12 +96,13 @@ const MassUpdate = () => {
                             <MutationFeedback
                                 success={isActionSuccess}
                                 successMessage={successMessage}
-                                error={isActionError ? errorMessage : undefined}
+                                error={isActionError}
+                                errorMessage={errorMessage}
                             />
 
                             <FlexColumnReverseWrapper>
                                 <TextHeading size="XL">{t('publicAuthorities.massUpdate.title')}</TextHeading>
-                                {isError && <QueryFeedback error={isError} loading={false} />}
+                                <QueryFeedback error={isError} loading={false} />
                             </FlexColumnReverseWrapper>
                             <PublicAuthoritiesMassUpdateFilter entityName={entityName} defaultFilterValues={defaultFilterValues} />
                             <PublicAuthoritiesMassUpdateTable

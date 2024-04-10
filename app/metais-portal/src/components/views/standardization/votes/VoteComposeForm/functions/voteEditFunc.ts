@@ -3,7 +3,7 @@ import { User } from '@isdd/metais-common/contexts/auth/authContext'
 import { formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import { TFunction } from 'i18next'
 import { FieldValues } from 'react-hook-form'
-import { ApiAttachment, ApiStandardRequestPreviewList, ApiVote } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ApiAttachment, ApiLink, ApiStandardRequestPreviewList, ApiVote, ApiVoteChoice } from '@isdd/metais-common/api/generated/standards-swagger'
 import { FileUploadData } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
@@ -13,7 +13,7 @@ import { VoteStateEnum } from '@/components/views/standardization/votes/voteProp
 export const getStandardRequestOptions = (allStandardRequestDataArray: ApiStandardRequestPreviewList | undefined): IOption<number | undefined>[] => {
     return (
         allStandardRequestDataArray?.standardRequests?.map((sr) => {
-            return { value: sr.id, label: sr.srName ?? '' }
+            return { value: sr.id, label: sr.name ?? '' }
         }) ?? []
     )
 }
@@ -38,8 +38,6 @@ export const mapUploadedFilesToApiAttachment = (uploadData: FileUploadData[]): A
         return {
             attachmentId: uploadedData.fileId,
             attachmentName: uploadedData.fileName,
-            attachmentSize: uploadedData.fileSize,
-            attachmentType: uploadedData.fileType,
             attachmentDescription: '',
         }
     })
@@ -51,8 +49,6 @@ export const mapProcessedExistingFilesToApiAttachment = (data: ExistingFileData[
         return {
             attachmentId: processedData.fileId,
             attachmentName: processedData.fileName,
-            attachmentSize: processedData.fileSize,
-            attachmentType: processedData.fileType,
             attachmentDescription: '',
         }
     })
@@ -79,8 +75,8 @@ export const mapFormToApiRequestBody = (
         actionDesription: formData.description,
         standardRequestId: formData.standardRequest,
         voteActors: formData.invitedUsers,
-        voteChoices: formData.answerDefinitions,
+        voteChoices: (formData.answerDefinitions as ApiVoteChoice[])?.filter((ad) => ad.value != null),
         attachments: attachments,
-        links: formData.documentLinks,
+        links: (formData.documentLinks as ApiLink[])?.filter((link) => !!link),
     }
 }

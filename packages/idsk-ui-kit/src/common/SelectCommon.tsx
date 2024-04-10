@@ -1,9 +1,8 @@
 import React from 'react'
 import { ControlProps, GroupBase, MenuProps, MultiValueRemoveProps, OptionProps, StylesConfig, components } from 'react-select'
+import { TFunction } from 'i18next'
 
 import styles from './selectCommon.module.scss'
-
-import { TransparentButtonWrapper } from '@isdd/idsk-ui-kit/button/TransparentButtonWrapper'
 
 export const Menu = <T,>(props: MenuProps<T, boolean, GroupBase<T>>) => {
     return (
@@ -21,13 +20,20 @@ export const Control = <T,>(props: ControlProps<T>) => {
     return <components.Control {...props} className={styles.reactControl} />
 }
 
-export const MultiValueRemove = <T,>(props: MultiValueRemoveProps<T>) => (
-    <components.MultiValueRemove {...props}>
-        <TransparentButtonWrapper>
-            <components.CrossIcon />
-        </TransparentButtonWrapper>
-    </components.MultiValueRemove>
-)
+export const getMultiValueRemove =
+    (t: TFunction<'translation', undefined, 'translation'>) =>
+    <T,>(props: MultiValueRemoveProps<T>) => {
+        // aria-label "Remove ${label}" is for now hardcoded in the plugin
+        // and only way to translate it is like this.
+        // This should be checked after new plugin versions are released
+        const strippedOptionLabel = props.innerProps?.['aria-label']?.replace(/^(Remove )/, '')
+        const propsWithTranslatedLabel = {
+            ...props,
+            innerProps: { ...props.innerProps, 'aria-label': t('select.removeOption', { label: strippedOptionLabel }) },
+        }
+
+        return <components.MultiValueRemove {...propsWithTranslatedLabel}>{props.children || <components.CrossIcon />}</components.MultiValueRemove>
+    }
 
 export const selectStyles = <T,>(): StylesConfig<T, boolean, GroupBase<T>> => ({
     multiValue: (base) => ({ ...base, border: 'solid', borderWidth: '1px', margin: '1px', padding: '2px' }),

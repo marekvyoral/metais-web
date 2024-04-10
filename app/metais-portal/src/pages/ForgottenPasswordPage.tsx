@@ -1,4 +1,4 @@
-import { BreadCrumbs, Button, GreenCheckOutlineIcon, HomeIcon, Input, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, ErrorBlock, GreenCheckOutlineIcon, HomeIcon, Input, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PORTAL_URL, REGEX_EMAIL } from '@isdd/metais-common/constants'
@@ -79,12 +79,16 @@ export const ForgottenPasswordPage = () => {
                         <>
                             <TextHeading size="XL">{t('forgottenPassword.heading')}</TextHeading>
                             <TextBody>{t('forgottenPassword.description')}</TextBody>
+
+                            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
                             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                                 <Input
                                     error={formState.errors.email?.message}
                                     label={t('forgottenPassword.email')}
                                     type="email"
                                     required
+                                    autoComplete="email"
                                     {...register('email')}
                                 />
                                 <Button className={styles.noBottomMargin} label={t('forgottenPassword.button')} type="submit" />

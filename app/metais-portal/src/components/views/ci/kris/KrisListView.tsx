@@ -64,12 +64,12 @@ export const KrisListView: React.FC<ICiListContainerView<KRISFilterType>> = ({
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{ciTypeData?.name}</TextHeading>
-                {isError && <QueryFeedback loading={false} error errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
+                <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
             </FlexColumnReverseWrapper>
 
             <Filter<KRISFilterType>
                 defaultFilterValues={defaultFilterValues}
-                form={({ filter, setValue }) => {
+                form={({ filter, setValue, isOpen }) => {
                     const ownerInputName = formatAttributeOperatorString(MetainformationColumns.OWNER, OPERATOR_OPTIONS_URL.FULLTEXT)
                     const defaultValuesAsUuids = filter.metaAttributeFilters?.liableEntity?.map((item) => item ?? '') ?? []
 
@@ -106,6 +106,7 @@ export const KrisListView: React.FC<ICiListContainerView<KRISFilterType>> = ({
                                 attributeProfiles={[]}
                                 constraintsData={constraintsData}
                                 ignoreInputNames={[MetainformationColumns.OWNER, MetainformationColumns.CREATED_AT, MetainformationColumns.STATE]}
+                                isFocusable={isOpen}
                             />
                         </div>
                     )

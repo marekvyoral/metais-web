@@ -38,7 +38,7 @@ const Entity: React.FC = () => {
                             >
                                 <FlexColumnReverseWrapper>
                                     <TextHeading size="XL">{t('navMenu.egov.entity')}</TextHeading>
-                                    {(props.isError || invalidateEntity.isError || validateEntity.isError) && <QueryFeedback error loading={false} />}
+                                    <QueryFeedback error={props.isError || invalidateEntity.isError || validateEntity.isError} loading={false} />
                                 </FlexColumnReverseWrapper>
                                 <EntityFilter defaultFilterValues={defaultFilterValues} />
                                 <EgovTable

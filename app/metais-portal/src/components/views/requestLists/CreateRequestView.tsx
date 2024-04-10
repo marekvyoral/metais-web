@@ -1,10 +1,12 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 import {
     BreadCrumbs,
     Button,
     ButtonGroupRow,
     ButtonLink,
     CheckBox,
-    ExpandableRowCellWrapper,
+    ErrorBlock,
     GridCol,
     GridRow,
     HomeIcon,
@@ -16,31 +18,33 @@ import {
     TextArea,
     TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { ActionsOverTable, BulkPopup, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types/'
 import { useGetRoleParticipantHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { AsyncUriSelect } from '@isdd/metais-common/components/async-uri-select/AsyncUriSelect'
+import { ElementToScrollTo } from '@isdd/metais-common/components/element-to-scroll-to/ElementToScrollTo'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
+import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
+import { ActionsOverTable, BulkPopup, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { CellContext, ColumnDef, ExpandedState, Row } from '@tanstack/react-table'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
-import { CellContext, ColumnDef, ExpandedState, Row } from '@tanstack/react-table'
-import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
-import { Can, useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types/'
-import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
-import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
-import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
-import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
-import { IItemForm, ModalItem } from '@/components/views/requestLists/components/modalItem/ModalItem'
-import styles from '@/components/views/requestLists/requestView.module.scss'
-import { DateModalItem } from '@/components/views/requestLists/components/modalItem/DateModalItem'
-import { useCreateRequestSchema } from '@/components/views/requestLists/useRequestSchemas'
+import { IRequestForm, getItemCodelistRefId, mapToCodeListDetail } from '@/componentHelpers/requests'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CreateRequestViewProps } from '@/components/containers/CreateRequestContainer'
-import { IRequestForm, mapToCodeListDetail } from '@/componentHelpers/requests'
+import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
+import { AutoIncrement } from '@/components/views/requestLists/components/AutoIncrement'
+import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
+import { DateModalItem } from '@/components/views/requestLists/components/modalItem/DateModalItem'
+import { IItemForm, ModalItem } from '@/components/views/requestLists/components/modalItem/ModalItem'
+import styles from '@/components/views/requestLists/requestView.module.scss'
+import { useCreateRequestSchema } from '@/components/views/requestLists/useRequestSchemas'
 
 export interface ICodeItem {
     id: string
@@ -75,6 +79,10 @@ export enum RequestFormEnum {
     CODELISTS = 'codeLists',
     VALIDDATE = 'validDate',
     STARTDATE = 'startDate',
+    PREFIX = 'prefix',
+    AUTOINCREMENT_VALID = 'valid',
+    AUTOINCREMENT_TYPE = 'type',
+    AUTOINCREMENT_CHAR_COUNT = 'charCount',
 }
 
 export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
@@ -120,21 +128,68 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     const [defaultSelectOrg, setDefaultSelectOrg] = useState<IOption>()
     const [expanded, setExpanded] = useState<ExpandedState>({})
     const [isCodeAvailable, setIsCodeAvailable] = useState<boolean>(false)
-    const { register, handleSubmit, formState, getValues, setValue, setError, trigger, control } = useForm<IRequestForm>({
+
+    const DEFAULT_CHAR_COUNT = 3
+    const canUse = requestId ? ability.can(Actions.EDIT, Subjects.DETAIL) : ability.can(Actions.CREATE, Subjects.DETAIL)
+
+    const { register, handleSubmit, formState, getValues, setValue, setError, trigger, control, watch } = useForm<IRequestForm>({
         resolver: yupResolver(schema),
         defaultValues: editData || {
             base: true,
+            charCount: DEFAULT_CHAR_COUNT,
+            type: 'NUMERIC',
         },
     })
+    const charCountInput = watch(RequestFormEnum.AUTOINCREMENT_CHAR_COUNT)
+    const prefixInput = watch(RequestFormEnum.PREFIX)
+    const isAutoincrementValid = !!watch(RequestFormEnum.AUTOINCREMENT_VALID)
+    const codelistRefId = watch(RequestFormEnum.REFINDICATOR)
+    const hasAutoincrementButNotPrefixOrCount = isAutoincrementValid && (!prefixInput || !charCountInput)
+    const DEFAULT_AUTOINCREMENT_INDEX = 1
 
     const handleDateChange = (date: Date | null, name: string) => {
         setValue(name as keyof ICodeItem, date ?? new Date())
     }
 
+    const getAutoIncrement = (index: number, prefix: string, charCount: number) => {
+        if (!isAutoincrementValid || !charCount) return ''
+        const charCountZeroLength = charCount - index.toString().length
+        const charCountZeroArray = charCountZeroLength ? Array(charCountZeroLength).fill(0).join('') : ''
+        return `${prefix}${charCountZeroArray}${index}`
+    }
+
+    const getAutoIncrementWithCodelistRefId = (index: number, prefix: string, charCount: number) => {
+        const code = getAutoIncrement(index, prefix, charCount)
+        return code ? getItemCodelistRefId(codelistRefId ?? '', code) : ''
+    }
+
     const onHandleSubmit = (formData: IRequestForm) => {
-        const res = { ...formData, codeLists: [...codeList] }
+        let res = { ...formData, codeLists: [...codeList] }
+        const formCharCount = formData.charCount
+        const formAutoincValid = formData.valid
+        const formPrefix = formData.prefix
+
+        //remap codelist with correct prefix as it could change on already created items
+        if (formAutoincValid && formPrefix && formCharCount) {
+            res = {
+                ...res,
+                codeLists: res.codeLists.map((i, index) => ({
+                    ...i,
+                    codeItem: getAutoIncrement(index + 1, formPrefix, formCharCount),
+                    refident: getAutoIncrementWithCodelistRefId(index + 1, formPrefix, formCharCount),
+                })),
+            }
+        }
         isSend ? onSend(res) : onSave(res)
     }
+
+    useEffect(() => {
+        const currentCharCount = getValues(RequestFormEnum.AUTOINCREMENT_CHAR_COUNT) ?? 1
+        const maxItems = Math.pow(10, currentCharCount)
+        if (codeList.length >= maxItems - 1) {
+            setValue(RequestFormEnum.AUTOINCREMENT_CHAR_COUNT, parseInt(currentCharCount?.toString()) + 1)
+        }
+    }, [codeList.length, setValue, getValues])
 
     const onClickCheck = async () => {
         const isValid = await trigger(RequestFormEnum.CODELISTCODE)
@@ -150,7 +205,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         } else {
             setIsCodeAvailable(false)
             result.errorTranslateKeys?.forEach((error) => {
-                setError(RequestFormEnum.CODELISTCODE, { message: t([error, 'feedback.mutationErrorMessage']) })
+                setError(RequestFormEnum.CODELISTCODE, { message: t([error ?? '', 'feedback.mutationErrorMessage']) })
             })
         }
     }
@@ -195,6 +250,13 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         const endOfList = pagination.pageNumber * pagination.pageSize
         return codeList?.slice(startOfList, endOfList) || []
     }, [codeList, pagination.pageNumber, pagination.pageSize])
+
+    useEffect(() => {
+        setPagination((prev) => ({
+            ...prev,
+            dataLength: codeList.length,
+        }))
+    }, [codeList.length])
 
     useEffect(() => {
         if (editData) {
@@ -281,23 +343,20 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                     )
                 )
             },
-            cell: ({ row }) => (
-                <ExpandableRowCellWrapper row={row}>
-                    {editData && (
-                        <div className="govuk-checkboxes govuk-checkboxes--small">
-                            <CheckBox
-                                label=""
-                                name="checkbox"
-                                id={`checkbox_${row.id}`}
-                                value="true"
-                                onChange={() => handleCheckboxChange(row)}
-                                checked={row.original.id ? !!rowSelection[row.original.id] : false}
-                                title={t('table.selectItem', { itemName: row.original.codeName })}
-                            />
-                        </div>
-                    )}
-                </ExpandableRowCellWrapper>
-            ),
+            cell: ({ row }) =>
+                editData && (
+                    <div className="govuk-checkboxes govuk-checkboxes--small">
+                        <CheckBox
+                            label=""
+                            name="checkbox"
+                            id={`checkbox_${row.id}`}
+                            value="true"
+                            onChange={() => handleCheckboxChange(row)}
+                            checked={row.original.id ? !!rowSelection[row.original.id] : false}
+                            title={t('table.selectItem', { itemName: row.original.codeName })}
+                        />
+                    </div>
+                ),
         },
         {
             header: t('codeListList.requestCreate.codeId'),
@@ -331,8 +390,6 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         },
     ]
 
-    const canUse = requestId ? ability.can(Actions.EDIT, Subjects.DETAIL) : ability.can(Actions.CREATE, Subjects.DETAIL)
-
     return (
         <>
             {editData ? (
@@ -362,9 +419,17 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
             {canUse && (
                 <MainContentWrapper>
                     <QueryFeedback loading={isLoading || !!isAbilityLoading} error={isError || isAbilityError} withChildren>
+                        <ElementToScrollTo trigger={errorMessages.length > 0} manualScroll>
+                            {errorMessages.map((errorMessage, index) => (
+                                <MutationFeedback key={index} error errorMessage={errorMessage && t(errorMessage)} />
+                            ))}
+                        </ElementToScrollTo>
                         {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                         <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
-                        <form onSubmit={handleSubmit(onHandleSubmit)}>
+
+                        {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                        <form onSubmit={handleSubmit(onHandleSubmit)} noValidate>
                             <div className={styles.bottomGap}>
                                 <CheckBox
                                     disabled={!canEdit}
@@ -384,6 +449,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 {...register(RequestFormEnum.CODELISTNAME)}
                                 error={formState.errors[RequestFormEnum.CODELISTNAME]?.message}
                             />
+
                             <Input
                                 correct={isCodeAvailable}
                                 required
@@ -394,9 +460,21 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 {...register(RequestFormEnum.CODELISTCODE)}
                                 error={formState.errors[RequestFormEnum.CODELISTCODE]?.message}
                             />
-                            {!!canEdit && <Button label={t('codeListList.requestCreate.btnCheck')} variant="secondary" onClick={onClickCheck} />}
+                            <div className={styles.availWrapper}>
+                                {!!canEdit && <Button label={t('codeListList.requestCreate.btnCheck')} variant="secondary" onClick={onClickCheck} />}
+                                {isCodeAvailable && (
+                                    <MutationFeedback
+                                        success={isCodeAvailable}
+                                        successMessage={t('codeListDetail.feedback.codeIsAvailable')}
+                                        onMessageClose={() => {
+                                            setIsCodeAvailable(false)
+                                        }}
+                                    />
+                                )}
+                            </div>
                             <Input
                                 required
+                                maxLength={10}
                                 disabled={!canEdit}
                                 label={getDescription('Gui_Profil_ZC_rezort', language, attributeProfile)}
                                 info={getName('Gui_Profil_ZC_rezort', language, attributeProfile)}
@@ -420,14 +498,27 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 error={formState.errors[RequestFormEnum.MAINGESTOR]?.message}
                                 defaultValue={defaultSelectOrg}
                             />
-                            <Input
+
+                            <AsyncUriSelect
+                                control={control}
                                 disabled={!canEdit}
+                                name={RequestFormEnum.REFINDICATOR}
                                 label={getDescription('Gui_Profil_ZC_uri', language, attributeProfile)}
-                                info={getName('Gui_Profil_ZC_uri', language, attributeProfile)}
-                                id={RequestFormEnum.REFINDICATOR}
-                                {...register(RequestFormEnum.REFINDICATOR)}
                                 error={formState.errors[RequestFormEnum.REFINDICATOR]?.message}
+                                info={getName('Gui_Profil_ZC_uri', language, attributeProfile)}
+                                hint={t('refIden.hint')}
                             />
+                            <AutoIncrement
+                                register={register}
+                                formState={formState}
+                                isAutoIncremenetValid={isAutoincrementValid}
+                                autoIncrement={getAutoIncrement(
+                                    DEFAULT_AUTOINCREMENT_INDEX,
+                                    prefixInput ?? '',
+                                    charCountInput ?? DEFAULT_AUTOINCREMENT_INDEX,
+                                )}
+                            />
+
                             {(editData?.codeListState === RequestListState.ACCEPTED_SZZC ||
                                 editData?.codeListState === RequestListState.KS_ISVS_ACCEPTED) && (
                                 <>
@@ -531,10 +622,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             </GridRow>
                             <TextHeading size="L">{t('codeListList.requestCreate.codeListTableTitle')}</TextHeading>
                             <MutationFeedback
-                                success={isSuccessSetDates ?? false}
+                                success={isSuccessSetDates}
                                 successMessage={t('codeListDetail.feedback.editCodeListItems')}
-                                showSupportEmail
-                                error={errorMessageSetDates && t([errorMessageSetDates, 'feedback.mutationErrorMessage'])}
+                                error={!!errorMessageSetDates}
+                                errorMessage={t([errorMessageSetDates ?? '', 'feedback.mutationErrorMessage'])}
                             />
                             <ActionsOverTable
                                 pagination={{ pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE, dataLength: 0 }}
@@ -542,21 +633,30 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 createButton={
                                     canEdit && (
                                         <Can I={Actions.ADD_ITEMS} a={Subjects.DETAIL}>
-                                            <CreateEntityButton
-                                                onClick={() => {
-                                                    setCodeListItem(undefined)
-                                                    setOpen(true)
-                                                }}
-                                                label={t('codeListList.requestCreate.addItemBtn')}
+                                            <Tooltip
+                                                descriptionElement={t('codeListList.requestCreate.hasAutoincrementButNotPrefixOrCount')}
+                                                on={['click']}
+                                                disabled={!hasAutoincrementButNotPrefixOrCount}
+                                                triggerElement={
+                                                    <CreateEntityButton
+                                                        onClick={() => {
+                                                            setCodeListItem(undefined)
+                                                            if (!hasAutoincrementButNotPrefixOrCount) {
+                                                                setOpen(true)
+                                                            }
+                                                        }}
+                                                        label={t('codeListList.requestCreate.addItemBtn')}
+                                                    />
+                                                }
                                             />
                                         </Can>
                                     )
                                 }
                                 selectedRowsCount={Object.keys(rowSelection).length}
-                                bulkPopup={
+                                bulkPopup={({ selectedRowsCount }) =>
                                     !!editData && (
                                         <BulkPopup
-                                            checkedRowItems={Object.keys(rowSelection).length}
+                                            checkedRowItems={selectedRowsCount}
                                             items={(closePopup) => [
                                                 <ButtonLink
                                                     key={'setDates'}
@@ -596,14 +696,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 {...pagination}
                                 handlePageChange={(filter) => setPagination({ ...pagination, pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER })}
                             />
-                            {errorMessages.map((errorMessage, index) => (
-                                <MutationFeedback
-                                    success={false}
-                                    key={index}
-                                    showSupportEmail={!errorMessage}
-                                    error={t([errorMessage, 'feedback.mutationErrorMessage'])}
-                                />
-                            ))}
+
                             <ButtonGroupRow>
                                 <Button
                                     label={t('form.cancel')}
@@ -633,11 +726,16 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <ModalItem
                                 isOpen={isOpen}
                                 close={close}
-                                isCreate={!editData}
                                 onSubmit={addItem}
                                 item={codeListItem}
+                                createRefIdUri={getAutoIncrementWithCodelistRefId(codeList.length + 1, prefixInput ?? '', charCountInput ?? 0)}
+                                createItemCode={getAutoIncrement(codeList.length + 1, prefixInput ?? '', charCountInput ?? 0)}
                                 attributeProfile={attributeProfile}
                                 canEdit={!!canEdit}
+                                editData={editData}
+                                charCount={charCountInput}
+                                prefix={prefixInput}
+                                isAutoincrementValid={isAutoincrementValid}
                             />
                         )}
                         <DateModalItem

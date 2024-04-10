@@ -1,16 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button } from '@isdd/idsk-ui-kit/index'
 import { Stepper } from '@isdd/idsk-ui-kit/stepper/Stepper'
-import { SubmitWithFeedback } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, SubmitWithFeedback } from '@isdd/metais-common/index'
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
-import { FieldValues, FormProvider, useForm } from 'react-hook-form'
+import { FieldValues, FieldErrors, FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AttributeProfile, CiCode, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { ConfigurationItemUiAttributes, HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { ENTITY_PROJECT } from '@isdd/metais-common/constants'
+import { ENTITY_KRIS, ENTITY_PROJECT, KRIS_Profil_nazov } from '@isdd/metais-common/constants'
 
 import { getFilteredAttributeProfilesBasedOnRole, getValidAndVisibleAttributes } from './createEntityHelpers'
 import { generateFormSchema } from './createCiEntityFormSchema'
@@ -24,6 +24,7 @@ type Props = {
     generatedEntityId: CiCode
     ciTypeData: CiType | undefined
     onSubmit: (formData: FieldValues) => void
+    onError?: (errors: FieldErrors) => void
     isProcessing?: boolean
     selectedRole?: GidRoleData | null
     stepperList: ISection[]
@@ -32,12 +33,15 @@ type Props = {
     setHasReset: Dispatch<SetStateAction<boolean>>
     isSubmitDisabled: boolean
     selectedOrg?: HierarchyRightsUi | null
+    handleSectionOpen: (id: string) => void
+    openOrCloseAllSections: () => void
 }
 
 export const CiEntityFormBody: React.FC<Props> = ({
     entityName,
     formDefaultValues,
     onSubmit,
+    onError,
     stepperList,
     selectedRole,
     isUpdate,
@@ -47,6 +51,8 @@ export const CiEntityFormBody: React.FC<Props> = ({
     isSubmitDisabled,
     ciTypeData,
     selectedOrg,
+    handleSectionOpen,
+    openOrCloseAllSections,
 }) => {
     const navigate = useNavigate()
     const { t, i18n } = useTranslation()
@@ -101,13 +107,19 @@ export const CiEntityFormBody: React.FC<Props> = ({
     }, [formState.defaultValues, formDefaultValues, setValue, generatedEntityId?.ciurl, generatedEntityId?.cicode])
 
     useEffect(() => {
+        if (entityName === ENTITY_KRIS) setValue(ATTRIBUTE_NAME.Gen_Profil_nazov, `${KRIS_Profil_nazov} ${selectedOrg?.poName}`)
         if (entityName === ENTITY_PROJECT) setValue(AttributesConfigTechNames.EA_Profil_Projekt_prijimatel, selectedOrg?.poName)
     }, [selectedOrg, setValue, entityName])
 
     return (
         <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                <Stepper subtitleTitle="" stepperList={stepperList} />
+            <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
+                <Stepper
+                    subtitleTitle=""
+                    stepperList={stepperList}
+                    handleSectionOpen={handleSectionOpen}
+                    openOrCloseAllSections={openOrCloseAllSections}
+                />
                 <SubmitWithFeedback
                     className={styles.buttonGroup}
                     additionalButtons={[

@@ -1,12 +1,13 @@
 import { FileImportStepEnum, MutationFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@isdd/idsk-ui-kit/index'
+import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { FileImportList } from '@isdd/metais-common/components/file-import/FileImportList'
 import { StatusBar } from '@uppy/react'
 import styles from '@isdd/metais-common/src/components/file-import/FileImport.module.scss'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
@@ -46,6 +47,7 @@ export const ImportParametersView: React.FC<IImportParametersView> = () => {
         endpointUrl,
         setFileImportStep,
         fileImportStep,
+        refType: RefAttributesRefType.CI,
     })
 
     const handleCancelImport = () => {
@@ -86,11 +88,8 @@ export const ImportParametersView: React.FC<IImportParametersView> = () => {
 
     return (
         <MainContentWrapper>
-            <MutationFeedback
-                success={uploadFilesStatus[0]?.response?.body?.ok === true ?? false}
-                error={false}
-                successMessage={t(`errors.import.successUload`)}
-            />
+            <TextHeading size="XL">{t('navMenu.lists.monitoringImport')}</TextHeading>
+            <MutationFeedback success={uploadFilesStatus[0]?.response?.body?.ok === true ?? false} successMessage={t(`errors.import.successUload`)} />
             <FileImportDragDrop uppy={uppy} />
             <div>
                 <StatusBar

@@ -1,24 +1,31 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
-import { getDefaultCiEntityTabList, useCiDetailPageTitle, useCiListPageHeading, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import {
+    getCiHowToBreadCrumb,
+    getDefaultCiEntityTabList,
+    useCiDetailPageTitle,
+    useCiListPageHeading,
+    useGetEntityParamsFromUrl,
+} from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityDetailView } from '@/components/views/ci/detail/CiEntityDetailView'
+import { useCiCheckEntityTypeRedirectHook } from '@/hooks/useCiCheckEntityTypeRedirect.hook'
 
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
     const userAbility = useUserAbility()
 
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName ?? '')
 
     const {
         data: ciItemData,
@@ -30,6 +37,7 @@ const EntityDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+    useCiCheckEntityTypeRedirectHook(ciItemData, entityName)
 
     const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
     const { getTitle } = useCiDetailPageTitle(ciTypeData?.name ?? '', ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov], t)
@@ -43,6 +51,7 @@ const EntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(entityName ?? '', t),
                     { label: getHeading(), href: `/ci/${entityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),

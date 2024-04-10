@@ -1,16 +1,24 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { AttributeProfile, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ApiError, AttributeUi, AttributeUiValue, RelationshipUi, RequestIdUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { FieldValues, useForm } from 'react-hook-form'
+import { FieldErrors, FieldValues, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
 import { SubmitWithFeedback } from '@isdd/metais-common/index'
 import { Button } from '@isdd/idsk-ui-kit/index'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Languages } from '@isdd/metais-common/localization/languages'
+import { Stepper } from '@isdd/idsk-ui-kit/stepper/Stepper'
+import { ISection } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
-import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits } from '@/components/create-entity/createEntityHelpers'
+import {
+    findAttributeConstraint,
+    getAttributeInputErrorMessage,
+    getAttributeUnits,
+    getAttributesInputErrorMessage,
+} from '@/components/create-entity/createEntityHelpers'
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
 
 type Props = {
@@ -40,6 +48,7 @@ export const RelationDetailEditForm: React.FC<Props> = ({
     editRelation,
 }) => {
     const { t, i18n } = useTranslation()
+    const [sections, setSections] = useState<ISection[]>([])
     const flatAttributesFromSchema = relationTypeData?.attributes?.concat(
         relationTypeData?.attributeProfiles?.flatMap((profile) => profile.attributes ?? []) ?? [],
     )
@@ -66,7 +75,13 @@ export const RelationDetailEditForm: React.FC<Props> = ({
         }, {}),
 
         resolver: yupResolver(
-            generateFormSchema([relationTypeData as AttributeProfile, ...(relationTypeData?.attributeProfiles ?? [])], t, i18n.language),
+            generateFormSchema(
+                [relationTypeData as AttributeProfile, ...(relationTypeData?.attributeProfiles ?? [])],
+                t,
+                i18n.language,
+                null,
+                relationTypeData?.technicalName,
+            ),
         ),
     })
 
@@ -98,32 +113,100 @@ export const RelationDetailEditForm: React.FC<Props> = ({
         editRelation({ data: dataToSend })
     }
 
+    const handleSectionOpen = (id: string) => {
+        setSections((prev) => prev.map((item) => (item.id === id ? { ...item, isOpen: !item.isOpen } : item)))
+    }
+
+    const openOrCloseAllSections = () => {
+        setSections((prev) => {
+            const allOpen = prev.every((item) => item.isOpen)
+            return prev.map((item) => ({ ...item, isOpen: !allOpen }))
+        })
+    }
+
+    const handleSectionBasedOnError = (err: FieldErrors) => {
+        setSections((prev) =>
+            prev.map((section) => {
+                const isSectionError = Object.keys(err).find((item) => item.includes(section.id ?? ''))
+                if (isSectionError) {
+                    return { ...section, isOpen: true, error: true }
+                }
+                return { ...section, error: false }
+            }),
+        )
+    }
+
+    useEffect(() => {
+        setSections(
+            relationTypeData?.attributeProfiles && Array.isArray(relationTypeData?.attributeProfiles)
+                ? relationTypeData?.attributeProfiles?.map((profile: AttributeProfile, index) => {
+                      return {
+                          title: (i18n.language === Languages.SLOVAK ? profile.description : profile.engDescription) ?? profile.name ?? '',
+                          error: getAttributesInputErrorMessage(profile.attributes ?? [], errors),
+                          stepLabel: { label: (index + 1).toString(), variant: 'circle' },
+                          id: profile.id ? profile.id.toString() : 'default_id',
+                          last: relationTypeData?.attributeProfiles?.length === index + 1 ? true : false,
+                          isOpen: sections[index]?.isOpen ?? false,
+                          content: profile.attributes?.map((attribute) => {
+                              return (
+                                  attribute?.valid &&
+                                  !attribute.invisible && (
+                                      <AttributeInput
+                                          key={attribute?.id}
+                                          attribute={attribute}
+                                          register={register}
+                                          setValue={setValue}
+                                          clearErrors={clearErrors}
+                                          trigger={trigger}
+                                          isSubmitted={isSubmitted}
+                                          error={getAttributeInputErrorMessage(attribute, errors)}
+                                          hasResetState={{ hasReset, setHasReset }}
+                                          constraints={findAttributeConstraint(
+                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                              //@ts-ignore
+                                              attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
+                                              constraintsData,
+                                          )}
+                                          unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                                          control={control}
+                                      />
+                                  )
+                              )
+                          }),
+                      }
+                  })
+                : [],
+        )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        clearErrors,
+        constraintsData,
+        control,
+        errors,
+        hasReset,
+        i18n.language,
+        isSubmitted,
+        register,
+        relationTypeData?.attributeProfiles,
+        setValue,
+        trigger,
+        unitsData,
+    ])
+
+    const onError = (err: FieldErrors) => {
+        handleSectionBasedOnError(err)
+    }
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            {flatAttributesFromSchema?.map((attribute) => {
-                return (
-                    <AttributeInput
-                        key={attribute?.id}
-                        attribute={attribute}
-                        register={register}
-                        setValue={setValue}
-                        clearErrors={clearErrors}
-                        trigger={trigger}
-                        isSubmitted={isSubmitted}
-                        error={getAttributeInputErrorMessage(attribute, errors)}
-                        hint={attribute?.description}
-                        hasResetState={{ hasReset, setHasReset }}
-                        constraints={findAttributeConstraint(
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            //@ts-ignore
-                            attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
-                            constraintsData,
-                        )}
-                        unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
-                        control={control}
-                    />
-                )
-            })}
+        <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
+            {sections.length > 0 && (
+                <Stepper
+                    subtitleTitle=""
+                    stepperList={sections}
+                    handleSectionOpen={handleSectionOpen}
+                    openOrCloseAllSections={openOrCloseAllSections}
+                />
+            )}
             <SubmitWithFeedback
                 submitButtonLabel={t('relationDetail.submit')}
                 loading={isEditLoading}

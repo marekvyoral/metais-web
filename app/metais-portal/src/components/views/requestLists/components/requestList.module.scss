@@ -16,3 +16,22 @@
     align-items: start;
     gap: govuk-spacing(2);
 }
+
+.fieldset {
+    padding: govuk-spacing(4);
+    margin: 0;
+    margin-bottom: govuk-spacing(4);
+}
+
+.row {
+    display: flex;
+    align-items: end;
+}
+
+.checkbox {
+    margin-bottom: govuk-spacing(6);
+}
+
+.grey {
+    color: govuk-colour('dark-grey') !important;
+}

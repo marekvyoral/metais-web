@@ -1,4 +1,4 @@
-import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, ButtonGroupRow, ErrorBlock, HomeIcon, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { RelatedRoleType } from '@isdd/metais-common/api/generated/iam-swagger'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React from 'react'
@@ -40,8 +40,11 @@ export const RoleCreateView: React.FC<ICreateRoleViewParams> = ({ roleGroups, cr
                 <QueryFeedback loading={isLoading} withChildren error={false}>
                     <FlexColumnReverseWrapper>
                         <TextHeading size="L">{t('adminRolesPage.newRole')}</TextHeading>
-                        {isError && <QueryFeedback error loading={false} />}
+                        <QueryFeedback error={isError} loading={false} />
                     </FlexColumnReverseWrapper>
+
+                    {methods.formState.isSubmitted && !methods.formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
                     <FormProvider {...methods}>
                         <form onSubmit={(e) => e.preventDefault()} noValidate className="container">
                             <Input

@@ -16,8 +16,8 @@ const DraftsListEditPage = () => {
     return (
         <DraftsListFormContainer
             entityId={entityId}
-            View={({ data, isLoading }) => {
-                document.title = formatTitleString(data?.requestData?.srName ?? '')
+            View={({ data, handleUploadSuccess, fileUploadRef, onSubmit, isError, isLoading, onFileUploadFailed }) => {
+                document.title = formatTitleString(data?.requestData?.name ?? '')
                 return (
                     <>
                         <BreadCrumbs
@@ -27,14 +27,22 @@ const DraftsListEditPage = () => {
                                 { label: t('breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
                                 { label: t('breadcrumbs.draftsList'), href: NavigationSubRoutes.ZOZNAM_NAVRHOV },
                                 {
-                                    label: data?.requestData?.srName ?? t('breadcrumbs.noName'),
+                                    label: data?.requestData?.name ?? t('breadcrumbs.noName'),
                                     href: `${NavigationSubRoutes.ZOZNAM_NAVRHOV}/${entityId}`,
                                 },
                             ]}
                         />
                         <MainContentWrapper>
                             <QueryFeedback loading={isLoading} error={false} withChildren>
-                                <DraftsListEditForm defaultData={data?.requestData} />
+                                <DraftsListEditForm
+                                    onFileUploadFailed={onFileUploadFailed}
+                                    defaultData={data?.requestData}
+                                    handleUploadSuccess={handleUploadSuccess}
+                                    fileUploadRef={fileUploadRef}
+                                    onSubmit={onSubmit}
+                                    isError={isError}
+                                    isLoading={isLoading}
+                                />
                             </QueryFeedback>
                         </MainContentWrapper>
                     </>

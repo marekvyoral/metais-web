@@ -1,6 +1,6 @@
 import { ArrowDownIcon } from '@isdd/idsk-ui-kit'
 import classNames from 'classnames'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useId, useState } from 'react'
 import { Link, useLocation, useMatch } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
@@ -34,6 +34,7 @@ export const SidebarItem = ({
     hasSamePathAsParent,
 }: SidebarItemProps) => {
     const [expandedSubItemIndexes, setExpandedSubItemIndexes] = useState<boolean[]>(() => Array(item.subItems?.length).fill(false))
+    const contentId = useId()
 
     const isDefaultOpened = defaultOpenedMenuItemsPaths.some((opened) => opened === item.path)
     const isUrlMatched = !!useMatch(item.path)
@@ -50,11 +51,11 @@ export const SidebarItem = ({
 
     useEffect(() => {
         if (defaultOpenedMenuItemsIndexes.length > 0) {
-            setExpandedSubItemIndexes((prev) => [
-                ...prev.slice(0, defaultOpenedMenuItemsIndexes[0]),
-                true,
-                ...prev.slice(defaultOpenedMenuItemsIndexes[0] + 1),
-            ])
+            setExpandedSubItemIndexes(() => {
+                const indexes = Array<boolean>(item.subItems?.length ?? 0)
+                indexes.splice(defaultOpenedMenuItemsIndexes[0], 1, true)
+                return indexes
+            })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -69,7 +70,10 @@ export const SidebarItem = ({
                             styles.sectionHeaderButton,
                             ((item.subItems?.length && isExpanded) || isDefaultOpened || isUrlMatched) && !shouldNotBeBold && styles.expanded,
                         )}
-                        aria-expanded={isExpanded}
+                        aria-expanded={item.subItems ? isExpanded : undefined}
+                        aria-controls={item.subItems ? contentId : undefined}
+                        aria-haspopup={item.subItems ? 'menu' : undefined}
+                        aria-current={isUrlMatched ? 'page' : undefined}
                         to={item.path}
                         {...(item.target && { target: item.target })}
                     >
@@ -81,6 +85,7 @@ export const SidebarItem = ({
                 </div>
                 {item.subItems && isExpanded && isSidebarExpanded && (
                     <div
+                        id={contentId}
                         className={classNames(styles.hide, isExpanded && styles.unhide)}
                         aria-label={t('sidebar.groupLabel', { title: item.title })}
                         role="group"
@@ -89,11 +94,10 @@ export const SidebarItem = ({
                             {item.subItems.map((subItem, indexSubItem) => {
                                 const isExpandedSub = expandedSubItemIndexes[indexSubItem]
                                 const onToggleSub = (toggle?: boolean) => {
-                                    setExpandedSubItemIndexes((prev) => {
-                                        const newArr = [...prev]
-                                        if (toggle) newArr[indexSubItem] = toggle
-                                        else newArr[indexSubItem] = !isExpandedSub
-                                        return newArr
+                                    setExpandedSubItemIndexes(() => {
+                                        const indexes = Array<boolean>(item.subItems?.length ?? 0)
+                                        indexes.splice(indexSubItem, 1, toggle ?? !isExpanded)
+                                        return indexes
                                     })
                                 }
                                 const subItemHasSamePathAsParent = item.path == subItem.path

@@ -2,7 +2,6 @@ import { BaseModal, BreadCrumbs, Button, ButtonLink, HomeIcon, TextHeading } fro
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetTrainingsForUser, useUnregisterTrainee } from '@isdd/metais-common/api/generated/trainings-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { CI_ITEM_QUERY_KEY, ENTITY_TRAINING, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
@@ -18,8 +17,10 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { SortBy } from '@isdd/idsk-ui-kit/types'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import {
+    getCiHowToBreadCrumb,
     getDefaultCiEntityTabList,
     getSuccessMessageKeyByType,
     useCiDetailPageTitle,
@@ -31,6 +32,7 @@ import { RelationsListContainer } from '@/components/containers/RelationsListCon
 import { TrainingContainer } from '@/components/containers/TrainingContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { TrainingEntityIdHeader } from '@/components/views/ci/trainings/TrainingEntityIdHeader'
+import { useCiCheckEntityTypeRedirectHook } from '@/hooks/useCiCheckEntityTypeRedirect.hook'
 
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -49,7 +51,7 @@ const EntityDetailPage: React.FC = () => {
     const ability = useUserAbility(entityName)
     const { invalidate } = useInvalidateTrainingsCache(entityId ?? '')
 
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName ?? '')
     const { getRequestStatus, isLoading: isRequestLoading } = useGetStatus('PROCESSED')
 
     const {
@@ -80,13 +82,27 @@ const EntityDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+    useCiCheckEntityTypeRedirectHook(ciItemData, entityName)
 
     const isRegisteredOnTraining = useMemo(() => {
         return trainingData?.configurationItemSet?.some((training) => training.uuid === ciItemData?.uuid)
     }, [trainingData, ciItemData])
 
-    const canRegisteredOnTraining = useMemo(() => {
-        return ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Skolenie_pocet_volnych_miest] > 0
+    const canRegisterOnTraining = useMemo(() => {
+        const hasFreeVacancies = ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Skolenie_pocet_volnych_miest] > 0
+        const dateNow = new Date(Date.now())
+        const dateFrom = new Date(ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Skolenie_zaciatok])
+        const isPlanned = dateFrom.getTime() - dateNow.getTime() > 0
+
+        return hasFreeVacancies && isPlanned
+    }, [ciItemData])
+
+    const canUnRegisterOnTraining = useMemo(() => {
+        const dateNow = new Date(Date.now())
+        const dateFrom = new Date(ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_Skolenie_zaciatok])
+        const isPlanned = dateFrom.getTime() - dateNow.getTime() > 0
+
+        return isPlanned
     }, [ciItemData])
 
     const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
@@ -124,6 +140,8 @@ const EntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(entityName ?? '', t),
+
                     { label: getHeading(), href: `/ci/${entityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
@@ -138,19 +156,20 @@ const EntityDetailPage: React.FC = () => {
                         <FlexColumnReverseWrapper>
                             <TrainingEntityIdHeader
                                 inviteButton={
-                                    canRegisteredOnTraining &&
-                                    (user && isRegisteredOnTraining ? (
-                                        <Button
-                                            label={t('trainings.unregisterFromTraining')}
-                                            variant="warning"
-                                            onClick={() => setShowUnregisterModal(true)}
-                                        />
-                                    ) : (
-                                        <Button
-                                            label={t('trainings.registerForTraining')}
-                                            onClick={() => navigate(`/ci/${entityName}/${entityId}/invite`, { state: location.state })}
-                                        />
-                                    ))
+                                    user && isRegisteredOnTraining
+                                        ? canUnRegisterOnTraining && (
+                                              <Button
+                                                  label={t('trainings.unregisterFromTraining')}
+                                                  variant="warning"
+                                                  onClick={() => setShowUnregisterModal(true)}
+                                              />
+                                          )
+                                        : canRegisterOnTraining && (
+                                              <Button
+                                                  label={t('trainings.registerForTraining')}
+                                                  onClick={() => navigate(`/ci/${entityName}/${entityId}/invite`, { state: location.state })}
+                                              />
+                                          )
                                 }
                                 editButton={
                                     <ButtonLink
@@ -167,15 +186,12 @@ const EntityDetailPage: React.FC = () => {
                                 refetchCi={refetch}
                             />
                             <QueryFeedback loading={false} error={isError} />
-                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
-                                <div ref={wrapperRef}>
-                                    <MutationFeedback
-                                        error={false}
-                                        success={isActionSuccess.value}
-                                        successMessage={t(getSuccessMessageKeyByType(isActionSuccess.additionalInfo?.type))}
-                                    />
-                                </div>
-                            )}
+                            <div ref={wrapperRef}>
+                                <MutationFeedback
+                                    success={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}
+                                    successMessage={t(getSuccessMessageKeyByType(isActionSuccess.additionalInfo?.type))}
+                                />
+                            </div>
                         </FlexColumnReverseWrapper>
 
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />

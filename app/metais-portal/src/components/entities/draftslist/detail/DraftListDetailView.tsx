@@ -19,10 +19,9 @@ interface Props {
 export const DraftListDetailView: React.FC<Props> = ({ data }) => {
     const { t } = useTranslation()
 
-    const isVersion2 = data?.requestData?.version === 2
-
     return (
         <AccordionContainer
+            sectionsHeadingSize="L"
             sections={[
                 {
                     title: t('DraftsList.detail.accordion.basicInformation'),
@@ -30,20 +29,16 @@ export const DraftListDetailView: React.FC<Props> = ({ data }) => {
                     content: <DraftListDetailMainSection data={data} />,
                 },
 
-                ...(isVersion2
-                    ? [
-                          {
-                              title: t('DraftsList.detail.accordion.generalDescription'),
-                              onLoadOpen: false,
-                              content: <DraftListDetailVersion2SectionGeneral data={data} />,
-                          },
-                          {
-                              title: t('DraftsList.detail.accordion.otherDescription'),
-                              onLoadOpen: false,
-                              content: <DraftListDetailVersion2SectionOther data={data} />,
-                          },
-                      ]
-                    : []),
+                {
+                    title: t('DraftsList.detail.accordion.generalDescription'),
+                    onLoadOpen: false,
+                    content: <DraftListDetailVersion2SectionGeneral data={data} />,
+                },
+                {
+                    title: t('DraftsList.detail.accordion.otherDescription'),
+                    onLoadOpen: false,
+                    content: <DraftListDetailVersion2SectionOther data={data} />,
+                },
             ]}
         />
     )

@@ -1,4 +1,5 @@
 import React, { useId } from 'react'
+import classNames from 'classnames'
 
 import styles from './error-block.module.scss'
 
@@ -8,13 +9,19 @@ export interface ErrorBlockProps {
     errorTitle?: string
     errorMessage?: React.ReactNode
     buttons?: { label: string; onClick: () => void }[]
+    hidden?: boolean
 }
 
-export const ErrorBlock: React.FC<ErrorBlockProps> = ({ errorTitle, errorMessage, buttons }) => {
+export const ErrorBlock: React.FC<ErrorBlockProps> = ({ errorTitle, errorMessage, buttons, hidden }) => {
     const id = useId()
     const errorSummaryTitleId = `error-summary-title-${id}`
     return (
-        <div className="govuk-error-summary" aria-labelledby={errorSummaryTitleId} role="alert" data-module="govuk-error-summary">
+        <div
+            className={classNames('govuk-error-summary', { 'govuk-visually-hidden': hidden })}
+            aria-labelledby={errorSummaryTitleId}
+            role="alert"
+            data-module="govuk-error-summary"
+        >
             {errorTitle && (
                 <h2 className="govuk-error-summary__title" id={errorSummaryTitleId}>
                     {errorTitle}

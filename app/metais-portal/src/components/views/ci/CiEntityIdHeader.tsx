@@ -3,6 +3,7 @@ import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { ApiError, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import styles from '@isdd/metais-common/components/entity-header/ciEntityHeader.module.scss'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
@@ -38,7 +39,9 @@ export const CiEntityIdHeader: React.FC<Props> = ({
     editButton,
 }) => {
     const { t } = useTranslation()
-
+    const {
+        state: { user },
+    } = useAuth()
     const { handleReInvalidate, handleInvalidate, errorMessage, isBulkLoading } = useBulkAction(isRelation)
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
@@ -65,69 +68,76 @@ export const CiEntityIdHeader: React.FC<Props> = ({
 
     return (
         <>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage}
-                        showSupportEmail
-                        error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
-                        onMessageClose={() => setBulkActionResult(undefined)}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess}
+                    successMessage={bulkActionResult?.successMessage}
+                    error={bulkActionResult?.isError}
+                    onMessageClose={() => setBulkActionResult(undefined)}
+                />
+            </div>
             <div className={styles.headerDiv}>
                 {isBulkLoading && <LoadingIndicator fullscreen />}
                 <TextHeading size="XL" className={classNames({ [styles.invalidated]: isInvalidated })}>
                     {entityItemName}
                 </TextHeading>
-                <ButtonGroupRow>
-                    <Can I={Actions.EDIT} a={`ci.${entityId}`}>
-                        {editButton}
-                    </Can>
-                    <ButtonPopup
-                        buttonClassName={styles.noWrap}
-                        buttonLabel={t('ciType.moreButton')}
-                        popupPosition="right"
-                        popupContent={() => {
-                            return (
-                                <div className={styles.buttonLinksDiv}>
-                                    <Tooltip
-                                        key={'invalidateItem'}
-                                        descriptionElement={errorMessage}
-                                        position={'top center'}
-                                        tooltipContent={(open) => (
+
+                {user && (
+                    <ButtonGroupRow>
+                        <Can I={Actions.EDIT} a={`ci.${entityId}`}>
+                            {editButton}
+                        </Can>
+                        <ButtonPopup
+                            buttonClassName={styles.noWrap}
+                            buttonLabel={t('ciType.moreButton')}
+                            popupPosition="right"
+                            popupContent={() => {
+                                return (
+                                    <div className={styles.buttonLinksDiv}>
+                                        <Tooltip
+                                            key={'invalidateItem'}
+                                            descriptionElement={errorMessage}
+                                            position={'top center'}
+                                            on={'click'}
+                                            tooltipContent={(open) => (
+                                                <ButtonLink
+                                                    disabled={isInvalidated}
+                                                    onClick={() => {
+                                                        handleInvalidate(entityListData, () => setShowInvalidate(true), open)
+                                                    }}
+                                                    label={t('ciType.invalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
+                                                />
+                                            )}
+                                        />
+                                        <Tooltip
+                                            key={'revalidateItem'}
+                                            descriptionElement={errorMessage}
+                                            position={'top center'}
+                                            tooltipContent={(open) => (
+                                                <ButtonLink
+                                                    disabled={!isInvalidated}
+                                                    onClick={() => {
+                                                        handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)
+                                                    }}
+                                                    label={t('ciType.revalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
+                                                />
+                                            )}
+                                        />
+                                        <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
                                             <ButtonLink
-                                                disabled={isInvalidated}
-                                                onClick={() => {
-                                                    handleInvalidate(entityListData, () => setShowInvalidate(true), open)
-                                                }}
-                                                label={t('ciType.invalidateItem')}
+                                                onClick={() => setShowChangeOwner(true)}
+                                                label={t('ciType.changeOfOwner')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
-                                        )}
-                                    />
-                                    <Tooltip
-                                        key={'revalidateItem'}
-                                        descriptionElement={errorMessage}
-                                        position={'top center'}
-                                        tooltipContent={(open) => (
-                                            <ButtonLink
-                                                disabled={!isInvalidated}
-                                                onClick={() => {
-                                                    handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)
-                                                }}
-                                                label={t('ciType.revalidateItem')}
-                                            />
-                                        )}
-                                    />
-                                    <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
-                                        <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
-                                    </Can>
-                                </div>
-                            )
-                        }}
-                    />
-                </ButtonGroupRow>
+                                        </Can>
+                                    </div>
+                                )
+                            }}
+                        />
+                    </ButtonGroupRow>
+                )}
                 {isBulkLoading && <LoadingIndicator fullscreen />}
 
                 <InvalidateBulkModal

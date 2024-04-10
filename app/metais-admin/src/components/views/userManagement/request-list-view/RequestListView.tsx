@@ -12,7 +12,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, EClaimState
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAbilityContextWithFeedback } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
@@ -39,6 +39,8 @@ export const RequestListView: React.FC<IRequestListView> = ({
 }) => {
     const { t, i18n } = useTranslation()
     const { isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
+    const tableRef = useRef<HTMLTableElement>(null)
+
     const entityName = 'requestList'
     const columns: Array<ColumnDef<ClaimUi>> = [
         {
@@ -56,7 +58,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
             ),
         },
         {
-            header: t('requestList.identityLogin'),
+            header: t('requestList.loginEmail'),
             accessorFn: (row) => row?.identityLogin,
             enableSorting: true,
             id: 'identityLogin',
@@ -74,16 +76,6 @@ export const RequestListView: React.FC<IRequestListView> = ({
                 getCellContext: (ctx) => ctx?.row?.original?.mobile,
             },
             cell: (ctx) => <span>{ctx?.row?.original?.mobile}</span>,
-        },
-        {
-            header: t('requestList.email'),
-            accessorFn: (row) => row?.email,
-            enableSorting: true,
-            id: 'email',
-            meta: {
-                getCellContext: (ctx) => ctx?.row?.original?.email,
-            },
-            cell: (ctx) => <span>{ctx?.row?.original?.email}</span>,
         },
         {
             header: t('requestList.createdAt'),
@@ -122,10 +114,11 @@ export const RequestListView: React.FC<IRequestListView> = ({
                         {listType === RequestListType.REGISTRATION && t('requestList.registrationLitle')}
                         {listType === RequestListType.REQUESTS && t('requestList.title')}
                     </TextHeading>
-                    {isError ||
-                        (isAbilityError && (
-                            <QueryFeedback error loading={false} errorProps={{ errorMessage: t('managementList.containerQueryError') }} />
-                        ))}
+                    <QueryFeedback
+                        error={isError || isAbilityError}
+                        loading={false}
+                        errorProps={{ errorMessage: t('managementList.containerQueryError') }}
+                    />
                 </FlexColumnReverseWrapper>
                 <Filter<IRequestListFilterView>
                     defaultFilterValues={defaultFilterParams}
@@ -187,8 +180,8 @@ export const RequestListView: React.FC<IRequestListView> = ({
                     hiddenButtons={{ SELECT_COLUMNS: true }}
                 />
                 <Table
+                    tableRef={tableRef}
                     key={'requestListTable'}
-                    rowHref={(row) => `./detail/${listType.toLowerCase()}/${row?.original?.uuid}`}
                     data={data?.claimSet || []}
                     columns={columns.map((item) => ({ ...item, size: 150 }))}
                     sort={defaultFilterParams.sort}
@@ -204,7 +197,10 @@ export const RequestListView: React.FC<IRequestListView> = ({
                     pageNumber={defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER}
                     pageSize={defaultFilterParams.pageSize ?? BASE_PAGE_SIZE}
                     dataLength={data?.pagination?.totalItems ?? 0}
-                    handlePageChange={handleFilterChange}
+                    handlePageChange={(filter) => {
+                        handleFilterChange(filter)
+                        tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                    }}
                 />
             </QueryFeedback>
         </>

@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useId } from 'react'
 import { Control, Controller, FieldValue, UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 import DatePicker, { ReactDatePickerProps, registerLocale } from 'react-datepicker'
 import { Languages } from '@isdd/metais-common/src/localization/languages'
@@ -6,7 +6,6 @@ import { sk, enUS as en } from 'date-fns/locale'
 import classNames from 'classnames'
 import { GreenCheckMarkIcon } from '@isdd/metais-common/src/assets/images'
 import { useTranslation } from 'react-i18next'
-import { v4 as uuidV4 } from 'uuid'
 import 'react-datepicker/dist/react-datepicker.css'
 import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common'
 
@@ -63,7 +62,7 @@ export const DateInput = forwardRef<ReactDatePickerProps, Props>(
         className,
         inputClassName,
         hasInputIcon,
-        id = `input_${uuidV4()}`,
+        id,
         required,
         clearErrors,
         minDate,
@@ -71,8 +70,10 @@ export const DateInput = forwardRef<ReactDatePickerProps, Props>(
         setValue,
     }) => {
         const { t, i18n } = useTranslation()
-        const hintId = `${id}-hint`
-        const errorId = `${id}-error`
+        const uId = useId()
+        const inputId = id ?? `input_${uId}`
+        const hintId = `${inputId}-hint`
+        const errorId = `${inputId}-error`
 
         const datePlaceholder = 'dd.mm.yyyy'
         const dateTimePlaceholder = 'dd.mm.yyyy hh:mm'
@@ -104,24 +105,22 @@ export const DateInput = forwardRef<ReactDatePickerProps, Props>(
                     return (
                         <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
                             <div className={styles.labelDiv}>
-                                <label className="govuk-label" htmlFor={id}>
+                                <label className="govuk-label" htmlFor={inputId}>
                                     {label} {required && t('input.requiredField')}
                                 </label>
                                 {info && <Tooltip altText={`Tooltip ${label}`} descriptionElement={<div className="tooltipWidth500">{info}</div>} />}
                             </div>
+                            <span id={hintId} className={classNames({ 'govuk-visually-hidden': !hint, 'govuk-hint': !!hint })}>
+                                {hint}
+                            </span>
 
-                            {hint && (
-                                <span className="govuk-hint" id={hintId}>
-                                    {hint}
-                                </span>
-                            )}
-                            {error && (
-                                <span id={errorId} className="govuk-error-message">
-                                    {error}
-                                </span>
-                            )}
+                            <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
+                                {error && <span className="govuk-visually-hidden">{t('error')}</span>}
+                                {error}
+                            </span>
                             <div className={classNames(styles.inputWrapper, inputClassName)} style={{ position: 'relative' }}>
                                 <DatePicker
+                                    id={inputId}
                                     wrapperClassName={styles.fullWidth}
                                     className={classNames('govuk-input', { 'govuk-input--error': !!error })}
                                     placeholderText={placeholder}
@@ -139,7 +138,8 @@ export const DateInput = forwardRef<ReactDatePickerProps, Props>(
                                     required={required}
                                     minDate={minDate}
                                     maxDate={maxDate ? maxDate : new Date('9999-12-31')}
-                                    aria-describedby={hint ? hintId : undefined}
+                                    aria-invalid={!!error}
+                                    aria-describedby={`${hintId} ${errorId}`}
                                     aria-errormessage={errorId}
                                 />
                                 {correct && (

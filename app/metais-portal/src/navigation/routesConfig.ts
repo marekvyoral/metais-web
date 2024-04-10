@@ -10,8 +10,6 @@ import { IdentityTermsPage } from '@/pages/IdentityTermsPage'
 import { LoginProblemsPage } from '@/pages/LoginProblemsPage'
 import AsEntityDetailPage from '@/pages/ci/AS/[entityId]'
 import CloneASPage from '@/pages/ci/AS/[entityId]/clone'
-import ActivityEntityDetailPage from '@/pages/ci/Aktivita/[entityId]'
-import GoalEntityDetailPage from '@/pages/ci/Ciel/[entityId]'
 import { IntegrationLinkDetailPage } from '@/pages/ci/Integracia/[entityId]'
 import { IntegrationHarmonogram } from '@/pages/ci/Integracia/[entityId]/harmonogram'
 import { IntegrationLinkHistory } from '@/pages/ci/Integracia/[entityId]/history'
@@ -49,6 +47,7 @@ import Information from '@/pages/ci/[entityName]/[entityId]/information'
 import CreateCiItemAndRelation from '@/pages/ci/[entityName]/[entityId]/new-ci/[tabName]'
 import NewCiRelationPage from '@/pages/ci/[entityName]/[entityId]/new-relation/[tabName]'
 import RelationshipsAccordionPage from '@/pages/ci/[entityName]/[entityId]/relationships'
+import CreateKrisEntityPage from '@/pages/ci/KRIS/create'
 import CreateEntityPage from '@/pages/ci/[entityName]/create'
 import CiListPage from '@/pages/ci/[entityName]/entity'
 import CodeListDetailPage from '@/pages/data-objects/codelists/[id]/detail'
@@ -143,6 +142,15 @@ import EditTrainingEntityPage from '@/pages/ci/Trainings/[entityId]/edit'
 import AboutApplicationPage from '@/pages/about-application/aboutApp'
 import TrainingInformation from '@/pages/ci/Trainings/[entityId]/information'
 import ITVSExceptionsInformation from '@/pages/ci/OsobitnyPostup/[entityId]/information'
+import GroupItvsDetailPage from '@/pages/standardization/groupslist/itvs'
+import GroupEditItvsPage from '@/pages/standardization/groupslist/itvs/edit'
+import ReferenceRegisterDetail from '@/pages/ci/ReferenceRegister'
+import WebPortalInformation from '@/pages/ci/WeboveSidlo/[entityId]/information'
+import { BulkListPage } from '@/pages/bulk-list/BulkList'
+import PlaceOfOperationEntityListPage from '@/pages/ci/MiestoPrevadzky'
+import PlaceOfOperationEntityDetailPage from '@/pages/ci/MiestoPrevadzky/[entityId].tsx/[entityId]'
+import ZCListPage from '@/pages/ci/ZC/entity'
+import ZCEntityDetailPage from '@/pages/ci/ZC/[entityId]'
 
 export interface RouteConfig {
     path?: string
@@ -361,6 +369,11 @@ export const routesConfig: RouteConfig[] = [
                 component: GroupsListPage,
             },
             {
+                path: RouterRoutes.STANDARDIZATION_GROUPS_DETAIL_ITVS,
+                slug: RouterRoutes.STANDARDIZATION_GROUPS_DETAIL_ITVS,
+                component: GroupItvsDetailPage,
+            },
+            {
                 path: RouterRoutes.STANDARDIZATION_GROUPS_DETAIL,
                 slug: RouterRoutes.STANDARDIZATION_GROUPS_DETAIL,
                 component: GroupDetailPage,
@@ -369,6 +382,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.STANDARDIZATION_GROUPS_CREATE,
                 slug: RouterRoutes.STANDARDIZATION_GROUPS_CREATE,
                 component: CreateGroupPage,
+            },
+            {
+                path: RouterRoutes.STANDARDIZATION_GROUPS_EDIT_ITVS,
+                slug: RouterRoutes.STANDARDIZATION_GROUPS_EDIT_ITVS,
+                component: GroupEditItvsPage,
             },
             {
                 path: RouterRoutes.STANDARDIZATION_GROUPS_EDIT,
@@ -591,6 +609,22 @@ export const routesConfig: RouteConfig[] = [
                 component: AboutApplicationPage,
             },
             {
+                path: RouterRoutes.CI_REFERENCE_REGISTER,
+                slug: RouterRoutes.CI_REFERENCE_REGISTER,
+                component: ReferenceRegisterDetail,
+            },
+            {
+                path: RouterRoutes.CI_PLACE_OF_OPERATION,
+                slug: RouterRoutes.CI_PLACE_OF_OPERATION,
+                component: PlaceOfOperationEntityListPage,
+            },
+            {
+                path: RouterRoutes.CI_PLACE_OF_OPERATION_DETAIL,
+                slug: RouterRoutes.CI_PLACE_OF_OPERATION_DETAIL,
+                component: PlaceOfOperationEntityDetailPage,
+                subRoutes: [generalCiDetailInformationOutlet],
+            },
+            {
                 path: RouterRoutes.REF_REGISTERS_DETAIL,
                 slug: RouterRoutes.REF_REGISTERS_DETAIL,
                 component: RefRegistersDetail,
@@ -704,31 +738,20 @@ export const routesConfig: RouteConfig[] = [
                 component: TrainingInvitePage,
             },
             {
-                path: RouterRoutes.CI_GOAL_DETAIL,
-                slug: RouterRoutes.CI_GOAL_DETAIL,
-                component: GoalEntityDetailPage,
-                subRoutes: [generalCiDetailInformationOutlet],
+                path: RouterRoutes.CI_ZC,
+                slug: RouterRoutes.CI_ZC,
+                component: ZCListPage,
             },
             {
-                path: RouterRoutes.CI_GOAL_CREATE,
-                slug: RouterRoutes.CI_GOAL_CREATE,
-                component: CreateEntityPage,
-            },
-            {
-                path: RouterRoutes.CI_ACTIVITY_DETAIL,
-                slug: RouterRoutes.CI_ACTIVITY_DETAIL,
-                component: ActivityEntityDetailPage,
-                subRoutes: [generalCiDetailInformationOutlet],
+                path: RouterRoutes.CI_ZC_DETAIL,
+                slug: RouterRoutes.CI_ZC_DETAIL,
+                component: ZCEntityDetailPage,
+                subRoutes: generalCiDetailOutlets,
             },
             {
                 path: RouterRoutes.CI_KRIS_LIST,
                 slug: RouterRoutes.CI_KRIS_LIST,
                 component: KRISListPage,
-            },
-            {
-                path: RouterRoutes.CI_ACTIVITY_CREATE,
-                slug: RouterRoutes.CI_ACTIVITY_CREATE,
-                component: CreateEntityPage,
             },
             {
                 path: RouterRoutes.CI_KRIS_DETAIL,
@@ -763,7 +786,7 @@ export const routesConfig: RouteConfig[] = [
             {
                 path: RouterRoutes.CI_KRIS_CREATE,
                 slug: RouterRoutes.CI_KRIS_CREATE,
-                component: CreateEntityPage,
+                component: CreateKrisEntityPage,
             },
             {
                 path: RouterRoutes.CI_PROJECT_DETAIL,
@@ -823,7 +846,7 @@ export const routesConfig: RouteConfig[] = [
             {
                 path: RouterRoutes.ITVS_EXCEPTIONS_DETAIL,
                 slug: RouterRoutes.ITVS_EXCEPTIONS_DETAIL,
-                component: TrainingEntityDetailPage,
+                component: EntityDetailPage,
                 subRoutes: [
                     {
                         slug: RouterRoutes.CI_DETAIL,
@@ -836,6 +859,23 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.ITVS_EXCEPTIONS_EDIT,
                 slug: RouterRoutes.ITVS_EXCEPTIONS_EDIT,
                 component: ITVSExceptionsEditPage,
+            },
+            {
+                path: RouterRoutes.WEBOVE_SIDLO_DETAIL,
+                slug: RouterRoutes.WEBOVE_SIDLO_DETAIL,
+                component: EntityDetailPage,
+                subRoutes: [
+                    {
+                        slug: RouterRoutes.CI_DETAIL,
+                        component: WebPortalInformation,
+                        index: true,
+                    },
+                ],
+            },
+            {
+                path: RouterRoutes.WEBOVE_SIDLO_CREATE,
+                slug: RouterRoutes.WEBOVE_SIDLO_CREATE,
+                component: CreateEntityPage,
             },
             {
                 path: LoginRouteNames.LOGIN_PROBLEMS,
@@ -957,6 +997,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.RELATION_LIST,
                 slug: RouterRoutes.RELATION_LIST,
                 component: RelationListPage,
+            },
+            {
+                path: RouterRoutes.BULK_ACTION_ITEM_LIST,
+                slug: RouterRoutes.BULK_ACTION_ITEM_LIST,
+                component: BulkListPage,
             },
             {
                 path: '*',

@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
-import { Button, CheckBox, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, CheckBox, ErrorBlock, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import {
     getReadCiNeighboursWithAllRelsQueryKey,
     getReadNeighboursConfigurationItemsCountQueryKey,
@@ -16,17 +16,22 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { v4 as uuidV4 } from 'uuid'
 import { boolean, mixed, object, string } from 'yup'
 import { useQueryClient } from '@tanstack/react-query'
-import { RequestIdUi, getGetOlaContractQueryKey, getListOlaContractListQueryKey } from '@isdd/metais-common/api/generated/monitoring-swagger'
+import {
+    RequestIdUi,
+    getGetOlaContractQueryKey,
+    getListOlaContractListQueryKey,
+    useGetOlaContractHook,
+} from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
-import { getGetHistoryQueryKey, getGetMetaQueryKey, useGetContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
+import { RefAttributesRefType, getGetHistoryQueryKey, getGetMeta1QueryKey, useGetContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
-import { OLA_Kontrakt_dodavatela_ISVS } from '@isdd/metais-common/constants'
+import { OLA_Kontrakt, OLA_Kontrakt_dodavatela_ISVS } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { v4 as uuidV4 } from 'uuid'
 
 import { ISVSSelect } from './ISVSSelect'
 
@@ -46,7 +51,28 @@ const getSchema = (t: TFunction) => {
             ['code']: string(),
             ['referencingIdentifier']: string(),
             ['contractCode']: string(),
-            ['validityEndDate']: string().nullable(),
+            ['validityEndDate']: string()
+                .nullable()
+                .when('validityStartDate', (validityStartDate, dateSchema) => {
+                    return dateSchema.test({
+                        name: 'validityEndDate',
+                        test: function (value) {
+                            const startDate = new Date(validityStartDate[0])
+                            const endDate = new Date(value ?? '')
+                            if (!value) return true
+                            if (!validityStartDate[0]) return true
+                            return (
+                                startDate <= endDate ||
+                                this.createError({
+                                    message: t('validation.endTimeBeforeStartTime', {
+                                        startTime: t('olaContracts.filter.intervalStart'),
+                                        endTime: t('olaContracts.filter.intervalEnd'),
+                                    }),
+                                })
+                            )
+                        },
+                    })
+                }),
             ['crzLink']: string(),
             ['vendorLock']: boolean(),
         })
@@ -76,7 +102,9 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
         setValue,
         handleSubmit,
         clearErrors,
-        formState: { errors },
+        formState: { errors, isValid, isSubmitted },
+        watch,
+        trigger,
     } = useForm({
         resolver: yupResolver(getSchema(t)),
         defaultValues:
@@ -97,7 +125,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
     const deleteRel = useDeleteRelationshipHook()
     const queryClient = useQueryClient()
     const listKey = getListOlaContractListQueryKey()
-    const dmsKey = getGetMetaQueryKey(olaContract?.uuid ?? '')
+    const dmsKey = getGetMeta1QueryKey(olaContract?.uuid ?? '')
     const contractKey = getGetOlaContractQueryKey(olaContract?.uuid ?? '')
     const downloadVersionFile = useGetContentHook()
     const fileHistoryKey = getGetHistoryQueryKey(olaContract?.uuid ?? '')
@@ -107,6 +135,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
     const [showDocument, setShowDocument] = useState(false)
     const { setIsActionSuccess } = useActionSuccess()
     const location = useLocation()
+    const getOlaContract = useGetOlaContractHook()
 
     useEffect(() => {
         if (ciCode) {
@@ -115,20 +144,40 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
         }
     }, [ciCode, setValue])
 
-    const fileMetaAttributes = {
-        'x-content-uuid': uuidV4(),
-        refAttributes: new Blob(
-            [
-                JSON.stringify({
-                    refType: 'STANDARD',
-                }),
-            ],
-            { type: 'application/json' },
-        ),
-    }
+    const intervalEndValue = watch('validityEndDate')
+    useEffect(() => {
+        if (intervalEndValue && isSubmitted) {
+            trigger()
+        }
+    }, [intervalEndValue, isSubmitted, trigger])
+
     const handleUploadData = useCallback(() => {
         fileUploadRef.current?.startUploading()
     }, [])
+
+    const redirectsOnSuccess = (formData: FieldValues, invalidateFile?: boolean) => {
+        if (!isError) {
+            queryClient.invalidateQueries(listKey)
+            if (olaContract) {
+                if (invalidateFile) {
+                    queryClient.invalidateQueries(dmsKey)
+                    queryClient.invalidateQueries(fileHistoryKey)
+                }
+
+                queryClient.invalidateQueries(contractKey)
+            }
+            setIsActionSuccess({
+                value: true,
+                path: olaContract ? RouterRoutes.OLA_CONTRACT_LIST + '/' + olaContract.uuid : RouterRoutes.OLA_CONTRACT_LIST,
+                additionalInfo: { type: olaContract ? 'edit' : 'create' },
+            })
+        }
+        if (!olaContract || olaContract.contractorIsvsUuid == formData['contractorIsvsUuid']) {
+            navigate(olaContract ? RouterRoutes.OLA_CONTRACT_LIST + '/' + olaContract.uuid : RouterRoutes.OLA_CONTRACT_LIST, {
+                state: { from: location },
+            })
+        }
+    }
 
     const updateContract = (formData: FieldValues, invalidateFile?: boolean, uuid?: string) =>
         saveContract({
@@ -140,9 +189,26 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
             },
         })
             .then(async (res) => {
-                if (olaContract) {
-                    await getRequestStatus((res as RequestIdUi).requestId ?? '', () => null)
+                await getRequestStatus((res as RequestIdUi).requestId ?? '', () => null)
+                const newOla = await getOlaContract(uuid ?? '')
+                if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                    fileUploadRef.current?.setCustomMeta({
+                        'x-content-uuid': uuidV4(),
+                        refAttributes: new Blob(
+                            [
+                                JSON.stringify({
+                                    refType: RefAttributesRefType.CI,
+                                    refCiId: uuid,
+                                    refCiTechnicalName: OLA_Kontrakt,
+                                    refCiOwner: newOla?.owner,
+                                }),
+                            ],
+                            { type: 'application/json' },
+                        ),
+                    })
+                    handleUploadData()
                 }
+
                 if (olaContract && olaContract.contractorIsvsUuid != formData['contractorIsvsUuid']) {
                     const rels = await readRels(olaContract.uuid ?? '', {
                         neighboursFilter: { metaAttributes: { state: ['DRAFT'] }, relType: [OLA_Kontrakt_dodavatela_ISVS] },
@@ -172,42 +238,18 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                 }
             })
             .finally(() => {
-                if (!isError) {
-                    queryClient.invalidateQueries(listKey)
-                    if (olaContract) {
-                        if (invalidateFile) {
-                            queryClient.invalidateQueries(dmsKey)
-                            queryClient.invalidateQueries(fileHistoryKey)
-                        }
-
-                        queryClient.invalidateQueries(contractKey)
-                    }
-                    setIsActionSuccess({
-                        value: true,
-                        path: olaContract ? RouterRoutes.OLA_CONTRACT_LIST + '/' + olaContract.uuid : RouterRoutes.OLA_CONTRACT_LIST,
-                        additionalInfo: { type: olaContract ? 'edit' : 'create' },
-                    })
-                }
-                if (!olaContract || olaContract.contractorIsvsUuid == formData['contractorIsvsUuid']) {
-                    navigate(olaContract ? RouterRoutes.OLA_CONTRACT_LIST + '/' + olaContract.uuid : RouterRoutes.OLA_CONTRACT_LIST, {
-                        state: { from: location },
-                    })
-                }
+                redirectsOnSuccess(formData, invalidateFile)
             })
 
     const handleUploadSuccess = (data: FileUploadData[]) => {
-        updateContract(formDataRef.current, true, olaContract ? olaContract.uuid : data[0].fileId)
+        queryClient.invalidateQueries(getGetHistoryQueryKey(data.at(0)?.fileId ?? ''))
+        queryClient.invalidateQueries(getGetMeta1QueryKey(data.at(0)?.fileId ?? ''))
     }
 
     const onSubmit = async (formData: FieldValues) => {
         const uuid = olaContract?.uuid ?? (await generateUuid())
         formDataRef.current = { ...formData }
-        if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
-            handleUploadData()
-            return
-        } else {
-            updateContract(formData, false, uuid)
-        }
+        updateContract(formData, false, uuid)
     }
 
     const downloadFile = async (uuid: string) => {
@@ -228,7 +270,10 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
             <TextHeading size="XL">
                 {isEdit ? t('olaContracts.headingEdit', { itemName: olaContract?.name }) : t('olaContracts.headingAdd')}
             </TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)}>
+
+            {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <QueryFeedback loading={isLoading || isRequestProcessing} error={isError} withChildren>
                     <Input {...register('name')} label={t('olaContracts.filter.name')} required error={errors.name?.message} />
                     <Input {...register('nameEnglish')} label={t('olaContracts.filter.nameEnglish')} />
@@ -255,6 +300,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                         name={'validityEndDate'}
                         control={control}
                         label={t('olaContracts.filter.intervalEnd')}
+                        error={errors.validityEndDate?.message}
                         setValue={setValue}
                     />
                     <Input {...register('crzLink')} label={t('olaContracts.filter.crzLink')} />
@@ -288,7 +334,7 @@ export const OlaContractSaveView: React.FC<IOlaContractSaveView> = ({
                         allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
                         multiple={false}
                         isUsingUuidInFilePath
-                        fileMetaAttributes={fileMetaAttributes}
+                        refType={RefAttributesRefType.CI}
                         onUploadSuccess={handleUploadSuccess}
                         customUuid={olaContract?.uuid}
                     />

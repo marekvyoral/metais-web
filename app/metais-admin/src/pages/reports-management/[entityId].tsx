@@ -30,11 +30,7 @@ const ReportsDetailPage: React.FC = () => {
                         />
                         <MainContentWrapper>
                             <QueryFeedback loading={props.isLoading} error={props.isError}>
-                                <MutationFeedback
-                                    success={props.isMutationSuccess}
-                                    showSupportEmail
-                                    error={props.isMutationError ? t('feedback.mutationErrorMessage') : undefined}
-                                />
+                                <MutationFeedback success={props.isMutationSuccess} error={props.isMutationError} />
                                 <TextHeading size="L">{t('breadcrumbs.reportsEdit')}</TextHeading>
                                 <ReportsDetail
                                     data={props.data}
@@ -44,7 +40,6 @@ const ReportsDetailPage: React.FC = () => {
                                     saveIsLoading={props.saveIsLoading}
                                     mutationIsLoading={props.mutationIsLoading}
                                     runMutationIsSuccess={props.runMutationIsSuccess}
-                                    mutationError={props.mutationError}
                                 />
                             </QueryFeedback>
                         </MainContentWrapper>

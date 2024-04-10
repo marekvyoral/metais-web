@@ -8,6 +8,7 @@ export const BASE_PAGE_SIZE = 10
 
 export const REGEX_EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$|^$/
 export const REGEX_TEL = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$|^$/
+export const REGEX_URL = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/
 
 export const filterKeysToSkip = new Set(['fullTextSearch', 'attributeFilters', 'sort', 'pageSize', 'pageNumber'])
 
@@ -62,6 +63,7 @@ export const documentsManagementGroupDocumentsDefaultSelectedColumns = (t: TFunc
     { technicalName: 'required', name: t('documentsManagement.required'), selected: true },
     { technicalName: 'documentGroup', name: t('documentsManagement.documentGroup'), selected: false },
     { technicalName: 'type', name: t('documentsManagement.type'), selected: false },
+    { technicalName: 'template', name: t('documentsManagement.template'), selected: true },
 ]
 
 export const getProjectsFinanceManagementSelectedColumns = (t: TFunction<'translation', undefined, 'translation'>) => [
@@ -102,6 +104,7 @@ export enum ReponseErrorCodeEnum {
     GNR500 = 'gnr500',
     OPERATION_NOT_ALLOWED = 'OperationNotAllowed',
     WRONG_OLD_PASSWORD = 'WRONG_OLD_PASSWORD',
+    EKO_CODE_USED = 'EkoCodeUsed',
 }
 export const REPORTS = 'reports'
 export const FIRST_PAGE_NUMBER = 1
@@ -165,6 +168,8 @@ export const TYP_DATOVEHO_PRVKU = 'TYP_DATOVEHO_PRVKU'
 export const STAV_PROJEKTU = 'STAV_PROJEKTU'
 export const FAZA_PROJEKTU = 'FAZA_PROJEKTU'
 export const CI_ITEM_QUERY_KEY = 'ciItemData'
+export const RELATIONSHIP_TYPES_QUERY_KEY = 'useListRelationshipTypes'
+export const CI_TYPES_QUERY_KEY = 'useListCiTypes'
 export const REPORTS_LIST_QUERY_KEY = '/reports/list'
 export const ADMIN_EGOV_ENTITY_LIST_QKEY = `/citypes/list`
 export const ADMIN_EGOV_RELATION_LIST_QKEY = `/relationshiptypes/list`
@@ -173,7 +178,7 @@ export const HTML_TYPE = 'HTML'
 export const DATETIME_TYPE = 'DATETIME'
 export const MUK = 'muk'
 
-export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
+export const P_REALIZUJE_AKT = 'Projekt_realizuje_aktivitu'
 export const ENTITY_ACTIVITY = 'Aktivita'
 
 export const DESCRIPTION = 'Popis'
@@ -188,6 +193,7 @@ export const RATED_STATE = 'c_stav_projektu_4'
 export const NOT_APPROVED_STATE = 'c_stav_projektu_12'
 export const RE_RATED_STATE = 'c_stav_projektu_11'
 export const RETURNED_STATE = 'c_stav_projektu_5'
+export const CANCELED_STATE = 'c_stav_projektu_7'
 
 export const PROJECT_STATUS = 'EA_Profil_Projekt_status'
 
@@ -201,6 +207,8 @@ export const PO_PO = 'PO_PO'
 export const PO_IS_PO = 'PO_IS_PO'
 export const PO = 'PO'
 export const PROJECT = 'Projekt'
+export const PROGRAM = 'Program'
+export const WEBOVE_SIDLO = 'WeboveSidlo'
 export const ENTITY_KS = 'KS'
 export const ENTITY_AS = 'AS'
 export const ENTITY_ISVS = 'ISVS'
@@ -208,6 +216,7 @@ export const ENTITY_KONTRAKT = 'Kontrakt'
 export const ENTITY_MIGRATION = 'Migracia'
 export const ENTITY_INFRA_SLUZBA = 'InfraSluzba'
 export const ENTITY_TRAINING = 'Training'
+export const ENTITY_ZC = 'ZC'
 export const ENTITY_OSOBITNY_POSTUP = 'OsobitnyPostup'
 export const STANDARDIZATION_DRAFTS_LIST = 'draftsList'
 export const REFERENCE_REGISTER = 'ReferenceRegister'
@@ -219,11 +228,13 @@ export const DRAFT = 'DRAFT'
 export const ENTITY_CIEL = 'Ciel'
 export const ENTITY_KRIS = 'KRIS'
 export const KRIS_stanovuje_Ciel = 'KRIS_stanovuje_Ciel'
+export const KRIS_Profil_nazov = 'Koncepcia rozvoja IT'
 export const ENTITY_PRINCIP = 'Princip'
 export const PO_predklada_KRIS = 'PO_predklada_KRIS'
 export const ENTITY_ZS = 'ZS'
 export const ENTITY_AGENDA = 'Agenda'
 export const ENTITY_INTEGRATION = 'Integracia'
+export const ENTITY_MIESTO_PREVADZKY = 'MiestoPrevadzky'
 
 export const INACTIVE_LOGOUT_TIME = import.meta.env.VITE_INACTIVE_LOGOUT_TIME
 export const INACTIVE_WARNING_TIME = import.meta.env.VITE_INACTIVE_WARNING_TIME
@@ -231,7 +242,7 @@ export const IAM_OIDC_BASE_URL = import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_
 
 export const ciInformationTab = 'information'
 export const integrationHarmonogramTab = 'harmonogram'
-
+export const LIFE_CYCLE_PHASE = 'FazaZivotnehoCyklu'
 export const KRIScolumnsTechNames = [
     ATTRIBUTE_NAME.Gen_Profil_nazov,
     ATTRIBUTE_NAME.Gen_Profil_kod_metais,
@@ -248,7 +259,7 @@ export enum ROLES {
 }
 export const NO_USER_COLUMNS_LS_KEY = 'METAIS_columns_noUser/'
 
-export const CAN_CREATE_AND_EDIT_VOTES_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP']
+export const CAN_CREATE_AND_EDIT_VOTES_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP', 'STD_KOORDINATOR_AGENDY']
 
 export const CAN_NOT_MANAGE_CI = [
     'Agenda',
@@ -290,7 +301,7 @@ export const CAN_NOT_MANAGE_CI = [
     'Ciel',
 ]
 
-export const API_MODULS = [
+export const API_MODULES_DEV = [
     'userconfig',
     'dms',
     'typesrepository',
@@ -314,14 +325,43 @@ export const API_MODULS = [
     'monitoring',
     'metaisiam-rest',
     'trainings',
+    'wiki',
 ]
-export const CAN_CREATE_MEETING_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP']
+
+export const API_MODULES = [
+    'user-config',
+    'dms',
+    'types-repo',
+    'bpm-engine',
+    'validation',
+    'notification-engine',
+    'report',
+    'claim-manager',
+    'clarity',
+    'controls',
+    'tco',
+    'enums-repo',
+    'impexp-cmdb',
+    'license',
+    'standards',
+    'codelist-repo',
+    'kris',
+    'pdf-creator',
+    'provisioning',
+    'notification-manager',
+    'monitoring',
+    'iam',
+    'trainings',
+    'wiki',
+]
+
+export const CAN_CREATE_MEETING_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP', 'STD_KOORDINATOR_AGENDY']
 export const CAN_EDIT_MEETING_USER_ROLES = ['STD_KOORDINATOR_AGENDY']
-export const LOWER_CASE_NUMBER_DOT_REGEX = /^[a-z0-9.]*$/
+export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 export const SPACES_REGEX = /\s+/g
 export const baseWikiUrl = import.meta.env.VITE_REST_CLIENT_WIKI_BASE_URL
 export const STAV_DIZ_ENUM_CODE = 'STAV_DIZ'
-export const DECLARATION_ID = 'isvs_63'
+export const DECLARATION_ID = 'webove_sidlo_30'
 
 export const categoryParameterMap = new Map<string, string>([
     ['AS', 'c_typ_parametra_kategoria.3'],
@@ -329,6 +369,7 @@ export const categoryParameterMap = new Map<string, string>([
 ])
 export const INTEGRACIA_KONZUMUJE_PROJEKT = 'Integracia_konzumuje_Projekt'
 export const INTEGRACIA_VYSTAVUJE_PROJEKT = 'Integracia_vystavuje_Projekt'
+export const KS_MA_FAZU_ZIVOTNEHO_CYKLU = 'KS_ma_FazaZivotnehoCyklu'
 export const INTEGRATION_HARMONOGRAM_EDIT_SEARCH_PARAM = 'edit'
 export const FAZA_INTEGRACNEHO_MILNIKA = 'FAZA_INTEGRACNEHO_MILNIKA'
 export const GUI_PROFILE_DIZ = 'Gui_Profil_DIZ'
@@ -368,3 +409,21 @@ export const OLA_CONTRACT_STATE_ACTIONS = {
     PLAN: 'PLAN',
     CONTRACT: 'CONTRACT',
 }
+
+export enum C_STAV_REGISTRACIE {
+    c_stav_registracie_2 = 'c_stav_registracie.2',
+}
+export enum HowTo {
+    EGOV_HOWTO = 'EGOV_HOWTO',
+    SPK_HOWTO = 'SPK_HOWTO',
+    CODELISTS_HOWTO = 'CODELISTS_HOWTO',
+    URI_HOWTO = 'URI_HOWTO',
+    REF_REG_HOWTO = 'REF_REG_HOWTO',
+    MONITORING_HOWTO = 'MONITORING_HOWTO',
+}
+
+export const BULK_ACTION_ITEM_SEPARATOR = ','
+export const BULK_ACTION_ITEM_SEARCH_KEY = 'list'
+export const ELASTIC_MAX_RECORDS = 10000
+
+export const TASKS_QUERY_KEY = 'tasksQueryKey'

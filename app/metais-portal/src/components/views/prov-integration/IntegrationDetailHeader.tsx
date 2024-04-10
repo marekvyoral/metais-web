@@ -104,12 +104,11 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
 
     return (
         <>
-            <ElementToScrollTo isVisible={bulkActionResult?.isError || bulkActionResult?.isSuccess || isError || isSuccess}>
+            <ElementToScrollTo trigger={bulkActionResult?.isError || bulkActionResult?.isSuccess || isError || isSuccess}>
                 <MutationFeedback
                     success={bulkActionResult?.isSuccess || isSuccess}
                     successMessage={bulkActionResult?.successMessage}
-                    showSupportEmail
-                    error={bulkActionResult?.isError || isError ? t('feedback.mutationErrorMessage') : ''}
+                    error={bulkActionResult?.isError || isError}
                 />
             </ElementToScrollTo>
             <div className={styles.headerDiv}>
@@ -143,6 +142,7 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
                                                         close()
                                                     }}
                                                     label={t('ciType.invalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -158,6 +158,7 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
                                                         close()
                                                     }}
                                                     label={t('ciType.revalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -168,6 +169,7 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
                                                     close()
                                                 }}
                                                 label={t('ciType.changeOfOwner')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </Can>
 
@@ -178,6 +180,7 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
                                                     close()
                                                 }}
                                                 label={t('integrationLinks.uploadDoc')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </Can>
 
@@ -188,6 +191,7 @@ export const IntegrationDetailHeader: React.FC<Props> = ({
                                                     close()
                                                 }}
                                                 label={t('integrationLinks.manualSign')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </Can>
 

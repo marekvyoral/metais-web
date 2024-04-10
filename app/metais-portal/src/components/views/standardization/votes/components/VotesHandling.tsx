@@ -1,8 +1,8 @@
-import { Button, RadioButton, RadioGroupWithLabel, TextArea } from '@isdd/idsk-ui-kit/index'
+import { Button, RadioButton, RadioGroup, TextArea } from '@isdd/idsk-ui-kit/index'
 import { ApiVote } from '@isdd/metais-common/api/generated/standards-swagger'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import classNames from 'classnames'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -18,6 +18,9 @@ interface ICastVote {
     canSendNote: boolean
     handleSendDescription: (description: string) => void
     cancelState: boolean
+    votesProcessingError?: string
+    setVotesProcessingError: React.Dispatch<React.SetStateAction<string | undefined>>
+    voted: boolean
 }
 
 interface IChoise {
@@ -42,10 +45,12 @@ export const VotesHandler: React.FC<ICastVote> = ({
     canSendNote,
     handleSendDescription,
     cancelState,
+    votesProcessingError,
+    setVotesProcessingError,
+    voted,
 }) => {
     const { t } = useTranslation()
-    const [votesProcessingError, setVotesProcessingError] = useState<boolean>(false)
-    const [voted, setVoted] = useState<boolean>(false)
+
     const { register, handleSubmit } = useForm()
 
     const alreadyVoted = !!castedVoteId
@@ -94,7 +99,7 @@ export const VotesHandler: React.FC<ICastVote> = ({
                 if (choiceDescription) await handleSendDescription(choiceDescription)
                 return
             } catch {
-                setVotesProcessingError(true)
+                setVotesProcessingError('votes.actions.failedToSend')
             }
         }
         if (choiceId == undefined) {
@@ -102,15 +107,10 @@ export const VotesHandler: React.FC<ICastVote> = ({
         }
         const isVeto = choiceId == VETO_VOTE_ID
 
-        try {
-            if (isVeto) {
-                await handleVetoVote(choiceDescription)
-            } else handleCastVote(choiceId, choiceDescription ?? '')
-
-            setVoted(true)
-        } catch {
-            setVotesProcessingError(true)
-            setVoted(false)
+        if (isVeto) {
+            handleVetoVote(choiceDescription)
+        } else {
+            handleCastVote(choiceId, choiceDescription ?? '')
         }
     }
 
@@ -118,19 +118,17 @@ export const VotesHandler: React.FC<ICastVote> = ({
         <QueryFeedback
             withChildren
             loading={voteProcessing}
-            error={votesProcessingError}
             indicatorProps={{ transparentMask: true, layer: 'dialog', label: t('votes.voteDetail.voteProcessing') }}
         >
-            {voted && (
-                <MutationFeedback
-                    success={voted}
-                    error={votesProcessingError && t('votes.actions.failedToSend')}
-                    successMessage={t('votes.actions.sent')}
-                    onMessageClose={() => setVotesProcessingError(false)}
-                />
-            )}
-            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
-                <RadioGroupWithLabel
+            <MutationFeedback
+                success={voted}
+                error={!!votesProcessingError}
+                errorMessage={t(`errors.${votesProcessingError}`)}
+                successMessage={t('votes.actions.sent')}
+                onMessageClose={() => setVotesProcessingError(undefined)}
+            />
+            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')} noValidate>
+                <RadioGroup
                     label={t('votes.voteDetail.votesHandlingRadioLabel')}
                     hint={
                         cancelState
@@ -157,7 +155,7 @@ export const VotesHandler: React.FC<ICastVote> = ({
                             />
                         )
                     })}
-                </RadioGroupWithLabel>
+                </RadioGroup>
                 {(canCast || canSendNote || !vetoed) && (
                     <TextArea
                         rows={3}

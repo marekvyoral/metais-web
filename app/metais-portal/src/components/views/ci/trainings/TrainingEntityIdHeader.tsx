@@ -67,17 +67,14 @@ export const TrainingEntityIdHeader: React.FC<Props> = ({
 
     return (
         <>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage}
-                        showSupportEmail
-                        error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
-                        onMessageClose={() => setBulkActionResult(undefined)}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess}
+                    successMessage={bulkActionResult?.successMessage}
+                    error={bulkActionResult?.isError}
+                    onMessageClose={() => setBulkActionResult(undefined)}
+                />
+            </div>
             <div className={styles.headerDiv}>
                 {isBulkLoading && <LoadingIndicator fullscreen />}
                 <TextHeading size="XL" className={classNames({ [styles.invalidated]: isInvalidated })}>
@@ -105,6 +102,7 @@ export const TrainingEntityIdHeader: React.FC<Props> = ({
                                                     disabled={isInvalidated}
                                                     onClick={() => handleInvalidate(entityListData, () => setShowInvalidate(true), open)}
                                                     label={t('ciType.invalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -117,11 +115,16 @@ export const TrainingEntityIdHeader: React.FC<Props> = ({
                                                     disabled={!isInvalidated}
                                                     onClick={() => handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)}
                                                     label={t('ciType.revalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
                                         <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
-                                            <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
+                                            <ButtonLink
+                                                onClick={() => setShowChangeOwner(true)}
+                                                label={t('ciType.changeOfOwner')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
+                                            />
                                         </Can>
                                     </div>
                                 )

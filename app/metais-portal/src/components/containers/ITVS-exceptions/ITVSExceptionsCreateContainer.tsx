@@ -22,11 +22,12 @@ import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { FieldValues } from 'react-hook-form'
 import { v4 as uuidV4 } from 'uuid'
 import { JOIN_OPERATOR } from '@isdd/metais-common/constants'
-import { useListRelatedCiTypes, useGetRelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { useGetRelationshipTypeWrapper } from '@isdd/metais-common/hooks/useRelationshipType.hook'
+import { useListRelatedCiTypesWrapper } from '@isdd/metais-common/hooks/useListRelatedCiTypes.hook'
 
 import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
 import { CreateEntityData } from '@/components/create-entity/CreateEntity'
@@ -86,7 +87,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const [isCreationLoading, setIsCreationLoading] = useState(false)
 
     //load all relationship types for CI - /related
-    const { data: relatedListData, isLoading: isRelatedListLoading, isError: isRelatedListError } = useListRelatedCiTypes(entityName)
+    const { data: relatedListData, isLoading: isRelatedListLoading, isError: isRelatedListError } = useListRelatedCiTypesWrapper(entityName)
     //build select options from this data
     const relatedListAsSources = filterRelatedList(relatedListData?.cisAsSources, relationNodes)
     const relatedListAsTargets = filterRelatedList(relatedListData?.cisAsTargets, relationNodes)
@@ -94,7 +95,11 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const { data: rels } = useReadCiNeighboursWithAllRels(updateCiItemId ?? '')
     const allCIsInRelations: CiWithRelsUi[] = rels?.ciWithRels ?? []
 
-    const { data: relationTypeData, isLoading: isRelationTypeDataLoading, isError: isRelationTypeDataError } = useGetRelationshipType(relationType)
+    const {
+        data: relationTypeData,
+        isLoading: isRelationTypeDataLoading,
+        isError: isRelationTypeDataError,
+    } = useGetRelationshipTypeWrapper(relationType)
 
     const [formData, setFormData] = useState<FieldValues>({})
 
@@ -271,17 +276,11 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                         ? t('ciType.createEntity', { entityName: t('ITVSExceptions.vynimky_ITVS') })
                         : t('ciType.editEntity', { entityName: t('ITVSExceptions.vynimky_ITVS') })}
                 </TextHeading>
-                {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
+                <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
             </FlexColumnReverseWrapper>
-            {!(isRedirectError || isProcessedError || isRedirectLoading) && (
-                <div ref={mutationRef}>
-                    <MutationFeedback
-                        success={false}
-                        showSupportEmail
-                        error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
-                    />
-                </div>
-            )}
+            <div ref={mutationRef}>
+                <MutationFeedback error={storeConfigurationItem.isError} />
+            </div>
             {(isRedirectError || isProcessedError || isTooManyFetchesError) && <div ref={wrapperRef} />}
             <QueryFeedback
                 loading={isRedirectLoading || isCreationLoading}

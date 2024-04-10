@@ -3,7 +3,6 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
 import { ConfigurationItemUi, ConfigurationItemUiAttributes, useReadCiNeighboursWithAllRels } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useListRelatedCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
@@ -14,6 +13,7 @@ import * as d3 from 'd3'
 import { FC, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ModalButtons } from '@isdd/metais-common/index'
+import { useListRelatedCiTypesWrapper } from '@isdd/metais-common/hooks/useListRelatedCiTypes.hook'
 
 import styles from './relationshipGraph.module.scss'
 import { isRelatedCiTypeCmdbView } from './typeHelper'
@@ -69,7 +69,7 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
     const { ciItemData, gestorData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(nodeDetail?.uuid)
     const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(nodeDetail?.type)
 
-    const { isLoading: isLoadingRelated, isError: isErrorRelated, data: relatedTypes } = useListRelatedCiTypes(target?.type ?? '')
+    const { isLoading: isLoadingRelated, isError: isErrorRelated, data: relatedTypes } = useListRelatedCiTypesWrapper(target?.type ?? '')
     const types = useMemo(() => (relatedTypes?.cisAsSources || []).concat(relatedTypes?.cisAsTargets || []), [relatedTypes])
     const ciTypes = types
         .filter(function (oneType) {
@@ -193,7 +193,12 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
                             popupContent={(closePopup) => (
                                 <div>
                                     <div>
-                                        <Button label={t('graph.exportPNG')} variant="secondary" onClick={() => onExport('png', closePopup)} />
+                                        <Button
+                                            label={t('graph.exportPNG')}
+                                            variant="secondary"
+                                            onClick={() => onExport('png', closePopup)}
+                                            aria-haspopup="dialog"
+                                        />
                                     </div>
                                     <div>
                                         <Button
@@ -201,6 +206,7 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
                                             variant="secondary"
                                             className="govuk-!-margin-bottom-1"
                                             onClick={() => onExport('pdf', closePopup)}
+                                            aria-haspopup="dialog"
                                         />
                                     </div>
                                 </div>

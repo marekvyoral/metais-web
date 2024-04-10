@@ -1,4 +1,4 @@
-import { GetContentParams, Metadata, useGetContentHook, useGetMeta } from '@isdd/metais-common/api/generated/dms-swagger'
+import { GetContentParams, Metadata, useGetContentHook, useGetMeta1 } from '@isdd/metais-common/api/generated/dms-swagger'
 import { ApiError, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import {
     ApiOlaContractData,
@@ -7,7 +7,6 @@ import {
     useGetOlaContract,
     useOlaContractTransition,
 } from '@isdd/metais-common/api/generated/monitoring-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { OLA_Kontrakt, ROLES, STAV_OLA_KONTRAKT } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters, UseMutateAsyncFunction } from '@tanstack/react-query'
@@ -19,6 +18,7 @@ import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNa
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { EnumItem, useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { canEditOlaContract } from '@/components/views/ola-contract-list/helper'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -62,10 +62,10 @@ export const OlaContractDetailContainer: React.FC<IOlaContractAddContainer> = ({
         data: olaContractDocument,
         isLoading: isOlaContractDocumentLoading,
         isError: isOlaContractDocumentError,
-    } = useGetMeta(entityId ?? '', {}, { query: { retry: 1 } })
+    } = useGetMeta1(entityId ?? '', {}, { query: { retry: 1 } })
     const downloadVersionFile = useGetContentHook()
     const [showHistory, setShowHistory] = useState(false)
-    const { data: ciType, isLoading: isCiTypeLoading, isError: isCiTypeError } = useGetCiType(OLA_Kontrakt)
+    const { data: ciType, isLoading: isCiTypeLoading, isError: isCiTypeError } = useGetCiTypeWrapper(OLA_Kontrakt)
     const { getRequestStatus, isError: isGetStatusError, isTooManyFetchesError, isLoading: isGettingStatus } = useGetStatus()
     const { setIsActionSuccess } = useActionSuccess()
     const {

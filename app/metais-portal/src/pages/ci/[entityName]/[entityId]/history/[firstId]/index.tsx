@@ -6,9 +6,9 @@ import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
-import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { getCiHowToBreadCrumb, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { HistorySingleItemCompareContainer } from '@/components/containers/HistorySingleItemCompareContainer'
 import { CiHistoryPermissionsWrapper } from '@/components/permissions/CiHistoryPermissionsWrapper'
@@ -22,7 +22,7 @@ const CompareSinglePage: React.FC = () => {
     const { entityId } = useGetEntityParamsFromUrl()
     entityName = shouldEntityNameBePO(entityName ?? '')
 
-    const { data: ciTypeData } = useGetCiType(entityName)
+    const { data: ciTypeData } = useGetCiTypeWrapper(entityName)
     const { data: ciItemData } = useReadConfigurationItem(entityId ?? '', {
         query: {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
@@ -36,6 +36,7 @@ const CompareSinglePage: React.FC = () => {
                     withWidthContainer
                     links={[
                         { label: t('breadcrumbs.home'), href: '/' },
+                        ...getCiHowToBreadCrumb(entityName ?? '', t),
                         { label: t('titles.ciList', { ci: ciTypeData?.name }), href: `/ci/${entityName}` },
                         {
                             label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),

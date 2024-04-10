@@ -8,14 +8,21 @@ import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbi
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { POEntityDetailHeader } from './POEntityDetailHeader'
 
-import { getDefaultCiEntityTabList, useCiDetailPageTitle, useCiListPageHeading, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import {
+    getCiHowToBreadCrumb,
+    getDefaultCiEntityTabList,
+    useCiDetailPageTitle,
+    useCiListPageHeading,
+    useGetEntityParamsFromUrl,
+} from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
+import { useCiCheckEntityTypeRedirectHook } from '@/hooks/useCiCheckEntityTypeRedirect.hook'
 
 const POEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -25,7 +32,7 @@ const POEntityDetailPage: React.FC = () => {
     const entityName = PO
 
     const userAbility = useUserAbility()
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName ?? '')
     const [selectedTab, setSelectedTab] = useState<string>()
 
     const {
@@ -37,6 +44,7 @@ const POEntityDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+    useCiCheckEntityTypeRedirectHook(ciItemData, entityName)
 
     const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
     const { getTitle } = useCiDetailPageTitle(ciTypeData?.name ?? '', ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov], t)
@@ -52,6 +60,7 @@ const POEntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(entityName ?? '', t),
                     { label: getHeading(), href: `/ci/${entityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
@@ -68,17 +77,14 @@ const POEntityDetailPage: React.FC = () => {
                                 entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
-                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
-                                <MutationFeedback
-                                    error={false}
-                                    success={isActionSuccess.value}
-                                    successMessage={
-                                        isActionSuccess.additionalInfo?.type === 'create'
-                                            ? t('mutationFeedback.successfulCreated')
-                                            : t('mutationFeedback.successfulUpdated')
-                                    }
-                                />
-                            )}
+                            <MutationFeedback
+                                success={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}
+                                successMessage={
+                                    isActionSuccess.additionalInfo?.type === 'create'
+                                        ? t('mutationFeedback.successfulCreated')
+                                        : t('mutationFeedback.successfulUpdated')
+                                }
+                            />
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
 

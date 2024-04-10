@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { AccordionContainer, CheckBox, DEFAULT_LAZY_LOAD_PER_PAGE, ILoadOptionsResponse, SelectLazyLoading, Table } from '@isdd/idsk-ui-kit'
+import {
+    AccordionContainer,
+    CheckBox,
+    DEFAULT_LAZY_LOAD_PER_PAGE,
+    GridCol,
+    GridRow,
+    ILoadOptionsResponse,
+    SelectLazyLoading,
+    Table,
+    TextBody,
+} from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { ColumnDef } from '@tanstack/react-table'
 import { SortType } from '@isdd/idsk-ui-kit/src/types'
@@ -46,10 +56,10 @@ enum TasksPreferences {
     TASK_CHANGED_ASSIGNEE = 'TASK_CHANGED_ASSIGNEE',
     TASK_CLOSED = 'TASK_CLOSED',
 }
-enum IntegrationsPreferences {
-    INTEGRATION_STARTED = 'INTEGRATION_STARTED',
-    INTEGRATION_DELAYED = 'INTEGRATION_DELAYED',
-}
+// enum IntegrationsPreferences {
+//     INTEGRATION_STARTED = 'INTEGRATION_STARTED',
+//     INTEGRATION_DELAYED = 'INTEGRATION_DELAYED',
+// }
 enum StandardizationPreferences {
     STANDARD_REQUEST = 'STANDARD_REQUEST',
     STANDARD_MEETING = 'STANDARD_MEETING',
@@ -63,11 +73,6 @@ enum UserPreferences {
     USER_ACCEPTED = 'USER_ACCEPTED',
     USER_REFUSED = 'USER_REFUSED',
 }
-enum LicensesPreferences {
-    LICENSE_ADDED = 'LICENSE_ADDED',
-    LICENSE_MOVED = 'LICENSE_MOVED',
-    LICENSE_CHANGED_UNUSED = 'LICENSE_CHANGED_UNUSED',
-}
 enum CodeListsPreferences {
     CODELIST_REQUEST = 'CODELIST_REQUEST',
     CODELIST_CHANGE_STATUS = 'CODELIST_CHANGE_STATUS',
@@ -78,10 +83,9 @@ const Sections = {
     [Tabs.ITEMS]: ItemsPreferences,
     [Tabs.RELATIONS]: RelationsPreferences,
     [Tabs.TASKS]: TasksPreferences,
-    [Tabs.INTEGRATIONS]: IntegrationsPreferences,
+    // [Tabs.INTEGRATIONS]: IntegrationsPreferences,
     [Tabs.STANDARDIZATION]: StandardizationPreferences,
     [Tabs.USER]: UserPreferences,
-    [Tabs.LICENSES]: LicensesPreferences,
     [Tabs.CODELIST]: CodeListsPreferences,
 }
 
@@ -185,6 +189,23 @@ export const UserNotificationsSettings = () => {
         setSelectedPortalNotifications(state)
         handleSave(selectedEmailNotifications, state, selectedProjectsNotifications)
     }
+    const handlePortalSectionChange = (ids: string[], checked: boolean, sectionId: string) => {
+        setMessageSection(`${prefixMsg}.${sectionId}`)
+        let state: string[] = []
+        if (checked) {
+            state = [...selectedPortalNotifications]
+            ids.forEach((id) => {
+                if (!selectedPortalNotifications.includes(id)) state.push(id)
+            })
+        } else {
+            state = selectedPortalNotifications.filter((item) => !ids.includes(item))
+        }
+        setSelectedPortalNotifications(state)
+        handleSave(selectedEmailNotifications, state, selectedProjectsNotifications)
+    }
+    const isPortalSectionSelected = (items: string[]) => {
+        return items.every((item) => selectedPortalNotifications.includes(item))
+    }
 
     const handleEmailCheckboxChange = (id: string, checked: boolean, sectionId: string) => {
         setMessageSection(`${prefixMsg}.${sectionId}`)
@@ -198,6 +219,23 @@ export const UserNotificationsSettings = () => {
 
         setSelectedEmailNotifications(state)
         handleSave(state, selectedPortalNotifications, selectedProjectsNotifications)
+    }
+    const handleEmailSectionChange = (ids: string[], checked: boolean, sectionId: string) => {
+        setMessageSection(`${prefixMsg}.${sectionId}`)
+        let state: string[] = []
+        if (checked) {
+            state = [...selectedEmailNotifications]
+            ids.forEach((id) => {
+                if (!selectedEmailNotifications.includes(id)) state.push(id)
+            })
+        } else {
+            state = selectedEmailNotifications.filter((item) => !ids.includes(item))
+        }
+        setSelectedEmailNotifications(state)
+        handleSave(state, selectedPortalNotifications, selectedProjectsNotifications)
+    }
+    const isEmailSectionSelected = (items: string[]) => {
+        return items.every((item) => selectedEmailNotifications.includes(item))
     }
 
     const handleChangeProjects = (projects: Project[]) => {
@@ -251,6 +289,13 @@ export const UserNotificationsSettings = () => {
                             label={t('userProfile.notifications.table.portal')}
                             checked={selectedPortalNotifications.includes(id)}
                             onChange={(event) => handlePortalCheckboxChange(id, event.target.checked, sectionId)}
+                            aria-label={
+                                selectedPortalNotifications.includes(id)
+                                    ? t('userProfile.notifications.uncheckPortal', {
+                                          name: t(`userProfile.notifications.settings.${sectionId}.${id}`),
+                                      })
+                                    : t('userProfile.notifications.checkPortal', { name: t(`userProfile.notifications.settings.${sectionId}.${id}`) })
+                            }
                         />
                         <CheckBox
                             id={`email-${id}`}
@@ -258,6 +303,13 @@ export const UserNotificationsSettings = () => {
                             label={t('userProfile.notifications.table.email')}
                             checked={selectedEmailNotifications.includes(id)}
                             onChange={(event) => handleEmailCheckboxChange(id, event.target.checked, sectionId)}
+                            aria-label={
+                                selectedEmailNotifications.includes(id)
+                                    ? t('userProfile.notifications.uncheckEmail', {
+                                          name: t(`userProfile.notifications.settings.${sectionId}.${id}`),
+                                      })
+                                    : t('userProfile.notifications.checkEmail', { name: t(`userProfile.notifications.settings.${sectionId}.${id}`) })
+                            }
                         />
                     </div>
                 )
@@ -296,6 +348,56 @@ export const UserNotificationsSettings = () => {
                         successMessage={t(`userProfile.notifications.feedback.editSuccess`)}
                         onMessageClose={() => setIsErrorProjects(false)}
                     />
+
+                    <GridRow className={classNames(styles.textWrapper)}>
+                        <GridCol setWidth="one-quarter">
+                            <TextBody className={classNames(styles.text)}>Nastavenie všetkých notifikácií</TextBody>
+                        </GridCol>
+                        <GridCol setWidth="one-quarter">
+                            <div
+                                className={classNames(
+                                    'govuk-checkboxes',
+                                    'govuk-checkboxes--small',
+                                    styles.buttonContainer,
+                                    styles.buttonContainerSection,
+                                )}
+                            >
+                                <CheckBox
+                                    id={`portal-${sectionId}`}
+                                    aria-label={
+                                        isPortalSectionSelected(Object.keys(preferences))
+                                            ? t('userProfile.notifications.uncheckPortalSection', {
+                                                  section: t(`userProfile.notifications.settings.tabs.${sectionId}`),
+                                              })
+                                            : t('userProfile.notifications.checkPortalSection', {
+                                                  section: t(`userProfile.notifications.settings.tabs.${sectionId}`),
+                                              })
+                                    }
+                                    name="portal"
+                                    label={t('userProfile.notifications.table.portal')}
+                                    checked={isPortalSectionSelected(Object.keys(preferences))}
+                                    onChange={(event) => handlePortalSectionChange(Object.keys(preferences), event.target.checked, sectionId)}
+                                />
+                                <CheckBox
+                                    id={`email-${sectionId}`}
+                                    aria-label={
+                                        isEmailSectionSelected(Object.keys(preferences))
+                                            ? t('userProfile.notifications.uncheckEmailSection', {
+                                                  section: t(`userProfile.notifications.settings.tabs.${sectionId}`),
+                                              })
+                                            : t('userProfile.notifications.checkEmailSection', {
+                                                  section: t(`userProfile.notifications.settings.tabs.${sectionId}`),
+                                              })
+                                    }
+                                    name="email"
+                                    label={t('userProfile.notifications.table.email')}
+                                    checked={isEmailSectionSelected(Object.keys(preferences))}
+                                    onChange={(event) => handleEmailSectionChange(Object.keys(preferences), event.target.checked, sectionId)}
+                                />
+                            </div>
+                        </GridCol>
+                    </GridRow>
+
                     {getContentTable(getColumnsDefinition(sectionId), Object.keys(preferences))}
                 </>
             ),

@@ -7,13 +7,10 @@ import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectP
 import { ENTITY_OSOBITNY_POSTUP, metaisEmail } from '@isdd/metais-common/constants'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import classNames from 'classnames'
 import React, { useEffect, useMemo, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-
-import styles from './styles.module.scss'
 
 import { formatForFormDefaultValues } from '@/componentHelpers/ci'
 import { CI_TYPE_DATA_ITVS_EXCEPTIONS_BLACK_LIST, getModifiedCiTypeData } from '@/componentHelpers/ci/ciTypeBlackList'
@@ -25,6 +22,7 @@ import { CreateEntitySection } from '@/components/create-entity/CreateEntitySect
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
 import { INewCiRelationData } from '@/hooks/useNewCiRelation.hook'
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
+import { useRolesForPO } from '@/hooks/useRolesForPO'
 
 export interface IRelationshipSetState {
     relationshipSet: RelationshipWithCiType[]
@@ -46,6 +44,8 @@ interface Props {
     uploadError: boolean
     allCIsInRelations: CiWithRelsUi[]
 }
+
+const GENERATED_ATTRIBUTES = [ATTRIBUTE_NAME.Gen_Profil_kod_metais, ATTRIBUTE_NAME.Gen_Profil_kod_metais, ATTRIBUTE_NAME.Gen_Profil_ref_id]
 
 export const ITVSExceptionsCreateView: React.FC<Props> = ({
     data,
@@ -69,6 +69,11 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     const { constraintsData, ciTypeData, unitsData } = attributesData
     const { readRelationShipsData: existingRelations, relationTypeData: relationSchema } = relationData
 
+    const { rolesForPO } = useRolesForPO(
+        updateCiItemId ? data.ownerId ?? '' : publicAuthorityState?.selectedPublicAuthority?.poUUID ?? '',
+        ciTypeData?.roleList ?? [],
+    )
+
     const ciTypeModified = useMemo(() => {
         return getModifiedCiTypeData(ciTypeData, CI_TYPE_DATA_ITVS_EXCEPTIONS_BLACK_LIST)
     }, [ciTypeData])
@@ -76,22 +81,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     const attProfiles = useMemo(() => ciTypeModified?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeModified?.attributeProfiles])
 
     const genProfilTechName = Gen_Profil
-    const attProfileTechNames = attProfiles.map((profile) => profile.technicalName)
-
-    const mappedProfileTechNames: Record<string, boolean> = attProfileTechNames.reduce<Record<string, boolean>>((accumulator, attributeName) => {
-        if (attributeName != null) {
-            accumulator[attributeName] = false
-        }
-        return accumulator
-    }, {})
-
     const [hasReset, setHasReset] = useState(false)
-    const sectionErrorDefaultConfig: { [x: string]: boolean } = {
-        [genProfilTechName]: false,
-        ...mappedProfileTechNames,
-    }
-
-    const [, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
 
     const [relationSchemaCombinedAttributes, setRelationSchemaCombinedAttributest] = useState<(Attribute | undefined)[]>([])
     useEffect(() => {
@@ -101,7 +91,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         ])
     }, [relationSchema])
     const attributes = useMemo(
-        () => [...(ciTypeModified?.attributes ?? []), ...attProfiles.map((profile) => profile.attributes).flat()],
+        () => [...(ciTypeModified?.attributes ?? []), ...attProfiles.map((profile) => profile.attributes ?? []).flat()],
         [attProfiles, ciTypeModified?.attributes],
     )
     const defaultValuesFromSchema = useMemo(
@@ -142,6 +132,13 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         setValue(AttributesConfigTechNames.METAIS_CODE, metaIsCodeValue)
     }, [metaIsCodeValue, referenceIdValue, setValue])
 
+    const defaultDataISVS = allCIsInRelations?.filter((ciRel) => ciRel.rels?.[0].type === 'osobitny_postup_vztah_ISVS')
+    const defaultDataPO = allCIsInRelations?.filter((ciRel) => ciRel.rels?.[0].type === 'osobitny_postup_vztah_PO')
+
+    const ciTypeAttributes = attributes?.filter((attribute) => !GENERATED_ATTRIBUTES.includes(attribute?.technicalName as ATTRIBUTE_NAME)) ?? []
+
+    const generatedAttributes = attributes?.filter((attribute) => GENERATED_ATTRIBUTES.includes(attribute?.technicalName as ATTRIBUTE_NAME)) ?? []
+
     return (
         <>
             {!updateCiItemId && publicAuthorityState && roleState && (
@@ -154,13 +151,13 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                 />
             )}
 
-            <QueryFeedback loading={isLoading || isProcessing} error={isError} withChildren>
+            <QueryFeedback loading={isLoading || isProcessing} error={isError}>
                 <FormProvider {...methods}>
-                    <form noValidate>
+                    <form noValidate onSubmit={handleSubmit(onSubmit)}>
                         <CreateEntitySection
+                            hideErrorBlock
                             sectionId={genProfilTechName}
-                            attributes={ciTypeModified.attributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
-                            setSectionError={setSectionError}
+                            attributes={ciTypeAttributes}
                             constraintsData={constraintsData}
                             generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                             unitsData={unitsData}
@@ -169,25 +166,8 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             updateCiItemId={updateCiItemId}
                             sectionRoles={ciTypeModified?.roleList ?? []}
                             selectedRole={roleState?.selectedRole ?? null}
+                            rolesForPO={rolesForPO ?? []}
                         />
-
-                        {...attProfiles.map((profile) => (
-                            <div key={profile.id}>
-                                <CreateEntitySection
-                                    sectionId={profile.technicalName ?? ''}
-                                    attributes={profile.attributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
-                                    setSectionError={setSectionError}
-                                    constraintsData={constraintsData}
-                                    generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
-                                    unitsData={unitsData}
-                                    defaultItemAttributeValues={defaultItemAttributeValues}
-                                    hasResetState={{ hasReset, setHasReset }}
-                                    updateCiItemId={updateCiItemId}
-                                    sectionRoles={ciTypeModified?.roleList ?? []}
-                                    selectedRole={roleState?.selectedRole ?? null}
-                                />
-                            </div>
-                        ))}
 
                         {uploadError && (
                             <ErrorBlock
@@ -202,78 +182,63 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                 }
                             />
                         )}
+
+                        <RelationForITVSExceptionSelect
+                            ciType="ISVS"
+                            relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
+                            methods={methods}
+                            hasResetState={{ hasReset, setHasReset }}
+                            constraintsData={relationData?.constraintsData ?? []}
+                            unitsData={unitsData}
+                            relationType="osobitny_postup_vztah_ISVS"
+                            relationshipSetState={relationshipSetState}
+                            label={t('ITVSExceptions.relatedITVS')}
+                            existingRelations={existingRelations}
+                            defaultData={defaultDataISVS}
+                        />
+
+                        <RelationForITVSExceptionSelect
+                            ciType="PO"
+                            relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
+                            methods={methods}
+                            hasResetState={{ hasReset, setHasReset }}
+                            constraintsData={relationData?.constraintsData ?? []}
+                            unitsData={unitsData}
+                            relationType="osobitny_postup_vztah_PO"
+                            relationshipSetState={relationshipSetState}
+                            label={t('ITVSExceptions.relatedPO')}
+                            existingRelations={existingRelations}
+                            defaultData={defaultDataPO}
+                        />
+
+                        <CreateEntitySection
+                            hideErrorBlock
+                            sectionId={genProfilTechName}
+                            attributes={generatedAttributes}
+                            constraintsData={constraintsData}
+                            generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
+                            unitsData={unitsData}
+                            defaultItemAttributeValues={defaultItemAttributeValues}
+                            hasResetState={{ hasReset, setHasReset }}
+                            updateCiItemId={updateCiItemId}
+                            sectionRoles={ciTypeModified?.roleList ?? []}
+                            selectedRole={roleState?.selectedRole ?? null}
+                            rolesForPO={rolesForPO ?? []}
+                        />
+
+                        <ButtonGroupRow>
+                            <Button
+                                label={t('button.cancel')}
+                                type="reset"
+                                variant="secondary"
+                                onClick={() => {
+                                    navigate(`${NavigationSubRoutes.OSOBITNY_POSTUP}`)
+                                }}
+                            />
+                            <Button type="submit" label={t('button.saveChanges')} />
+                        </ButtonGroupRow>
                     </form>
                 </FormProvider>
-                <RelationForITVSExceptionSelect
-                    ciType="ISVS"
-                    relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
-                    methods={methods}
-                    hasResetState={{ hasReset, setHasReset }}
-                    constraintsData={relationData?.constraintsData ?? []}
-                    unitsData={unitsData}
-                    relationType="osobitny_postup_vztah_ISVS"
-                    relationshipSetState={relationshipSetState}
-                    label={t('ITVSExceptions.relatedISVS')}
-                    existingRelations={existingRelations}
-                />
-                <div className={styles.margin30}>
-                    {allCIsInRelations
-                        ?.filter((ciRel) => ciRel.rels?.[0].type === 'osobitny_postup_vztah_ISVS')
-                        .map((ciWithRel) => (
-                            <div className={classNames(['govuk-accordion__section'])} key={ciWithRel.ci?.uuid}>
-                                <div className={classNames(['govuk-accordion__section-header', styles.existingRelWrapper])}>
-                                    <a className="govuk-accordion__section-button">{ciWithRel.ci?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}</a>
-                                    {ciWithRel.rels?.[0].attributes?.[0]?.value && (
-                                        <small>
-                                            {t('ITVSExceptions.note')}: {ciWithRel.rels?.[0].attributes?.[0]?.value?.toString() ?? ''}
-                                        </small>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                </div>
-                <RelationForITVSExceptionSelect
-                    ciType="PO"
-                    relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
-                    methods={methods}
-                    hasResetState={{ hasReset, setHasReset }}
-                    constraintsData={relationData?.constraintsData ?? []}
-                    unitsData={unitsData}
-                    relationType="osobitny_postup_vztah_PO"
-                    relationshipSetState={relationshipSetState}
-                    label={t('ITVSExceptions.relatedPO')}
-                    existingRelations={existingRelations}
-                />
-                {allCIsInRelations
-                    ?.filter((ciRel) => ciRel.rels?.[0].type === 'osobitny_postup_vztah_PO')
-                    .map((ciWithRel) => (
-                        <div className={classNames(['govuk-accordion__section'])} key={ciWithRel.ci?.uuid}>
-                            <div className={classNames(['govuk-accordion__section-header', styles.existingRelWrapper])}>
-                                <a className="govuk-accordion__section-button">{ciWithRel.ci?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}</a>
-                                {ciWithRel.rels?.[0].attributes?.[0]?.value && (
-                                    <small>
-                                        {t('ITVSExceptions.note')}: {ciWithRel.rels?.[0].attributes?.[0]?.value?.toString() ?? ''}
-                                    </small>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                <ButtonGroupRow>
-                    <Button
-                        label={t('button.cancel')}
-                        type="reset"
-                        variant="secondary"
-                        onClick={() => {
-                            navigate(`${NavigationSubRoutes.OSOBITNY_POSTUP}`)
-                        }}
-                    />
-                    <Button
-                        onClick={handleSubmit((formData) => {
-                            onSubmit(formData)
-                        })}
-                        label={t('button.saveChanges')}
-                    />
-                </ButtonGroupRow>
             </QueryFeedback>
         </>
     )

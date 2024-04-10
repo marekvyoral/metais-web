@@ -31,7 +31,7 @@ const Eko = () => {
                             <QueryFeedback loading={props.isLoading} error={false} withChildren>
                                 <FlexColumnReverseWrapper>
                                     <TextHeading size="XL">{t('navMenu.eko')}</TextHeading>
-                                    {props.isError && <QueryFeedback error loading={false} />}
+                                    <QueryFeedback error={props.isError} loading={false} />
                                 </FlexColumnReverseWrapper>
                                 <EkoTable
                                     data={enrichEkoDataMaper(props?.data?.ekoCodes || [])}

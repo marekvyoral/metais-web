@@ -184,6 +184,7 @@ export const IsvsEvaluationRow: React.FC<IIsvsEvaluationRowProps> = ({ uuid, ent
                             value="checkbox-all"
                             onChange={() => handleAllCheckboxChange()}
                             checked={checkedAll}
+                            title={t('table.selectAllItems')}
                         />
                     </div>
                 )
@@ -255,16 +256,13 @@ export const IsvsEvaluationRow: React.FC<IIsvsEvaluationRowProps> = ({ uuid, ent
 
     return (
         <QueryFeedback loading={isLoading || isLoadingAddData || isFetching} error={isError || isErrorAddData}>
-            {resultSuccessApiCall.isSuccess && (
-                <MutationFeedback
-                    success={resultSuccessApiCall.isSuccess}
-                    successMessage={resultSuccessApiCall.message}
-                    error={undefined}
-                    onMessageClose={() => setResultSuccessApiCall({ isSuccess: false, message: '' })}
-                />
-            )}
+            <MutationFeedback
+                success={resultSuccessApiCall.isSuccess}
+                successMessage={resultSuccessApiCall.message}
+                onMessageClose={() => setResultSuccessApiCall({ isSuccess: false, message: '' })}
+            />
             <div className={styles.expandableRowContent}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Table columns={columnsDetail} data={mappedData(evalData)} />
                 </form>
             </div>

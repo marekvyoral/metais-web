@@ -5,7 +5,7 @@ import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ApiOlaContractData, ApiSlaContractReadList } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
@@ -29,13 +29,12 @@ enum ColumnNames {
 
 export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, sort, statesEnum }) => {
     const { t, i18n } = useTranslation()
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const columns: Array<ColumnDef<ApiOlaContractData>> = [
         {
             accessorKey: ColumnNames.name,
-            header: () => {
-                return <span>{t('olaContracts.columns.name')}</span>
-            },
+            header: t('olaContracts.columns.name'),
             id: ColumnNames.name,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => (
@@ -50,9 +49,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.contractCode,
-            header: () => {
-                return <span>{t('olaContracts.columns.contractCode')}</span>
-            },
+            header: () => t('olaContracts.columns.contractCode'),
             id: ColumnNames.contractCode,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => ctx.row.original.contractCode,
@@ -63,9 +60,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.validityStartDate,
-            header: () => {
-                return <span>{t('olaContracts.columns.validityStartDate')}</span>
-            },
+            header: () => t('olaContracts.columns.validityStartDate'),
             id: ColumnNames.validityStartDate,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => t('date', { date: ctx.row.original.validityStartDate }),
@@ -76,9 +71,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.validityEndDate,
-            header: () => {
-                return <span>{t('olaContracts.columns.validityEndDate')}</span>
-            },
+            header: t('olaContracts.columns.validityEndDate'),
             id: ColumnNames.validityEndDate,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) =>
@@ -107,9 +100,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.contractorIsvsName,
-            header: () => {
-                return <span>{t('olaContracts.columns.contractorIsvsName')}</span>
-            },
+            header: () => t('olaContracts.columns.contractorIsvsName'),
             id: ColumnNames.contractorIsvsName,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => {
@@ -122,9 +113,7 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.administratorIsvs,
-            header: () => {
-                return <span>{t('olaContracts.columns.consumerIsvs')}</span>
-            },
+            header: () => t('olaContracts.columns.consumerIsvs'),
             id: ColumnNames.administratorIsvs,
             size: 200,
             cell: (ctx: CellContext<ApiOlaContractData, unknown>) => ctx.row.original.administratorIsvs?.map((i) => i.name).join(', '),
@@ -135,14 +124,14 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.vendorLock,
-            header: () => {
-                return <span>{t('olaContracts.columns.vendorLock')}</span>
-            },
+            header: t('olaContracts.columns.vendorLock'),
             id: ColumnNames.vendorLock,
             size: 200,
-            cell: (ctx: CellContext<ApiOlaContractData, unknown>) => (ctx.row.original.vendorLock == true ? 'true' : 'false'),
+            cell: (ctx: CellContext<ApiOlaContractData, unknown>) =>
+                ctx.row.original.vendorLock == true ? t('radioButton.yes') : t('radioButton.no'),
             meta: {
-                getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) => (ctx.row.original.vendorLock == true ? 'true' : 'false'),
+                getCellContext: (ctx: CellContext<ApiOlaContractData, unknown>) =>
+                    ctx.row.original.vendorLock == true ? t('radioButton.yes') : t('radioButton.no'),
             },
             enableSorting: true,
         },
@@ -151,9 +140,9 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
     return (
         <>
             <Table
+                tableRef={tableRef}
                 columns={columns}
                 data={data?.results}
-                rowHref={(row) => `./${row?.original?.uuid}`}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                 }}
@@ -164,7 +153,10 @@ export const OlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
                 pageNumber={data?.pagination?.page ?? BASE_PAGE_NUMBER}
                 pageSize={data?.pagination?.perPage ?? BASE_PAGE_SIZE}
                 dataLength={data?.pagination?.totalItems ?? 0}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </>
     )

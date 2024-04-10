@@ -1,5 +1,5 @@
 import { AccordionContainer, Button, Tab, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ApiStandardRequest, ApiVote, ApiVoteResult } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ApiStandardRequest, ApiVote, ApiVoteResult, getGetVoteDetailQueryKey } from '@isdd/metais-common/api/generated/standards-swagger'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +9,10 @@ import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useVotes
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { TableWithPagination } from '@isdd/metais-common/components/TableWithPagination/TableWithPagination'
 import { MutationFeedback } from '@isdd/metais-common/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { useQueryClient } from '@tanstack/react-query'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
 import { voteActorResultsColumns } from './voteActorResultsColumns'
@@ -34,6 +37,9 @@ export interface IVoteDetailView {
     vetoVote: ({ token, description }: { token?: string; description?: string }) => Promise<void>
     voteNote: ({ token, description }: { token?: string; description: string }) => Promise<void>
     cancelVote: (description: string) => Promise<void>
+    votesProcessingError?: string
+    setVotesProcessingError: React.Dispatch<React.SetStateAction<string | undefined>>
+    voted: boolean
 }
 
 export const VoteDetailView: React.FC<IVoteDetailView> = ({
@@ -48,10 +54,14 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     cancelVote,
     voteNote,
     votesProcessing,
+    votesProcessingError,
+    setVotesProcessingError,
+    voted,
 }) => {
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
+    const { isActionSuccess } = useActionSuccess()
 
     const getTabTitle = (textValue: string | undefined, numberValue: number | undefined): string => {
         return `${textValue ?? ''} (${numberValue ?? ''})`
@@ -67,6 +77,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     const [castVoteError, setCastVoteError] = useState(false)
     const [castVoteSuccess, setCastVoteSuccess] = useState(false)
     const [castVoteMessage, setCastVoteMessage] = useState('')
+    const queryClient = useQueryClient()
 
     const tabList: Tab[] = useMemo((): Tab[] => {
         const choiceResultsList = voteResultData?.choiceResults ?? []
@@ -166,32 +177,77 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     const canModifyVote = useMemo(() => {
         return (
             voteState == VoteStateOptionEnum.PLANNED ||
-            (voteState !== VoteStateOptionEnum.SUMMARIZED && voteState !== VoteStateOptionEnum.VETOED && voteState !== VoteStateOptionEnum.UPCOMING)
+            (voteState !== VoteStateOptionEnum.SUMMARIZED &&
+                voteState !== VoteStateOptionEnum.VETOED &&
+                voteState !== VoteStateOptionEnum.UPCOMING &&
+                voteState !== VoteStateOptionEnum.ENDED)
         )
     }, [voteState])
 
     const hideVoteModifyingButtons = useMemo(() => {
-        return voteState == VoteStateOptionEnum.CANCELED
+        return voteState == VoteStateOptionEnum.CANCELED || voteState == VoteStateOptionEnum.ENDED
     }, [voteState])
+
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
     useEffect(() => {
-        if (castVoteError) {
+        if (isActionSuccess.value) {
             scrollToMutationFeedback()
+            if (isActionSuccess.additionalInfo?.type != 'create') {
+                queryClient.invalidateQueries(getGetVoteDetailQueryKey(voteData?.id ?? 0))
+            }
         }
-    }, [castVoteError, scrollToMutationFeedback])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isActionSuccess.value])
+
+    const votesSum = useMemo(
+        () =>
+            voteResultData?.choiceResults
+                ?.map((result) => result.votedActorsCount)
+                .reduce((accumulator, currentValue) => (accumulator ?? 0) + (currentValue ?? 0), 0),
+        [voteResultData?.choiceResults],
+    )
+
     return (
         <>
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={isActionSuccess.value}
+                    successMessage={
+                        isActionSuccess.additionalInfo?.type == 'create' ? t('votes.voteDetail.created') : t('mutationFeedback.successfulUpdated')
+                    }
+                />
+            </div>
             <div className={styles.inlineSpaceBetween}>
                 <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
-                {isUserLoggedIn && !hideVoteModifyingButtons && (
+
+                {isUserLoggedIn && (
                     <div className={styles.inlineSpaceBetween}>
                         <Can I={Actions.EDIT} a={Subject.VOTE}>
-                            <Button
-                                type="submit"
-                                label={t('votes.voteDetail.editVote')}
-                                onClick={() => editVoteHandler()}
-                                disabled={!canModifyVote}
-                            />
+                            {canModifyVote ? (
+                                <Button
+                                    type="submit"
+                                    label={t('votes.voteDetail.editVote')}
+                                    onClick={() => editVoteHandler()}
+                                    disabled={!canModifyVote}
+                                />
+                            ) : (
+                                <Tooltip
+                                    on={'hover' || 'focus'}
+                                    descriptionElement={t('votes.voteDetail.editVoteTooltip')}
+                                    tooltipContent={() => (
+                                        <Button
+                                            type="submit"
+                                            label={t('votes.voteDetail.editVote')}
+                                            onClick={() => editVoteHandler()}
+                                            disabled={!canModifyVote}
+                                        />
+                                    )}
+                                    position={'bottom center'}
+                                    arrow={false}
+                                />
+                            )}
+
                             <Spacer horizontal />
                             <CancelVoteButton disabled={!canCancelVote || !canModifyVote} cancelVote={cancelVote} />
                         </Can>
@@ -204,19 +260,20 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
             <TextBody>{voteData?.description ?? ''}</TextBody>
             <Spacer vertical />
             <TextHeading size="L">{t('votes.voteDetail.votesHandlingTitle')}</TextHeading>
-            <div ref={wrapperRef} />
-            {(castVoteSuccess || castVoteError) && (
-                <MutationFeedback
-                    success={castVoteSuccess}
-                    error={castVoteError ? castVoteMessage : t('votes.actions.failedToSend')}
-                    successMessage={t('votes.actions.sent')}
-                    onMessageClose={() => {
-                        setCastVoteError(false)
-                        setCastVoteMessage('')
-                    }}
-                />
-            )}
+            <MutationFeedback
+                success={castVoteSuccess}
+                error={castVoteError}
+                errorMessage={castVoteMessage || t('votes.actions.failedToSend')}
+                successMessage={t('votes.actions.sent')}
+                onMessageClose={() => {
+                    setCastVoteError(false)
+                    setCastVoteMessage('')
+                }}
+            />
             <VotesHandler
+                voted={voted}
+                setVotesProcessingError={setVotesProcessingError}
+                votesProcessingError={votesProcessingError}
                 voteData={voteData}
                 handleCastVote={handleCastVote}
                 handleVetoVote={handleVetoVote}
@@ -244,6 +301,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
             <VoteOverViewItems voteData={voteData} voteResultData={voteResultData} />
             <Spacer vertical />
             <Tabs
+                key={votesSum}
                 tabList={tabList}
                 onSelect={(selected) => {
                     setSelectedTab(selected.id)

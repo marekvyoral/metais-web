@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, IconLabel, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
-import { Button, GridCol, GridRow, PaginatorWrapper, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { GridCol, GridRow, PaginatorWrapper, RadioGroup, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
 import {
     ApiParameterType,
     MonitoredValue,
     MonitoredValuesList,
     useListParameterValuesHook,
 } from '@isdd/metais-common/api/generated/monitoring-swagger'
-import { ChangeIcon } from '@isdd/metais-common/assets/images'
 import { ColumnDef } from '@tanstack/react-table'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
@@ -25,9 +25,10 @@ interface IServiceDetailViewGraphItem {
     item: ApiParameterType
     tableDataParam?: EnumType
     queryParams?: IQueryParamsDetail
+    onIsEmpty: (isEmpty: boolean) => void
 }
 
-export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> = ({ item, tableDataParam, queryParams }) => {
+export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> = ({ item, tableDataParam, queryParams, onIsEmpty }) => {
     const { t, i18n } = useTranslation()
     const [isLoadingBlock, setIsLoadingBlock] = useState<boolean>(false)
     const [isErrorBlock, setIsErrorBlock] = useState<boolean>(false)
@@ -53,6 +54,7 @@ export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> =
                 sortAsc: true,
             })
                 .then((res) => {
+                    onIsEmpty(res.results?.length === 0)
                     setTableData(res)
                 })
                 .catch(() => {
@@ -148,25 +150,39 @@ export const ServiceDetailViewGraphItem: React.FC<IServiceDetailViewGraphItem> =
                         <GridRow>
                             <GridCol setWidth="one-half">
                                 <div className={styles.labelDiv}>
-                                    <Button
-                                        variant="secondary"
-                                        onClick={() => setToggleTable(!toggleTable)}
-                                        label={<IconLabel label={''} icon={ChangeIcon} />}
-                                    />
-                                    <label className="govuk-label">
-                                        <TextHeading size="M">{item.name} </TextHeading>
-                                    </label>
+                                    <TextHeading size="L">{item.name}</TextHeading>
                                     <Tooltip descriptionElement={item.description} altText={`Tooltip ${item.name}`} />
                                 </div>
+                                <RadioGroup inline small>
+                                    <RadioButton
+                                        id={'graph-radio' + item.id}
+                                        key={'graph-radio' + item.id}
+                                        label={t('monitoringServices.detail.graph')}
+                                        name={'graph-radio' + item.id}
+                                        value={'graf'}
+                                        defaultChecked
+                                        aria-label={t('monitoringServices.detail.changeToTable')}
+                                        onClick={() => setToggleTable(false)}
+                                    />
+                                    <RadioButton
+                                        id={'table-radio' + item.id}
+                                        key={'table-radio' + item.id}
+                                        label={t('monitoringServices.detail.table')}
+                                        name={'graph-radio' + item.id}
+                                        value={'tabulka'}
+                                        aria-label={t('monitoringServices.detail.changeToGraph')}
+                                        onClick={() => setToggleTable(true)}
+                                    />
+                                </RadioGroup>
                             </GridCol>
                             <GridCol setWidth="one-half">
                                 <div className={styles.actionRow}>
-                                    <TextHeading size="S">
+                                    <span className="govuk-accordion__section-heading govuk-heading-s">
                                         {isAverage(item.unit ?? '')
                                             ? `${t('monitoringServices.detail.avarageInPeriod')}`
                                             : `${t('monitoringServices.detail.totalInPeriod')}`}
                                         {` ${setTotalCount(tableData?.results ?? [], item.unit ?? '')} ${enumItem}`}
-                                    </TextHeading>
+                                    </span>
                                 </div>
                             </GridCol>
                         </GridRow>

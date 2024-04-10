@@ -16,7 +16,7 @@ import {
     object,
     string,
 } from 'yup'
-import { REGEX_TEL, HTML_TYPE, REGEX_EMAIL } from '@isdd/metais-common/constants'
+import { REGEX_TEL, HTML_TYPE, REGEX_EMAIL, REGEX_URL } from '@isdd/metais-common/constants'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -91,6 +91,7 @@ export const generateFormSchema = (
         const isShort = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.SHORT
         const isDouble = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.DOUBLE
         const isInteger = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.INTEGER
+        const isUrl = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.URL
         const isArray = attribute?.array
         const isHTML = attribute?.type === HTML_TYPE
 
@@ -256,6 +257,15 @@ export const generateFormSchema = (
                 }
                 return current
             })
+        } else if (isUrl) {
+            schema[attribute.technicalName] = string()
+                .matches(REGEX_URL, t('validation.invalidUrl'))
+                .when('isRequired', (_, current) => {
+                    if (isRequired) {
+                        return current.required(t('validation.required'))
+                    }
+                    return current
+                })
         } else if (isFile) {
             schema[attribute.technicalName] = mixed<FileList>().when('isRequired', (_, current) => {
                 if (isRequired) {

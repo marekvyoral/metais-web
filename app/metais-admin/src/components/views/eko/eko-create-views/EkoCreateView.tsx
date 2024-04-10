@@ -1,14 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Input } from '@isdd/idsk-ui-kit'
+import { Button, ErrorBlock, Input } from '@isdd/idsk-ui-kit'
 import { EkoCode, EkoCodeEkoCodeState } from '@isdd/metais-common/api/generated/tco-swagger'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 import { useCallback, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { useValidationSchemaForm } from './hooks/useValidationSchemaForm'
 
@@ -21,6 +23,9 @@ export const EkoCreateView = ({ data, mutate, editData, isError, isLoading }: IE
     const navigate = useNavigate()
     const { schema } = useValidationSchemaForm(data)
 
+    const { setIsActionSuccess } = useActionSuccess()
+    const location = useLocation()
+
     const { register, handleSubmit, formState } = useForm<IForm>({ resolver: yupResolver(schema) })
     const [resultApiCall, setResultApiCall] = useState<IResultApiCall>({
         isError: false,
@@ -32,7 +37,8 @@ export const EkoCreateView = ({ data, mutate, editData, isError, isLoading }: IE
             const ekoCode: EkoCode = { name: formData.name, ekoCode: formData.ekoCode, ekoCodeState: EkoCodeEkoCodeState.ACTIVE }
             await mutate(ekoCode)
                 .then(() => {
-                    setResultApiCall({ isError: false, isSuccess: true, message: undefined })
+                    setIsActionSuccess({ value: true, path: AdminRouteNames.EKO, additionalInfo: { type: editData ? 'edit' : 'create' } })
+                    navigate(AdminRouteNames.EKO, { state: { from: location } })
                 })
                 .catch((mutationError) => {
                     const errorResponse = JSON.parse(mutationError.message)
@@ -46,28 +52,29 @@ export const EkoCreateView = ({ data, mutate, editData, isError, isLoading }: IE
                     })
                 })
         },
-        [mutate, t],
+        [editData, location, mutate, navigate, setIsActionSuccess, t],
     )
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 {editData ? <h2 className="govuk-heading-l">{t('eko.editCode')}</h2> : <h2 className="govuk-heading-l">{t('eko.createdCode')}</h2>}
-                {(resultApiCall.isError || resultApiCall.isSuccess) && (
-                    <MutationFeedback
-                        error={resultApiCall.message}
-                        success={resultApiCall.isSuccess}
-                        onMessageClose={() =>
-                            setResultApiCall({
-                                isError: false,
-                                isSuccess: false,
-                                message: undefined,
-                            })
-                        }
-                    />
-                )}
-                {isError && <QueryFeedback error loading={false} />}
+                <MutationFeedback
+                    error={resultApiCall.isError}
+                    errorMessage={resultApiCall.message}
+                    onMessageClose={() =>
+                        setResultApiCall({
+                            isError: false,
+                            isSuccess: false,
+                            message: undefined,
+                        })
+                    }
+                />
+                <QueryFeedback error={isError} loading={false} />
             </FlexColumnReverseWrapper>
-            <form onSubmit={handleSubmit(onSubmit)}>
+
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <>
                     <div>
                         {editData && (

@@ -55,7 +55,7 @@ export const MembershipHistoryView: React.FC<IMembershipHistoryView> = ({
     return (
         <>
             <div className="idsk-table-filter idsk-table-filter__panel">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} noValidate>
                     <GroupSelect setSelectedGroup={setSelectedGroup} />
                     <GridRow>
                         <GridCol>

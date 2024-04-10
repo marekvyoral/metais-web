@@ -14,7 +14,7 @@ import { MutationFeedback, QueryFeedback, QueryKeysByEntity } from '@isdd/metais
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useQueryClient } from '@tanstack/react-query'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
-import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { RefRegisterChangeStateModal } from '@/components/views/refregisters/RefRegisterChangeStateModal'
@@ -26,9 +26,10 @@ interface Props {
     entityItemName: string
     isLoading: boolean
     isError: boolean
+    owner: string
 }
 
-export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName, isLoading, isError }) => {
+export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName, isLoading, isError, owner }) => {
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
@@ -88,7 +89,14 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
         await deleteReferenceRegister({
             referenceRegisterUuid: entityId,
         })
-    }, [entityId, deleteReferenceRegister])
+        setIsActionSuccess({
+            value: true,
+            path: `${NavigationSubRoutes.REFERENCE_REGISTER}`,
+            additionalInfo: { type: 'delete' },
+        })
+        queryClient.invalidateQueries([QueryKeysByEntity.REFERENCE_REGISTERS])
+        navigate(`${NavigationSubRoutes.REFERENCE_REGISTER}`)
+    }, [deleteReferenceRegister, entityId, setIsActionSuccess, queryClient, navigate])
 
     return (
         <>
@@ -102,6 +110,7 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
                     targetState={targetState}
                     handleChangeState={handleChangeState}
                     entityItemName={entityItemName}
+                    owner={owner}
                 />
                 <RefRegisterGeneratePropDialog
                     openGeneratePropDialog={openGeneratePropDialog}
@@ -111,7 +120,6 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
                 <QueryFeedback loading={isLoading} error={isError}>
                     <div className={styles.headerDiv}>
                         <TextHeading size="XL">{entityItemName}</TextHeading>
-
                         {isLoggedIn && (
                             <ButtonGroupRow>
                                 <Can I={Actions.EDIT} a={`refRegisters`}>

@@ -85,7 +85,7 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
 
     return (
         <BaseModal widthInPx={640} isOpen={isOpen} close={onClose}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className={styles.div}>
                     <TextHeading size="L">{t('userProfile.requests.rightsSettings')}</TextHeading>
 
@@ -118,7 +118,7 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
                         error={errors[RequestFormFields.DESCRIPTION]?.message}
                         {...register(RequestFormFields.DESCRIPTION)}
                     />
-                    <MutationFeedback success={false} error={sendError} onMessageClose={() => setSendError(undefined)} />
+                    <MutationFeedback error={!!sendError} errorMessage={sendError} onMessageClose={() => setSendError(undefined)} />
                 </div>
                 <ModalButtons
                     submitButtonLabel={t('userProfile.requests.submit')}

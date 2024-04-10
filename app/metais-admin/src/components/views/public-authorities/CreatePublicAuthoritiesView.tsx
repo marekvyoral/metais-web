@@ -1,6 +1,6 @@
-import { Button, CheckBox, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit'
+import { Button, CheckBox, ErrorBlock, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useState } from 'react'
@@ -12,6 +12,7 @@ import { ICreatePublicAuthoritiesView } from '@/components/containers/public-aut
 
 export const CreatePublicAuthoritiesView = (props: ICreatePublicAuthoritiesView) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const { ico } = useParams()
     const [isSubmit, setSubmit] = useState<boolean>(false)
     const [isSubmitLoading, setSubmitLoading] = useState<boolean>(false)
@@ -34,7 +35,9 @@ export const CreatePublicAuthoritiesView = (props: ICreatePublicAuthoritiesView)
                 </TextHeading>
             </FlexColumnReverseWrapper>
             <div className={styles.form}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Input
                         {...register('Gen_Profil_nazov')}
                         label={`${t('publicAuthorities.create.name')} ${t('input.requiredField')}`}
@@ -194,7 +197,7 @@ export const CreatePublicAuthoritiesView = (props: ICreatePublicAuthoritiesView)
                     />
                     <div className={styles.buttonsGroup}>
                         <Button label={t('actionsInTable.save')} type="submit" />
-                        <Button label={t('actionsInTable.cancel')} />
+                        <Button label={t('actionsInTable.cancel')} onClick={() => navigate(-1)} />
                     </div>
                 </form>
             </div>

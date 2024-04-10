@@ -42,7 +42,7 @@ export const POView: React.FC<ICiListContainerView<POFilterData>> = memo(
             <QueryFeedback loading={isLoading} error={false} withChildren>
                 <FlexColumnReverseWrapper>
                     <TextHeading size="XL">{t(`ciType.${POType}_Heading`)}</TextHeading>
-                    {isError && <QueryFeedback error={isError} loading={false} />}
+                    <QueryFeedback error={isError} loading={false} />
                 </FlexColumnReverseWrapper>
                 <FilterPO
                     entityName={entityName}
@@ -69,9 +69,10 @@ export const POView: React.FC<ICiListContainerView<POFilterData>> = memo(
                             defaultFilterValues={defaultFilterValues}
                             checkedItemsUuids={getRowSelectionUuids(rowSelection)}
                             pagination={pagination}
+                            ciTypeName={ciTypeData?.name ?? ''}
                         />
                     }
-                    importButton={<ImportButton ciType={entityName} />}
+                    importButton={<ImportButton ciType={entityName} ciTypeName={ciTypeData?.name ?? ''} />}
                 />
                 <CiTable
                     data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData, gestorsData }}

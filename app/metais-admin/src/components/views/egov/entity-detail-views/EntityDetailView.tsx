@@ -72,6 +72,19 @@ export const EntityDetailView = ({
         ...tabsFromApi,
     ]
 
+    const getSuccessMessage = (type: string | undefined) => {
+        switch (type) {
+            case 'create':
+                return t('mutationFeedback.successfulCreated')
+            case 'edit':
+                return t('mutationFeedback.successfulUpdated')
+            case 'createZc':
+                return t('mutationFeedback.successfulEntityZcCreated')
+            default:
+                return t('mutationFeedback.successfulUpdated')
+        }
+    }
+
     useEffect(() => {
         scrollToMutationFeedback()
     }, [isActionSuccess, scrollToMutationFeedback])
@@ -93,27 +106,26 @@ export const EntityDetailView = ({
                             <Button
                                 label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
                                 onClick={() => setValidityOfEntity(ciTypeData?.technicalName)}
-                                disabled={ciTypeData?.type !== AttributeProfileType.custom}
+                                disabled={ciTypeData?.type === AttributeProfileType.system}
                             />
                         </ButtonGroupRow>
                     </div>
-                    {isError && <QueryFeedback error loading={false} />}
+                    <QueryFeedback error={isError} loading={false} />
                     <div ref={wrapperRef}>
-                        {isActionSuccess.value && isActionSuccess?.additionalInfo?.type === 'attrEdit' && (
-                            <MutationFeedback success successMessage={t('mutationFeedback.attrSuccessfulUpdated')} error={false} />
-                        )}
-                        {isActionSuccess.value &&
-                            (isActionSuccess.additionalInfo?.type === 'edit' || isActionSuccess.additionalInfo?.type === 'create') && (
-                                <MutationFeedback
-                                    success={isActionSuccess.value}
-                                    error={false}
-                                    successMessage={
-                                        isActionSuccess.additionalInfo?.type === 'edit'
-                                            ? t('mutationFeedback.successfulUpdated')
-                                            : t('mutationFeedback.successfulCreated')
-                                    }
-                                />
-                            )}
+                        <MutationFeedback
+                            success={isActionSuccess.value && isActionSuccess?.additionalInfo?.type === 'attrEdit'}
+                            successMessage={t('mutationFeedback.attrSuccessfulUpdated')}
+                        />
+
+                        <MutationFeedback
+                            success={
+                                isActionSuccess.value &&
+                                (isActionSuccess.additionalInfo?.type === 'edit' ||
+                                    isActionSuccess.additionalInfo?.type === 'create' ||
+                                    isActionSuccess.additionalInfo?.type === 'createZc')
+                            }
+                            successMessage={getSuccessMessage(isActionSuccess.additionalInfo?.type)}
+                        />
                     </div>
                 </FlexColumnReverseWrapper>
                 <BasicInformation data={{ ciTypeData, constraintsData, unitsData }} roles={roles} />

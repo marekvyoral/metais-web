@@ -1,0 +1,17 @@
+@import '@isdd/metais-common/src/utils.scss';
+
+.marginBottom4 {
+    margin-bottom: govuk-spacing(4);
+}
+
+.countsDiv {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: govuk-spacing(4);
+    text-align: center;
+    justify-content: center;
+}
+
+.h1 {
+    font-size: 45px !important;
+}

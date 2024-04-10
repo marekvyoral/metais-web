@@ -1,6 +1,6 @@
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 import { useReadConfigurationItem, useGetRoleParticipant } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetRightsForPO, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
@@ -16,7 +16,7 @@ export const useCommonPermissionData = ({ entityId, entityName }: Args) => {
     const identityUuid = user?.uuid
     const isLoggedIn = !!identityUuid
 
-    const { data: ciTypeData, isLoading: ciTypeLoading, isError: ciTypeError } = useGetCiType(entityName)
+    const { data: ciTypeData, isLoading: ciTypeLoading, isError: ciTypeError } = useGetCiTypeWrapper(entityName)
 
     const {
         data: ciData,

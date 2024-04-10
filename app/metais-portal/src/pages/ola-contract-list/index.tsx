@@ -2,13 +2,14 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
+import { ListOlaContractListParams } from '@isdd/metais-common/api/generated/monitoring-swagger'
 
-import { IAdditionalFilterField, OlaContractListContainer } from '@/components/containers/OlaContractListContainer'
+import { OlaContractListContainer } from '@/components/containers/OlaContractListContainer'
 import { OlaContractListView } from '@/components/views/ola-contract-list/OlaContractListView'
 
 export const OlaContractList = () => {
     const { t } = useTranslation()
-    const defaultFilterValues: IAdditionalFilterField = {
+    const defaultFilterValues: ListOlaContractListParams = {
         name: '',
         contractCode: '',
         validityStart: '',

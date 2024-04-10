@@ -126,14 +126,11 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
         <QueryFeedback loading={isLoading || isLoadingApi} error={isError || isErrorApi} withChildren>
             {versionData?.length ? (
                 <>
-                    {resultSuccessApiCall.isSuccess && (
-                        <MutationFeedback
-                            success={resultSuccessApiCall.isSuccess}
-                            successMessage={resultSuccessApiCall.message}
-                            error={undefined}
-                            onMessageClose={resetResultSuccessApiCall}
-                        />
-                    )}
+                    <MutationFeedback
+                        success={resultSuccessApiCall.isSuccess}
+                        successMessage={resultSuccessApiCall.message}
+                        onMessageClose={resetResultSuccessApiCall}
+                    />
                     <GridRow className={styles.heading}>
                         <GridCol setWidth="one-half">
                             <InformationGridRow
@@ -234,6 +231,7 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                                                     setOpenExport({ isOpen: true, type: EContainerType.KRIS })
                                                 }}
                                                 label={t('evaluation.exportKris')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </div>
                                         <div className={styles.buttonPopupItem}>
@@ -242,6 +240,7 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                                                     setOpenExport({ isOpen: true, type: EContainerType.ISVS })
                                                 }}
                                                 label={t('evaluation.exportIsvs')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </div>
                                         <div>
@@ -250,6 +249,7 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                                                     setOpenExport({ isOpen: true, type: EContainerType.KS })
                                                 }}
                                                 label={t('evaluation.exportKs')}
+                                                aria={{ 'aria-haspopup': 'dialog' }}
                                             />
                                         </div>
                                     </div>

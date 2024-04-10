@@ -15,26 +15,29 @@ import {
     TextLink,
     TextLinkExternal,
 } from '@isdd/idsk-ui-kit/index'
-import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
+import { GetMeta200 } from '@isdd/metais-common/api/generated/dms-swagger'
 import { ApiMeetingRequest, useParticipateMeetingRequest, useSummarizeMeetingRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
-import { FieldValues, useForm } from 'react-hook-form'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { formatBytes } from '@isdd/metais-common/components/file-import/fileImportUtils'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { Can, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useMeetingsDetailPermissions'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import headerStyles from '@isdd/metais-common/src/components/entity-header/ciEntityHeader.module.scss'
 import classNames from 'classnames'
+import React, { useEffect, useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { MeetingActorsTable } from './MeetingActorsTable'
-import { MeetingExternalActorsTable } from './MeetingExternalActorsTable'
 import { MeetingCancelModal } from './MeetingCancelModal'
+import { MeetingExternalActorsTable } from './MeetingExternalActorsTable'
 import { MeetingStateEnum } from './MeetingsListView'
 
 import styles from '@/components/views/standardization/meetings/meetingStyles.module.scss'
@@ -42,16 +45,17 @@ import styles from '@/components/views/standardization/meetings/meetingStyles.mo
 interface MeetingDetailBaseInfoProps {
     infoData: ApiMeetingRequest | undefined
     refetch: () => void
+    attachmentsMetaData?: GetMeta200
 }
 export enum MeetingParticipateValue {
     ACCEPTED = 'ACCEPTED',
     DECLINED = 'DECLINED',
 }
 
-const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData, refetch }) => {
+const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData, refetch, attachmentsMetaData }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { isActionSuccess } = useActionSuccess()
+    const { isActionSuccess, setIsActionSuccess } = useActionSuccess()
     const {
         state: { user },
     } = useAuth()
@@ -74,6 +78,8 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
     console.log('token', token)
     console.log('participation', participation)
 
+    const [error, setError] = useState(false)
+    const [isSummarizeLoading, setIsSummarizeLoading] = useState(false)
     const openModal = () => {
         setModalOpen(true)
     }
@@ -82,8 +88,28 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
     }
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
     const onSubmit = (fieldValues: FieldValues) => {
-        if (infoData?.id && fieldValues.linkUrl) summarizeLink.mutateAsync({ meetingRequestId: infoData?.id, data: { linkUrl: fieldValues.linkUrl } })
+        setIsSummarizeLoading(true)
+        if (infoData?.id && fieldValues.linkUrl)
+            summarizeLink
+                .mutateAsync({ meetingRequestId: infoData?.id, data: { linkUrl: fieldValues.linkUrl } })
+                .then(() => {
+                    setIsActionSuccess({
+                        value: true,
+                        path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${infoData?.id}`,
+                        additionalInfo: { type: 'summarizeLink' },
+                    })
+                })
+                .catch(() => {
+                    setError(true)
+                    setIsActionSuccess({ value: false, path: `${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${infoData?.id}` })
+                })
+                .finally(() => {
+                    refetch()
+                    setIsSummarizeLoading(false)
+                    scrollToMutationFeedback()
+                })
     }
+
     const handleParticipate = () => {
         if (infoData?.id) {
             setParticipateLoading(true)
@@ -106,16 +132,12 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
             setEditParticipate(!userIsParticipate)
         }
     }, [userIsParticipate])
-    useEffect(() => {
-        if (isActionSuccess.value) {
-            scrollToMutationFeedback()
-        }
-    }, [isActionSuccess.value, scrollToMutationFeedback])
+
     const LinkProposals: React.FC = () => (
         <>
             {infoData?.standardRequestsNames?.map((proposal, index) => {
                 return (
-                    <TextLink key={proposal} to={`/standardization/draftslist/${infoData?.standardRequestIds?.[index]}`}>
+                    <TextLink key={proposal} to={`/standardization/draftslist/${infoData?.standardRequestIds?.[index]}`} textBodySize>
                         {proposal}
                     </TextLink>
                 )
@@ -125,33 +147,36 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
 
     const SummarizeLink: React.FC = () => (
         <>
-            {ability.can(Actions.SET_SUMMARIZE_LINK, Subject.MEETING) && summarizeLinkChange && (
-                <form onSubmit={handleSubmit(onSubmit)}>
+            <QueryFeedback loading={isSummarizeLoading} withChildren>
+                {ability.can(Actions.SET_SUMMARIZE_LINK, Subject.MEETING) && summarizeLinkChange && (
+                    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                        <GridRow>
+                            <GridCol setWidth="two-thirds">
+                                <Input {...register('linkUrl')} />
+                            </GridCol>
+                            <GridCol setWidth="one-third">
+                                <Button label={t('meetings.linkSave')} type="submit" />
+                            </GridCol>
+                        </GridRow>
+                    </form>
+                )}
+                {ability.can(Actions.CHANGE_SUMMARIZE_LINK, Subject.MEETING) && !summarizeLinkChange && (
                     <GridRow>
                         <GridCol setWidth="two-thirds">
-                            <Input {...register('linkUrl')} />
+                            <TextLinkExternal
+                                title={infoData?.summarizedLink ?? ''}
+                                href={infoData?.summarizedLink ?? ''}
+                                textLink={infoData?.summarizedLink ?? ''}
+                                newTab
+                                textBodySize
+                            />
                         </GridCol>
                         <GridCol setWidth="one-third">
-                            <Button label={t('meetings.linkSave')} type="submit" />
+                            <Button label={t('meetings.linkChange')} onClick={() => setSummarizeLinkChange(true)} />
                         </GridCol>
                     </GridRow>
-                </form>
-            )}
-            {ability.can(Actions.CHANGE_SUMMARIZE_LINK, Subject.MEETING) && !summarizeLinkChange && (
-                <GridRow>
-                    <GridCol setWidth="two-thirds">
-                        <TextLinkExternal
-                            title={infoData?.summarizedLink ?? ''}
-                            href={infoData?.summarizedLink ?? ''}
-                            textLink={infoData?.summarizedLink ?? ''}
-                            newTab
-                        />
-                    </GridCol>
-                    <GridCol setWidth="one-third">
-                        <Button label={t('meetings.linkChange')} onClick={() => setSummarizeLinkChange(true)} />
-                    </GridCol>
-                </GridRow>
-            )}
+                )}
+            </QueryFeedback>
         </>
     )
     const sections = [
@@ -163,16 +188,19 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                     {infoData?.meetingAttachments?.length ? (
                         <>
                             <TextBody>{t('meetings.otherDocuments')}:</TextBody>
-                            {infoData?.meetingAttachments?.map((index) => (
-                                <GridRow key={index?.id}>
+                            {infoData?.meetingAttachments?.map((attachment) => (
+                                <GridRow key={attachment?.id}>
                                     <GridCol setWidth="full">
                                         <img src={IconDocument} className={styles.documentIcon} alt="" />
                                         <TextLinkExternal
-                                            key={index?.id}
-                                            title={index?.attachmentName ?? ''}
-                                            href={`${DMS_DOWNLOAD_FILE}${index?.attachmentId}`}
-                                            textLink={index?.attachmentName ?? ''}
+                                            key={attachment?.id}
+                                            title={`${attachment?.attachmentName}`}
+                                            href={`${DMS_DOWNLOAD_FILE}${attachment?.attachmentId}`}
+                                            textLink={`${attachment?.attachmentName} (${formatBytes(
+                                                attachmentsMetaData?.[attachment.attachmentId ?? 0]?.contentLength ?? 0,
+                                            )})`}
                                             newTab
+                                            textBodySize
                                         />
                                     </GridCol>
                                 </GridRow>
@@ -183,7 +211,9 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                     )}
                     {infoData?.meetingLinks?.length ? (
                         <>
-                            <TextBody>{t('meetings.documentLinks')}:</TextBody>
+                            <TextBody className={classNames({ [styles.documentsLinkMargin]: !!infoData?.meetingAttachments?.length })}>
+                                {t('meetings.documentLinks')}:
+                            </TextBody>
                             {infoData?.meetingLinks?.map((index) => (
                                 <GridRow key={index?.id}>
                                     <GridCol setWidth="full">
@@ -194,13 +224,16 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                                             href={`${index?.url}`}
                                             textLink={index?.linkDescription ?? ''}
                                             newTab
+                                            textBodySize
                                         />
                                     </GridCol>
                                 </GridRow>
                             ))}
                         </>
                     ) : (
-                        <TextBody>{t('meetings.noDocumentsLinkAttached')}</TextBody>
+                        <TextBody className={classNames({ [styles.documentsLinkMargin]: !!infoData?.meetingAttachments?.length })}>
+                            {t('meetings.noDocumentsLinkAttached')}
+                        </TextBody>
                     )}
                 </>
             ),
@@ -256,8 +289,17 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
 
     return (
         <>
-            <MutationFeedback success={isActionSuccess.value} error={false} />
             <div ref={wrapperRef} />
+            <MutationFeedback
+                success={isActionSuccess.value}
+                error={error}
+                successMessage={
+                    isActionSuccess.additionalInfo?.type === 'summarizeLink'
+                        ? t('meetings.summarizeSuccess')
+                        : t('mutationFeedback.successfulUpdated')
+                }
+            />
+
             <div className={headerStyles.headerDiv}>
                 <TextHeading size="XL">{infoData?.name}</TextHeading>
 
@@ -285,6 +327,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                                         openModal()
                                         closePopup()
                                     }}
+                                    aria-haspopup="dialog"
                                 />
                             </div>
                         )}

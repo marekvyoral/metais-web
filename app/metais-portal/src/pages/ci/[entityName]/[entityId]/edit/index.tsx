@@ -6,7 +6,7 @@ import { Languages } from '@isdd/metais-common/localization/languages'
 import { useTranslation } from 'react-i18next'
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
 
-import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { getCiHowToBreadCrumb, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { EditCiEntityView } from '@/components/views/ci/edit/EditCiEntityView'
@@ -15,7 +15,7 @@ const EditEntityPage = () => {
     const { t, i18n } = useTranslation()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
 
-    const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(entityId)
+    const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError, gestorData } = useCiHook(entityId)
     const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(entityName)
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
     document.title = `${t('titles.ciEdit', {
@@ -35,6 +35,7 @@ const EditEntityPage = () => {
                     withWidthContainer
                     links={[
                         { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                        ...getCiHowToBreadCrumb(entityName ?? '', t),
                         { label: t('titles.ciList', { ci: ciTypeName }), href: `/ci/${entityName}` },
                         { label: currentName ? currentName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
                         { label: t('breadcrumbs.ciEdit', { itemName: currentName }), href: `/ci/${entityName}/${entityId}/edit` },
@@ -51,6 +52,7 @@ const EditEntityPage = () => {
                             entityName={entityName ?? ''}
                             isError={[isAttError, isCiItemError].some((item) => item)}
                             isLoading={[isAttLoading, isCiItemLoading].some((item) => item)}
+                            ownerId={gestorData?.[0].owner ?? ''}
                         />
                     </CiPermissionsWrapper>
                 </MainContentWrapper>

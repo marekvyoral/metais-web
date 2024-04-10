@@ -113,7 +113,7 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
                 >
                     {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                     <TextHeading size="XL">{t('trainings.invitedTitle')}</TextHeading>
-                    <form onSubmit={handleSubmit(onHandleSubmit)}>
+                    <form onSubmit={handleSubmit(onHandleSubmit)} noValidate>
                         <Input
                             required
                             label={t('trainings.table.firstName')}
@@ -185,12 +185,7 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
                         )}
 
                         {errorMessages.map((errorMessage, index) => (
-                            <MutationFeedback
-                                success={false}
-                                key={index}
-                                showSupportEmail
-                                error={t([errorMessage, 'feedback.mutationErrorMessage'])}
-                            />
+                            <MutationFeedback key={index} error errorMessage={errorMessage && t(errorMessage)} />
                         ))}
 
                         <ButtonGroupRow className={styles.buttonGroupEdit}>

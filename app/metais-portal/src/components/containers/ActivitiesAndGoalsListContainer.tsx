@@ -15,6 +15,11 @@ import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFi
 import { INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import {
+    useInvalidateCiNeighboursWithAllRelsCache,
+    useInvalidateDerivedRelationsCountCache,
+    useInvalidateRelationsCountCache,
+} from '@isdd/metais-common/hooks/invalidate-cache'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { useCanCreateGraph } from '@isdd/metais-common/src/hooks/useCanCreateGraph'
@@ -83,6 +88,10 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
     const { data: ciData, isLoading: ciLoading } = useReadConfigurationItem(configurationItemId ?? '')
     const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
+
+    const { invalidate: invalidateRelatedCountCache } = useInvalidateRelationsCountCache()
+    const { invalidate: invalidateDerivedRelationsCountCache } = useInvalidateDerivedRelationsCountCache()
+    const { invalidate: invalidateCiNeighboursWithAllRelsCache } = useInvalidateCiNeighboursWithAllRelsCache()
 
     const isLoggedIn = !!user?.uuid
 
@@ -164,11 +173,27 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
         }
     }, [listData, currentNeighbours, areNeighboursFetching])
 
+    const invalidateCache = useCallback(
+        (uuids: (string | undefined)[]) => {
+            uuids.forEach((uuid) => {
+                if (uuid) {
+                    invalidateRelatedCountCache(uuid)
+                    invalidateDerivedRelationsCountCache(uuid)
+                    invalidateCiNeighboursWithAllRelsCache(uuid)
+                }
+            })
+            refetch()
+        },
+        [invalidateCiNeighboursWithAllRelsCache, invalidateDerivedRelationsCountCache, invalidateRelatedCountCache, refetch],
+    )
+
     const invalidateRelation = useInvalidateRelationship({
         mutation: {
-            onSuccess(data) {
+            onSuccess(data, variables) {
                 if (data.requestId) {
-                    getRequestStatus(data.requestId, () => refetch())
+                    getRequestStatus(data.requestId, () => {
+                        invalidateCache([variables.data.endUuid, variables.data.startUuid])
+                    })
                 }
             },
         },
@@ -176,9 +201,14 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
 
     const storeGraph = useStoreGraph({
         mutation: {
-            onSuccess(data) {
+            onSuccess(data, variables) {
                 if (data.requestId) {
-                    getRequestStatus(data.requestId, () => refetch())
+                    getRequestStatus(data.requestId, () => {
+                        invalidateCache([
+                            variables.data.storeSet?.relationshipSet ? variables.data.storeSet?.relationshipSet[0].endUuid : undefined,
+                            variables.data.storeSet?.relationshipSet ? variables.data.storeSet?.relationshipSet[0].startUuid : undefined,
+                        ])
+                    })
                 }
             },
         },

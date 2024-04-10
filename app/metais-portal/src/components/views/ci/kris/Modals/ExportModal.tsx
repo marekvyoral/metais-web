@@ -1,4 +1,4 @@
-import { BaseModal, Button, ButtonGroupRow, GridCol, GridRow, RadioButton, RadioGroupWithLabel, TextHeading } from '@isdd/idsk-ui-kit'
+import { BaseModal, Button, ButtonGroupRow, GridCol, GridRow, RadioButton, RadioGroup, TextHeading } from '@isdd/idsk-ui-kit'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SelectPOForFilter } from '@isdd/metais-common/components/select-po/SelectPOForFilter'
@@ -64,7 +64,7 @@ export const ExportModal: React.FC<IExportModalProps> = ({ open, onClose, onExpo
                 )}
                 <GridRow>
                     <GridCol setWidth="full">
-                        <RadioGroupWithLabel label={t('evaluation.exportKrisLabel')} className="govuk-radios--small" inline multiple={false}>
+                        <RadioGroup label={t('evaluation.exportKrisLabel')} small inline>
                             <RadioButton
                                 id={'xml'}
                                 value={'RadioButton'}
@@ -81,7 +81,7 @@ export const ExportModal: React.FC<IExportModalProps> = ({ open, onClose, onExpo
                                 name={'RadioButton'}
                                 onChange={() => setExportValue('xlsx')}
                             />
-                        </RadioGroupWithLabel>
+                        </RadioGroup>
                     </GridCol>
                 </GridRow>
                 <ButtonGroupRow>

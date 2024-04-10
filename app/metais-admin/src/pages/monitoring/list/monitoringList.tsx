@@ -15,8 +15,7 @@ const MonitoringListPage = () => {
                 withWidthContainer
                 links={[
                     { label: t('monitoring.breadcrumbs.home'), href: AdminRouteNames.HOME, icon: HomeIcon },
-                    { label: t('monitoring.breadcrumbs.monitoring'), href: AdminRouteNames.MONITORING },
-                    { label: t('monitoring.breadcrumbs.list'), href: AdminRouteNames.MONITORING_LIST },
+                    { label: t('monitoring.breadcrumbs.monitoring'), href: AdminRouteNames.MONITORING_LIST },
                 ]}
             />
             <MainContentWrapper>

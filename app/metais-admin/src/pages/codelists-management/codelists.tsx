@@ -1,7 +1,8 @@
 import { BreadCrumbs, Filter, HomeIcon, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import { CodelistsFeedback } from '@/components/codelists/CodelistsFeedback'
 import { CodelistsTable } from '@/components/codelists/codelistsTable/CodelistsTable'
@@ -10,10 +11,14 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const Codelists = () => {
     const { t } = useTranslation()
+    const { currentPreferences } = useUserPreferences()
     const defaultFilterValues = {
         [CodelistFilterInputs.NAME]: '',
         [CodelistFilterInputs.VALUE]: '',
         [CodelistFilterInputs.VALUE_DESCRIPTION]: '',
+        pageNumber: BASE_PAGE_NUMBER,
+        pageSize: Number(currentPreferences.defaultPerPage) || BASE_PAGE_SIZE,
+        dataLength: 0,
     }
     return (
         <>
@@ -26,7 +31,7 @@ const Codelists = () => {
             />
             <CodelistContainer
                 defaults={defaultFilterValues}
-                View={({ filteredData, mutations, isError, isLoading, setSort, sort }) => {
+                View={({ filteredData, mutations, isError, isLoading, setSort, sort, handleFilterChange, filter }) => {
                     return (
                         <MainContentWrapper>
                             <QueryFeedback loading={isLoading} error={false} withChildren>
@@ -62,6 +67,8 @@ const Codelists = () => {
                                         isError={isError}
                                         setSort={setSort}
                                         sort={sort}
+                                        handleFilterChange={handleFilterChange}
+                                        filter={filter}
                                     />
                                 )}
                             </QueryFeedback>

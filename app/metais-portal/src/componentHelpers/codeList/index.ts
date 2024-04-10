@@ -247,19 +247,6 @@ export const mapFormToCodeListItem = (language: string, formItem: IItemForm, old
     return newItem
 }
 
-export const getErrorTranslateKeys = (errors: { message: string }[]): string[] => {
-    return errors
-        .filter((error) => !!error && error.message)
-        .map((error) => {
-            try {
-                const message = JSON.parse(error.message)
-                return `errors.codeList.${message.message}`
-            } catch {
-                return ''
-            }
-        })
-}
-
 export const mapCodeListToEditForm = (code: ApiCodelistPreview | undefined, language: string): IEditCodeListForm | undefined => {
     if (!code) return undefined
     return {

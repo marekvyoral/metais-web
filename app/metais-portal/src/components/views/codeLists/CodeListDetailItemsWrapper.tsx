@@ -64,6 +64,10 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
     handleFilterChange,
     handleMarkForPublish,
     handleSetDates,
+    isCodelistAutoincrementValid,
+    codelistPrefix,
+    codelistRefId,
+    codelistCharCount,
 }) => {
     const { t } = useTranslation()
     const [rowSelection, setRowSelection] = useState<Record<string, TableCols>>({})
@@ -137,7 +141,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
 
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
-            {isError && <QueryFeedback error={isError} loading={false} />}
+            <QueryFeedback error={isError} loading={false} />
             <TextHeading size="L">{t('codeListDetail.title.items')}</TextHeading>
             <Filter<CodeListDetailFilterData>
                 heading={t('codeList.filter.title')}
@@ -172,7 +176,6 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
             <MutationFeedback
                 success={isSuccessItemActionMutation}
                 successMessage={t('codeListDetail.feedback.editCodeListItems')}
-                error={undefined}
                 onMessageClose={() => onModalOpen()}
             />
             <ActionsOverTable
@@ -184,16 +187,16 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                 entityName=""
                 handleFilterChange={handleFilterChange}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                selectedRowsCount={Object.keys(rowSelection).length}
                 createButton={
                     <Can I={Actions.CREATE} a={Subjects.ITEM}>
                         <CreateEntityButton label={t('codeListDetail.button.addNewItem')} onClick={() => handleOpenCreateItem()} />
                     </Can>
                 }
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <Can I={Actions.BULK_ACTIONS} a={Subjects.ITEM}>
                         <BulkPopup
-                            checkedRowItems={Object.keys(rowSelection).length}
+                            checkedRowItems={selectedRowsCount}
                             items={(closePopup) => [
                                 <ButtonLink
                                     key={'markReadyForPublishing'}
@@ -216,7 +219,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                             ]}
                         />
                     </Can>
-                }
+                )}
             />
             {items && (
                 <CodeListDetailItemsTable
@@ -241,7 +244,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                 {isLoadingItemAction && <LoadingIndicator label={t('feedback.saving')} />}
                 <TextHeading size="M">{t(`codeListDetail.modal.title.setDates`)}</TextHeading>
                 {Object.keys(rowSelection).length > 0 ? (
-                    <form onSubmit={handleSubmit(onSetDatesSubmit)}>
+                    <form onSubmit={handleSubmit(onSetDatesSubmit)} noValidate>
                         <TextBody>{t('codeListDetail.modal.text.willBeChanged')}</TextBody>
                         {selectedItemsTable}
                         <DateInput
@@ -324,6 +327,10 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                     attributeProfile={attributeProfile}
                     workingLanguage={workingLanguage}
                     defaultOrderValue={items?.codelistsItemCount ?? 1}
+                    isCodelistAutoincrementValid={!!isCodelistAutoincrementValid}
+                    codelistPrefix={codelistPrefix}
+                    codelistRefId={codelistRefId}
+                    codelistCharCount={codelistCharCount}
                 />
             )}
         </QueryFeedback>

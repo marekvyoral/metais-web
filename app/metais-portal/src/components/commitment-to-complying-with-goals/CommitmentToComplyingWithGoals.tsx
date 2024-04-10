@@ -1,11 +1,11 @@
 import { CheckBox, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { ConfigurationItemUi, useStoreConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import React, { useEffect, useState } from 'react'
-import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
-import { useTranslation } from 'react-i18next'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import styles from './commitment.module.scss'
 
@@ -16,9 +16,18 @@ type Props = {
     isOwner: boolean
     isCiItemInvalidated: boolean
     hasSomeCheckedTableItem: boolean
+    setSuccess: React.Dispatch<React.SetStateAction<boolean | undefined>>
+    setError: React.Dispatch<React.SetStateAction<boolean | undefined>>
 }
 
-export const CommitmentToComplyingWithGoals: React.FC<Props> = ({ ciItemData, isOwner, isCiItemInvalidated, hasSomeCheckedTableItem }) => {
+export const CommitmentToComplyingWithGoals: React.FC<Props> = ({
+    ciItemData,
+    isOwner,
+    isCiItemInvalidated,
+    hasSomeCheckedTableItem,
+    setSuccess,
+    setError,
+}) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -55,10 +64,20 @@ export const CommitmentToComplyingWithGoals: React.FC<Props> = ({ ciItemData, is
             })
             .then(
                 async (resp) =>
-                    await getRequestStatus(resp.requestId ?? '', () => {
-                        setUpdateButton(!updateButton)
-                    }),
+                    await getRequestStatus(
+                        resp.requestId ?? '',
+                        () => {
+                            setUpdateButton(!updateButton)
+                            setSuccess(true)
+                        },
+                        () => {
+                            setError(true)
+                        },
+                    ),
             )
+            .catch(() => {
+                setError(true)
+            })
     }
 
     return (
@@ -78,7 +97,7 @@ export const CommitmentToComplyingWithGoals: React.FC<Props> = ({ ciItemData, is
                             label={t('Ciel.commitmentLabel')}
                             name="commitment"
                             onChange={(e) => handleCheckboxChange(e.target.checked)}
-                            value={checked ? 'checked' : ''}
+                            checked={checked}
                         />
                     </div>
                 )}

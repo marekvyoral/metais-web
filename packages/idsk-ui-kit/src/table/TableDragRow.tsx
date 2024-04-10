@@ -38,7 +38,6 @@ export const TableDragRow = <T,>({
     const navigate = useNavigate()
     const location = useLocation()
     const hasCheckbox = row.getVisibleCells().find((cell) => cell.column.id === CHECKBOX_CELL)
-    const verticalHeaderColId = hasCheckbox ? row.getVisibleCells()[1].column.id : row.getVisibleCells()[0].column.id
 
     const [, dropRef] = useDrop({
         accept: 'row',
@@ -112,7 +111,6 @@ export const TableDragRow = <T,>({
                 )
                 return useHeader ? (
                     <th
-                        tabIndex={0}
                         scope="row"
                         className={classNames('idsk-table__cell', styles.fontWeightNormal, {
                             [styles.fontWeightBolder]: isRowBold && isRowBold(row),
@@ -124,23 +122,19 @@ export const TableDragRow = <T,>({
                         id={cell.column.id}
                         ref={index === 0 ? dropRef : null}
                     >
-                        <div ref={index === 0 ? dragRef : null} className={styles.flexCenter}>
-                            {index === 0 && (
-                                <img height={30} className={classNames({ [styles.handlePointer]: index === 0 })} src={DndIcon} alt={t('dnd')} />
-                            )}
+                        <div ref={index === 0 ? dragRef : null} className={styles.flexCenter} aria-label={t('dnd')}>
+                            {index === 0 && <img height={30} className={classNames({ [styles.handlePointer]: index === 0 })} src={DndIcon} alt="" />}
                             {cellContent}
                         </div>
                     </th>
                 ) : (
                     <td
-                        tabIndex={0}
                         className={classNames('idsk-table__cell', {
                             [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
                             [styles.rowSelected]: isRowSelected && isRowSelected(row),
                         })}
                         style={columnDef.size ? { width: columnDef.size } : { width: 'auto' }}
                         key={cell.id}
-                        headers={`${cell.column.id} ${verticalHeaderColId}`}
                         ref={index === 0 ? dropRef : null}
                     >
                         <div ref={index === 0 ? dragRef : null}>{cellContent}</div>

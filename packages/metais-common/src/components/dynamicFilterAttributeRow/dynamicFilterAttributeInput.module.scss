@@ -1,0 +1,60 @@
+@import '@isdd/metais-common/src/utils.scss';
+
+.customFilterWrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    column-gap: govuk-spacing(5);
+    align-items: center;
+    @include mq($until: desktop) {
+        margin: govuk-spacing(5) 0 0;
+    }
+}
+
+.customFilterInputWrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    column-gap: govuk-spacing(5);
+    align-items: center;
+    border: none;
+    padding: 0;
+    margin: 0;
+    min-inline-size: 96%;
+    @include mq($until: desktop) {
+        display: initial;
+    }
+}
+
+.trashIcon {
+    color: govuk-colour('red');
+
+    &:link,
+    &:visited,
+    &:hover,
+    &:focus,
+    &:active {
+        color: govuk-colour('dark-red');
+        background-color: transparent;
+        box-shadow: none;
+    }
+}
+
+.rowItem {
+    flex: 1;
+}
+
+.radioButtonDiv {
+    flex: 1;
+    margin-top: govuk-spacing(4);
+}
+.lazySelect {
+    max-width: 30% !important;
+    @include mq($until: desktop) {
+        max-width: 100% !important;
+    }
+}
+
+.fullWidth {
+    width: 100%;
+}

@@ -4,7 +4,6 @@ import {
     ButtonGroupRow,
     ButtonLink,
     ButtonPopup,
-    ExpandableRowCellWrapper,
     HomeIcon,
     InfoIconWithText,
     LoadingIndicator,
@@ -154,6 +153,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                                 })
                                                             }}
                                                             label={t('codeListList.buttons.ACCEPT')}
+                                                            aria={{ 'aria-haspopup': 'dialog' }}
                                                         />
                                                     </Can>
                                                     <Can I={Actions.ACCEPT_SZZC} a={Subjects.DETAIL}>
@@ -167,6 +167,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                                 })
                                                             }}
                                                             label={t('codeListList.buttons.ACCEPT_SZZC')}
+                                                            aria={{ 'aria-haspopup': 'dialog' }}
                                                         />
                                                     </Can>
                                                     <Can I={Actions.CANCEL_REQUEST} a={Subjects.DETAIL}>
@@ -180,6 +181,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                                 })
                                                             }}
                                                             label={t('codeListList.buttons.CANCEL_REQUEST')}
+                                                            aria={{ 'aria-haspopup': 'dialog' }}
                                                         />
                                                     </Can>
                                                     <Can I={Actions.REJECT} a={Subjects.DETAIL}>
@@ -193,6 +195,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                                 })
                                                             }}
                                                             label={t('codeListList.buttons.REJECT')}
+                                                            aria={{ 'aria-haspopup': 'dialog' }}
                                                         />
                                                     </Can>
                                                     <Can I={Actions.MOVE_TO_KSISVS} a={Subjects.DETAIL}>
@@ -206,6 +209,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                                 })
                                                             }}
                                                             label={t('codeListList.buttons.MOVE_TO_KSISVS')}
+                                                            aria={{ 'aria-haspopup': 'dialog' }}
                                                         />
                                                     </Can>
                                                     <Can I={Actions.SEND} a={Subjects.DETAIL}>
@@ -219,10 +223,19 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                                                 })
                                                             }}
                                                             label={t('codeListList.buttons.SEND')}
+                                                            aria={{ 'aria-haspopup': 'dialog' }}
                                                         />
                                                     </Can>
-                                                    <ButtonLink onClick={() => setIsExportModalOpen(true)} label={t('codeListList.buttons.EXPORT')} />
-                                                    <ButtonLink onClick={() => setIsImportModalOpen(true)} label={t('codeListList.buttons.IMPORT')} />
+                                                    <ButtonLink
+                                                        onClick={() => setIsExportModalOpen(true)}
+                                                        label={t('codeListList.buttons.EXPORT')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
+                                                    />
+                                                    <ButtonLink
+                                                        onClick={() => setIsImportModalOpen(true)}
+                                                        label={t('codeListList.buttons.IMPORT')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
+                                                    />
                                                 </div>
                                             )
                                         }}
@@ -231,12 +244,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                             </Can>
                         </div>
                         {actionsErrorMessages.map((errorMessage, index) => (
-                            <MutationFeedback
-                                success={false}
-                                key={index}
-                                showSupportEmail
-                                error={t([errorMessage, 'feedback.mutationErrorMessage'])}
-                            />
+                            <MutationFeedback key={index} error errorMessage={errorMessage && t(errorMessage)} />
                         ))}
                         <BasicInfoTabView
                             codeList={data.detail}
@@ -278,11 +286,6 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                     accessorFn: (row) => row?.itemCode,
                                     id: 'code',
                                     size: 80,
-                                    cell: ({ row, getValue }) => (
-                                        <ExpandableRowCellWrapper row={row}>
-                                            <span>{getValue() as string}</span>
-                                        </ExpandableRowCellWrapper>
-                                    ),
                                 },
                                 {
                                     header: t('codeListList.requestCreate.codeName'),

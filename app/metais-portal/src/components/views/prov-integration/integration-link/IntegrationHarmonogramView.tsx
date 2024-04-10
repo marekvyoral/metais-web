@@ -80,9 +80,7 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
     const columns: Array<ColumnDef<ApiIntegrationHarmonogram>> = [
         {
             accessorKey: 'harmonogramPhase',
-            header: () => {
-                return <span>{t('integrationLinks.harmonogramPhase')}</span>
-            },
+            header: () => t('integrationLinks.harmonogramPhase'),
             id: 'harmonogramPhase',
             size: 200,
             cell: (ctx: CellContext<ApiIntegrationHarmonogram, unknown>) => {
@@ -96,9 +94,7 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
         },
         {
             accessorKey: 'plannedDate',
-            header: () => {
-                return <span>{t('integrationLinks.plannedDate')}</span>
-            },
+            header: () => t('integrationLinks.plannedDate'),
             id: 'plannedDate',
             size: 200,
             cell: (ctx: CellContext<ApiIntegrationHarmonogram, unknown>) => {
@@ -122,9 +118,7 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
         },
         {
             accessorKey: 'realizedDate',
-            header: () => {
-                return <span>{t('integrationLinks.realizedDate')}</span>
-            },
+            header: () => t('integrationLinks.realizedDate'),
             id: 'realizedDate',
             size: 200,
             cell: (ctx: CellContext<ApiIntegrationHarmonogram, unknown>) => {
@@ -165,8 +159,8 @@ export const IntegrationHarmonogramView: React.FC<HarmonogramView> = ({
 
     return (
         <QueryFeedback loading={isLoading || isUpdateLoading} error={isError} withChildren>
-            <MutationFeedback success={isUpdateSuccess} showSupportEmail error={isUpdateError ? t('feedback.mutationErrorMessage') : ''} />
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <MutationFeedback success={isUpdateSuccess} error={isUpdateError} />
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Table columns={columns} data={hasHarmonogramData ? harmonogramData?.results : defaultData} />
                 {isHarmonogramEdit && (
                     <SubmitWithFeedback

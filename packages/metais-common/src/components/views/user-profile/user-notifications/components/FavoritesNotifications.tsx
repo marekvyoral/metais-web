@@ -23,10 +23,11 @@ import {
 } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, CI_TYPES_QUERY_KEY, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ActionsOverTable, BulkPopup } from '@isdd/metais-common/components/actions-over-table'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { ConfigurationItemSetUi, useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { CiTypePreview, useListCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 const reduceTableDataToObject = <T extends { id?: number }>(array: T[]): Record<string, T> => {
     return array.reduce<Record<string, T>>((result, item) => {
@@ -37,11 +38,15 @@ const reduceTableDataToObject = <T extends { id?: number }>(array: T[]): Record<
     }, {})
 }
 
-const getLink = (item: FollowedItem, location: Location, ciList: ConfigurationItemSetUi) => {
+const getLink = (item: FollowedItem, location: Location, ciList: ConfigurationItemSetUi, ciTypesMap?: Record<string, CiTypePreview>) => {
     let to = ''
+    let name = item.name
     if (item.itemType === FollowedItemItemType.CI) {
         const ciItem = ciList.configurationItemSet?.find((ci) => ci.uuid === item.itemId)
         to = `/ci/${ciItem?.type}/${item.itemId}`
+        if (ciItem?.type && ciTypesMap && ciTypesMap[ciItem?.type]) {
+            name += ` (${ciTypesMap[ciItem?.type].name})`
+        }
     }
     if (item.itemType === FollowedItemItemType.CODELIST) {
         to = `${NavigationSubRoutes.CODELIST}/${item.itemId}`
@@ -50,12 +55,12 @@ const getLink = (item: FollowedItem, location: Location, ciList: ConfigurationIt
         to = `${NavigationSubRoutes.REF_IDENTIFIERS}/${item.itemId}`
     }
     if (item.itemType === FollowedItemItemType.REF_REGISTER) {
-        to = `${NavigationSubRoutes.REFERENCE_REGISTRE}/${item.itemId}`
+        to = `${NavigationSubRoutes.REFERENCE_REGISTER}/${item.itemId}`
     }
 
     return (
         <Link to={to} state={{ from: location }}>
-            {item.name}
+            {name}
         </Link>
     )
 }
@@ -68,6 +73,7 @@ export const UserFavoritesNotifications = () => {
     const location = useLocation()
     const { t } = useTranslation()
     const queryClient = useQueryClient()
+    const { i18n } = useTranslation()
 
     const [pagination, setPagination] = useState({
         pageNumber: BASE_PAGE_NUMBER,
@@ -80,6 +86,21 @@ export const UserFavoritesNotifications = () => {
         removeId: undefined,
     })
 
+    const { data: listOfCiTypes } = useListCiTypes({ filter: {} }, { query: { queryKey: [CI_TYPES_QUERY_KEY, i18n.language] } })
+    const ciTypesMap = useMemo(
+        () =>
+            listOfCiTypes?.results?.reduce<Record<string, CiTypePreview>>((prev, curr) => {
+                if (!curr.technicalName) {
+                    return prev
+                }
+                return {
+                    ...prev,
+                    [curr.technicalName]: curr,
+                }
+            }, {}),
+        [listOfCiTypes?.results],
+    )
+
     const {
         data: listData,
         isLoading: isLoadingList,
@@ -87,9 +108,23 @@ export const UserFavoritesNotifications = () => {
         refetch,
         isRefetching,
     } = useGetFollowedItems(
-        { page: pagination.pageNumber ?? BASE_PAGE_NUMBER, perPage: pagination.pageSize, orderBy: pagination.order, ascending: pagination.ascending },
+        {
+            paging: {
+                page: pagination.pageNumber ?? BASE_PAGE_NUMBER,
+                perPage: pagination.pageSize,
+                sortBy: pagination.order,
+                ascending: pagination.ascending,
+            },
+        },
         { query: { enabled: true } },
     )
+
+    // if pageNumber is not first page and there are no items on that page, go to the first page
+    useEffect(() => {
+        if (pagination.pageNumber > BASE_PAGE_NUMBER && listData?.items?.length === 0) {
+            setPagination({ ...pagination, pageNumber: BASE_PAGE_NUMBER })
+        }
+    }, [listData?.items?.length, pagination])
 
     const ciIds = getTypeIds(listData ?? {}, FollowedItemItemType.CI)
     const {
@@ -243,7 +278,7 @@ export const UserFavoritesNotifications = () => {
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (ctx) => getLink(ctx.getValue() as FollowedItem, location, ciListData ?? {}),
+            cell: (ctx) => getLink(ctx.getValue() as FollowedItem, location, ciListData ?? {}, ciTypesMap),
         },
         {
             header: t('userProfile.notifications.table.settings'),
@@ -284,7 +319,6 @@ export const UserFavoritesNotifications = () => {
         refetch()
     }, [pagination, refetch])
 
-    const disabledBulkAction = !selectedUuids.length
     const isLoading = [isLoadingList, isLoadingCiListData, isLoadingUpdateMutation, isLoadingRemove, isRefetching].some((item) => item)
     const isError = [isErrorList, isErrorCiListData].some((item) => item)
     const isErrorMutation = [isErrorUpdateMutation, isErrorRemove].some((item) => item)
@@ -296,7 +330,8 @@ export const UserFavoritesNotifications = () => {
         <QueryFeedback loading={isLoading} error={isError} withChildren>
             <MutationFeedback
                 success={isSuccessMutation}
-                error={isErrorMutation ? t('userProfile.notifications.feedback.error') : undefined}
+                error={isErrorMutation}
+                errorMessage={t('userProfile.notifications.feedback.error')}
                 successMessage={isSuccessRemove ? successMessage : undefined}
                 onMessageClose={() => {
                     resetRemoveState()
@@ -310,10 +345,10 @@ export const UserFavoritesNotifications = () => {
                 }}
                 pagination={{ ...pagination, dataLength: listData?.items?.length ?? 0 }}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                bulkPopup={
+                selectedRowsCount={selectedUuids.length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={selectedUuids.length}
-                        disabled={disabledBulkAction}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'remove'}
@@ -328,7 +363,7 @@ export const UserFavoritesNotifications = () => {
                             />,
                         ]}
                     />
-                }
+                )}
                 entityName={''}
             />
             <Table<FollowedItem>
@@ -345,7 +380,7 @@ export const UserFavoritesNotifications = () => {
             <PaginatorWrapper
                 pageSize={pagination.pageSize}
                 pageNumber={pagination.pageNumber}
-                dataLength={200} // api bug - dataLength is not returned MIID-245
+                dataLength={listData?.paging?.totalCount || 0}
                 handlePageChange={(page) => setPagination({ ...pagination, pageNumber: page.pageNumber ?? BASE_PAGE_NUMBER })}
             />
             <ConfirmationModal

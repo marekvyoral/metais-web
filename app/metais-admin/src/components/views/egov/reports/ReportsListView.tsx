@@ -33,17 +33,13 @@ export const ReportsListView = ({
     return (
         <>
             <div ref={scrollRef} />
-            <MutationFeedback
-                success={saveMutationIsSuccess || changeMutationIsSuccess}
-                error={false}
-                onMessageClose={changeMutationIsSuccessReset}
-            />
+            <MutationFeedback success={saveMutationIsSuccess || changeMutationIsSuccess} onMessageClose={changeMutationIsSuccessReset} />
             <Filter<ReportsFilterData>
                 defaultFilterValues={defaultFilterValues}
                 form={({ setValue, filter }) => (
                     <div>
                         <SimpleSelect
-                            label={t('report.filter.category')}
+                            label={t('reports.filter.category')}
                             name={'category'}
                             id="category"
                             options={mapCategoriesToOptions(categories?.categories)}

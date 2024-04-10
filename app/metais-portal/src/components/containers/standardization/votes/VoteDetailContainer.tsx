@@ -1,5 +1,5 @@
 import { QueryFeedback } from '@isdd/metais-common/index'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import {
@@ -36,7 +36,13 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
     const userLogin = user?.login ?? ''
 
     const { data: voteData, isLoading: voteDataLoading, isError: voteDataError, refetch } = useGetVoteDetail(Number(voteId))
-    const { isLoading: cancelVoteLoading, mutateAsync: cancelVoteAsyncMutation } = useCancelVote({ mutation: { onSuccess: () => refetch() } })
+
+    const [votesProcessingError, setVotesProcessingError] = useState<string>()
+    const [voted, setVoted] = useState<boolean>(false)
+
+    const { isLoading: cancelVoteLoading, mutateAsync: cancelVoteAsyncMutation } = useCancelVote({
+        mutation: { onSuccess: () => refetch(), onError: (resp) => setVotesProcessingError(resp.message) },
+    })
 
     const {
         data: srData,
@@ -44,7 +50,12 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
         isError: srError,
     } = useGetStandardRequestDetail(voteData?.standardRequestId ?? 0, { query: { enabled: !!voteData?.standardRequestId } })
     const standardRequestLoading = !!voteData?.standardRequestId && srLoading
-    const { data: voteResultData, isLoading: voteResultDataLoading, isError: voteResultDataError } = useGetVoteResult(Number(voteId))
+    const {
+        data: voteResultData,
+        isLoading: voteResultDataLoading,
+        isError: voteResultDataError,
+        refetch: refetchResult,
+    } = useGetVoteResult(Number(voteId))
 
     const canDoCast = useMemo((): boolean => {
         return voteData?.voteActors?.find((va) => va.userId == userLogin) !== undefined
@@ -54,12 +65,57 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
         data: voteActorResultData,
         isLoading: voteActorResultLoading,
         isError: voteActorResultError,
+        refetch: refetchActorResult,
     } = useGetVoteActorResult(Number(voteId), userId, { query: { enabled: canDoCast } })
-    const { isLoading: castVoteLoading, mutateAsync: castVoteAsyncMutation } = useCastVote()
-    const { isLoading: castUserVoteLoading, mutateAsync: castUserVoteAsyncMutation } = useCastVote1()
-    const { isLoading: vetoVoteLoading, mutateAsync: vetoVoteAsyncMutation } = useVetoVote()
-    const { isLoading: vetoUserVoteLoading, mutateAsync: vetoUserVoteAsyncMutation } = useVetoVote1()
-    const { isLoading: voteNoteLoading, mutateAsync: voteNoteAsyncMutation } = useVoteNote()
+
+    const { isLoading: voteNoteLoading, mutateAsync: voteNoteAsyncMutation } = useVoteNote({
+        mutation: {
+            onSuccess() {
+                refetchResult()
+                refetchActorResult()
+                setVoted(true)
+            },
+            onError: (resp) => setVotesProcessingError(JSON.parse(resp.message ?? '')['message']),
+        },
+    })
+
+    const { isLoading: castVoteLoading, mutateAsync: castVoteAsyncMutation } = useCastVote({
+        mutation: {
+            onSuccess() {
+                refetchResult()
+                refetchActorResult()
+                setVoted(true)
+            },
+            onError: (resp) => setVotesProcessingError(JSON.parse(resp.message ?? '')['message']),
+        },
+    })
+
+    const { isLoading: castUserVoteLoading, mutateAsync: castUserVoteAsyncMutation } = useCastVote1({
+        mutation: {
+            onSuccess() {
+                refetchResult()
+                refetchActorResult()
+                setVoted(true)
+            },
+            onError: (resp) => setVotesProcessingError(JSON.parse(resp.message ?? '')['message']),
+        },
+    })
+    const { isLoading: vetoVoteLoading, mutateAsync: vetoVoteAsyncMutation } = useVetoVote({
+        mutation: {
+            onSuccess() {
+                setVoted(true)
+            },
+            onError: (resp) => setVotesProcessingError(JSON.parse(resp.message ?? '')['message']),
+        },
+    })
+    const { isLoading: vetoUserVoteLoading, mutateAsync: vetoUserVoteAsyncMutation } = useVetoVote1({
+        mutation: {
+            onSuccess() {
+                setVoted(true)
+            },
+            onError: (resp) => setVotesProcessingError(JSON.parse(resp.message ?? '')['message']),
+        },
+    })
 
     const castVote = async ({ choiceId, token, description }: { choiceId: number; token?: string; description?: string }) => {
         if (!voteData?.id) {
@@ -147,6 +203,9 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent', transparentMask: false }}>
                     <View
+                        voted={voted}
+                        setVotesProcessingError={setVotesProcessingError}
+                        votesProcessingError={votesProcessingError}
                         voteResultData={voteResultData}
                         voteData={voteData}
                         srData={srData}

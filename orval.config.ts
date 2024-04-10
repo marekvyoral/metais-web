@@ -107,6 +107,11 @@ export default defineConfig({
                             name: 'useClientForRefRegistersHistory',
                         },
                     },
+                    searchAll: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
                 },
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClient.ts',
@@ -190,6 +195,13 @@ export default defineConfig({
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useDmsSwaggerClient.ts',
                     name: 'useDmsSwaggerClient',
+                },
+                operations: {
+                    getMeta: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
                 },
             },
             ...defaultOutputOptions,

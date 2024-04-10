@@ -1,8 +1,5 @@
-import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
-import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { ServiceDetailView } from '@/components/views/monitoring/services/ServiceDetailView'
 import { MonitoringDetailFilterData, MonitoringServiceDetailContainer } from '@/components/containers/MonitoringServiceDetailContainer'
@@ -18,7 +15,6 @@ export interface IQueryParamsDetail {
 }
 
 const DetailServicePage: React.FC = () => {
-    const { t } = useTranslation()
     const [urlParams] = useSearchParams()
 
     const queryParams: IQueryParamsDetail = {
@@ -31,7 +27,7 @@ const DetailServicePage: React.FC = () => {
         isvs: urlParams.get('isvs') ?? '',
     }
 
-    const defaultFilterValues: MonitoringDetailFilterData = {
+    const queryFilterValues: MonitoringDetailFilterData = {
         serviceType: urlParams.get('serviceType') ?? '',
         serviceUuid: urlParams.get('serviceUuid') ?? '',
         dateFrom: queryParams.dateFrom,
@@ -43,20 +39,11 @@ const DetailServicePage: React.FC = () => {
     }
 
     return (
-        <>
-            <BreadCrumbs
-                withWidthContainer
-                links={[
-                    { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: t('titles.monitoringServices') ?? '', href: RouterRoutes.MONITORING_SERVICES },
-                ]}
-            />
-            <MonitoringServiceDetailContainer
-                defaultFilterValues={defaultFilterValues}
-                queryParams={queryParams}
-                View={(props) => <ServiceDetailView {...props} />}
-            />
-        </>
+        <MonitoringServiceDetailContainer
+            queryFilterValues={queryFilterValues}
+            queryParams={queryParams}
+            View={(props) => <ServiceDetailView {...props} />}
+        />
     )
 }
 

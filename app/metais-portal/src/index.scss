@@ -19,9 +19,9 @@ body {
     max-width: 500px;
 }
 
-.idsk-table p{ 
-        overflow-y: visible !important;
-        overflow-x: visible !important;
+.idsk-table p {
+    overflow-y: visible !important;
+    overflow-x: visible !important;
 }
 
 .wiki {
@@ -78,5 +78,11 @@ body {
         tbody {
             @extend .idsk-table__body;
         }
+    }
+}
+
+.attr-highlight {
+    mark {
+        font-weight: bold !important;
     }
 }

@@ -1,6 +1,6 @@
 import { BaseModal, Button, ButtonGroupRow, ButtonLink, ISelectColumnType, Tab, Table, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
-import { useDeleteContent } from '@isdd/metais-common/api/generated/dms-swagger'
+import { RefAttributesRefType, useDeleteContent } from '@isdd/metais-common/api/generated/dms-swagger'
 import { Document, getGetDocumentsQueryKey, useSaveDocument } from '@isdd/metais-common/api/generated/kris-swagger'
 import { FileUpload, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
@@ -12,15 +12,14 @@ import {
 } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { ActionsOverTable, BulkPopup, ModalButtons, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, BulkPopup, DMS_DOWNLOAD_FILE, ModalButtons, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useQueryClient } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { v4 as uuidV4 } from 'uuid'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { IView } from '@/components/containers/documents-management/DocumentsGroupContainer'
 
@@ -33,6 +32,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
     filter,
     handleFilterChange,
     refetchInfoData,
+    templatesMetadata,
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
@@ -136,6 +136,17 @@ export const DocumentsGroupView: React.FC<IView> = ({
             cell: (ctx) => (ctx?.getValue() ? t('radioButton.yes') : t('radioButton.no')),
         },
         {
+            header: t('documentsManagement.template'),
+            accessorFn: (row) => row?.templateUuid,
+            enableSorting: true,
+            id: 'template',
+            cell: (ctx) => (
+                <Link to={`${DMS_DOWNLOAD_FILE}${ctx?.getValue()}`} state={{ from: location }} target="_blank" className="govuk-link">
+                    {templatesMetadata?.find((tm) => tm?.uuid == ctx?.getValue())?.filename}
+                </Link>
+            ),
+        },
+        {
             header: t('actionsInTable.actions'),
             accessorKey: 'actions',
             id: 'actions',
@@ -232,17 +243,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
     const handleUploadData = useCallback(() => {
         fileUploadRef.current?.startUploading()
     }, [])
-    const fileMetaAttributes = {
-        'x-content-uuid': uuidV4(),
-        refAttributes: new Blob(
-            [
-                JSON.stringify({
-                    refType: 'STANDARD',
-                }),
-            ],
-            { type: 'application/json' },
-        ),
-    }
+
     const { handleSubmit } = useForm()
     const onTemplateUpload = () => {
         if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
@@ -275,7 +276,6 @@ export const DocumentsGroupView: React.FC<IView> = ({
             </ButtonGroupRow>
             <MutationFeedback
                 success={isActionSuccess.value && isActionSuccess?.additionalInfo?.type == 'editGroup'}
-                error={undefined}
                 successMessage={t('mutationFeedback.successfulUpdated')}
             />
 
@@ -302,7 +302,6 @@ export const DocumentsGroupView: React.FC<IView> = ({
                         isActionSuccess.value &&
                         (isActionSuccess?.additionalInfo?.type == 'create' || isActionSuccess?.additionalInfo?.type == 'edit')
                     }
-                    error={undefined}
                     successMessage={
                         isActionSuccess?.additionalInfo?.type == 'create'
                             ? t('mutationFeedback.successfulCreated')
@@ -311,14 +310,9 @@ export const DocumentsGroupView: React.FC<IView> = ({
                 />
                 <MutationFeedback
                     success={isDocumentSuccessfullyUpdated && !isTemplateSuccessfullyDeleted && !isTemplateDeleting}
-                    error={undefined}
                     successMessage={t('documentsManagement.templateSuccessfullyAdded')}
                 />
-                <MutationFeedback
-                    success={isTemplateSuccessfullyDeleted}
-                    error={undefined}
-                    successMessage={t('documentsManagement.templateSuccessfullyDeleted')}
-                />
+                <MutationFeedback success={isTemplateSuccessfullyDeleted} successMessage={t('documentsManagement.templateSuccessfullyDeleted')} />
             </div>
             <Table
                 columns={columns.filter(
@@ -362,11 +356,10 @@ export const DocumentsGroupView: React.FC<IView> = ({
             <BaseModal isOpen={!!documentToAddTemplate} close={() => setDocumentToAddTemplate(undefined)}>
                 <QueryFeedback loading={isDocumentUpdating || isUploading} error={isDocumentUpdatingError} withChildren>
                     <TextHeading size="L">{t('documentsManagement.uploadTemplate')}</TextHeading>
-                    <form onSubmit={handleSubmit(onTemplateUpload)}>
+                    <form onSubmit={handleSubmit(onTemplateUpload)} noValidate>
                         <FileUpload
                             ref={fileUploadRef}
                             allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif', '.csv']}
-                            fileMetaAttributes={fileMetaAttributes}
                             isUsingUuidInFilePath
                             onUploadSuccess={async (value) => {
                                 setIsUploading(false)
@@ -374,7 +367,9 @@ export const DocumentsGroupView: React.FC<IView> = ({
                                     setDocumentToAddTemplate(undefined)
                                 })
                             }}
+                            onFileUploadFailed={() => setIsUploading(false)}
                             multiple={false}
+                            refType={RefAttributesRefType.DOCUMENT_TEMPLATE}
                         />
                         <ModalButtons
                             submitButtonLabel={t('codelists.save')}

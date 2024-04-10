@@ -1,30 +1,32 @@
 import { ErrorBlockList } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
-import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Attribute, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import React, { useEffect, useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { Attribute, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 
 import { HasResetState } from './CreateCiEntityForm'
-import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits, getHint } from './createEntityHelpers'
+import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits, getHint, getSectionErrorList } from './createEntityHelpers'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 
 interface ISection {
     sectionId: string
     attributes: Attribute[]
-    setSectionError: React.Dispatch<React.SetStateAction<{ [x: string]: boolean }>>
     generatedEntityId: CiCode
     constraintsData: (EnumType | undefined)[]
     unitsData: EnumType | undefined
     defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
     hasResetState: HasResetState
+    setSectionError?: React.Dispatch<React.SetStateAction<{ [x: string]: boolean }>>
     updateCiItemId?: string
     sectionRoles: string[]
     selectedRole?: GidRoleData | null
+    hideErrorBlock?: boolean
+    rolesForPO: GidRoleData[]
 }
 
 export const CreateEntitySection: React.FC<ISection> = ({
@@ -32,42 +34,38 @@ export const CreateEntitySection: React.FC<ISection> = ({
     sectionId,
     constraintsData,
     generatedEntityId,
-    setSectionError,
     unitsData,
     defaultItemAttributeValues,
     hasResetState,
     updateCiItemId,
+    setSectionError,
     sectionRoles,
-    selectedRole,
+    hideErrorBlock,
+    rolesForPO,
 }) => {
     const ability = useAbilityContext()
 
     const { register, formState, trigger, setValue, clearErrors, control } = useFormContext()
     const { errors, isSubmitted } = formState
 
-    const errorNames = Object.keys(errors).filter((item) => item.includes(sectionId))
-    const thisSectionAttWithErrors = attributes.filter((att) => att.technicalName && errorNames.includes(att.technicalName))
+    const thisSectionErrorList = getSectionErrorList(attributes, formState?.errors, sectionId)
 
-    const thisSectionErrorList = [
-        ...thisSectionAttWithErrors.map((att) => ({
-            errorTitle: att.name ?? '',
-            errorMessage: errors[errorNames.find((name) => name === att.technicalName) ?? '']?.message?.toString(),
-        })),
-    ]
+    const canEditSection = useMemo(() => {
+        return sectionRoles.some((sectionRole) => rolesForPO?.map((role) => role.roleName).includes(sectionRole))
+    }, [sectionRoles, rolesForPO])
+    const isUpdateSectionDisabled = !!updateCiItemId && !ability?.can(Actions.EDIT, `ci.${updateCiItemId}.attributeProfile.${sectionId}`)
 
     const isSectionError = Object.keys(errors)
         .map((item) => item.includes(sectionId))
         .some((item) => item)
-    useEffect(() => {
-        setSectionError((prev) => ({ ...prev, [sectionId]: isSectionError }))
-    }, [sectionId, isSectionError, setSectionError])
 
-    const canEditSection = useMemo(() => (selectedRole ? sectionRoles.includes(selectedRole?.roleName ?? '') : true), [sectionRoles, selectedRole])
-    const isUpdateSectionDisabled = !!updateCiItemId && !ability?.can(Actions.EDIT, `ci.${updateCiItemId}.attributeProfile.${sectionId}`)
+    useEffect(() => {
+        setSectionError?.((prev) => ({ ...prev, [sectionId]: isSectionError }))
+    }, [sectionId, isSectionError, setSectionError])
 
     return (
         <div>
-            <ErrorBlockList errorList={thisSectionErrorList} />
+            {!hideErrorBlock && <ErrorBlockList errorList={thisSectionErrorList} />}
             {attributes?.map?.((attribute) => (
                 <React.Fragment key={attribute.technicalName}>
                     {!attribute.invisible && attribute.valid && (

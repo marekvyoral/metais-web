@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { useLocation, useNavigate } from 'react-router-dom'
 import React from 'react'
 
-import { CHECKBOX_CELL, TOOLTIP_TEXT_BREAKER } from './constants'
+import { CHECKBOX_CELL, EXPANDABLE_CELL, TOOLTIP_TEXT_BREAKER } from './constants'
 import styles from './table.module.scss'
 
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
@@ -33,7 +33,7 @@ export const TableRow = <T,>({
     const navigate = useNavigate()
     const location = useLocation()
     const hasCheckbox = row.getVisibleCells().find((cell) => cell.column.id === CHECKBOX_CELL)
-    const verticalHeaderColId = hasCheckbox ? row.getVisibleCells()[1].column.id : row.getVisibleCells()[0].column.id
+    const isExpandable = row.getCanExpand()
 
     let headerUsed = false
 
@@ -48,6 +48,7 @@ export const TableRow = <T,>({
                 {
                     [styles.danger]: isRowDanger && isRowDanger(row),
                     [styles.checkBoxRow]: hasCheckbox,
+                    [styles.expandableRow]: isExpandable,
                 },
             )}
             onClick={() => {
@@ -100,7 +101,6 @@ export const TableRow = <T,>({
                 )
                 return useHeader ? (
                     <th
-                        tabIndex={0}
                         scope="row"
                         className={classNames('idsk-table__cell', styles.fontWeightNormal, {
                             [styles.fontWeightBolder]: isRowBold && isRowBold(row),
@@ -117,18 +117,20 @@ export const TableRow = <T,>({
                     </th>
                 ) : (
                     <td
-                        tabIndex={0}
                         className={classNames('idsk-table__cell', {
                             [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
                             [styles.rowSelected]: isRowSelected && isRowSelected(row),
                         })}
                         style={columnDef.size ? { width: columnDef.size } : { width: 'auto' }}
                         key={cell.id}
-                        headers={`${cell.column.id} ${verticalHeaderColId}`}
                     >
-                        <TextBody size="S" className={'marginBottom0'}>
-                            {cellContent}
-                        </TextBody>
+                        {cell.column.id === EXPANDABLE_CELL ? (
+                            cellContent
+                        ) : (
+                            <TextBody size="S" className={'marginBottom0'}>
+                                {cellContent}
+                            </TextBody>
+                        )}
                     </td>
                 )
             })}

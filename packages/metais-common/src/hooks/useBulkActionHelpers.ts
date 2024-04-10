@@ -1,8 +1,11 @@
 import uniq from 'lodash/uniq'
 
+import { useGetCiTypeHookWrapper } from './useCiType.hook'
+import { useGetRelationshipTypeHookWrapper } from './useRelationshipType.hook'
+
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetRightsForPOBulkHook, useIsInPoByGid1Hook, useIsOwnerByGidHook } from '@isdd/metais-common/api/generated/iam-swagger'
-import { CiType, RelationshipType, useGetCiTypeHook, useGetRelationshipTypeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CiType, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useBulkActionHelpers = () => {
@@ -12,8 +15,8 @@ export const useBulkActionHelpers = () => {
     const isLoggedIn = !!user?.uuid
 
     const getRightsForPOBulk = useGetRightsForPOBulkHook()
-    const getCiType = useGetCiTypeHook()
-    const getRelationType = useGetRelationshipTypeHook()
+    const getCiType = useGetCiTypeHookWrapper()
+    const getRelationType = useGetRelationshipTypeHookWrapper()
     const checkIsInPoByGid = useIsInPoByGid1Hook()
     const checkIsOwnerByGid = useIsOwnerByGidHook()
 

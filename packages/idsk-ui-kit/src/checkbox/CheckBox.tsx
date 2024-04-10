@@ -1,13 +1,15 @@
 import classNames from 'classnames'
 import React, { DetailedHTMLProps, forwardRef } from 'react'
 import { decodeHtmlEntities } from '@isdd/metais-common/src/utils/utils'
+import { useTranslation } from 'react-i18next'
+import { v4 } from 'uuid'
 
 import styles from './checkbox.module.scss'
 
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 interface ICheckBoxProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-    id: string
+    id?: string
     label: string | React.ReactNode
     name: string
     value?: string
@@ -22,18 +24,31 @@ interface ICheckBoxProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTM
 
 export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
     (
-        { id, label, error, name, disabled, value, info, title, labelClassName, containerClassName, className, htmlForDisabled = false, ...rest },
+        {
+            id = v4(),
+            label,
+            error,
+            name,
+            disabled,
+            value,
+            info,
+            title,
+            labelClassName,
+            containerClassName,
+            className,
+            htmlForDisabled = false,
+            ...rest
+        },
         ref,
     ) => {
+        const { t } = useTranslation()
         const errorId = `${id}-error`
-
         return (
             <div className={classNames({ 'govuk-form-group--error': !!error })}>
-                {error && (
-                    <span id={errorId} className="govuk-error-message">
-                        {error}
-                    </span>
-                )}
+                <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
+                    {error && <span className="govuk-visually-hidden">{t('error')}</span>}
+                    {error}
+                </span>
                 <div className={classNames('govuk-checkboxes__item', containerClassName)}>
                     <div className={styles.checkboxWrap}>
                         <input
@@ -46,8 +61,9 @@ export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
                             ref={ref}
                             {...rest}
                             title={title}
+                            aria-invalid={!!error}
+                            aria-describedby={errorId}
                             aria-errormessage={errorId}
-                            aria-label={label?.toString()}
                         />
 
                         {label ? (

@@ -271,7 +271,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
             isMutationError={isMutationError}
             isMutationSuccess={isMutationSuccess}
             successRolesUpdate={successRolesUpdate}
-            updateIdentityStateBatchMutation={updateIdentityStateBatchMutation}
+            mutations={{ updateIdentityStateBatchMutation, revokeUserBatchMutation }}
             handleUpdateRolesBulk={handleUpdateRolesBulk}
         />
     )

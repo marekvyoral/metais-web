@@ -1,17 +1,19 @@
-import { BreadCrumbs, Button, ButtonGroupRow, ButtonLink, GridCol, GridRow, HomeIcon, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, ButtonGroupRow, ButtonLink, ErrorBlock, GridCol, GridRow, HomeIcon, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
+import { formatDateTimeForAPI, formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { QueryFeedback } from '@isdd/metais-common/index'
-import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagger'
-import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
-import { v4 as uuidV4 } from 'uuid'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { FileUpload } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { formatTitleString } from '@isdd/metais-common/utils/utils'
-import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
+import { DateInput, DateTypeEnum } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { useNavigate } from 'react-router-dom'
+import { getErrorTranslateKey } from '@isdd/metais-common/utils/errorMapper'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import styles from './createEditView.module.scss'
 import { MeetingFormEnum, createMeetingSchema, editMeetingSchema } from './meetingSchema'
@@ -22,32 +24,37 @@ import { SelectMeetingGroupWithActors } from './SelectMeetingGroupWithActors'
 import { MeetingProposalsModal } from './MeetingProposalsModal'
 
 import {
-    mapProcessedExistingFilesToApiAttachment,
-    mapUploadedFilesToApiAttachment,
-} from '@/components/views/standardization/votes/VoteComposeForm/functions/voteEditFunc'
-import {
     ExistingFileData,
     ExistingFilesHandler,
-    IExistingFilesHandlerRef,
 } from '@/components/views/standardization/votes/VoteComposeForm/components/ExistingFilesHandler/ExistingFilesHandler'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { IMeetingEditViewParams } from '@/components/containers/standardization/meetings/MeetingEditContainer'
 import { LinksImport } from '@/components/LinksImport/LinksImport'
 
-export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, isLoading, isError }) => {
+export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({
+    onSubmit,
+    infoData,
+    isEdit,
+    isLoading,
+    isError,
+    isActionError,
+    actionError,
+    fileUploadRef,
+    existingFilesProcessRef,
+    handleDeleteSuccess,
+    handleUploadSuccess,
+    id,
+}) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const titleDetailName = infoData?.name ? `- ${infoData?.name}` : ''
     document.title = formatTitleString(`${isEdit ? t('meetings.editMeeting') : t('meetings.addNewMeeting')} ${titleDetailName}`)
 
     const formRef = useRef<HTMLFormElement>(null)
-    //files
-    const fileUploadRef = useRef<IFileUploadRef>(null)
     const formDataRef = useRef<FieldValues>([])
-    const existingFilesProcessRef = useRef<IExistingFilesHandlerRef>(null)
-    const attachmentsDataRef = useRef<ApiAttachment[]>([])
 
     const [selectedProposals, setSelectedProposals] = useState(infoData?.standardRequestIds?.map((o) => o.toString()) ?? [])
-    // modals
+
     const [modalOpenProposal, setModalOpenProposal] = useState(false)
     const openModalProposal = () => {
         setModalOpenProposal(true)
@@ -62,22 +69,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
     const onCloseReason = () => {
         setModalOpenReason(false)
     }
-    // files
-    const handleUploadData = useCallback(() => {
-        fileUploadRef.current?.startUploading()
-    }, [])
-    const handleDeleteFiles = () => {
-        existingFilesProcessRef?.current?.startFilesProcessing()
-    }
-    const handleDeleteSuccess = () => {
-        onSubmit(
-            formDataRef.current,
-            attachmentsDataRef.current.concat(
-                mapProcessedExistingFilesToApiAttachment(existingFilesProcessRef.current?.getRemainingFileList() ?? []),
-            ),
-        )
-    }
-    // forms
+
     const {
         register,
         handleSubmit,
@@ -85,7 +77,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
         setValue,
         watch,
         unregister,
-        formState: { errors },
+        formState: { errors, isSubmitted, isValid },
     } = useForm({
         resolver: yupResolver(isEdit ? editMeetingSchema(t) : createMeetingSchema(t)),
         defaultValues: {
@@ -105,9 +97,8 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                 })) || [],
             [MeetingFormEnum.GROUP]: infoData?.groups || [],
             [MeetingFormEnum.NAME]: infoData?.name || '',
-            [MeetingFormEnum.DATE]: formatDateForDefaultValue(infoData?.beginDate ?? ''),
-            [MeetingFormEnum.TIME_START]: formatDateTimeForDefaultValue(infoData?.beginDate ?? '', 'HH:mm'),
-            [MeetingFormEnum.TIME_END]: formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'),
+            [MeetingFormEnum.BEGIN_DATE]: formatDateTimeForDefaultValue(infoData?.beginDate ?? ''),
+            [MeetingFormEnum.END_DATE]: formatDateTimeForDefaultValue(infoData?.endDate ?? ''),
             [MeetingFormEnum.PLACE]: infoData?.place || '',
             [MeetingFormEnum.MEETING_LINKS]:
                 infoData?.meetingLinks?.map((link) => ({
@@ -129,31 +120,15 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
 
     const callSubmit = (data: FieldValues) => {
         formDataRef.current = { ...data }
-        if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
-            handleUploadData()
-            return
-        }
-        if (existingFilesProcessRef.current?.hasDataToProcess()) {
-            handleDeleteFiles()
-            return
-        }
-
         onSubmit(data, [])
     }
+
     const submit = () => {
         handleSubmit((data) => {
             callSubmit(data)
         })()
     }
-    const handleUploadSuccess = (data: FileUploadData[]) => {
-        const attachmentsData = mapUploadedFilesToApiAttachment(data)
-        if (existingFilesProcessRef.current?.hasDataToProcess()) {
-            attachmentsDataRef.current = attachmentsData
-            handleDeleteFiles()
-        } else {
-            onSubmit(formDataRef.current, attachmentsData)
-        }
-    }
+
     useEffect(() => {
         setValue(MeetingFormEnum.DESCRIPTION, infoData?.description || '')
         setValue(
@@ -185,24 +160,25 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
         )
         setValue(MeetingFormEnum.GROUP, infoData?.groups || [])
         setValue(MeetingFormEnum.NAME, infoData?.name || '')
-        setValue(MeetingFormEnum.DATE, formatDateForDefaultValue(infoData?.beginDate ?? ''))
-        setValue(MeetingFormEnum.TIME_START, formatDateTimeForDefaultValue(infoData?.beginDate ?? '', 'HH:mm'))
-        setValue(MeetingFormEnum.TIME_END, formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'))
+        setValue(MeetingFormEnum.BEGIN_DATE, formatDateTimeForAPI(infoData?.beginDate ?? ''))
+        setValue(MeetingFormEnum.END_DATE, formatDateTimeForAPI(infoData?.endDate ?? ''))
         setValue(MeetingFormEnum.PLACE, infoData?.place || '')
         setSelectedProposals(infoData?.standardRequestIds?.map((o) => o.toString()) ?? [])
     }, [infoData, setValue])
 
-    const fileMetaAttributes = {
-        'x-content-uuid': uuidV4(),
-        refAttributes: new Blob(
-            [
-                JSON.stringify({
-                    refType: 'STANDARD',
-                }),
-            ],
-            { type: 'application/json' },
-        ),
-    }
+    const startDate = watch(MeetingFormEnum.BEGIN_DATE)
+    const actionErrorMessageKey = getErrorTranslateKey(actionError)
+
+    useEffect(() => {
+        if (!watch(MeetingFormEnum.END_DATE)) setValue(MeetingFormEnum.END_DATE, startDate)
+    }, [setValue, startDate, watch])
+
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        if (isActionError) {
+            scrollToMutationFeedback()
+        }
+    }, [isActionError, scrollToMutationFeedback])
 
     return (
         <>
@@ -240,7 +216,10 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
             <MainContentWrapper>
                 <TextHeading size="XL">{isEdit ? `${t('meetings.editMeeting')} - ${infoData?.name}` : t('meetings.addNewMeeting')}</TextHeading>
                 <QueryFeedback loading={isLoading} error={isError} withChildren>
-                    <form onSubmit={handleSubmit(callSubmit)} ref={formRef}>
+                    <div ref={wrapperRef} />
+                    {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+                    <MutationFeedback error={isActionError} errorMessage={actionErrorMessageKey && t(actionErrorMessageKey)} />
+                    <form onSubmit={handleSubmit(callSubmit)} ref={formRef} noValidate>
                         <TextHeading size="L">{t('meetings.form.heading.dateTime')}</TextHeading>
                         <Input
                             label={`${t('meetings.form.name')} (${t('meetings.mandatory')}):`}
@@ -251,34 +230,27 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                         <GridRow>
                             <GridCol setWidth="one-half">
                                 <DateInput
-                                    label={`${t('meetings.form.date')} (${t('meetings.mandatory')}):`}
-                                    id={MeetingFormEnum.DATE}
-                                    error={errors[MeetingFormEnum.DATE]?.message}
-                                    {...register(MeetingFormEnum.DATE, { value: formatDateForDefaultValue(infoData?.beginDate ?? '') })}
+                                    label={`${t('meetings.start')} (${t('meetings.mandatory')}):`}
+                                    id={MeetingFormEnum.BEGIN_DATE}
+                                    error={errors[MeetingFormEnum.BEGIN_DATE]?.message}
+                                    {...register(MeetingFormEnum.BEGIN_DATE, { value: formatDateTimeForAPI(infoData?.beginDate ?? '') })}
                                     control={control}
                                     setValue={setValue}
+                                    type={DateTypeEnum.DATETIME}
                                 />
                             </GridCol>
-                            <GridCol setWidth="one-quarter">
-                                <Input
-                                    label={`${t('meetings.form.timeStart')} (${t('meetings.mandatory')}):`}
-                                    type="time"
-                                    id={MeetingFormEnum.TIME_START}
-                                    error={errors[MeetingFormEnum.TIME_START]?.message}
-                                    {...register(MeetingFormEnum.TIME_START, {
-                                        value: formatDateTimeForDefaultValue(infoData?.beginDate ?? '', 'HH:mm'),
-                                    })}
-                                />
-                            </GridCol>
-                            <GridCol setWidth="one-quarter">
-                                <Input
-                                    label={`${t('meetings.form.timeEnd')} (${t('meetings.mandatory')}):`}
-                                    type="time"
-                                    id={MeetingFormEnum.TIME_END}
-                                    error={errors[MeetingFormEnum.TIME_END]?.message}
-                                    {...register(MeetingFormEnum.TIME_END, {
-                                        value: formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'),
-                                    })}
+                            <GridCol setWidth="one-half">
+                                <DateInput
+                                    disabled={!startDate}
+                                    label={`${t('meetings.end')} (${t('meetings.mandatory')}):`}
+                                    id={MeetingFormEnum.END_DATE}
+                                    error={errors[MeetingFormEnum.END_DATE]?.message}
+                                    {...register(MeetingFormEnum.END_DATE, { value: formatDateTimeForAPI(infoData?.endDate ?? '') })}
+                                    control={control}
+                                    setValue={setValue}
+                                    type={DateTypeEnum.DATETIME}
+                                    maxDate={new Date(startDate)}
+                                    minDate={new Date(startDate)}
                                 />
                             </GridCol>
                         </GridRow>
@@ -348,27 +320,34 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                             allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
                             multiple
                             isUsingUuidInFilePath
-                            fileMetaAttributes={fileMetaAttributes}
+                            refType={RefAttributesRefType.MEETING_REQUEST}
+                            refId={id?.toString()}
                             onUploadSuccess={handleUploadSuccess}
+                            textSize="L"
                         />
-                        <ExistingFilesHandler
-                            existingFiles={
-                                infoData?.meetingAttachments?.map<ExistingFileData>((attachment) => {
-                                    return {
-                                        fileId: attachment.attachmentId,
-                                        fileName: attachment.attachmentName,
-                                        fileSize: attachment.attachmentSize,
-                                        fileType: attachment.attachmentType,
-                                    }
-                                }) ?? []
-                            }
-                            ref={existingFilesProcessRef}
-                            onFilesProcessingSuccess={handleDeleteSuccess}
-                        />
+                        {infoData?.meetingAttachments && infoData?.meetingAttachments.length > 0 && (
+                            <ExistingFilesHandler
+                                existingFiles={
+                                    infoData?.meetingAttachments?.map<ExistingFileData>((attachment) => {
+                                        return {
+                                            fileId: attachment.attachmentId,
+                                            fileName: attachment.attachmentName,
+                                        }
+                                    }) ?? []
+                                }
+                                ref={existingFilesProcessRef}
+                                onFilesProcessingSuccess={handleDeleteSuccess}
+                            />
+                        )}
                         {isEdit ? (
                             <>
                                 <ButtonGroupRow>
-                                    <Button label={t('form.cancel')} type="reset" variant="secondary" onClick={goBack} />
+                                    <Button
+                                        label={t('form.cancel')}
+                                        type="reset"
+                                        variant="secondary"
+                                        onClick={() => navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI}/${infoData?.id}`)}
+                                    />
                                     <Button label={t('form.submit')} onClick={openModalReason} />
                                 </ButtonGroupRow>
                                 <MeetingReasonModal
@@ -383,8 +362,13 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                         ) : (
                             <>
                                 <ButtonGroupRow>
-                                    <Button label={t('form.cancel')} type="reset" variant="secondary" onClick={goBack} />
-                                    <Button label={t('form.submit')} type="submit" />
+                                    <Button
+                                        label={t('form.cancel')}
+                                        type="reset"
+                                        variant="secondary"
+                                        onClick={() => navigate(NavigationSubRoutes.ZOZNAM_ZASADNUTI)}
+                                    />
+                                    <Button label={t('meetings.form.createBtn')} type="submit" />
                                 </ButtonGroupRow>
                             </>
                         )}

@@ -7,15 +7,13 @@ import styles from './searchInput.module.scss'
 interface IInputProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id: string
     name: string
-    hint?: string
     error?: FieldError
     disabled?: boolean
     onSearchButtonClick?: () => void
 }
 
 export const SearchInput = forwardRef<HTMLInputElement, IInputProps>(
-    ({ id, placeholder, className, style, onSearchButtonClick, name, hint, error, disabled, ...rest }, ref) => {
-        const hintId = `${id}-hint`
+    ({ id, placeholder, className, style, onSearchButtonClick, name, error, disabled, ...rest }, ref) => {
         const { t } = useTranslation()
         return (
             <div className={classNames('idsk-header-web__main-action-search', styles.searchInputWrapper, className)} style={style}>
@@ -29,7 +27,6 @@ export const SearchInput = forwardRef<HTMLInputElement, IInputProps>(
                     placeholder={placeholder || t('searchInput.search').toString()}
                     ref={ref}
                     {...rest}
-                    aria-describedby={hint ? hintId : undefined}
                     disabled={disabled}
                 />
                 <button className="govuk-button" onClick={onSearchButtonClick} type="submit">

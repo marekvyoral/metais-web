@@ -7,9 +7,10 @@ import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { DMS_DOWNLOAD_FILE } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUi, getReadCiNeighboursQueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting'
+import { INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import {
     ActionsOverTable,
     BulkPopup,
@@ -22,16 +23,14 @@ import {
     ReInvalidateBulkModal,
     UpdateFileModal,
 } from '@isdd/metais-common/index'
+import styles from '@isdd/metais-common/src/components/actions-over-table/single-actions-popup/file-history/styles.module.scss'
+import { useQueryClient } from '@tanstack/react-query'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styles from '@isdd/metais-common/src/components/actions-over-table/single-actions-popup/file-history/styles.module.scss'
-import { INVALIDATED } from '@isdd/metais-common/constants'
-import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { useQueryClient } from '@tanstack/react-query'
 
-import { downloadFile, isDocumentUpdatable, isDocumentsUpdatable, listToMap } from '@/components/views/documents/utils'
 import { TableCols, defaultFilter } from '@/components/containers/DocumentListContainer'
+import { downloadFile, isDocumentUpdatable, isDocumentsUpdatable, listToMap } from '@/components/views/documents/utils'
 
 interface DocumentsTable {
     ciData?: ConfigurationItemUi
@@ -76,7 +75,6 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     const additionalColumnsNullsafe = additionalColumns ?? []
 
     const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleDeleteFile, handleUpdateFile } = useBulkAction()
-
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
     const [showDeleteFile, setShowDeleteFile] = useState<boolean>(false)
@@ -174,7 +172,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             header: t('documentsTab.table.createdAt'),
             id: 'documentsTab.table.createdAt',
             size: 100,
-            cell: (row) => formatDateTimeForDefaultValue(row.getValue() as string),
+            cell: (ctx) => t('dateTime', { date: ctx.getValue() as string }),
         },
         ...(isUserLogged
             ? [
@@ -192,7 +190,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             header: t('documentsTab.table.lastModifiedAt'),
             id: 'documentsTab.table.lastModifiedAt',
             size: 100,
-            cell: (row) => formatDateTimeForDefaultValue(row.getValue() as string),
+            cell: (ctx) => t('dateTime', { date: ctx.getValue() as string }),
         },
         ...(isUserLogged
             ? [
@@ -317,36 +315,29 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
 
     return (
         <QueryFeedback loading={isLoading || isBulkLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && bulkActionResult?.additionalInfo?.action !== 'addedDocuments' && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage + successfullyAdded.join(',')}
-                        showSupportEmail
-                        error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
-                        onMessageClose={() => setBulkActionResult(undefined)}
-                    />
-                </div>
-            )}
-            {bulkActionResult?.isSuccess && bulkActionResult?.additionalInfo?.action === 'addedDocuments' && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={t(`addFile${successfullyAdded.length > 1 ? 's' : ''}Success`, {
-                            docs: successfullyAdded.join(', '),
-                        })}
-                        error={''}
-                        onMessageClose={() => setBulkActionResult(undefined)}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess && bulkActionResult?.additionalInfo?.action !== 'addedDocuments'}
+                    successMessage={bulkActionResult?.successMessage + successfullyAdded.join(',')}
+                    error={bulkActionResult?.isError && bulkActionResult?.additionalInfo?.action !== 'addedDocuments'}
+                    onMessageClose={() => setBulkActionResult(undefined)}
+                />
+            </div>
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess && bulkActionResult?.additionalInfo?.action === 'addedDocuments'}
+                    successMessage={t(`addFile${successfullyAdded.length > 1 ? 's' : ''}Success`, {
+                        docs: successfullyAdded.join(', '),
+                    })}
+                    onMessageClose={() => setBulkActionResult(undefined)}
+                />
+            </div>
 
             <ActionsOverTable
                 pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
-                selectedRowsCount={Object.keys(rowSelection).length}
                 createButton={
                     <Button
                         disabled={isInvalidated}
@@ -355,12 +346,15 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                         className={styles.marginBottom0}
                     />
                 }
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <Tooltip
                         descriptionElement={errorMessage}
-                        position={'center center'}
+                        position={'top center'}
+                        on={['click']}
                         tooltipContent={(open) => (
                             <BulkPopup
+                                checkedRowItems={selectedRowsCount}
                                 items={(closePopup) => [
                                     <ButtonLink
                                         key={'buttonValidateItems'}
@@ -407,7 +401,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                             />
                         )}
                     />
-                }
+                )}
             />
             <InvalidateBulkModal
                 items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {}))}

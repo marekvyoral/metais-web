@@ -4,6 +4,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import {
     CiListFilterContainerUi,
     getGetRoleParticipantBulkQueryKey,
+    getReadCiDerivedRelTypesCountQueryKey,
     getReadCiHistoryVersionsQueryKey,
     getReadCiList1QueryKey,
     getReadCiNeighboursQueryKey,
@@ -24,11 +25,12 @@ import {
     getGetOriginalCodelistHeaderQueryKey,
     getGetTemporalCodelistHeaderWithLockQueryKey,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { getGetMetaQueryKey } from '@isdd/metais-common/api/generated/dms-swagger'
 import { getFind2111QueryKey, getFindByUuid3QueryKey, getFindRelatedIdentitiesAndCountQueryKey } from '@isdd/metais-common/api/generated/iam-swagger'
 import { getGetTraineesQueryKey, getGetTrainingsForUserQueryKey } from '@isdd/metais-common/api/generated/trainings-swagger'
 import { getGetAttributeProfileQueryKey } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
+import { CI_ITEM_QUERY_KEY, TASKS_QUERY_KEY } from '@isdd/metais-common/constants'
+import { getGetVoteDetailQueryKey } from '@isdd/metais-common/api/generated/standards-swagger'
+import { getGetMeta1QueryKey } from '@isdd/metais-common/api/generated/dms-swagger'
 
 const isCiListFilterContainerUi = (obj: unknown): obj is CiListFilterContainerUi => {
     return !!obj && typeof obj === 'object'
@@ -73,7 +75,7 @@ export const useInvalidateDmsFileCache = () => {
     const queryClient = useQueryClient()
 
     const invalidate = (ciItemUuid: string) => {
-        const QK = getGetMetaQueryKey(ciItemUuid)
+        const QK = getGetMeta1QueryKey(ciItemUuid)
         queryClient.invalidateQueries(QK)
     }
 
@@ -103,11 +105,22 @@ export const useInvalidateCiHistoryListCache = () => {
     return { invalidate }
 }
 
-export const useInvalidateCiNeighboursWithAllRelsCache = (ciItemUuid: string) => {
+export const useInvalidateCiNeighboursWithAllRelsCacheByUuid = (ciItemUuid: string) => {
     const queryClient = useQueryClient()
     const listQueryKey = getReadCiNeighboursWithAllRelsQueryKey(ciItemUuid)
 
     const invalidate = () => {
+        queryClient.invalidateQueries([listQueryKey[0]])
+    }
+
+    return { invalidate }
+}
+
+export const useInvalidateCiNeighboursWithAllRelsCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (ciItemUuid: string) => {
+        const listQueryKey = getReadCiNeighboursWithAllRelsQueryKey(ciItemUuid)
         queryClient.invalidateQueries([listQueryKey[0]])
     }
 
@@ -230,12 +243,42 @@ export const useInvalidateRelationsCountCache = () => {
     return { invalidate }
 }
 
+export const useInvalidateDerivedRelationsCountCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (uuid: string) => {
+        const ciDerivedNeighboursCountQueryKey = getReadCiDerivedRelTypesCountQueryKey(uuid)
+        queryClient.invalidateQueries(ciDerivedNeighboursCountQueryKey)
+    }
+    return { invalidate }
+}
+
 export const useInvalidateCiReadCache = () => {
     const queryClient = useQueryClient()
 
     const invalidate = (uuid: string) => {
         const ciQueryKey = getReadConfigurationItemQueryKey(uuid)
         queryClient.invalidateQueries(ciQueryKey)
+    }
+    return { invalidate }
+}
+
+export const useInvalidateVoteCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (id: number) => {
+        const ciQueryKey = getGetVoteDetailQueryKey(id)
+        queryClient.invalidateQueries(ciQueryKey)
+    }
+    return { invalidate }
+}
+
+export const useInvalidateTasksCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = () => {
+        const tasksQueryKey = [TASKS_QUERY_KEY]
+        queryClient.invalidateQueries(tasksQueryKey)
     }
     return { invalidate }
 }

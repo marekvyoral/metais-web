@@ -273,9 +273,7 @@ export const getColumnsForIntegrationTables = (columnConfig: IntegrationColumnsC
 
     return columnConfig.map((column) => ({
         accessorKey: column.id,
-        header: () => {
-            return <span>{t(`integrationLinks.tabsColumns.${column.id}`)}</span>
-        },
+        header: () => t(`integrationLinks.tabsColumns.${column.id}`),
         id: column.id,
         size: 200,
         cell: (ctx: CellContext<ApiIntegrationSubjectsViewItem & ApiIntegrationCoverageOfIsvsViewItem, unknown>) => {

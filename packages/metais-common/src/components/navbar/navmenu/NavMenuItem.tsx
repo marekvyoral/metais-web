@@ -1,7 +1,9 @@
 import classnames from 'classnames'
-import React, { SetStateAction, useEffect, useRef, useState } from 'react'
+import React, { SetStateAction, useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useMatch } from 'react-router-dom'
+
+import { NavMenuSubItem } from './NavMenuSubItem'
 
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 interface INavMenuItem {
@@ -24,10 +26,12 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
     const { t } = useTranslation()
     const [expanded, setExpanded] = useState(false)
     const ref = useRef<HTMLLIElement>(null)
+    const itemsWrapperId = useId()
 
     const showMenu = `${t('navMenu.show')} ${title} menu`
     const hideMenu = `${t('navMenu.hide')} ${title} menu`
     const location = useLocation()
+    const isUrlMatched = !!useMatch(path)
     const handleShouldCloseOnClick = () => {
         setExpanded(!expanded)
         if (path === activeTab && activeTab !== undefined) {
@@ -77,10 +81,11 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
                 className={classnames('govuk-link idsk-header-web__nav-list-item-link', styles.navListItemOvverride)}
                 state={{ from: location }}
                 to={path}
-                aria-label={expanded ? hideMenu : showMenu}
-                aria-expanded={expanded}
-                data-text-for-hide={hideMenu}
-                data-text-for-show={showMenu}
+                aria-label={list.length ? (expanded ? hideMenu : showMenu) : undefined}
+                aria-expanded={list.length ? expanded : undefined}
+                aria-controls={list.length ? itemsWrapperId : undefined}
+                aria-haspopup={list.length ? 'menu' : undefined}
+                aria-current={isUrlMatched ? 'page' : undefined}
             >
                 {title}
                 {list.length >= 1 && (
@@ -105,18 +110,9 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
             <div className="idsk-header-web__nav-submenu">
                 <div className="govuk-width-container">
                     <div className="govuk-grid-row">
-                        <ul className="idsk-header-web__nav-submenu-list" aria-label={t('navMenu.innerNav') ?? ''}>
+                        <ul id={itemsWrapperId} className="idsk-header-web__nav-submenu-list" aria-label={t('navMenu.innerNav') ?? ''}>
                             {list.map((item) => (
-                                <li key={item.title} className="idsk-header-web__nav-submenu-list-item">
-                                    <Link
-                                        className="govuk-link idsk-header-web__nav-submenu-list-item-link"
-                                        state={{ from: location }}
-                                        to={item.path}
-                                        title={item.title}
-                                    >
-                                        <span>{item.title}</span>
-                                    </Link>
-                                </li>
+                                <NavMenuSubItem key={item.title} {...item} />
                             ))}
                         </ul>
                     </div>

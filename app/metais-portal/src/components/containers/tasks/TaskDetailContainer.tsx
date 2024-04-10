@@ -4,6 +4,10 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useInvalidateTasksCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { getGidsForUserOrgRoles, getGidsForUserRoles } from '@/componentHelpers/tasks/tasks.helpers'
 import { TaskDetailView } from '@/components/views/tasks/TaskDetailView'
@@ -61,9 +65,13 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
     const [selectedGroup, setSelectedGroup] = useState<RoleOrgIdentity | undefined>(undefined)
 
     const { isLoading, isError, data: task, refetch: refetchTask } = useGetTaskById({ id: parseInt(taskId ?? '') ?? '' })
-
+    const { setIsActionSuccess } = useActionSuccess()
+    const navigate = useNavigate()
+    const location = useLocation()
     const closeTaskCall = useCloseTask()
     const reassignTaskCall = useReassignTask()
+
+    const invalidateTasks = useInvalidateTasksCache()
 
     const closeTask = () => {
         closeTaskCall.mutate(
@@ -76,6 +84,9 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
             },
             {
                 onSuccess: async () => {
+                    invalidateTasks.invalidate()
+                    setIsActionSuccess({ value: true, path: `${RouterRoutes.TASKS}`, additionalInfo: { type: 'edit' } })
+                    navigate(`${RouterRoutes.TASKS}`, { state: { from: location } })
                     await refetchTask()
                 },
             },
@@ -95,6 +106,17 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
             },
             {
                 onSuccess: async () => {
+                    setIsActionSuccess({
+                        value: true,
+                        path: `${RouterRoutes.TASKS}/${taskId}`,
+                        additionalInfo: {
+                            type: assignToUser ? 'toUser' : 'toGroup',
+                            userName:
+                                (selectedLogin ? selectedLogin?.firstName + ' ' + selectedLogin?.lastName : user?.firstName + ' ' + user?.lastName) ??
+                                '',
+                            groupName: selectedGroup?.orgName ?? '',
+                        },
+                    })
                     await refetchTask()
                 },
             },

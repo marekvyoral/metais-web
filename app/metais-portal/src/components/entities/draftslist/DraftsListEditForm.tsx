@@ -1,14 +1,16 @@
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
-import { ApiLink, ApiStandardRequest, useUpdateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
-import { Button, LoadingIndicator } from '@isdd/idsk-ui-kit/index'
+import { ApiLink, ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
+import { Button, ErrorBlock, LoadingIndicator } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { DMS_DOWNLOAD_BASE, FileImportStepEnum, MutationFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback } from '@isdd/metais-common/index'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { v4 as uuidV4 } from 'uuid'
-import { useUppy } from '@isdd/metais-common/hooks/useUppy'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
+import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 import { DraftsListAttachmentsZone } from '@/components/entities/draftslist/DraftsListAttachmentsZone'
 import styles from '@/components/entities/draftslist/draftsListCreateForm.module.scss'
@@ -16,11 +18,28 @@ import { generateSchemaForEditDraft } from '@/components/entities/draftslist/sch
 
 interface IDraftsListEditForm {
     defaultData?: ApiStandardRequest
+    fileUploadRef: React.RefObject<IFileUploadRef>
+    handleUploadSuccess: (data: FileUploadData[]) => void
+    onSubmit: (values: FieldValues) => void
+    isError: boolean
+    isLoading: boolean
+    onFileUploadFailed?: () => void
 }
 
-export const DraftsListEditForm = ({ defaultData }: IDraftsListEditForm) => {
+export const DraftsListEditForm = ({
+    defaultData,
+    fileUploadRef,
+    handleUploadSuccess,
+    onSubmit,
+    isError,
+    isLoading,
+    onFileUploadFailed,
+}: IDraftsListEditForm) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const {
+        state: { user },
+    } = useAuth()
 
     const { register, setValue, watch, handleSubmit, formState } = useForm({
         defaultValues: {
@@ -28,7 +47,7 @@ export const DraftsListEditForm = ({ defaultData }: IDraftsListEditForm) => {
         },
         resolver: yupResolver(generateSchemaForEditDraft(t)),
     })
-    const { mutateAsync: updateDraft, isSuccess, isError, isLoading } = useUpdateStandardRequest()
+
     const links = watch('links') ?? []
 
     const addNewLink = () => {
@@ -44,76 +63,47 @@ export const DraftsListEditForm = ({ defaultData }: IDraftsListEditForm) => {
         setValue('links', newAttachments)
     }
 
-    const onSubmit = useCallback(
-        async (values: FieldValues) => {
-            await updateDraft({
-                standardRequestId: defaultData?.id ?? 0,
-                data: {
-                    ...values,
-                },
-            })
-        },
-        [defaultData, updateDraft],
-    )
-
     const errors = formState?.errors
-    const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
 
-    // eslint-disable-next-line no-warning-comments
-    const { uppy, currentFiles, handleRemoveFile, uploadFilesStatus, handleUpload, generalErrorMessages, removeGeneralErrorMessages } = useUppy({
-        multiple: true,
-        fileImportStep,
-        endpointUrl: `${DMS_DOWNLOAD_BASE}`,
-        setFileImportStep,
-        setCustomFileMeta: () => {
-            const id = uuidV4()
-            return {
-                'x-content-uuid': id,
-                refAttributes: new Blob(
-                    [
-                        JSON.stringify({
-                            refType: 'STANDARD',
-                        }),
-                    ],
-                    { type: 'application/json' },
-                ),
-            }
-        },
-    })
+    const callSubmit = (data: FieldValues) => {
+        onSubmit(data)
+    }
 
-    const handleSubmitForm = useCallback(
-        async (values: FieldValues) => {
-            if (currentFiles?.length > 0) await handleUpload()
-            const uploadedFiles =
-                currentFiles?.map((file) => ({
-                    attachmentId: file?.meta['x-content-uuid'],
-                    attachmentName: file?.name,
-                    attachmentSize: file?.size,
-                    attachmentType: file?.extension,
-                    attachmentDescription: '-',
-                })) ?? []
-            onSubmit({
-                ...values,
-                attachments: uploadedFiles,
-            })
-        },
-        [handleUpload, onSubmit, currentFiles],
-    )
+    const handleSubmitForm = () => {
+        handleSubmit((data) => {
+            callSubmit(data)
+        })()
+    }
 
     return (
         <>
             {isLoading && <LoadingIndicator fullscreen />}
-            <MutationFeedback error={isError} success={isSuccess} />
+            {isError && <MutationFeedback error={isError} success={false} />}
 
-            <form onSubmit={handleSubmit(handleSubmitForm)}>
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>
                 <DraftsListAttachmentsZone
                     links={links as ApiLink[]}
                     register={register}
                     addNewLink={addNewLink}
                     onDelete={removeLink}
                     errors={errors}
-                    uppyHelpers={{ uppy, uploadFilesStatus, handleRemoveFile, currentFiles, generalErrorMessages, removeGeneralErrorMessages }}
                 />
+                {user && (
+                    <FileUpload
+                        ref={fileUploadRef}
+                        allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
+                        multiple
+                        isUsingUuidInFilePath
+                        refType={RefAttributesRefType.STANDARD_REQUEST}
+                        onUploadSuccess={handleUploadSuccess}
+                        onFileUploadFailed={onFileUploadFailed}
+                        refId={defaultData?.id?.toString()}
+                        textSize="L"
+                    />
+                )}
+                <Spacer vertical />
                 <div className={styles.buttonGroup}>
                     <Button
                         label={t('DraftsList.createForm.cancel')}

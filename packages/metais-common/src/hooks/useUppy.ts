@@ -12,6 +12,15 @@ import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useCountdown } from '@isdd/metais-common/hooks/useCountdown'
 import { cleanFileName } from '@isdd/metais-common/utils/utils'
+import {
+    CiRefAttributes,
+    DocumentTemplateRefAttributes,
+    MeetingRequestRefAttributes,
+    RefAttributesRefType,
+    StandardRequestRefAttributes,
+    UnknownRefAttributes,
+    VoteRefAttributes,
+} from '@isdd/metais-common/api/generated/dms-swagger'
 
 interface iUseUppy {
     allowedFileTypes?: string[] // if undefined all file types are allowed
@@ -23,6 +32,8 @@ interface iUseUppy {
     setCustomFileMeta?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => { [metaKey: string]: unknown }
     setFileUuidAsync?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => Promise<{ uuid: string }>
     fileUploadError?: (responseError: { responseText: string; response: unknown }) => string
+    refId?: string
+    refType?: RefAttributesRefType
 }
 
 export type UploadFileResponse = {
@@ -54,6 +65,8 @@ export const useUppy = ({
     setFileUuidAsync,
     fileImportStep,
     fileUploadError,
+    refId,
+    refType,
 }: iUseUppy) => {
     const { i18n, t } = useTranslation()
     const uppy = useMemo(() => {
@@ -100,6 +113,87 @@ export const useUppy = ({
         return
     }
 
+    const getRefObject = useCallback(
+        (
+            type: RefAttributesRefType | undefined,
+        ):
+            | MeetingRequestRefAttributes
+            | CiRefAttributes
+            | VoteRefAttributes
+            | DocumentTemplateRefAttributes
+            | StandardRequestRefAttributes
+            | UnknownRefAttributes => {
+            switch (type) {
+                case RefAttributesRefType.MEETING_REQUEST: {
+                    const refObject: MeetingRequestRefAttributes = {
+                        refType: type,
+                        refMeetingRequestId: Number(refId),
+                    }
+                    return refObject
+                }
+                case RefAttributesRefType.CI: {
+                    const refObject: CiRefAttributes = {
+                        refType: type,
+                        refCiId: refId,
+                    }
+                    return refObject
+                }
+                case RefAttributesRefType.VOTE: {
+                    const refObject: VoteRefAttributes = {
+                        refType: type,
+                        refVoteId: Number(refId),
+                    }
+                    return refObject
+                }
+                case RefAttributesRefType.DOCUMENT_TEMPLATE: {
+                    const refObject: DocumentTemplateRefAttributes = {
+                        refType: type,
+                        refDocumentTemplateId: Number(refId),
+                    }
+                    return refObject
+                }
+                case RefAttributesRefType.STANDARD_REQUEST: {
+                    const refObject: StandardRequestRefAttributes = {
+                        refType: type,
+                        refStandardRequestId: Number(refId),
+                    }
+                    return refObject
+                }
+                default: {
+                    const refObject: UnknownRefAttributes = {
+                        refType: type,
+                    }
+                    return refObject
+                }
+            }
+        },
+        [refId],
+    )
+
+    useEffect(() => {
+        const getBlob = async () => {
+            const prevRefAttrs = await new Response(uppy.getState().meta['refAttributes']).text()
+            if (prevRefAttrs && prevRefAttrs.length > 0) {
+                uppy.setMeta({
+                    refAttributes: new Blob(
+                        [
+                            JSON.stringify({
+                                ...JSON.parse(prevRefAttrs),
+                                ...getRefObject(refType),
+                            }),
+                        ],
+                        { type: 'application/json' },
+                    ),
+                })
+            } else {
+                uppy.setMeta({
+                    refAttributes: new Blob([JSON.stringify(getRefObject(refType))], { type: 'application/json' }),
+                })
+            }
+        }
+        getBlob()
+    }, [getRefObject, refId, refType, uppy])
+
     useCountdown({
         shouldCount: generalErrorMessages.length > 0,
         onCountDownEnd: removeGeneralErrorMessages,
@@ -121,10 +215,17 @@ export const useUppy = ({
             }
             setUploadFilesStatus((current) => [
                 ...current.filter((c) => c.fileId !== file?.id),
-                { fileId: file?.id ?? '', fileName: file?.name, uploadError: errorString, isUploaded: isUploadedSuccessfully, response },
+                {
+                    fileId: file?.id ?? '',
+                    fileName: file?.name,
+                    uploadError: errorString && t('fileImport.uploadFailed'),
+                    isUploaded: isUploadedSuccessfully,
+                    response,
+                },
             ])
             return
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [containsFileId],
     )
 
@@ -194,6 +295,7 @@ export const useUppy = ({
             if (setCustomFileMeta) {
                 uppy.setFileMeta(file?.id, setCustomFileMeta?.(file))
             }
+
             if (setFileUuidAsync) {
                 const fileUuid = await setFileUuidAsync?.(file)
                 uppy.setFileState(file.id, {
@@ -242,7 +344,6 @@ export const useUppy = ({
             }
             result.successful.forEach((item) => updateUploadFilesStatus(item, true, undefined, item.response))
             result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error, item.response))
-
             return result
         } catch (error) {
             addGeneralErrorMessage(t('fileImport.uploadFailed'))

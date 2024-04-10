@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { CheckBox, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { CheckBox, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ModalButtons, MutationFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -20,8 +20,6 @@ export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, clos
     const {
         register,
         handleSubmit,
-        setValue,
-        clearErrors,
         formState: { errors },
         setError,
     } = useForm({ resolver: yupResolver(codeListCreateSchema(t)) })
@@ -35,28 +33,19 @@ export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, clos
     }, [errorType, setError, t])
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className={styles.center}>
                 <TextHeading size="L">{t('codelists.createNewCodelist')}</TextHeading>
             </div>
-            <MutationFeedback success={false} error={mutationError} onMessageClose={() => setMutationError('')} />
-            <Input error={errors[CodelistEnum.CODE]?.message} label={t('codelists.code')} {...register(CodelistEnum.CODE)} />
-            <Input error={errors[CodelistEnum.NAME]?.message} label={t('codelists.name')} {...register(CodelistEnum.NAME)} />
+            <MutationFeedback error={!!mutationError} errorMessage={mutationError} onMessageClose={() => setMutationError('')} />
+            <Input error={errors[CodelistEnum.CODE]?.message} label={t('codelists.code')} {...register(CodelistEnum.CODE)} required />
+            <Input error={errors[CodelistEnum.NAME]?.message} label={t('codelists.name')} {...register(CodelistEnum.NAME)} required />
             <TextArea
                 error={errors[CodelistEnum.DESCRIPTION]?.message}
                 rows={3}
                 label={t('codelists.description')}
                 {...register(CodelistEnum.DESCRIPTION)}
-            />
-            <SimpleSelect
-                label={t('codelists.category')}
-                name={CodelistEnum.CATEGORY}
-                options={[
-                    { label: '-', value: '' },
-                    { label: 'LICENSE', value: 'LICENSE' },
-                ]}
-                setValue={setValue}
-                clearErrors={clearErrors}
+                required
             />
             <div className={styles.marginBottom}>
                 <CheckBox label={t('codelists.valid')} id="valid" {...register(CodelistEnum.VALIDITY)} />

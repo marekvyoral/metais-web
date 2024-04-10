@@ -4,6 +4,7 @@ import React, { useEffect, useMemo } from 'react'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { MeetingFilter, MeetingsFilterData, MeetingsListView, SortType } from '@/components/views/standardization/meetings/MeetingsListView'
 import { MeetingsListPermissionsWrapper } from '@/components/permissions/MeetingsListPermissionsWrapper'
@@ -26,6 +27,7 @@ export const MeetingsListContainer: React.FC = () => {
     }
 
     const { filter, handleFilterChange } = useFilterParams<MeetingsFilterData>(defaultFilterValues)
+    const { isActionSuccess } = useActionSuccess()
 
     const meetingsRequestParams = useMemo((): GetMeetingRequestsParams => {
         const meetingParamValues: GetMeetingRequestsParams = {
@@ -48,9 +50,9 @@ export const MeetingsListContainer: React.FC = () => {
     const { wrapperRef: scrollRef, scrollToMutationFeedback: scrollToRef } = useScroll()
 
     useEffect(() => {
-        if (isError) scrollToRef()
+        if (isError || isActionSuccess.value) scrollToRef()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isError])
+    }, [isError, isActionSuccess])
 
     return (
         <MeetingsListPermissionsWrapper>

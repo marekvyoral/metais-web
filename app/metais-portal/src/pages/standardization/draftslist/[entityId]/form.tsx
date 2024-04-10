@@ -38,7 +38,7 @@ const DraftDetailView: FC<DraftDetailViewProps> = ({ entityId, isLoading, isErro
     const { t } = useTranslation()
     const { requestData } = data
     const { isLoading: isAbilityLoading, isError: isAbilityError } = useAbilityContextWithFeedback()
-    document.title = formatTitleString(requestData?.srName ?? '')
+    document.title = formatTitleString(t('draftsList.detail', { name: requestData?.name ?? '' }))
 
     return (
         <>
@@ -49,7 +49,7 @@ const DraftDetailView: FC<DraftDetailViewProps> = ({ entityId, isLoading, isErro
                     { label: t('breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
                     { label: t('breadcrumbs.draftsList'), href: NavigationSubRoutes.ZOZNAM_NAVRHOV },
                     {
-                        label: requestData?.srName ?? t('breadcrumbs.noName'),
+                        label: requestData?.name ?? t('breadcrumbs.noName'),
                         href: `${NavigationSubRoutes.ZOZNAM_NAVRHOV}/${entityId}`,
                     },
                 ]}
@@ -61,7 +61,7 @@ const DraftDetailView: FC<DraftDetailViewProps> = ({ entityId, isLoading, isErro
                             {!isLoading && (
                                 <DraftsListIdHeader
                                     entityId={entityId ?? ''}
-                                    entityItemName={requestData?.srName ?? ''}
+                                    entityItemName={requestData?.name ?? ''}
                                     requestChannel={requestData?.requestChannel ?? ''}
                                 />
                             )}

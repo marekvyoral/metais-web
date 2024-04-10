@@ -1,24 +1,35 @@
-import { QueryFeedback } from '@isdd/metais-common/index'
-import React, { useEffect, useMemo } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { FindAllWithIdentities1Params, useFindAllWithIdentities1 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useTranslation } from 'react-i18next'
-import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { BreadCrumbs, BreadCrumbsItemProps, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
+import { FindAllWithIdentities1Params, useFindAllWithIdentities1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import {
+    ApiAttachment,
     ApiVote,
     useCreateVote,
     useGetAllStandardRequests,
     useGetVoteDetail,
     useUpdateVote,
 } from '@isdd/metais-common/api/generated/standards-swagger'
+import { FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useInvalidateVoteCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { getErrorTranslateKey } from '@isdd/metais-common/utils/errorMapper'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { v4 as uuidV4 } from 'uuid'
 
-import { IVoteEditView } from '@/components/views/standardization/votes/VoteComposeForm/VoteComposeFormView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { getPageDocumentTitle } from '@/components/views/standardization/votes/VoteComposeForm/functions/voteEditFunc'
+import { IVoteEditView } from '@/components/views/standardization/votes/VoteComposeForm/VoteComposeFormView'
+import { IExistingFilesHandlerRef } from '@/components/views/standardization/votes/VoteComposeForm/components/ExistingFilesHandler/ExistingFilesHandler'
+import {
+    getPageDocumentTitle,
+    mapProcessedExistingFilesToApiAttachment,
+    mapUploadedFilesToApiAttachment,
+} from '@/components/views/standardization/votes/VoteComposeForm/functions/voteEditFunc'
 
 interface IVoteEditContainer {
     View: React.FC<IVoteEditView>
@@ -34,20 +45,23 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
     const { state: user } = useAuth()
     const isUserLogged = !!user
 
+    const fileUploadRef = useRef<IFileUploadRef>(null)
+    const attachmentsDataRef = useRef<ApiAttachment[]>([])
+    const existingFilesProcessRef = useRef<IExistingFilesHandlerRef>(null)
+
     const { voteId: voteIdParam } = useParams()
-    const voteId = isNewVote ? 0 : Number(voteIdParam)
+
+    const [voteId, setVoteId] = useState(isNewVote ? 0 : Number(voteIdParam))
+    const [creatingFilesLoading, setCreatingFilesLoading] = useState(false)
+    const [deletingFilesLoading, setDeletingFilesLoading] = useState(false)
+
+    const invalidateVoteDetailCache = useInvalidateVoteCache()
 
     const { data: voteData, isLoading: voteDataLoading, isError: voteDataError } = useGetVoteDetail(voteId, { query: { enabled: !isNewVote } })
     const { data: allStandardRequestsData, isLoading: allStandardRequestsLoading, isError: allStandardRequestsError } = useGetAllStandardRequests()
     const groupsWithIdentitiesRequestParams: FindAllWithIdentities1Params = {
         expression: '',
     }
-    const allStandardRequestsDataError = useMemo(() => {
-        if (allStandardRequestsData?.standardRequestsCount && voteData?.standardRequestId) {
-            return allStandardRequestsData?.standardRequestsCount < voteData?.standardRequestId ?? 0
-        }
-        return false
-    }, [allStandardRequestsData?.standardRequestsCount, voteData?.standardRequestId])
 
     const {
         data: groupWithIdentitiesData,
@@ -55,57 +69,182 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
         isError: groupWithIdentitiesError,
     } = useFindAllWithIdentities1(groupsWithIdentitiesRequestParams)
 
+    const handleUploadData = useCallback(() => {
+        fileUploadRef.current?.startUploading()
+    }, [])
+
+    const handleDeleteFiles = () => {
+        existingFilesProcessRef?.current?.startFilesProcessing()
+    }
+
     const {
-        isSuccess: isCreateVoteSuccess,
         isLoading: isCreateVoteLoading,
         isError: isCreateVoteError,
+        error: createVoteError,
         mutateAsync: createVoteAsyncMutation,
-    } = useCreateVote()
+    } = useCreateVote({
+        mutation: {
+            onSuccess: (data: ApiVote) => {
+                setVoteId(data.id ?? 0)
+                if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                    fileUploadRef.current?.setCustomMeta({
+                        'x-content-uuid': uuidV4(),
+                        refAttributes: new Blob(
+                            [
+                                JSON.stringify({
+                                    refType: RefAttributesRefType.VOTE,
+                                    refVoteId: data.id,
+                                }),
+                            ],
+                            { type: 'application/json' },
+                        ),
+                    })
+                    setCreatingFilesLoading(true)
+                    handleUploadData()
+                }
+                setIsActionSuccess({
+                    value: true,
+                    path: `${NavigationSubRoutes.ZOZNAM_HLASOV}/${data.id}`,
+                    additionalInfo: { type: isNewVote ? 'create' : 'edit' },
+                })
+                setIsActionSuccess({
+                    value: true,
+                    path: NavigationSubRoutes.ZOZNAM_HLASOV,
+                    additionalInfo: { type: 'create' },
+                })
+                navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV}/${data.id}`, { state: { from: location } })
+            },
+        },
+    })
+
     const createVote = (newVoteData: ApiVote) => {
+        const files = fileUploadRef.current?.getFilesToUpload()
+        const fileIds = Object.values(fileUploadRef.current?.fileUuidsMapping().current ?? {})
+        setVoteId(Math.random())
         createVoteAsyncMutation({
-            data: newVoteData,
+            data: {
+                ...newVoteData,
+                attachments: mapUploadedFilesToApiAttachment(
+                    files?.map((file, index) => {
+                        return { ...file, fileId: fileIds[index] }
+                    }) ?? [],
+                ),
+            },
         })
     }
 
     const {
-        isSuccess: isUpdateSuccess,
         isLoading: isUpdateVoteLoading,
         isError: isUpdateVoteError,
+        error: updateVoteError,
         mutateAsync: updateVoteAsyncMutation,
-    } = useUpdateVote()
+    } = useUpdateVote({
+        mutation: {
+            onSuccess: (data) => {
+                setVoteId(data.id ?? 0)
+                invalidateVoteDetailCache.invalidate(voteId)
+                if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+                    fileUploadRef.current?.setCustomMeta({
+                        'x-content-uuid': uuidV4(),
+                        refAttributes: new Blob(
+                            [
+                                JSON.stringify({
+                                    refType: RefAttributesRefType.VOTE,
+                                    refVoteId: data.id,
+                                }),
+                            ],
+                            { type: 'application/json' },
+                        ),
+                    })
+                    setCreatingFilesLoading(true)
+                    handleUploadData()
+                } else {
+                    setIsActionSuccess({
+                        value: true,
+                        path: `${NavigationSubRoutes.ZOZNAM_HLASOV}/${voteId}`,
+                        additionalInfo: { type: isNewVote ? 'create' : 'edit' },
+                    })
+                    setIsActionSuccess({
+                        value: true,
+                        path: NavigationSubRoutes.ZOZNAM_HLASOV,
+                        additionalInfo: { type: isNewVote ? 'create' : 'edit' },
+                    })
+                    navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV}/${data?.id}`, { state: { from: location } })
+                }
+            },
+        },
+    })
     const updateVote = (updatedVoteData: ApiVote) => {
+        const files = fileUploadRef.current?.getFilesToUpload()
+        const fileIds = Object.values(fileUploadRef.current?.fileUuidsMapping().current ?? {})
+        const newFiles = mapUploadedFilesToApiAttachment(
+            files?.map((file, index) => {
+                return { ...file, fileId: fileIds[index] }
+            }) ?? [],
+        )
+        const existingFiles = mapProcessedExistingFilesToApiAttachment(existingFilesProcessRef.current?.getRemainingFileList() ?? [])
         updateVoteAsyncMutation({
             voteId,
-            data: updatedVoteData,
+            data: { ...updatedVoteData, attachments: newFiles.concat(existingFiles) },
         })
     }
 
-    const isLoading = (voteDataLoading && !isNewVote) || allStandardRequestsLoading || isCreateVoteLoading || isUpdateVoteLoading
-    const isError =
-        voteDataError ||
-        allStandardRequestsError ||
-        groupWithIdentitiesError ||
-        isCreateVoteError ||
-        isUpdateVoteError ||
-        allStandardRequestsDataError
+    const isLoading =
+        (voteDataLoading && !isNewVote) ||
+        allStandardRequestsLoading ||
+        isCreateVoteLoading ||
+        isUpdateVoteLoading ||
+        creatingFilesLoading ||
+        deletingFilesLoading
+
+    const isError = voteDataError || allStandardRequestsError || groupWithIdentitiesError
+
+    const isMutationError = isCreateVoteError || isUpdateVoteError
+
     const getLoaderLabel = (): string | undefined => {
         return isCreateVoteLoading || isUpdateVoteLoading ? t('votes.type.callingVote') : undefined
     }
 
-    useEffect(() => {
-        if (isCreateVoteSuccess || isUpdateSuccess) {
+    const handleCancel = () => {
+        navigate(-1)
+    }
+
+    const handleDeleteSuccess = () => {
+        setDeletingFilesLoading(false)
+        setIsActionSuccess({
+            value: true,
+            path: `${NavigationSubRoutes.ZOZNAM_HLASOV}/${voteId}`,
+            additionalInfo: { type: isNewVote ? 'create' : 'edit' },
+        })
+        setIsActionSuccess({
+            value: true,
+            path: NavigationSubRoutes.ZOZNAM_HLASOV,
+            additionalInfo: { type: isNewVote ? 'create' : 'edit' },
+        })
+        navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV}/${voteId}`, { state: { from: location } })
+    }
+
+    const handleUploadSuccess = (data: FileUploadData[]) => {
+        setCreatingFilesLoading(false)
+        const attachmentsData = mapUploadedFilesToApiAttachment(data)
+        if (existingFilesProcessRef.current?.hasDataToProcess()) {
+            setDeletingFilesLoading(true)
+            attachmentsDataRef.current = attachmentsData
+            handleDeleteFiles()
+        } else {
+            setIsActionSuccess({
+                value: true,
+                path: `${NavigationSubRoutes.ZOZNAM_HLASOV}/${voteId}`,
+                additionalInfo: { type: isNewVote ? 'create' : 'edit' },
+            })
             setIsActionSuccess({
                 value: true,
                 path: NavigationSubRoutes.ZOZNAM_HLASOV,
-                additionalInfo: { type: isCreateVoteSuccess ? 'create' : 'edit' },
+                additionalInfo: { type: isNewVote ? 'create' : 'edit' },
             })
-            navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV}`, { state: { from: location } })
-        }
-    }, [isCreateVoteSuccess, location, navigate, setIsActionSuccess, isUpdateSuccess])
 
-    const handleCancel = () => {
-        setIsActionSuccess({ value: false, path: NavigationSubRoutes.ZOZNAM_HLASOV })
-        navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV}`, { state: { from: location } })
+            navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV}/${voteId}`, { state: { from: location } })
+        }
     }
 
     const getBreadCrumbLinks = (newVote: boolean) => {
@@ -136,6 +275,8 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
         }
     }, [isError, scrollToMutationFeedback])
 
+    const mutationErrorKey = getErrorTranslateKey(createVoteError || updateVoteError)
+
     return (
         <>
             {isUserLogged && (
@@ -143,6 +284,7 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
                     <BreadCrumbs links={getBreadCrumbLinks(!!isNewVote)} withWidthContainer />
                     <MainContentWrapper>
                         <div ref={queryFeedbackRef} />
+                        <MutationFeedback error={isMutationError} errorMessage={mutationErrorKey && t(mutationErrorKey)} />
                         <QueryFeedback
                             loading={isLoading}
                             error={isError}
@@ -160,6 +302,11 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
                                 isIdentifiersLoading={groupWithIIdentitiesLoading}
                                 isSubmitLoading={isCreateVoteLoading || isUpdateVoteLoading}
                                 isSubmitError={isCreateVoteError || isUpdateVoteError}
+                                existingFilesProcessRef={existingFilesProcessRef}
+                                fileUploadRef={fileUploadRef}
+                                handleDeleteSuccess={handleDeleteSuccess}
+                                handleUploadSuccess={handleUploadSuccess}
+                                voteId={voteId}
                             />
                         </QueryFeedback>
                     </MainContentWrapper>

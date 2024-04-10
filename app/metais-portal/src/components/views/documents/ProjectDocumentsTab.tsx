@@ -17,6 +17,7 @@ export const ProjectDocumentsTab: React.FC<IView> = ({
     refetch,
     allDocuments,
     projectData,
+    templatesMetadata,
 }) => {
     const { t } = useTranslation()
     const [pageSize, setPageSize] = useState(BASE_PAGE_SIZE)
@@ -33,6 +34,7 @@ export const ProjectDocumentsTab: React.FC<IView> = ({
                     <Fragment key={index}>
                         <TextHeading size="M">{section.name}</TextHeading>
                         <ProjectDocumentsTable
+                            templatesMetadata={templatesMetadata}
                             projectData={projectData}
                             addButtonSectionName={sectionShowAddBtn}
                             docs={section.docs}
@@ -41,6 +43,7 @@ export const ProjectDocumentsTab: React.FC<IView> = ({
                             isError={isError}
                             isLoading={isLoading}
                             refetch={refetch}
+                            hiddenColumnsNames={['state']}
                         />
                     </Fragment>
                 )
@@ -48,6 +51,7 @@ export const ProjectDocumentsTab: React.FC<IView> = ({
             <TextHeading size="M">{t('documentsTab.allDocuments')}</TextHeading>
 
             <ProjectDocumentsTable
+                hiddenColumnsNames={['state', 'template']}
                 totalLength={allDocuments?.length}
                 pageSize={pageSize}
                 setPageSize={setPageSize}

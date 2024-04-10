@@ -64,7 +64,7 @@ export const OlaContractRevalidateModal: React.FC<IOlaContractRevalidateModal> =
                 error={isProcessedError || isRecycleError || isRecycleRelsError}
                 withChildren
             >
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <TextHeading size="L">{t('olaContracts.revalidateModal.heading', { name })}</TextHeading>
                     <TextWarning>{t('olaContracts.revalidateModal.warning')}</TextWarning>
                     <CheckBox {...register('revalidateRels')} id="revalidateRels" label={t('olaContracts.revalidateModal.revalidateRels')} />

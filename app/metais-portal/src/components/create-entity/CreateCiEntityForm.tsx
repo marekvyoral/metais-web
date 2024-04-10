@@ -4,13 +4,13 @@ import { Gen_Profil } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUiAttributes, HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
-import { CiCode, CiType, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CiCode, CiType, RelationshipCode, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
-import { FieldValues } from 'react-hook-form'
+import { FieldValues, FieldErrors } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import { metaisEmail } from '@isdd/metais-common/constants'
@@ -41,6 +41,8 @@ interface ICreateCiEntityForm {
     withRelation?: boolean
     selectedRole?: GidRoleData | null
     selectedOrg?: HierarchyRightsUi | null
+    generatedRelCode?: RelationshipCode
+    rolesForPO: GidRoleData[]
 }
 
 export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
@@ -58,9 +60,12 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     withRelation,
     selectedRole,
     selectedOrg,
+    generatedRelCode,
+    rolesForPO,
 }) => {
     const { t, i18n } = useTranslation()
     const [hasReset, setHasReset] = useState(false)
+    const [sections, setSections] = useState<ISection[]>([])
 
     const ability = useAbilityContext()
     const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
@@ -69,21 +74,19 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
 
     const location = useLocation()
     const attProfiles = useMemo(() => ciTypeData?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeData?.attributeProfiles])
-    const attProfileTechNames = attProfiles.map((profile) => profile.technicalName)
-    const mappedProfileTechNames: Record<string, boolean> = attProfileTechNames.reduce<Record<string, boolean>>((accumulator, attributeName) => {
-        if (attributeName != null) {
-            accumulator[attributeName] = false
-        }
-        return accumulator
-    }, {})
+    const attProfileTechNames = useMemo(() => attProfiles.map((profile) => profile.technicalName), [attProfiles])
+    const mappedProfileTechNames: Record<string, boolean> = useMemo(
+        () =>
+            attProfileTechNames.reduce<Record<string, boolean>>((accumulator, attributeName) => {
+                if (attributeName != null) {
+                    accumulator[attributeName] = false
+                }
+                return accumulator
+            }, {}),
+        [attProfileTechNames],
+    )
 
     const attributes = useMemo(() => getValidAndVisibleAttributes(ciTypeData), [ciTypeData])
-
-    const sectionErrorDefaultConfig: { [x: string]: boolean } = {
-        [Gen_Profil]: false,
-        ...mappedProfileTechNames,
-    }
-    const [sectionError, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
 
     const defaultValuesFromSchema = useMemo(() => {
         return attributes.reduce((acc, att) => {
@@ -99,67 +102,129 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
         [isUpdate, attributes, defaultItemAttributeValues, defaultValuesFromSchema],
     )
 
-    const sections: ISection[] =
-        [
-            {
-                title: t('ciInformationAccordion.basicInformation'),
-                error: sectionError[Gen_Profil] === true,
-                stepLabel: { label: '1', variant: 'circle' },
-                content: (
-                    <CreateEntitySection
-                        sectionId={Gen_Profil}
-                        attributes={ciTypeData?.attributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
-                        setSectionError={setSectionError}
-                        constraintsData={constraintsData}
-                        unitsData={unitsData}
-                        generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
-                        defaultItemAttributeValues={defaultItemAttributeValues}
-                        hasResetState={{ hasReset, setHasReset }}
-                        updateCiItemId={updateCiItemId}
-                        sectionRoles={ciTypeData?.roleList ?? []}
-                        selectedRole={selectedRole}
-                    />
-                ),
-            },
-            ...attProfiles.map((profile, index) => ({
-                title: (i18n.language === Languages.SLOVAK ? profile.description : profile.engDescription) ?? profile.name ?? '',
-                stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
-                last: relationSchema ? false : attProfiles.length === index + 1 ? true : false,
-                error: sectionError[profile.technicalName ?? ''] === true,
-                content: (
-                    <CreateEntitySection
-                        sectionId={profile.technicalName ?? ''}
-                        attributes={profile.attributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
-                        setSectionError={setSectionError}
-                        constraintsData={constraintsData}
-                        generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
-                        unitsData={unitsData}
-                        defaultItemAttributeValues={defaultItemAttributeValues}
-                        hasResetState={{ hasReset, setHasReset }}
-                        updateCiItemId={updateCiItemId}
-                        sectionRoles={profile.roleList ?? []}
-                        selectedRole={selectedRole}
-                    />
-                ),
-            })),
-        ] ?? []
+    const sectionErrorDefaultConfig: { [x: string]: boolean } = useMemo(
+        () => ({
+            [Gen_Profil]: false,
+            ...mappedProfileTechNames,
+        }),
+        [mappedProfileTechNames],
+    )
 
-    const newRelationSections = [
-        ...sections,
-        {
-            title: t('newRelation.relation'),
-            last: true,
-            stepLabel: { label: (attProfiles.length + 2).toString(), variant: 'circle' } as IStepLabel,
-            content: (
-                <RelationAttributeForm
-                    relationSchema={relationSchema}
-                    hasResetState={{ hasReset, setHasReset }}
-                    constraintsData={constraintsData}
-                    unitsData={unitsData}
-                />
-            ),
-        },
-    ]
+    const [sectionError, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
+
+    useEffect(() => {
+        const result: ISection[] =
+            [
+                {
+                    title: t('ciInformationAccordion.basicInformation'),
+                    stepLabel: { label: '1', variant: 'circle' },
+                    error: sectionError[Gen_Profil] === true,
+                    id: Gen_Profil,
+                    isOpen: sections.find((item) => item.id === Gen_Profil)?.isOpen,
+                    content: (
+                        <CreateEntitySection
+                            sectionId={Gen_Profil}
+                            attributes={ciTypeData?.attributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
+                            constraintsData={constraintsData}
+                            unitsData={unitsData}
+                            generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
+                            defaultItemAttributeValues={defaultItemAttributeValues}
+                            hasResetState={{ hasReset, setHasReset }}
+                            updateCiItemId={updateCiItemId}
+                            setSectionError={setSectionError}
+                            sectionRoles={ciTypeData?.roleList ?? []}
+                            selectedRole={selectedRole}
+                            rolesForPO={rolesForPO}
+                        />
+                    ),
+                },
+                ...attProfiles.map((profile, index) => {
+                    return {
+                        title: (i18n.language === Languages.SLOVAK ? profile.description : profile.engDescription) ?? profile.name ?? '',
+                        stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
+                        last: relationSchema ? false : attProfiles.length === index + 1 ? true : false,
+                        id: `${profile.technicalName}`,
+                        isOpen: sections.find((item) => item.id === `${profile.technicalName}`)?.isOpen,
+                        error: sectionError[profile.technicalName ?? ''] === true,
+                        content: (
+                            <CreateEntitySection
+                                sectionId={profile.technicalName ?? ''}
+                                attributes={profile.attributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
+                                constraintsData={constraintsData}
+                                generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
+                                unitsData={unitsData}
+                                setSectionError={setSectionError}
+                                defaultItemAttributeValues={defaultItemAttributeValues}
+                                hasResetState={{ hasReset, setHasReset }}
+                                updateCiItemId={updateCiItemId}
+                                sectionRoles={profile.roleList ?? []}
+                                selectedRole={selectedRole}
+                                rolesForPO={rolesForPO}
+                            />
+                        ),
+                    }
+                }),
+            ] ?? []
+
+        if (relationSchema) {
+            result.push({
+                title: t('newRelation.relation'),
+                last: true,
+                id: 'newRelation',
+                stepLabel: { label: (attProfiles.length + 2).toString(), variant: 'circle' } as IStepLabel,
+                content: (
+                    <RelationAttributeForm
+                        relationSchema={relationSchema}
+                        hasResetState={{ hasReset, setHasReset }}
+                        constraintsData={constraintsData}
+                        unitsData={unitsData}
+                        generatedRelCode={generatedRelCode}
+                    />
+                ),
+            })
+        }
+        setSections(result)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        attProfiles,
+        ciTypeData?.attributes,
+        ciTypeData?.roleList,
+        constraintsData,
+        defaultItemAttributeValues,
+        generatedEntityId,
+        hasReset,
+        i18n.language,
+        mappedProfileTechNames,
+        relationSchema,
+        sectionError,
+        selectedRole,
+        t,
+        unitsData,
+        updateCiItemId,
+    ])
+
+    const handleSectionOpen = (id: string) => {
+        setSections((prev) => prev.map((item) => (item.id === id ? { ...item, isOpen: !item.isOpen } : item)))
+    }
+
+    const openOrCloseAllSections = () => {
+        setSections((prev) => {
+            const allOpen = prev.every((item) => item.isOpen)
+            return prev.map((item) => ({ ...item, isOpen: !allOpen }))
+        })
+    }
+
+    const handleSectionBasedOnError = (errors: FieldErrors) => {
+        setSections((prev) =>
+            prev.map((section) => {
+                const isSectionError = Object.keys(errors).find((item) => item.includes(section.id ?? ''))
+                if (isSectionError) {
+                    return { ...section, isOpen: true, error: true }
+                }
+                return { ...section, error: false }
+            }),
+        )
+    }
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
     useEffect(() => {
@@ -190,11 +255,14 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 generatedEntityId={generatedEntityId}
                 ciTypeData={ciTypeData}
                 onSubmit={onSubmit}
+                onError={(errors) => handleSectionBasedOnError(errors)}
                 isProcessing={isProcessing}
                 selectedRole={selectedRole}
-                stepperList={relationSchema ? newRelationSections : sections}
+                stepperList={sections}
                 formDefaultValues={formDefaultValues}
                 isUpdate={isUpdate}
+                handleSectionOpen={handleSectionOpen}
+                openOrCloseAllSections={openOrCloseAllSections}
                 setHasReset={setHasReset}
                 isSubmitDisabled={isSubmitDisabled}
                 selectedOrg={selectedOrg}

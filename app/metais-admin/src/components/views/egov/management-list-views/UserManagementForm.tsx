@@ -14,9 +14,9 @@ import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { SPACES_REGEX } from '@isdd/metais-common/constants'
+import { ErrorBlock } from '@isdd/idsk-ui-kit/index'
 
-import { InputNames, UserDetailForm } from './UserDetailForm'
+import { UserDetailForm } from './UserDetailForm'
 import { UserManagementFormButtons } from './UserManagementFormButtons'
 import { OrgData, UserRolesForm } from './UserRolesForm'
 import { formatGidsData } from './managementListHelpers'
@@ -24,7 +24,6 @@ import { getUserManagementFormSchema } from './userManagementFormSchema'
 
 import { UserDetailData } from '@/components/containers/ManagementList/UserDetailContainer'
 import { UserManagementData } from '@/components/containers/ManagementList/UserManagementContainer'
-import { useGetAvailableLogin } from '@/hooks/useGetAvailableLogin'
 
 interface Props {
     detailData: UserDetailData | undefined | null
@@ -41,7 +40,6 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const { setIsActionSuccess } = useActionSuccess()
     const managedUserUuid = detailData?.userData?.uuid
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
-
     const managementListPath = '/managementList'
     const detailPath = '/detail'
     const userIdPath = `/${managedUserUuid}`
@@ -54,19 +52,9 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     })
 
     const [editedUserOrgAndRoles, setEditedUserOrgAndRoles] = useState<Record<string, OrgData>>({})
-    const [loginValue, setLoginValue] = useState<string>('')
     const [shouldReset, setShouldReset] = useState(false)
 
     const [errorType, setErrorType] = useState<string>('')
-
-    const values = methods.watch()
-    const loginString = `${values[InputNames.FIRST_NAME]?.trim()}${values[InputNames.LAST_NAME] ? '.' + values[InputNames.LAST_NAME]?.trim() : ''}`
-
-    useEffect(() => {
-        methods.setValue(InputNames.LOGIN, loginValue ? loginValue.replace(SPACES_REGEX, '') : '')
-    }, [loginValue, methods])
-
-    const { isError: availableLoginError, isFetching } = useGetAvailableLogin(loginString, setLoginValue, 500, isCreate)
 
     useEffect(() => {
         methods.reset(detailData?.userData)
@@ -118,6 +106,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                     if (errorData.type === 'UniqueConstraintException' && errorData.property === 'email') {
                         setErrorType(UNIQUE_EMAIL)
                     }
+                    scrollToMutationFeedback()
                 }
             },
         },
@@ -143,10 +132,6 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
         updateOrCreate.mutateAsync({ data: { identity: identity, gids: gids } })
     }
 
-    useEffect(() => {
-        scrollToMutationFeedback()
-    }, [updateOrCreate.isError, updateOrCreate.isSuccess, scrollToMutationFeedback])
-
     return (
         <FormProvider {...methods}>
             <QueryFeedback
@@ -157,32 +142,28 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                     label: updateOrCreate.isLoading ? (isCreate ? t('userManagement.creationLoading') : t('userManagement.editLoading')) : undefined,
                 }}
             >
+                {methods.formState.isSubmitted && !methods.formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
                 <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
-                    {(updateOrCreate.isError || updateOrCreate.isSuccess) && (
-                        <div ref={wrapperRef}>
-                            <MutationFeedback
-                                error={
-                                    !updateOrCreate.isSuccess &&
-                                    (errorType === NO_CHANGES_DETECTED
-                                        ? t('managementList.noChangesDetected')
-                                        : errorType === UNIQUE_LOGIN
-                                        ? t('userManagement.error.uniqueLogin')
-                                        : errorType === UNIQUE_EMAIL
-                                        ? t('userProfile.uniqueEmail')
-                                        : t('managementList.mutationError'))
-                                }
-                                success={updateOrCreate.isSuccess}
-                            />
-                        </div>
-                    )}
+                    <div ref={wrapperRef}>
+                        <MutationFeedback
+                            error={updateOrCreate.isError}
+                            errorMessage={
+                                errorType === NO_CHANGES_DETECTED
+                                    ? t('managementList.noChangesDetected')
+                                    : errorType === UNIQUE_LOGIN
+                                    ? t('userManagement.error.uniqueLogin')
+                                    : errorType === UNIQUE_EMAIL
+                                    ? t('userProfile.uniqueEmail')
+                                    : t('managementList.mutationError')
+                            }
+                            success={updateOrCreate.isSuccess}
+                        />
+                    </div>
                     <UserDetailForm
                         isCreate={isCreate}
                         userData={detailData?.userData}
                         handleBackNavigate={handleBackNavigate}
                         handleResetForm={handleResetForm}
-                        isError={availableLoginError}
-                        isFetching={isFetching}
-                        loginValue={loginValue}
                     />
                     <UserRolesForm
                         isCreate={isCreate}
@@ -196,7 +177,6 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                     <UserManagementFormButtons
                         handleBackNavigate={handleBackNavigate}
                         handleResetForm={handleResetForm}
-                        isError={availableLoginError}
                         hideCancelButton={!isCreate}
                     />
                 </form>

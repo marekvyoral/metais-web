@@ -26,6 +26,7 @@ const MeetingDetailPage: React.FC = () => {
                         meetingId={props.meetingId}
                         meetingDetailData={props.meetingDetailData}
                         refetch={props.refetch}
+                        attachmentsMetaData={props.attachmentsMetaData}
                     />
                 )
             }}

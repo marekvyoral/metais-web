@@ -148,7 +148,7 @@ uninstall-okd-feature:
     - helm uninstall "$RELEASE_NAME" -n metais3 || echo "Helm release $RELEASE_NAME not found, or already uninstalled."
   rules:
     - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/ && $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
+      when: on_success
 
 
 deploy-okd-develop:

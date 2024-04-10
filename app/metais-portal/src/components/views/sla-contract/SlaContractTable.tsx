@@ -1,7 +1,7 @@
 import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useRef } from 'react'
 import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 import { useTranslation } from 'react-i18next'
 import { Languages } from '@isdd/metais-common/localization/languages'
@@ -28,13 +28,12 @@ enum ColumnNames {
 export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, sort }) => {
     const { t, i18n } = useTranslation()
     const { slaContractsData, contractPhaseData } = data
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const columns: Array<ColumnDef<ApiSlaContractRead>> = [
         {
             accessorKey: ColumnNames.name,
-            header: () => {
-                return <span>{t('slaContracts.columns.name')}</span>
-            },
+            header: () => t('slaContracts.columns.name'),
             id: ColumnNames.name,
             size: 200,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => (
@@ -49,9 +48,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.validityStartDate,
-            header: () => {
-                return <span>{t('slaContracts.columns.validityStartDate')}</span>
-            },
+            header: () => t('slaContracts.columns.validityStartDate'),
             id: ColumnNames.validityStartDate,
             size: 120,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => t('date', { date: ctx.row.original.validityStartDate }),
@@ -62,9 +59,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.validityEndDate,
-            header: () => {
-                return <span>{t('slaContracts.columns.validityEndDate')}</span>
-            },
+            header: () => t('slaContracts.columns.validityEndDate'),
             id: ColumnNames.validityEndDate,
             size: 120,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => t('date', { date: ctx.row.original.validityEndDate }),
@@ -75,9 +70,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.phase,
-            header: () => {
-                return <span>{t('slaContracts.columns.phase')}</span>
-            },
+            header: () => t('slaContracts.columns.phase'),
             id: ColumnNames.phase,
             size: 200,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => {
@@ -94,9 +87,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.consumerIsvs,
-            header: () => {
-                return <span>{t('slaContracts.columns.consumerIsvs')}</span>
-            },
+            header: () => t('slaContracts.columns.consumerIsvs'),
             id: ColumnNames.consumerIsvs,
             size: 200,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => ctx.row.original.consumerIsvs?.name,
@@ -107,9 +98,7 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
         },
         {
             accessorKey: ColumnNames.providerIsvs,
-            header: () => {
-                return <span>{t('slaContracts.columns.providerIsvs')}</span>
-            },
+            header: () => t('slaContracts.columns.providerIsvs'),
             id: ColumnNames.providerIsvs,
             size: 200,
             cell: (ctx: CellContext<ApiSlaContractRead, unknown>) => ctx.row.original.providerIsvs?.name,
@@ -123,9 +112,9 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
     return (
         <>
             <Table
+                tableRef={tableRef}
                 columns={columns}
                 data={slaContractsData?.results}
-                rowHref={(row) => `./${row?.original?.uuid}`}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                 }}
@@ -136,7 +125,10 @@ export const SlaContractTable: React.FC<Props> = ({ data, handleFilterChange, so
                 pageNumber={slaContractsData?.pagination?.page ?? BASE_PAGE_NUMBER}
                 pageSize={slaContractsData?.pagination?.perPage ?? BASE_PAGE_SIZE}
                 dataLength={slaContractsData?.pagination?.totalItems ?? 0}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </>
     )

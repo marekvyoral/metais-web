@@ -7,13 +7,13 @@ import { Actions } from './useUserAbility'
 import { useGetRoleParticipant, useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ATTRIBUTE_NAME, Gen_Profil } from '@isdd/metais-common/api/constants'
 import { useGetRightsForPO, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY, INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { getUniqueRules } from '@isdd/metais-common/permissions/helpers'
-import { useGetMeta } from '@isdd/metais-common/api/generated/dms-swagger'
+import { useGetMeta1 } from '@isdd/metais-common/api/generated/dms-swagger'
 import { useIntegrationLinkConsumingAndProvidingProject } from '@isdd/metais-common/hooks/useIntegrationLink'
 import { isOwnershipOnPoSide } from '@isdd/metais-common/utils/utils'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 export enum IntegrationLinkActions {
     APPROVE = 'APPROVE',
@@ -44,7 +44,7 @@ export const useEditIntegrationPermissions = (entityName: string, entityId: stri
     const identityUuid = user?.uuid
     const isLoggedIn = !!identityUuid
 
-    const { data: ciTypeData, isLoading: ciTypeLoading, isError: ciTypeError } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData, isLoading: ciTypeLoading, isError: ciTypeError } = useGetCiTypeWrapper(entityName ?? '')
     const {
         providingPOData,
         consumingPOData,
@@ -97,7 +97,7 @@ export const useEditIntegrationPermissions = (entityName: string, entityId: stri
         },
         { query: { enabled: !ciLoading && token !== null && isLoggedIn } },
     )
-    const { data: dmsFileMetaData } = useGetMeta(entityId ?? '')
+    const { data: dmsFileMetaData } = useGetMeta1(entityId ?? '')
 
     const ciOwner = ciData?.metaAttributes?.owner
     const isOwnerOfCi = isOwnerByGid?.isOwner?.[0]?.owner

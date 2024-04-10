@@ -87,7 +87,7 @@ export const RefCatalogForm: React.FC<RefCatalogFormPropsType> = ({
     }, [isUriExist, setError, t])
 
     return (
-        <form>
+        <form noValidate>
             {!isUpdate && (
                 <SimpleSelect
                     label={t('refIdentifiers.create.ownerUser')}

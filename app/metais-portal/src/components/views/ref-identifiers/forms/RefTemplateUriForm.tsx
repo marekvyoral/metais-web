@@ -93,7 +93,7 @@ export const RefTemplateUriForm: React.FC<RefTemplateUriFormPropsType> = ({
 
     return (
         <>
-            <form>
+            <form noValidate>
                 {!isUpdate && (
                     <SimpleSelect
                         label={t('refIdentifiers.create.ownerUser')}

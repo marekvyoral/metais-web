@@ -171,15 +171,15 @@ export const CreateAndEditIntegrationLinkView: React.FC<ICreateIntegrationLinkCo
 
     return (
         <QueryFeedback loading={isLoading || createIntegrationLink.isLoading || uploadLoading} withChildren>
-            <ElementToScrollTo isVisible={createIntegrationLink.isError}>
-                <MutationFeedback success={false} showSupportEmail error={t('createEntity.mutationError')} />
+            <ElementToScrollTo trigger={createIntegrationLink.isError}>
+                <MutationFeedback error={createIntegrationLink.isError} errorMessage={t('createEntity.mutationError')} />
             </ElementToScrollTo>
 
-            <ElementToScrollTo isVisible={ownerError}>
-                <MutationFeedback success={false} error={t('createEntity.ownerError')} />
+            <ElementToScrollTo trigger={ownerError}>
+                <MutationFeedback error={ownerError} errorMessage={t('createEntity.ownerError')} />
             </ElementToScrollTo>
 
-            <ElementToScrollTo isVisible={uploadError}>
+            <ElementToScrollTo trigger={uploadError}>
                 <ErrorBlock
                     errorTitle={t('createEntity.errorTitle')}
                     errorMessage={
@@ -195,7 +195,7 @@ export const CreateAndEditIntegrationLinkView: React.FC<ICreateIntegrationLinkCo
 
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('ciType.createEntity', { entityName: ciTypeData?.name })}</TextHeading>
-                {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
+                <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
             </FlexColumnReverseWrapper>
 
             <IntegrationLinkFormBody {...props} onSubmit={onSubmit} />

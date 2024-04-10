@@ -20,6 +20,7 @@ import { ICiTypeRelationData, ISelectedRelationTypeState } from '@/components/co
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 import { CreateCiEntityForm } from '@/components/create-entity/CreateCiEntityForm'
 import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
+import { useRolesForPO } from '@/hooks/useRolesForPO'
 
 export interface AttributesData {
     ciTypeData: CiType | undefined
@@ -61,6 +62,8 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
     const { constraintsData, ciTypeData, unitsData } = attributesData
     const { relatedList } = relationData
     const { selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName } = selectedRelationTypeState
+
+    const { rolesForPO, isRightsForPOError } = useRolesForPO(publicAuthorityState?.selectedPublicAuthority?.poUUID ?? '', ciTypeData?.roleList ?? [])
 
     const [uploadError, setUploadError] = useState(false)
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
@@ -151,17 +154,11 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
     return (
         <>
             <div ref={wrapperRef}>
-                {!(isRedirectError || isProcessedError || isRedirectLoading) && (
-                    <MutationFeedback
-                        success={false}
-                        showSupportEmail
-                        error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
-                    />
-                )}
+                <MutationFeedback error={storeConfigurationItem.isError} />
             </div>
             <QueryFeedback
                 loading={isRedirectLoading}
-                error={isRedirectError || isProcessedError || isTooManyFetchesError}
+                error={isRedirectError || isProcessedError || isTooManyFetchesError || isRightsForPOError}
                 indicatorProps={{
                     label: cloneCiItemId ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
                 }}
@@ -209,6 +206,7 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
                     updateCiItemId={cloneCiItemId}
                     isProcessing={storeConfigurationItem.isLoading}
                     selectedRole={roleState?.selectedRole ?? null}
+                    rolesForPO={rolesForPO ?? []}
                 />
             </QueryFeedback>
         </>

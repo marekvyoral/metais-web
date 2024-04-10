@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
 import classNames from 'classnames'
+import React, { useId } from 'react'
 
 import { ISection, StepperSection } from './StepperSection'
 import { StepperSubtitle } from './StepperSubtitle'
@@ -17,34 +17,40 @@ interface IStepper {
     subtitleTitle: string
     stepperList: ISection[]
     sectionsHeadingSize?: 'S' | 'M' | 'L' | 'XL'
+    handleSectionOpen: (id: string) => void
+    openOrCloseAllSections: () => void
 }
 
-export const Stepper: React.FC<IStepper> = ({ description, stepperList, subtitleTitle, sectionsHeadingSize }) => {
-    const defaultArray = Array<StepperArrayEnum>(stepperList.length).fill(StepperArrayEnum.CLOSED)
-    if (stepperList) {
-        stepperList.map((item, index) => {
-            if (item.isOpen) defaultArray[index] = StepperArrayEnum.EXPANDED
-        })
-    }
-
-    const [sectionArray, setSectionArray] = useState(defaultArray)
+export const Stepper: React.FC<IStepper> = ({
+    description,
+    stepperList,
+    sectionsHeadingSize,
+    handleSectionOpen,
+    subtitleTitle,
+    openOrCloseAllSections,
+}) => {
+    const wrapperId = useId()
 
     return (
         <>
             {description && <p className="idsk-stepper__caption govuk-caption-m">{description}</p>}
-            <div className={classNames('idsk-stepper', styles.marginBottom)} data-module="idsk-stepper" data-attribute="value">
-                <StepperSubtitle title={subtitleTitle} setSectionArray={setSectionArray} sectionArray={sectionArray} />
+            <div id={wrapperId} className={classNames('idsk-stepper', styles.marginBottom)} data-module="idsk-stepper" data-attribute="value">
+                <StepperSubtitle
+                    title={subtitleTitle}
+                    contentId={wrapperId}
+                    stepperList={stepperList}
+                    openOrCloseAllSections={openOrCloseAllSections}
+                />
                 {stepperList.map((item, index) => (
                     <React.Fragment key={index}>
                         {item.isTitle ? (
-                            <StepperSectionTitle index={index} title={item.title} sectionArray={sectionArray} setSectionArray={setSectionArray} />
+                            <StepperSectionTitle title={item.title} />
                         ) : (
                             <StepperSection
                                 textHeadingSize={sectionsHeadingSize}
                                 index={index}
                                 section={item}
-                                sectionArray={sectionArray}
-                                setSectionArray={setSectionArray}
+                                handleSectionOpen={handleSectionOpen}
                             />
                         )}
                     </React.Fragment>

@@ -15,6 +15,7 @@ import { FieldValues } from 'react-hook-form'
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from '@/components/create-entity/createEntityHelpers'
 import { CreateCiEntityForm } from '@/components/create-entity/CreateCiEntityForm'
+import { useRolesForPO } from '@/hooks/useRolesForPO'
 
 export interface AttributesData {
     ciTypeData: CiType | undefined
@@ -58,6 +59,11 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
 
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
+
+    const { rolesForPO, isRightsForPOError } = useRolesForPO(
+        updateCiItemId ? data.ownerId ?? '' : publicAuthorityState?.selectedPublicAuthority?.poUUID ?? '',
+        ciTypeData?.roleList ?? [],
+    )
 
     const modifiedCiTypeData = useMemo(() => {
         if (isUpdate) {
@@ -164,18 +170,12 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
 
     return (
         <>
-            {!(isRedirectError || isProcessedError || isRedirectLoading) && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={false}
-                        showSupportEmail
-                        error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback error={storeConfigurationItem.isError} />
+            </div>
             <QueryFeedback
                 loading={isRedirectLoading}
-                error={isRedirectError || isProcessedError || isTooManyFetchesError}
+                error={isRedirectError || isProcessedError || isTooManyFetchesError || isRightsForPOError}
                 indicatorProps={{
                     label: isUpdate ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
                 }}
@@ -212,6 +212,7 @@ export const CreateProjectEntity: React.FC<ICreateEntity> = ({
                     updateCiItemId={updateCiItemId}
                     isProcessing={storeConfigurationItem.isLoading}
                     selectedRole={roleState?.selectedRole ?? null}
+                    rolesForPO={rolesForPO ?? []}
                 />
             </QueryFeedback>
         </>

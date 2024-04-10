@@ -15,11 +15,14 @@ import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, BulkPopup, CreateEn
 import { QueryObserverResult, UseMutateAsyncFunction } from '@tanstack/react-query'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import classNames from 'classnames'
-import { SetStateAction, useCallback, useState } from 'react'
+import { SetStateAction, useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import styles from './egovTable.module.scss'
+
+import { EntityType } from '@/components/views/egov/entity-detail-views/CreateEntityView'
 
 type IListData = {
     data?: AttributeProfile[] | undefined
@@ -61,6 +64,7 @@ interface IEgovTable {
 
 export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInvalidateFunc, mutateValidateFunc }: IListData) => {
     const { t } = useTranslation()
+    const { currentPreferences } = useUserPreferences()
     const {
         state: { user },
     } = useAuth()
@@ -68,7 +72,6 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
     const navigate = useNavigate()
     const location = useLocation()
     const [rowSelection, setRowSelection] = useState<Array<string>>([])
-
     const handleCheckboxChange = useCallback(
         (row: Row<IEgovTable>) => {
             if (row.original.technicalName) {
@@ -82,20 +85,21 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
         [rowSelection, setRowSelection],
     )
 
+    const tableRef = useRef<HTMLTableElement>(null)
     const [pageNumber, setPageNumber] = useState<number>(BASE_PAGE_NUMBER)
-    const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
+    const [pageSize, setPageSize] = useState<number>(Number(currentPreferences.defaultPerPage) || BASE_PAGE_SIZE)
     const handleAllCheckboxChange = () => {
         if (!data) return
 
         const checkedAll = data
             .slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
-            .filter((row) => row.type == AttributeProfileType.custom)
-            .every((row) => row.type == AttributeProfileType.custom && rowSelection.includes(row.technicalName || ''))
+            .filter((row) => row.type == AttributeProfileType.application)
+            .every((row) => row.type == AttributeProfileType.application && rowSelection.includes(row.technicalName || ''))
 
         const customRows =
             data
                 .slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
-                .filter((row) => row.type == AttributeProfileType.custom)
+                .filter((row) => row.type == AttributeProfileType.application)
                 .map((row) => row.technicalName || '') || []
 
         if (checkedAll) {
@@ -110,14 +114,14 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
             header: () => {
                 const checkedAll = data
                     ?.slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
-                    ?.filter((row) => row.type == AttributeProfileType.custom)
-                    .every((row) => row.type == AttributeProfileType.custom && rowSelection.includes(row.technicalName || ''))
+                    ?.filter((row) => row.type == AttributeProfileType.application)
+                    .every((row) => row.type == AttributeProfileType.application && rowSelection.includes(row.technicalName || ''))
 
                 return (
                     <>
                         {data
                             ?.slice(pageNumber * pageSize - pageSize - 1, pageNumber * pageSize)
-                            .some((a) => a.type == AttributeProfileType.custom) ? (
+                            .some((a) => a.type == AttributeProfileType.application) ? (
                             <div className="govuk-checkboxes govuk-checkboxes--small">
                                 <CheckBox
                                     label=""
@@ -139,7 +143,7 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
             cell: ({ row }) => {
                 return (
                     <>
-                        {row.original.type == AttributeProfileType.custom ? (
+                        {row.original.type == AttributeProfileType.application ? (
                             <div className="govuk-checkboxes govuk-checkboxes--small">
                                 <CheckBox
                                     label=""
@@ -263,15 +267,24 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={entityName ?? ''}
                 createButton={
-                    <CreateEntityButton
-                        label={t(`egov.addNew.${entityName}`)}
-                        onClick={() => navigate(`/egov/${entityName}/create`, { state: { from: location } })}
-                    />
+                    <>
+                        <CreateEntityButton
+                            label={t(`egov.addNew.${entityName}`)}
+                            onClick={() => navigate(`/egov/${entityName}/create`, { state: { from: location } })}
+                        />
+                        {entityName === EntityType.ENTITY && (
+                            <CreateEntityButton
+                                label={t('egov.addNew.entityFromZc')}
+                                onClick={() => navigate(`/egov/entity/createZc`, { state: { from: location } })}
+                            />
+                        )}
+                    </>
                 }
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={Object.keys(rowSelection).length}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'buttonBlock'}
@@ -293,16 +306,16 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                             />,
                         ]}
                     />
-                }
+                )}
             />
             <MutationFeedback
                 success={mutateInvalidateFunc.isSuccess || mutateValidateFunc.isSuccess}
-                error={false}
                 successMessage={
                     mutateInvalidateFunc.isSuccess ? t('mutationFeedback.successfulInvalidated') : t('mutationFeedback.successfulRevalidated')
                 }
             />
             <Table<IEgovTable>
+                tableRef={tableRef}
                 data={data}
                 columns={columnsWithPermissions}
                 sort={sort}
@@ -311,7 +324,15 @@ export const EgovTable = ({ data, entityName, refetch, sort, setSort, mutateInva
                 manualPagination={false}
                 pagination={{ pageIndex: pageNumber - 1, pageSize: pageSize }}
             />
-            <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={data?.length || 0} handlePageChange={handlePageChange} />
+            <PaginatorWrapper
+                pageNumber={pageNumber}
+                pageSize={pageSize}
+                dataLength={data?.length || 0}
+                handlePageChange={(filter) => {
+                    handlePageChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </div>
     )
 }

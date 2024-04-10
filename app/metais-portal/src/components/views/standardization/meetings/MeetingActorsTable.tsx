@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
@@ -24,6 +24,7 @@ const defaultPagination: Pagination = {
 export const MeetingActorsTable = ({ data, error, isLoading }: MeetingActorsTableProps) => {
     const { t } = useTranslation()
     const [pagination, setPagination] = useState(defaultPagination)
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const filteredData = useMemo(() => {
         const startOfList = pagination.pageNumber * pagination.pageSize - pagination.pageSize
@@ -98,12 +99,15 @@ export const MeetingActorsTable = ({ data, error, isLoading }: MeetingActorsTabl
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 handleFilterChange={myHandleFilterChange}
             />
-            <Table data={filteredData} columns={columns} isLoading={isLoading} error={error} />
+            <Table tableRef={tableRef} data={filteredData} columns={columns} isLoading={isLoading} error={error} />
             <PaginatorWrapper
                 dataLength={data?.meetingActors?.length ?? 0}
                 pageNumber={pagination.pageNumber}
                 pageSize={pagination.pageSize}
-                handlePageChange={(page) => setPagination({ ...pagination, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })}
+                handlePageChange={(page) => {
+                    setPagination({ ...pagination, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </div>
     )

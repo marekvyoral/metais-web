@@ -11,7 +11,7 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ActionsOverTable, BulkPopup, CreateEntityButton, MutationFeedback, QueryFeedback, RefIdentifierTypeEnum } from '@isdd/metais-common/index'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { Row } from '@tanstack/react-table'
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
@@ -37,6 +37,7 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
     const { t, i18n } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
+    const tableRef = useRef<HTMLTableElement>(null)
     const {
         isActionSuccess: { value: isExternalSuccess },
     } = useActionSuccess()
@@ -94,7 +95,7 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
     const handleAddToFavorite = () => {
         addFavorite(
             selectedUuids.map((item) => String(item)),
-            FollowedItemItemType.CODELIST,
+            FollowedItemItemType.REFID,
         )
     }
 
@@ -110,11 +111,12 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                     <MutationFeedback
                         success={isSuccessAddToFavorite}
                         successMessage={successMessage}
-                        error={errorAddToFavorite ? t('userProfile.notifications.feedback.error') : undefined}
+                        error={!!errorAddToFavorite}
+                        errorMessage={t('userProfile.notifications.feedback.error')}
                         onMessageClose={() => resetState()}
                     />
-                    {isError && <QueryFeedback error loading={false} />}
-                    {isExternalSuccess && <MutationFeedback success error={false} />}
+                    <QueryFeedback error={isError} loading={false} />
+                    <MutationFeedback success={isExternalSuccess} />
                 </div>
             </FlexColumnReverseWrapper>
 
@@ -173,10 +175,10 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                     pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
                     dataLength: data?.configurationItemSet?.length ?? 0,
                 }}
-                bulkPopup={
+                selectedRowsCount={selectedUuids.length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={selectedUuids.length}
-                        disabled={!selectedUuids.length}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'favorite'}
@@ -191,7 +193,7 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                             />,
                         ]}
                     />
-                }
+                )}
                 entityName=""
                 createButton={
                     <CreateEntityButton
@@ -204,7 +206,7 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                 hiddenButtons={{ SELECT_COLUMNS: true }}
             />
             <Table
-                rowHref={(row) => `./${row?.original?.uuid}`}
+                tableRef={tableRef}
                 data={data?.configurationItemSet as ColumnsOutputDefinition[]}
                 columns={refIdentifierColumns(t, i18n.language, registrationState, rowSelection, handleCheckboxChange, handleAllCheckboxChange)}
                 sort={filter.sort ?? []}
@@ -214,7 +216,13 @@ export const RefIdentifierListView: React.FC<RefIdentifiersContainerViewProps> =
                 }}
                 isRowSelected={isRowSelected}
             />
-            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+            <PaginatorWrapper
+                {...pagination}
+                handlePageChange={(filterValues) => {
+                    handleFilterChange(filterValues)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </QueryFeedback>
     )
 }

@@ -11,14 +11,15 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { getSlaContractTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
+import { useCiCheckEntityTypeRedirectHook } from '@/hooks/useCiCheckEntityTypeRedirect.hook'
 
 export const SlaContractDetailPage: React.FC = () => {
     const { t, i18n } = useTranslation()
@@ -37,10 +38,11 @@ export const SlaContractDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+    useCiCheckEntityTypeRedirectHook(ciItemData, entityName)
 
     const userAbility = useUserAbility()
     const entityItemName = ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName ?? '')
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
 
     document.title = `${t('titles.ciDetail', {
@@ -90,19 +92,16 @@ export const SlaContractDetailPage: React.FC = () => {
                                 ciRoles={[]}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError} />
-                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
-                                <div ref={wrapperRef}>
-                                    <MutationFeedback
-                                        error={false}
-                                        success={isActionSuccess.value}
-                                        successMessage={
-                                            isActionSuccess.additionalInfo?.type === 'create'
-                                                ? t('mutationFeedback.successfulCreated')
-                                                : t('mutationFeedback.successfulUpdated')
-                                        }
-                                    />
-                                </div>
-                            )}
+                            <div ref={wrapperRef}>
+                                <MutationFeedback
+                                    success={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}
+                                    successMessage={
+                                        isActionSuccess.additionalInfo?.type === 'create'
+                                            ? t('mutationFeedback.successfulCreated')
+                                            : t('mutationFeedback.successfulUpdated')
+                                    }
+                                />
+                            </div>
                         </FlexColumnReverseWrapper>
 
                         <Tabs tabList={tabList} />

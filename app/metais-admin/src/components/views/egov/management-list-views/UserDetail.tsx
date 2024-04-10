@@ -27,10 +27,9 @@ export const UserDetail: React.FC<IUserDetail> = ({ userData, userId }) => {
         { label: t('managementList.firstName'), value: userData?.firstName },
         { label: t('managementList.lastName'), value: userData?.lastName },
         { label: t('managementList.displayName'), value: userData?.displayName },
-        { label: t('managementList.email'), value: userData?.email },
+        { label: t('managementList.loginEmail'), value: userData?.login },
         { label: t('managementList.position'), value: userData?.position },
         { label: t('managementList.mobile'), value: userData?.mobile },
-        { label: t('managementList.login'), value: userData?.login },
     ]
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
@@ -50,7 +49,7 @@ export const UserDetail: React.FC<IUserDetail> = ({ userData, userId }) => {
                     />
                 </div>
                 <div ref={wrapperRef}>
-                    <MutationFeedback error={false} success={isActionSuccess.value} />
+                    <MutationFeedback success={isActionSuccess.value} />
                 </div>
             </FlexColumnReverseWrapper>
 

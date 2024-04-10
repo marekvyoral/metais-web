@@ -3,12 +3,12 @@ import { ENTITY_KRIS } from '@isdd/metais-common/constants'
 import { IFilterParams, OPERATOR_OPTIONS } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { KrisListView } from '@/components/views/ci/kris/KrisListView'
-import { useCiListPageHeading } from '@/componentHelpers/ci'
+import { getCiHowToBreadCrumb, useCiListPageHeading } from '@/componentHelpers/ci'
 
 export interface KRISFilterType extends IFilterParams {
     owner?: string
@@ -25,7 +25,7 @@ const KRISListPage: React.FC = () => {
         data: ciTypeData,
         isLoading: isCiTypeDataLoading,
         isError: isCiTypeDataError,
-    } = useGetCiType(ciType, { query: { queryKey: [i18n.language, ciType] } })
+    } = useGetCiTypeWrapper(ciType, { query: { queryKey: [i18n.language, ciType] } })
 
     const { getTitle, getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
     document.title = getTitle()
@@ -36,6 +36,7 @@ const KRISListPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(ciType, t),
                     { label: getHeading(), href: `/ci/${ciType}` },
                 ]}
             />

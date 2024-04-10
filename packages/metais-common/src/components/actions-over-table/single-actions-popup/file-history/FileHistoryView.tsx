@@ -106,7 +106,7 @@ export const FileHistoryView: React.FC<IFileHistoryViewProps> = ({ data, item, h
             <TextHeading size="L">{t('fileHistory.documentHistory')}</TextHeading>
             <div className={styles.centerText}>
                 <TextBody className={styles.marginBottom0}>{item.attributes?.Gen_Profil_nazov}</TextBody>
-                <PageSizeSelect id="pageSizeSelect" className={styles.selectGroup} handlePagingSelect={handlePagingSelect} />
+                <PageSizeSelect className={styles.selectGroup} handlePagingSelect={handlePagingSelect} />
             </div>
             <Table<MetaVersion> data={data} columns={columns} />
             <ModalButtons onClose={onClose} />

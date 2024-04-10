@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useId } from 'react'
 import classNames from 'classnames'
 import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 import { GroupBase, MenuPosition, MultiValue, OptionProps, OptionsOrGroups, PropsValue } from 'react-select'
 import { AsyncPaginate } from 'react-select-async-paginate'
 import { useTranslation } from 'react-i18next'
 import { PopupPosition } from 'reactjs-popup/dist/types'
+import sanitizeHtml from 'sanitize-html'
+import { decodeHtmlEntities } from '@isdd/metais-common/src/utils/utils'
 
 import styles from './selectLazyLoading.module.scss'
 
-import { Control, Menu, MultiValueRemove, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
+import { Control, Menu, getMultiValueRemove, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { useGetLocalMessages } from '@isdd/idsk-ui-kit/select/useGetLocalMessages'
 
@@ -50,6 +52,7 @@ export interface ISelectProps<T> {
     disabled?: boolean
     required?: boolean
     tooltipPosition?: PopupPosition | PopupPosition[]
+    hint?: string
 }
 
 export const SelectLazyLoading = <T,>({
@@ -57,6 +60,7 @@ export const SelectLazyLoading = <T,>({
     onChange,
     label,
     name,
+    hint,
     info,
     getOptionValue,
     getOptionLabel,
@@ -76,7 +80,10 @@ export const SelectLazyLoading = <T,>({
     tooltipPosition,
 }: ISelectProps<T>): JSX.Element => {
     const { t } = useTranslation()
+    const uniqueId = useId()
+    const inputId = id ?? uniqueId
     const errorId = `${id}-error`
+    const hintId = `${id}-hint`
     const localMessages = useGetLocalMessages()
     const Option = (props: OptionProps<T>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
@@ -106,18 +113,36 @@ export const SelectLazyLoading = <T,>({
     return (
         <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!error })}>
             <div className={styles.labelDiv}>
-                <label className="govuk-label" htmlFor={id}>
+                <label className="govuk-label" htmlFor={inputId}>
                     {label} {required && t('input.requiredField')}
                 </label>
-                {info && <Tooltip descriptionElement={info} position={tooltipPosition} altText={`Tooltip ${label}`} />}
+                {info && (
+                    <Tooltip
+                        descriptionElement={
+                            <div className="tooltipWidth500">
+                                {
+                                    <span
+                                        dangerouslySetInnerHTML={{
+                                            __html: sanitizeHtml(decodeHtmlEntities(info)),
+                                        }}
+                                    />
+                                }
+                            </div>
+                        }
+                        position={tooltipPosition}
+                        altText={`Tooltip ${label}`}
+                    />
+                )}
             </div>
-            {!!error && (
-                <span id={errorId} className="govuk-error-message">
-                    {error}
-                </span>
-            )}
+            <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
+                {error && <span className="govuk-visually-hidden">{t('error')}</span>}
+                {error}
+            </span>
+            <span id={hintId} className={classNames({ 'govuk-visually-hidden': !hint, 'govuk-hint': !!hint })}>
+                {hint}
+            </span>
             <AsyncPaginate<T, GroupBase<T>, { page: number } | undefined, boolean>
-                id={id}
+                inputId={inputId}
                 name={name}
                 value={value}
                 loadOptions={loadOptions}
@@ -125,7 +150,7 @@ export const SelectLazyLoading = <T,>({
                 getOptionLabel={getOptionLabel}
                 classNames={{ menuList: () => styles.reactSelectMenuList }}
                 placeholder={placeholder || ''}
-                components={{ Option, Menu, Control, MultiValueRemove }}
+                components={{ Option, Menu, Control, MultiValueRemove: getMultiValueRemove(t) }}
                 isMulti={isMulti}
                 menuPosition={menuPosition}
                 defaultValue={defaultValue}
@@ -136,11 +161,14 @@ export const SelectLazyLoading = <T,>({
                 unstyled
                 onChange={handleOnChange}
                 isDisabled={disabled}
+                aria-invalid={!!error}
+                aria-describedby={errorId}
                 aria-errormessage={errorId}
                 noOptionsMessage={localMessages.noOptionsMessage}
                 ariaLiveMessages={localMessages.ariaLiveMessages}
                 screenReaderStatus={localMessages.screenReaderStatus}
                 loadingMessage={localMessages.loadingMessage}
+                required={required}
             />
         </div>
     )

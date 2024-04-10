@@ -5,7 +5,7 @@ import { UseFormSetValue } from 'react-hook-form'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { TextWarning } from '@isdd/idsk-ui-kit'
 
-import style from './customFilterAttribute.module.scss'
+import style from './dynamicFilterAttributes.module.scss'
 
 import { IAttributeFilters, IFilterParams, OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
 import { DynamicFilterAttributeRow } from '@isdd/metais-common/components/dynamicFilterAttributeRow/DynamicFilterAttributeRow'
@@ -56,6 +56,7 @@ interface Props {
     constraintsData: (EnumType | undefined)[] | undefined
     ignoreInputNames?: string[]
     ciName?: string
+    isFocusable?: boolean
 }
 
 export const DynamicFilterAttributes: FC<Props> = ({
@@ -67,6 +68,7 @@ export const DynamicFilterAttributes: FC<Props> = ({
     defaults,
     ignoreInputNames,
     ciName,
+    isFocusable = true,
 }) => {
     const attributeFiltersData = filterData?.attributeFilters
     const metaAttributeFiltersData = filterData?.metaAttributeFilters
@@ -208,6 +210,7 @@ export const DynamicFilterAttributes: FC<Props> = ({
                         attributeType={findAttributeType(attribute.name ?? '', combinedAttributes)}
                         currentAttribute={attribute}
                         attributeConstraints={findAttributeConstraints(attribute.name ?? '', combinedAttributes, constraintsData ?? [])}
+                        isFocusable={isFocusable}
                     />
                 )
             })}
@@ -221,7 +224,17 @@ export const DynamicFilterAttributes: FC<Props> = ({
                     />
                 </div>
             )}
-            <ButtonLink label={t('customAttributeFilter.add')} className={style.addButton} type="button" onClick={addRow} />
+            <ButtonLink
+                label={
+                    <>
+                        <span aria-hidden>+ </span>
+                        {t('customAttributeFilter.add')}
+                    </>
+                }
+                className={style.addButton}
+                type="button"
+                onClick={addRow}
+            />
         </div>
     )
 }

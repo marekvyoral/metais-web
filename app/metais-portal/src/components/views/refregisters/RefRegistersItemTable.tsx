@@ -1,4 +1,4 @@
-import { ExpandableRowCellWrapper, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
+import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { ApiReferenceRegisterItem } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { ColumnDef, ExpandedState } from '@tanstack/react-table'
 import { useState } from 'react'
@@ -22,8 +22,7 @@ export const RefRegistersItemTable = ({
             accessorFn: (row) => row?.order,
             header: t('refRegisters.detail.items.order'),
             id: '1',
-            cell: ({ row }) => <ExpandableRowCellWrapper row={row}>{row?.original?.order}</ExpandableRowCellWrapper>,
-            size: 200,
+            size: 70,
         },
         {
             accessorFn: (row) => row?.itemName,

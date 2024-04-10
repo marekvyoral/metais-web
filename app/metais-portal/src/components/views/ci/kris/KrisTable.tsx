@@ -5,7 +5,7 @@ import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swag
 import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { IListData } from '@isdd/metais-common/types/list'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
 import { KRIScolumnsTechNames } from '@isdd/metais-common/constants'
@@ -47,6 +47,7 @@ export const KrisTable: React.FC<ICiTable> = ({
 }) => {
     const { t } = useTranslation()
     const { getColumnsFromApiCellContent } = useGetColumnsFromApiCellContent()
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
     const tableData = mapTableData(
@@ -65,12 +66,7 @@ export const KrisTable: React.FC<ICiTable> = ({
 
         return {
             accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
-            header: () => {
-                if (isOwner) {
-                    return <span>{t('KRIS.responsibleAuthority')}</span>
-                }
-                return <span>{attributeHeader ?? technicalName}</span>
-            },
+            header: () => (isOwner ? t('KRIS.responsibleAuthority') : attributeHeader ?? technicalName),
             id: technicalName ?? '',
             size: index === 0 ? 300 : 200,
             cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
@@ -89,9 +85,9 @@ export const KrisTable: React.FC<ICiTable> = ({
     return (
         <>
             <Table
+                tableRef={tableRef}
                 columns={columns}
                 data={tableData}
-                rowHref={(row) => `./${row?.original?.uuid}`}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                 }}
@@ -99,7 +95,13 @@ export const KrisTable: React.FC<ICiTable> = ({
                 isLoading={isLoading}
                 error={isError}
             />
-            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+            <PaginatorWrapper
+                {...pagination}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
+            />
         </>
     )
 }

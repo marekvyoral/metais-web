@@ -1,20 +1,21 @@
-import React from 'react'
-import { ActionsOverTable } from '@isdd/metais-common/src/components/actions-over-table/ActionsOverTable'
-import { DEFAULT_PAGESIZE_OPTIONS, STANDARDIZATION_DRAFTS_LIST } from '@isdd/metais-common/src/constants'
-import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
-import { CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { useTranslation } from 'react-i18next'
+import { CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common'
+import { DraftFilter } from '@isdd/metais-common/api/filter/filterApi'
+import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { ActionsOverTable } from '@isdd/metais-common/src/components/actions-over-table/ActionsOverTable'
+import { DEFAULT_PAGESIZE_OPTIONS, STANDARDIZATION_DRAFTS_LIST } from '@isdd/metais-common/src/constants'
 import { formatTitleString } from '@isdd/metais-common/utils/utils'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import { DraftsListContainer } from '@/components/containers/draftslist/DraftsListContainer'
-import { DraftsListTable } from '@/components/entities/draftslist/DraftsListTable'
-import { DraftsListFilter } from '@/components/entities/draftslist/DraftsListFilter'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { DraftsListContainer } from '@/components/containers/draftslist/DraftsListContainer'
+import { DraftsListFilter } from '@/components/entities/draftslist/DraftsListFilter'
+import { DraftsListTable } from '@/components/entities/draftslist/DraftsListTable'
 
 const DraftsListListPage: React.FC = () => {
     const navigate = useNavigate()
@@ -37,9 +38,9 @@ const DraftsListListPage: React.FC = () => {
     document.title = formatTitleString(t('breadcrumbs.draftsList'))
 
     return (
-        <DraftsListContainer<GetFOPStandardRequestsParams>
+        <DraftsListContainer<DraftFilter>
             defaultFilterValues={defaultFilterValues}
-            View={({ data, handleFilterChange, pagination, sort, isLoading, isError }) => (
+            View={({ data, handleFilterChange, pagination, sort, isLoading, isError, workingGroupOptions }) => (
                 <>
                     <BreadCrumbs
                         withWidthContainer
@@ -55,7 +56,6 @@ const DraftsListListPage: React.FC = () => {
                                 <TextHeading size="XL">{t('draftsList.heading')}</TextHeading>
                                 <MutationFeedback
                                     success={isActionSuccess.value}
-                                    error={false}
                                     successMessage={
                                         isActionSuccess.additionalInfo?.type == 'create'
                                             ? t('mutationFeedback.successfulCreated')
@@ -63,7 +63,7 @@ const DraftsListListPage: React.FC = () => {
                                     }
                                 />
                             </FlexColumnReverseWrapper>
-                            <DraftsListFilter defaultFilterValues={defaultFilterValues} />
+                            <DraftsListFilter defaultFilterValues={defaultFilterValues} workingGroupOptions={workingGroupOptions ?? []} />
                             <ActionsOverTable
                                 pagination={pagination}
                                 entityName={STANDARDIZATION_DRAFTS_LIST}

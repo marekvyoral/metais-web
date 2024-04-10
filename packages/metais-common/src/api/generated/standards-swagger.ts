@@ -38,8 +38,6 @@ export type ParticipateMeetingRequestParams = {
     participation: string
 }
 
-export type CreateVote1200 = { [key: string]: any }
-
 export type GetMeetingRequestsParams = {
     pageNumber: number
     perPage: number
@@ -107,8 +105,6 @@ export type VetoVote1200 = { [key: string]: any }
 
 export type VoteNote200 = { [key: string]: any }
 
-export type CreateVote200 = { [key: string]: any }
-
 export type GetVotesParams = {
     pageNumber: number
     perPage: number
@@ -125,8 +121,6 @@ export type GetVotesParams = {
 export type SummarizeMeetingRequest200 = { [key: string]: any }
 
 export type UpdateSummarizeData200 = { [key: string]: any }
-
-export type UpdateMeetingRequest200 = { [key: string]: any }
 
 export type AddUserToActiveVotes200 = { [key: string]: any }
 
@@ -541,7 +535,7 @@ export const useGetVoteDetail = <TData = Awaited<ReturnType<ReturnType<typeof us
 }
 
 export const useUpdateVoteHook = () => {
-    const updateVote = useStandardsSwaggerClient<void>()
+    const updateVote = useStandardsSwaggerClient<ApiVote>()
 
     return (voteId: number, apiVote: ApiVote) => {
         return updateVote({ url: `/standards/votes/${voteId}`, method: 'put', headers: { 'Content-Type': 'application/json' }, data: apiVote })
@@ -952,7 +946,7 @@ export const useGetMeetingRequestDetail = <TData = Awaited<ReturnType<ReturnType
 }
 
 export const useUpdateMeetingRequestHook = () => {
-    const updateMeetingRequest = useStandardsSwaggerClient<UpdateMeetingRequest200>()
+    const updateMeetingRequest = useStandardsSwaggerClient<ApiMeetingRequest>()
 
     return (meetingRequestId: number, apiMeetingRequest: ApiMeetingRequest) => {
         return updateMeetingRequest({
@@ -1170,7 +1164,7 @@ export const useGetVotes = <TData = Awaited<ReturnType<ReturnType<typeof useGetV
 }
 
 export const useCreateVoteHook = () => {
-    const createVote = useStandardsSwaggerClient<CreateVote200>()
+    const createVote = useStandardsSwaggerClient<ApiVote>()
 
     return (apiVote: ApiVote) => {
         return createVote({ url: `/standards/votes`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: apiVote })
@@ -1990,38 +1984,38 @@ export const useGetMeetingRequests = <TData = Awaited<ReturnType<ReturnType<type
     return query
 }
 
-export const useCreateVote1Hook = () => {
-    const createVote1 = useStandardsSwaggerClient<CreateVote1200>()
+export const useCreateMeetingHook = () => {
+    const createMeeting = useStandardsSwaggerClient<ApiMeetingRequest>()
 
     return (apiMeetingRequest: ApiMeetingRequest) => {
-        return createVote1({ url: `/meetings`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: apiMeetingRequest })
+        return createMeeting({ url: `/meetings`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: apiMeetingRequest })
     }
 }
 
-export const useCreateVote1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>, TError, { data: ApiMeetingRequest }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>, TError, { data: ApiMeetingRequest }, TContext> => {
+export const useCreateMeetingMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateMeetingHook>>>, TError, { data: ApiMeetingRequest }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateMeetingHook>>>, TError, { data: ApiMeetingRequest }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
-    const createVote1 = useCreateVote1Hook()
+    const createMeeting = useCreateMeetingHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>, { data: ApiMeetingRequest }> = (props) => {
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useCreateMeetingHook>>>, { data: ApiMeetingRequest }> = (props) => {
         const { data } = props ?? {}
 
-        return createVote1(data)
+        return createMeeting(data)
     }
 
     return { mutationFn, ...mutationOptions }
 }
 
-export type CreateVote1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>>
-export type CreateVote1MutationBody = ApiMeetingRequest
-export type CreateVote1MutationError = ApiError
+export type CreateMeetingMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCreateMeetingHook>>>>
+export type CreateMeetingMutationBody = ApiMeetingRequest
+export type CreateMeetingMutationError = ApiError
 
-export const useCreateVote1 = <TError = ApiError, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>, TError, { data: ApiMeetingRequest }, TContext>
+export const useCreateMeeting = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateMeetingHook>>>, TError, { data: ApiMeetingRequest }, TContext>
 }) => {
-    const mutationOptions = useCreateVote1MutationOptions(options)
+    const mutationOptions = useCreateMeetingMutationOptions(options)
 
     return useMutation(mutationOptions)
 }

@@ -16,6 +16,7 @@ import { PORTAL_URL } from '@isdd/metais-common/constants'
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 interface INavMenu {
+    id: string
     isMenuExpanded: boolean
     setIsMenuExpanded: React.Dispatch<SetStateAction<boolean>>
     navItems: NavigationItem[]
@@ -23,7 +24,7 @@ interface INavMenu {
     isAdmin?: boolean
 }
 
-export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded, navItems, isAdmin, isLoginApp }) => {
+export const NavMenu: React.FC<INavMenu> = ({ id, isMenuExpanded, setIsMenuExpanded, navItems, isAdmin, isLoginApp }) => {
     const { t } = useTranslation()
 
     const [activeTab, setActiveTab] = useState<string | undefined>()
@@ -38,10 +39,10 @@ export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded,
 
     return (
         <div
+            id={id}
             onBlur={(event) => closeOnClickOutside<boolean>(event, setIsMenuExpanded, false)}
             onKeyDown={(event) => closeOnEscapeKey<boolean>(event, setIsMenuExpanded, false)}
             className={classNames({ 'idsk-header-web__nav': true, 'idsk-header-web__nav--mobile': !isMenuExpanded })}
-            aria-hidden
         >
             <div className="govuk-width-container">
                 <div className="govuk-grid-row">

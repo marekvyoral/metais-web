@@ -91,12 +91,12 @@ export const RelationDetailView = ({
                             <Button
                                 label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
                                 onClick={() => unValidRelationShipTypeMutation?.(ciTypeData?.technicalName)}
-                                disabled={ciTypeData?.type !== AttributeProfileType.custom}
+                                disabled={ciTypeData?.type === AttributeProfileType.system}
                             />
                         </ButtonGroupRow>
                     </div>
-                    {isError && <QueryFeedback error loading={false} />}
-                    <MutationFeedback success={isActionSuccess.value} error={false} />
+                    <QueryFeedback error={isError} loading={false} />
+                    <MutationFeedback success={isActionSuccess.value} />
                 </FlexColumnReverseWrapper>
                 <BasicInformation data={{ ciTypeData, constraintsData, unitsData }} roles={roles} />
             </div>

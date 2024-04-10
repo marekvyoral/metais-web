@@ -5,7 +5,7 @@ import { PageSizeSelect } from '@isdd/idsk-ui-kit/page-size-select/PageSizeSelec
 import { CiTableSelectColumns, IColumnSectionType } from '@isdd/idsk-ui-kit/src/ci-table-select-columns/CiTableSelectColumns'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import classnames from 'classnames'
-import { PropsWithChildren, default as React, useId } from 'react'
+import { PropsWithChildren, default as React } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './actionsOverTable.module.scss'
@@ -19,6 +19,8 @@ export enum ActionNames {
     SELECT_COLUMNS = 'SELECT_COLUMNS',
     PAGING = 'PAGING',
     BULK_ACTIONS = 'BULK_ACTIONS',
+    IMPORT = 'IMPORT',
+    EXPORT = 'EXPORT',
 }
 
 export interface ISimpleTableSelectParams {
@@ -49,7 +51,7 @@ interface IActionsOverTableProps extends PropsWithChildren {
     createButton?: React.ReactNode
     exportButton?: React.ReactNode
     importButton?: React.ReactNode
-    bulkPopup?: React.ReactNode
+    bulkPopup?: (params: { selectedRowsCount?: number }) => React.ReactNode
     metaAttributesColumnSection?: IColumnSectionType
     handlePagingSelect?: (page: string) => void
     simpleTableColumnsSelect?: ISimpleTableSelectParams
@@ -87,7 +89,6 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
 }) => {
     const ability = useCreateCiAbility(ciTypeData, entityName)
     const { t } = useTranslation()
-    const pagingSelectId = useId()
 
     const attributeProfilesColumnSections: IColumnSectionType[] =
         attributeProfiles?.map((attributeProfile) => ({
@@ -130,17 +131,17 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                     <Can I={Actions.BULK_ACTIONS} a={entityName} ability={ability}>
                         <>
                             {selectedRowsCount != undefined && <SelectedRowsAriaRead count={selectedRowsCount} />}
-                            {bulkPopup}
+                            {bulkPopup({ selectedRowsCount })}
                         </>
                     </Can>
                 )}
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>
-                    {importButton && (
+                    {!hiddenButtons?.IMPORT && importButton && (
                         <Can I={Actions.IMPORT} a={entityName} ability={ability}>
                             <>{importButton}</>
                         </Can>
                     )}
-                    {exportButton && <>{exportButton}</>}
+                    {!hiddenButtons?.EXPORT && exportButton && <>{exportButton}</>}
                 </div>
                 {createButton && (
                     <Can I={Actions.CREATE} a={entityName} ability={ability}>
@@ -153,6 +154,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                 {!hiddenButtons?.SELECT_COLUMNS && (
                     <ButtonPopup
                         buttonLabel={t('actionOverTable.selectColumn')}
+                        triggerAria={{ 'aria-label': t('actionOverTable.selectColumnAriaLabel') }}
                         buttonClassName="marginBottom0"
                         popupPosition="right"
                         popupContent={(closePopup) => {
@@ -181,7 +183,6 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                 )}
                 {!hiddenButtons?.PAGING && pagingOptions && (
                     <PageSizeSelect
-                        id={pagingSelectId}
                         pagingOptions={pagingOptions}
                         handlePagingSelect={handlePagingSelect ? handlePagingSelect : defaultHandlePagingSelect}
                         className={styles.selectGroup}

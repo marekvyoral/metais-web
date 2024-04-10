@@ -13,7 +13,7 @@ interface Props {
     buttonId: string
 }
 
-export const SidebarIcon = ({ section, onToggle, setIsSidebarExpanded, isExpanded, buttonId }: Props) => {
+export const SidebarIcon = ({ section, onToggle, setIsSidebarExpanded, isExpanded }: Props) => {
     const location = useLocation()
     return (
         <Link
@@ -24,12 +24,12 @@ export const SidebarIcon = ({ section, onToggle, setIsSidebarExpanded, isExpande
                 onToggle(true)
                 setIsSidebarExpanded(true)
             }}
+            aria-haspopup={section.subItems ? 'menu' : undefined}
         >
             <img src={section.icon} className={styles.img} alt="" />
             <span
                 className={classNames(styles.sectionHeaderButton, styles.smallSidebarText, isExpanded && styles.expanded)}
-                aria-expanded={isExpanded}
-                id={buttonId}
+                aria-expanded={section.subItems ? isExpanded : undefined}
             >
                 {section.title}
             </span>

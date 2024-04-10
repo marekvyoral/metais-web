@@ -70,6 +70,7 @@ export type ListParameterValuesParams = {
 }
 
 export type ListMonitoringOverviewParams = {
+    entityRef?: string
     serviceTypes?: string[]
     intervalStart?: string
     intervalEnd?: string
@@ -2158,7 +2159,7 @@ export const useUpdateOlaContract = <TError = ApiError, TContext = unknown>(opti
 }
 
 export const useSaveOlaContractHook = () => {
-    const saveOlaContract = useMonitoringSwaggerClient<void>()
+    const saveOlaContract = useMonitoringSwaggerClient<RequestIdUi>()
 
     return (apiOlaContractData: ApiOlaContractData) => {
         return saveOlaContract({

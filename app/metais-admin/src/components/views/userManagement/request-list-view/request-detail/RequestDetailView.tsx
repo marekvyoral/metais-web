@@ -46,11 +46,11 @@ export const RequestDetailView: React.FC<IRequestDetailProps> = ({
     const detailRows = [
         { label: t('managementList.firstName'), value: request?.identityFirstName },
         { label: t('managementList.lastName'), value: request?.identityLastName },
-        { label: t('managementList.displayName'), value: request?.name },
-        { label: t('managementList.email'), value: request?.email },
+        // { label: t('managementList.displayName'), value: request?.name },
+        { label: t('managementList.loginEmail'), value: request?.identityLogin },
+        // { label: t('managementList.email'), value: request?.email },
         { label: t('managementList.position'), value: request?.position },
         { label: t('managementList.mobile'), value: request?.mobile },
-        { label: t('managementList.login'), value: request?.identityLogin },
     ]
 
     const detailRequestRows = [
@@ -71,7 +71,7 @@ export const RequestDetailView: React.FC<IRequestDetailProps> = ({
 
     return (
         <>
-            {(successesMutation || errorMessage) && <MutationFeedback success={successesMutation} error={errorMessage} />}
+            <MutationFeedback success={successesMutation} error={!!errorMessage} errorMessage={errorMessage} />
             <div className={styles.basicInformationSpace}>
                 <TextHeading size="L">{t('requestList.identityDetail')}</TextHeading>
                 <DefinitionList>

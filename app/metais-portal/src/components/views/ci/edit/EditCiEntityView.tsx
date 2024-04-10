@@ -21,6 +21,7 @@ interface Props {
     entityId: string
     isLoading: boolean
     isError: boolean
+    ownerId: string
 }
 
 export const EditCiEntityView: React.FC<Props> = ({
@@ -32,6 +33,7 @@ export const EditCiEntityView: React.FC<Props> = ({
     entityId,
     isError,
     isLoading,
+    ownerId,
 }) => {
     const { t, i18n } = useTranslation()
     const ciItemAttributes = ciItemData?.attributes
@@ -51,12 +53,12 @@ export const EditCiEntityView: React.FC<Props> = ({
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('ciType.editEntity', { entityName: ciTypeName })}</TextHeading>
-                {isError && <QueryFeedback loading={false} error={isError} />}
+                <QueryFeedback loading={false} error={isError} />
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
             <CreateEntity
                 updateCiItemId={ciItemData?.uuid}
-                data={{ attributesData: { ciTypeData, constraintsData, unitsData }, generatedEntityId: entityIdToUpdate }}
+                data={{ ownerId: ownerId, attributesData: { ciTypeData, constraintsData, unitsData }, generatedEntityId: entityIdToUpdate }}
                 entityName={entityName}
                 defaultItemAttributeValues={ciItemAttributes}
             />

@@ -35,12 +35,14 @@ export interface IExportButtonProps<T> {
     pagination?: Pagination
     defaultFilterValues: T
     checkedItemsUuids: string[]
+    ciTypeName?: string
 }
 
 export const ExportButton = <T extends FieldValues & IFilterParams>({
     defaultFilterValues,
     checkedItemsUuids,
     pagination,
+    ciTypeName,
 }: IExportButtonProps<T>) => {
     const [modalOpen, setModalOpen] = useState(false)
     const { t } = useTranslation()
@@ -169,7 +171,8 @@ export const ExportButton = <T extends FieldValues & IFilterParams>({
                 onClick={openModal}
                 className="marginBottom0"
                 variant="secondary"
-                label={<IconLabel label={t('actionOverTable.export')} icon={ExportIcon} alt={t('exportItemsOrRelations.header')} />}
+                aria-label={t('actionOverTable.exportAria', { ciTypeName })}
+                label={<IconLabel label={t('actionOverTable.export')} icon={ExportIcon} />}
             />
 
             <ExportItemsOrRelations isOpen={modalOpen} close={onClose} isLoading={isLoading} onExportStart={onExportStart} isError={isError} />

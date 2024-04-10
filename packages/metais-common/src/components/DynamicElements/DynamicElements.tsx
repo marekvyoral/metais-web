@@ -1,11 +1,10 @@
-import React, { useState, MouseEvent, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import { UseFormSetValue } from 'react-hook-form'
 import { TextWarning } from '@isdd/idsk-ui-kit'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
-import isEqual from 'lodash/isEqual'
+import React, { MouseEvent, useId, useState } from 'react'
+import { UseFormSetValue } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
-import style from './customElement.module.scss'
+import style from './dynamicElements.module.scss'
 import { DynamicRow, RenderableComponentProps } from './DynamicRow'
 
 import { MAX_DYNAMIC_ATTRIBUTES_LENGHT } from '@isdd/metais-common/constants/index'
@@ -36,11 +35,7 @@ export const DynamicElements: <T extends object>({
     const [dynamicElementsData, setDynamicElementsData] = useState([...initialElementsData])
     const { t } = useTranslation()
     const [addRowError, setAddRowError] = useState<string>('')
-
-    useEffect(() => {
-        if (!isEqual(dynamicElementsData, initialElementsData) && !!initialElementsData.length) setDynamicElementsData(initialElementsData)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [initialElementsData])
+    const id = useId()
 
     const removeRow = (index: number) => {
         const copyDynamicElementsData = [...dynamicElementsData]
@@ -49,7 +44,12 @@ export const DynamicElements: <T extends object>({
         onChange?.(copyDynamicElementsData)
     }
 
-    const addRow = (e: MouseEvent<HTMLButtonElement>) => {
+    const getFocusableId = (index: number) => {
+        const DYNAMIC_ROW = 'dynamic-row-'
+        return `${id}-${DYNAMIC_ROW}-${index}`
+    }
+
+    const addRow = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
 
         if (dynamicElementsData.length < MAX_DYNAMIC_ATTRIBUTES_LENGHT) {
@@ -60,15 +60,31 @@ export const DynamicElements: <T extends object>({
         }
     }
 
+    const changeFocusToFirstInteractiveElement = () => {
+        const divWithFocusId = document.getElementById(getFocusableId(dynamicElementsData.length))
+        if (divWithFocusId) {
+            const firstInput = divWithFocusId?.querySelector('input')
+            if (firstInput) {
+                firstInput.focus()
+            } else {
+                divWithFocusId?.focus()
+            }
+        }
+    }
+
     const doNotRemove = (elementIndex: number) => {
         return nonRemovableElementIndexes?.includes(elementIndex)
     }
 
     return (
         <div className={style.stretch}>
+            <span className="govuk-visually-hidden" role="alert">
+                {t('arrayInput.changeRowsNumber', { name: '', count: dynamicElementsData.length })}
+            </span>
             {dynamicElementsData.map((elementData, index) => (
                 <DynamicRow
-                    key={'dynamic-row-' + index}
+                    id={getFocusableId(index)}
+                    key={getFocusableId(index)}
                     index={index}
                     lastElement={dynamicElementsData.length == index + 1}
                     defaultRowData={elementData}
@@ -93,7 +109,16 @@ export const DynamicElements: <T extends object>({
                 )}
             </div>
             <div className={style.spaceVertical}>
-                <ButtonLink label={addItemButtonLabelText} className={style.addButton} type="button" onClick={addRow} />
+                <ButtonLink
+                    label={addItemButtonLabelText}
+                    className={style.addButton}
+                    type="button"
+                    onClick={(e) => {
+                        addRow(e).then(() => {
+                            changeFocusToFirstInteractiveElement()
+                        })
+                    }}
+                />
             </div>
         </div>
     )

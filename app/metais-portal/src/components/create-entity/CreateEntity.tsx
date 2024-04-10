@@ -7,11 +7,14 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ENTITY_KS } from '@isdd/metais-common/constants'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { useCiCreateEditOnStatusSuccess, useCiCreateUpdateOnSubmit } from './createEntityHelpers'
 
 import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
+import { useKSChannel } from '@/hooks/useChannelKS'
+import { useRolesForPO } from '@/hooks/useRolesForPO'
 
 export interface AttributesData {
     ciTypeData: CiType | undefined
@@ -49,6 +52,12 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     const { constraintsData, ciTypeData, unitsData } = attributesData
 
     const onStatusSuccess = useCiCreateEditOnStatusSuccess()
+    const { createChannelForKS, isLoading: isSubmitLoading, isError: isSubmitError } = useKSChannel()
+
+    const { rolesForPO, isRightsForPOError } = useRolesForPO(
+        updateCiItemId ? data.ownerId ?? '' : publicAuthorityState?.selectedPublicAuthority?.poUUID ?? '',
+        ciTypeData?.roleList ?? [],
+    )
     const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
     const { onSubmit, uploadError, setUploadError, configurationItemId } = useCiCreateUpdateOnSubmit(entityName)
     const storeConfigurationItem = useStoreConfigurationItem({
@@ -56,9 +65,15 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             onError() {
                 setUploadError(true)
             },
-            async onSuccess(successData) {
+            async onSuccess(successData, variables) {
                 if (successData.requestId != null) {
-                    await getRequestStatus(successData.requestId, () => onStatusSuccess({ configurationItemId, isUpdate, entityName }))
+                    await getRequestStatus(successData.requestId, async () => {
+                        if (entityName === ENTITY_KS) {
+                            await createChannelForKS(variables.data, () => onStatusSuccess({ configurationItemId, isUpdate, entityName }))
+                        } else {
+                            onStatusSuccess({ configurationItemId, isUpdate, entityName })
+                        }
+                    })
                 } else {
                     setUploadError(true)
                 }
@@ -70,17 +85,15 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         if (!(isRedirectError || isProcessedError || isRedirectLoading) || isTooManyFetchesError) {
             scrollToMutationFeedback()
         }
-    }, [isProcessedError, isRedirectError, isRedirectLoading, isTooManyFetchesError, scrollToMutationFeedback])
+    }, [isProcessedError, isRedirectError, isRedirectLoading, isTooManyFetchesError, isRightsForPOError, scrollToMutationFeedback])
 
     return (
         <>
-            {!(isRedirectError || isProcessedError || isRedirectLoading) && (
-                <MutationFeedback success={false} showSupportEmail error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''} />
-            )}
+            <MutationFeedback error={storeConfigurationItem.isError} />
 
             <QueryFeedback
-                loading={isRedirectLoading}
-                error={isRedirectError || isProcessedError || isTooManyFetchesError}
+                loading={isRedirectLoading || isSubmitLoading}
+                error={isRedirectError || isProcessedError || isTooManyFetchesError || isSubmitError || isRightsForPOError}
                 indicatorProps={{
                     label: isUpdate ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
                 }}
@@ -118,12 +131,15 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                             storeCiItem: storeConfigurationItem.mutateAsync,
                             ownerId: data.ownerId,
                             generatedEntityId,
+                            publicAuthorityState,
                         })
                     }
                     defaultItemAttributeValues={defaultItemAttributeValues}
                     updateCiItemId={updateCiItemId}
                     isProcessing={storeConfigurationItem.isLoading}
+                    selectedOrg={publicAuthorityState?.selectedPublicAuthority}
                     selectedRole={roleState?.selectedRole ?? null}
+                    rolesForPO={rolesForPO ?? []}
                 />
             </QueryFeedback>
         </>

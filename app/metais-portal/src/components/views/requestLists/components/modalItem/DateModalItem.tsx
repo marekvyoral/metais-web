@@ -1,4 +1,4 @@
-import { BaseModal, Button, ButtonGroupRow, Table, TextBody, TextHeading, TextWarning } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Table, TextBody, TextHeading, TextWarning } from '@isdd/idsk-ui-kit/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
@@ -25,7 +25,7 @@ export const DateModalItem: React.FC<DateModalItemProps> = ({ isOpen, close, onS
     const { t } = useTranslation()
     const { schema: schemaEdit } = useItemDateSchema()
 
-    const { register, handleSubmit, formState, control, setValue } = useForm<IItemDates>({
+    const { register, handleSubmit, formState, control, setValue, watch } = useForm<IItemDates>({
         resolver: yupResolver(schemaEdit),
     })
 
@@ -37,7 +37,7 @@ export const DateModalItem: React.FC<DateModalItemProps> = ({ isOpen, close, onS
         <BaseModal isOpen={isOpen} close={close}>
             <TextHeading size="M">{t(`codeListDetail.modal.title.setDates`)}</TextHeading>
             {Object.keys(rowSelection).length > 0 ? (
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <TextBody>{t('codeListDetail.modal.text.willBeChanged')}</TextBody>
                     <Table
                         data={Object.values(rowSelection)}
@@ -77,14 +77,14 @@ export const DateModalItem: React.FC<DateModalItemProps> = ({ isOpen, close, onS
                         handleDateChange={handleDateChange}
                         setValue={setValue}
                     />
-                    <ButtonGroupRow>
+                    {/* <ButtonGroupRow>
                         <Button type="submit" disabled={!formState.isValid} label={t('codeListDetail.modal.button.confirm')} />
-                    </ButtonGroupRow>
+                    </ButtonGroupRow> */}
                     <ModalButtons
                         submitButtonLabel={t('codeListDetail.modal.button.confirm')}
                         closeButtonLabel={t('evaluation.cancelBtn')}
                         onClose={close}
-                        disabled={!formState.isValid}
+                        disabled={!watch(RequestItemFormEnum.VALIDDATE) || !watch(RequestItemFormEnum.STARTDATE)}
                     />
                 </form>
             ) : (

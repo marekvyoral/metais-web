@@ -33,17 +33,41 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
         },
     ]
 
-    const svg = d3.select(svgRef.current).append('svg')
-    const width = widthDiv
-    const height = 400
     const margin = 50
-    const duration = 250
+    const width = widthDiv - margin
+    const height = 600
+    const duration = 150
+    let clickCount = 0
 
     const lineOpacity = '1'
 
     const circleOpacity = '0.85'
     const circleRadius = 6
-    const circleRadiusHover = 8
+
+    const topOffset = 100
+    const topOffsetMargin = 30
+
+    const svg = d3
+        .select(svgRef.current)
+        .append('svg')
+        .attr('focusable', false)
+        .on('focus', function () {
+            return
+        })
+        .on('keydown', function (e) {
+            //ESC
+            if (e.keyCode === 27) {
+                d3.select(this)
+                    .selectAll(`.line${clickCount - 1}, .rect${clickCount - 1}, .text${clickCount - 1}`)
+                    .remove()
+            }
+        })
+        .on('click', function () {
+            if (clickCount > 1)
+                d3.select(this)
+                    .selectAll(`.line${clickCount - 2}, .rect${clickCount - 2}, .text${clickCount - 2}`)
+                    .remove()
+        })
 
     /* Scale */
     const extentX = d3.extent(wrappedData[0].values, (d) => d.date)
@@ -62,7 +86,7 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
     const yScale = d3
         .scaleLinear()
         .domain([minY, maxY])
-        .range([height - margin, 0])
+        .range([height - margin, topOffset])
 
     svg.attr('width', width + margin + 'px')
         .attr('height', height + margin + 'px')
@@ -134,7 +158,7 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
         // line color that connects dots
         .attr('class', 'line')
         .attr('fill', 'none')
-        .attr('stroke', 'steelblue')
+        .attr('stroke', 'blue')
         .attr('stroke-width', 2)
         .style('opacity', lineOpacity)
 
@@ -144,35 +168,60 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
         .data(wrappedData)
         .enter()
         .append('g')
-        .style('fill', '#33BBFF')
+        .style('fill', 'blue')
         .selectAll('circle')
         .data((d: Line) => d.values)
         .enter()
         .append('g')
         .attr('class', 'circle')
-        .on('mouseover', function () {
+        .style('cursor', 'pointer')
+        .on('click', function () {
             // display amount on hovering of points
             d3.select<SVGGElement, Data>(this)
                 .append('rect')
-                .attr('class', 'text')
+                .style('cursor', 'pointer')
+                .attr('class', 'rect' + clickCount)
                 .style('fill', 'white')
-                .attr('x', (d) => xScale(d.date ?? new Date()))
-                .attr('y', (d) => yScale(d.value) - 25)
-            const text = d3
-                .select<SVGGElement, Data>(this)
+                .style('stroke', 'black')
+                .attr('x', (d) => xScale(d.date ?? new Date()) - topOffset / 2)
+                .attr('y', topOffsetMargin)
+                .attr('width', 100)
+                .attr('height', 50)
+
+            d3.select<SVGGElement, Data>(this)
+                .append('text')
+                .style('cursor', 'pointer')
+                .attr('class', 'text' + clickCount)
+                .attr('font-family', '"Source Sans Pro", "Arial", sans-serif')
+                .attr('fill', 'black')
+                .text((d) => `(${d.value})`)
+                .attr('x', (d) => xScale(d.date ?? new Date()) - topOffset / 2 + 7)
+                .attr('y', topOffsetMargin + 20)
+
+            d3.select<SVGGElement, Data>(this)
                 .style('cursor', 'pointer')
                 .append('text')
-                .attr('class', 'text')
-                .text((d) => `(${d.value}) ${formatDateForDefaultValue(d.date?.toISOString() ?? '', 'dd. MM. yyyy')}`)
-                .attr('x', (d) => xScale(d.date ?? new Date()) + 5)
-                .attr('y', (d) => yScale(d.value) - 10)
-            d3.select('rect')
-                .attr('width', text.text().length * 7.1)
-                .attr('height', 20)
+                .attr('class', 'text' + clickCount)
+                .attr('fill', 'black')
+                .attr('font-family', '"Source Sans Pro", "Arial", sans-serif')
+                .attr('stroke', 'black')
+                .text((d) => `${formatDateForDefaultValue(d.date?.toISOString() ?? '', 'dd. MM. yyyy')}`)
+                .attr('x', (d) => xScale(d.date ?? new Date()) - topOffset / 2 + 7)
+                .attr('y', topOffsetMargin + 40)
+
+            d3.select<SVGGElement, Data>(this)
+                .append('line')
+                .attr('class', 'line' + clickCount)
+                .style('stroke', 'black')
+                .style('stroke-width', 1)
+                .attr('x1', (d) => xScale(d.date ?? new Date()))
+                .attr('y1', topOffsetMargin + 51)
+                .attr('x2', (d) => xScale(d.date ?? new Date()))
+                .attr('y2', (d) => yScale(d.value ?? 0) - 2)
+
+            clickCount = clickCount + 1
         })
-        .on('mouseout', function () {
-            d3.select(this).style('cursor', 'none').transition().duration(duration).selectAll('.text').remove()
-        })
+
         .append('circle')
         .attr('cx', (d: unknown) => {
             if (typeof d === 'object' && d !== null && 'date' in d) {
@@ -189,7 +238,7 @@ export const createLinearGraph = (svgRef: RefObject<HTMLDivElement>, graphData: 
         .attr('r', circleRadius)
         .style('opacity', circleOpacity)
         .on('mouseover', function () {
-            d3.select(this).transition().duration(duration).attr('r', circleRadiusHover)
+            d3.select(this).transition().duration(duration).attr('r', circleRadius)
         })
         .on('mouseout', function () {
             d3.select(this).transition().duration(duration).attr('r', circleRadius)

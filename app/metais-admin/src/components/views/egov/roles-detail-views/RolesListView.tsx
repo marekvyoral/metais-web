@@ -7,7 +7,7 @@ import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ActionsOverTable, BASE_PAGE_NUMBER, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
@@ -42,6 +42,7 @@ const RoleListView: React.FC<RoleListViewParams> = ({
     const resetSelectedColumns = () => {
         setSelectedColumns(getRolesListSelectedColumns(t))
     }
+    const tableRef = useRef<HTMLTableElement>(null)
     const { isActionSuccess } = useActionSuccess()
     const columns: ColumnDef<Role>[] = [
         {
@@ -162,19 +163,16 @@ const RoleListView: React.FC<RoleListViewParams> = ({
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
-                        <TextHeading size="XL">{t('adminRolesPage.rolesList')}</TextHeading>
-                        {isError && <QueryFeedback error loading={false} />}
-                        {isActionSuccess.value && (
-                            <MutationFeedback
-                                success
-                                successMessage={
-                                    isActionSuccess.additionalInfo?.type === 'edit'
-                                        ? t('mutationFeedback.successfulUpdated')
-                                        : t('mutationFeedback.successfulCreated')
-                                }
-                                error={false}
-                            />
-                        )}
+                        <TextHeading size="XL">{t('adminRolesPage.rolesList')}</TextHeading>\
+                        <QueryFeedback error={isError} loading={false} />
+                        <MutationFeedback
+                            success={isActionSuccess.value}
+                            successMessage={
+                                isActionSuccess.additionalInfo?.type === 'edit'
+                                    ? t('mutationFeedback.successfulUpdated')
+                                    : t('mutationFeedback.successfulCreated')
+                            }
+                        />
                     </FlexColumnReverseWrapper>
                     <RolesFilter tableRoleGroups={tableRoleGroups} />
                     <ActionsOverTable
@@ -190,7 +188,9 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                             />
                         }
                     />
+
                     <Table<Role>
+                        tableRef={tableRef}
                         onSortingChange={(newSort) => {
                             setSorting(newSort)
                         }}
@@ -208,7 +208,10 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                         dataLength={rolesPages ?? 0}
                         pageNumber={pagination.pageNumber}
                         pageSize={pagination.pageSize}
-                        handlePageChange={(filterPage) => setPagination({ ...pagination, pageNumber: filterPage.pageNumber ?? BASE_PAGE_NUMBER })}
+                        handlePageChange={(filterPage) => {
+                            setPagination({ ...pagination, pageNumber: filterPage.pageNumber ?? BASE_PAGE_NUMBER })
+                            tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                        }}
                     />
                 </QueryFeedback>
             </MainContentWrapper>

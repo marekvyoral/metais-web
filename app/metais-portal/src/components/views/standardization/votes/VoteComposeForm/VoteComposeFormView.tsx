@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, CheckBox, GridCol, GridRow, IOption, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, CheckBox, ErrorBlock, GridCol, GridRow, IOption, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { GroupWithIdentities } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ApiAttachment, ApiLink, ApiStandardRequestPreviewList, ApiVote, ApiVoteChoice } from '@isdd/metais-common/api/generated/standards-swagger'
 import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
@@ -8,23 +8,17 @@ import { SubmitWithFeedback, formatDateForDefaultValue } from '@isdd/metais-comm
 import classNames from 'classnames'
 import { TFunction } from 'i18next'
 import { DateTime } from 'luxon'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { v4 as uuidV4 } from 'uuid'
 import * as Yup from 'yup'
 import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 
 import { ExistingFileData, ExistingFilesHandler, IExistingFilesHandlerRef } from './components/ExistingFilesHandler/ExistingFilesHandler'
 import { SelectVoteActors } from './components/SelectVoteActors'
-import {
-    getPageTitle,
-    getStandardRequestOptions,
-    mapFormToApiRequestBody,
-    mapProcessedExistingFilesToApiAttachment,
-    mapUploadedFilesToApiAttachment,
-} from './functions/voteEditFunc'
+import { getPageTitle, getStandardRequestOptions, mapFormToApiRequestBody } from './functions/voteEditFunc'
 
 import { LinksImport } from '@/components/LinksImport/LinksImport'
 import { AnswerDefinitions } from '@/components/views/standardization/votes/components/AnswerDefinitions/AnswerDefinitions'
@@ -45,6 +39,11 @@ export interface IVoteEditView {
     createVote: (newVoteData: ApiVote) => void
     updateVote: (updatedVoteData: ApiVote) => void
     onCancel: () => void
+    fileUploadRef: React.RefObject<IFileUploadRef>
+    existingFilesProcessRef: React.RefObject<IExistingFilesHandlerRef>
+    handleUploadSuccess: (data: FileUploadData[]) => void
+    handleDeleteSuccess: () => void
+    voteId: number
 }
 
 export interface IVoteEditForm {
@@ -120,10 +119,15 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
     createVote,
     updateVote,
     onCancel,
+    fileUploadRef,
+    existingFilesProcessRef,
+    handleDeleteSuccess,
+    handleUploadSuccess,
+    voteId,
 }) => {
     const isNewVote = !existingVoteDataToEdit
     const { t } = useTranslation()
-
+    const formDataRef = useRef<FieldValues>([])
     const standardRequestOptions: IOption<number | undefined>[] = useMemo(() => {
         return getStandardRequestOptions(allStandardRequestData)
     }, [allStandardRequestData])
@@ -162,10 +166,6 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
         }
     }, [requestIdWatch])
 
-    const fileUploadRef = useRef<IFileUploadRef>(null)
-    const formDataRef = useRef<FieldValues>([])
-    const attachmentsDataRef = useRef<ApiAttachment[]>([])
-    const existingFilesProcessRef = useRef<IExistingFilesHandlerRef>(null)
     const openStandardRequestListModal = useRef<StandardRequestsListModalRefType>(null)
 
     const handleOpenStandardRequestListModal = () => {
@@ -185,56 +185,9 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
         }
     }
 
-    const handleDeleteFiles = () => {
-        existingFilesProcessRef?.current?.startFilesProcessing()
-    }
-
-    const handleDeleteSuccess = () => {
-        callApi(
-            formDataRef.current,
-            attachmentsDataRef.current.concat(
-                mapProcessedExistingFilesToApiAttachment(existingFilesProcessRef.current?.getRemainingFileList() ?? []),
-            ),
-        )
-    }
-
-    const handleUploadSuccess = (data: FileUploadData[]) => {
-        const attachmentsData = mapUploadedFilesToApiAttachment(data)
-        if (existingFilesProcessRef.current?.hasDataToProcess()) {
-            attachmentsDataRef.current = attachmentsData
-            handleDeleteFiles()
-        } else {
-            callApi(formDataRef.current, attachmentsData)
-        }
-    }
-
-    const handleUploadData = useCallback(() => {
-        fileUploadRef.current?.startUploading()
-    }, [])
-
     const onSubmit = (formData: FieldValues) => {
         formDataRef.current = { ...formData }
-        if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
-            handleUploadData()
-            return
-        }
-        if (existingFilesProcessRef.current?.hasDataToProcess()) {
-            handleDeleteFiles()
-            return
-        }
         callApi(formData, [])
-    }
-
-    const fileMetaAttributes = {
-        'x-content-uuid': uuidV4(),
-        refAttributes: new Blob(
-            [
-                JSON.stringify({
-                    refType: 'STANDARD',
-                }),
-            ],
-            { type: 'application/json' },
-        ),
     }
 
     return (
@@ -247,7 +200,10 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                 setSelectedRequestId={setSelectedRequestId}
             />
             <TextHeading size="XL">{getPageTitle(isNewVote, t)}</TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
+
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')} noValidate>
                 <TextArea
                     rows={2}
                     id="voteSubject"
@@ -304,9 +260,12 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                     allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif', '.csv']}
                     multiple
                     isUsingUuidInFilePath
-                    fileMetaAttributes={fileMetaAttributes}
                     onUploadSuccess={handleUploadSuccess}
+                    refId={voteId.toString()}
+                    refType={RefAttributesRefType.VOTE}
+                    textSize="L"
                 />
+                <Spacer vertical />
 
                 <ExistingFilesHandler
                     existingFiles={
@@ -314,8 +273,6 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                             return {
                                 fileId: attachment.attachmentId,
                                 fileName: attachment.attachmentName,
-                                fileSize: attachment.attachmentSize,
-                                fileType: attachment.attachmentType,
                             }
                         }) ?? []
                     }

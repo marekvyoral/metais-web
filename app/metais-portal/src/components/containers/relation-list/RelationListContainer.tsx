@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { RelFilterUi, RelListFilterContainerUi, RelationshipUi, useReadRelationshipList } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useGetCiTypeHook, useListCiTypes, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useListCiTypes, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, CI_TYPES_QUERY_KEY, RELATIONSHIP_TYPES_QUERY_KEY } from '@isdd/metais-common/constants'
 import { IOption } from '@isdd/idsk-ui-kit/index'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { useGetCiTypeHookWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
+import { useTranslation } from 'react-i18next'
 
 import { IRelationListView } from '@/components/views/relation-list/RelationListView'
 
@@ -28,6 +30,7 @@ interface RelationListContainerProps {
 
 export const RelationListContainer: React.FC<RelationListContainerProps> = ({ View }) => {
     const { currentPreferences } = useUserPreferences()
+    const { i18n } = useTranslation()
 
     const [relationships, setRelationships] = useState<RelationshipUi[]>([])
     const [totaltems, setTotalItems] = useState<number>(0)
@@ -58,10 +61,10 @@ export const RelationListContainer: React.FC<RelationListContainerProps> = ({ Vi
 
     const { mutateAsync, isLoading } = useReadRelationshipList()
 
-    const { data: relTypes } = useListRelationshipTypes({ filter: {} })
-    const { data: ciTypes } = useListCiTypes({ filter: {} })
-    const ciTypeHook = useGetCiTypeHook()
-    //const relTypeHook = useGetRelationshipTypeHook()
+    const { data: relTypes } = useListRelationshipTypes({ filter: {} }, { query: { queryKey: [RELATIONSHIP_TYPES_QUERY_KEY, i18n.language] } })
+    const { data: ciTypes } = useListCiTypes({ filter: {} }, { query: { queryKey: [CI_TYPES_QUERY_KEY, i18n.language] } })
+    const ciTypeHook = useGetCiTypeHookWrapper()
+    //const relTypeHook = useGetRelationshipTypeHookWrapper()
 
     // const onRelTypeChange = async (type: string | undefined) => {
     //     if (type) {

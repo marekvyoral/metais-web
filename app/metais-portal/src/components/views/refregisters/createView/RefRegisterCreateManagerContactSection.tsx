@@ -1,15 +1,13 @@
-import { GridCol, GridRow, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { GridCol, GridRow, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { ApiReferenceRegister } from '@isdd/metais-common/api/generated/reference-registers-swagger'
+import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { IOptions } from '@isdd/metais-common/components/select-cmdb-params/SelectFilterCMDBParamsOptions'
 import React from 'react'
 import { FormState, UseFormClearErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ApiReferenceRegister } from '@isdd/metais-common/api/generated/reference-registers-swagger'
-import { useParams } from 'react-router-dom'
-import { IOptions } from '@isdd/metais-common/components/select-cmdb-params/SelectFilterCMDBParamsOptions'
-import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
+import { isRRFieldEditable } from '@/componentHelpers/refregisters/helpers'
 import { IRefRegisterCreateFormData } from '@/components/views/refregisters/schema'
-import { getInfoRR, getLabelRR, isRRFieldEditable } from '@/componentHelpers/refregisters/helpers'
-import { RefRegisterViewItems } from '@/types/views'
 
 interface IProps {
     defaultData?: ApiReferenceRegister
@@ -21,42 +19,25 @@ interface IProps {
     register: UseFormRegister<IRefRegisterCreateFormData>
     isContact: boolean
     creatorNotSet: boolean
+    creatorUuid?: string
 }
 
 export const RefRegisterCreateManagerContactSection: React.FC<IProps> = ({
     defaultData,
-    renamedAttributes,
     userGroupOptions,
-    setValue,
-    clearErrors,
     formState,
     register,
     isContact,
     creatorNotSet,
+    creatorUuid,
 }) => {
     const { t } = useTranslation()
-    const { entityId } = useParams()
 
-    const optionsPO = entityId ? [{ label: defaultData?.managerName ?? '', value: defaultData?.managerUuid ?? '' }] : userGroupOptions
+    const creatorName = userGroupOptions?.find((option) => option.value === creatorUuid)?.label
     return (
         <>
             <TextHeading size="L">{t('refRegisters.create.managerContact')}</TextHeading>
-
-            <SimpleSelect
-                label={getLabelRR(RefRegisterViewItems.MANAGER_NAME, renamedAttributes) ?? ''}
-                info={getInfoRR(RefRegisterViewItems.MANAGER_NAME, renamedAttributes)}
-                name={'refRegisters.manager.PO'}
-                id={'refRegisters.manager.PO'}
-                options={optionsPO ?? []}
-                setValue={setValue}
-                defaultValue={defaultData?.managerUuid ?? ''}
-                clearErrors={clearErrors}
-                error={formState.errors?.refRegisters?.manager?.PO?.message}
-                disabled={!isRRFieldEditable(defaultData?.state) || isContact || creatorNotSet || !!entityId}
-                required
-                isClearable={false}
-            />
-
+            <TextHeading size="S">{creatorName}</TextHeading>
             <GridRow>
                 <GridCol setWidth="one-half">
                     <Input

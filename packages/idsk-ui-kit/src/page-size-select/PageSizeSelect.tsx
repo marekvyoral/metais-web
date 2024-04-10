@@ -10,7 +10,6 @@ interface Props {
     pagingOptions?: { value: string; label: string }[]
     handlePagingSelect?: (page: string) => void
     className: string
-    id: string
 }
 
 enum DefaultPagingEnum {
@@ -20,7 +19,7 @@ enum DefaultPagingEnum {
     HUNDRED = '100',
 }
 
-export const PageSizeSelect: React.FC<Props> = ({ pagingOptions, handlePagingSelect, className, id }) => {
+export const PageSizeSelect: React.FC<Props> = ({ pagingOptions, handlePagingSelect, className }) => {
     const { t } = useTranslation()
     const [urlParams] = useSearchParams()
     const { currentPreferences } = useUserPreferences()
@@ -34,12 +33,13 @@ export const PageSizeSelect: React.FC<Props> = ({ pagingOptions, handlePagingSel
         <SimpleSelect
             className={classNames(className)}
             label={t('actionOverTable.view')}
-            id={id}
-            name={`name_${id}`}
+            ariaLabel={t('actionOverTable.viewAriaLabel')}
+            name={'page_size'}
             options={pagingOptions ? pagingOptions : defaultPagingOptions}
             onChange={(value) => handlePagingSelect && handlePagingSelect(value || '')}
             defaultValue={urlParams.get('pageSize') || currentPreferences.defaultPerPage || defaultPagingOptions[0].value}
             isClearable={false}
+            isSearchable={false}
         />
     )
 }

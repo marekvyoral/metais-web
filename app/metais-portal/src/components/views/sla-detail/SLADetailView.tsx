@@ -174,7 +174,7 @@ export const SlaDetailView: React.FC<IView> = ({
                 }
             />
             <BaseModal isOpen={!!updateItem} close={() => setUpdateItem(undefined)}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className={styles.modalContainer}>
                         <DefinitionList className={styles.width80}>
                             <InformationGridRow
@@ -254,7 +254,6 @@ export const SlaDetailView: React.FC<IView> = ({
 
                 <MutationFeedback
                     success={isUpdateSuccess || isInvalidateSuccess}
-                    error={''}
                     successMessage={isInvalidateSuccess ? t('mutationFeedback.successfulInvalidated') : t('mutationFeedback.successfulUpdated')}
                     onMessageClose={() => {
                         setIsInvalidateSuccess(false)
@@ -295,6 +294,7 @@ export const SlaDetailView: React.FC<IView> = ({
                                                             closePopup()
                                                         }}
                                                         label={t('sla-detail.edit')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
                                                     <ButtonLink
                                                         type="button"
@@ -303,6 +303,7 @@ export const SlaDetailView: React.FC<IView> = ({
                                                             closePopup()
                                                         }}
                                                         label={t('sla-detail.invalidate')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
                                                 </>
                                             )}

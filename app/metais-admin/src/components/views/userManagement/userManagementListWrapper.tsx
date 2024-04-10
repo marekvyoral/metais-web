@@ -10,8 +10,8 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isd
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { UseMutationResult } from '@tanstack/react-query'
-import React, { useCallback, useState } from 'react'
+import { UseMutateFunction, UseMutationResult } from '@tanstack/react-query'
+import React, { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -28,6 +28,27 @@ import {
 import { SelectFilterOrganizationHierarchy } from '@/components/views/userManagement/components/SelectFilterOrganizationHierarchy/SelectFilterOrganizationHierarchy'
 import { SelectFilterRole } from '@/components/views/userManagement/components/SelectFilterRole/SelectFilterRole'
 import { UserManagementListTable } from '@/components/views/userManagement/components/UserManagementTable/UserManagementListTable'
+
+export interface UserStateBatchMutation {
+    updateIdentityStateBatchMutation: UseMutationResult<
+        void[],
+        unknown,
+        {
+            uuids: string[]
+            activate: boolean
+        },
+        unknown
+    >
+    revokeUserBatchMutation: UseMutateFunction<
+        Response[],
+        unknown,
+        {
+            login: string
+            token: string | null
+        }[],
+        unknown
+    >
+}
 
 export interface UserManagementListPageViewProps {
     data: UserManagementListData
@@ -48,17 +69,9 @@ export interface UserManagementListPageViewProps {
     isMutationError: boolean
     isMutationSuccess: boolean
     successRolesUpdate: string | undefined
-    updateIdentityStateBatchMutation: UseMutationResult<
-        void[],
-        unknown,
-        {
-            uuids: string[]
-            activate: boolean
-        },
-        unknown
-    >
     rowSelection: Record<string, UserManagementListItem>
     setRowSelection: React.Dispatch<React.SetStateAction<Record<string, UserManagementListItem>>>
+    mutations: UserStateBatchMutation
 }
 
 export const UserManagementListPageView: React.FC<UserManagementListPageViewProps> = ({
@@ -74,10 +87,10 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     isMutationError,
     isMutationSuccess,
     successRolesUpdate,
-    updateIdentityStateBatchMutation,
     rowSelection,
     setRowSelection,
     handleUpdateRolesBulk,
+    mutations,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -85,6 +98,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     const {
         isActionSuccess: { value: isSuccess },
     } = useActionSuccess()
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const [isChangeRolesModalOpen, setChangeRolesModalOpen] = useState<boolean>(false)
 
@@ -113,15 +127,15 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
         >
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('userManagement.title')}</TextHeading>
-                {isError && <QueryFeedback loading={false} error errorProps={{ errorMessage: t('userManagement.error.query') }} />}
-                {isErrorExport && <QueryFeedback loading={false} error errorProps={{ errorMessage: t('userManagement.error.export') }} />}
-                {(isMutationError || isMutationSuccess) && (
-                    <MutationFeedback success={isMutationSuccess} error={isMutationError && t('userManagement.error.mutation')} />
-                )}
-                {isSuccess && <MutationFeedback success error={false} />}
-                {successRolesUpdate && (
-                    <MutationFeedback success error={false} successMessage={successRolesUpdate} successMessageClassName={styles.successMessage} />
-                )}
+                <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('userManagement.error.query') }} />
+                <QueryFeedback loading={false} error={isErrorExport} errorProps={{ errorMessage: t('userManagement.error.export') }} />
+                <MutationFeedback success={isMutationSuccess} error={isMutationError} errorMessage={t('userManagement.error.mutation')} />
+                <MutationFeedback success={isSuccess} />
+                <MutationFeedback
+                    success={!!successRolesUpdate}
+                    successMessage={successRolesUpdate}
+                    successMessageClassName={styles.successMessage}
+                />
             </FlexColumnReverseWrapper>
             <Filter<UserManagementFilterData>
                 defaultFilterValues={defaultFilterValues}
@@ -158,7 +172,6 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                     pageSize: userManagementFilter.pageSize ?? BASE_PAGE_SIZE,
                     dataLength: data.dataLength,
                 }}
-                selectedRowsCount={Object.keys(rowSelection).length}
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 createButton={
@@ -175,10 +188,11 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                         variant="secondary"
                     />
                 }
+                selectedRowsCount={Object.keys(rowSelection).length}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
-                bulkPopup={
+                bulkPopup={({ selectedRowsCount }) => (
                     <BulkPopup
-                        checkedRowItems={Object.keys(rowSelection).length}
+                        checkedRowItems={selectedRowsCount}
                         items={(closePopup) => [
                             <ButtonLink
                                 key={'buttonBlock'}
@@ -210,22 +224,26 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                             />,
                         ]}
                     />
-                }
+                )}
                 entityName={''}
             />
             <UserManagementListTable
+                tableRef={tableRef}
                 data={data}
                 filter={userManagementFilter}
                 rowSelection={rowSelection}
                 setRowSelection={setRowSelection}
-                updateIdentityStateBatchMutation={updateIdentityStateBatchMutation}
+                mutations={mutations}
                 handleFilterChange={handleFilterChange}
             />
             <PaginatorWrapper
                 dataLength={data.dataLength}
                 pageNumber={userManagementFilter.pageNumber ?? BASE_PAGE_NUMBER}
                 pageSize={userManagementFilter.pageSize ?? BASE_PAGE_SIZE}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filter) => {
+                    handleFilterChange(filter)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
             <ChangeRoleModal
                 isOpen={isChangeRolesModalOpen}

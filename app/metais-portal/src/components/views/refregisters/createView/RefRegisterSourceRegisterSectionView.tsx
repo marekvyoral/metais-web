@@ -4,6 +4,7 @@ import React from 'react'
 import { FormState, UseFormClearErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import { ApiReferenceRegister } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 import { IRefRegisterCreateFormData } from '@/components/views/refregisters/schema'
 import { getInfoRR, getLabelRR, getSourceRegisterOptions, showSourceRegisterForm } from '@/componentHelpers/refregisters/helpers'
@@ -38,8 +39,8 @@ export const RefRegisterSourceRegisterSectionView: React.FC<IProps> = ({
                 <SimpleSelect
                     id={'refRegisters.sourceRegister'}
                     name={'refRegisters.sourceRegister'}
-                    label={getLabelRR(RefRegisterViewItems.ISVS_SOURCE, renamedAttributes) ?? ''}
-                    info={getInfoRR(RefRegisterViewItems.ISVS_SOURCE, renamedAttributes)}
+                    label={getLabelRR(RefRegisterViewItems.ISVS_NAME, renamedAttributes) ?? ''}
+                    info={getInfoRR(RefRegisterViewItems.ISVS_NAME, renamedAttributes)}
                     options={getSourceRegisterOptions(sourceRegisters) ?? []}
                     onChange={(value?: string) => {
                         setSourceRegister(sourceRegisters?.find((sR) => sR.configurationItem?.uuid === value))
@@ -54,8 +55,8 @@ export const RefRegisterSourceRegisterSectionView: React.FC<IProps> = ({
             )}
 
             <Input
-                label={getLabelRR(RefRegisterViewItems.ISVS_CODE, renamedAttributes) ?? ''}
-                info={getInfoRR(RefRegisterViewItems.ISVS_CODE, renamedAttributes)}
+                label={getLabelRR(ATTRIBUTE_NAME.Gen_Profil_kod_metais, renamedAttributes) ?? ''}
+                info={getInfoRR(ATTRIBUTE_NAME.Gen_Profil_kod_metais, renamedAttributes)}
                 {...register('refRegisters.codeMetaIS')}
                 disabled
                 required

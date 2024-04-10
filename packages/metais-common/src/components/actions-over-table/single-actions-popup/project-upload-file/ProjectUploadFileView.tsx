@@ -10,6 +10,7 @@ import styles from '@isdd/metais-common/components/actions-over-table/actionsOve
 import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 import { ModalButtons } from '@isdd/metais-common/components/modal-buttons/ModalButtons'
+import { RefAttributesRefType } from '@isdd/metais-common/api/generated/dms-swagger'
 
 interface IProjectUploadFileViewProps {
     items?: ConfigurationItemUi[]
@@ -21,6 +22,7 @@ interface IProjectUploadFileViewProps {
     isLoading: boolean
     fileUploadRef: React.RefObject<IFileUploadRef>
     onFileUploadSuccess: (data: FileUploadData[]) => void
+    onFileUploadFailed: () => void
     duplicateDocNames?: string[]
 }
 
@@ -34,6 +36,7 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
     fileMetaAttributes,
     onFileUploadSuccess,
     duplicateDocNames,
+    onFileUploadFailed,
 }) => {
     const { t } = useTranslation()
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>()
@@ -56,7 +59,7 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
                 <TextHeading size="L">{t('bulkActions.addFile.title')}</TextHeading>
             </div>
 
-            <form onSubmit={onSubmit} className={classNames({ [styles.positionRelative]: isLoading })}>
+            <form onSubmit={onSubmit} className={classNames({ [styles.positionRelative]: isLoading })} noValidate>
                 <TextArea {...register('note')} label={t('bulkActions.updateFile.reason')} rows={3} />
                 <FileUpload
                     ref={fileUploadRef}
@@ -65,11 +68,15 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
                     fileMetaAttributes={fileMetaAttributes}
                     isUsingUuidInFilePath
                     onUploadSuccess={onFileUploadSuccess}
+                    onFileUploadFailed={onFileUploadFailed}
                     setCurrentFiles={setCurrentFiles}
+                    refType={RefAttributesRefType.CI}
                 />
-                {duplicateDocNamesError && (
-                    <MutationFeedback success={false} error={duplicateDocNamesError} onMessageClose={() => setDuplicateDocNamesError('')} />
-                )}
+                <MutationFeedback
+                    error={!!duplicateDocNamesError}
+                    errorMessage={duplicateDocNamesError}
+                    onMessageClose={() => setDuplicateDocNamesError('')}
+                />
 
                 <ModalButtons
                     submitButtonLabel={t('bulkActions.addFile.upload')}

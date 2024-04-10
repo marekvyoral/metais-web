@@ -18,7 +18,7 @@ import { ImportButton } from '@isdd/metais-common/components/actions-over-table/
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { DynamicFilterAttributes, ExtendedAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_PROJECT, ENTITY_TRAINING, ROLES } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_PROJECT, ENTITY_TRAINING, ENTITY_ZC, ROLES } from '@isdd/metais-common/constants'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
@@ -39,6 +39,7 @@ import { useCiListPageHeading } from '@/componentHelpers/ci'
 
 interface IListWrapper extends ICiListContainerView<CIFilterData> {
     isNewRelationModal?: boolean
+    hideRowSelection?: boolean
 }
 
 export const ListWrapper: React.FC<IListWrapper> = ({
@@ -63,6 +64,8 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     isNewRelationModal,
     rowSelection,
     setRowSelection,
+    hiddenButtons,
+    hideRowSelection,
 }) => {
     const { t, i18n } = useTranslation()
 
@@ -79,19 +82,19 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     const navigate = useNavigate()
     const location = useLocation()
 
-    const checkedRowItems = Object.keys(rowSelection).length
-    const isDisabledBulkButton = checkedRowItems === 0
-
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
     const [showChangeOwner, setShowChangeOwner] = useState<boolean>(false)
 
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
 
-    const checkedItemList = tableData?.configurationItemSet?.filter((i) => Object.keys(rowSelection).includes(i.uuid || '')) || []
+    const checkedItemList = Object.keys(rowSelection)
+        .map((key) => rowSelection[key])
+        .filter((i) => !!i.uuid)
     const queryClient = useQueryClient()
     const typeTraining = entityName === ENTITY_TRAINING
     const typeProject = entityName === ENTITY_PROJECT
+    const typeZC = entityName === ENTITY_ZC
     const isUserTrainer = user?.roles?.includes(ROLES.SKOLITEL)
     const isUserAdminEgov = user?.roles?.includes(ROLES.R_EGOV)
     const isUserAdmin = user?.roles?.includes(ROLES.R_ADMIN)
@@ -102,13 +105,14 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         setBulkActionResult(actionResult)
     }
     const showCreateEntityButton = useMemo(() => {
+        if (typeZC) return false
         if (typeTraining) {
             return isUserTrainer ? true : false
         }
         if (typeProject) {
             return isUserAdminEgov || isUserAdmin ? true : false
         } else return true
-    }, [isUserAdmin, isUserAdminEgov, isUserTrainer, typeProject, typeTraining])
+    }, [isUserAdmin, isUserAdminEgov, isUserTrainer, typeProject, typeTraining, typeZC])
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
@@ -124,24 +128,20 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{ciName}</TextHeading>
-                {(isError || isCiTypeConstraintsError) && (
-                    <QueryFeedback loading={false} error errorProps={{ errorMessage: t('feedback.failedFetch') }} />
-                )}
-                {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                    <div ref={wrapperRef}>
-                        <MutationFeedback
-                            success={bulkActionResult?.isSuccess}
-                            successMessage={bulkActionResult?.successMessage}
-                            showSupportEmail
-                            error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
-                            onMessageClose={() => setBulkActionResult(undefined)}
-                        />
-                    </div>
-                )}
+                <QueryFeedback loading={false} error={isError || isCiTypeConstraintsError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
+                <div ref={wrapperRef}>
+                    <MutationFeedback
+                        success={bulkActionResult?.isSuccess}
+                        successMessage={bulkActionResult?.successMessage}
+                        error={bulkActionResult?.isError}
+                        errorMessage={bulkActionResult?.errorMessage}
+                        onMessageClose={() => setBulkActionResult(undefined)}
+                    />
+                </div>
             </FlexColumnReverseWrapper>
             <Filter<CIFilterData>
                 defaultFilterValues={defaultFilterValues}
-                form={({ register, filter, setValue }) => {
+                form={({ register, filter, setValue, isOpen }) => {
                     return (
                         <div>
                             <Input
@@ -167,6 +167,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                 attributes={attributes as ExtendedAttribute[]}
                                 attributeProfiles={attributeProfiles}
                                 constraintsData={constraintsData}
+                                isFocusable={isOpen}
                             />
                         </div>
                     )
@@ -185,7 +186,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     attributes={attributes ?? []}
                     columnListData={columnListData}
                     ciTypeData={ciTypeData}
-                    selectedRowsCount={Object.keys(rowSelection).length}
+                    hiddenButtons={hiddenButtons}
                     createButton={
                         showCreateEntityButton && (
                             <CreateEntityButton
@@ -194,23 +195,29 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                             />
                         )
                     }
-                    importButton={<ImportButton ciType={entityName ?? ''} />}
+                    importButton={
+                        <ImportButton
+                            ciType={entityName ?? ''}
+                            ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
+                        />
+                    }
                     exportButton={
                         <ExportButton
+                            ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
                             defaultFilterValues={defaultFilterValues}
                             checkedItemsUuids={getRowSelectionUuids(rowSelection)}
                             pagination={pagination}
                         />
                     }
-                    bulkPopup={
+                    selectedRowsCount={Object.keys(rowSelection).length}
+                    bulkPopup={({ selectedRowsCount }) => (
                         <Tooltip
                             descriptionElement={errorMessage}
                             on={'click'}
                             position={'center center'}
                             tooltipContent={(open) => (
                                 <BulkPopup
-                                    disabled={isDisabledBulkButton}
-                                    checkedRowItems={checkedRowItems}
+                                    checkedRowItems={selectedRowsCount}
                                     items={(closePopup) => [
                                         <ButtonLink
                                             key={'invalidate'}
@@ -261,7 +268,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                 />
                             )}
                         />
-                    }
+                    )}
                 />
             )}
             {isBulkLoading && <LoadingIndicator fullscreen />}
@@ -292,7 +299,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 handleFilterChange={handleFilterChange}
                 pagination={pagination}
                 sort={sort}
-                rowSelectionState={{ rowSelection, setRowSelection }}
+                rowSelectionState={hideRowSelection ? undefined : { rowSelection, setRowSelection }}
                 storeUserSelectedColumns={storeUserSelectedColumns}
                 isLoading={isLoading || isCiTypeConstraintsLoading}
                 isError={isError || isCiTypeConstraintsError}

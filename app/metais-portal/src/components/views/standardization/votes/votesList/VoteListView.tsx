@@ -11,7 +11,7 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
@@ -61,6 +61,7 @@ export const VotesListView: React.FC<IVotesListView> = ({
         isActionSuccess: { value: isSuccess, additionalInfo: additionalInfo },
     } = useActionSuccess()
     const ability = useAbilityContext()
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const newVoteHandler = () => {
         navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV_CREATE}`, { state: { from: location } })
@@ -85,15 +86,12 @@ export const VotesListView: React.FC<IVotesListView> = ({
     return (
         <>
             <TextHeading size="XL">{t('votes.votesList.title')}</TextHeading>
-            {isSuccess && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success
-                        error={false}
-                        successMessage={additionalInfo?.type == 'create' ? t('votes.voteDetail.created') : t('mutationFeedback.successfulUpdated')}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={isSuccess}
+                    successMessage={additionalInfo?.type == 'create' ? t('votes.voteDetail.created') : t('mutationFeedback.successfulUpdated')}
+                />
+            </div>
             <Filter<IVotesListFilterData>
                 heading={t('votes.votesList.filter.title')}
                 defaultFilterValues={defaultFilterValues}
@@ -164,6 +162,7 @@ export const VotesListView: React.FC<IVotesListView> = ({
             </div>
             <QueryFeedback loading={isLoadingNextPage} withChildren>
                 <Table
+                    tableRef={tableRef}
                     data={votesList}
                     columns={voteListColumns(t, isUserLogged)}
                     sort={filter.sort ?? []}
@@ -176,7 +175,10 @@ export const VotesListView: React.FC<IVotesListView> = ({
                 pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
                 pageSize={filter.pageSize || BASE_PAGE_SIZE}
                 dataLength={votesListData?.votesCount || 0}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filterValues) => {
+                    handleFilterChange(filterValues)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </>
     )

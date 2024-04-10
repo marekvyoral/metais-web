@@ -1,4 +1,4 @@
-import { BreadCrumbs, HomeIcon, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FooterRouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -26,7 +26,7 @@ const DeclarationPage = () => {
     const { t } = useTranslation()
     const { i18n } = useTranslation()
 
-    const DEFAULT_URL = `${baseWikiUrl}/page/render/webove_sidlo?isvsCode=${DECLARATION_ID}`
+    const DEFAULT_URL = `${baseWikiUrl}/page/render/webove_sidlo?weboveSidloCode=${DECLARATION_ID}`
 
     const {
         data: htmlString,
@@ -64,12 +64,7 @@ const DeclarationPage = () => {
 
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading || isFetching} error={isError} withChildren>
-                    <TextHeading size="XL">
-                        <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(t('technical.declaration')) }} />
-                    </TextHeading>
-                    <TextBody size="L">
-                        <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(sanitizedData ?? '') }} />
-                    </TextBody>
+                    <div className="wiki" dangerouslySetInnerHTML={{ __html: sanitizeHtml(sanitizedData ?? '') }} />
                 </QueryFeedback>
             </MainContentWrapper>
         </>

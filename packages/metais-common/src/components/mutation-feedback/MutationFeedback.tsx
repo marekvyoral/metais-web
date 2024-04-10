@@ -4,7 +4,6 @@ import { TextWarning } from '@isdd/idsk-ui-kit/src/typography/TextWarning'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
-import { v4 as uuidV4 } from 'uuid'
 import { TransparentButtonWrapper } from '@isdd/idsk-ui-kit'
 import { Link } from 'react-router-dom'
 
@@ -17,15 +16,15 @@ import { CloseIcon } from '@isdd/metais-common/assets/images'
 
 export interface MutationFeedbackError {
     errorTitle: string
-    errorMessage: string
+    errorMessage?: string
     buttons?: { label: string; onClick: () => void }[]
 }
 
 interface MutationFeedbackProps {
-    success: boolean
+    success?: boolean
     successMessage?: string
-    error: React.ReactNode
-    showSupportEmail?: boolean
+    error?: boolean
+    errorMessage?: string
     onMessageClose?: () => void
     successMessageClassName?: string
 }
@@ -33,13 +32,12 @@ interface MutationFeedbackProps {
 export const MutationFeedback: React.FC<MutationFeedbackProps> = ({
     success,
     error,
-    showSupportEmail,
+    errorMessage,
     successMessage,
     onMessageClose,
     successMessageClassName,
 }) => {
     const { t } = useTranslation()
-    const labelId = `${uuidV4()}-label`
     const { clearAction } = useActionSuccess()
     const [show, setShow] = useState(true)
     const closeMessage = () => {
@@ -53,30 +51,31 @@ export const MutationFeedback: React.FC<MutationFeedbackProps> = ({
     }, [success, error, successMessage])
 
     return show ? (
-        <div className={styles.inline}>
+        <div className={styles.inline} role="alert">
             {success && (
                 <IconWithText icon={RoundCheckGreenIcon}>
-                    <div aria-live="assertive" className={classNames(styles.successText, successMessageClassName)}>
+                    <div className={classNames(styles.successText, successMessageClassName)}>
                         {successMessage || t('mutationFeedback.successfulUpdated')}
                     </div>
                 </IconWithText>
             )}
             {error && (
-                <TextWarning aria-live="assertive">
+                <TextWarning>
                     <div className={styles.column}>
-                        {error}
-                        {showSupportEmail && <Link to={`mailto:${metaisEmail}`}>{metaisEmail}</Link>}
+                        {errorMessage ?? (
+                            <>
+                                {t('feedback.mutationErrorMessage')}
+                                <Link to={`mailto:${metaisEmail}`}>{metaisEmail}</Link>
+                            </>
+                        )}
                     </div>
                 </TextWarning>
             )}
             <Spacer horizontal />
             {(success || error) && (
                 <div className={classNames(styles.closeIconWrapper, 'govuk-body')}>
-                    <TransparentButtonWrapper onClick={closeMessage} aria-labelledby={labelId}>
-                        <span id={labelId} className="govuk-visually-hidden">
-                            {success ? successMessage || t('mutationFeedback.successfulUpdated') : error}
-                        </span>
-                        <img src={CloseIcon} className={styles.closeIcon} alt={t('closeFeedback')} lang="sk" />
+                    <TransparentButtonWrapper onClick={closeMessage} aria-label={t('closeFeedback')}>
+                        <img src={CloseIcon} className={styles.closeIcon} alt="" />
                     </TransparentButtonWrapper>
                 </div>
             )}

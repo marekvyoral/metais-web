@@ -51,7 +51,7 @@ export const UserWizards: React.FC = () => {
         <>
             <MutationFeedback success={isActionSuccess.value} error={hasError} successMessage={t('wizard.success')} />
             <TextHeading size="L">{t('wizard.show')}</TextHeading>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} noValidate>
                 <div className={styles.govukBottomMargin}>
                     <CheckBox
                         label={t('wizard.search')}

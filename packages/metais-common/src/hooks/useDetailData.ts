@@ -10,20 +10,21 @@ interface IDetailData {
     entityStructure: CiType | undefined
     isEntityStructureLoading: boolean
     isEntityStructureError: boolean
+    onlyValidAttributes?: boolean
 }
 
-export const useDetailData = ({ entityStructure, isEntityStructureLoading, isEntityStructureError }: IDetailData) => {
+export const useDetailData = ({ entityStructure, isEntityStructureLoading, isEntityStructureError, onlyValidAttributes = false }: IDetailData) => {
     const constraintsAttributes = calculateConstraintFromAttributes(entityStructure?.attributes)
 
-    const constraintsAttributesProfiles = calculateConstraintFromAttributeProfiles(entityStructure?.attributeProfiles ?? [])
+    const constraintsAttributesProfiles = calculateConstraintFromAttributeProfiles(entityStructure?.attributeProfiles ?? [], onlyValidAttributes)
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
-    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnum(MEASURE_UNIT)
+    const { isFetching: isUnitsFetching, isError: isUnitsError, data: unitsData } = useGetEnum(MEASURE_UNIT)
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
     const constraintsData = resultList.map((item) => item.data)
-    const isLoading = [isEntityStructureLoading, isConstraintLoading, isUnitsLoading].some((item) => item)
+    const isLoading = [isEntityStructureLoading, isConstraintLoading, isUnitsFetching].some((item) => item)
     const isError = [isEntityStructureError, isConstraintError, isUnitsError].some((item) => item)
     return {
         isLoading,

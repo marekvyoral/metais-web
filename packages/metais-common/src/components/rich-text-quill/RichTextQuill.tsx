@@ -7,10 +7,12 @@ import { UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import sanitizeHtml from 'sanitize-html'
 
 import styles from './styles.module.scss'
 
 import { QuillBulletListIcon, QuillLinkIcon, QuillOrderedListIcon } from '@isdd/metais-common/assets/images'
+import { decodeHtmlEntities } from '@isdd/metais-common/utils/utils'
 
 export enum RichQuillButtons {
     HEADER_1 = 'HEADER_1',
@@ -117,16 +119,18 @@ const CustomToolbar: React.FC<ICustomToolBarProps> = ({ excludeOptions, id }) =>
     icons['list']['bullet'] = '<img alt="" src=' + QuillBulletListIcon + ' />'
 
     return (
-        <div id={id} className={styles.customToolbar} ref={wrapperRef}>
+        <div id={id} className={styles.customToolbar} ref={wrapperRef} role="list">
             {RichTextButtons.filter((item) => !excludeOptions?.includes(item.key)).map((item) => (
-                <Button
-                    key={item.key}
-                    label={item.label}
-                    className={classNames('idsk-button', item.className)}
-                    variant="secondary"
-                    value={item.value}
-                    aria-label={t(`quill.buttonLabels.${item.key}`)}
-                />
+                <span role="listitem" key={item.key}>
+                    <Button
+                        key={item.key}
+                        label={item.label}
+                        className={classNames('idsk-button', item.className)}
+                        variant="secondary"
+                        value={item.value}
+                        aria-label={t(`quill.buttonLabels.${item.key}`)}
+                    />
+                </span>
             ))}
         </div>
     )
@@ -179,15 +183,33 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
     }, [])
 
     return (
-        <div className={classNames('govuk-form-group', styles.fieldset, { 'govuk-form-group--error': !!error })}>
-            {error && (
-                <span id={errorId} className="govuk-error-message">
-                    {error}
-                </span>
-            )}
+        <div
+            className={classNames('govuk-form-group', styles.fieldset, { 'govuk-form-group--error': !!error })}
+            aria-description={`${t('quill.description')} ${label}`}
+        >
+            <span id={errorId} className={classNames({ 'govuk-visually-hidden': !error, 'govuk-error-message': !!error })}>
+                {error && <span className="govuk-visually-hidden">{t('error')}</span>}
+                {error}
+            </span>
             <div className={styles.header}>
                 {label && <div className="govuk-label">{label + requiredLabel}</div>}
-                <div className={styles.infoDiv}>{info && <Tooltip descriptionElement={info} />}</div>
+                <div className={styles.infoDiv}>
+                    {info && (
+                        <Tooltip
+                            descriptionElement={
+                                <div className="tooltipWidth500">
+                                    {
+                                        <span
+                                            dangerouslySetInnerHTML={{
+                                                __html: sanitizeHtml(decodeHtmlEntities(info)),
+                                            }}
+                                        />
+                                    }
+                                </div>
+                            }
+                        />
+                    )}
+                </div>
             </div>
             <div className={classNames({ 'govuk-input--error': !!error })}>
                 <CustomToolbar excludeOptions={excludeOptions} id={id} />
@@ -204,6 +226,8 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
                     defaultValue={defaultValue}
                     readOnly={readOnly}
                     aria-errormessage={errorId}
+                    aria-invalid={!!errorId}
+                    aria-describedby={errorId}
                 />
             </div>
         </div>

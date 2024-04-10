@@ -1,8 +1,13 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { ApiParameterTypesList, useListParameterTypes1 } from '@isdd/metais-common/api/generated/monitoring-swagger'
+import {
+    ApiMonitoringOverviewService,
+    ApiParameterTypesList,
+    useListMonitoringOverview,
+    useListParameterTypes1,
+} from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import React from 'react'
+import React, { useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 
 import { IQueryParamsDetail } from '@/pages/monitoring/services/monitoras/[serviceUuid]'
@@ -20,8 +25,10 @@ export interface MonitoringDetailFilterData extends IFilterParams, FieldValues, 
 
 export interface IView {
     data?: ApiParameterTypesList
+    detailData?: ApiMonitoringOverviewService
     filterParams: MonitoringDetailFilterData
     defaultFilterValues: MonitoringDetailFilterData
+    setDefaultFilterValues: React.Dispatch<React.SetStateAction<MonitoringDetailFilterData>>
     handleFilterChange: (filter: IFilter) => void
     isLoading: boolean
     isError: boolean
@@ -35,15 +42,19 @@ export enum ServiceDetailType {
 }
 interface IMonitoringServiceDetailContainer {
     View: React.FC<IView>
-    defaultFilterValues: MonitoringDetailFilterData
+    queryFilterValues: MonitoringDetailFilterData
     queryParams?: IQueryParamsDetail
 }
 
-export const MonitoringServiceDetailContainer: React.FC<IMonitoringServiceDetailContainer> = ({ View, defaultFilterValues, queryParams }) => {
+export const MonitoringServiceDetailContainer: React.FC<IMonitoringServiceDetailContainer> = ({ View, queryFilterValues, queryParams }) => {
+    const [defaultFilterValues, setDefaultFilterValues] = useState<MonitoringDetailFilterData>(queryFilterValues)
+
     const { filter, handleFilterChange } = useFilterParams<MonitoringDetailFilterData>({
         ...defaultFilterValues,
         serviceUuid: queryParams?.serviceUuid ?? '',
     })
+
+    const { data: list } = useListMonitoringOverview({ entityRef: queryParams?.serviceUuid })
 
     const {
         data: chartData,
@@ -62,10 +73,12 @@ export const MonitoringServiceDetailContainer: React.FC<IMonitoringServiceDetail
         <View
             filterParams={filter}
             defaultFilterValues={defaultFilterValues}
+            setDefaultFilterValues={setDefaultFilterValues}
             handleFilterChange={handleFilterChange}
             isLoading={isLoading}
             isError={isError}
             data={chartData}
+            detailData={list?.results?.[0]}
             queryParams={queryParams}
             tableDataParam={tableDataParam}
         />

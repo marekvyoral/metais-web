@@ -4,8 +4,6 @@ import { ColumnDef, ColumnOrderState, PaginationState, ExpandedState, Row } from
 
 import { Table } from './Table'
 import { TableMetaBlock } from './TableMetaBlock'
-import { ExpandableHeaderCellWrapper } from './ExpandableHeaderCellWrapper'
-import { ExpandableRowCellWrapper } from './ExpandableRowCellWrapper'
 import { resetColumnOrder } from './tableUtils'
 import { CHECKBOX_CELL } from './constants'
 
@@ -242,8 +240,7 @@ const expandableColumnsSpec: ColumnDef<Person>[] = [
     {
         accessorFn: (row) => row.firstName,
         id: 'firstName',
-        header: ({ table }) => <ExpandableHeaderCellWrapper table={table}> First Name </ExpandableHeaderCellWrapper>,
-        cell: ({ row }) => <ExpandableRowCellWrapper row={row}> {row.original.firstName} </ExpandableRowCellWrapper>,
+        header: 'First Name',
         enableSorting: true,
     },
     {

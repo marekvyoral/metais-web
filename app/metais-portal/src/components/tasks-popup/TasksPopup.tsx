@@ -1,5 +1,5 @@
-import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
-import React, { useRef } from 'react'
+import { TextHeading, useTabbing } from '@isdd/idsk-ui-kit/index'
+import React, { useId, useRef, useState } from 'react'
 import { PopupActions } from 'reactjs-popup/dist/types'
 import { useTranslation } from 'react-i18next'
 import { Popup } from 'reactjs-popup'
@@ -21,34 +21,47 @@ export const TasksPopup: React.FC = () => {
     const {
         state: { user },
     } = useAuth()
+    const contentRef = useRef(null)
+    const triggerId = useId()
+    const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
     const assignedTo = [user?.login ?? '', ...getGidsForUserOrgRoles(user), ...getUuidsForUserOrgRoles(user)]
     const { data: tasks } = useGetTasksWithRefresh({ assignedTo: assignedTo && assignedTo.length > 0 ? [...new Set(assignedTo)] : [] })
 
+    const youHaveCountTitle = t('tasks.youHaveTasks', { numberOfTasks: (tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0) })
+
     const popupRef = useRef<PopupActions>(null)
     const popupTrigger = (
-        <Button
-            label={
-                <IconWithNotification
-                    title={t('tasks.tasks')}
-                    iconActive={FactCheckBlackIcon}
-                    iconInactive={FactCheckIcon}
-                    count={(tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0)}
-                    path=""
-                    showAsLink={false}
-                    altText={t('tasks.tasks')}
-                />
-            }
+        <IconWithNotification
+            id={triggerId}
+            iconActive={FactCheckBlackIcon}
+            iconInactive={FactCheckIcon}
+            count={(tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0)}
+            path=""
+            showAsLink={false}
+            aria={{ 'aria-label': `${t('tasks.tasks')}: ${youHaveCountTitle}` }}
             className={styles.tasksPopupBtn}
         />
     )
 
+    useTabbing(contentRef, isExpanded)
+
     return (
-        <Popup trigger={popupTrigger} arrow={false} keepTooltipInside ref={popupRef} position="bottom right" className={styles['task-popup']}>
-            <div className={styles.tasksPopupContent}>
-                <TextHeading size="S">
-                    {t('tasks.youHaveTasks', { numberOfTasks: (tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0) })}
-                </TextHeading>
+        <Popup
+            trigger={popupTrigger}
+            arrow={false}
+            ref={popupRef}
+            position="bottom right"
+            onOpen={() => {
+                setIsExpanded(true)
+            }}
+            onClose={() => {
+                setIsExpanded(false)
+                document.getElementById(triggerId)?.focus()
+            }}
+        >
+            <div className={styles.tasksPopupContent} ref={contentRef}>
+                <TextHeading size="S">{youHaveCountTitle}</TextHeading>
                 <ul className={styles.tasksList}>
                     {tasks?.tasks?.map((task: Task) => {
                         return (

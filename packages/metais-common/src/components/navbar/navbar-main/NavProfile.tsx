@@ -9,6 +9,8 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useHandleLogout } from '@isdd/metais-common/hooks/useHandleLogout'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
+const ADMIN_URL = import.meta.env.VITE_PORTAL_URL + import.meta.env.VITE_ADMIN_URL + '/'
+
 export const NavProfile: React.FC = () => {
     const { t } = useTranslation()
 
@@ -44,11 +46,16 @@ export const NavProfile: React.FC = () => {
                             user ? 'idsk-header-web__main--login-logoutbtn--active' : 'idsk-header-web__main--login-logoutbtn',
                         )}
                         to="#"
-                        title={t('navbar.logout') ?? ''}
                     >
                         {t('navbar.logout')}
                     </Link>
-                    <span> | </span>
+                    <span aria-hidden> | </span>
+                    {user?.roles?.includes('R_ADMIN') && (
+                        <Link to={ADMIN_URL} state={{ from: location }} className={'govuk-link'} target="_blank">
+                            {t('navbar.admin')}
+                        </Link>
+                    )}
+                    <span aria-hidden> | </span>
                     <Link
                         state={{ from: location }}
                         className={classnames(
@@ -57,7 +64,6 @@ export const NavProfile: React.FC = () => {
                             user ? 'idsk-header-web__main--login-profilebtn--active' : 'idsk-header-web__main--login-profilebtn',
                         )}
                         to={RouteNames.USER_PROFILE}
-                        title={t('navbar.profile') ?? ''}
                     >
                         {t('navbar.profile')}
                     </Link>

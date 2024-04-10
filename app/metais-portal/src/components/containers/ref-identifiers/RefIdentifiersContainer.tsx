@@ -8,6 +8,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IFilterParams, OPERATOR_OPTIONS, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { formatDateToIso } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import { RefIdentifierListShowEnum } from '@/components/views/ref-identifiers/refIdentifierListProps'
 import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
@@ -45,22 +46,22 @@ const refIdentifierTypes = [
     RefIdentifierTypeEnum.Individuum,
 ]
 
-const defaultFilter: RefIdentifierListFilterData = {
-    pageNumber: BASE_PAGE_NUMBER,
-    pageSize: BASE_PAGE_SIZE,
-    type: [] as RefIdentifierTypeEnum[],
-    state: '',
-    createdAtFrom: '',
-    createdAtTo: '',
-    view: RefIdentifierListShowEnum.ALL,
-}
-
 export const RefIdentifiersContainer: React.FC<RefIdentifiersContainerProps> = ({ View }) => {
     const {
         state: { user },
     } = useAuth()
 
     const isLoggedIn = !!user
+    const { currentPreferences } = useUserPreferences()
+    const defaultFilter: RefIdentifierListFilterData = {
+        pageNumber: BASE_PAGE_NUMBER,
+        pageSize: Number(currentPreferences.defaultPerPage) || BASE_PAGE_SIZE,
+        type: [] as RefIdentifierTypeEnum[],
+        state: '',
+        createdAtFrom: '',
+        createdAtTo: '',
+        view: RefIdentifierListShowEnum.ALL,
+    }
 
     const { filter, handleFilterChange } = useFilterParams<RefIdentifierListFilterData>(defaultFilter)
 

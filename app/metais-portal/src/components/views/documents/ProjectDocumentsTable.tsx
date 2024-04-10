@@ -5,7 +5,7 @@ import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useGetMetaHook } from '@isdd/metais-common/api/generated/dms-swagger'
+import { useGetMeta1Hook } from '@isdd/metais-common/api/generated/dms-swagger'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS, INVALIDATED, ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -27,6 +27,7 @@ import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ApiError } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Link } from 'react-router-dom'
 
 import { allChecked, checkAll, downloadFile, downloadFiles, filterAsync, isInvalid, isMeta } from './utils'
 
@@ -45,6 +46,8 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
     page,
     setPage,
     totalLength,
+    hiddenColumnsNames,
+    templatesMetadata,
 }) => {
     const { t } = useTranslation()
     const {
@@ -73,7 +76,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
         refetch()
         setBulkActionResult(actionResult)
     }
-    const getMeta = useGetMetaHook()
+    const getMeta = useGetMeta1Hook()
 
     const getDefaultBulkActions = (row: CellContext<IDocType, unknown>) => [
         <ButtonLink
@@ -263,7 +266,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                     <ButtonLink
                         className={classNames(styles.buttonLinkWithIcon, { [styles.invalidated]: isInvalid(row.cell.row) })}
                         key="downloadFile"
-                        label={row.getValue() as string}
+                        label={(row.getValue() as string) + ' ' + (row.cell.row.original.required ? t('input.requiredField') : '')}
                         onClick={async () => {
                             const item = docs ? docs[row.row.index] : {}
                             const response = await getMeta(item.uuid ?? '')
@@ -273,7 +276,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         }}
                     />
                 ) : (
-                    (row.getValue() as string) + ' ' + (row.cell.row.original.required && t('input.requiredField'))
+                    (row.getValue() as string) + ' ' + (row.cell.row.original.required ? t('input.requiredField') : '')
                 )
             },
         },
@@ -282,6 +285,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             header: t('documentsTab.table.evidenceStatus'),
             id: 'state',
             size: 100,
+
             meta: {
                 getCellContext: (ctx) => ctx.getValue() && t(`metaAttributes.state.${ctx.getValue()}`),
             },
@@ -315,6 +319,17 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             id: 'documentsTab.table.lastModifiedBy',
             size: 100,
         },
+        {
+            header: t('documentsTab.table.template'),
+            accessorFn: (row) => row?.templateUuid,
+            enableSorting: true,
+            id: 'template',
+            cell: (ctx) => (
+                <Link to={`${DMS_DOWNLOAD_FILE}${ctx?.getValue()}`} state={{ from: location }} target="_blank" className="govuk-link">
+                    {templatesMetadata?.find((tm) => tm?.uuid == ctx?.getValue())?.filename}
+                </Link>
+            ),
+        },
 
         {
             accessorKey: 'bulkActions',
@@ -333,12 +348,16 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
         } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rowSelection])
 
-    const filteredColumns = isUserLogged
+    let filteredColumns = isUserLogged
         ? columns
         : columns
               .filter((column) => column.id != 'documentsTab.table.lastModifiedBy')
               .filter((column) => column.id != 'documentsTab.table.createdBy')
               .filter((column) => column.id != 'bulkActions')
+
+    if (hiddenColumnsNames) {
+        filteredColumns = filteredColumns.filter((c) => !hiddenColumnsNames.includes(c.id ?? ''))
+    }
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
@@ -349,17 +368,15 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
     }, [bulkActionResult, scrollToMutationFeedback])
     return (
         <QueryFeedback loading={isLoading || isBulkLoading || isLocalLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage}
-                        showSupportEmail
-                        error={bulkActionResult?.isError ? bulkActionResult.errorMessage ?? t('feedback.mutationErrorMessage') : ''}
-                        onMessageClose={() => setBulkActionResult(undefined)}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess}
+                    successMessage={bulkActionResult?.successMessage}
+                    error={bulkActionResult?.isError}
+                    errorMessage={bulkActionResult?.errorMessage}
+                    onMessageClose={() => setBulkActionResult(undefined)}
+                />
+            </div>
             <ActionsOverTable
                 pagination={{
                     pageNumber: page ?? BASE_PAGE_NUMBER,
@@ -372,7 +389,6 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         setPage && setPage(BASE_PAGE_NUMBER)
                     }
                 }}
-                selectedRowsCount={Object.keys(rowSelection).length}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, PAGING: !selectPageSize }}
@@ -386,12 +402,14 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         />
                     )
                 }
-                bulkPopup={
+                selectedRowsCount={Object.keys(rowSelection).length}
+                bulkPopup={({ selectedRowsCount }) => (
                     <Tooltip
                         descriptionElement={errorMessage}
                         position={'center center'}
                         tooltipContent={() => (
                             <BulkPopup
+                                checkedRowItems={selectedRowsCount}
                                 items={(closePopup) => [
                                     <ButtonLink
                                         key={'downloadItems'}
@@ -439,9 +457,8 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                             />
                         )}
                     />
-                }
+                )}
             />
-
             <Table rowSelection={rowSelection} onRowSelectionChange={setRowSelection} columns={filteredColumns} data={docs} />
             {selectPageSize && (
                 <PaginatorWrapper

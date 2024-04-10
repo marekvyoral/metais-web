@@ -7,7 +7,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, PO } from '
 import { ActionsOverTable, BulkPopup, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef, Table as ITable, Row } from '@tanstack/react-table'
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
@@ -57,6 +57,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
     setRowSelection,
 }) => {
     const { t } = useTranslation()
+    const tableRef = useRef<HTMLTableElement>(null)
     const {
         isActionSuccess: { value: isExternalSuccess },
     } = useActionSuccess()
@@ -303,7 +304,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                             name="atributeValue"
                             valuesAsUuids={Array.isArray(value) ? [value?.[0]?.value] ?? [] : value?.value ? [value?.value] : []}
                             onChange={(val) => {
-                                if (val && val.length) {
+                                if (val && val.length && val.every((v) => v && v.uuid != '')) {
                                     onChange({ ...value, value: val?.[0]?.uuid })
                                 }
                             }}
@@ -349,11 +350,12 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                             <MutationFeedback
                                 success={isSuccessAddToFavorite}
                                 successMessage={successMessage}
-                                error={errorAddToFavorite ? t('userProfile.notifications.feedback.error') : undefined}
+                                error={!!errorAddToFavorite}
+                                errorMessage={t('userProfile.notifications.feedback.error')}
                                 onMessageClose={() => resetState()}
                             />
-                            {isError && <QueryFeedback error loading={false} />}
-                            {isExternalSuccess && <MutationFeedback success error={false} />}
+                            <QueryFeedback error={isError} loading={false} />
+                            <MutationFeedback success={isExternalSuccess} />
                         </div>
                     </FlexColumnReverseWrapper>
                     {isOnlyPublishedPage ? (
@@ -361,7 +363,6 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                     ) : (
                         <TextHeading size="L">{t('codeListList.codeListSubtitle')}</TextHeading>
                     )}
-
                     <Filter<CodeListListFilterData>
                         heading={t('codeList.filter.title')}
                         defaultFilterValues={defaultFilterValues}
@@ -385,17 +386,16 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                             )
                         }}
                     />
-
                     <ActionsOverTable
                         pagination={{
                             pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
                             pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
                             dataLength: data?.dataLength ?? 0,
                         }}
-                        bulkPopup={
+                        selectedRowsCount={selectedUuids.length}
+                        bulkPopup={({ selectedRowsCount }) => (
                             <BulkPopup
-                                checkedRowItems={selectedUuids.length}
-                                disabled={!selectedUuids.length}
+                                checkedRowItems={selectedRowsCount}
                                 items={(closePopup) => [
                                     <ButtonLink
                                         key={'favorite'}
@@ -410,15 +410,15 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                                     />,
                                 ]}
                             />
-                        }
+                        )}
                         entityName=""
                         handleFilterChange={handleFilterChange}
                         pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                         hiddenButtons={{ SELECT_COLUMNS: true }}
                     />
                     <Table<ApiCodelistPreview>
+                        tableRef={tableRef}
                         data={data?.list}
-                        // columns={columns}
                         sort={filter.sort ?? []}
                         isRowSelected={isRowSelected}
                         onSortingChange={(columnSort) => {
@@ -431,7 +431,10 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                         pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
                         pageSize={filter.pageSize || BASE_PAGE_SIZE}
                         dataLength={data?.dataLength || 0}
-                        handlePageChange={handleFilterChange}
+                        handlePageChange={(filterValues) => {
+                            handleFilterChange(filterValues)
+                            tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                        }}
                     />
                 </QueryFeedback>
             </MainContentWrapper>

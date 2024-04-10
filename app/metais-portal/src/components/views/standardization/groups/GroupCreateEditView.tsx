@@ -1,5 +1,5 @@
-import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, IOption, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { useFindRelatedOrganizationsHook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { BreadCrumbs, Button, ButtonGroupRow, ErrorBlock, HomeIcon, IOption, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Identity, useFindRelatedOrganizationsHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -36,7 +36,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
         watch,
         clearErrors,
         reset,
-        formState: { errors },
+        formState: { errors, isValid, isSubmitted },
     } = useForm({
         resolver: yupResolver(isEdit ? editGroupSchema(t) : createGroupSchema(t)),
         defaultValues: {
@@ -58,6 +58,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
     }, [infoData?.description, infoData?.name, infoData?.shortName, reset])
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    const [seed, setSeed] = useState(0)
 
     const orgOptionsHook = useFindRelatedOrganizationsHook()
 
@@ -133,22 +134,23 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
             <MainContentWrapper>
                 <FlexColumnReverseWrapper>
                     <TextHeading size="XL">{isEdit ? `${t('groups.editGroup')} - ${infoData?.name}` : t('groups.addNewGroup')}</TextHeading>
-                    {(resultApiCall?.isError || resultApiCall?.isSuccess) && (
-                        <div ref={wrapperRef}>
-                            <MutationFeedback
-                                error={resultApiCall.message}
-                                success={resultApiCall.isSuccess}
-                                onMessageClose={resetResultSuccessApiCall}
-                            />
-                        </div>
-                    )}
+                    <div ref={wrapperRef}>
+                        <MutationFeedback
+                            error={resultApiCall?.isError}
+                            errorMessage={resultApiCall?.message}
+                            success={resultApiCall?.isSuccess}
+                            onMessageClose={resetResultSuccessApiCall}
+                        />
+                    </div>
                 </FlexColumnReverseWrapper>
                 <QueryFeedback
                     loading={isLoading}
                     indicatorProps={{ label: isEdit ? t('groups.editingGroup') : t('groups.creatingGroup') }}
                     withChildren
                 >
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    {isSubmitted && !isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+                    <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Input
                             label={`${t('groups.groupName')} (${t('groups.mandatory')}):`}
                             id={GroupFormEnum.NAME}
@@ -176,17 +178,24 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({
                                 <IdentitySelect
                                     label={`${t('groups.master')} (${t('groups.mandatory')})`}
                                     name={GroupFormEnum.USER}
-                                    setValue={setValue}
                                     clearErrors={clearErrors}
                                     error={errors[GroupFormEnum.USER]?.message}
+                                    onChange={(val) => {
+                                        setValue(GroupFormEnum.USER, (val as Identity)?.uuid)
+                                        setValue(GroupFormEnum.ORGANIZATION, undefined)
+                                        setSeed(Math.random())
+                                    }}
                                 />
                                 <SimpleSelect
+                                    key={seed}
                                     label={`${t('groups.organization')} (${t('groups.mandatory')}):`}
                                     id={GroupFormEnum.ORGANIZATION}
                                     name={GroupFormEnum.ORGANIZATION}
                                     options={organizationOptions ?? []}
-                                    setValue={setValue}
                                     error={errors[GroupFormEnum.ORGANIZATION]?.message}
+                                    onChange={(val) => {
+                                        setValue(GroupFormEnum.ORGANIZATION, val)
+                                    }}
                                 />
                             </>
                         )}

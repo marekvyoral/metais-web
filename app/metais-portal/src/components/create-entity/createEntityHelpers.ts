@@ -5,16 +5,24 @@ import {
     AttributeProfile,
     CiCode,
     CiType,
+    useGenerateCodeHook,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 import { FieldErrors, FieldValues, UseFormSetValue } from 'react-hook-form'
 import { AnyObject, NumberSchema } from 'yup'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { isDate, isObjectEmpty } from '@isdd/metais-common/utils/utils'
-import { ENTITY_TRAINING, ROLES } from '@isdd/metais-common/constants'
+import { ENTITY_TRAINING, PO_predklada_KRIS, ROLES } from '@isdd/metais-common/constants'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { DateTime } from 'luxon'
-import { ConfigurationItemUiAttributes, ApiError, ConfigurationItemUi, RequestIdUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import {
+    ConfigurationItemUiAttributes,
+    ApiError,
+    ConfigurationItemUi,
+    RequestIdUi,
+    useStoreGraphHook,
+    AttributeUiValue,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useEffect, useState } from 'react'
 import {
     useInvalidateCiHistoryListCache,
@@ -25,10 +33,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
 import { v4 as uuidV4 } from 'uuid'
+import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
 
+import { EContainerType } from '@/components/containers/CiEvaluationContainer'
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
+import { PublicAuthorityState } from '@/hooks/usePublicAuthorityAndRole.hook'
 
 export const isRoundNumber = (value: number) => {
     return value === parseInt(value.toString(), 10)
@@ -120,6 +131,19 @@ export const getAttributeInputErrorMessage = (attribute: Attribute, errors: Fiel
     if (attribute.technicalName != null) {
         const error = Object.keys(errors).includes(attribute.technicalName)
         return error ? errors[attribute.technicalName] : undefined
+    }
+    return undefined
+}
+
+export const getAttributesInputErrorMessage = (attributes: Attribute[], errors: FieldErrors<FieldValues>) => {
+    if (attributes.length) {
+        attributes.forEach((attribute: Attribute) => {
+            if (attribute.technicalName != null) {
+                const error = Object.keys(errors).includes(attribute.technicalName)
+                return error ? errors[attribute.technicalName] : undefined
+            }
+            return undefined
+        })
     }
     return undefined
 }
@@ -232,13 +256,16 @@ type CiOnSubmitType = {
     ownerId: string | undefined
     generatedEntityId: CiCode | undefined
     updateCiItemId?: string
+    publicAuthorityState?: PublicAuthorityState
 }
 
 export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
     const [uploadError, setUploadError] = useState(false)
+    const storeGraph = useStoreGraphHook()
+    const generateRelCode = useGenerateCodeHook()
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
-    const onSubmit = async ({ formData, storeCiItem, ownerId, generatedEntityId, updateCiItemId }: CiOnSubmitType) => {
+    const onSubmit = async ({ formData, storeCiItem, ownerId, generatedEntityId, updateCiItemId, publicAuthorityState }: CiOnSubmitType) => {
         const isUpdate = !!updateCiItemId
         if (!isUpdate && entityName === ENTITY_TRAINING) {
             formData[ATTRIBUTE_NAME.Profil_Skolenie_pocet_volnych_miest] = formData[ATTRIBUTE_NAME.Profil_Skolenie_pocet_miest]
@@ -254,13 +281,13 @@ export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
 
         const type = entityName
         const uuid = isUpdate ? updateCiItemId : uuidV4()
-        const dataToUpdate = {
+        const dataToUpdate: ConfigurationItemUi = {
             uuid: uuid,
             type: type,
             attributes: formattedAttributesToSend,
         }
 
-        const dataToCreate = {
+        const dataToCreate: ConfigurationItemUi = {
             ...dataToUpdate,
             owner: ownerId,
         }
@@ -272,6 +299,29 @@ export const useCiCreateUpdateOnSubmit = (entityName?: string) => {
             data: isUpdate ? dataToUpdate : dataToCreate,
         })
 
+        if (!isUpdate && entityName === EContainerType.KRIS) {
+            try {
+                const relCode = await generateRelCode(PO_predklada_KRIS)
+                const relationshipSet = {
+                    storeSet: {
+                        relationshipSet: [
+                            {
+                                type: PO_predklada_KRIS,
+                                uuid: uuidV4(),
+                                startUuid: publicAuthorityState?.selectedPublicAuthority?.poUUID,
+                                endUuid: uuid,
+                                owner: ownerId,
+                                attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: relCode?.code as unknown as AttributeUiValue }],
+                            },
+                        ],
+                    },
+                }
+                storeGraph(relationshipSet)
+            } catch {
+                setUploadError(true)
+            }
+        }
+
         return uuid
     }
 
@@ -282,4 +332,18 @@ export const getValidAndVisibleAttributes = (ciTypeData: CiType | undefined): At
     return [...(ciTypeData?.attributes ?? []), ...(ciTypeData?.attributeProfiles?.flatMap((profile) => profile.attributes ?? []) ?? [])].filter(
         (att) => att && !att.invisible && att.valid,
     )
+}
+
+export const getSectionErrorList = (attributes: Attribute[], errors: FieldErrors<FieldValues>, sectionId: string): ErrorBlock[] => {
+    const errorNames = Object.keys(errors).filter((item) => item.includes(sectionId))
+
+    const sectionAttWithErrors = attributes.filter((att) => att.technicalName && errorNames.includes(att.technicalName))
+
+    const sectionErrorList = [
+        ...sectionAttWithErrors.map((att) => ({
+            errorTitle: att.name ?? '',
+            errorMessage: errors[errorNames.find((name) => name === att.technicalName) ?? '']?.message?.toString(),
+        })),
+    ]
+    return sectionErrorList
 }

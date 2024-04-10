@@ -1,6 +1,8 @@
 @import '@isdd/idsk-ui-kit/src/utils.scss';
 
-$formMaxHeight: 500px;
+// max-height is needed for expand animation, set to very high max-height to prevent filter scroll
+// number should be larger than size of filter with set max custom filter attributes
+$formMaxHeight: 2000px;
 
 .formWrapper {
     padding: govuk-spacing(5);
@@ -69,16 +71,16 @@ $formMaxHeight: 500px;
 }
 
 .form {
-    overflow: auto;
+    overflow: visible;
 }
 
 .visible {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.5s ease, visibility 0s ease 0.5s;
+    transition: opacity 0.5s ease-in, visibility 0s ease-in 0.5s;
 }
 .hidden {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0s ease 0.5s;
+    transition: opacity 0.5s ease-out, visibility 0s ease-out 0.5s;
 }

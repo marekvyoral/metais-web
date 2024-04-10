@@ -6,30 +6,34 @@ import { INeighboursFilter, mapFilterToRelationApi } from '@isdd/metais-common/a
 import {
     ConfigurationItemUiAttributes,
     NeighbourPairUi,
-    NeighboursFilterUi,
+    NeighbourSetUi,
     useGetRoleParticipantBulk,
-    useReadCiNeighbours,
+    useReadCiNeighboursHook,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import {
-    CiType,
-    RelationshipTypePreviewList,
-    useGetCiType,
-    useListRelatedCiTypes,
-    useListRelationshipTypes,
-} from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CiType, RelationshipTypePreviewList, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { GENERIC_NAMES, useGetRelationColumnData } from '@isdd/metais-common/api/hooks/containers/relationContainerHelpers'
 import { RelationSelectedRowType } from '@isdd/metais-common/api/userConfigKvRepo'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
-import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
+import { RELATIONSHIP_TYPES_QUERY_KEY } from '@isdd/metais-common/constants'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
+import { IRelationshipTabFilters, useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
+import { useListRelatedCiTypesWrapper } from '@isdd/metais-common/hooks/useListRelatedCiTypes.hook'
 import { CellContext, ColumnDef, Table as ITable, Row } from '@tanstack/react-table'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { LangWrapper } from '@/components/lang-wrapper/LangWrapper'
 import { getOwnerInformation } from '@/componentHelpers/ci/ciTableHelpers'
 import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination } from '@/componentHelpers/pagination'
+import { LangWrapper } from '@/components/lang-wrapper/LangWrapper'
 import { NeighboursApiType } from '@/components/views/relationships/RelationshipsAccordion'
+
+interface ICallReadCiNeighbours {
+    fullTextSearch?: string
+    pageNumber?: number
+    reset?: boolean
+    sort?: ColumnSort[]
+}
 
 export interface ICiNeighboursListContainerView {
     data?: NeighbourPairUi[]
@@ -42,15 +46,15 @@ export interface ICiNeighboursListContainerView {
     rowSelections: RelationSelectedRowType
     resetRowSelection: () => void
     sectionsConfig: ISelectSectionType[]
-    refetch: () => void
+    callReadCiNeighbours: (params: ICallReadCiNeighbours) => void
     saveSelectedColumns: (columnSelection: ISelectColumnType[]) => void
     resetSelectedColumns: () => Promise<void>
-    apiFilterData?: NeighboursFilterUi
+    apiFilterData?: IRelationshipTabFilters
     handleFilterChange: (filter: INeighboursFilter) => void
     isLoading: boolean
     isError: boolean
     isSource: boolean
-    handleSortChange: (sort: ColumnSort[]) => void
+    uiFilterState: INeighboursFilter
 }
 
 interface ICiNeighboursListContainer {
@@ -71,29 +75,23 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         apiType === NeighboursApiType.source,
     )
 
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
-    const [uiFilterState, setUiFilterState] = useState<INeighboursFilter>({
-        pageNumber: BASE_PAGE_NUMBER,
-        pageSize: BASE_PAGE_SIZE,
-        sort: [{ orderBy: GENERIC_NAMES.CI_TYPE, sortDirection: SortType.DESC }],
-    })
+    const defaultValues = useMemo(
+        () => ({
+            pageNumber: BASE_PAGE_NUMBER,
+            pageSize: BASE_PAGE_SIZE,
+            sort: [{ orderBy: GENERIC_NAMES.CI_TYPE, sortDirection: SortType.DESC }],
+        }),
+        [],
+    )
+    const [uiFilterState, setUiFilterState] = useState<INeighboursFilter>(defaultValues)
+
+    const [isRelationLoading, setIsRelationLoading] = useState<boolean>(false)
+    const [isRelationError, setIsRelationError] = useState<boolean>(false)
+    const [tableData, setTableData] = useState<NeighbourSetUi>({})
 
     const [rowSelection, setRowSelection] = useState<RelationSelectedRowType>({})
-
-    const handleFilterChange = (filter: INeighboursFilter) => {
-        setUiFilterState({
-            ...uiFilterState,
-            ...filter,
-        })
-    }
-
-    const handleSortChange = (sort: ColumnSort[]) => {
-        setUiFilterState({
-            ...uiFilterState,
-            sort: sort,
-        })
-    }
 
     const {
         isLoading: isEntityRelationsLoading,
@@ -101,21 +99,65 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         defaultSourceRelationshipTabFilter,
         defaultTargetRelationshipTabFilter,
     } = useEntityRelationshipTabFilters(entityName ?? '')
-
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName)
-    const { data: relationData, isLoading: isRelationListLoading, isError: isRelationListError } = useListRelationshipTypes({ filter: {} })
-    const { isLoading: isLoadingRelated, isError: isErrorRelated, data: relatedTypes } = useListRelatedCiTypes(entityName)
-    const types = useMemo(() => (relatedTypes?.cisAsSources || []).concat(relatedTypes?.cisAsTargets || []), [relatedTypes])
-
-    const selectedRequestApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName)
+    const {
+        data: relationData,
+        isLoading: isRelationListLoading,
+        isError: isRelationListError,
+    } = useListRelationshipTypes({ filter: {} }, { query: { queryKey: [RELATIONSHIP_TYPES_QUERY_KEY, i18n.language] } })
 
     const {
-        isLoading: isRelationLoading,
-        isFetching: isRelationFetching,
-        isError: isRelationError,
-        data: tableData,
-        refetch,
-    } = useReadCiNeighbours(configurationItemId ?? '', mapFilterToRelationApi(uiFilterState, selectedRequestApi), {})
+        isLoading: isLoadingRelated,
+        isError: isErrorRelated,
+        data: relatedTypes,
+    } = useListRelatedCiTypesWrapper(entityName, { query: { queryKey: [entityName, i18n.language] } })
+    const types = useMemo(() => (relatedTypes?.cisAsSources || []).concat(relatedTypes?.cisAsTargets || []), [relatedTypes])
+
+    const selectedRequestApi = useMemo(
+        () => (apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter),
+        [apiType, defaultSourceRelationshipTabFilter, defaultTargetRelationshipTabFilter],
+    )
+
+    const readCiNeighbours = useReadCiNeighboursHook()
+
+    const callReadCiNeighbours = useCallback(
+        ({ fullTextSearch, pageNumber, reset, sort }: ICallReadCiNeighbours) => {
+            setIsRelationLoading(true)
+            let filter: INeighboursFilter = {
+                ...uiFilterState,
+                sort: sort ?? uiFilterState.sort,
+                pageNumber: pageNumber ?? uiFilterState.pageNumber,
+                neighboursFilter: {
+                    ...uiFilterState.neighboursFilter,
+                    fullTextSearch: fullTextSearch ?? uiFilterState.neighboursFilter?.fullTextSearch,
+                },
+            }
+            if (sort) {
+                setUiFilterState({ ...uiFilterState, sort: sort })
+            }
+            if (pageNumber) {
+                setUiFilterState({ ...uiFilterState, pageNumber: pageNumber })
+            }
+            if (reset) {
+                setUiFilterState(defaultValues)
+                filter = defaultValues
+            }
+            readCiNeighbours(configurationItemId ?? '', mapFilterToRelationApi(filter, selectedRequestApi))
+                .then((resp) => setTableData(resp))
+                .catch(() => {
+                    setIsRelationError(true)
+                })
+                .finally(() => setIsRelationLoading(false))
+        },
+        [configurationItemId, defaultValues, readCiNeighbours, selectedRequestApi, uiFilterState],
+    )
+
+    useEffect(() => {
+        if (configurationItemId && (selectedRequestApi.neighboursFilter.ciType.length || selectedRequestApi.neighboursFilter.relType.length)) {
+            callReadCiNeighbours({})
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [configurationItemId, selectedRequestApi])
 
     const neighbourPairs = tableData?.[apiType === NeighboursApiType.source ? 'fromNodes' : 'toNodes']?.neighbourPairs
 
@@ -289,7 +331,6 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         isLoadingRelated,
         isRelationListLoading,
         isGestorsLoadingCombined,
-        isRelationFetching,
         isEntityRelationsLoading && isRelationLoading,
     ].some((item) => item)
     const isError = [
@@ -309,17 +350,17 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
                 columns={columns}
                 ciTypeData={ciTypeData}
                 isSource
-                refetch={refetch}
                 selectedColumns={selectedColumns}
                 sectionsConfig={configSections}
                 rowSelections={rowSelection}
                 resetRowSelection={() => setRowSelection({})}
+                callReadCiNeighbours={callReadCiNeighbours}
+                uiFilterState={uiFilterState}
                 saveSelectedColumns={storeColumns}
                 resetSelectedColumns={restoreColumns}
-                handleFilterChange={handleFilterChange}
+                handleFilterChange={setUiFilterState}
                 isLoading={false}
                 isError
-                handleSortChange={handleSortChange}
             />
         )
     return (
@@ -331,17 +372,17 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
             selectedColumns={selectedColumns}
             sectionsConfig={configSections}
             isSource
-            refetch={refetch}
             ciTypeData={ciTypeData}
             rowSelections={rowSelection}
+            uiFilterState={uiFilterState}
             resetRowSelection={() => setRowSelection({})}
+            callReadCiNeighbours={callReadCiNeighbours}
             saveSelectedColumns={storeColumns}
             resetSelectedColumns={restoreColumns}
-            apiFilterData={selectedRequestApi.neighboursFilter}
-            handleFilterChange={handleFilterChange}
+            apiFilterData={selectedRequestApi}
+            handleFilterChange={setUiFilterState}
             isLoading={isLoading}
             isError={isError}
-            handleSortChange={handleSortChange}
         />
     )
 }

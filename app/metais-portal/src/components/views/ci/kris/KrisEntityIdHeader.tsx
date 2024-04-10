@@ -1,4 +1,4 @@
-import { ButtonGroupRow, ButtonPopup, LoadingIndicator, TextHeading, TextWarning } from '@isdd/idsk-ui-kit'
+import { ButtonGroupRow, ButtonPopup, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import {
@@ -101,7 +101,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
     const [showApprove, setShowApprove] = useState<boolean>(false)
     const [showRevalidate, setRevalidate] = useState<boolean>(false)
     const [showReturnToWorkout, setShowReturnToWorkout] = useState<boolean>(false)
-    const [isPdfDisabled, setIsPdfDisabled] = useState<boolean | undefined>(undefined)
+    const [isPdfDisabled, setIsPdfDisabled] = useState<boolean | undefined>(true)
     const [isLoadingApi, setIsLoadingApi] = useState<boolean>(false)
     const [isError, setIsError] = useState<boolean>(false)
     const [showWarning, setShowWarning] = useState<boolean>(false)
@@ -109,12 +109,21 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
 
     const entityListData = entityData ? [entityData] : []
+    const canGetKrisData =
+        entityData?.attributes?.[ATTRIBUTE_NAME.Profil_KRIS_stav_kris] !== 'c_stav_kris.1' &&
+        entityData?.attributes?.[ATTRIBUTE_NAME.Profil_KRIS_stav_kris] !== undefined
+
     const {
         data: dataNeighbours,
         isLoading: isLoadingNeighbours,
         isError: isErrorNeighbours,
     } = useReadNeighboursConfigurationItems(entityId, { nodeType: 'Dokument', relationshipType: 'Dokument_sa_tyka_KRIS' })
-    const { data: dataKris, isLoading: isLoadingKris } = useGetKris(entityData?.uuid ?? '')
+    const { data: dataKris, isLoading: isLoadingGetKris } = useGetKris(entityData?.uuid ?? '', {
+        query: {
+            enabled: canGetKrisData,
+        },
+    })
+    const isLoadingKris = !!user && isLoadingGetKris && canGetKrisData
     const { data: isOwnerByGid } = useIsOwnerByGid(
         {
             gids: [entityData?.metaAttributes?.owner ?? ''],
@@ -436,35 +445,38 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
         const fetchDisabledStatus = async () => {
             const newCi = (await refetchCi()).data
 
-            const status = await disableGeneratePdf(newCi)
-            setIsPdfDisabled(status)
+            if (user) {
+                const status = await disableGeneratePdf(newCi)
+                setIsPdfDisabled(status)
+            }
         }
         fetchDisabledStatus()
-    }, [disableGeneratePdf, queryClient, refetchCi, updateButton])
+    }, [disableGeneratePdf, queryClient, refetchCi, updateButton, user])
 
     const isLoading = [isBulkLoading, isLoadingApi, isLoadingNeighbours, isLoadingDataPoRole, isLoadingKris].some((item) => item)
 
     return (
         <>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage}
-                        showSupportEmail
-                        error={bulkActionResult?.isError || isError ? t('feedback.mutationErrorMessage') : ''}
-                        onMessageClose={() => setBulkActionResult(undefined)}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess}
+                    successMessage={bulkActionResult?.successMessage}
+                    error={bulkActionResult?.isError || isError}
+                    onMessageClose={() => setBulkActionResult(undefined)}
+                />
+            </div>
             <MutationFeedback
                 success={succesMessage !== undefined}
                 successMessage={succesMessage}
-                showSupportEmail
-                error={isError || isErrorNeighbours ? t('feedback.mutationErrorMessage') : ''}
+                error={isError || isErrorNeighbours}
                 onMessageClose={() => setSuccesMessage(undefined)}
             />
-            {showWarning && <TextWarning>{t('modalKris.generatePdf.docGenStart')}</TextWarning>}
+            <MutationFeedback
+                success={showWarning}
+                successMessage={t('modalKris.generatePdf.docGenStart')}
+                error={false}
+                onMessageClose={() => setShowWarning(false)}
+            />
             <div className={styles.headerDiv}>
                 {isLoading && <LoadingIndicator fullscreen />}
                 <TextHeading size="XL" className={classNames({ [styles.invalidated]: isInvalidated })}>
@@ -494,6 +506,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                         setGeneratePdf(true)
                                                     }}
                                                     label={t('ciType.pdfGenerateFuture')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -508,6 +521,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                     disabled={isInvalidated}
                                                     onClick={() => handleInvalidate(entityListData, () => setShowInvalidate(true), open)}
                                                     label={t('ciType.invalidateItem')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -522,6 +536,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                     disabled={!isInvalidated}
                                                     onClick={() => setRevalidate(true)}
                                                     label={t('ciType.reInvalidateCi')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -537,6 +552,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                         disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
                                                         onClick={() => setShowApprove(true)}
                                                         label={t('ciType.approve')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
                                                 )}
                                             />
@@ -553,6 +569,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                     disabled={!isEvaluation}
                                                     onClick={() => setShowReturnToWorkout(true)}
                                                     label={t('ciType.return_to_workout')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
                                             )}
                                         />
@@ -584,6 +601,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                         disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
                                                         onClick={handleSignDoc}
                                                         label={t('ciType.signDocument')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
                                                 )}
                                             />
@@ -600,6 +618,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
                                                         disabled={!isOwnerByGid?.isOwner?.[0]?.owner}
                                                         onClick={handleSignDocFuture}
                                                         label={t('ciType.signDocumentFuture')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
                                                     />
                                                 )}
                                             />

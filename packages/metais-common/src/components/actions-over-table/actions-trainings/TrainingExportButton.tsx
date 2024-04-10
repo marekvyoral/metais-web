@@ -63,16 +63,12 @@ export const TrainingExportButton: React.FC<IExportButtonProps> = ({ trainingUui
                 onClick={() => setModalOpen(true)}
                 className="marginBottom0"
                 variant="secondary"
+                aria-label={t('trainings.exportAria')}
                 label={<IconLabel label={t('actionOverTable.export')} icon={ExportIcon} />}
             />
             <BaseModal isOpen={modalOpen} close={closeModal}>
                 {isLoading && <LoadingIndicator label={t('exportItemsOrRelations.loading')} />}
-                <MutationFeedback
-                    success={exportSuccess}
-                    showSupportEmail
-                    error={isError ? t('feedback.mutationErrorMessage') : undefined}
-                    successMessage={t('exportItemsOrRelations.exportSuccess')}
-                />
+                <MutationFeedback success={exportSuccess} error={isError} successMessage={t('exportItemsOrRelations.exportSuccess')} />
                 <div className={styles.modalContainer}>
                     <div className={styles.content}>
                         <div className={styles.icon}>

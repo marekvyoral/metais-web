@@ -4,7 +4,7 @@ import { ISection, IStepLabel } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { ConfigurationItemUiAttributes, HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Attribute, AttributeConstraintEnumAllOf } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { META_IS_TITLE } from '@isdd/metais-common/constants'
@@ -33,83 +33,94 @@ export const HistoryCompareView: React.FC<IHistoryItemsCompareContainerView> = (
 }) => {
     const { t, i18n } = useTranslation()
     const [showOnlyChanges, setShowOnlyChanges] = useState<boolean>(false)
+    const [sections, setSections] = useState<ISection[]>([])
+
     const languageEn = 'en'
-    const attProfiles = ciTypeData?.attributeProfiles?.map((profile) => profile) ?? []
+    const attProfiles = useMemo(() => ciTypeData?.attributeProfiles?.map((profile) => profile) ?? [], [ciTypeData?.attributeProfiles])
 
     const heading = t('historyTab.comparingHistory', {
         itemName: dataFirst?.item?.attributes?.find((att: { name: string; value: string }) => att?.name == ATTRIBUTE_NAME.Gen_Profil_nazov)?.value,
     })
     document.title = `${heading} ${META_IS_TITLE}`
 
-    const getEnumValue = (enumAttribute: AttributeConstraintEnumAllOf, value: string): string => {
-        if (!enumAttribute) {
-            return value ?? ''
-        }
-
-        const numValue = constraintsData.find((i) => i?.code === enumAttribute.enumCode)?.enumItems?.find((i) => i?.code === value)
-        if (i18n.language === languageEn) {
-            return numValue?.engValue ?? ''
-        }
-
-        return numValue?.value ?? value
-    }
-
-    const getAttributeValue = (attribute: Attribute, data?: HistoryVersionUiConfigurationItemUi): string => {
-        if (!attribute.technicalName) return ''
-        const item = data?.item?.attributes?.find((i: ConfigurationItemUiAttributes) => i.name === attribute.technicalName)
-        if (item) {
-            if (attribute.array) {
-                return item?.value?.length
-                    ? item?.value.map(
-                          (i: string) =>
-                              getEnumValue(attribute.constraints?.find((o) => o.type === AttributeType.ENUM) as AttributeConstraintEnumAllOf, i) +
-                              ', ',
-                      )
-                    : ''
-            }
-            if (attribute.type === AttributeType.DATE) {
-                return item?.value && new Date(item?.value).toLocaleString(i18n.language)
-            }
-            if (attribute.type === AttributeType.BOOLEAN) {
-                return item?.value ? t('radioButton.yes') : t('radioButton.no')
-            }
-            if (attribute.type === AttributeType.STRING_PAIR) {
-                return item?.value?.length ? item?.value?.split('|')[0] ?? '' : ''
+    const getEnumValue = useCallback(
+        (enumAttribute: AttributeConstraintEnumAllOf, value: string): string => {
+            if (!enumAttribute) {
+                return value ?? ''
             }
 
-            return item?.value && attribute.constraints?.length && attribute.constraints?.find((i) => i.type === AttributeType.ENUM)
-                ? getEnumValue(attribute.constraints?.find((i) => i.type === AttributeType.ENUM) as AttributeConstraintEnumAllOf, item?.value)
-                : item?.value ?? ''
-        }
-        return item?.value ?? ''
-    }
+            const numValue = constraintsData.find((i) => i?.code === enumAttribute.enumCode)?.enumItems?.find((i) => i?.code === value)
+            if (i18n.language === languageEn) {
+                return numValue?.engValue ?? ''
+            }
 
-    const haveDiff = (attributes: Attribute[]): boolean => {
-        let diff = false
-        attributes.forEach((attribute) => {
-            const itemFirst = dataFirst?.item?.attributes?.find((i: ConfigurationItemUiAttributes) => i.name === attribute.technicalName)?.value
-            const itemSec = dataSec?.item?.attributes?.find((i: ConfigurationItemUiAttributes) => i.name === attribute.technicalName)?.value
+            return numValue?.value ?? value
+        },
+        [constraintsData, i18n.language],
+    )
 
-            if (itemFirst !== itemSec) {
-                if (Array.isArray(itemFirst)) {
-                    if (itemFirst.length !== itemSec?.length) {
-                        diff = true
-                        return
-                    }
-                    itemFirst.forEach((item, index) => {
-                        if (item !== itemSec?.[index]) {
+    const getAttributeValue = useCallback(
+        (attribute: Attribute, data?: HistoryVersionUiConfigurationItemUi): string => {
+            if (!attribute.technicalName) return ''
+            const item = data?.item?.attributes?.find((i: ConfigurationItemUiAttributes) => i.name === attribute.technicalName)
+            if (item) {
+                if (attribute.array) {
+                    return item?.value?.length
+                        ? item?.value.map(
+                              (i: string) =>
+                                  getEnumValue(attribute.constraints?.find((o) => o.type === AttributeType.ENUM) as AttributeConstraintEnumAllOf, i) +
+                                  ', ',
+                          )
+                        : ''
+                }
+                if (attribute.type === AttributeType.DATE) {
+                    return item?.value && new Date(item?.value).toLocaleString(i18n.language)
+                }
+                if (attribute.type === AttributeType.BOOLEAN) {
+                    return item?.value ? t('radioButton.yes') : t('radioButton.no')
+                }
+                if (attribute.type === AttributeType.STRING_PAIR) {
+                    return item?.value?.length ? item?.value?.split('|')[0] ?? '' : ''
+                }
+
+                return item?.value && attribute.constraints?.length && attribute.constraints?.find((i) => i.type === AttributeType.ENUM)
+                    ? getEnumValue(attribute.constraints?.find((i) => i.type === AttributeType.ENUM) as AttributeConstraintEnumAllOf, item?.value)
+                    : item?.value ?? ''
+            }
+            return item?.value ?? ''
+        },
+        [getEnumValue, i18n.language, t],
+    )
+
+    const haveDiff = useCallback(
+        (attributes: Attribute[]): boolean => {
+            let diff = false
+            attributes.forEach((attribute) => {
+                const itemFirst = dataFirst?.item?.attributes?.find((i: ConfigurationItemUiAttributes) => i.name === attribute.technicalName)?.value
+                const itemSec = dataSec?.item?.attributes?.find((i: ConfigurationItemUiAttributes) => i.name === attribute.technicalName)?.value
+
+                if (itemFirst !== itemSec) {
+                    if (Array.isArray(itemFirst)) {
+                        if (itemFirst.length !== itemSec?.length) {
                             diff = true
                             return
                         }
-                    })
+                        itemFirst.forEach((item, index) => {
+                            if (item !== itemSec?.[index]) {
+                                diff = true
+                                return
+                            }
+                        })
+                        return
+                    }
+                    diff = true
                     return
                 }
-                diff = true
-                return
-            }
-        })
-        return diff
-    }
+            })
+            return diff
+        },
+        [dataFirst?.item?.attributes, dataSec?.item?.attributes],
+    )
 
     let firstIsOpen = false
     const setOpenProfile = () => {
@@ -120,58 +131,34 @@ export const HistoryCompareView: React.FC<IHistoryItemsCompareContainerView> = (
         return false
     }
 
-    const sections: ISection[] =
-        [
-            {
-                title: t('ciInformationAccordion.basicInformation'),
-                change: !isSimple && haveDiff(ciTypeData?.attributes || []),
-                isOpen: setOpenProfile(),
-                hide: showOnlyChanges && !isSimple && !haveDiff(ciTypeData?.attributes || []),
-                stepLabel: { label: '1', variant: 'circle' },
-                content: (
-                    <DefinitionList>
-                        <HistoryCompareItemView
-                            key={'attribute.technicalName'}
-                            label={''}
-                            tooltip={''}
-                            isSimple={isSimple}
-                            valueFirst={`${t('history.ACTIONS.' + dataFirst?.actions ?? '')}:  ${
-                                dataFirst?.actionTime && new Date(dataFirst?.actionTime).toLocaleString(i18n.language)
-                            }`}
-                            valueSec={`${dataSec && t('history.ACTIONS.' + dataSec?.actions ?? '')}:  ${
-                                dataSec?.actionTime && new Date(dataSec?.actionTime).toLocaleString(i18n.language)
-                            }`}
-                            withoutCompare
-                        />
-                        {ciTypeData?.attributes
-                            ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-                            .map((attribute) => {
-                                return (
-                                    <HistoryCompareItemView
-                                        key={attribute.technicalName}
-                                        label={attribute.name || ''}
-                                        tooltip={attribute.description || ''}
-                                        isSimple={isSimple}
-                                        showOnlyChanges={showOnlyChanges}
-                                        valueFirst={getAttributeValue(attribute, dataFirst)}
-                                        valueSec={getAttributeValue(attribute, dataSec)}
-                                    />
-                                )
-                            })}
-                    </DefinitionList>
-                ),
-            },
-            ...attProfiles.map((profile, index) => {
-                return {
-                    title: profile.description ?? '',
-                    change: !isSimple && haveDiff(profile.attributes || []),
+    useEffect(() => {
+        setSections(
+            [
+                {
+                    title: t('ciInformationAccordion.basicInformation'),
+                    change: !isSimple && haveDiff(ciTypeData?.attributes || []),
                     isOpen: setOpenProfile(),
-                    hide: showOnlyChanges && !isSimple && !haveDiff(profile.attributes || []),
-                    stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
+                    hide: showOnlyChanges && !isSimple && !haveDiff(ciTypeData?.attributes || []),
+                    stepLabel: { label: '1', variant: 'circle' },
+                    id: 'attribute.technicalName',
                     content: (
                         <DefinitionList>
-                            {profile.attributes &&
-                                profile.attributes.map((attribute) => {
+                            <HistoryCompareItemView
+                                key={'attribute.technicalName'}
+                                label={''}
+                                tooltip={''}
+                                isSimple={isSimple}
+                                valueFirst={`${t('history.ACTIONS.' + dataFirst?.actions ?? '')}:  ${
+                                    dataFirst?.actionTime && new Date(dataFirst?.actionTime).toLocaleString(i18n.language)
+                                }`}
+                                valueSec={`${dataSec && t('history.ACTIONS.' + dataSec?.actions ?? '')}:  ${
+                                    dataSec?.actionTime && new Date(dataSec?.actionTime).toLocaleString(i18n.language)
+                                }`}
+                                withoutCompare
+                            />
+                            {ciTypeData?.attributes
+                                ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+                                .map((attribute) => {
                                     return (
                                         <HistoryCompareItemView
                                             key={attribute.technicalName}
@@ -186,25 +173,80 @@ export const HistoryCompareView: React.FC<IHistoryItemsCompareContainerView> = (
                                 })}
                         </DefinitionList>
                     ),
-                }
-            }),
-            {
-                title: t('ciInformationAccordion.relations'),
-                change: !isSimple && haveDiff(ciTypeData?.attributes || []),
-                isOpen: setOpenProfile(),
-                hide: showOnlyChanges && !isSimple && !haveDiff(ciTypeData?.attributes || []),
-                stepLabel: { label: (attProfiles.length + 2).toString(), variant: 'circle' },
-                last: true,
-                content: (
-                    <RelationCompareItemView
-                        label={t('ciInformationAccordion.relations')}
-                        tooltip={''}
-                        dataRelationFirst={dataRelationFirst}
-                        dataRelationSecond={dataRelationSecond}
-                    />
-                ),
-            },
-        ] ?? []
+                },
+                ...attProfiles.map((profile, index) => {
+                    return {
+                        title: profile.description ?? '',
+                        id: profile.technicalName ?? '',
+                        change: !isSimple && haveDiff(profile.attributes || []),
+                        isOpen: setOpenProfile(),
+                        hide: showOnlyChanges && !isSimple && !haveDiff(profile.attributes || []),
+                        stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
+                        content: (
+                            <DefinitionList>
+                                {profile.attributes &&
+                                    profile.attributes.map((attribute) => {
+                                        return (
+                                            <HistoryCompareItemView
+                                                key={attribute.technicalName}
+                                                label={attribute.name || ''}
+                                                tooltip={attribute.description || ''}
+                                                isSimple={isSimple}
+                                                showOnlyChanges={showOnlyChanges}
+                                                valueFirst={getAttributeValue(attribute, dataFirst)}
+                                                valueSec={getAttributeValue(attribute, dataSec)}
+                                            />
+                                        )
+                                    })}
+                            </DefinitionList>
+                        ),
+                    }
+                }),
+                {
+                    title: t('ciInformationAccordion.relations'),
+                    id: 'ciInformationAccordion.relations',
+                    change: !isSimple && haveDiff(ciTypeData?.attributes || []),
+                    isOpen: setOpenProfile(),
+                    hide: showOnlyChanges && !isSimple && !haveDiff(ciTypeData?.attributes || []),
+                    stepLabel: { label: (attProfiles.length + 2).toString(), variant: 'circle' },
+                    last: true,
+                    content: (
+                        <RelationCompareItemView
+                            label={t('ciInformationAccordion.relations')}
+                            tooltip={''}
+                            dataRelationFirst={dataRelationFirst}
+                            dataRelationSecond={dataRelationSecond}
+                        />
+                    ),
+                },
+            ] ?? [],
+        )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        attProfiles,
+        ciTypeData?.attributes,
+        dataFirst,
+        dataRelationFirst,
+        dataRelationSecond,
+        dataSec,
+        getAttributeValue,
+        haveDiff,
+        i18n.language,
+        isSimple,
+        showOnlyChanges,
+        t,
+    ])
+
+    const handleSectionOpen = (id: string) => {
+        setSections((prev) => prev.map((item) => (item.id === id ? { ...item, isOpen: !item.isOpen } : item)))
+    }
+
+    const openOrCloseAllSections = () => {
+        setSections((prev) => {
+            const allOpen = prev.every((item) => item.isOpen)
+            return prev.map((item) => ({ ...item, isOpen: !allOpen }))
+        })
+    }
 
     return (
         <>
@@ -217,7 +259,7 @@ export const HistoryCompareView: React.FC<IHistoryItemsCompareContainerView> = (
                     onChange={() => setShowOnlyChanges(!showOnlyChanges)}
                 />
             )}
-            <Stepper subtitleTitle="" stepperList={sections} />
+            <Stepper subtitleTitle="" stepperList={sections} handleSectionOpen={handleSectionOpen} openOrCloseAllSections={openOrCloseAllSections} />
         </>
     )
 }

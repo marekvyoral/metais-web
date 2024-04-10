@@ -92,13 +92,17 @@ export const ServicesView: React.FC<IServicesView> = ({ data, isError, isLoading
         <MainContentWrapper>
             <QueryFeedback loading={isLoading} error={false} withChildren>
                 <FlexColumnReverseWrapper>
-                    <TextHeading size="L">{t('titles.monitoringServices')}</TextHeading>
-                    {isError && <QueryFeedback loading={false} error={isError} />}
+                    <TextHeading size="XL">{t('titles.monitoringServices')}</TextHeading>
+                    <QueryFeedback loading={false} error={isError} />
                 </FlexColumnReverseWrapper>
                 <Filter<MonitoringFilterData>
                     onlyForm
                     defaultFilterValues={defaultFilterValues}
-                    form={({ setValue, clearErrors, filter, register, control }) => {
+                    form={({ setValue, clearErrors, filter, register, control, watch }) => {
+                        const start = watch('intervalStart')
+                        const end = watch('intervalEnd')
+                        const endIsLowerThanStart = start && end && new Date(start) > new Date(end)
+
                         return (
                             <div>
                                 <GridRow>
@@ -152,6 +156,7 @@ export const ServicesView: React.FC<IServicesView> = ({ data, isError, isLoading
                                     {...register('intervalEnd')}
                                     control={control}
                                     setValue={setValue}
+                                    error={endIsLowerThanStart ? t('codeListList.requestValidations.dateGreaterThan') : undefined}
                                 />
                             </div>
                         )

@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ApiActiveMonitoringCfgList } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
@@ -48,6 +48,7 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
     const {
         isActionSuccess: { value: isSuccess, additionalInfo: additionalInfo },
     } = useActionSuccess()
+    const tableRef = useRef<HTMLTableElement>(null)
 
     const newMonitoringHandler = () => {
         navigate(`${AdminRouteNames.MONITORING_CREATE}`, { state: { from: location } })
@@ -73,17 +74,14 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
     return (
         <>
             <TextHeading size="XL">{t('monitoring.list.heading')}</TextHeading>
-            {isSuccess && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success
-                        error={false}
-                        successMessage={
-                            additionalInfo?.type == 'create' ? t('mutationFeedback.successfulCreated') : t('mutationFeedback.successfulUpdated')
-                        }
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={isSuccess}
+                    successMessage={
+                        additionalInfo?.type == 'create' ? t('mutationFeedback.successfulCreated') : t('mutationFeedback.successfulUpdated')
+                    }
+                />
+            </div>
             <Filter<IMonitoringListFilterData>
                 heading={t('monitoring.list.filter.title')}
                 defaultFilterValues={defaultFilterValues}
@@ -118,6 +116,7 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
             </div>
             <QueryFeedback loading={isLoadingNextPage} withChildren>
                 <Table
+                    tableRef={tableRef}
                     data={monitoringCfgApiData?.results}
                     columns={monitoringListColumns(t)}
                     sort={filter.sort ?? []}
@@ -130,7 +129,10 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
                 pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
                 pageSize={filter.pageSize || BASE_PAGE_SIZE}
                 dataLength={monitoringCfgApiData?.pagination?.totalItems || 0}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filterValues) => {
+                    handleFilterChange(filterValues)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </>
     )

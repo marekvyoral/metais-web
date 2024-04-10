@@ -11,6 +11,7 @@ import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useB
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import {
     ActionsOverTable,
+    BASE_PAGE_NUMBER,
     BulkPopup,
     ChangeOwnerBulkModal,
     InvalidateBulkModal,
@@ -28,7 +29,6 @@ type RelationFilterData = IFilterParams & NeighboursFilterUi
 export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
     data,
     ciTypeData,
-    refetch,
     isLoading,
     isError,
     columns,
@@ -42,7 +42,8 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
     filter,
     apiFilterData,
     handleFilterChange,
-    handleSortChange,
+    callReadCiNeighbours,
+    uiFilterState,
 }) => {
     const { t } = useTranslation()
     const {
@@ -60,62 +61,54 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
 
     const canSelectInvalidated = !!user?.uuid && currentPreferences.showInvalidatedItems
 
-    const ciTypeOption = apiFilterData?.ciType?.map((type) => ({ label: type, value: type })) || []
-    const relTypeOption = apiFilterData?.relType?.map((type) => ({ label: type, value: type })) || []
+    const ciTypeOption = apiFilterData?.neighboursFilter.ciType || []
+    const relTypeOption = apiFilterData?.neighboursFilter.relType || []
     const stateOption: IOption<string>[] = [
         { value: 'DRAFT', label: t('metaAttributes.state.DRAFT') },
         { value: 'INVALIDATED', label: t('metaAttributes.state.INVALIDATED'), disabled: !canSelectInvalidated },
     ]
 
-    const defaultValues: RelationFilterData = {
-        relType: filter?.neighboursFilter?.relType,
-        ciType: filter?.neighboursFilter?.ciType,
-        metaAttributes: filter?.neighboursFilter?.metaAttributes,
-        fullTextSearch: filter?.neighboursFilter?.fullTextSearch,
-    }
-
-    const checkedRowItems = Object.keys(rowSelections).length
-    const isDisabledBulkButton = checkedRowItems === 0
-
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: (value: React.SetStateAction<boolean>) => void) => {
         closeFunction(false)
-        refetch()
         setBulkActionResult(actionResult)
         resetRowSelection()
     }
 
     return (
         <>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <MutationFeedback
-                    success={bulkActionResult?.isSuccess}
-                    successMessage={bulkActionResult?.successMessage}
-                    showSupportEmail
-                    error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
-                    onMessageClose={() => setBulkActionResult(undefined)}
-                />
-            )}
+            <MutationFeedback
+                success={bulkActionResult?.isSuccess}
+                successMessage={bulkActionResult?.successMessage}
+                error={bulkActionResult?.isError}
+                errorMessage={bulkActionResult?.errorMessage}
+                onMessageClose={() => setBulkActionResult(undefined)}
+            />
             <Filter<RelationFilterData>
-                defaultFilterValues={defaultValues}
-                handleOnSubmit={({ ciType, metaAttributes, relType, fullTextSearch }) => {
-                    handleFilterChange({
-                        neighboursFilter: {
-                            ciType,
-                            metaAttributes,
-                            relType,
-                            fullTextSearch,
-                        },
-                    })
+                defaultFilterValues={{ fullTextSearch: '' }}
+                handleOnSubmit={({ fullTextSearch }) => {
+                    callReadCiNeighbours({ fullTextSearch, pageNumber: BASE_PAGE_NUMBER })
                 }}
-                form={({ setValue }) => (
+                customReset={(resetFilters) => {
+                    callReadCiNeighbours({ reset: true })
+                    resetFilters()
+                }}
+                form={() => (
                     <div>
                         <MultiSelect
                             name="ciType"
                             label={t('relationshipsTab.table.ciType')}
                             placeholder={t('relationshipsTab.select.ciType')}
                             options={ciTypeOption}
-                            defaultValue={filter?.neighboursFilter?.ciType}
-                            setValue={setValue}
+                            value={uiFilterState.neighboursFilter?.ciType}
+                            onChange={(val) =>
+                                handleFilterChange({
+                                    ...uiFilterState,
+                                    neighboursFilter: {
+                                        ...uiFilterState.neighboursFilter,
+                                        ciType: val,
+                                    },
+                                })
+                            }
                             disabled={ciTypeOption.length === 0}
                         />
                         <MultiSelect
@@ -123,8 +116,16 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                             label={t('relationshipsTab.table.relationshipType')}
                             placeholder={t('relationshipsTab.select.relationshipType')}
                             options={relTypeOption}
-                            defaultValue={filter?.neighboursFilter?.relType}
-                            setValue={setValue}
+                            value={uiFilterState.neighboursFilter?.relType}
+                            onChange={(val) =>
+                                handleFilterChange({
+                                    ...uiFilterState,
+                                    neighboursFilter: {
+                                        ...uiFilterState.neighboursFilter,
+                                        relType: val,
+                                    },
+                                })
+                            }
                             disabled={relTypeOption.length === 0}
                         />
                         <MultiSelect
@@ -132,8 +133,19 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                             label={t('relationshipsTab.table.evidenceStatus')}
                             placeholder={t('relationshipsTab.select.evidenceStatus')}
                             options={stateOption}
-                            defaultValue={filter?.neighboursFilter?.metaAttributes?.state}
-                            setValue={setValue}
+                            value={uiFilterState.neighboursFilter?.metaAttributes?.state}
+                            onChange={(val) =>
+                                handleFilterChange({
+                                    ...uiFilterState,
+                                    neighboursFilter: {
+                                        ...uiFilterState.neighboursFilter,
+                                        metaAttributes: {
+                                            ...uiFilterState.neighboursFilter?.metaAttributes,
+                                            state: val,
+                                        },
+                                    },
+                                })
+                            }
                         />
                     </div>
                 )}
@@ -144,15 +156,14 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                     entityName=""
                     simpleTableColumnsSelect={{ sections: sectionsConfig, selectedColumns, resetSelectedColumns, saveSelectedColumns }}
                     handleFilterChange={handleFilterChange}
-                    selectedRowsCount={checkedRowItems}
-                    bulkPopup={
+                    selectedRowsCount={Object.keys(rowSelections).length}
+                    bulkPopup={({ selectedRowsCount }) => (
                         <Tooltip
                             descriptionElement={errorMessage}
                             position={'center center'}
                             tooltipContent={(open) => (
                                 <BulkPopup
-                                    disabled={isDisabledBulkButton}
-                                    checkedRowItems={checkedRowItems}
+                                    checkedRowItems={selectedRowsCount}
                                     items={(closePopup) => [
                                         <ButtonLink
                                             key={'invalidate'}
@@ -186,7 +197,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                                 />
                             )}
                         />
-                    }
+                    )}
                 />
                 <ReInvalidateBulkModal
                     items={relationshipItemList}
@@ -215,9 +226,16 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                     isRelation
                 />
 
-                <Table columns={columns} data={data} isLoading={isLoading} error={isError} sort={filter?.sort} onSortingChange={handleSortChange} />
+                <Table
+                    columns={columns}
+                    data={data}
+                    isLoading={isLoading}
+                    error={isError}
+                    sort={filter?.sort}
+                    onSortingChange={(sort) => callReadCiNeighbours({ sort: sort })}
+                />
             </QueryFeedback>
-            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+            <PaginatorWrapper {...pagination} handlePageChange={({ pageNumber }) => callReadCiNeighbours({ pageNumber })} />
         </>
     )
 }

@@ -1,7 +1,6 @@
 import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { CI_ITEM_QUERY_KEY, ENTITY_PROJECT, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
@@ -12,14 +11,22 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useSetStatesHook } from '@isdd/metais-common/api/generated/kris-swagger'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
-import { getDefaultCiEntityTabList, useCiDetailPageTitle, useCiListPageHeading, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import {
+    getCiHowToBreadCrumb,
+    getDefaultCiEntityTabList,
+    useCiDetailPageTitle,
+    useCiListPageHeading,
+    useGetEntityParamsFromUrl,
+} from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { ProjectStateContainer } from '@/components/containers/ProjectStateContainer'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { ProjectEntityIdHeader } from '@/components/views/ci/project/ProjectEntityIdHeader'
 import { ProjectStateView } from '@/components/views/ci/project/ProjectStateView'
+import { useCiCheckEntityTypeRedirectHook } from '@/hooks/useCiCheckEntityTypeRedirect.hook'
 
 const ProjectEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -39,7 +46,7 @@ const ProjectEntityDetailPage: React.FC = () => {
 
     const setStates = useSetStatesHook()
 
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_PROJECT)
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(ENTITY_PROJECT)
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
@@ -55,6 +62,7 @@ const ProjectEntityDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+    useCiCheckEntityTypeRedirectHook(ciItemData, ENTITY_PROJECT)
 
     const { getHeading } = useCiListPageHeading(ciTypeData?.name ?? '', t)
     const { getTitle } = useCiDetailPageTitle(ciTypeData?.name ?? '', ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov], t)
@@ -78,6 +86,8 @@ const ProjectEntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    ...getCiHowToBreadCrumb(ENTITY_PROJECT, t),
+
                     { label: getHeading(), href: `/ci/${ENTITY_PROJECT}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
@@ -106,17 +116,14 @@ const ProjectEntityDetailPage: React.FC = () => {
                                 refetchCi={refetch}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
-                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
-                                <MutationFeedback
-                                    error={false}
-                                    success={isActionSuccess.value}
-                                    successMessage={
-                                        isActionSuccess.additionalInfo?.type === 'create'
-                                            ? t('mutationFeedback.successfulCreated')
-                                            : t('mutationFeedback.successfulUpdated')
-                                    }
-                                />
-                            )}
+                            <MutationFeedback
+                                success={isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated'}
+                                successMessage={
+                                    isActionSuccess.additionalInfo?.type === 'create'
+                                        ? t('mutationFeedback.successfulCreated')
+                                        : t('mutationFeedback.successfulUpdated')
+                                }
+                            />
                         </FlexColumnReverseWrapper>
                         {user && ciItemData && (
                             <ProjectStateContainer

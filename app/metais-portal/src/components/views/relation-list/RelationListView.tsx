@@ -1,13 +1,18 @@
-import { BreadCrumbs, Filter, HomeIcon, IOption, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
-import React from 'react'
-import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { useTranslation } from 'react-i18next'
+import { BaseModal, BreadCrumbs, Filter, HomeIcon, IOption, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import React, { useRef, useState } from 'react'
+import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { Trans, useTranslation } from 'react-i18next'
 import { RelationshipUi } from '@isdd/metais-common/api/generated/iam-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, HowTo } from '@isdd/metais-common/constants'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { ActionsOverTable, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, ModalButtons, QueryFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
-import { Link } from 'react-router-dom'
+import { getHowToTranslate } from '@isdd/metais-common/utils/utils'
+import { useGetRoleParticipant, useReadConfigurationItem, useReadRelationship } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
+import { useGetRelationshipTypeWrapper } from '@isdd/metais-common/hooks/useRelationshipType.hook'
+
+import { RelationDetailModalView } from './RelationDetailModalView'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { RelationshipsFilterData, defaultFilterValues } from '@/components/containers/relation-list/RelationListContainer'
@@ -23,9 +28,6 @@ export interface IRelationListView {
     onSourceTypeChange: (val: string | undefined) => void
     onTargetTypeChange: (val: string | undefined) => void
     seed: number
-    //onRelTypeChange: (val: string | undefined) => void
-    // relAttributes: Attribute[] | undefined
-    // relAttributeProfiles: AttributeProfile[] | undefined
 }
 
 export const RelationListView: React.FC<IRelationListView> = ({
@@ -39,14 +41,81 @@ export const RelationListView: React.FC<IRelationListView> = ({
     onSourceTypeChange,
     onTargetTypeChange,
     seed,
-
-    //onRelTypeChange,
-    // relAttributes,
-    // relAttributeProfiles,
 }) => {
     const { t } = useTranslation()
+    const tableRef = useRef<HTMLTableElement>(null)
+    const [relationData, setRelationData] = useState<RelationshipUi | null>(null)
+
+    const {
+        data: relationshipData,
+        isLoading: isRelationshipLoading,
+        isError: isRelationshipError,
+        refetch: refetchRelationship,
+    } = useReadRelationship(relationData?.uuid ?? '')
+    const {
+        data: ciTargetData,
+        isLoading: isCiTargetDataLoading,
+        isError: isCiTargetDataError,
+    } = useReadConfigurationItem(relationData?.endUuid ?? '', { query: { enabled: !!relationData?.endUuid } })
+    const {
+        data: ciSourceData,
+        isLoading: isCiSourceDataLoading,
+        isError: isCiSourceDataError,
+    } = useReadConfigurationItem(relationData?.startUuid ?? '', { query: { enabled: !!relationData?.startUuid } })
+
+    const {
+        data: relationTypeData,
+        isLoading: isRelationTypeDataLoading,
+        isError: isRelationTypeDataError,
+    } = useGetRelationshipTypeWrapper(relationData?.type ?? '', {
+        query: { enabled: !!relationData?.uuid },
+    })
+
+    const {
+        isLoading: isDetailDataLoading,
+        isError: isDetailDataError,
+        constraintsData,
+        unitsData,
+    } = useDetailData({
+        entityStructure: relationTypeData,
+        isEntityStructureLoading: isRelationTypeDataLoading,
+        isEntityStructureError: isRelationTypeDataError,
+    })
+
+    const {
+        data: ownerData,
+        isLoading: isOwnerLoading,
+        isError: isOwnerError,
+    } = useGetRoleParticipant(relationData?.metaAttributes?.owner ?? '', { query: { enabled: !!relationData?.metaAttributes?.owner } })
 
     const columns: Array<ColumnDef<RelationshipUi>> = [
+        {
+            id: 'summary',
+            header: t('relationshipList.summary'),
+            accessorFn: (row) => row,
+            cell: (row) => (
+                <a
+                    href="#"
+                    onClick={(event) => {
+                        event.preventDefault()
+                        setRelationData(row.row.original)
+                    }}
+                >
+                    <Trans
+                        i18nKey="relationshipList.summaryValue"
+                        components={{
+                            strong: <strong />,
+                        }}
+                        values={{
+                            startName: row.row.original.startName,
+                            endName: row.row.original.endName,
+                        }}
+                    />
+                </a>
+            ),
+            size: 300,
+            enableSorting: false,
+        },
         {
             id: 'startCiTypeName',
             header: t('relationshipList.startTypeName'),
@@ -64,7 +133,6 @@ export const RelationListView: React.FC<IRelationListView> = ({
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (row) => <Link to={`/ci/${row.row.original.startType}/${row.row.original.startUuid}`}>{row.row.original.startName}</Link>,
             enableSorting: true,
         },
         {
@@ -93,7 +161,6 @@ export const RelationListView: React.FC<IRelationListView> = ({
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (row) => <Link to={`/ci/${row.row.original.endType}/${row.row.original.endUuid}`}>{row.row.original.endName}</Link>,
             enableSorting: true,
         },
         {
@@ -113,14 +180,12 @@ export const RelationListView: React.FC<IRelationListView> = ({
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (row) => (
-                <Link to={`/relation/${row.row.original.startType}/${row.row.original.startUuid}/${row.row.original.uuid}`}>
-                    {row.row.original.type}
-                </Link>
-            ),
             enableSorting: false,
         },
     ]
+
+    const isLoading = [isRelationshipLoading, isCiTargetDataLoading, isCiSourceDataLoading, isDetailDataLoading, isOwnerLoading].some((item) => item)
+    const isError = [isRelationshipError, isCiTargetDataError, isCiSourceDataError, isDetailDataError, isOwnerError].some((item) => item)
 
     return (
         <>
@@ -128,10 +193,10 @@ export const RelationListView: React.FC<IRelationListView> = ({
                 withWidthContainer
                 links={[
                     { label: t('tasks.home'), href: '/', icon: HomeIcon },
+                    { label: getHowToTranslate(HowTo.EGOV_HOWTO, t), href: RouteNames.HOW_TO_EGOV_COMPONENTS },
                     { label: t('titles.relationsSearch'), href: RouterRoutes.RELATION_LIST },
                 ]}
             />
-
             <MainContentWrapper>
                 <TextHeading size="XL">{t('titles.relationsSearch')}</TextHeading>
 
@@ -141,6 +206,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
                     form={({ filter, setValue, watch }) => (
                         <div>
                             <SimpleSelect
+                                key={seed}
                                 id="relType"
                                 name="relType"
                                 label={t('relationshipList.relType')}
@@ -151,7 +217,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
                             />
 
                             <SimpleSelect
-                                key={seed}
+                                key={seed + 1}
                                 id="sourceType"
                                 name="sourceType"
                                 label={t('relationshipList.startTypeName')}
@@ -163,7 +229,7 @@ export const RelationListView: React.FC<IRelationListView> = ({
                             />
 
                             <SimpleSelect
-                                key={seed + 1}
+                                key={seed + 2}
                                 id="targetType"
                                 name="targetType"
                                 label={t('relationshipList.endTypeName')}
@@ -173,26 +239,6 @@ export const RelationListView: React.FC<IRelationListView> = ({
                                 defaultValue={filter.targetType}
                                 disabled={!!watch('relType')}
                             />
-                            {/* Zistit ci chceme filter podla attrs kedze ich nezobrazujeme */}
-                            {/* {watch('relType') && (
-                                <DynamicFilterAttributes
-                                setValue={setValue}
-                                defaults={defaultFilterValues}
-                                filterData={{
-                                    attributeFilters: filter.attributeFilters ?? {},
-                                    metaAttributeFilters: filter.metaAttributeFilters ?? {},
-                                }}
-                                attributes={relAttributes}
-                                attributeProfiles={relAttributeProfiles}
-                                constraintsData={undefined}
-                                ignoreInputNames={[
-                                    MetainformationColumns.OWNER,
-                                    MetainformationColumns.CREATED_AT,
-                                    MetainformationColumns.STATE,
-                                    MetainformationColumns.LAST_MODIFIED_AT,
-                                ]}
-                                />
-                            )} */}
                         </div>
                     )}
                 />
@@ -209,7 +255,9 @@ export const RelationListView: React.FC<IRelationListView> = ({
                         pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                         hiddenButtons={{ SELECT_COLUMNS: true }}
                     />
+
                     <Table
+                        tableRef={tableRef}
                         data={relations}
                         columns={columns}
                         isLoading={isLoadingRelations}
@@ -222,10 +270,28 @@ export const RelationListView: React.FC<IRelationListView> = ({
                         pageNumber={defFilter.pageNumber || BASE_PAGE_NUMBER}
                         pageSize={defFilter.pageSize || BASE_PAGE_SIZE}
                         dataLength={totalItems || 0}
-                        handlePageChange={handleFilterChange}
+                        handlePageChange={(filter) => {
+                            handleFilterChange(filter)
+                            tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                        }}
                     />
                 </QueryFeedback>
             </MainContentWrapper>
+            <BaseModal isOpen={relationData !== null} close={() => setRelationData(null)}>
+                <div>
+                    {relationData && (
+                        <>
+                            <RelationDetailModalView
+                                data={{ relationshipData, relationTypeData, constraintsData, ciSourceData, ciTargetData, ownerData, unitsData }}
+                                isLoading={isLoading}
+                                isError={isError}
+                                refetchRelationship={refetchRelationship}
+                            />
+                        </>
+                    )}
+                </div>
+                <ModalButtons onClose={() => setRelationData(null)} />
+            </BaseModal>
         </>
     )
 }

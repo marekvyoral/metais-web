@@ -19,6 +19,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryObserverResult } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
 import { FieldValues } from 'react-hook-form'
+import { HiddenButtons } from '@isdd/metais-common/index'
 
 import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
 import { useRowSelectionState } from '@/hooks/useRowSelectionState'
@@ -47,6 +48,7 @@ export interface ICiListContainerView<T> {
     POType: string
     rowSelection: Record<string, ColumnsOutputDefinition>
     setRowSelection: React.Dispatch<React.SetStateAction<Record<string, ColumnsOutputDefinition>>>
+    hiddenButtons?: Partial<HiddenButtons>
 }
 
 interface ICiListContainer<T> {
@@ -78,6 +80,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
         defaultFilterValues,
         defaultRequestApi,
     )
+
     useEffect(() => {
         reset()
         // eslint-disable-next-line react-hooks/exhaustive-deps

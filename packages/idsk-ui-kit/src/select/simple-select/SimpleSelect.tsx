@@ -1,5 +1,5 @@
 import React from 'react'
-import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
+import { Control, UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 import { MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
 
 import { IOption, Select } from '@isdd/idsk-ui-kit/select/Select'
@@ -7,6 +7,7 @@ import { IOption, Select } from '@isdd/idsk-ui-kit/select/Select'
 interface ISelectProps<T> {
     id?: string
     label: string
+    ariaLabel?: string
     name: string
     options: MultiValue<IOption<T>>
     option?: (props: OptionProps<IOption<T>>) => JSX.Element
@@ -17,6 +18,8 @@ interface ISelectProps<T> {
     setValue?: UseFormSetValue<any>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     clearErrors?: UseFormClearErrors<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    control?: Control<any>
     defaultValue?: T
     value?: T
     error?: string
@@ -25,12 +28,16 @@ interface ISelectProps<T> {
     disabled?: boolean
     onBlur?: React.FocusEventHandler<HTMLInputElement>
     isClearable?: boolean
+    isSearchable?: boolean
     menuPosition?: MenuPosition
     required?: boolean
+    tabIndex?: number
+    hint?: string
 }
 
 export const SimpleSelect = <T,>({
     label,
+    ariaLabel,
     name,
     options,
     option,
@@ -48,8 +55,12 @@ export const SimpleSelect = <T,>({
     disabled,
     onBlur,
     isClearable,
+    isSearchable,
     menuPosition,
     required,
+    tabIndex,
+    control,
+    hint,
 }: ISelectProps<T>) => {
     const handleOnChange = (selectedOption: MultiValue<IOption<T>> | SingleValue<IOption<T>>) => {
         const opt: IOption<T> | undefined = Array.isArray(selectedOption) ? selectedOption[0] : selectedOption
@@ -60,9 +71,11 @@ export const SimpleSelect = <T,>({
 
     return (
         <Select
+            control={control}
             id={id}
             name={name}
             label={label}
+            ariaLabel={ariaLabel}
             value={value === null ? null : options.find((opt) => opt.value === value)}
             defaultValue={options.find((opt) => opt.value === defaultValue) || null}
             placeholder={placeholder || ''}
@@ -76,9 +89,12 @@ export const SimpleSelect = <T,>({
             disabled={disabled}
             onBlur={onBlur}
             isClearable={isClearable}
+            isSearchable={isSearchable}
             menuPosition={menuPosition}
             onChange={handleOnChange}
             required={required}
+            tabIndex={tabIndex}
+            hint={hint}
         />
     )
 }

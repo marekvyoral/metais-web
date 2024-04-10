@@ -53,13 +53,15 @@ export const Paginator: React.FC<PaginatorProps> = ({ pageNumber, pageSize, data
         >
             <Button
                 variant="secondary"
-                label={<img src={PaginatorStartArrowIcon} alt={t('pagination.toFirst')} />}
+                label={<img src={PaginatorStartArrowIcon} alt="" />}
+                aria-label={t('pagination.toFirst')}
                 onClick={jumpToFirstPage}
                 disabled={pageNumberInt === 1}
             />
             <Button
                 variant="secondary"
-                label={<img src={PaginatorLeftArrowIcon} alt={t('pagination.toPrev')} />}
+                label={<img src={PaginatorLeftArrowIcon} alt="" />}
+                aria-label={t('pagination.toPrev')}
                 onClick={jumpToPreviousPage}
                 className={styles.paginatorStepButton}
                 disabled={pageNumberInt === 1}
@@ -89,14 +91,16 @@ export const Paginator: React.FC<PaginatorProps> = ({ pageNumber, pageSize, data
             />
             <Button
                 variant="secondary"
-                label={<img src={PaginatorRightArrowIcon} alt={t('pagination.toNext')} />}
+                label={<img src={PaginatorRightArrowIcon} alt="" />}
+                aria-label={t('pagination.toNext')}
                 onClick={jumpToNextPage}
                 className={styles.paginatorStepButton}
                 disabled={pageNumberInt === totalPageCount}
             />
             <Button
                 variant="secondary"
-                label={<img src={PaginatorEndArrowIcon} alt={t('pagination.toLast')} />}
+                label={<img src={PaginatorEndArrowIcon} alt="" />}
+                aria-label={t('pagination.toLast')}
                 onClick={jumpToLastPage}
                 disabled={pageNumberInt === totalPageCount}
             />

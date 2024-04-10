@@ -1,5 +1,5 @@
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
-import { SortType } from '@isdd/idsk-ui-kit/types'
+import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { MultiValue, OptionProps } from 'react-select'
 import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
@@ -24,6 +24,7 @@ interface ISelectPO {
     disabled?: boolean
     required?: boolean
     ciFilter?: CiFilterUi
+    additionalData?: IFilter
 }
 
 export const SelectPOForFilter: React.FC<ISelectPO> = ({
@@ -37,6 +38,7 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({
     disabled,
     required,
     isMulti = false,
+    additionalData,
 }) => {
     const ciOptionsHook = useReadCiList1Hook()
     const [seed, setSeed] = useState(1)
@@ -44,11 +46,10 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({
 
     const { data, isLoading, isError, refetch } = useReadCiList1(
         {
-            filter: { type: [ciType], uuid: valuesAsUuids },
+            filter: { type: [ciType], uuid: valuesAsUuids, ...additionalData },
         },
-        { query: { enabled: valuesAsUuids && valuesAsUuids?.length > 0 } },
+        { query: { enabled: valuesAsUuids && valuesAsUuids?.length > 0 && valuesAsUuids.every((v) => v != '') } },
     )
-
     const [value, setValue] = useState<ConfigurationItemUi | MultiValue<ConfigurationItemUi> | null>()
 
     useEffect(() => {
@@ -64,7 +65,7 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({
     }, [isLoading, isError])
 
     useEffect(() => {
-        if (selectedLiableEntities.length === 0 && valuesAsUuids?.length > 0) {
+        if (selectedLiableEntities.length === 0 && valuesAsUuids?.length > 0 && valuesAsUuids.every((v) => v != '')) {
             refetch().then((res) => {
                 setSelectedLiableEntities(res.data?.configurationItemSet || [])
             })
@@ -84,7 +85,7 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({
                 perpage: 20,
                 sortBy: 'Gen_Profil_nazov',
                 sortType: SortType.ASC,
-                filter: ciFilter ? ciFilter : { type: [ciType], searchFields: ['Gen_Profil_nazov'], fullTextSearch: searchQuery },
+                filter: ciFilter ? ciFilter : { type: [ciType], searchFields: ['Gen_Profil_nazov'], fullTextSearch: searchQuery, ...additionalData },
             } as CiListFilterContainerUi
 
             const ciResponse = await ciOptionsHook(defaultFilterValues)
@@ -97,7 +98,7 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({
                 },
             }
         },
-        [ciFilter, ciOptionsHook, ciType],
+        [additionalData, ciFilter, ciOptionsHook, ciType],
     )
 
     const formatOption = (props: OptionProps<ConfigurationItemUi>) => {

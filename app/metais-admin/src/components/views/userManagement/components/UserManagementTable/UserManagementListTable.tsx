@@ -10,11 +10,11 @@ import { useTranslation } from 'react-i18next'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { truncateWithEllipsis } from '@isdd/metais-common/componentHelpers/formatting/ellipsis'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
-import { UseMutationResult } from '@tanstack/react-query'
 
 import styles from './userManagementListTable.module.scss'
 import { UserTableRowActions } from './UserTableRowActions'
 
+import { UserStateBatchMutation } from '@/components/views/userManagement/userManagementListWrapper'
 import { extractOrganizationNamesFromCi } from '@/components/views/userManagement/userManagementUtils'
 import {
     UserManagementListItem,
@@ -29,15 +29,8 @@ interface UserManagementTableProps {
     rowSelection: Record<string, UserManagementListItem>
     setRowSelection: (item: Record<string, UserManagementListItem>) => void
     handleFilterChange: (filter: IFilter) => void
-    updateIdentityStateBatchMutation: UseMutationResult<
-        void[],
-        unknown,
-        {
-            uuids: string[]
-            activate: boolean
-        },
-        unknown
-    >
+    mutations: UserStateBatchMutation
+    tableRef: React.RefObject<HTMLTableElement>
 }
 
 export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
@@ -46,10 +39,12 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
     rowSelection,
     setRowSelection,
     handleFilterChange,
-    updateIdentityStateBatchMutation,
+    mutations,
+    tableRef,
 }) => {
     const { t } = useTranslation()
     const { pageNumber, pageSize } = filter
+    const { updateIdentityStateBatchMutation, revokeUserBatchMutation } = mutations
 
     const handleAllCheckboxChange = useCallback(
         (rows: UserManagementListItem[]) => {
@@ -141,10 +136,16 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
         },
         {
             header: t('userManagement.actions'),
-            cell: (ctx) => <UserTableRowActions ctx={ctx} updateIdentityStateBatchMutation={updateIdentityStateBatchMutation} />,
+            cell: (ctx) => (
+                <UserTableRowActions
+                    ctx={ctx}
+                    updateIdentityStateBatchMutation={updateIdentityStateBatchMutation}
+                    revokeUserBatchMutation={revokeUserBatchMutation}
+                />
+            ),
             id: 'actions',
         },
-        { header: t('userManagement.login'), accessorFn: (row) => row.identity.login, enableSorting: true, id: 'login' },
+        { header: t('userManagement.loginEmail'), accessorFn: (row) => row.identity.login, enableSorting: true, id: 'login' },
         { header: t('userManagement.mobile'), accessorFn: (row) => row.identity.mobile, enableSorting: true, id: 'mobile' },
         {
             header: t('userManagement.organization'),
@@ -187,6 +188,7 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
 
     return (
         <Table
+            tableRef={tableRef}
             data={data.list}
             columns={columns.map((item) => ({ ...item, size: 150 }))}
             pagination={{ pageIndex: pageNumber ?? BASE_PAGE_NUMBER, pageSize: pageSize ?? BASE_PAGE_SIZE }}

@@ -5,7 +5,7 @@ import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ColumnDef } from '@tanstack/react-table'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TrainingExportButton } from '@isdd/metais-common/src/components/actions-over-table/actions-trainings/TrainingExportButton'
 
@@ -25,6 +25,8 @@ export const TrainingView: React.FC<TrainingContainerView> = ({
     const { isActionSuccess } = useActionSuccess()
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    const tableRef = useRef<HTMLTableElement>(null)
 
     useEffect(() => {
         scrollToMutationFeedback(true)
@@ -78,15 +80,12 @@ export const TrainingView: React.FC<TrainingContainerView> = ({
     return (
         <QueryFeedback loading={isLoading} error={isError} withChildren>
             <TextHeading size="L">{t('trainings.invitedTitle')}</TextHeading>
-            {isActionSuccess && isActionSuccess.additionalInfo?.type === 'relationCreated' && (
-                <div ref={wrapperRef}>
-                    <MutationFeedback
-                        success={isActionSuccess.value}
-                        successMessage={t('mutationFeedback.successfulRelationCreated')}
-                        error={false}
-                    />
-                </div>
-            )}
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={isActionSuccess.value && isActionSuccess.additionalInfo?.type === 'relationCreated'}
+                    successMessage={t('mutationFeedback.successfulRelationCreated')}
+                />
+            </div>
             <Filter form={() => <></>} defaultFilterValues={filter} onlySearch />
             <ActionsOverTable
                 pagination={{
@@ -100,12 +99,15 @@ export const TrainingView: React.FC<TrainingContainerView> = ({
                 exportButton={!!data?.[0]?.trainingId && <TrainingExportButton trainingUuid={data[0].trainingId} trainingName={trainingName} />}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
             />
-            <Table columns={columns} data={slicedTableData} isLoading={isLoading} error={isError} />
+            <Table tableRef={tableRef} columns={columns} data={slicedTableData} isLoading={isLoading} error={isError} />
             <PaginatorWrapper
                 pageSize={pageSize}
                 pageNumber={pageNumber}
                 dataLength={filteredData.length ?? 0}
-                handlePageChange={handleFilterChange}
+                handlePageChange={(filterValues) => {
+                    handleFilterChange(filterValues)
+                    tableRef.current?.scrollIntoView({ behavior: 'smooth' })
+                }}
             />
         </QueryFeedback>
     )

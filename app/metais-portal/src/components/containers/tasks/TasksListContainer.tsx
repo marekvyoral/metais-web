@@ -25,7 +25,7 @@ interface TasksFilter extends IFilterParams {
 }
 
 const defaultFilterValues: TasksFilter = {
-    state: TaskFilterState.ALL,
+    state: TaskFilterState.ACTIVE,
     appId: 'ALL',
     createdFrom: undefined,
     createdTo: undefined,
@@ -76,7 +76,7 @@ export const TasksListContainer: React.FC = () => {
     ]
     const { data: appIds } = useGetValidEnum('TYPE_TASK_APP_ID')
     const { mutate, isError, isLoading, data, isIdle } = useGetTasks()
-    const [sort, setSort] = useState<ColumnSort[]>([{ sortDirection: SortType.DESC, orderBy: 'name' }])
+    const [sort, setSort] = useState<ColumnSort[]>([{ sortDirection: SortType.DESC, orderBy: 'createdAt' }])
     const [pagination, setPagination] = useState<Pagination>({ pageNumber: 1, pageSize: 10, dataLength: 0 })
 
     const { filter: filterParams } = useFilterParams<TasksFilter>(defaultFilterValues)

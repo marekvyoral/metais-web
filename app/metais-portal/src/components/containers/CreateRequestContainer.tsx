@@ -1,29 +1,29 @@
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-import { HierarchyPOFilterUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Roles } from '@isdd/metais-common/api/constants'
+import { HierarchyPOFilterUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     useCreateCodelistRequest,
     useExistsCodelist,
     useGetFirstNotUsedCode,
     useSaveAndSendCodelist,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import React, { useMemo, useState } from 'react'
+import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { RequestListState } from '@isdd/metais-common/constants'
-import { useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { ErrorTranslateKeyType, getErrorTranslateKeys } from '@isdd/metais-common/src/utils/errorMapper'
 import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
+import React, { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
-import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
-import { IItemDates } from '@/components/views/requestLists/components/modalItem/DateModalItem'
-import { IOption } from '@/components/views/requestLists/CreateRequestView'
 import { IRequestForm, getRoleUUID, mapFormToSave } from '@/componentHelpers/requests'
-import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
+import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
+import { IOption } from '@/components/views/requestLists/CreateRequestView'
+import { IItemDates } from '@/components/views/requestLists/components/modalItem/DateModalItem'
+import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
 
 export interface CreateRequestViewProps {
     requestId?: string
@@ -31,14 +31,14 @@ export interface CreateRequestViewProps {
     isLoading: boolean
     isLoadingMutation: boolean
     isError: boolean
-    errorMessages: string[]
+    errorMessages: ErrorTranslateKeyType[]
     isSuccessSetDates?: boolean
     errorMessageSetDates?: string
     attributeProfile: AttributeProfile
     canEdit?: boolean
     firstNotUsedCode?: string
     editData?: IRequestForm
-    onHandleCheckIfCodeIsAvailable: (code: string) => Promise<{ isAvailable: boolean; errorTranslateKeys: string[] }>
+    onHandleCheckIfCodeIsAvailable: (code: string) => Promise<{ isAvailable: boolean; errorTranslateKeys: ErrorTranslateKeyType[] }>
     onGetMainGestor?: (gid: string) => Promise<IOption>
     onSend: (formData: IRequestForm) => Promise<void>
     onSave: (formData: IRequestForm) => Promise<void>
@@ -75,9 +75,11 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
 
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
     const [errorAddOrGetGroup, setAddOrGetGroupError] = useState<{ message: string }>()
+    const [isAddOrGetGroupLoading, setIsAddOrGetGroupLoading] = useState<boolean>(false)
+
     const implicitHierarchy = useReadCiList()
-    const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave, error: errorSave } = useCreateCodelistRequest()
-    const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend, error: errorSend } = useSaveAndSendCodelist()
+    const { mutateAsync, isLoading: isLoadingSave, error: errorSave } = useCreateCodelistRequest()
+    const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, error: errorSend } = useSaveAndSendCodelist()
     const { data: firstNotUsedCode, isLoading: isLoadingGetFirstNotUsedCode } = useGetFirstNotUsedCode({ query: { cacheTime: 0 } })
     const { data: attributeProfile, isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
     const { mutateAsync: mutateExists, isLoading: isLoadingExists } = useExistsCodelist()
@@ -132,8 +134,10 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
         const uuid = getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)
         const saveData = mapFormToSave(formData, workingLanguage)
         setAddOrGetGroupError(undefined)
+        setIsAddOrGetGroupLoading(true)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
+                setIsAddOrGetGroupLoading(false)
                 mutateAsync({ data: saveData }).then(() => {
                     invalidateRequests()
                     setIsActionSuccess({
@@ -145,16 +149,20 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
                 })
             })
             .catch((error) => {
+                setIsAddOrGetGroupLoading(false)
                 setAddOrGetGroupError(error)
             })
     }
 
     const onSend = async (formData: IRequestForm) => {
         const uuid = getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)
+        const saveData = mapFormToSave(formData, workingLanguage)
         setAddOrGetGroupError(undefined)
+        setIsAddOrGetGroupLoading(true)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
-                mutateSendASync({ data: mapFormToSave(formData, workingLanguage) }).then(() => {
+                setIsAddOrGetGroupLoading(false)
+                mutateSendASync({ data: saveData }).then(() => {
                     invalidateRequests()
                     setIsActionSuccess({
                         value: true,
@@ -165,13 +173,14 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
                 })
             })
             .catch((error) => {
+                setIsAddOrGetGroupLoading(false)
                 setAddOrGetGroupError(error)
             })
     }
 
     const isLoading = [isLoadingGetFirstNotUsedCode, isLoadingAttributeProfile].some((item) => item)
-    const isLoadingMutation = [isLoadingSave, isLoadingSend, isLoadingExists].some((item) => item)
-    const isError = [errorAddOrGetGroup, isErrorSave, isErrorSend, isErrorAttributeProfile].some((item) => item)
+    const isLoadingMutation = [isLoadingSave, isLoadingSend, isLoadingExists, isAddOrGetGroupLoading].some((item) => item)
+    const isError = [isErrorAttributeProfile].some((item) => item)
     const errorMessages = getErrorTranslateKeys([errorAddOrGetGroup, errorSend, errorSave].map((item) => item as { message: string }))
 
     return (

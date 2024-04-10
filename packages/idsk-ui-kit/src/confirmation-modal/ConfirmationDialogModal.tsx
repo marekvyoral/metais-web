@@ -46,9 +46,7 @@ export const ConfirmationModal: React.FC<IConfirmationProps> = ({
                         )}
                     </>
                 </TextHeading>
-                <div className={styles.content}>
-                    <div className="govuk-radios--small">{content}</div>
-                </div>
+                <div className={styles.content}>{content}</div>
             </div>
             <ModalButtons
                 {...(showOKButton && { submitButtonLabel: okButtonLabel ? okButtonLabel : t('confirmationModal.okButtonLabel') })}

@@ -2,10 +2,11 @@ import {
     AccordionContainer,
     Button,
     CheckBox,
+    ErrorBlock,
     ILoadOptionsResponse,
     Input,
     RadioButton,
-    RadioGroupWithLabel,
+    RadioGroup,
     SelectLazyLoading,
     SimpleSelect,
     TextHeading,
@@ -116,7 +117,9 @@ export const MonitoringComposeView: React.FC<IMonitoringComposeView> = ({
     return (
         <>
             <TextHeading size="XL">{getPageTitle(isNewRecord, t)}</TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
+            {formState.isSubmitted && !formState.isValid && <ErrorBlock errorTitle={t('formErrors')} hidden />}
+
+            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')} noValidate>
                 <SelectLazyLoading<ConfigurationItemUi>
                     key={seed}
                     getOptionLabel={(item) => `(${item?.type ?? ''}) ${getCiName(item)}` ?? ''}
@@ -161,7 +164,7 @@ export const MonitoringComposeView: React.FC<IMonitoringComposeView> = ({
                             summary: null,
                             content: (
                                 <>
-                                    <RadioGroupWithLabel label={t('monitoring.compose.httpMethod')} className="govuk-radios--small" inline>
+                                    <RadioGroup label={t('monitoring.compose.httpMethod')} small inline>
                                         <RadioButton
                                             id={'httpMethod.get'}
                                             value={'GET'}
@@ -175,7 +178,7 @@ export const MonitoringComposeView: React.FC<IMonitoringComposeView> = ({
                                             label={t('monitoring.compose.radioButton.post')}
                                             {...register('httpMethod')}
                                         />
-                                    </RadioGroupWithLabel>
+                                    </RadioGroup>
 
                                     <HttpRequestHeaders
                                         register={register}

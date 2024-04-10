@@ -103,7 +103,7 @@ export const RoleUsersView: React.FC<IRoleUsersViewParams> = ({ roleId, data, is
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
                         <TextHeading size="L">{t('adminRolesPage.assignedUsers')}</TextHeading>
-                        {isError && <QueryFeedback error loading={false} />}
+                        <QueryFeedback error={isError} loading={false} />
                     </FlexColumnReverseWrapper>
                     <Filter<FilterData>
                         defaultFilterValues={defaultFilterValues}

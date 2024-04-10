@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { MouseEvent, useEffect, useRef } from 'react'
+import React, { AriaAttributes, MouseEvent, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './button-link.module.scss'
@@ -11,11 +11,11 @@ interface ButtonLinkProps {
     type?: 'submit' | 'reset' | 'button'
     icon?: string
     disabled?: boolean
-    withoutFocus?: boolean
     hidden?: boolean
     onMouseOver?: React.MouseEventHandler<HTMLButtonElement>
     onMouseOut?: React.MouseEventHandler<HTMLButtonElement>
     id?: string
+    aria?: AriaAttributes
 }
 
 export const ButtonLink: React.FC<ButtonLinkProps> = ({
@@ -25,18 +25,15 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({
     icon,
     type,
     disabled,
-    withoutFocus,
     onMouseOver,
     onMouseOut,
     hidden = false,
     id,
+    aria,
+    ...rest
 }) => {
     const { t } = useTranslation()
     const ref = useRef<HTMLButtonElement>(null)
-
-    useEffect(() => {
-        if (withoutFocus) ref.current?.blur()
-    }, [withoutFocus])
 
     return (
         <>
@@ -50,6 +47,8 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({
                     disabled={disabled}
                     ref={ref}
                     id={id}
+                    {...aria}
+                    {...rest}
                 >
                     {icon && <img className={styles.iconInButtonLink} src={icon} alt="" />}
                     {label ?? t('errors.fixLink')}

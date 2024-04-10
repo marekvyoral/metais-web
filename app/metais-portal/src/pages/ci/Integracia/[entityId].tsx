@@ -1,23 +1,24 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY, META_IS_TITLE } from '@isdd/metais-common/constants'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { useGetCiTypeWrapper } from '@isdd/metais-common/hooks/useCiType.hook'
 
 import { getIntegrationLinkTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { IntegrationPermissionsWrapper } from '@/components/permissions/IntegrationPermissionsWrapper'
 import { IntegrationLinkDetail } from '@/components/views/prov-integration/IntegrationLinkDetail'
+import { useCiCheckEntityTypeRedirectHook } from '@/hooks/useCiCheckEntityTypeRedirect.hook'
 
 export const IntegrationLinkDetailPage: React.FC = () => {
     const { t, i18n } = useTranslation()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
 
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeWrapper(entityName ?? '')
     const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
 
     const {
@@ -30,6 +31,8 @@ export const IntegrationLinkDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+    useCiCheckEntityTypeRedirectHook(ciItemData, entityName)
+
     document.title = `${t('titles.ciDetail', {
         ci: ciTypeName,
         itemName: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],

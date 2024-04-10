@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    useGetRelationshipType,
     RelationshipType,
     AttributeProfile,
     useUnvalidRelationshipType,
@@ -13,6 +12,7 @@ import {
     useDeleteAttributeTextation,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
+import { useGetRelationshipTypeWrapper } from '@isdd/metais-common/hooks/useRelationshipType.hook'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
 import { createTabNamesAndValuesMap } from '@isdd/metais-common/hooks/useEntityProfiles'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
@@ -47,7 +47,7 @@ export const RelationDetailContainer: React.FC<IRelationDetailContainer> = ({ en
         isError: isCiTypeDataError,
         refetch,
         isFetching: isCiTypeDataFetching,
-    } = useGetRelationshipType(entityName)
+    } = useGetRelationshipTypeWrapper(entityName, {}, false)
     const {
         data: attributeOverridesData,
         isLoading: isAttributesOverridesLoading,

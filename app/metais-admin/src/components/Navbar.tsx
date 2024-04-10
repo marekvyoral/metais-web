@@ -5,7 +5,7 @@ import { NavMenu } from '@isdd/metais-common/components/navbar/navmenu/NavMenu'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { AdminRouteNames, AdminRouteRoles, NavigationItem } from '@isdd/metais-common/navigation/routeNames'
 import { TFunction } from 'i18next'
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { getPermittedRoutesForUser } from '@/componentHelpers/navigation'
@@ -39,7 +39,7 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
         },
         {
             title: t('navMenu.publicAuthorities.management'),
-            path: '/public-authorities',
+            path: AdminRouteNames.PUBLIC_AUTHORITIES_LIST,
             icon: InstructionsIcon,
             role: [AdminRouteRoles.ADMIN],
             subItems: [
@@ -87,22 +87,9 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
         {
             title: t('navMenu.monitoring.monitoring'),
             //in admin is /list but that is not unique
-            path: AdminRouteNames.MONITORING,
+            path: AdminRouteNames.MONITORING_LIST,
             icon: InstructionsIcon,
             role: [AdminRouteRoles.ADMIN, AdminRouteRoles.HKO],
-            subItems: [
-                //did not find similar routes in admin so I made custom ones
-                {
-                    title: t('navMenu.monitoring.params'),
-                    path: AdminRouteNames.MONITORING_PARAMS,
-                    role: [AdminRouteRoles.ADMIN, AdminRouteRoles.HKO],
-                },
-                {
-                    title: t('navMenu.monitoring.list'),
-                    path: AdminRouteNames.MONITORING_LIST,
-                    role: [AdminRouteRoles.ADMIN, AdminRouteRoles.HKO],
-                },
-            ],
         },
         //predpokladam ze to je sprava zostav
         {
@@ -141,13 +128,6 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
                 },
             ],
         },
-        //not sure about this TODO
-        {
-            title: t('navMenu.templateReferenceIdentifiersManagement'),
-            path: AdminRouteNames.TEMPLATE_REFERENCE_IDENTIFIERS,
-            icon: InstructionsIcon,
-            role: [AdminRouteRoles.ADMIN],
-        },
         {
             title: t('navMenu.systemState.heading'),
             path: AdminRouteNames.SYSTEM_STATUS_SETTINGS,
@@ -171,6 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
     } = useAuth()
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
     const [showDropDown, setShowDropDown] = useState<boolean>(false)
+    const menuId = useId()
 
     const adminRoutes = getAdminNavItems(t, user?.roles ?? null)
     useAdminProtectedRoutes(adminRoutes)
@@ -185,8 +166,14 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                     <div className="idsk-header-web__tricolor" />
 
                     <NavBarHeader setShowDropDown={setShowDropDown} showDropDown={showDropDown} />
-                    <NavBarMain isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} isAdmin={isAdmin} />
-                    <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={adminRoutes} isAdmin={isAdmin} />
+                    <NavBarMain menuId={menuId} isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} isAdmin={isAdmin} />
+                    <NavMenu
+                        id={menuId}
+                        isMenuExpanded={isMenuExpanded}
+                        setIsMenuExpanded={setIsMenuExpanded}
+                        navItems={adminRoutes}
+                        isAdmin={isAdmin}
+                    />
                 </div>
             </header>
         </>

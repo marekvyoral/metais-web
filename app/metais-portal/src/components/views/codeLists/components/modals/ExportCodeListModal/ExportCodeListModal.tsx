@@ -65,14 +65,7 @@ export const ExportCodeListModal: React.FC<ExportCodeListModalProps> = ({ code, 
                     <TextHeading size={'L'} className={styles.heading}>
                         {t('codeListDetail.modal.title.export')}
                     </TextHeading>
-                    {isError && (
-                        <MutationFeedback
-                            success={false}
-                            showSupportEmail
-                            error={t('feedback.mutationErrorMessage')}
-                            onMessageClose={() => setIsError(false)}
-                        />
-                    )}
+                    <MutationFeedback error={isError} onMessageClose={() => setIsError(false)} />
                     <div className={styles.buttonGroup}>
                         <Button
                             label={t('codeListDetail.modal.button.xml')}

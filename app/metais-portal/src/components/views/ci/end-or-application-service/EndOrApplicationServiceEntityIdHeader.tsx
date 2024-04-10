@@ -3,6 +3,7 @@ import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { ApiError, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import styles from '@isdd/metais-common/components/entity-header/ciEntityHeader.module.scss'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
@@ -44,7 +45,9 @@ export const EndOrApplicationServiceEntityIdHeader: React.FC<Props> = ({
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
-
+    const {
+        state: { user },
+    } = useAuth()
     const { handleReInvalidate, handleInvalidate, handleClone, errorMessage, isBulkLoading } = useBulkAction(isRelation)
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
@@ -77,8 +80,7 @@ export const EndOrApplicationServiceEntityIdHeader: React.FC<Props> = ({
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage}
-                        showSupportEmail
-                        error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                        error={bulkActionResult?.isError}
                         onMessageClose={() => setBulkActionResult(undefined)}
                     />
                 </div>
@@ -89,62 +91,77 @@ export const EndOrApplicationServiceEntityIdHeader: React.FC<Props> = ({
                     {entityItemName}
                 </TextHeading>
                 <ButtonGroupRow>
-                    <Can I={Actions.EDIT} a={`ci.${entityId}`}>
-                        {editButton}
-                    </Can>
-                    <ButtonPopup
-                        buttonClassName={styles.noWrap}
-                        buttonLabel={t('ciType.moreButton')}
-                        popupPosition="right"
-                        popupContent={() => {
-                            return (
-                                <div className={styles.buttonLinksDiv}>
-                                    <Tooltip
-                                        key={'invalidateItem'}
-                                        descriptionElement={errorMessage}
-                                        position={'top center'}
-                                        tooltipContent={(open) => (
-                                            <ButtonLink
-                                                disabled={isInvalidated}
-                                                onClick={() => handleInvalidate(entityListData, () => setShowInvalidate(true), open)}
-                                                label={t('ciType.invalidateItem')}
+                    {user && (
+                        <>
+                            <Can I={Actions.EDIT} a={`ci.${entityId}`}>
+                                {editButton}
+                            </Can>
+
+                            <ButtonPopup
+                                buttonClassName={styles.noWrap}
+                                buttonLabel={t('ciType.moreButton')}
+                                popupPosition="right"
+                                popupContent={() => {
+                                    return (
+                                        <div className={styles.buttonLinksDiv}>
+                                            <Tooltip
+                                                key={'invalidateItem'}
+                                                descriptionElement={errorMessage}
+                                                position={'top center'}
+                                                tooltipContent={(open) => (
+                                                    <ButtonLink
+                                                        disabled={isInvalidated}
+                                                        onClick={() => handleInvalidate(entityListData, () => setShowInvalidate(true), open)}
+                                                        label={t('ciType.invalidateItem')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
+                                                    />
+                                                )}
                                             />
-                                        )}
-                                    />
-                                    <Tooltip
-                                        key={'revalidateItem'}
-                                        descriptionElement={errorMessage}
-                                        position={'top center'}
-                                        tooltipContent={(open) => (
-                                            <ButtonLink
-                                                disabled={!isInvalidated}
-                                                onClick={() => handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)}
-                                                label={t('ciType.revalidateItem')}
+                                            <Tooltip
+                                                key={'revalidateItem'}
+                                                descriptionElement={errorMessage}
+                                                position={'top center'}
+                                                tooltipContent={(open) => (
+                                                    <ButtonLink
+                                                        disabled={!isInvalidated}
+                                                        onClick={() => handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)}
+                                                        label={t('ciType.revalidateItem')}
+                                                        aria={{ 'aria-haspopup': 'dialog' }}
+                                                    />
+                                                )}
                                             />
-                                        )}
-                                    />
-                                    <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
-                                        <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
-                                    </Can>
-                                    <Can I={Actions.EDIT} a={`ci.${entityId}`}>
-                                        <Tooltip
-                                            key={'cloneCI'}
-                                            descriptionElement={errorMessage}
-                                            position={'top center'}
-                                            tooltipContent={(open) => (
+                                            <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
                                                 <ButtonLink
-                                                    onClick={() =>
-                                                        handleClone(entityData, () => navigate(clonePath, { state: { from: location } }), open)
-                                                    }
-                                                    label={tooltipLabel}
+                                                    onClick={() => setShowChangeOwner(true)}
+                                                    label={t('ciType.changeOfOwner')}
+                                                    aria={{ 'aria-haspopup': 'dialog' }}
                                                 />
-                                            )}
-                                        />
-                                    </Can>
-                                </div>
-                            )
-                        }}
-                    />
+                                            </Can>
+                                            <Can I={Actions.EDIT} a={`ci.${entityId}`}>
+                                                <Tooltip
+                                                    key={'cloneCI'}
+                                                    descriptionElement={errorMessage}
+                                                    position={'top center'}
+                                                    tooltipContent={(open) => (
+                                                        <ButtonLink
+                                                            onClick={() =>
+                                                                handleClone(
+                                                                    entityData,
+                                                                    () => navigate(clonePath, { state: { from: location } }),
+                                                                    open,
+                                                                )
+                                                            }
+                                                            label={tooltipLabel}
+                                                        />
+                                                    )}
+                                                />
+                                            </Can>
+                                        </div>
+                                    )
+                                }}
+                            />
+                        </>
+                    )}
                 </ButtonGroupRow>
                 {isBulkLoading && <LoadingIndicator fullscreen />}
                 <InvalidateBulkModal

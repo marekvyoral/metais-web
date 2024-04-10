@@ -2,13 +2,14 @@ import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { BreadCrumbs, HomeIcon, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { mapCategoriesToOptions } from '@isdd/metais-common/componentHelpers'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { DEFAULT_PAGESIZE_OPTIONS, META_IS_TITLE } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, HowTo, META_IS_TITLE } from '@isdd/metais-common/constants'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { RouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { getHowToTranslate } from '@isdd/metais-common/utils/utils'
 
 import { ReportsListContainer } from '@/components/containers/ReportsListContainer'
 import { ReportsTable } from '@/components/views/reports/ReportsTable'
@@ -30,6 +31,7 @@ const ReportsListPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    { label: getHowToTranslate(HowTo.MONITORING_HOWTO, t), href: RouteNames.HOW_TO_MONITORING },
                     { label: t('reports.heading') ?? '', href: RouterRoutes.REPORTS_LIST },
                 ]}
             />
@@ -41,8 +43,8 @@ const ReportsListPage: React.FC = () => {
                         <MainContentWrapper>
                             <QueryFeedback loading={props.isLoading} error={false} withChildren>
                                 <FlexColumnReverseWrapper>
-                                    <TextHeading size="L">{t('reports.heading')}</TextHeading>
-                                    {props.isError && <QueryFeedback loading={false} error={props.isError} />}
+                                    <TextHeading size="XL">{t('reports.heading')}</TextHeading>
+                                    <QueryFeedback loading={false} error={props.isError} />
                                 </FlexColumnReverseWrapper>
                                 <Filter<ReportsFilterData>
                                     defaultFilterValues={defaultFilterValues}
