@@ -1,5 +1,6 @@
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import {
+    AttributeUiValue,
     ConfigurationItemUi,
     ConfigurationItemUiAttributes,
     RelationshipUi,
@@ -11,6 +12,7 @@ import {
     useRecycleInvalidatedRelsHook,
     useStoreRelationship,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useGenerateCodeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ENTITY_ZS, INVALIDATED } from '@isdd/metais-common/constants'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { useState } from 'react'
@@ -29,6 +31,7 @@ export const useKSChannel = () => {
     const readRelaionships = useReadRelationshipsHook()
     const recycleRel = useRecycleInvalidatedRelsHook()
     const invalidateRel = useInvalidateRelationshipHook()
+    const generateRelCode = useGenerateCodeHook()
     const readNeighboursWithAllRels = useReadCiNeighboursWithAllRelsHook()
     const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
 
@@ -134,8 +137,9 @@ export const useKSChannel = () => {
         const requestIdPromises: Promise<RequestIdUi>[] = []
         if (channelCodes && channelCodes?.length > 0) {
             const channelData = await readByMetaisCode({ metaIsCodes: mappedChannelCodes })
-            channelData?.configurationItemSet?.forEach((ch) => {
+            channelData?.configurationItemSet?.forEach(async (ch) => {
                 if (old?.get(ch?.uuid ?? '') === undefined) {
+                    const code = await generateRelCode(Kanal_spristupnuje_KS)
                     const requestId = storeRel({
                         data: {
                             type: Kanal_spristupnuje_KS,
@@ -143,7 +147,7 @@ export const useKSChannel = () => {
                             startUuid: ch?.uuid,
                             endUuid: entityData?.uuid,
                             owner: entityData?.owner,
-                            attributes: [],
+                            attributes: [{ name: ATTRIBUTE_NAME.Gen_Profil_Rel_kod_metais, value: code.code as unknown as AttributeUiValue }],
                         },
                     })
                     requestIdPromises.push(requestId)
