@@ -34,6 +34,8 @@ interface iUseUppy {
     fileUploadError?: (responseError: { responseText: string; response: unknown }) => string
     refId?: string
     refType?: RefAttributesRefType
+    method?: string
+    fieldName?: string
 }
 
 export type UploadFileResponse = {
@@ -67,6 +69,8 @@ export const useUppy = ({
     fileUploadError,
     refId,
     refType,
+    method,
+    fieldName,
 }: iUseUppy) => {
     const { i18n, t } = useTranslation()
     const uppy = useMemo(() => {
@@ -283,9 +287,11 @@ export const useUppy = ({
     useEffect(() => {
         uppy.getPlugin('XHRUpload')?.setOptions({
             endpoint: endpointUrl,
+            ...(method ? { method: method } : {}),
+            ...(fieldName ? { fieldName: fieldName } : {}),
             headers: { Authorization: `Bearer ${token}`, 'Accept-Language': i18n.language },
         })
-    }, [token, endpointUrl, i18n.language, uppy])
+    }, [token, endpointUrl, i18n.language, uppy, method, fieldName])
 
     useEffect(() => {
         const fileErrorCallback = (file: UppyFile | undefined, error: Error) => {

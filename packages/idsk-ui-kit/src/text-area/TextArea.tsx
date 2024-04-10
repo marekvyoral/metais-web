@@ -33,7 +33,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
         return (
             <div className={classNames('govuk-form-group', wrapperClassname, { 'govuk-form-group--error': !!error })}>
                 <div className={styles.labelDiv}>
-                    <label className="govuk-label" htmlFor={inputId}>
+                    <label className={classNames('govuk-label', styles.wrap)} htmlFor={inputId}>
                         {label} {required && t('input.requiredField')}
                     </label>
                     {info && (

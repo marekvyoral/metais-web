@@ -594,5 +594,25 @@ export default defineConfig({
         hooks: {
             afterAllFilesWrite: 'prettier --write',
         },
-    },
+    },globalConfigManager: {
+        input: {
+            target: process.env.VITE_REST_CLIEN_GLOBAL_CONF_SWAGGER_URL ?? '',
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/globalConfig-manager-swagger.ts`,
+            override: {
+                query: {
+                    useQuery: true,
+                },
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useGlobalConfSwaggerClient.ts',
+                    name: 'useGlobalConfSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    }
 })

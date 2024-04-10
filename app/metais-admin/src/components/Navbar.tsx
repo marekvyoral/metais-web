@@ -133,6 +133,11 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
             path: AdminRouteNames.SYSTEM_STATUS_SETTINGS,
             role: [AdminRouteRoles.ADMIN],
         },
+        {
+            title: t('localization.heading'),
+            path: AdminRouteNames.LOCALIZATION,
+            role: [AdminRouteRoles.ADMIN],
+        },
     ]
 
     if (userRoles == null || userRoles.length == 0) return []
