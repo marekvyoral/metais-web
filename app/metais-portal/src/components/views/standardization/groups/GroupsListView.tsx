@@ -60,7 +60,7 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
 
     const label = <span>+ {t('groups.addNewGroup')}</span>
     const tableRef = useRef<HTMLTableElement>(null)
-    const [pageSize, setPageSize] = useState<number>(Number(currentPreferences.defaultPerPage) ?? BASE_PAGE_SIZE)
+    const [pageSize, setPageSize] = useState<number>(Number(currentPreferences.defaultPerPage) || BASE_PAGE_SIZE)
     const [pageNumber, setPageNumber] = useState<number>(BASE_PAGE_NUMBER)
 
     const handlePageChange = (filter: IFilter) => {
