@@ -1,6 +1,6 @@
-import { Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
+import { Input, SimpleSelect, TextArea, CheckBox, RadioGroup, RadioButton } from '@isdd/idsk-ui-kit'
 import { DateInput, DateTypeEnum } from '@isdd/idsk-ui-kit/date-input/DateInput'
-import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { AttributeAttributeTypeEnum, AttributeConstraintCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import { HTML_TYPE } from '@isdd/metais-common/constants'
@@ -44,7 +44,7 @@ const AddAttributeView = ({
         [entityName, storeNewAttribute],
     )
 
-    const defaultValue = watch('defaultValue')
+    const { defaultValue, constraints } = watch()
 
     //control interval
     useEffect(() => {
@@ -187,7 +187,9 @@ const AddAttributeView = ({
                             setValue={setValue}
                             clearErrors={clearErrors}
                             ciType={isConstraintCiType(currentSelectedConstraints) ? currentSelectedConstraints.ciType : ''}
+                            disabled={!(constraints?.[0] as AttributeConstraintCiType)?.ciType}
                         />
+                        <CheckBox {...register('array')} label={t('egov.array')} />
                     </>
                 )}
 
@@ -217,6 +219,12 @@ const AddAttributeView = ({
                         />
                     )}
 
+                {selectedType === AttributeAttributeTypeEnum.STRING && !selectedConstraint && (
+                    <RadioGroup>
+                        <RadioButton defaultChecked {...register('displayAs')} value="" id="displayAsInput" label={t('egov.displayAsInput')} />
+                        <RadioButton {...register('displayAs')} value="textarea" id="displayAsTextarea" label={t('egov.displayAsTextarea')} />
+                    </RadioGroup>
+                )}
                 <ModalButtons
                     isLoading={isLoading}
                     submitButtonLabel={t('form.submit')}

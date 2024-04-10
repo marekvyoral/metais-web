@@ -27,6 +27,8 @@ interface iUseCreateAttributeForm {
             units: string | undefined
             defaultValue: string | boolean | number | undefined
             constraints: AttributeConstraint[] | AttributeConstraintRegexAllOf[] | AttributeConstraintIntervalAllOf[] | AttributeConstraintEnumAllOf[]
+            array?: boolean
+            displayAs?: string
         },
         unknown,
         undefined

@@ -40,6 +40,9 @@ const AddAttributeContainer = ({ View, onClose, refetch, entityName }: IAddAttri
                     ...newAttribute,
                     constraints: newAttribute?.constraints?.filter((constraint) => constraint.type && constraint.type.length > 0) ?? [],
                     technicalName: attributeTechnicalName + underscore + newAttribute?.technicalName,
+                    array: newAttribute?.array,
+                    isArray: newAttribute?.array,
+                    ...(newAttribute?.displayAs ? { displayAs: newAttribute?.displayAs } : {}),
                 },
             })
             setIsActionSuccess({

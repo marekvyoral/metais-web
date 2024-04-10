@@ -195,6 +195,12 @@ export const ProfileDetailView = <T,>({
     const getNumericColumns = (): Array<ColumnDef<Attribute>> => {
         return [
             {
+                header: t('egov.isArray'),
+                accessorFn: (row) => row?.isArray,
+                id: 'isArray',
+                cell: (ctx) => (ctx.row.original.isArray ? t('egov.yes') : t('egov.no')),
+            },
+            {
                 header: unitsData?.name,
                 accessorFn: (row) => row?.units,
                 id: 'measureUnit',
@@ -202,13 +208,13 @@ export const ProfileDetailView = <T,>({
             },
             {
                 header: t('egov.constraintType'),
-                accessorFn: (row) => row.constraints?.[0].type,
+                accessorFn: (row) => row.constraints?.[0]?.type,
                 id: 'constraintType',
                 cell: (ctx) => t(`egov.${ctx.row.original.constraints?.[0]?.type}`),
             },
             {
                 header: t('egov.constraint'),
-                accessorFn: (row) => row.constraints?.[0].type,
+                accessorFn: (row) => row.constraints?.[0]?.type,
                 id: 'constraint',
                 cell: (ctx) => {
                     const constraint = ctx.row.original.constraints?.[0]

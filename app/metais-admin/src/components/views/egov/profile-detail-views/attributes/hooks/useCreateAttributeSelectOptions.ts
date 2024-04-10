@@ -63,7 +63,6 @@ export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: i
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
         { label: t('egov.create.enum'), value: StringConstraints.ENUM },
         { label: t('egov.create.regex'), value: StringConstraints.REGEX },
-        { label: t('egov.create.interval'), value: StringConstraints.INTERVAL },
         { label: t('egov.create.ciType'), value: StringConstraints.CI_TYPE },
     ]
 
