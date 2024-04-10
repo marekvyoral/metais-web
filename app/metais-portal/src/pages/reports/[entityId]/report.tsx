@@ -64,6 +64,7 @@ export const ReportsDetailPage: React.FC = () => {
                                     exportButton={
                                         <ReportExportButton
                                             entityId={props?.data?.id ?? 0}
+                                            entityName={props.data?.name ?? ''}
                                             filter={mapFilterToExecuteParams(props.filterParams ?? {}, props.data?.parameters, props.filterEmumData)}
                                         />
                                     }

@@ -22,14 +22,22 @@ interface IExportItemsOrRelationsProps {
     close: () => void
     onExportStart: (exportValue: string, extension: FileExtensionEnum) => void
     isError?: boolean
+    hideRadioBtns?: boolean
 }
 
-export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({ isOpen, isLoading, close, onExportStart, isError }) => {
+export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
+    isOpen,
+    isLoading,
+    close,
+    onExportStart,
+    isError,
+    hideRadioBtns,
+}) => {
     const { t } = useTranslation()
     const [exportValue, setExportValue] = useState('')
     const { isActionSuccess } = useActionSuccess()
     const startExport = (extension: FileExtensionEnum) => {
-        if (!exportValue) return
+        if (!exportValue && !hideRadioBtns) return
         onExportStart(exportValue, extension)
         // close()
     }
@@ -46,22 +54,24 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
                     <TextHeading size={'L'} className={styles.heading}>
                         {t('exportItemsOrRelations.header')}
                     </TextHeading>
-                    <RadioGroup inline small>
-                        <RadioButton
-                            id={'id1'}
-                            name={'RadioButton'}
-                            value={'RadioButton'}
-                            label={t('exportItemsOrRelations.items')}
-                            onChange={() => setExportValue('items')}
-                        />
-                        <RadioButton
-                            id={'id2'}
-                            name={'RadioButton'}
-                            value={'RadioButton'}
-                            label={t('exportItemsOrRelations.relations')}
-                            onChange={() => setExportValue('relations')}
-                        />
-                    </RadioGroup>
+                    {!hideRadioBtns && (
+                        <RadioGroup inline small>
+                            <RadioButton
+                                id={'id1'}
+                                name={'RadioButton'}
+                                value={'RadioButton'}
+                                label={t('exportItemsOrRelations.items')}
+                                onChange={() => setExportValue('items')}
+                            />
+                            <RadioButton
+                                id={'id2'}
+                                name={'RadioButton'}
+                                value={'RadioButton'}
+                                label={t('exportItemsOrRelations.relations')}
+                                onChange={() => setExportValue('relations')}
+                            />
+                        </RadioGroup>
+                    )}
                     <div className={styles.buttonGroup}>
                         <Button
                             label={t('exportItemsOrRelations.buttonXML')}
