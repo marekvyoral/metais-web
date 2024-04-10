@@ -44,12 +44,15 @@ export const getReportsFilterParameterYupSchema = (
 
     if (parameterKeys) {
         const schema = Object.fromEntries(
-            parameterKeys?.map((key) => {
-                const type = parameters?.find((parameter) => parameter.key === key)?.type
-                if (type === ParameterType.BOOLEAN) return [key, boolean().oneOf([true], t('validation.mustBeChecked'))]
+            [
+                ['fullTextSearch', string()],
+                parameterKeys?.map((key) => {
+                    const type = parameters?.find((parameter) => parameter.key === key)?.type
+                    if (type === ParameterType.BOOLEAN) return [key, boolean().oneOf([true], t('validation.mustBeChecked'))]
 
-                return [key, string().required(t('validation.required'))]
-            }) ?? [],
+                    return [key, string().required(t('validation.required'))]
+                }),
+            ] ?? [],
         )
         return (
             object()

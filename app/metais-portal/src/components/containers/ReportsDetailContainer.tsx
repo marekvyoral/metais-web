@@ -61,7 +61,7 @@ export const ReportsDetailContainer: React.FC<IReportsDetailContainer> = ({ View
         isError: isErrorReport,
         data: reportData,
     } = useExecute(reportMetaData?.id ?? 0, TYP, mapFilterToExecuteParams(filterParams, reportMetaData?.parameters, filterEnumData))
-
+    console.log('filterParams', filterParams)
     const pagination = mapGenericTypeToPagination(filterParams, reportData)
     document.title = `${t('titles.reportDetail')} ${reportMetaData?.name ?? ''} ${META_IS_TITLE}`
     return (

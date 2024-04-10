@@ -108,7 +108,7 @@ export const mapFilterToExecuteParams = (
     return {
         page: pageNumber ?? BASE_PAGE_NUMBER,
         perPage: pageSize ?? BASE_PAGE_SIZE,
-        parameters: { ...parametersObject },
+        parameters: { ...parametersObject, fullTextSearch: filterParams.fullTextSearch },
     }
 }
 
