@@ -294,6 +294,14 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                                 ),
                             },
                             {
+                                title: t('evaluation.accordion.projects'),
+                                content: <></>,
+                            },
+                            {
+                                title: t('evaluation.accordion.activities'),
+                                content: <></>,
+                            },
+                            {
                                 title: t('evaluation.accordion.krit'),
                                 content: (
                                     <BasicEvaluationAccordion dataRights={dataRights} entityId={entityId ?? ''} isGlobalAllowed={isGlobalAllowed} />

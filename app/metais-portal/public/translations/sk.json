@@ -424,6 +424,8 @@
     "evaluation.accordion.isvs": "ISVS",
     "evaluation.accordion.services": "Koncové služby",
     "evaluation.accordion.krit": "KRIT Základné informácie",
+    "evaluation.accordion.projects": "Projekty",
+    "evaluation.accordion.activities": "Aktivity",
     "evaluation.evaluatedBy": "Vyhodnotil",
     "evaluation.version": "Verzia",
     "evaluation.created": "Začiatok hodnotenia",

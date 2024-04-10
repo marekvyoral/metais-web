@@ -87,6 +87,29 @@ export type GetKsParams = {
     direction: GetKsDirection
 }
 
+export type GetProjectsDirection = (typeof GetProjectsDirection)[keyof typeof GetProjectsDirection]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetProjectsDirection = {
+    ASC: 'ASC',
+    DESC: 'DESC',
+} as const
+
+export type GetProjectsOrder = (typeof GetProjectsOrder)[keyof typeof GetProjectsOrder]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetProjectsOrder = {
+    NAME: 'NAME',
+    CODE: 'CODE',
+} as const
+
+export type GetProjectsParams = {
+    page: number
+    count: number
+    order: GetProjectsOrder
+    direction: GetProjectsDirection
+}
+
 export type GetPhaseMap200 = { [key: string]: string }
 
 export type GetProgramWithPartsParams = {
@@ -194,11 +217,6 @@ export interface ApiKontrolaList {
     pagination?: PaginationResponseData
 }
 
-export interface ApiKontrolaResultList {
-    results?: ApiKontrolaResult[]
-    pagination?: PaginationResponseData
-}
-
 export interface ApiKontrolaResultDetailList {
     results?: ApiKontrolaResultDetail[]
     pagination?: PaginationResponseData
@@ -211,6 +229,11 @@ export interface ApiKontrolaResult {
     kontrolaRunAt?: string
     kontrolaRunBy?: string
     errorCount?: number
+}
+
+export interface ApiKontrolaResultList {
+    results?: ApiKontrolaResult[]
+    pagination?: PaginationResponseData
 }
 
 export interface ApiKontrola {
@@ -243,27 +266,6 @@ export interface KrisToBeIsvs {
     validated?: boolean
 }
 
-export interface NoteItemUi {
-    state?: StateUi
-    evaluations?: NoteUi[]
-    responses?: NoteUi[]
-}
-
-export interface SortObject {
-    empty?: boolean
-    sorted?: boolean
-    unsorted?: boolean
-}
-
-export interface PageableObject {
-    offset?: number
-    sort?: SortObject
-    paged?: boolean
-    pageNumber?: number
-    pageSize?: number
-    unpaged?: boolean
-}
-
 export interface PageKrisToBeIsvs {
     totalElements?: number
     totalPages?: number
@@ -278,6 +280,23 @@ export interface PageKrisToBeIsvs {
     empty?: boolean
 }
 
+export interface NoteSubItemUi {
+    itemId?: string
+    state?: StateUi
+    evaluations?: NoteUi[]
+    responses?: NoteUi[]
+}
+
+export interface SubItemListUi {
+    items?: NoteSubItemUi[]
+}
+
+export interface NoteItemUi {
+    state?: StateUi
+    evaluations?: NoteUi[]
+    responses?: NoteUi[]
+}
+
 export interface KrisToBeKs {
     uuid?: string
     name?: string
@@ -285,6 +304,21 @@ export interface KrisToBeKs {
     fazaUuid?: string
     fazaName?: string
     validated?: boolean
+}
+
+export interface SortObject {
+    empty?: boolean
+    sorted?: boolean
+    unsorted?: boolean
+}
+
+export interface PageableObject {
+    offset?: number
+    sort?: SortObject
+    pageNumber?: number
+    pageSize?: number
+    unpaged?: boolean
+    paged?: boolean
 }
 
 export interface PageKrisToBeKs {
@@ -301,17 +335,72 @@ export interface PageKrisToBeKs {
     empty?: boolean
 }
 
+export interface KrisToBeActivity {
+    uuid?: string
+    name?: string
+    code?: string
+    validated?: boolean
+}
+
+export interface KrisToBeProject {
+    uuid?: string
+    name?: string
+    code?: string
+    activities?: KrisToBeActivity[]
+    validated?: boolean
+}
+
+export interface PageKrisToBeProject {
+    totalElements?: number
+    totalPages?: number
+    size?: number
+    content?: KrisToBeProject[]
+    number?: number
+    sort?: SortObject
+    numberOfElements?: number
+    pageable?: PageableObject
+    first?: boolean
+    last?: boolean
+    empty?: boolean
+}
+
 export interface KrisToBeRights {
     inEvaluation?: boolean
     inProgress?: boolean
     hasVersions?: boolean
     evaluator?: boolean
-    municipality?: boolean
     creator?: boolean
+    municipality?: boolean
 }
 
 export interface ApiPermissionResult {
     hasPermission?: boolean
+}
+
+export type FillRefAttributesTaskFailedUuids = { [key: string]: string }
+
+export type FillRefAttributesTaskStatus = (typeof FillRefAttributesTaskStatus)[keyof typeof FillRefAttributesTaskStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const FillRefAttributesTaskStatus = {
+    CREATED: 'CREATED',
+    IN_PROGRESS_PREPARE_DATA: 'IN_PROGRESS_PREPARE_DATA',
+    IN_PROGRESS_UPDATE_METADATA_IN_DMS: 'IN_PROGRESS_UPDATE_METADATA_IN_DMS',
+    FINISHED: 'FINISHED',
+    CANCELLED: 'CANCELLED',
+} as const
+
+export interface FillRefAttributesTask {
+    id?: string
+    totalCount?: number
+    startedAt?: string
+    endedAt?: string
+    status?: FillRefAttributesTaskStatus
+    successUuids?: string[]
+    failedUuids?: FillRefAttributesTaskFailedUuids
+    taskBriefInfo?: string
+    successCount?: number
+    failedCount?: number
 }
 
 export interface RecycleSetUi {
@@ -359,7 +448,7 @@ export interface InvalidateReason {
     comment?: string
 }
 
-export interface InvalidateSetUi {
+export interface StoreSetUi {
     configurationItemSet?: ConfigurationItemUi[]
     relationshipSet?: RelationshipUi[]
     invalidateReason?: InvalidateReason
@@ -390,7 +479,7 @@ export interface ConfigurationItemUi {
     metaAttributes?: MetaAttributesUi
 }
 
-export interface StoreSetUi {
+export interface InvalidateSetUi {
     configurationItemSet?: ConfigurationItemUi[]
     relationshipSet?: RelationshipUi[]
     invalidateReason?: InvalidateReason
@@ -424,6 +513,25 @@ export type AttributeUiValue = { [key: string]: any }
 export interface AttributeUi {
     name?: string
     value?: AttributeUiValue
+}
+
+export interface SubItemNewNoteUi {
+    itemId?: string
+    values?: NoteValueUi[]
+    state?: StateUi
+}
+
+export interface SubItemsNewNotesUi {
+    itemNotes?: SubItemNewNoteUi[]
+}
+
+export interface SubItemNoteUi {
+    itemId?: string
+    values?: NoteValueUi[]
+}
+
+export interface SubItemsNotesUi {
+    itemNotes?: SubItemNoteUi[]
 }
 
 export interface ExportNoteUi {
@@ -618,11 +726,11 @@ export const useUpdateProgramPartsFinance = <TError = ApiError, TContext = unkno
     return useMutation(mutationOptions)
 }
 
-export const useUpdateManualApprovmentHook = () => {
-    const updateManualApprovment = useKRISSwaggerClient<void>()
+export const useUpdateManualApprovementHook = () => {
+    const updateManualApprovement = useKRISSwaggerClient<void>()
 
     return (uuid: string, krisUi: KrisUi) => {
-        return updateManualApprovment({
+        return updateManualApprovement({
             url: `/kris-to-be/kris/${uuid}/approve`,
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
@@ -631,42 +739,42 @@ export const useUpdateManualApprovmentHook = () => {
     }
 }
 
-export const useUpdateManualApprovmentMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+export const useUpdateManualApprovementMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useUpdateManualApprovmentHook>>>,
+        Awaited<ReturnType<ReturnType<typeof useUpdateManualApprovementHook>>>,
         TError,
         { uuid: string; data: KrisUi },
         TContext
     >
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateManualApprovmentHook>>>, TError, { uuid: string; data: KrisUi }, TContext> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateManualApprovementHook>>>, TError, { uuid: string; data: KrisUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
-    const updateManualApprovment = useUpdateManualApprovmentHook()
+    const updateManualApprovement = useUpdateManualApprovementHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useUpdateManualApprovmentHook>>>, { uuid: string; data: KrisUi }> = (
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useUpdateManualApprovementHook>>>, { uuid: string; data: KrisUi }> = (
         props,
     ) => {
         const { uuid, data } = props ?? {}
 
-        return updateManualApprovment(uuid, data)
+        return updateManualApprovement(uuid, data)
     }
 
     return { mutationFn, ...mutationOptions }
 }
 
-export type UpdateManualApprovmentMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateManualApprovmentHook>>>>
-export type UpdateManualApprovmentMutationBody = KrisUi
-export type UpdateManualApprovmentMutationError = ApiError
+export type UpdateManualApprovementMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateManualApprovementHook>>>>
+export type UpdateManualApprovementMutationBody = KrisUi
+export type UpdateManualApprovementMutationError = ApiError
 
-export const useUpdateManualApprovment = <TError = ApiError, TContext = unknown>(options?: {
+export const useUpdateManualApprovement = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useUpdateManualApprovmentHook>>>,
+        Awaited<ReturnType<ReturnType<typeof useUpdateManualApprovementHook>>>,
         TError,
         { uuid: string; data: KrisUi },
         TContext
     >
 }) => {
-    const mutationOptions = useUpdateManualApprovmentMutationOptions(options)
+    const mutationOptions = useUpdateManualApprovementMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
@@ -1423,7 +1531,7 @@ export const useKoncoveSluzbyCezIsvs = <TError = ApiError, TContext = unknown>(o
 export const useAddResponseHook = () => {
     const addResponse = useKRISSwaggerClient<void>()
 
-    return (kris: string, uuid: string, type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS', noteUi: NoteUi) => {
+    return (kris: string, uuid: string, type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY', noteUi: NoteUi) => {
         return addResponse({
             url: `/kris-to-be/kris/${kris}/${uuid}/${type}/response`,
             method: 'post',
@@ -1437,13 +1545,13 @@ export const useAddResponseMutationOptions = <TError = ApiError, TContext = unkn
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAddResponseHook>>>,
         TError,
-        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: NoteUi },
+        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'; data: NoteUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useAddResponseHook>>>,
     TError,
-    { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: NoteUi },
+    { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'; data: NoteUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1452,7 +1560,7 @@ export const useAddResponseMutationOptions = <TError = ApiError, TContext = unkn
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useAddResponseHook>>>,
-        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: NoteUi }
+        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'; data: NoteUi }
     > = (props) => {
         const { kris, uuid, type, data } = props ?? {}
 
@@ -1470,7 +1578,7 @@ export const useAddResponse = <TError = ApiError, TContext = unknown>(options?: 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAddResponseHook>>>,
         TError,
-        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: NoteUi },
+        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'; data: NoteUi },
         TContext
     >
 }) => {
@@ -1482,7 +1590,7 @@ export const useAddResponse = <TError = ApiError, TContext = unknown>(options?: 
 export const useAddEvaluationHook = () => {
     const addEvaluation = useKRISSwaggerClient<void>()
 
-    return (kris: string, uuid: string, type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS', newNoteUi: NewNoteUi) => {
+    return (kris: string, uuid: string, type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY', newNoteUi: NewNoteUi) => {
         return addEvaluation({
             url: `/kris-to-be/kris/${kris}/${uuid}/${type}/evaluation`,
             method: 'post',
@@ -1496,13 +1604,13 @@ export const useAddEvaluationMutationOptions = <TError = ApiError, TContext = un
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAddEvaluationHook>>>,
         TError,
-        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: NewNoteUi },
+        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'; data: NewNoteUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useAddEvaluationHook>>>,
     TError,
-    { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: NewNoteUi },
+    { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'; data: NewNoteUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1511,7 +1619,7 @@ export const useAddEvaluationMutationOptions = <TError = ApiError, TContext = un
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useAddEvaluationHook>>>,
-        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: NewNoteUi }
+        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'; data: NewNoteUi }
     > = (props) => {
         const { kris, uuid, type, data } = props ?? {}
 
@@ -1529,7 +1637,7 @@ export const useAddEvaluation = <TError = ApiError, TContext = unknown>(options?
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAddEvaluationHook>>>,
         TError,
-        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: NewNoteUi },
+        { kris: string; uuid: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'; data: NewNoteUi },
         TContext
     >
 }) => {
@@ -1541,7 +1649,12 @@ export const useAddEvaluation = <TError = ApiError, TContext = unknown>(options?
 export const useExportNoteResponseHook = () => {
     const exportNoteResponse = useKRISSwaggerClient<ExportNoteResponse>()
 
-    return (kris: string, type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS', exportFilter: ExportFilter, params: ExportNoteResponseParams) => {
+    return (
+        kris: string,
+        type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+        exportFilter: ExportFilter,
+        params: ExportNoteResponseParams,
+    ) => {
         return exportNoteResponse({
             url: `/kris-to-be/kris/${kris}/${type}/export`,
             method: 'post',
@@ -1556,13 +1669,23 @@ export const useExportNoteResponseMutationOptions = <TError = ApiError, TContext
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useExportNoteResponseHook>>>,
         TError,
-        { kris: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: ExportFilter; params: ExportNoteResponseParams },
+        {
+            kris: string
+            type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            data: ExportFilter
+            params: ExportNoteResponseParams
+        },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useExportNoteResponseHook>>>,
     TError,
-    { kris: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: ExportFilter; params: ExportNoteResponseParams },
+    {
+        kris: string
+        type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+        data: ExportFilter
+        params: ExportNoteResponseParams
+    },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1571,7 +1694,12 @@ export const useExportNoteResponseMutationOptions = <TError = ApiError, TContext
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useExportNoteResponseHook>>>,
-        { kris: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: ExportFilter; params: ExportNoteResponseParams }
+        {
+            kris: string
+            type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            data: ExportFilter
+            params: ExportNoteResponseParams
+        }
     > = (props) => {
         const { kris, type, data, params } = props ?? {}
 
@@ -1589,11 +1717,194 @@ export const useExportNoteResponse = <TError = ApiError, TContext = unknown>(opt
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useExportNoteResponseHook>>>,
         TError,
-        { kris: string; type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS'; data: ExportFilter; params: ExportNoteResponseParams },
+        {
+            kris: string
+            type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            data: ExportFilter
+            params: ExportNoteResponseParams
+        },
         TContext
     >
 }) => {
     const mutationOptions = useExportNoteResponseMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useAddSubItemResponseHook = () => {
+    const addSubItemResponse = useKRISSwaggerClient<void>()
+
+    return (
+        kris: string,
+        parentUuid: string,
+        parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+        childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+        subItemsNotesUi: SubItemsNotesUi,
+    ) => {
+        return addSubItemResponse({
+            url: `/kris-to-be/kris/${kris}/${parentUuid}/${parentType}/${childType}/response`,
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            data: subItemsNotesUi,
+        })
+    }
+}
+
+export const useAddSubItemResponseMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useAddSubItemResponseHook>>>,
+        TError,
+        {
+            kris: string
+            parentUuid: string
+            parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            data: SubItemsNotesUi
+        },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useAddSubItemResponseHook>>>,
+    TError,
+    {
+        kris: string
+        parentUuid: string
+        parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+        childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+        data: SubItemsNotesUi
+    },
+    TContext
+> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const addSubItemResponse = useAddSubItemResponseHook()
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useAddSubItemResponseHook>>>,
+        {
+            kris: string
+            parentUuid: string
+            parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            data: SubItemsNotesUi
+        }
+    > = (props) => {
+        const { kris, parentUuid, parentType, childType, data } = props ?? {}
+
+        return addSubItemResponse(kris, parentUuid, parentType, childType, data)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type AddSubItemResponseMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useAddSubItemResponseHook>>>>
+export type AddSubItemResponseMutationBody = SubItemsNotesUi
+export type AddSubItemResponseMutationError = ApiError
+
+export const useAddSubItemResponse = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useAddSubItemResponseHook>>>,
+        TError,
+        {
+            kris: string
+            parentUuid: string
+            parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            data: SubItemsNotesUi
+        },
+        TContext
+    >
+}) => {
+    const mutationOptions = useAddSubItemResponseMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useAddSubItemEvaluationsHook = () => {
+    const addSubItemEvaluations = useKRISSwaggerClient<void>()
+
+    return (
+        kris: string,
+        parentUuid: string,
+        parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+        childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+        subItemsNewNotesUi: SubItemsNewNotesUi,
+    ) => {
+        return addSubItemEvaluations({
+            url: `/kris-to-be/kris/${kris}/${parentUuid}/${parentType}/${childType}/evaluation`,
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            data: subItemsNewNotesUi,
+        })
+    }
+}
+
+export const useAddSubItemEvaluationsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useAddSubItemEvaluationsHook>>>,
+        TError,
+        {
+            kris: string
+            parentUuid: string
+            parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            data: SubItemsNewNotesUi
+        },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useAddSubItemEvaluationsHook>>>,
+    TError,
+    {
+        kris: string
+        parentUuid: string
+        parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+        childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+        data: SubItemsNewNotesUi
+    },
+    TContext
+> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const addSubItemEvaluations = useAddSubItemEvaluationsHook()
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useAddSubItemEvaluationsHook>>>,
+        {
+            kris: string
+            parentUuid: string
+            parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            data: SubItemsNewNotesUi
+        }
+    > = (props) => {
+        const { kris, parentUuid, parentType, childType, data } = props ?? {}
+
+        return addSubItemEvaluations(kris, parentUuid, parentType, childType, data)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type AddSubItemEvaluationsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useAddSubItemEvaluationsHook>>>>
+export type AddSubItemEvaluationsMutationBody = SubItemsNewNotesUi
+export type AddSubItemEvaluationsMutationError = ApiError
+
+export const useAddSubItemEvaluations = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useAddSubItemEvaluationsHook>>>,
+        TError,
+        {
+            kris: string
+            parentUuid: string
+            parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY'
+            data: SubItemsNewNotesUi
+        },
+        TContext
+    >
+}) => {
+    const mutationOptions = useAddSubItemEvaluationsMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
@@ -1825,6 +2136,42 @@ export const useInvalidateConfigurationItemBiznisMdules = <TError = ApiError, TC
     >
 }) => {
     const mutationOptions = useInvalidateConfigurationItemBiznisMdulesMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useStartTaskHook = () => {
+    const startTask = useKRISSwaggerClient<FillRefAttributesTask>()
+
+    return (id: string) => {
+        return startTask({ url: `/fillRefAttributes/startTask/${id}`, method: 'post' })
+    }
+}
+
+export const useStartTaskMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStartTaskHook>>>, TError, { id: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStartTaskHook>>>, TError, { id: string }, TContext> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const startTask = useStartTaskHook()
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStartTaskHook>>>, { id: string }> = (props) => {
+        const { id } = props ?? {}
+
+        return startTask(id)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type StartTaskMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStartTaskHook>>>>
+
+export type StartTaskMutationError = ApiError
+
+export const useStartTask = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStartTaskHook>>>, TError, { id: string }, TContext>
+}) => {
+    const mutationOptions = useStartTaskMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
@@ -2789,6 +3136,50 @@ export const useGetRights = <TData = Awaited<ReturnType<ReturnType<typeof useGet
     return query
 }
 
+export const useGetProjectsHook = () => {
+    const getProjects = useKRISSwaggerClient<PageKrisToBeProject>()
+
+    return (uuid: string, params: GetProjectsParams, signal?: AbortSignal) => {
+        return getProjects({ url: `/kris-to-be/project/${uuid}`, method: 'get', params, signal })
+    }
+}
+
+export const getGetProjectsQueryKey = (uuid: string, params: GetProjectsParams) =>
+    [`/kris-to-be/project/${uuid}`, ...(params ? [params] : [])] as const
+
+export const useGetProjectsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetProjectsHook>>>, TError = ApiError>(
+    uuid: string,
+    params: GetProjectsParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetProjectsHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetProjectsHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetProjectsQueryKey(uuid, params)
+
+    const getProjects = useGetProjectsHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetProjectsHook>>>> = ({ signal }) => getProjects(uuid, params, signal)
+
+    return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
+}
+
+export type GetProjectsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetProjectsHook>>>>
+export type GetProjectsQueryError = ApiError
+
+export const useGetProjects = <TData = Awaited<ReturnType<ReturnType<typeof useGetProjectsHook>>>, TError = ApiError>(
+    uuid: string,
+    params: GetProjectsParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetProjectsHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetProjectsQueryOptions(uuid, params, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
 export const useGetKsHook = () => {
     const getKs = useKRISSwaggerClient<PageKrisToBeKs>()
 
@@ -2917,18 +3308,18 @@ export const useGetVersions = <TData = Awaited<ReturnType<ReturnType<typeof useG
 export const useGetEvaluationsHook = () => {
     const getEvaluations = useKRISSwaggerClient<NoteItemUi>()
 
-    return (kris: string, uuid: string, type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS', signal?: AbortSignal) => {
+    return (kris: string, uuid: string, type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY', signal?: AbortSignal) => {
         return getEvaluations({ url: `/kris-to-be/kris/${kris}/${uuid}/${type}/notes`, method: 'get', signal })
     }
 }
 
-export const getGetEvaluationsQueryKey = (kris: string, uuid: string, type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS') =>
+export const getGetEvaluationsQueryKey = (kris: string, uuid: string, type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY') =>
     [`/kris-to-be/kris/${kris}/${uuid}/${type}/notes`] as const
 
 export const useGetEvaluationsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetEvaluationsHook>>>, TError = ApiError>(
     kris: string,
     uuid: string,
-    type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS',
+    type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEvaluationsHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEvaluationsHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -2949,10 +3340,69 @@ export type GetEvaluationsQueryError = ApiError
 export const useGetEvaluations = <TData = Awaited<ReturnType<ReturnType<typeof useGetEvaluationsHook>>>, TError = ApiError>(
     kris: string,
     uuid: string,
-    type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS',
+    type: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEvaluationsHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useGetEvaluationsQueryOptions(kris, uuid, type, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useGetSubItemEvaluationsHook = () => {
+    const getSubItemEvaluations = useKRISSwaggerClient<SubItemListUi>()
+
+    return (
+        kris: string,
+        parentUuid: string,
+        parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+        childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+        signal?: AbortSignal,
+    ) => {
+        return getSubItemEvaluations({ url: `/kris-to-be/kris/${kris}/${parentUuid}/${parentType}/${childType}/notes`, method: 'get', signal })
+    }
+}
+
+export const getGetSubItemEvaluationsQueryKey = (
+    kris: string,
+    parentUuid: string,
+    parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+    childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+) => [`/kris-to-be/kris/${kris}/${parentUuid}/${parentType}/${childType}/notes`] as const
+
+export const useGetSubItemEvaluationsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetSubItemEvaluationsHook>>>, TError = ApiError>(
+    kris: string,
+    parentUuid: string,
+    parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+    childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSubItemEvaluationsHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSubItemEvaluationsHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetSubItemEvaluationsQueryKey(kris, parentUuid, parentType, childType)
+
+    const getSubItemEvaluations = useGetSubItemEvaluationsHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetSubItemEvaluationsHook>>>> = ({ signal }) =>
+        getSubItemEvaluations(kris, parentUuid, parentType, childType, signal)
+
+    return { queryKey, queryFn, enabled: !!(kris && parentUuid && parentType && childType), ...queryOptions }
+}
+
+export type GetSubItemEvaluationsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetSubItemEvaluationsHook>>>>
+export type GetSubItemEvaluationsQueryError = ApiError
+
+export const useGetSubItemEvaluations = <TData = Awaited<ReturnType<ReturnType<typeof useGetSubItemEvaluationsHook>>>, TError = ApiError>(
+    kris: string,
+    parentUuid: string,
+    parentType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+    childType: 'COMMON' | 'GOALS' | 'KRIS' | 'KS' | 'ISVS' | 'PROJECT' | 'ACTIVITY',
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSubItemEvaluationsHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetSubItemEvaluationsQueryOptions(kris, parentUuid, parentType, childType, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -3174,4 +3624,203 @@ export const useFindKontrola = <TData = Awaited<ReturnType<ReturnType<typeof use
     query.queryKey = queryOptions.queryKey
 
     return query
+}
+
+export const useGetTasksHook = () => {
+    const getTasks = useKRISSwaggerClient<FillRefAttributesTask[]>()
+
+    return (signal?: AbortSignal) => {
+        return getTasks({ url: `/fillRefAttributes/tasks`, method: 'get', signal })
+    }
+}
+
+export const getGetTasksQueryKey = () => [`/fillRefAttributes/tasks`] as const
+
+export const useGetTasksQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetTasksHook>>>, TError = ApiError>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTasksHook>>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTasksHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetTasksQueryKey()
+
+    const getTasks = useGetTasksHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetTasksHook>>>> = ({ signal }) => getTasks(signal)
+
+    return { queryKey, queryFn, ...queryOptions }
+}
+
+export type GetTasksQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetTasksHook>>>>
+export type GetTasksQueryError = ApiError
+
+export const useGetTasks = <TData = Awaited<ReturnType<ReturnType<typeof useGetTasksHook>>>, TError = ApiError>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTasksHook>>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetTasksQueryOptions(options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useGetTaskHook = () => {
+    const getTask = useKRISSwaggerClient<FillRefAttributesTask>()
+
+    return (id: string, signal?: AbortSignal) => {
+        return getTask({ url: `/fillRefAttributes/tasks/${id}`, method: 'get', signal })
+    }
+}
+
+export const getGetTaskQueryKey = (id: string) => [`/fillRefAttributes/tasks/${id}`] as const
+
+export const useGetTaskQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetTaskHook>>>, TError = ApiError>(
+    id: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetTaskQueryKey(id)
+
+    const getTask = useGetTaskHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetTaskHook>>>> = ({ signal }) => getTask(id, signal)
+
+    return { queryKey, queryFn, enabled: !!id, ...queryOptions }
+}
+
+export type GetTaskQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetTaskHook>>>>
+export type GetTaskQueryError = ApiError
+
+export const useGetTask = <TData = Awaited<ReturnType<ReturnType<typeof useGetTaskHook>>>, TError = ApiError>(
+    id: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetTaskQueryOptions(id, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useGetTaskBriefInfosHook = () => {
+    const getTaskBriefInfos = useKRISSwaggerClient<string[]>()
+
+    return (signal?: AbortSignal) => {
+        return getTaskBriefInfos({ url: `/fillRefAttributes/tasks/briefInfos`, method: 'get', signal })
+    }
+}
+
+export const getGetTaskBriefInfosQueryKey = () => [`/fillRefAttributes/tasks/briefInfos`] as const
+
+export const useGetTaskBriefInfosQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfosHook>>>,
+    TError = ApiError,
+>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfosHook>>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfosHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetTaskBriefInfosQueryKey()
+
+    const getTaskBriefInfos = useGetTaskBriefInfosHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfosHook>>>> = ({ signal }) => getTaskBriefInfos(signal)
+
+    return { queryKey, queryFn, ...queryOptions }
+}
+
+export type GetTaskBriefInfosQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfosHook>>>>
+export type GetTaskBriefInfosQueryError = ApiError
+
+export const useGetTaskBriefInfos = <TData = Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfosHook>>>, TError = ApiError>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfosHook>>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetTaskBriefInfosQueryOptions(options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useGetTaskBriefInfoHook = () => {
+    const getTaskBriefInfo = useKRISSwaggerClient<string>()
+
+    return (id: string, signal?: AbortSignal) => {
+        return getTaskBriefInfo({ url: `/fillRefAttributes/tasks/briefInfos/${id}`, method: 'get', signal })
+    }
+}
+
+export const getGetTaskBriefInfoQueryKey = (id: string) => [`/fillRefAttributes/tasks/briefInfos/${id}`] as const
+
+export const useGetTaskBriefInfoQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfoHook>>>, TError = ApiError>(
+    id: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfoHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfoHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetTaskBriefInfoQueryKey(id)
+
+    const getTaskBriefInfo = useGetTaskBriefInfoHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfoHook>>>> = ({ signal }) => getTaskBriefInfo(id, signal)
+
+    return { queryKey, queryFn, enabled: !!id, ...queryOptions }
+}
+
+export type GetTaskBriefInfoQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfoHook>>>>
+export type GetTaskBriefInfoQueryError = ApiError
+
+export const useGetTaskBriefInfo = <TData = Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfoHook>>>, TError = ApiError>(
+    id: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskBriefInfoHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetTaskBriefInfoQueryOptions(id, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useCancelTaskHook = () => {
+    const cancelTask = useKRISSwaggerClient<FillRefAttributesTask>()
+
+    return (id: string) => {
+        return cancelTask({ url: `/fillRefAttributes/cancelTask/${id}`, method: 'delete' })
+    }
+}
+
+export const useCancelTaskMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelTaskHook>>>, TError, { id: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelTaskHook>>>, TError, { id: string }, TContext> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const cancelTask = useCancelTaskHook()
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useCancelTaskHook>>>, { id: string }> = (props) => {
+        const { id } = props ?? {}
+
+        return cancelTask(id)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type CancelTaskMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCancelTaskHook>>>>
+
+export type CancelTaskMutationError = ApiError
+
+export const useCancelTask = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelTaskHook>>>, TError, { id: string }, TContext>
+}) => {
+    const mutationOptions = useCancelTaskMutationOptions(options)
+
+    return useMutation(mutationOptions)
 }

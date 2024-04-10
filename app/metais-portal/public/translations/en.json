@@ -426,6 +426,8 @@
     "evaluation.accordion.isvs": "ISVS",
     "evaluation.accordion.services": "eGov services",
     "evaluation.accordion.krit": "KRIT Basic information",
+    "evaluation.accordion.projects": "Projects",
+    "evaluation.accordion.activities": "Activities",
     "evaluation.evaluatedBy": "User",
     "evaluation.version": "Version",
     "evaluation.created": "Start of evaluation",
