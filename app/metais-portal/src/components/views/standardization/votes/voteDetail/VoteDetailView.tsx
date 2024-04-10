@@ -189,7 +189,11 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     }, [voteState])
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
-
+    useEffect(() => {
+        if (castVoteError) {
+            scrollToMutationFeedback()
+        }
+    }, [castVoteError, scrollToMutationFeedback])
     useEffect(() => {
         if (isActionSuccess.value) {
             scrollToMutationFeedback()
