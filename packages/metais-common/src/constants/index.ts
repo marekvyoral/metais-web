@@ -426,3 +426,10 @@ export const BULK_ACTION_ITEM_SEARCH_KEY = 'list'
 export const ELASTIC_MAX_RECORDS = 10000
 
 export const TASKS_QUERY_KEY = 'tasksQueryKey'
+
+export enum ConstraintTypes {
+    REGEX = 'regex',
+    ENUM = 'enum',
+    INTERVAL = 'interval',
+    CI_TYPE = 'ciType',
+}

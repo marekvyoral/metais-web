@@ -1,14 +1,29 @@
 import { BreadCrumbs, Button, ButtonLink, ButtonPopup, CheckBox, HomeIcon, Input, Table, TextHeading } from '@isdd/idsk-ui-kit'
-import { MutationFeedback, QueryFeedback, formatDateForDefaultValue, formatDateTimeForDefaultValue, isRowSelected } from '@isdd/metais-common'
-import { Attribute, AttributeAttributeTypeEnum, AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import {
+    MutationFeedback,
+    QueryFeedback,
+    formatDateForDefaultValue,
+    formatDateTimeForDefaultValue,
+    isRowSelected,
+    ATTRIBUTE_NAME,
+} from '@isdd/metais-common'
+import {
+    Attribute,
+    AttributeAttributeTypeEnum,
+    AttributeConstraintCiType,
+    AttributeConstraintEnum,
+    AttributeConstraintInterval,
+    AttributeConstraintRegex,
+    AttributeProfileType,
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { ColumnDef, Row } from '@tanstack/react-table'
+import { CellContext, ColumnDef, Row } from '@tanstack/react-table'
 import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
-import { HTML_TYPE } from '@isdd/metais-common/constants'
+import { ConstraintTypes, HTML_TYPE } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
@@ -16,6 +31,7 @@ import { ObjectSchema, lazy, number, object, string } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { TFunction } from 'i18next'
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
+import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import { MoreActionsColumn } from './actions/MoreActionsColumn'
 import { AddAttributeModal } from './attributes/AddAttributeModal'
@@ -56,6 +72,35 @@ const getProfileAttributeSchema = (t: TFunction) => {
     })
 }
 
+const useGetCiTypes = (attributes: Attribute[]) => {
+    const uuids: string[] = []
+    const types: string[] = []
+    attributes.forEach((a) => {
+        const constraint = a.constraints?.[0] as AttributeConstraintCiType
+
+        if (constraint?.type == ConstraintTypes.CI_TYPE && constraint?.ciType && a.defaultValue) {
+            uuids.push(a.defaultValue)
+            types.push(constraint?.ciType)
+        }
+    })
+
+    const { data, isLoading, isError, fetchStatus } = useReadCiList1(
+        {
+            filter: {
+                type: types,
+                uuid: uuids,
+            },
+            perpage: 999,
+        },
+        { query: { enabled: uuids.length > 0 && types.length > 0 } },
+    )
+    return {
+        data: data?.configurationItemSet,
+        isLoading: isLoading && fetchStatus != 'idle',
+        isError,
+    }
+}
+
 export const ProfileDetailView = <T,>({
     data: { profileData, constraintsData, unitsData },
     setValidityOfProfile,
@@ -74,6 +119,8 @@ export const ProfileDetailView = <T,>({
     const { isActionSuccess, setIsActionSuccess } = useActionSuccess()
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    const { data: ciItemsData, isError: isCiTypesError, isLoading: isCiTypesLoading } = useGetCiTypes(profileData?.attributes ?? [])
 
     useEffect(() => {
         if (isActionSuccess.value) scrollToMutationFeedback()
@@ -148,7 +195,7 @@ export const ProfileDetailView = <T,>({
     const getNumericColumns = (): Array<ColumnDef<Attribute>> => {
         return [
             {
-                header: t('egov.measureUnit'),
+                header: unitsData?.name,
                 accessorFn: (row) => row?.units,
                 id: 'measureUnit',
                 cell: (row) => unitsData?.enumItems?.find((item) => item.code === row.getValue())?.value,
@@ -157,7 +204,7 @@ export const ProfileDetailView = <T,>({
                 header: t('egov.constraintType'),
                 accessorFn: (row) => row.constraints?.[0].type,
                 id: 'constraintType',
-                cell: (ctx) => ctx.row.original.constraints?.[0]?.type,
+                cell: (ctx) => t(`egov.${ctx.row.original.constraints?.[0]?.type}`),
             },
             {
                 header: t('egov.constraint'),
@@ -167,14 +214,18 @@ export const ProfileDetailView = <T,>({
                     const constraint = ctx.row.original.constraints?.[0]
                     const type = constraint?.type
 
-                    if (type === 'interval') {
-                        return `${constraint?.minValue} - ${constraint?.maxValue}`
-                    } else if (type === 'regex') {
-                        return constraint?.regex
-                    } else if (type === 'enum') {
-                        return constraintsData.find((item) => item?.code === constraint?.enumCode)?.name
-                    } else if (type === 'ciType') {
-                        return constraint?.ciType
+                    if (type === ConstraintTypes.INTERVAL) {
+                        const current = constraint as AttributeConstraintInterval
+                        return `${current?.minValue} - ${current?.maxValue}`
+                    } else if (type === ConstraintTypes.REGEX) {
+                        const current = constraint as AttributeConstraintRegex
+                        return current?.regex
+                    } else if (type === ConstraintTypes.ENUM) {
+                        const current = constraint as AttributeConstraintEnum
+                        return constraintsData.find((item) => item?.code === current?.enumCode)?.name
+                    } else if (type === ConstraintTypes.CI_TYPE) {
+                        const current = constraint as AttributeConstraintCiType
+                        return current?.ciType
                     }
                     return ''
                 },
@@ -190,7 +241,7 @@ export const ProfileDetailView = <T,>({
             enableSorting: true,
             id: 'name',
             meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
+                getCellContext: (ctx: CellContext<Attribute, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.original.id, selectedRows) ? (
@@ -210,7 +261,7 @@ export const ProfileDetailView = <T,>({
             enableSorting: true,
             id: 'engName',
             meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
+                getCellContext: (ctx: CellContext<Attribute, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.original.id, selectedRows) ? (
@@ -231,7 +282,7 @@ export const ProfileDetailView = <T,>({
             enableSorting: true,
             id: 'description',
             meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
+                getCellContext: (ctx: CellContext<Attribute, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.original.id, selectedRows) ? (
@@ -251,7 +302,7 @@ export const ProfileDetailView = <T,>({
             enableSorting: true,
             id: 'engDescription',
             meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
+                getCellContext: (ctx: CellContext<Attribute, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.original.id, selectedRows) ? (
@@ -283,7 +334,7 @@ export const ProfileDetailView = <T,>({
             enableSorting: true,
             id: 'technicalName',
             meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
+                getCellContext: (ctx: CellContext<Attribute, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
@@ -325,7 +376,7 @@ export const ProfileDetailView = <T,>({
             enableSorting: true,
             id: 'defaultValue',
             meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
+                getCellContext: (ctx: CellContext<Attribute, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) => {
                 if (isRowSelected(ctx?.row?.index, selectedRows)) {
@@ -338,10 +389,13 @@ export const ProfileDetailView = <T,>({
                     return formatDateForDefaultValue(ctx?.getValue?.() as string, 'dd.MM.yyyy')
                 } else if (ctx.row.original.type === AttributeAttributeTypeEnum.DATETIME) {
                     return formatDateTimeForDefaultValue(ctx?.getValue?.() as string, 'dd.MM.yyyy, HH:mm')
+                } else if (ctx.row.original.constraints?.[0]?.type === ConstraintTypes.CI_TYPE) {
+                    return ciItemsData?.find((i) => i.uuid === ctx.row.original.defaultValue)?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
                 } else {
                     return <span>{ctx?.getValue?.() as string}</span>
                 }
             },
+            size: 200,
         },
         {
             header: t('actionsInTable.actions'),
@@ -406,7 +460,7 @@ export const ProfileDetailView = <T,>({
                     { label: t('egov.routing.attrProfile'), href: AdminRouteNames.EGOV_PROFILE },
                 ]}
             />
-            <QueryFeedback loading={isLoading} error={isError} withChildren>
+            <QueryFeedback loading={isLoading || isCiTypesLoading} error={isError || isCiTypesError} withChildren>
                 <div className={styles.basicInformationSpace}>
                     <FlexColumnReverseWrapper>
                         <div className={styles.flexBetween}>

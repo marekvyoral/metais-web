@@ -6,7 +6,7 @@ import { EnumItem, EnumType } from '@isdd/metais-common/api/generated/enums-repo
 import { Attribute, AttributeAttributeTypeEnum, AttributeConstraintRegexAllOf } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
-import { HTML_TYPE, MAX_TITLE_LENGTH } from '@isdd/metais-common/constants'
+import { ConstraintTypes, HTML_TYPE, MAX_TITLE_LENGTH } from '@isdd/metais-common/constants'
 import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 import { ATTRIBUTE_NAME, formatDateToIso } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
@@ -32,13 +32,6 @@ import { AttributesConfigTechNames, attClassNameConfig } from './attributeDispla
 import { getDefaultArrayValue, getDefaultValue } from './attributeInputHelpers'
 
 import { HasResetState } from '@/components/create-entity/CreateCiEntityForm'
-
-enum ConstraintTypes {
-    REGEX = 'regex',
-    ENUM = 'enum',
-    INTERVAL = 'interval',
-    CI_TYPE = 'ciType',
-}
 
 enum MandatoryType {
     CRITICAL = 'critical',
